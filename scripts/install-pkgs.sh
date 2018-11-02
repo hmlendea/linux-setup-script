@@ -101,10 +101,11 @@ install-pkg ntfs-3g
 install-pkg exfat-utils
 install-pkg xfsprogs
 
-install-pkg unzip
-install-pkg unrar
-install-pkg unace
-install-pkg p7zip
+install-dep unzip
+install-dep unrar
+install-dep unace
+install-dep p7zip
+install-dep lrzip
 
 # Desktop Environment & Base applications
 install-pkg gnome-shell
@@ -120,7 +121,6 @@ install-dep dnsmasq
 
 install-pkg gnome-keyring
 install-dep gnome-control-center
-install-pkg gnome-tweaks
 install-pkg gnome-system-monitor
 install-pkg gnome-terminal
 install-pkg gnome-disk-utility
@@ -128,12 +128,16 @@ install-pkg gnome-calculator
 install-pkg gnome-contacts
 install-pkg gnome-weather
 
+install-pkg gnome-tweaks
+install-pkg dconf-editor
+
 install-pkg seahorse
 install-pkg gedit
 install-pkg evince
 install-pkg libreoffice-fresh
 install-pkg libreoffice-fresh-ro
 
+install-pkg file-roller
 install-dep gnome-menus
 
 install-dep gvfs-afc
