@@ -70,13 +70,19 @@ function install-pkg-aur-manually() {
 	fi
 }
 
+install-pkg grub
+install-pkg update-grub
 
 # First things first
+install-pkg dkms
+install-dep linux-headers
+
 install-pkg bash-completion
 install-pkg sudo
 install-pkg gksu
 install-pkg wget
 install-pkg sl
+install-pkg most
 
 install-dep dialog
 install-dep wpa_supplicant
@@ -217,6 +223,8 @@ install-pkg git
 install-pkg monodevelop-stable
 install-pkg monogame-bin
 install-pkg code
+
+install-pkg chromedriver
 
 # Tools
 install-pkg gparted
