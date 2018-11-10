@@ -30,3 +30,5 @@ function execute-script-superuser() {
 execute-script "scripts/install-pkgs.sh"
 execute-script "scripts/config-system.sh"
 execute-script-superuser "scripts/customise-launchers.sh"
+
+sudo update-grub
