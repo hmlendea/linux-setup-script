@@ -670,7 +670,7 @@ fi
 
 # CREATE STEAM ICONS
 
-WMCLASSES_FILE="$HOME_REAL/Documents/.steam-wmclasses"
+WMCLASSES_FILE="../data/steam-wmclasses"
 
 if [ -d "$STEAM_APPS_PATH" ] && [ -d "$ICON_THEME_PATH" ]; then
     if [ ! -d "$STEAM_LAUNCHERS_PATH" ]; then
