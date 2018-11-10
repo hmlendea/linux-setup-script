@@ -1,5 +1,9 @@
 #!/bin/bash
 
+USER_REAL=$SUDO_USER
+[ ! -n "$USER_REAL" ] && USER_REAL=$USER
+HOME_REAL="/home/$USER_REAL"
+
 set_config_value() {
     FILE="$1"
     KEY="$2"
@@ -66,6 +70,8 @@ set_gsetting() {
 
 set_modprobe_option bluetooth disable_ertm 1    # Xbox One Controller Pairing
 set_modprobe_option btusb enable_autosuspend n  # Xbox One Controller Connecting, possibly other devices as well
+
+set_config_value "$HOME_REAL/.alsoftrc" hrtf true
 
 if [ -f "/etc/default/grub" ]; then
     set_config_value "/etc/default/grub" "GRUB_TIMEOUT" 1
