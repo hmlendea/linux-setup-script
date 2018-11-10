@@ -10,7 +10,9 @@ GLOBAL_LAUNCHERS_PATH="/usr/share/applications"
 LOCAL_LAUNCHERS_PATH="/home/$USER_REAL/.local/share/applications"
 STEAM_LAUNCHERS_PATH="$LOCAL_LAUNCHERS_PATH/Steam"
 STEAM_APPS_PATH=$(cat "/home/$USER_REAL/.local/share/Steam/steamapps/libraryfolders.vdf" | grep "\"/" | sed 's/\"[0-9]\"//g' | sed 's/^ *//g' | sed 's/\t//g' | sed 's/\"//g')$(echo "/steamapps/")
-ICON_THEME_PATH="/usr/share/icons/Numix-Circle"
+
+ICON_THEME=$(sudo -u $USER_REAL -H gsettings get org.gnome.desktop.interface icon-theme | tr -d "'")
+ICON_THEME_PATH="/usr/share/icons/"$ICON_THEME
 
 cd /usr/share/applications
 
@@ -154,7 +156,7 @@ set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/google-chrome-unstable.desktop" Icon 
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/ca.desrt.dconf-editor.desktop" Icon "dconf-editor"
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/Cisco-PacketTracer.desktop" Icon "logview"
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/CMake.desktop" Icon "cmake"
-set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/code-oss" Icon "visual-studio-code"
+set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/code-oss.desktop" Icon "visual-studio-code"
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/com.vinszent.GnomeTwitch.desktop" Icon "gnome-twitch"
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/Discord.desktop" Icon "discord"
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/factorio.desktop" Icon "factorio"
@@ -426,6 +428,7 @@ set_launcher_entry "$LOCAL_LAUNCHERS_PATH/chrome-nfjdjopfnbnkmfldmeffmhgodmlhdne
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/amidst.desktop" StartupWMClass "amidst-Amidst"
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/android-studio.desktop" StartupWMClass "jetbrains-studio"
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/Cisco-PacketTracer.desktop" StartupWMClass "PacketTracer6"
+set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/code-oss.desktop" StartupWMClass "code"
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/com.teamviewer.TeamViewer.desktop" StartupWMClass "TeamViewer"
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/fluxgui.desktop" StartupWMClass "Fluxgui.py"
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/geogebra.desktop" StartupWMClass "org-geogebra-desktop-GeoGebra3D"
@@ -677,9 +680,16 @@ if [ -d "$STEAM_APPS_PATH" ] && [ -d "$ICON_THEME_PATH" ]; then
     fi
 
     APP_IDS=$(ls "$STEAM_APPS_PATH" | grep "appmanifest_.*.acf" | awk -F_ '{print $2}' | awk -F. '{print $1}')
+    SIZE_DIR_NAME="48"
+
+    if [ ! -d "$ICON_THEME_PATH/48" ]; then
+        SIZE_DIR_NAME="48x48"
+    fi
 
     for APP_ID in $APP_IDS; do
-        if [ -f "$ICON_THEME_PATH/48/apps/steam_icon_$APP_ID.svg" ]; then
+        APP_ICON_PATH="$ICON_THEME_PATH/$SIZE_DIR_NAME/apps/steam_icon_$APP_ID.svg"
+
+        if [ -f "$APP_ICON_PATH" ]; then
             APP_NAME=$(grep -h "\"name\"" "$STEAM_APPS_PATH/appmanifest_$APP_ID.acf" | sed 's/\"name\"//' | grep -o "\".*\"" | sed 's/\"//g')
             APP_WMCLASS=$(echo "$APP_NAME" | sed 's/\ //g')
 
