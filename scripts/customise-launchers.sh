@@ -1,15 +1,13 @@
 #!/bin/bash
 
 USER_REAL=$SUDO_USER
-
-if [ ! -n "$USER_REAL" ]; then
-    USER_REAL=$USER
-fi
+[ ! -n "$USER_REAL" ] && USER_REAL=$USER
+HOME_REAL="/home/$USER_REAL"
 
 GLOBAL_LAUNCHERS_PATH="/usr/share/applications"
-LOCAL_LAUNCHERS_PATH="/home/$USER_REAL/.local/share/applications"
+LOCAL_LAUNCHERS_PATH="$HOME_REAL/.local/share/applications"
 STEAM_LAUNCHERS_PATH="$LOCAL_LAUNCHERS_PATH/Steam"
-STEAM_APPS_PATH=$(cat "/home/$USER_REAL/.local/share/Steam/steamapps/libraryfolders.vdf" | grep "\"/" | sed 's/\"[0-9]\"//g' | sed 's/^ *//g' | sed 's/\t//g' | sed 's/\"//g')$(echo "/steamapps/")
+STEAM_APPS_PATH=$(cat "$HOME_REAL/.local/share/Steam/steamapps/libraryfolders.vdf" | grep "\"/" | sed 's/\"[0-9]\"//g' | sed 's/^ *//g' | sed 's/\t//g' | sed 's/\"//g')$(echo "/steamapps/")
 
 ICON_THEME=$(sudo -u $USER_REAL -H gsettings get org.gnome.desktop.interface icon-theme | tr -d "'")
 ICON_THEME_PATH="/usr/share/icons/"$ICON_THEME
@@ -589,9 +587,9 @@ set_launcher_entry "$LOCAL_LAUNCHERS_PATH/chrome-lneaknkopdijkpnocmklfnjbeapigfb
 # Themes
 set_theme "/usr/bin/tor-browser-en" "Adwaita"
 
-rm -rf "/home/$USER_REAL/.local/share/applications/wine-*"
-rm -rf "/home/$USER_REAL/.local/share/applications/wine"
-rm -rf "/home/$USER_REAL/.config/menus/applications-merged/user-chrome-apps.menu"
+rm -rf "$HOME_REAL/.local/share/applications/wine-*"
+rm -rf "$HOME_REAL/.local/share/applications/wine"
+rm -rf "$HOME_REAL/.config/menus/applications-merged/user-chrome-apps.menu"
 
 # CREATE ICONS
 
@@ -658,25 +656,29 @@ if [ -d "/opt/android-studio" ]; then
     fi
 
     set_launcher_entry "$LOCAL_LAUNCHERS_PATH/android-sdk-manager.desktop" Name "Android SDK Manager"
-    set_launcher_entry "$LOCAL_LAUNCHERS_PATH/android-sdk-manager.desktop" Exec "\/home\/"$USER_REAL"\/Android\/Sdk\/tools\/android sdk"
+    set_launcher_entry "$LOCAL_LAUNCHERS_PATH/android-sdk-manager.desktop" Exec $HOME_REAL"\/Android\/Sdk\/tools\/android sdk"
     set_launcher_entry "$LOCAL_LAUNCHERS_PATH/android-sdk-manager.desktop" Categories "Development;"
     set_launcher_entry "$LOCAL_LAUNCHERS_PATH/android-sdk-manager.desktop" StartupWMClass "Android SDK Manager"
     set_launcher_entry "$LOCAL_LAUNCHERS_PATH/android-sdk-manager.desktop" Icon "android-sdk"
     set_launcher_entry "$LOCAL_LAUNCHERS_PATH/android-sdk-manager.desktop" NoDisplay "true"
 
     set_launcher_entry "$LOCAL_LAUNCHERS_PATH/android-avd-manager.desktop" Name "Android Virtual Device Manager"
-    set_launcher_entry "$LOCAL_LAUNCHERS_PATH/android-avd-manager.desktop" Exec "\/home\/"$USER_REAL"\/Android\/Sdk\/tools\/android avd"
+    set_launcher_entry "$LOCAL_LAUNCHERS_PATH/android-avd-manager.desktop" Exec $HOME_REAL"\/Android\/Sdk\/tools\/android avd"
     set_launcher_entry "$LOCAL_LAUNCHERS_PATH/android-avd-manager.desktop" Categories "Emulator;"
     set_launcher_entry "$LOCAL_LAUNCHERS_PATH/android-avd-manager.desktop" Icon "android-sdk"
 fi
 
 # CREATE STEAM ICONS
 
-WMCLASSES_FILE="/home/$USER_REAL/Documents/.steam-wmclasses"
+WMCLASSES_FILE="$HOME_REAL/Documents/.steam-wmclasses"
 
 if [ -d "$STEAM_APPS_PATH" ] && [ -d "$ICON_THEME_PATH" ]; then
     if [ ! -d "$STEAM_LAUNCHERS_PATH" ]; then
         mkdir -p "$STEAM_LAUNCHERS_PATH"
+    fi
+
+    if [ ! -f "$WMCLASSES_FILE" ]; then
+        touch "$WMCLASSES_FILE"
     fi
 
     APP_IDS=$(ls "$STEAM_APPS_PATH" | grep "appmanifest_.*.acf" | awk -F_ '{print $2}' | awk -F. '{print $1}')
@@ -689,13 +691,27 @@ if [ -d "$STEAM_APPS_PATH" ] && [ -d "$ICON_THEME_PATH" ]; then
     for APP_ID in $APP_IDS; do
         APP_ICON_PATH="$ICON_THEME_PATH/$SIZE_DIR_NAME/apps/steam_icon_$APP_ID.svg"
 
+        if [ ! -f "$APP_ICON_PATH" ]; then
+            for ICON_THEME_CANDIDATE in $(ls "/usr/share/icons/") ; do
+                ICON_THEME_CANDIDATE_PATH="/usr/share/icons/"$ICON_THEME_CANDIDATE
+
+                if [ -d "$ICON_THEME_CANDIDATE_PATH/48" ]; then
+                    SIZE_DIR_NAME="48"
+                else
+                    SIZE_DIR_NAME="48x48"
+                fi
+
+                APP_ICON_PATH_CANDIDATE="$ICON_THEME_CANDIDATE_PATH/$SIZE_DIR_NAME/apps/steam_icon_$APP_ID.svg"
+                if [ -f "$APP_ICON_PATH_CANDIDATE" ]; then
+                    APP_ICON_PATH=$APP_ICON_PATH_CANDIDATE
+                    break
+                fi
+            done
+        fi
+
         if [ -f "$APP_ICON_PATH" ]; then
             APP_NAME=$(grep -h "\"name\"" "$STEAM_APPS_PATH/appmanifest_$APP_ID.acf" | sed 's/\"name\"//' | grep -o "\".*\"" | sed 's/\"//g')
             APP_WMCLASS=$(echo "$APP_NAME" | sed 's/\ //g')
-
-            if [ ! -f "$WMCLASSES_FILE" ]; then
-                touch "$WMCLASSES_FILE"
-            fi
 
             if [ $(grep -c "^$APP_ID=" "$WMCLASSES_FILE") -ne 0 ]; then
                 APP_WMCLASS=$(cat "$WMCLASSES_FILE" | grep "^$APP_ID=" | awk -F= '{print $2}')
@@ -710,7 +726,7 @@ if [ -d "$STEAM_APPS_PATH" ] && [ -d "$ICON_THEME_PATH" ]; then
             set_launcher_entry "$STEAM_LAUNCHERS_PATH/app_$APP_ID.desktop" Keywords "Game;Steam;$APP_ID;$APP_NAME;"
             set_launcher_entry "$STEAM_LAUNCHERS_PATH/app_$APP_ID.desktop" Keywords[ro] "Joc;Steam;$APP_ID;$APP_NAME;"
             set_launcher_entry "$STEAM_LAUNCHERS_PATH/app_$APP_ID.desktop" Exec "steam steam:\/\/rungameid\/$APP_ID"
-            set_launcher_entry "$STEAM_LAUNCHERS_PATH/app_$APP_ID.desktop" Icon "steam_icon_$APP_ID"
+            set_launcher_entry "$STEAM_LAUNCHERS_PATH/app_$APP_ID.desktop" Icon "$APP_ICON_PATH" #"steam_icon_$APP_ID"
             set_launcher_entry "$STEAM_LAUNCHERS_PATH/app_$APP_ID.desktop" Categories "Game;Steam;"
             set_launcher_entry "$STEAM_LAUNCHERS_PATH/app_$APP_ID.desktop" StartupWMClass "$APP_WMCLASS"
             set_launcher_entry "$STEAM_LAUNCHERS_PATH/app_$APP_ID.desktop" NoDisplay "true"
@@ -722,13 +738,13 @@ fi
 
 # Dropbox tray icons
 if [ -e "/usr/bin/dropbox" ]; then
-    DROPBOX_TRAY_ICONS_PATH="/home/$USER_REAL/Pictures/Icons/Trays/opt/dropbox/images/hicolor/16x16/status"
+    DROPBOX_TRAY_ICONS_PATH="$HOME_REAL/Pictures/Icons/Trays/opt/dropbox/images/hicolor/16x16/status"
 
     if [ -d "$DROPBOX_TRAY_ICONS_PATH" ]; then
-        DROPBOX_DIST_NAME=$(ls "/home/$USER_REAL/.dropbox-dist/" | grep "dropbox-lnx")
+        DROPBOX_DIST_NAME=$(ls "$HOME_REAL/.dropbox-dist/" | grep "dropbox-lnx")
 
         cp -rf "$DROPBOX_TRAY_ICONS_PATH" "/opt/dropbox/images/hicolor/16x16/"
-        cp -rf "$DROPBOX_TRAY_ICONS_PATH" "/home/$USER_REAL/.dropbox-dist/$DROPBOX_DIST_NAME/images/hicolor/16x16/"
+        cp -rf "$DROPBOX_TRAY_ICONS_PATH" "$HOME_REAL/.dropbox-dist/$DROPBOX_DIST_NAME/images/hicolor/16x16/"
 
         # TODO: Check if it is currently running
         #killall dropbox

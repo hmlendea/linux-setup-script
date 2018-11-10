@@ -166,6 +166,7 @@ install-pkg panther-launcher-git
 install-pkg materia-gtk-theme
 install-dep gtk-engine-murrine
 
+install-pkg numix-circle-icon-theme-git
 install-pkg papirus-icon-theme
 install-pkg paper-icon-theme
 
