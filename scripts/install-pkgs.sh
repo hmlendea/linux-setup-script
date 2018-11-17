@@ -134,6 +134,8 @@ install-pkg gnome-calculator
 install-pkg gnome-contacts
 install-pkg gnome-weather
 
+install-pkg gnome-dds-thumbnailer
+
 install-pkg gnome-tweaks
 install-pkg dconf-editor
 
