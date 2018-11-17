@@ -71,6 +71,8 @@ set_gsetting() {
 set_modprobe_option bluetooth disable_ertm 1    # Xbox One Controller Pairing
 set_modprobe_option btusb enable_autosuspend n  # Xbox One Controller Connecting, possibly other devices as well
 
+set_config_value "/etc/pulse/daemon.conf" resample-method speex-float-10
+
 set_config_value "$HOME_REAL/.alsoftrc" hrtf true
 
 if [ -f "/etc/default/grub" ]; then

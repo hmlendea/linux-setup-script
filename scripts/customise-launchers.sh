@@ -584,6 +584,8 @@ set_launcher_entry "$LOCAL_LAUNCHERS_PATH/chrome-lneaknkopdijkpnocmklfnjbeapigfb
 
 [ -f "$GLOBAL_LAUNCHERS_PATH/io.elementary.files.desktop" ]  && set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/org.gnome.Nautilus.desktop" NoDisplay "true"
 
+cd -
+
 # Themes
 set_theme "/usr/bin/tor-browser-en" "Adwaita"
 
@@ -670,7 +672,7 @@ fi
 
 # CREATE STEAM ICONS
 
-WMCLASSES_FILE="../data/steam-wmclasses"
+WMCLASSES_FILE="data/steam-wmclasses.txt"
 
 if [ -d "$STEAM_APPS_PATH" ] && [ -d "$ICON_THEME_PATH" ]; then
     if [ ! -d "$STEAM_LAUNCHERS_PATH" ]; then
