@@ -142,6 +142,7 @@ install-pkg dconf-editor
 install-pkg seahorse
 install-pkg gedit
 install-pkg evince
+install-pkg baobab
 install-pkg libreoffice-fresh
 install-pkg libreoffice-fresh-ro
 
