@@ -23,6 +23,10 @@ set_launcher_entry() {
         return
     fi
 
+    if [ ! -x "$FILE" ]; then
+        chmod +x "$FILE"
+    fi
+
     KEY_ESC=$(echo "$KEY" | sed -e 's/[]\/$*.^|[]/\\&/g')
     VAL_ESC=$(echo "$VAL" | sed -e 's/[]\/$*.^|[]/\\&/g')
 
