@@ -678,6 +678,9 @@ fi
 
 WMCLASSES_FILE="data/steam-wmclasses.txt"
 
+echo $STEAM_APPS_PATH
+echo $ICON_THEMEPATH
+
 if [ -d "$STEAM_APPS_PATH" ] && [ -d "$ICON_THEME_PATH" ]; then
     if [ ! -d "$STEAM_LAUNCHERS_PATH" ]; then
         mkdir -p "$STEAM_LAUNCHERS_PATH"
