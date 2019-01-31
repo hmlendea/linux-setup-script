@@ -88,6 +88,8 @@ install-dep dialog
 install-dep wpa_supplicant
 install-pkg net-tools
 
+install-pkg cron
+
 # Runtimes
 install-pkg python
 install-pkg python2
@@ -145,6 +147,9 @@ install-pkg evince
 install-pkg baobab
 install-pkg libreoffice-fresh
 install-pkg libreoffice-fresh-ro
+
+install-pkg eog
+install-dep eog-plugins
 
 install-pkg file-roller
 install-dep gnome-menus
