@@ -87,6 +87,7 @@ install-pkg most
 install-dep dialog
 install-dep wpa_supplicant
 install-pkg net-tools
+install-pkg wireless_tools
 
 install-pkg cron
 
@@ -126,6 +127,7 @@ install-pkg networkmanager-pptp
 install-pkg networkmanager-vpnc
 install-dep modemmanager
 install-dep dnsmasq
+install-dep system-config-printer
 
 install-pkg gnome-keyring
 install-dep gnome-control-center
@@ -164,10 +166,12 @@ install-dep gvfs-google
 
 install-pkg gnome-shell-extensions
 install-pkg gnome-shell-extension-dash-to-dock
+install-pkg gnome-shell-extension-mediaplayer-git
 install-pkg gnome-shell-extension-gsconnect-git
 install-pkg gnome-shell-extension-multi-monitors-add-on-git
 install-pkg gnome-shell-extension-remove-dropdown-arrows
 install-pkg gnome-shell-extension-no-topleft-hot-corner
+install-pkg gnome-shell-extension-weather-git
 install-pkg panther-launcher-git
 
 # Themes
@@ -183,6 +187,7 @@ install-pkg gnome-backgrounds
 install-pkg folder-color-bzr
 
 # Fonts
+install-dep ttf-ms-fonts
 install-dep ttf-liberation
 install-dep ttf-roboto
 install-dep ttf-croscore
@@ -224,7 +229,7 @@ install-pkg air-for-steam
 
 # Development
 install-pkg dotnet-sdk
-install-pkg jdk
+#install-pkg jdk
 install-pkg electron
 
 install-pkg git
