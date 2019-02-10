@@ -1,3 +1,9 @@
+367520=hollow_knight.x86_64
+221810=Cave.bin.x86
+221910=stanley_linux
+289070=Civ6Sub
+13600=pop.exe
+15100=assassinscreed_dx10.exe
 10=hl_linux
 70=hl_linux
 220=hl2_linux
