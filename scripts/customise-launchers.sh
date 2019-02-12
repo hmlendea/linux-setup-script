@@ -296,11 +296,11 @@ set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/wps-office-wps.desktop" Categories "Q
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/xchat.desktop" Categories "Network;Communication;"
 set_launcher_entry "$LOCAL_LAUNCHERS_PATH/chrome-aiahmijlpehemcpleichkcokhegllfjl-Default.desktop" Categories "ChromeApp;Education;"
 set_launcher_entry "$LOCAL_LAUNCHERS_PATH/chrome-aohghmighlieiainnegkcijnfilokake-Default.desktop" Categories "ChromeApp;Office;WordProcessor;"
-set_launcher_entry "$LOCAL_LAUNCHERS_PATH/chrome-hkgndiocipalkpejnpafdbdlfdjihomd-Default.desktop.desktop" Categories "ChromeApp;Network;FileTransfer;"
+set_launcher_entry "$LOCAL_LAUNCHERS_PATH/chrome-chrome-eppojlglocelodeimnohnlnionkobfln-Default.desktop" Categories "AudioVide;Video;Player;"
+set_launcher_entry "$LOCAL_LAUNCHERS_PATH/chrome-hkgndiocipalkpejnpafdbdlfdjihomd-Default.desktop" Categories "ChromeApp;Network;FileTransfer;"
 set_launcher_entry "$LOCAL_LAUNCHERS_PATH/chrome-hmjkmjkepdijhoojdojkdfohbdgmmhki-Default.desktop" Categories "ChromeApp;Utility;"
 set_launcher_entry "$LOCAL_LAUNCHERS_PATH/chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default.desktop" Categories "ChromeApp;Network;Navigation;"
 set_launcher_entry "$LOCAL_LAUNCHERS_PATH/chrome-nfjdjopfnbnkmfldmeffmhgodmlhdnei-Default.desktop" Categories "ChromeApp;Network;Chat;Communication;"
-
 
 # NAMES[RO]
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/atril.desktop" Name[ro] "Documente"
