@@ -234,7 +234,7 @@ install-pkg electron
 
 install-pkg git
 
-install-pkg monodevelop-stable
+install-pkg monodevelop-stable-bin
 install-pkg monogame-bin
 install-pkg code
 
