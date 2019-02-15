@@ -68,3 +68,6 @@
 218620=payday2_release
 38700=TokiTori.bin.x86
 252490=rust
+211820=starbound
+266840=aomx.exe
+323190=frostpunk.exe
