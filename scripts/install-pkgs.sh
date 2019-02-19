@@ -187,7 +187,7 @@ install-pkg gnome-backgrounds
 install-pkg folder-color-bzr
 
 # Fonts
-install-dep ttf-ms-fonts
+#install-dep ttf-ms-fonts # Don't install this, because it messes up the romanian diacritics (Only the full version works fine)
 install-dep ttf-liberation
 install-dep ttf-roboto
 install-dep ttf-croscore
