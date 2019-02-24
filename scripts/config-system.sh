@@ -23,7 +23,9 @@ set_config_value() {
         if [ $(grep -c "^${KEY}=.*$" <<< "$FILE_CONTENT") -gt 0 ]; then
             sed -i 's|^'"${KEY}"'=.*$|'"${KEY}"'='"${VALUE}"'|g' "$FILE"
         else
-            printf "$KEY=$VALUE\n" >> "$FILE"
+            LINE="$KEY=$VALUE"
+            echo "$LINE" | sudo tee -a "$FILE"
+            #printf "$LINE\n" >> "$FILE"
         fi
 
         echo "$FILE >>> $KEY=$VALUE"
@@ -44,7 +46,9 @@ set_modprobe_option() {
         if [ $(grep -c "^options ${MODULE} ${KEY}=.*$" <<< "$FILE_CONTENT") -gt 0 ]; then
             sed -i 's|^options '"${MODULE} ${KEY}"'=.*$|options '"${MODULE} ${KEY}"'='"${VALUE}"'|g' "$FILE"
         else
-            printf "options $MODULE $KEY=$VALUE\n" >> "$FILE"
+            LINE="options $MODULE $KEY=$VALUE"
+            echo "$LINE" | sudo tee -a "$FILE"
+            #printf "$LINE\n" >> "$FILE"
         fi
 
         echo "$FILE >>> $KEY=$VALUE"
@@ -68,6 +72,11 @@ set_gsetting() {
 # Xbox One Controller
 #echo "options bluetooth disable_ertm=1" | tee --append /etc/modprobe.d/xbox_bt.conf
 
+USING_NVIDIA_GPU=$(lspci | grep VGA | grep -c "NVIDIA")
+
+if [ $USING_NVIDIA_GPU = 1 ]; then
+    set_modprobe_option nvidia-drm modset 1
+fi
 set_modprobe_option bluetooth disable_ertm 1    # Xbox One Controller Pairing
 set_modprobe_option btusb enable_autosuspend n  # Xbox One Controller Connecting, possibly other devices as well
 
