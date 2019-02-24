@@ -13,22 +13,28 @@ if [ "${UID}" -eq 0 ]; then
     exit 1
 fi
 
+echo "I need sudo access!"
+sudo printf "Thank you!\n\n"
+
 function execute-script() {
     SCRIPT_PATH="$1"
 
-    echo "Executing '$EXEDIR/$SCRIPT_PATH'..."
+    echo "Executing as $USER: '$EXEDIR/$SCRIPT_PATH'..."
     /usr/bin/bash "$EXEDIR/$SCRIPT_PATH"
 }
 
 function execute-script-superuser() {
     SCRIPT_PATH="$1"
 
-    echo "Executing '$EXEDIR/$SCRIPT_PATH'..."
+    echo "Executing as root: '$EXEDIR/$SCRIPT_PATH'..."
     sudo /usr/bin/bash "$EXEDIR/$SCRIPT_PATH"
 }
 
 execute-script "scripts/install-pkgs.sh"
 execute-script "scripts/config-system.sh"
 execute-script-superuser "scripts/customise-launchers.sh"
+
+execute-script "scripts/update-rcs.sh"
+execute-script-superuser "scripts/update-rcs.sh"
 
 sudo update-grub

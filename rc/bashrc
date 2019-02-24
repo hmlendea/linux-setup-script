@@ -1,0 +1,104 @@
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+# Terminal size variables
+[ -z "$COLUMNS" ] && COLUMNS=$(tput cols)
+[ -z "$LINES" ]   && LINES=$(tput lines)
+
+### Custom prompt
+function __git_ps1 {
+    BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+    [ ! -z $BRANCH_NAME ] && echo "("$BRANCH_NAME") "
+}
+
+function __short_cwd {
+    MAX_LENGTH=$((COLUMNS*20/100))
+    CWD=${PWD##*/}
+
+    if [ "$HOME" == "$PWD" ]; then
+        echo "~"
+    elif [ ${#CWD} -gt $((MAX_LENGTH)) ]; then
+        echo ${CWD:0:$((MAX_LENGTH/2-1))}..${CWD:(-$((MAX_LENGTH/2-1)))}
+    else
+        echo $CWD
+    fi
+}
+
+function set_custom_prompt {
+    local userColour="34m" # Blue by default
+
+    [ "$(whoami)" == "root" ]   &&  userColour="31m" # Red    for root
+    [ "$(whoami)" == "guest" ]  &&  userColour="33m" # Yellow for guest
+
+    local ps1user="\[\e[01;$userColour\]\u\[\e[m\]"
+    local ps1host="\[\e[32m\]\h\[\e[m\]"
+    local ps1scwd="\[\e[33m\]\$(__short_cwd)\[\e[m\]"
+    local ps1gitb="\[\e[36m\]\$(__git_ps1)\[\e[m\]"
+
+    export PS1="$ps1user@$ps1host:$ps1scwd $ps1gitb> "
+}
+
+set_custom_prompt
+
+### Environment variables
+#export TERM=linux
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH-}:/usr/lib32"
+export SHELL="/bin/bash"
+
+[ -f "/usr/bin/dotnet" ]    &&  export DOTNET_CLI_TELEMETRY_OPTOUT=1                        # Disable DotNet Core telemetry
+[ -f "/opt/dotnet" ]        &&  export DOTNET_ROOT="/opt/dotnet"                            # DotNet Root
+[ -f "/usr/bin/nano" ]      &&  export EDITOR=nano                                          # Make nano the default editor
+[ -f "/usr/bin/optirun" ]   &&  export VGL_READBACK=pbo                                     # Better optirun performance
+[ -f "/usr/bin/wine" ]      &&  export WINEARCH=win32                                       # Make WINE default to 32bit
+[ -f "/usr/bin/steam" ]     &&  export STEAM_RUNTIME=0
+
+### Aliases
+alias sh=$SHELL
+alias ls='ls --color=auto'
+alias lsmnt='lsblk -l | tail -n +2 | awk '\''length($7) { print $1" => "$7 }'\'''
+alias grep='grep -a --color --text'
+alias uptime='uptime -p && printf "since " && uptime -s'
+
+[ -f "/usr/bin/systemctl" ]     &&  alias systemctl='sudo systemctl --no-pager -l'
+[ -f "/usr/bin/yaourt" ]        &&  alias yaourt='sudo printf "" && yaourt --noconfirm' # --needed'
+[ -f "/usr/bin/wine" ]          &&  alias wine32='WINEARCH=win32 wine'
+[ -f "/usr/bin/wine" ]          &&  alias wine64='WINEARCH=win64 wine'
+[ -f "/usr/bin/xterm" ]         &&  alias xterm='xterm -rv'
+[ -f "/usr/bin/xprop" ]         &&  alias xprop-wmclass='xprop | grep "WM_CLASS"'
+[ -f "/usr/bin/wget" ]          &&  alias wget-persistent='wget -c --retry-connrefused --waitretry=1 --read-timeout=10 --timeout=5 -t 0'
+[ -f "/proc/acpi/bbswitch" ]    &&  alias bbswitch-status="awk '{print $2}' /proc/acpi/bbswitch"
+[ -f "/usr/bin/git" ]           &&  alias git="git --no-pager"
+
+### Fixes
+[ -f "/usr/bin/monodevelop" ]   &&  alias monodevelop="GNOME_DESKTOP_SESSION_ID="" monodevelop"
+[ -f "/usr/bin/dotnet" ]        &&  alias dotnet='TERM=xterm dotnet'
+
+### Per-application themes
+#[ -f "/usr/bin/gedit" ]         &&  alias gedit="GTK_THEME=Adapta-Nokto-Eta:dark gedit"
+[ -f "/usr/bin/libreoffice" ]   &&  alias libreoffice="GTK_THEME=\"$CURRENT_GTK_THEME:light\" libreoffice"
+
+### PATH
+
+function try_set_dotnet_tools_dir {
+    TARGET_PATH="$1"
+
+    if [ -d "$TARGET_PATH" ]; then
+        export PATH="$PATH:$TARGET_PATH"
+    fi
+}
+
+function try_set_android_sdk_home {
+    NEW_PATH="$*"
+
+    if [ -d "$NEW_PATH" ]; then
+        export ANDROID_HOME="$NEW_PATH"
+        export ANDROID_SDK_PATH="$NEW_PATH"
+
+        export PATH=${PATH}:${ANDROID_HOME}/tools
+        export PATH=${PATH}:${ANDROID_HOME}/platform-tools
+        export PATH=${PATH}:${ANDROID_HOME}/system-images
+    fi
+}
+
+try_set_dotnet_tools_dir "$HOME/.dotnet/tools"
+try_set_android_sdk_home "$HOME/.Android/Sdk"
