@@ -217,6 +217,7 @@ install-dep gst-libav
 
 # Graphics
 install-pkg gimp
+install-pkg gimp-dds
 install-pkg inkscape
 
 # CLI
