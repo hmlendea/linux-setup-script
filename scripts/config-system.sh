@@ -105,7 +105,7 @@ if [ -f "/usr/bin/gnome-shell" ]; then
     set_gsetting "org.gnome.desktop.wm.keybindings" switch-group-backward "['<Shift><Super>Tab']"
     set_gsetting "org.gnome.desktop.wm.keybindings" toggle-fullscreen "['<Super>f']"
 
-    set_gsetting "org.gnome.desktop.wm.preferences" button-layout "close:minimize,maximize"
+    set_gsetting "org.gnome.desktop.wm.preferences" button-layout ":minimize,maximize,close"
     set_gsetting "org.gnome.desktop.wm.preferences" titlebar-font "Roboto 10"
 
     set_gsetting "org.gnome.shell.overrides" attach-modal-dialogs false
