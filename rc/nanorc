@@ -1,0 +1,12 @@
+include /usr/share/nano-syntax-highlighting/*.nanorc
+
+set nowrap
+#set autoindent
+set tabsize 4
+set tabstospaces
+set nohelp
+set constantshow
+set matchbrackets "(<[{)>]}"
+set morespace
+#set noconvert
+set smooth

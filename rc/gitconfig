@@ -1,0 +1,25 @@
+[user]
+	name = Horațiu Mlendea
+	email = Mlendea.Horatiu@GMail.com
+[core]
+    pager = most
+[color]
+    ui = auto
+	diff = auto
+	status = auto
+	branch = auto
+	interactive = true
+[merge]
+    conflictstyle = diff3
+[credential]
+	helper = cache --timeout=43200
+[push]
+	default = matching
+[diff "astextplain"]
+	textconv = astextplain
+[rebase]
+	autosquash = true
+[help]
+	format = html
+[alias]
+	lg = !git --no-pager log --pretty='%C(yellow)%h %C(bold blue)%<(15,trunc)%an%Creset %Cgreen%ad%Creset %s%C(auto)%d%Creset' --graph --date=format:%H:%M -n32
