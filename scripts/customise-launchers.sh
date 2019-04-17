@@ -454,7 +454,7 @@ set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/org.gnome.FileRoller.desktop" Startup
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/picard.desktop" StartupWMClass ""
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/playonlinux.desktop" StartupWMClass "Mainwindow.py"
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/popcorn-time-ce.desktop" StartupWMClass "popcorntime"
-set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/popcorntime.desktop" StartupWMClass "crx_hecfofbbdfadifpemejbbdcjmfmboohj"
+set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/popcorntime.desktop" StartupWMClass "Popcorn-Time"
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/pycharm-community-edition.desktop" StartupWMClass "jetbrains-pycharm-ce"
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/skype-desktop.desktop" StartupWMClass "crx_monljlleikpphbhopghghdbggidfahha"
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/skypeforlinux.desktop" StartupWMClass "Skype"
