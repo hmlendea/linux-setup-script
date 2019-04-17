@@ -118,7 +118,9 @@ if [ -f "/usr/bin/gnome-shell" ]; then
     set_gsetting "org.gnome.desktop.interface" font-name "Noto Sans 10"
     set_gsetting "org.gnome.desktop.interface" monospace-font-name "Noto Sans Mono 11"
 
-    if [ -d "/usr/share/themes/Materia-dark-compact" ]; then
+    if [ -d "/usr/share/themes/Adapta-Nokto-Eta" ]; then
+        set_gsetting "org.gnome.desktop.interface" gtk-theme "Adapta-Nokto-Eta"
+    elif [ -d "/usr/share/themes/Materia-dark-compact" ]; then
         set_gsetting "org.gnome.desktop.interface" gtk-theme "Materia-dark-compact"
     fi
 

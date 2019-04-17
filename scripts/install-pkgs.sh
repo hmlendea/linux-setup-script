@@ -175,7 +175,7 @@ install-pkg gnome-shell-extension-weather-git
 install-pkg panther-launcher-git
 
 # Themes
-install-pkg materia-gtk-theme
+install-pkg adapta-gtk-theme
 install-dep gtk-engine-murrine
 
 install-pkg numix-circle-icon-theme-git
