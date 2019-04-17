@@ -172,7 +172,6 @@ install-pkg gnome-shell-extension-multi-monitors-add-on-git
 install-pkg gnome-shell-extension-remove-dropdown-arrows
 install-pkg gnome-shell-extension-no-topleft-hot-corner
 install-pkg gnome-shell-extension-weather-git
-install-pkg panther-launcher-git
 
 # Themes
 install-pkg adapta-gtk-theme
