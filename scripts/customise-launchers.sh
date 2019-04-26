@@ -14,6 +14,26 @@ ICON_THEME_PATH="/usr/share/icons/"$ICON_THEME
 
 cd /usr/share/applications
 
+find_launcher_by_name() {
+    NAME_ENTRY_VALUE="$1"
+
+    find "$LOCAL_LAUNCHERS_PATH" -type f -iname "*.desktop" -print0 | while IFS= read -r -d $'\0' LAUNCHER; do
+        if grep -q "^Name="$NAME_ENTRY_VALUE"$" "$LAUNCHER"; then
+            echo "$LAUNCHER"
+            return 0
+        fi
+    done
+
+    find "$GLOBAL_LAUNCHERS_PATH" -type f -iname "*.desktop" -print0 | while IFS= read -r -d $'\0' LAUNCHER; do
+        if grep -q "^Name="$NAME_ENTRY_VALUE"$" "$LAUNCHER"; then
+            echo "$LAUNCHER"
+            return -
+        fi
+    done
+
+    return 1
+}
+
 set_launcher_entry() {
     FILE="$1"
     KEY="$2"
@@ -297,11 +317,11 @@ set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/wps-office-wps.desktop" Categories "Q
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/xchat.desktop" Categories "Network;Communication;"
 set_launcher_entry "$LOCAL_LAUNCHERS_PATH/chrome-aiahmijlpehemcpleichkcokhegllfjl-Default.desktop" Categories "ChromeApp;Education;"
 set_launcher_entry "$LOCAL_LAUNCHERS_PATH/chrome-aohghmighlieiainnegkcijnfilokake-Default.desktop" Categories "ChromeApp;Office;WordProcessor;"
-set_launcher_entry "$LOCAL_LAUNCHERS_PATH/chrome-chrome-eppojlglocelodeimnohnlnionkobfln-Default.desktop" Categories "AudioVide;Video;Player;"
 set_launcher_entry "$LOCAL_LAUNCHERS_PATH/chrome-hkgndiocipalkpejnpafdbdlfdjihomd-Default.desktop" Categories "ChromeApp;Network;FileTransfer;"
 set_launcher_entry "$LOCAL_LAUNCHERS_PATH/chrome-hmjkmjkepdijhoojdojkdfohbdgmmhki-Default.desktop" Categories "ChromeApp;Utility;"
 set_launcher_entry "$LOCAL_LAUNCHERS_PATH/chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default.desktop" Categories "ChromeApp;Network;Navigation;"
 set_launcher_entry "$LOCAL_LAUNCHERS_PATH/chrome-nfjdjopfnbnkmfldmeffmhgodmlhdnei-Default.desktop" Categories "ChromeApp;Network;Chat;Communication;"
+set_launcher_entry $(find_launcher_by_name "Netflix") Categories "AudioVideo;Video;Player;"
 
 # NAMES[RO]
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/atril.desktop" Name[ro] "Documente"
