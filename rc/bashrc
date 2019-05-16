@@ -60,7 +60,7 @@ alias lsmnt='lsblk -l | tail -n +2 | awk '\''length($7) { print $1" => "$7 }'\''
 alias grep='grep -a --color --text'
 alias uptime='uptime -p && printf "since " && uptime -s'
 
-[ -f "/usr/bin/systemctl" ]     &&  alias systemctl='sudo systemctl --no-pager -l'
+[ -f "/usr/bin/systemctl" ]     &&  alias systemctl='systemctl --no-pager -l -n25'
 [ -f "/usr/bin/yaourt" ]        &&  alias yaourt='sudo printf "" && yaourt --noconfirm' # --needed'
 [ -f "/usr/bin/wine" ]          &&  alias wine32='WINEARCH=win32 wine'
 [ -f "/usr/bin/wine" ]          &&  alias wine64='WINEARCH=win64 wine'
