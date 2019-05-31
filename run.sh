@@ -31,6 +31,22 @@ function execute-script-superuser() {
 }
 
 execute-script "scripts/install-pkgs.sh"
+
+echo "Updating the system..."
+if [ -f "/usr/bin/yaourt" ]; then
+    yaourt -Suya --noconfirm --needed
+else
+    sudo pacman -Suy
+fi
+
+UNUSED_DEPS=$(pacman -Qdtq)
+UNUSED_DEPS_COUNT=$(echo $UNUSED_DEPS | wc -w)
+
+echo "Uninstalling unused dependencies ($UNUSED_DEPS_COUNT)..."
+if [ -n "$UNUSED_DEPS" ]; then
+    sudo pacman --noconfirm -Rns $UNUSED_DEPS
+fi
+
 execute-script "scripts/config-system.sh"
 execute-script-superuser "scripts/customise-launchers.sh"
 
