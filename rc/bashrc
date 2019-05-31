@@ -55,6 +55,7 @@ export SHELL="/bin/bash"
 
 ### Aliases
 alias sh=$SHELL
+alias sudo='sudo '
 alias ls='ls --color=auto'
 alias lsmnt='lsblk -l | tail -n +2 | awk '\''length($7) { print $1" => "$7 }'\'''
 alias grep='grep -a --color --text'
