@@ -1,3 +1,14 @@
+206440=ToTheMoon.bin.x86_64
+244770=StarMade
+1250=killingfloor-bin
+221640=superhexagon.x86_64
+221640=TheSwapper.bin.x86_64
+379720=doomx64vk.exe
+108600=Game
+383150=DeadIslandGame
+DeadIslandGame=PA
+275390=steam_app_275390
+319630=LifeIsStrange
 367520=hollow_knight.x86_64
 221810=Cave.bin.x86
 221910=stanley_linux
