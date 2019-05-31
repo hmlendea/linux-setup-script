@@ -44,6 +44,7 @@ set_custom_prompt
 #export TERM=linux
 export LD_LIBRARY_PATH="${LD_LIBRARY_PATH-}:/usr/lib32"
 export SHELL="/bin/bash"
+export OLDPWD=$(pwd)
 
 [ -f "/usr/bin/dotnet" ]    &&  export DOTNET_CLI_TELEMETRY_OPTOUT=1        # Disable .NET Core telemetry
 [ -f "/usr/bin/dotnet" ]    &&  export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1  # Disable .NET Core first time message
