@@ -1,8 +1,9 @@
+570940=darksoulsremastered.exe
 206440=ToTheMoon.bin.x86_64
 244770=StarMade
 1250=killingfloor-bin
 221640=superhexagon.x86_64
-221640=TheSwapper.bin.x86_64
+231160=TheSwapper.bin.x86_64
 379720=doomx64vk.exe
 108600=Game
 383150=DeadIslandGame
