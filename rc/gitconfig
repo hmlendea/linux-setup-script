@@ -4,6 +4,7 @@
 [core]
     pager = most
     ignorecase = false
+    filemode = false
     askpass = 
     autocrlf = true
     fscache = true
