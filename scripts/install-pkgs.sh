@@ -121,7 +121,6 @@ install-pkg gnome-shell
 install-pkg gdm
 
 install-pkg networkmanager
-install-pkg networkmanager-openconnect
 install-pkg networkmanager-openvpn
 install-pkg networkmanager-pptp
 install-pkg networkmanager-vpnc
