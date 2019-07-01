@@ -2,6 +2,7 @@
     name = Mlendea, Horațiu
     email = Mlendea.Horatiu@GMail.com
 [core]
+    autocrlf = input
     pager = most
     ignorecase = false
     fileMode = false
