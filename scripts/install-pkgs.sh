@@ -182,7 +182,7 @@ install-pkg paper-icon-theme
 
 install-pkg gnome-backgrounds
 
-install-pkg folder-color-bzr
+install-pkg folder-color-nautilus-bzr
 
 # Fonts
 #install-dep ttf-ms-fonts # Don't install this, because it messes up the romanian diacritics (Only the full version works fine)
@@ -202,7 +202,7 @@ install-pkg chrome-gnome-shell
 
 # Communication
 install-pkg skypeforlinux-stable-bin
-install-pkg whatsie
+install-pkg whatsapp-nativefier
 
 # Multimedia
 install-pkg spotify

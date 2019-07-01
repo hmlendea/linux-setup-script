@@ -257,6 +257,7 @@ set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/tor-browser-en.desktop" Icon "tor-bro
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/unity-editor.desktop" Icon "unity-editor-icon"
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/unity-monodevelop.desktop" Icon "unity-monodevelop"
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/whatsapp-desktop.desktop" Icon "whatsappfordesktop"
+set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/whatsapp-nativefier.desktop" Icon "whatsapp"
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/whatsie.desktop" Icon "whatsapp"
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/wmail.desktop" Icon "gmail"
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/www.octave.org-octave.desktop" Icon "octave-logo"
