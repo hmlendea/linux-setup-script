@@ -48,6 +48,7 @@ if [ -n "$UNUSED_DEPS" ]; then
 fi
 
 execute-script "scripts/config-system.sh"
+execute-script-superuser "scripts/install-profiles.sh"
 execute-script-superuser "scripts/customise-launchers.sh"
 
 execute-script "scripts/update-rcs.sh"
