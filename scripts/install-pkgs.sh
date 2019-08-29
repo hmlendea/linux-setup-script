@@ -235,7 +235,7 @@ install-pkg git
 
 install-pkg monodevelop-stable-bin
 install-pkg monogame-bin
-install-pkg code
+install-pkg visual-studio-code-bin
 
 install-pkg chromedriver
 
