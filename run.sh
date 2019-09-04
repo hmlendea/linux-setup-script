@@ -13,45 +13,65 @@ if [ "${UID}" -eq 0 ]; then
     exit 1
 fi
 
+CPU_ARCHITECTURE=$(lscpu | grep "Architecture" | awk -F: '{print $2}' | sed 's/  //g')
+if [[ "${CPU_ARCHITECTURE}" == "x86_64" ]]; then
+    ARCH="x86_64"
+else
+    ARCH="arm"
+fi
+
 echo "I need sudo access!"
 sudo printf "Thank you!\n\n"
 
 function execute-script() {
-    SCRIPT_PATH="$1"
+    SCRIPT_NAME="$1"
+    SCRIPT_PATH="${EXEDIR}/scripts/${SCRIPT_NAME}"
 
-    echo "Executing as $USER: '$EXEDIR/$SCRIPT_PATH'..."
-    /usr/bin/bash "$EXEDIR/$SCRIPT_PATH"
+    echo "Executing as $USER: '${SCRIPT_PATH}'..."
+    /usr/bin/bash "${SCRIPT_PATH}" "${ARCH}"
 }
 
 function execute-script-superuser() {
-    SCRIPT_PATH="$1"
+    SCRIPT_NAME="$1"
+    SCRIPT_PATH="${EXEDIR}/scripts/${SCRIPT_NAME}"
 
-    echo "Executing as root: '$EXEDIR/$SCRIPT_PATH'..."
-    sudo /usr/bin/bash "$EXEDIR/$SCRIPT_PATH"
+    echo "Executing as root: '${SCRIPT_PATH}'..."
+    sudo /usr/bin/bash "${SCRIPT_PATH}" "${ARCH}"
 }
 
-execute-script "scripts/install-pkgs.sh"
+function update-system() {
+    echo "Updating the system..."
+    if [ -f "/usr/bin/yaourt" ]; then
+        yaourt -Suya --noconfirm --needed
+    else
+        sudo pacman -Suy
+    fi
+}
 
-echo "Updating the system..."
-if [ -f "/usr/bin/yaourt" ]; then
-    yaourt -Suya --noconfirm --needed
-else
-    sudo pacman -Suy
+function remove-unused-dependencies() {
+    echo "Uninstalling unused dependencies ($UNUSED_DEPS_COUNT)..."
+
+    UNUSED_DEPS=$(pacman -Qdtq)
+    UNUSED_DEPS_COUNT=$(echo $UNUSED_DEPS | wc -w)
+
+    if [ -n "$UNUSED_DEPS" ]; then
+        sudo pacman --noconfirm -Rns $UNUSED_DEPS
+    fi
+}
+
+execute-script "install-pkgs.sh"
+
+update-system
+remove-unused-dependencies
+
+execute-script "config-system.sh"
+execute-script-superuser "install-profiles.sh"
+execute-script-superuser "customise-launchers.sh"
+
+execute-script "update-rcs.sh"
+execute-script-superuser "update-rcs.sh"
+
+if [[ "${ARCH}" == "x86_64" ]]; then
+    sudo update-grub
 fi
 
-UNUSED_DEPS=$(pacman -Qdtq)
-UNUSED_DEPS_COUNT=$(echo $UNUSED_DEPS | wc -w)
-
-echo "Uninstalling unused dependencies ($UNUSED_DEPS_COUNT)..."
-if [ -n "$UNUSED_DEPS" ]; then
-    sudo pacman --noconfirm -Rns $UNUSED_DEPS
-fi
-
-execute-script "scripts/config-system.sh"
-execute-script-superuser "scripts/install-profiles.sh"
-execute-script-superuser "scripts/customise-launchers.sh"
-
-execute-script "scripts/update-rcs.sh"
-execute-script-superuser "scripts/update-rcs.sh"
-
-sudo update-grub

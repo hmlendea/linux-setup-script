@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if [[ "$1" != "x86_64" ]]; then
+    exit
+fi
+
 USER_REAL=$SUDO_USER
 [ ! -n "$USER_REAL" ] && USER_REAL=$USER
 HOME_REAL="/home/$USER_REAL"
