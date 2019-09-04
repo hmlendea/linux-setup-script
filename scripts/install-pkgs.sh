@@ -82,6 +82,8 @@ install-dep wpa_supplicant
 install-pkg net-tools
 install-pkg wireless_tools
 
+install-pkg openssl-1.0 # Required to run ASP .NET Core apps
+
 # Yaourt
 install-pkg-aur-manually package-query
 install-pkg-aur-manually yaourt
