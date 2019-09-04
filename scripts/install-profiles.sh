@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if [[ "$1" != "x86_64" ]]; then
+    exit
+fi
+
 SYSTEM_PROFILES_DIRECTORY_PATH="/etc/profile.d"
 
 for PROFILE_FILE_NAME in $(ls "profiles"); do
