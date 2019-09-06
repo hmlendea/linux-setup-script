@@ -29,7 +29,7 @@ function call-package-manager() {
 		if [ -f "/usr/bin/yaourt" ]; then
 			yaourt --noconfirm $ARGS
 		else
-			pacman $ARGS
+			sudo pacman $ARGS
 		fi
 #	else
 #		echo " >>> Skipping package '$PKG' (already installed)"
@@ -70,6 +70,9 @@ function install-pkg-aur-manually() {
 	fi
 }
 
+# Core
+install-pkg base-devel
+
 # Basics
 install-pkg bash-completion
 install-pkg sudo
@@ -81,12 +84,16 @@ install-dep dialog
 install-dep wpa_supplicant
 install-pkg net-tools
 install-pkg wireless_tools
+install-pkg wol
 
 install-pkg openssl-1.0 # Required to run ASP .NET Core apps
 
 # Yaourt
 install-pkg-aur-manually package-query
 install-pkg-aur-manually yaourt
+
+# Partition editors
+install-pkg parted
 
 # Filesystems
 install-pkg ntfs-3g
@@ -260,5 +267,5 @@ if [[ "${ARCH}" == "x86_64" ]]; then
 fi
 
 ########### END
-#cd ~
-#rm -rf "$TEMP_DIR_PATH"
+cd ~
+rm -rf "$TEMP_DIR_PATH"
