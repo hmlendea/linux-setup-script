@@ -29,7 +29,7 @@ function call-package-manager() {
 		if [ -f "/usr/bin/yaourt" ]; then
 			yaourt --noconfirm $ARGS
 		else
-			sudo pacman $ARGS
+			sudo pacman --noconfirm $ARGS
 		fi
 #	else
 #		echo " >>> Skipping package '$PKG' (already installed)"
@@ -71,7 +71,7 @@ function install-pkg-aur-manually() {
 }
 
 # Core
-install-pkg base-devel
+install-pkg binutils
 
 # Basics
 install-pkg bash-completion
