@@ -226,7 +226,6 @@ if [[ "${ARCH}" == "x86_64" ]]; then
     install-pkg chrome-gnome-shell
 
     # Communication
-    install-pkg skypeforlinux-stable-bin
     install-pkg whatsapp-nativefier
 
     # Multimedia
@@ -253,7 +252,6 @@ if [[ "${ARCH}" == "x86_64" ]]; then
     #install-pkg jdk
     install-pkg electron
 
-    install-pkg monodevelop-stable-bin
     install-pkg monogame-bin
     install-pkg visual-studio-code-bin
 
