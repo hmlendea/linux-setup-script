@@ -70,8 +70,13 @@ function install-pkg-aur-manually() {
 	fi
 }
 
-# Core
+# base-devel
 install-pkg binutils
+install-pkg gcc
+install-pkg pkgconf
+install-pkg make
+install-pkg fakeroot
+install-pkg patch
 
 # Basics
 install-pkg bash-completion
