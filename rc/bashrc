@@ -86,6 +86,10 @@ alias uptime='uptime -p && printf "since " && uptime -s'
 #[ -f "/usr/bin/gedit" ]         &&  alias gedit="GTK_THEME=Adapta-Nokto-Eta:dark gedit"
 [ -f "/usr/bin/libreoffice" ]   &&  alias libreoffice="GTK_THEME=\"$CURRENT_GTK_THEME:light\" libreoffice"
 
+if [[ $HOSTNAME == *Pi ]]; then
+    alias poweroff="echo Surely you don\'t mean to do that on the Pi! && echo If you do, use \'command poweroff\' instead."
+fi
+
 ### PATH
 
 function try_set_dotnet_tools_dir {
