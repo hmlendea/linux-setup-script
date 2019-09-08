@@ -30,8 +30,14 @@ function set_custom_prompt {
     [ "$(whoami)" == "root" ]   &&  userColour="31m" # Red    for root
     [ "$(whoami)" == "guest" ]  &&  userColour="33m" # Yellow for guest
 
+    local ps1hostColour="\[\e[32m\]"
+
+    if [[ $HOSTNAME == *Pi ]]; then
+        ps1hostColour="\[\e[95m\]"
+    fi
+
     local ps1user="\[\e[01;$userColour\]$USER\[\e[m\]"
-    local ps1host="\[\e[32m\]\h\[\e[m\]"
+    local ps1host="$ps1hostColour\h\[\e[m\]"
     local ps1scwd="\[\e[33m\]\$(__short_cwd)\[\e[m\]"
     local ps1gitb="\[\e[36m\]\$(__git_ps1)\[\e[m\]"
 
