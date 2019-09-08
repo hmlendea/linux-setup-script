@@ -703,6 +703,21 @@ if [ -f "/usr/bin/mono" ]; then
     set_launcher_entry "$NEWLAUNCHER" NoDisplay "true"
 fi
 
+if [ -f "/usr/bin/steam" ]; then
+    LAUNCHER_FILE_NAME="steam-streaming-client.desktop"
+    LAUNCHER_FILE_PATH="${GLOBAL_LAUNCHERS_PATH}/${LAUNCHER_FILE_NAME}"
+    if [ ! -f "steam-streaming-client.desktop" ]; then
+        create_launcher "${LAUNCHER_FILE_PATH}"
+        set_launcher_entry "${LAUNCHER_FILE_PATH}" Name "Streaming Client"
+        set_launcher_entry "${LAUNCHER_FILE_PATH}" Comment "Steam Streaming Client"
+        set_launcher_entry "${LAUNCHER_FILE_PATH}" Exec "steam"
+        set_launcher_entry "${LAUNCHER_FILE_PATH}" Icon "steam"
+        set_launcher_entry "${LAUNCHER_FILE_PATH}" Categories "Game;Steam;"
+        set_launcher_entry "${LAUNCHER_FILE_PATH}" StartupWMClass "streaming_client"
+        set_launcher_entry "${LAUNCHER_FILE_PATH}" NoDisplay "true"
+    fi
+fi
+
 #if [ -f "/usr/bin/python" ]; then
 #    NEWLAUNCHER="$GLOBAL_LAUNCHERS_PATH/run-python.desktop"
 #
