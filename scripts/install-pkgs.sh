@@ -120,6 +120,9 @@ install-pkg nano-syntax-highlighting-git
 # Development
 install-pkg git
 
+# Monitoring
+install-pkg alsi
+
 if [[ "${ARCH}" == "x86_64" ]]; then
     install-pkg grub
     install-pkg update-grub
