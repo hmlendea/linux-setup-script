@@ -174,8 +174,6 @@ if [[ "${ARCH}" == "x86_64" ]]; then
     install-pkg gedit
     install-pkg evince
     install-pkg baobab
-    install-pkg libreoffice-fresh
-    install-pkg libreoffice-fresh-ro
 
     install-pkg eog
     install-dep eog-plugins
@@ -213,7 +211,6 @@ if [[ "${ARCH}" == "x86_64" ]]; then
     install-pkg folder-color-nautilus-bzr
 
     # Fonts
-    #install-dep ttf-ms-fonts # Don't install this, because it messes up the romanian diacritics (Only the full version works fine)
     install-dep ttf-liberation
     install-dep ttf-roboto
     install-dep ttf-croscore
