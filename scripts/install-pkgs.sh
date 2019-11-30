@@ -84,6 +84,7 @@ install-pkg sudo
 install-pkg sl
 install-pkg most
 install-pkg wget
+install-pkg mmv
 
 install-dep dialog
 install-dep wpa_supplicant
