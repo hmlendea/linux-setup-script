@@ -6,45 +6,129 @@
 [ -z "$LINES" ]   && LINES=$(tput lines)
 
 ### Custom prompt
-function __git_ps1 {
-    BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
-    [ ! -z $BRANCH_NAME ] && echo "("$BRANCH_NAME") "
+
+function get_git_branch_name {
+    local branchName=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+    echo ${branchName}
 }
 
-function __short_cwd {
+function get_git_branch_status {
+    BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+
+    if [ ! -z ${BRANCH_NAME} ]; then
+        UPSTREAM=${1:-'@{u}'}
+        LOCAL=$(git rev-parse @)
+        REMOTE=$(git rev-parse "$UPSTREAM")
+        BASE=$(git merge-base @ "$UPSTREAM")
+
+        if [ ${LOCAL} = ${REMOTE} ]; then
+            echo "up-to-date"
+        elif [ ${LOCAL} = ${BASE} ]; then
+            echo "behind"
+        elif [ ${REMOTE} = ${BASE} ]; then
+            echo "ahead"
+        else
+            echo "diverged"
+        fi
+    fi
+}
+
+function get_git_branch_status_colour {
+    local branchStatus=$(get_git_branch_status)
+
+    if [ "${branchStatus}" == "behind" ]; then
+        echo "95"
+    elif [ "${branchStatus}" == "ahead" ]; then
+        echo "92"
+    elif [ "${branchStatus}" == "diverged" ]; then
+        echo "91"
+    fi
+}
+
+function get_git_branch_status_indicator {
+    local branchStatus=$(get_git_branch_status)
+
+    if [ "${branchStatus}" == "behind" ]; then
+        echo " -"
+    elif [ "${branchStatus}" == "ahead" ]; then
+        echo " +"
+    elif [ "${branchStatus}" == "diverged" ]; then
+        echo " ±"
+    fi
+}
+
+function get_git_branch_separator {
+    local branchName=$(get_git_branch_name)
+
+    if [ ! -z ${branchName} ]; then
+        if [ -z $* ]; then
+            echo " "
+        else
+            echo $*
+        fi
+    fi
+}
+
+function get_path {
     MAX_LENGTH=$((COLUMNS*20/100))
+    PWD=$(pwd)
     CWD=${PWD##*/}
 
     if [ "$HOME" == "$PWD" ]; then
         echo "~"
     elif [ ${#CWD} -gt $((MAX_LENGTH)) ]; then
         echo ${CWD:0:$((MAX_LENGTH/2-1))}..${CWD:(-$((MAX_LENGTH/2-1)))}
+    fi
+}
+
+function get_path_colour {
+    if [[ ! -w "$(pwd)" ]]; then
+        echo "31"
+    elif [[ "$(pwd)" == "/root" ]]; then
+        echo "41"
+    elif [[ "$(pwd)" == "/root/*" ]]; then
+        echo "41"
+    elif [[ "$(pwd)" == "/home/${USER}" ]]; then
+        echo "93"
     else
-        echo $CWD
+        echo "33"
     fi
 }
 
 function set_custom_prompt {
-    local userColour="34m" # Blue by default
+    local userColour="34"   # Default = blue
+    local hostColour="32"   # Default = green
+    local branchColour="36" # Default = cyan
 
-    [ "$(whoami)" == "root" ]   &&  userColour="31m" # Red    for root
-    [ "$(whoami)" == "guest" ]  &&  userColour="33m" # Yellow for guest
+    local separator1="@"
+    local separator2=":"
+    local separator3=">"
 
-    local ps1hostColour="\[\e[32m\]"
+    local branchName=$(get_git_branch_name)
 
-    if [[ $HOSTNAME == *Pi ]]; then
-        ps1hostColour="\[\e[95m\]"
-    fi
+    [ "$(whoami)" == "root" ]   && userColour="31" # Root = red
+    [ "$(whoami)" == "guest" ]  && userColour="33" # Guest = yellow
 
-    local ps1user="\[\e[01;$userColour\]$USER\[\e[m\]"
-    local ps1host="$ps1hostColour\h\[\e[m\]"
-    local ps1scwd="\[\e[33m\]\$(__short_cwd)\[\e[m\]"
-    local ps1gitb="\[\e[36m\]\$(__git_ps1)\[\e[m\]"
+    [ "${HOSTNAME}" == "*Pi" ]  && hostColour="35" # RaspberryPi = magenta
 
-    export PS1="$ps1user@$ps1host:$ps1scwd $ps1gitb> "
+    [ "${branchName}" == "HEAD" ]   && branchColour="41"
+    [ "${branchName}" == "master" ] && branchColour="93"
+
+    local ps1user="\[\e[01;${userColour}m\]$USER\[\e[m\]"
+    local ps1host="\[\e[${hostColour}m\]\h\[\e[m\]"
+
+    local ps1path="\[\e[\$(get_path_colour)m\]\$(get_path)\[\e[m\]"
+
+    local ps1gitSeparator1="\[\e[m\]\$(get_git_branch_separator '(')"
+    local ps1gitSeparator2="\[\e[m\]\$(get_git_branch_separator ')')\$(get_git_branch_separator ' ')"
+    local ps1gitBranchIndicator="\[\e[\$(get_git_branch_status_colour)m\]\$(get_git_branch_status_indicator)\[\e[m\]"
+    local ps1git="${ps1gitSeparator1}\[\e[${branchColour}m\]\$(get_git_branch_name)${ps1gitBranchIndicator}${ps1gitSeparator2}\[\e[m\]"
+
+    export PS1="$ps1user$separator1$ps1host$separator2${ps1path} $ps1git$separator3 "
 }
 
 set_custom_prompt
+shopt -s checkwinsize
 
 ### Environment variables
 #export TERM=linux
@@ -86,8 +170,8 @@ alias uptime='uptime -p && printf "since " && uptime -s'
 #[ -f "/usr/bin/gedit" ]         &&  alias gedit="GTK_THEME=Adapta-Nokto-Eta:dark gedit"
 [ -f "/usr/bin/libreoffice" ]   &&  alias libreoffice="GTK_THEME=\"$CURRENT_GTK_THEME:light\" libreoffice"
 
-if [[ $HOSTNAME == *Pi ]]; then
-    alias poweroff="echo Surely you don\'t mean to do that on the Pi! && echo If you do, use \'command poweroff\' instead."
+if [ -n "${SSH_CLIENT}" ] || [ -n "${SSH_TTY}" ]; then
+    alias poweroff="echo Surely you don\'t mean to do that on the remote machine! && echo If you do, use \'command poweroff\' instead."
 fi
 
 ### PATH
