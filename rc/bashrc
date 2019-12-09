@@ -78,6 +78,8 @@ function get_path {
         echo "~"
     elif [ ${#CWD} -gt $((MAX_LENGTH)) ]; then
         echo ${CWD:0:$((MAX_LENGTH/2-1))}..${CWD:(-$((MAX_LENGTH/2-1)))}
+    else
+        echo ${CWD}
     fi
 }
 
