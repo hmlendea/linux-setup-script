@@ -151,6 +151,7 @@ if [[ "${ARCH}" == "x86_64" ]]; then
     # Display Server, Drivers, FileSystems, etc
     install-pkg xorg-server
     install-pkg xf86-video-vesa
+    install-pkg xclip
 
     # Desktop Environment & Base applications
     install-pkg gnome-shell
@@ -275,6 +276,9 @@ if [[ "${ARCH}" == "x86_64" ]]; then
 
     install-pkg xorg-xkill
     install-pkg start-wmclass
+
+    # Libraries
+    install-pkg libc++
 fi
 
 if [ "${CHASSIS_TYPE}" == "Laptop" ]; then
