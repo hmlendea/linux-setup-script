@@ -35,3 +35,5 @@
     jeff = !git diff --ignore-space-at-eol -b -w --ignore-blank-lines
     pullr = pull --rebase
     new-branch = !git branch $1 && git checkout $1 && git push -u origin $1
+    push = fetch && push
+    pull = fetch && pull
