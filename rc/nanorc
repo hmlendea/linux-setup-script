@@ -1,12 +1,26 @@
+### Appearance
 include /usr/share/nano-syntax-highlighting/*.nanorc
 
-set nowrap
-#set autoindent
+set linenumbers
+set constantshow
+set nohelp
+
+set boldtext
+set selectedcolor brightblack,white
+set numbercolor brightwhite,normal
+#set statuscolor brightwhite,normal
+
+#set guidestripe 75
+
+### Editor
 set tabsize 4
 set tabstospaces
-set nohelp
-set constantshow
+set autoindent
+set trimblanks
 set matchbrackets "(<[{)>]}"
-set morespace
+
+### Others
+set mouse
 #set noconvert
-set smooth
+set positionlog
+set smarthome
