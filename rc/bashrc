@@ -104,20 +104,24 @@ function get_path {
         echo "~"
     elif [ ${#CWD} -gt $((MAX_LENGTH)) ]; then
         echo ${CWD:0:$((MAX_LENGTH/2-1))}..${CWD:(-$((MAX_LENGTH/2-1)))}
+    elif [ "${PWD}" == "/${CWD}" ]; then
+        echo ${PWD}
     else
         echo ${CWD}
     fi
 }
 
 function get_path_colour {
-    if [[ ! -w "$(pwd)" ]]; then
-        echo "31"
+    if [[ "$(pwd)" == "/" ]]; then
+        echo "41"
     elif [[ "$(pwd)" == "/root" ]]; then
         echo "41"
     elif [[ "$(pwd)" == "/root/*" ]]; then
         echo "41"
     elif [[ "$(pwd)" == "/home/${USER}" ]]; then
         echo "93"
+    elif [[ ! -w "$(pwd)" ]]; then
+        echo "31"
     else
         echo "33"
     fi
@@ -152,11 +156,37 @@ function set_custom_prompt {
 set_custom_prompt
 shopt -s checkwinsize
 
+#################
+### FUNCTIONS ###
+#################
+
+extract () {
+    if [ -f $1 ] ; then
+        case $1 in
+            *.tar.bz2)  tar xvjf $1     ;;
+            *.tar.gz)   tar xvzf $1     ;;
+            *.bz2)      bunzip2 $1      ;;
+            *.rar)      unrar x $1      ;;
+            *.gz)       gunzip $1       ;;
+            *.tar)      tar xvf $1      ;;
+            *.tbz2)     tar xvjf $1     ;;
+            *.tgz)      tar xvzf $1     ;;
+            *.zip)      unzip $1        ;;
+            *.Z)        uncompress $1   ;;
+            *.7z)       7z x $1         ;;
+            *)          echo "don't know how to extract '$1'..." ;;
+        esac
+    else
+        echo "'$1' is not a valid file!"
+    fi
+}
+
 ### Environment variables
 #export TERM=linux
 export LD_LIBRARY_PATH="${LD_LIBRARY_PATH-}:/usr/lib32"
 export SHELL="/bin/bash"
 export OLDPWD=$(pwd)
+export OLDPWD2=${OLDPWD}
 
 [ -f "/usr/bin/dotnet" ]    &&  export DOTNET_CLI_TELEMETRY_OPTOUT=1        # Disable .NET Core telemetry
 [ -f "/usr/bin/dotnet" ]    &&  export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1  # Disable .NET Core first time message
@@ -170,6 +200,14 @@ export OLDPWD=$(pwd)
 alias sh=$SHELL
 alias sudo='sudo '
 alias ls='ls --color=auto'
+alias cd..='cd ..'
+alias cd...='cd ../..'
+alias cd....='cd ../../..'
+alias cd.....='cd ../../../..'
+alias cd......='cd ../../../../..'
+alias cd="OLDPWD2=\${OLDPWD} && cd"
+alias cd-="cd -"
+alias cd--="__destDir=\${OLDPWD2} && cd \${__destDir}"
 alias lsmnt='lsblk -l | tail -n +2 | awk '\''length($7) { print $1" => "$7 }'\'''
 alias grep='grep -a --color --text'
 alias uptime='uptime -p && printf "since " && uptime -s'
