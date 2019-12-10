@@ -78,7 +78,9 @@ function get_git_branch_status_indicator {
         branchStatusIndicator="±" #" ♦"
     fi
 
-    echo " ${branchStatusIndicator}"
+    if [ -n "${branchStatusIndicator}" ]; then
+        echo " ${branchStatusIndicator}"
+    fi
 }
 
 function get_git_branch_separator {
