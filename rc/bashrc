@@ -12,6 +12,18 @@ function get_git_branch_name {
     echo ${branchName}
 }
 
+function get_git_branch_colour {
+    local branchName=$(get_git_branch_name)
+
+    if [ "${branchName}" == "HEAD" ]; then
+        echo "41"
+    elif [ "${branchName}" == "master" ]; then
+        echo "93"
+    else
+        echo "36"
+    fi
+}
+
 function get_git_branch_status {
     BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
 
@@ -20,9 +32,14 @@ function get_git_branch_status {
         LOCAL=$(git rev-parse @)
         REMOTE=$(git rev-parse "$UPSTREAM")
         BASE=$(git merge-base @ "$UPSTREAM")
+        LOCAL_CHANGES=$(git diff-index --name-only HEAD --)
 
         if [ ${LOCAL} = ${REMOTE} ]; then
-            echo "up-to-date"
+            if [ -z "${LOCAL_CHANGES}" ]; then
+                echo "up-to-date"
+            else
+                echo "local-changes"
+            fi
         elif [ ${LOCAL} = ${BASE} ]; then
             echo "behind"
         elif [ ${REMOTE} = ${BASE} ]; then
@@ -36,7 +53,9 @@ function get_git_branch_status {
 function get_git_branch_status_colour {
     local branchStatus=$(get_git_branch_status)
 
-    if [ "${branchStatus}" == "behind" ]; then
+    if [ "${branchStatus}" == "local-changes" ]; then
+        echo "32"
+    elif [ "${branchStatus}" == "behind" ]; then
         echo "95"
     elif [ "${branchStatus}" == "ahead" ]; then
         echo "92"
@@ -47,14 +66,19 @@ function get_git_branch_status_colour {
 
 function get_git_branch_status_indicator {
     local branchStatus=$(get_git_branch_status)
+    local branchStatusIndicator=""
 
-    if [ "${branchStatus}" == "behind" ]; then
-        echo " -"
+    if [ "${branchStatus}" == "local-changes" ]; then
+        branchStatusIndicator="*" #" ■"
+    elif [ "${branchStatus}" == "behind" ]; then
+        branchStatusIndicator="-" #" ▼"
     elif [ "${branchStatus}" == "ahead" ]; then
-        echo " +"
+        branchStatusIndicator="+" #" ▲"
     elif [ "${branchStatus}" == "diverged" ]; then
-        echo " ±"
+        branchStatusIndicator="±" #" ♦"
     fi
+
+    echo " ${branchStatusIndicator}"
 }
 
 function get_git_branch_separator {
@@ -100,21 +124,15 @@ function get_path_colour {
 function set_custom_prompt {
     local userColour="34"   # Default = blue
     local hostColour="32"   # Default = green
-    local branchColour="36" # Default = cyan
 
     local separator1="@"
     local separator2=":"
     local separator3=">"
 
-    local branchName=$(get_git_branch_name)
-
     [ "$(whoami)" == "root" ]   && userColour="31" # Root = red
     [ "$(whoami)" == "guest" ]  && userColour="33" # Guest = yellow
 
     [ "${HOSTNAME}" == "*Pi" ]  && hostColour="35" # RaspberryPi = magenta
-
-    [ "${branchName}" == "HEAD" ]   && branchColour="41"
-    [ "${branchName}" == "master" ] && branchColour="93"
 
     local ps1user="\[\e[01;${userColour}m\]$USER\[\e[m\]"
     local ps1host="\[\e[${hostColour}m\]\h\[\e[m\]"
@@ -124,7 +142,7 @@ function set_custom_prompt {
     local ps1gitSeparator1="\[\e[m\]\$(get_git_branch_separator '(')"
     local ps1gitSeparator2="\[\e[m\]\$(get_git_branch_separator ')')\$(get_git_branch_separator ' ')"
     local ps1gitBranchIndicator="\[\e[\$(get_git_branch_status_colour)m\]\$(get_git_branch_status_indicator)\[\e[m\]"
-    local ps1git="${ps1gitSeparator1}\[\e[${branchColour}m\]\$(get_git_branch_name)${ps1gitBranchIndicator}${ps1gitSeparator2}\[\e[m\]"
+    local ps1git="${ps1gitSeparator1}\[\e[\$(get_git_branch_colour)m\]\$(get_git_branch_name)${ps1gitBranchIndicator}${ps1gitSeparator2}\[\e[m\]"
 
     export PS1="$ps1user$separator1$ps1host$separator2${ps1path} $ps1git$separator3 "
 }
