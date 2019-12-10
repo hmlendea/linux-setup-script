@@ -75,3 +75,5 @@ if [[ "${ARCH}" == "x86_64" ]]; then
     sudo update-grub
 fi
 
+source ~/.bashrc
+
