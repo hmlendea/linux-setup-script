@@ -138,7 +138,7 @@ function set_custom_prompt {
     [ "$(whoami)" == "root" ]   && userColour="31" # Root = red
     [ "$(whoami)" == "guest" ]  && userColour="33" # Guest = yellow
 
-    [ "${HOSTNAME}" == "*Pi" ]  && hostColour="35" # RaspberryPi = magenta
+    [[ ${HOSTNAME} == *Pi ]]    && hostColour="95" # RaspberryPi = magenta
 
     local ps1user="\[\e[01;${userColour}m\]$USER\[\e[m\]"
     local ps1host="\[\e[${hostColour}m\]\h\[\e[m\]"
