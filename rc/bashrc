@@ -56,7 +56,7 @@ function get_git_branch_status_colour {
     if [ "${branchStatus}" == "local-changes" ]; then
         echo "32"
     elif [ "${branchStatus}" == "behind" ]; then
-        echo "95"
+        echo "31"
     elif [ "${branchStatus}" == "ahead" ]; then
         echo "92"
     elif [ "${branchStatus}" == "diverged" ]; then
@@ -138,7 +138,7 @@ function set_custom_prompt {
     [ "$(whoami)" == "root" ]   && userColour="31" # Root = red
     [ "$(whoami)" == "guest" ]  && userColour="33" # Guest = yellow
 
-    [[ ${HOSTNAME} == *Pi ]]    && hostColour="95" # RaspberryPi = magenta
+    [ "${HOSTNAME}" == "*Pi" ]  && hostColour="35" # RaspberryPi = magenta
 
     local ps1user="\[\e[01;${userColour}m\]$USER\[\e[m\]"
     local ps1host="\[\e[${hostColour}m\]\h\[\e[m\]"
@@ -181,6 +181,10 @@ extract () {
     fi
 }
 
+__gitCommit () {
+    git commit -m "$*"
+}
+
 ### Environment variables
 #export TERM=linux
 export LD_LIBRARY_PATH="${LD_LIBRARY_PATH-}:/usr/lib32"
@@ -220,7 +224,13 @@ alias uptime='uptime -p && printf "since " && uptime -s'
 [ -f "/usr/bin/xprop" ]         &&  alias xprop-wmclass='xprop | grep "WM_CLASS"'
 [ -f "/usr/bin/wget" ]          &&  alias wget-persistent='wget -c --retry-connrefused --waitretry=1 --read-timeout=10 --timeout=5 -t 0'
 [ -f "/proc/acpi/bbswitch" ]    &&  alias bbswitch-status="awk '{print $2}' /proc/acpi/bbswitch"
-[ -f "/usr/bin/git" ]           &&  alias git="git --no-pager"
+
+if [ -f "/usr/bin/git" ]; then
+    alias git="git --no-pager"
+    alias git-push="git fetch && git push"
+    alias git-pull="git fetch && git pull --rebase"
+    alias git-commit="git fetch && __gitCommit"
+fi
 
 ### Fixes
 [ -f "/usr/bin/monodevelop" ]   &&  alias monodevelop="GNOME_DESKTOP_SESSION_ID="" monodevelop"
