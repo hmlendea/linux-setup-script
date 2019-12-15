@@ -15,12 +15,12 @@ set numbercolor brightwhite,normal
 ### Editor
 set tabsize 4
 set tabstospaces
-set autoindent
+#set autoindent # Breaks pasting
 set trimblanks
 set matchbrackets "(<[{)>]}"
 
 ### Others
-set mouse
+#set mouse
 #set noconvert
 set positionlog
 set smarthome
