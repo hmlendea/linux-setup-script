@@ -10,6 +10,12 @@ TEMP_DIR_PATH=".temp-sysinstall"
 mkdir -p "$TEMP_DIR_PATH"
 cd "$TEMP_DIR_PATH"
 
+CHASSIS_TYPE="Desktop"
+
+if [ -d "/sys/module/battery" ]; then
+    CHASSIS_TYPE="Laptop"
+fi
+
 function is-package-installed() {
 	PKG=$1
 
@@ -93,9 +99,10 @@ install-pkg wol
 
 install-pkg openssl-1.0 # Required to run ASP .NET Core apps
 
-# Yaourt
+# Package manager
 install-pkg-aur-manually package-query
 install-pkg-aur-manually yaourt
+install-pkg pacutils
 
 # Partition editors
 install-pkg parted
@@ -267,6 +274,10 @@ if [[ "${ARCH}" == "x86_64" ]]; then
 
     install-pkg xorg-xkill
     install-pkg start-wmclass
+fi
+
+if [ "${CHASSIS_TYPE}" == "Laptop" ]; then
+    install-pkg acpi
 fi
 
 ########### END
