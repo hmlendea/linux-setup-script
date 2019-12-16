@@ -126,6 +126,7 @@ install-pkg nano-syntax-highlighting-git
 
 # Development
 install-pkg git
+install-pkg automake
 
 # Monitoring
 install-pkg alsi
