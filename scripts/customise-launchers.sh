@@ -474,7 +474,7 @@ set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/intellij-idea-ce.desktop" StartupWMCl
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/intellij-idea-ce-eap.desktop" StartupWMClass "jetbrains-idea-ce"
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/jetbrains-idea-ce.desktop" StartupWMClass "jetbrains-idea-ce"
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/messengerfordesktop.desktop" StartupWMClass "fbmessenger"
-set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/minecraft-launcher.desktop" StartupWMClass "Minecraft 1.13.2"
+set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/minecraft-launcher.desktop" StartupWMClass "Minecraft 1.15.1"
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/Monogame\ Pipeline.desktop" StartupWMClass "Pipeline"
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/MonogamePipeline.desktop" StartupWMClass "Pipeline"
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/nfs2se.desktop" StartupWMClass "nfs2se"
