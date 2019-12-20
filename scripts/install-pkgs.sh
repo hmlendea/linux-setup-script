@@ -146,7 +146,7 @@ if [[ "${ARCH}" == "x86_64" ]]; then
     install-pkg python2
     install-pkg mono
     install-pkg dotnet-runtime
-    install-pkg jre
+    install-pkg jre-openjdk
 
     # Display Server, Drivers, FileSystems, etc
     install-pkg xorg-server
