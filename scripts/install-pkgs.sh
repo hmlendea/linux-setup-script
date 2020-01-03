@@ -229,8 +229,6 @@ if [[ "${ARCH}" == "x86_64" ]]; then
     # Internet
     install-pkg google-chrome
     install-pkg transmission-gtk
-    install-pkg filezilla
-    install-pkg dropbox
 
     install-pkg chrome-gnome-shell
 
