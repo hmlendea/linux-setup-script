@@ -16,7 +16,7 @@ sudo sed -i 's/^;\(extension=pdo_sqlite\)$/\1/g' "/etc/php/php.ini"
 sudo sed -i 's/^;\(extension=sockets\)$/\1/g' "/etc/php/php.ini"
 sudo sed -i 's/^;\(extension=sqlite3\)$/\1/g' "/etc/php/php.ini"
 
-cp "/usr/share/pihole/configs/lighttpd.example.conf" "/etc/lighttpd/lighttpd.conf"
+sudo cp "/usr/share/pihole/configs/lighttpd.example.conf" "/etc/lighttpd/lighttpd.conf"
 sudo sed -i 's/^server\.port.*$/server.port = 8093/' "/etc/lighttpd/lighttpd.conf"
 
 sudo systemctl disable systemd-resolved
