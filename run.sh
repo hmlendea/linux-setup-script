@@ -70,8 +70,8 @@ update-system
 remove-unused-dependencies
 
 execute-script "config-system.sh"
-execute-script "set-system-locale-timedate.sh"
 
+execute-script-superuser "set-system-locale-timedate.sh"
 execute-script-superuser "install-profiles.sh"
 execute-script-superuser "customise-launchers.sh"
 
