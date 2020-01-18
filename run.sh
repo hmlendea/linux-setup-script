@@ -20,8 +20,13 @@ else
     ARCH="arm"
 fi
 
-echo "I need sudo access!"
-sudo printf "Thank you!\n\n"
+if [ -f "/usr/bin/sudo" ]; then
+    echo "I need sudo access!"
+    sudo printf "Thank you!\n\n"
+else
+    echo "ERROR: Please make sure 'sudo' is installed and configured"
+    exit 1
+fi
 
 function execute-script() {
     SCRIPT_NAME="$1"
