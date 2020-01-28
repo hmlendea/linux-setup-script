@@ -16,6 +16,8 @@ echo "KEYMAP=ro-std" > "${VCONSOLE_CONF_FILE_PATH}"
 
 echo "Setting up the language..."
 echo "LANG=en_GB.UTF-8" > "${LOCALE_CONF_FILE_PATH}"
+echo "LC_CTYPE=en_GB.UTF-8" >> "${LOCALE_CONF_FILE_PATH}"
+echo "LC_MEASUREMENT=ro_RO.UTF-8" >> "${LOCALE_CONF_FILE_PATH}"
 
 if [ ! -f "${LOCALTIME_FILE_PATH}" ]; then
     echo "Setting up the local time..."
