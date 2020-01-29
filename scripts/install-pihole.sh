@@ -12,24 +12,22 @@ install-pkg php-sqlite
 install-dep lighttpd
 install-dep php-cgi
 
+sudo cp "/usr/share/pihole/configs/lighttpd.example.conf" "/etc/lighttpd/lighttpd.conf"
+
 sudo sed -i 's/^;\(extension=pdo_sqlite\)$/\1/g' "/etc/php/php.ini"
 sudo sed -i 's/^;\(extension=sockets\)$/\1/g' "/etc/php/php.ini"
 sudo sed -i 's/^;\(extension=sqlite3\)$/\1/g' "/etc/php/php.ini"
-
-sudo cp "/usr/share/pihole/configs/lighttpd.example.conf" "/etc/lighttpd/lighttpd.conf"
 sudo sed -i 's/^server\.port.*$/server.port = 8093/' "/etc/lighttpd/lighttpd.conf"
+sudo sed -i 's/#IGNORE_LOCALHOST=no/IGNORE_LOCALHOST=yes/' "/etc/pihole/pihole-FTL.conf"
 
 sudo systemctl disable systemd-resolved
-
-sudo systemctl stop systemd-resolved
-
 sudo systemctl enable pihole-FTL
 sudo systemctl enable lighttpd
 
+sudo systemctl stop systemd-resolved
 sudo systemctl start pihole-FTL
 sudo systemctl start lighttpd
 
-echo "SET UP THE PASSWORD! (EMPTY TO SKIP)"
 pihole -a -p
 
 echo "UPDATE THE HOSTS FILE!!!"
