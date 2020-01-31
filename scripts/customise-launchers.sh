@@ -619,6 +619,8 @@ set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/jvisualvm-jdk10.desktop" NoDisplay "t
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/jvisualvm-jdk11.desktop" NoDisplay "true"
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/jvisualvm-jdk12.desktop" NoDisplay "true"
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/jvisualvm-jdk13.desktop" NoDisplay "true"
+set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/stoken-gui.desktop" NoDisplay "true"
+set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/stoken-gui-small.desktop" NoDisplay "true"
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/sun_java-jdk8.desktop" NoDisplay "true"
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/sun_java-jdk9.desktop" NoDisplay "true"
 set_launcher_entry "$GLOBAL_LAUNCHERS_PATH/sun_java-jdk10.desktop" NoDisplay "true"
