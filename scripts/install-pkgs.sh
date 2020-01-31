@@ -204,7 +204,7 @@ if [[ "${ARCH}" == "x86_64" ]]; then
     install-pkg gnome-shell-extension-gsconnect-git
     install-pkg gnome-shell-extension-multi-monitors-add-on-git
     install-pkg gnome-shell-extension-remove-dropdown-arrows
-    install-pkg gnome-shell-extension-no-topleft-hot-corner
+    install-pkg gnome-shell-extension-activities-config
     install-pkg gnome-shell-extension-weather-git
 
     # Themes
