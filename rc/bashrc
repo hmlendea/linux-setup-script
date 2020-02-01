@@ -30,22 +30,27 @@ function get_git_branch_status {
     if [ ! -z ${BRANCH_NAME} ]; then
         UPSTREAM=${1:-'@{u}'}
         LOCAL=$(git rev-parse @)
-        REMOTE=$(git rev-parse "$UPSTREAM")
-        BASE=$(git merge-base @ "$UPSTREAM")
-        LOCAL_CHANGES=$(git diff-index --name-only HEAD --)
+        REMOTE=$(git rev-parse "$UPSTREAM" 2>/dev/null)
 
-        if [ ${LOCAL} = ${REMOTE} ]; then
-            if [ -z "${LOCAL_CHANGES}" ]; then
-                echo "up-to-date"
-            else
-                echo "local-changes"
-            fi
-        elif [ ${LOCAL} = ${BASE} ]; then
-            echo "behind"
-        elif [ ${REMOTE} = ${BASE} ]; then
-            echo "ahead"
+        if [ -z ${REMOTE} ]; then
+            echo "local-only"
         else
-            echo "diverged"
+            BASE=$(git merge-base @ "$UPSTREAM")
+            LOCAL_CHANGES=$(git diff-index --name-only HEAD --)
+
+            if [ ${LOCAL} = ${REMOTE} ]; then
+                if [ -z "${LOCAL_CHANGES}" ]; then
+                    echo "up-to-date"
+                else
+                    echo "local-changes"
+                fi
+            elif [ ${LOCAL} = ${BASE} ]; then
+                echo "behind"
+            elif [ ${REMOTE} = ${BASE} ]; then
+                echo "ahead"
+            else
+                echo "diverged"
+            fi
         fi
     fi
 }
@@ -55,6 +60,8 @@ function get_git_branch_status_colour {
 
     if [ "${branchStatus}" == "local-changes" ]; then
         echo "32"
+    elif [ "${branchStatus}" == "local-only" ]; then
+        echo "93"
     elif [ "${branchStatus}" == "behind" ]; then
         echo "31"
     elif [ "${branchStatus}" == "ahead" ]; then
@@ -70,6 +77,8 @@ function get_git_branch_status_indicator {
 
     if [ "${branchStatus}" == "local-changes" ]; then
         branchStatusIndicator="*" #" ■"
+    elif [ "${branchStatus}" == "local-only" ]; then
+        branchStatusIndicator="~"
     elif [ "${branchStatus}" == "behind" ]; then
         branchStatusIndicator="-" #" ▼"
     elif [ "${branchStatus}" == "ahead" ]; then
