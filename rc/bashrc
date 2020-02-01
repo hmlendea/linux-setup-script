@@ -194,11 +194,16 @@ export OLDPWD2=${OLDPWD}
 
 [ -f "/usr/bin/dotnet" ]    &&  export DOTNET_CLI_TELEMETRY_OPTOUT=1        # Disable .NET Core telemetry
 [ -f "/usr/bin/dotnet" ]    &&  export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1  # Disable .NET Core first time message
-[ -f "/opt/dotnet" ]        &&  export DOTNET_ROOT="/opt/dotnet"            # .NET Root
 [ -f "/usr/bin/nano" ]      &&  export EDITOR=nano                          # Make nano the default editor
 [ -f "/usr/bin/optirun" ]   &&  export VGL_READBACK=pbo                     # Better optirun performance
 [ -f "/usr/bin/wine" ]      &&  export WINEARCH=win32                       # Make WINE default to 32bit
 [ -f "/usr/bin/steam" ]     &&  export STEAM_RUNTIME=0                      # Disable Steam Runtime
+
+[ -d "/opt/dotnet/" ]       &&  export DOTNET_ROOT="/opt/dotnet/"           # .NET Root
+[ -d "/usr/share/dotnet/" ] &&  export DOTNET_ROOT="/usr/share/dotnet/"     # .NET Root
+
+[ ! -z "${DOTNET_ROOT}" ]   &&  export MSBuildSDKsPath=$(printf "%s\n" ${DOTNET_ROOT}/sdk/*  | tail -1)"/Sdks/" # MS Build and Mono coexistance
+
 
 ### Aliases
 alias sh=$SHELL
