@@ -17,7 +17,7 @@
 [merge]
     conflictstyle = diff3
 [credential]
-    helper = cache --timeout=43200
+    helper = cache --timeout=259200
     modalPrompt = false
 [push]
     default = matching
