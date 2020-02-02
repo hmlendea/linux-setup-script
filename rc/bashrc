@@ -1,10 +1,6 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-# Terminal size variables
-[ -z "$COLUMNS" ] && COLUMNS=$(tput cols)
-[ -z "$LINES" ]   && LINES=$(tput lines)
-
 ### Custom prompt
 
 function get_git_branch_name {
@@ -105,7 +101,7 @@ function get_git_branch_separator {
 }
 
 function get_path {
-    MAX_LENGTH=$((COLUMNS*20/100))
+    MAX_LENGTH=24
     PWD=$(pwd)
     CWD=${PWD##*/}
 
