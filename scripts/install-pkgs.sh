@@ -102,6 +102,7 @@ install-pkg openssl-1.0 # Required to run ASP .NET Core apps
 # Package manager
 install-pkg-aur-manually package-query
 install-pkg-aur-manually yaourt
+install-pkg pacman-contri
 install-pkg pacutils
 
 # Partition editors
