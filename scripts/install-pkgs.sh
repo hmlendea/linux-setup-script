@@ -123,7 +123,7 @@ install-pkg lrzip
 install-pkg cron
 
 # CLI
-install-pkg nano-syntax-highlighting-git
+install-pkg nano-syntax-highlighting
 
 # Development
 install-pkg git
