@@ -117,8 +117,8 @@ set_launcher_entry_romanian() {
     KEY_ROMANIAN="$2"
     VAL="$3"
 
-    set_launcher_entry "$FILE" "$KEY_ROMANIAN[ro_RO]" "$VAL"
-    set_launcher_entry "$FILE" "$KEY_ROMANIAN[ro_MD]" "$VAL"
+    set_launcher_entry "${FILE}" "${KEY_ROMANIAN[ro_RO]}" "$VAL"
+    set_launcher_entry "${FILE}" "${KEY_ROMANIAN[ro_MD]}" "$VAL"
 }
 
 set_launcher_entry_english() {
@@ -126,10 +126,10 @@ set_launcher_entry_english() {
     KEY_ENGLISH="$2"
     VAL="$3"
 
-    set_launcher_entry "$FILE" "$KEY_ENGLISH[en_AU]" "$VAL"
-    set_launcher_entry "$FILE" "$KEY_ENGLISH[en_CA]" "$VAL"
-    set_launcher_entry "$FILE" "$KEY_ENGLISH[en_GB]" "$VAL"
-    set_launcher_entry "$FILE" "$KEY_ENGLISH[en_US]" "$VAL"
+    set_launcher_entry "${FILE}" "${KEY_ENGLISH[en_AU]}" "$VAL"
+    set_launcher_entry "${FILE}" "${KEY_ENGLISH[en_CA]}" "$VAL"
+    set_launcher_entry "${FILE}" "${KEY_ENGLISH[en_GB]}" "$VAL"
+    set_launcher_entry "${FILE}" "${KEY_ENGLISH[en_US]}" "$VAL"
 }
 
 create_launcher() {
