@@ -244,6 +244,10 @@ if [ -f "/usr/bin/git" ]; then
     alias git-commit="git fetch && __gitCommit"
 fi
 
+if [ "${OSTYPE}" == "cygwin" ]; then
+    alias killall="taskkill /IM"
+fi
+
 ### Fixes
 [ -f "/usr/bin/monodevelop" ]   &&  alias monodevelop="GNOME_DESKTOP_SESSION_ID="" monodevelop"
 [ -f "/usr/bin/dotnet" ]        &&  alias dotnet='TERM=xterm dotnet'
@@ -281,3 +285,4 @@ function try_set_android_sdk_home {
 
 try_set_dotnet_tools_dir "$HOME/.dotnet/tools"
 try_set_android_sdk_home "$HOME/.Android/Sdk"
+
