@@ -87,6 +87,7 @@ install-pkg patch
 # Basics
 install-pkg bash-completion
 install-pkg sudo
+install-pkg man
 install-pkg sl
 install-pkg most
 install-pkg wget
