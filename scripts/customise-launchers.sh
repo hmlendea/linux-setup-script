@@ -11,7 +11,8 @@ HOME_REAL="/home/${USER_REAL}"
 GLOBAL_LAUNCHERS_PATH="/usr/share/applications"
 LOCAL_LAUNCHERS_PATH="${HOME_REAL}/.local/share/applications"
 STEAM_LAUNCHERS_PATH="${LOCAL_LAUNCHERS_PATH}/Steam"
-STEAM_APPS_PATH=$(cat "${HOME_REAL}/.local/share/Steam/steamapps/libraryfolders.vdf" | grep "\"/" | sed 's/\"[0-9]\"//g' | sed 's/^ *//g' | sed 's/\t//g' | sed 's/\"//g')$(echo "/steamapps/")
+#STEAM_APPS_PATH=$(cat "${HOME_REAL}/.local/share/Steam/steamapps/libraryfolders.vdf" | grep "\"/" | sed 's/\"[0-9]\"//g' | sed 's/^ *//g' | sed 's/\t//g' | sed 's/\"//g')$(echo "/steamapps/")
+STEAM_APPS_PATH="${HOME_REAL}/.local/share/Steam/steamapps/"
 
 ICON_THEME=$(sudo -u ${USER_REAL} -H gsettings get org.gnome.desktop.interface icon-theme | tr -d "'")
 ICON_THEME_PATH="/usr/share/icons/"${ICON_THEME}
@@ -687,16 +688,18 @@ fi
 if [ -f "/usr/bin/steam" ]; then
     LAUNCHER_FILE_NAME="steam-streaming-client.desktop"
     LAUNCHER_FILE_PATH="${GLOBAL_LAUNCHERS_PATH}/${LAUNCHER_FILE_NAME}"
+
     if [ ! -f "steam-streaming-client.desktop" ]; then
         create_launcher "${LAUNCHER_FILE_PATH}"
-        set_launcher_entry "${LAUNCHER_FILE_PATH}" Name "Streaming Client"
-        set_launcher_entry "${LAUNCHER_FILE_PATH}" Comment "Steam Streaming Client"
-        set_launcher_entry "${LAUNCHER_FILE_PATH}" Exec "steam"
-        set_launcher_entry "${LAUNCHER_FILE_PATH}" Icon "steam"
-        set_launcher_entry "${LAUNCHER_FILE_PATH}" Categories "Game;Steam;"
-        set_launcher_entry "${LAUNCHER_FILE_PATH}" StartupWMClass "streaming_client"
-        set_launcher_entry "${LAUNCHER_FILE_PATH}" NoDisplay "true"
     fi
+
+    set_launcher_entry "${LAUNCHER_FILE_PATH}" Name "Streaming Client"
+    set_launcher_entry "${LAUNCHER_FILE_PATH}" Comment "Steam Streaming Client"
+    set_launcher_entry "${LAUNCHER_FILE_PATH}" Exec "steam"
+    set_launcher_entry "${LAUNCHER_FILE_PATH}" Icon "steam"
+    set_launcher_entry "${LAUNCHER_FILE_PATH}" Categories "Game;Steam;"
+    set_launcher_entry "${LAUNCHER_FILE_PATH}" StartupWMClass "streaming_client"
+    set_launcher_entry "${LAUNCHER_FILE_PATH}" NoDisplay "true"
 fi
 
 if [ -d "/opt/android-studio" ]; then
@@ -724,9 +727,6 @@ fi
 # CREATE STEAM ICONS
 
 WMCLASSES_FILE="data/steam-wmclasses.txt"
-
-echo ${STEAM_APPS_PATH}
-echo ${ICON_THEMEPATH}
 
 if [ -d "${STEAM_APPS_PATH}" ] && [ -d "${ICON_THEME_PATH}" ]; then
     if [ ! -d "${STEAM_LAUNCHERS_PATH}" ]; then
@@ -758,20 +758,32 @@ if [ -d "${STEAM_APPS_PATH}" ] && [ -d "${ICON_THEME_PATH}" ]; then
                 fi
 
                 APP_ICON_PATH_CANDIDATE="${ICON_THEME_CANDIDATE_PATH}/${SIZE_DIR_NAME}/apps/steam_icon_${APP_ID}.svg"
+
                 if [ -f "${APP_ICON_PATH_CANDIDATE}" ]; then
                     APP_ICON_PATH=${APP_ICON_PATH_CANDIDATE}
                     break
                 fi
             done
+
+            if [ ! -f "${APP_ICON_PATH}" ]; then
+                APP_ICON_PATH="steam_icon_${APP_ID}"
+            fi
         fi
 
-        if [ -f "${APP_ICON_PATH}" ]; then
-            APP_NAME=$(grep -h "\"name\"" "${STEAM_APPS_PATH}/appmanifest_${APP_ID}.acf" | sed 's/\"name\"//' | grep -o "\".*\"" | sed 's/\"//g')
-            APP_WMCLASS=$(echo "${APP_NAME}" | sed 's/\ //g')
+        APP_NAME=$(grep -h "\"name\"" "${STEAM_APPS_PATH}/appmanifest_${APP_ID}.acf" | sed 's/\"name\"//' | grep -o "\".*\"" | sed 's/\"//g')
+        DO_CREATE_LAUNCHER="true"
+
+        if [[ "${APP_NAME}" == "Steamworks Common Redistributables" ]] || [[ "${APP_NAME}" =~ ^Proton\ [0-9]+\.[0-9]+$ ]]; then
+            DO_CREATE_LAUNCHER="false"
+        fi
+
+        if [ "${DO_CREATE_LAUNCHER}" == "true" ]; then
+            APP_WMCLASS=""
 
             if [ $(grep -c "^${APP_ID}=" "${WMCLASSES_FILE}") -ne 0 ]; then
                 APP_WMCLASS=$(cat "${WMCLASSES_FILE}" | grep "^${APP_ID}=" | awk -F= '{print $2}')
             else
+                APP_WMCLASS=$(echo "${APP_NAME}" | sed 's/\ //g')
                 echo "CANNOT GET WMCLASS FOR STEAMAPP ${APP_ID} - ${APP_NAME}"
             fi
 
@@ -782,10 +794,10 @@ if [ -d "${STEAM_APPS_PATH}" ] && [ -d "${ICON_THEME_PATH}" ]; then
             set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" Keywords "Game;Steam;${APP_ID};${APP_NAME};"
             set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" Keywords[ro] "Joc;Steam;${APP_ID};${APP_NAME};"
             set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" Exec "steam steam:\/\/rungameid\/${APP_ID}"
-            set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" Icon "${APP_ICON_PATH}" #"steam_icon_${APP_ID}"
+            set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" Icon "${APP_ICON_PATH}"
             set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" Categories "Game;Steam;"
             set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" StartupWMClass "${APP_WMCLASS}"
-            set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" NoDisplay "true"
+            set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" NoDisplay "false"
         fi
     done
 
