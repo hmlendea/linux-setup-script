@@ -158,6 +158,10 @@ function set_custom_prompt {
     export PS1="$ps1user$separator1$ps1host$separator2${ps1path} $ps1git$separator3 "
 }
 
+if [ -z "${USER}" ] && [ ! -z "${USERNAME}" ]; then
+    export USER=${USERNAME}
+fi
+
 set_custom_prompt
 shopt -s checkwinsize
 
