@@ -84,6 +84,8 @@ set_launcher_entry() {
         set_launcher_entry_english "${FILE}" "Name" "${VAL}"
         set_launcher_entry_english "${FILE}" "X-GNOME-FullName" "${VAL}"
         set_launcher_entry_english "${FILE}" "X-MATE-FullName" "${VAL}"
+    elif [ "${KEY_ESC}" = "GenericName" ]; then
+        set_launcher_entry_english "${FILE}" "GenericName" "${VAL}"
     elif [ "${KEY_ESC}" = "Keywords" ]; then
         set_launcher_entry_english "${FILE}" "Keywords" "${VAL}"
     elif [ "${KEY_ESC}" = "X-GNOME-FullName" ]; then
@@ -100,6 +102,8 @@ set_launcher_entry() {
         set_launcher_entry_romanian "${FILE}" "Name" "${VAL}"
         set_launcher_entry_romanian "${FILE}" "X-GNOME-FullName" "${VAL}"
         set_launcher_entry_romanian "${FILE}" "X-MATE-FullName" "${VAL}"
+    elif [ "${KEY_ESC}" = "GenericName\[ro\]" ]; then
+        set_launcher_entry_romanian "${FILE}" "GenericName" "${VAL}"
     elif [ "${KEY_ESC}" = "Keywords\[ro\]" ]; then
         set_launcher_entry_romanian "${FILE}" "Keywords" "${VAL}"
     elif [ "${KEY_ESC}" = "X-GNOME-FullName\[ro\]" ]; then
@@ -138,8 +142,10 @@ create_launcher() {
         touch ${FILE}
         printf "[Desktop Entry]\n" >> ${FILE}
         printf "Version=1.0\n" >> ${FILE}
+        printf "NoDisplay=false\n" >> ${FILE}
         printf "Encoding=UTF-8\n" >> ${FILE}
         printf "Type=Application\n" >> ${FILE}
+        printf "Terminal=false\n" >> ${FILE}
         printf "Exec=${NAME}\n" >> ${FILE}
         printf "StartupWMClass=${NAME}\n" >> ${FILE}
 
@@ -804,22 +810,6 @@ if [ -d "${STEAM_APPS_PATH}" ] && [ -d "${ICON_THEME_PATH}" ]; then
     chown -R ${USER_REAL} "${STEAM_LAUNCHERS_PATH}"
 fi
 
-# Dropbox tray icons
-if [ -e "/usr/bin/dropbox" ]; then
-    DROPBOX_TRAY_ICONS_PATH="${HOME_REAL}/Pictures/Icons/Trays/opt/dropbox/images/hicolor/16x16/status"
-
-    if [ -d "${DROPBOX_TRAY_ICONS_PATH}" ]; then
-        DROPBOX_DIST_NAME=$(ls "${HOME_REAL}/.dropbox-dist/" | grep "dropbox-lnx")
-
-        cp -rf "${DROPBOX_TRAY_ICONS_PATH}" "/opt/dropbox/images/hicolor/16x16/"
-        cp -rf "${DROPBOX_TRAY_ICONS_PATH}" "${HOME_REAL}/.dropbox-dist/${DROPBOX_DIST_NAME}/images/hicolor/16x16/"
-
-        # TODO: Check if it is currently running
-        #killall dropbox
-        #sudo -u ${USER_REAL} "dropbox start" </dev/null &>/dev/null &
-    fi
-fi
-
 # Rebuild icon theme caches
 ICON_THEMES=$(find "/usr/share/icons/" -mindepth 1 -type d)
 
@@ -830,3 +820,4 @@ for ICON_THEME in ${ICON_THEMES}; do
 done
 
 update-desktop-database
+update-desktop-database ${LOCAL_LAUNCHERS_PATH}
