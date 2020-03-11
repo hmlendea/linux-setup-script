@@ -1,3 +1,4 @@
+275850=nms.exe
 464920=surviving mars
 570940=darksoulsremastered.exe
 206440=ToTheMoon.bin.x86_64
@@ -8,7 +9,6 @@
 379720=doomx64vk.exe
 108600=Game
 383150=DeadIslandGame
-DeadIslandGame=PA
 275390=steam_app_275390
 319630=LifeIsStrange
 367520=hollow_knight.x86_64
