@@ -750,6 +750,14 @@ if [ -d "${STEAM_APPS_PATH}" ] && [ -d "${ICON_THEME_PATH}" ]; then
         SIZE_DIR_NAME="48x48"
     fi
 
+    for STEAM_APP_LAUNCHER in ${STEAM_LAUNCHERS_PATH}/* ; do
+        APP_ID=$(cat "${STEAM_APP_LAUNCHER}" | grep "^Exec" | awk -F/ '{print $4}')
+
+        if [ ! -f "${STEAM_APPS_PATH}/appmanifest_${APP_ID}.acf" ]; then
+            set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" NoDisplay "true"
+        fi
+    done
+
     for APP_ID in ${APP_IDS}; do
         APP_ICON_PATH="${ICON_THEME_PATH}/${SIZE_DIR_NAME}/apps/steam_icon_${APP_ID}.svg"
 
