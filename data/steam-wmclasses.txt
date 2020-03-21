@@ -88,3 +88,5 @@
 1520=defcon.bin.x86
 20920=witcher2
 328080=Rise to Ruins Release 1b
+15310=settlershok.exe
+250820=vrmonitor
