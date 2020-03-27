@@ -599,7 +599,7 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsapp-desktop.desktop" Icon "wha
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsapp-desktop.desktop" StartupWMClass "whatsapp"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier.desktop" Categories "Network;Chat;InstantMessaging;Communication;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier.desktop" Icon "whatsapp"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier.desktop" StartupWMClass "whatsapp-nativefier-d52542"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier.desktop" StartupWMClass "whatsapp-nativefier-d40211"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsie.desktop" Categories "Network;Chat;Communication;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsie.desktop" Icon "whatsapp"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsie.desktop" Name "WhatsApp"
