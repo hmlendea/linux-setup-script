@@ -90,3 +90,4 @@
 328080=Rise to Ruins Release 1b
 15310=settlershok.exe
 250820=vrmonitor
+435150=supporttool.exe
