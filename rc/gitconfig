@@ -20,7 +20,7 @@
     helper = cache --timeout=259200
     modalPrompt = false
 [push]
-    default = matching
+    default = current
 [diff "astextplain"]
     textconv = astextplain
 [rebase]
