@@ -110,7 +110,7 @@ if [ -f "/usr/bin/gnome-shell" ]; then
     set_gsetting "org.gnome.desktop.wm.keybindings" toggle-fullscreen "['<Super>f']"
 
     set_gsetting "org.gnome.desktop.wm.preferences" button-layout ":minimize,maximize,close"
-    set_gsetting "org.gnome.desktop.wm.preferences" titlebar-font "Roboto 12"
+    set_gsetting "org.gnome.desktop.wm.preferences" titlebar-font "Sans Regular 12"
 
     set_gsetting "org.gnome.shell.overrides" attach-modal-dialogs false
 
@@ -118,9 +118,9 @@ if [ -f "/usr/bin/gnome-shell" ]; then
 
     set_gsetting "org.gnome.desktop.interface" clock-show-date "true"
     set_gsetting "org.gnome.desktop.interface" show-battery-percentage "true"
-    set_gsetting "org.gnome.desktop.interface" document-font-name "Noto Sans 12"
-    set_gsetting "org.gnome.desktop.interface" font-name "Noto Sans 12"
-    set_gsetting "org.gnome.desktop.interface" monospace-font-name "Noto Sans Mono 13"
+    set_gsetting "org.gnome.desktop.interface" document-font-name "Sans Regular 12"
+    set_gsetting "org.gnome.desktop.interface" font-name "Sans Regular 12"
+    set_gsetting "org.gnome.desktop.interface" monospace-font-name "Monospace 13"
 
     if [ -d "/usr/share/themes/Adapta-Nokto-Eta" ]; then
         set_gsetting "org.gnome.desktop.interface" gtk-theme "Adapta-Nokto-Eta"
