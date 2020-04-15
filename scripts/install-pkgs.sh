@@ -223,10 +223,8 @@ if [[ "${ARCH}" == "x86_64" ]]; then
 
     # Fonts
     install-dep ttf-liberation
-    install-dep ttf-roboto
     install-dep ttf-croscore
-    install-dep noto-fonts
-    install-dep noto-fonts-emoji
+    install-pkg ttf-hori
 
     # Internet
     install-pkg google-chrome
