@@ -91,3 +91,5 @@
 15310=settlershok.exe
 250820=vrmonitor
 435150=supporttool.exe
+804850=pax nova.exe
+287580=Pandora
