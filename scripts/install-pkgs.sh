@@ -97,6 +97,7 @@ install-dep wpa_supplicant
 install-pkg net-tools
 install-pkg wireless_tools
 install-pkg wol
+install-pkg dnsutils
 
 install-pkg openssl-1.0 # Required to run ASP .NET Core apps
 
