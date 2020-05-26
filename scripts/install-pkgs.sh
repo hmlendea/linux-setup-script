@@ -91,6 +91,7 @@ install-pkg man
 install-pkg sl
 install-pkg most
 install-pkg wget
+install-pkg usbutils
 
 install-dep dialog
 install-dep wpa_supplicant
