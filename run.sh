@@ -78,6 +78,8 @@ execute-script-superuser "customise-launchers.sh"
 execute-script "update-rcs.sh"
 execute-script-superuser "update-rcs.sh"
 
+execute-script "setup-git-gpg.sh"
+
 if [[ "${ARCH}" == "x86_64" ]]; then
     sudo update-grub
 fi
