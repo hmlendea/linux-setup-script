@@ -21,6 +21,8 @@
     modalPrompt = false
 [push]
     default = current
+[pull]
+    rebase = true
 [diff "astextplain"]
     textconv = astextplain
 [rebase]
