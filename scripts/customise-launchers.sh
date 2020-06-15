@@ -562,6 +562,8 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun-javaws-jre8.desktop" NoDisplay 
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun-javaws-jre9.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/system-config-printer.desktop" Name[ro] "Configurare Imprimantă"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/teamviewer.desktop" Categories "Network;RemoteAccess;FileTransfer;"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/teams.desktop" Categories "Application;Network;Chat;InstantMessaging;Communication;"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/teams.desktop" Name "Teams"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/teamviewer.desktop" Icon "teamviewer"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/teamviewer.desktop" Name "TeamViewer"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/teamviewer.desktop" StartupWMClass "TeamViewer.exe"
