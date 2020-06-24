@@ -240,7 +240,6 @@ if [[ "${ARCH}" == "x86_64" ]]; then
 
     # Multimedia
     install-pkg spotify
-    install-pkg popcorntime
     install-pkg lollypop
     install-pkg totem
 
