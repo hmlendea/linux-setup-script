@@ -267,6 +267,9 @@ if [[ "${ARCH}" == "x86_64" ]]; then
     install-pkg chromedriver
 
     # Tools
+    install-pkg google-keep-nativefier
+
+    # Filesystem / Partitioning
     install-pkg gparted
     install-dep nilfs-utils
     install-dep gpart
