@@ -236,7 +236,7 @@ if [[ "${ARCH}" == "x86_64" ]]; then
     install-pkg chrome-gnome-shell
 
     # Communication
-    install-pkg whatsapp-nativefier
+    install-pkg whatsapp-nativefier-dark
 
     # Multimedia
     install-pkg spotify
