@@ -281,6 +281,8 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-chrome-unstable.desktop" Sta
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-chrome.desktop" Name "Chrome"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-chrome.desktop" StartupWMClass "Google-chrome-stable"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-earth.desktop" Categories "Application;Network;Navigation;"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-keep.desktop" Name "Keep"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-keep.desktop" Name[ro] "Keep"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gparted.desktop" Name "Partition Editor"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gparted.desktop" Name[ro] "Editor de Partiții"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gpicview.desktop" Name[ro] "Imagini"
