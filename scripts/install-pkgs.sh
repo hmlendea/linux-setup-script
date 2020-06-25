@@ -204,6 +204,7 @@ if [[ "${ARCH}" == "x86_64" ]]; then
     install-dep gvfs-google
 
     install-pkg gnome-shell-extensions
+    install-pkg gnome-shell-extension-installer
     install-pkg gnome-shell-extension-dash-to-dock
     install-pkg gnome-shell-extension-mediaplayer-git
     install-pkg gnome-shell-extension-gsconnect-git
