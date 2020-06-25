@@ -53,6 +53,13 @@ function update-system() {
     fi
 }
 
+function update-gnome-extensions() {
+    if [ -f "/usr/bin/gnome-shell-extension-installer" ]; then
+        echo "Updating GNOME extensions..."
+        gnome-shell-extension-installer --yes --update --restart-shell
+    fi
+}
+
 function remove-unused-dependencies() {
     echo "Uninstalling unused dependencies ($UNUSED_DEPS_COUNT)..."
 
@@ -67,6 +74,7 @@ function remove-unused-dependencies() {
 execute-script "install-pkgs.sh"
 
 update-system
+update-gnome-extensions
 remove-unused-dependencies
 
 execute-script "config-system.sh"
