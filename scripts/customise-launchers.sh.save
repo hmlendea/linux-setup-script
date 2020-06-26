@@ -248,7 +248,6 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/firefox-developer.desktop" Categori
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/fluxgui.desktop" Icon "fluxgui"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/fluxgui.desktop" Name "F.lux"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/fluxgui.desktop" StartupWMClass "Fluxgui.py"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/fma-config-tool.desktop" Icon "nautilus-actions"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/fma-config-tool.desktop" Name "File Manager Actions"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/freeciv-mp-gtk2.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/freeciv-mp.desktop" NoDisplay "true"
@@ -653,9 +652,7 @@ set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-nfjdjopfnbnkmfldmeffmhgodmlhd
 set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-nfjdjopfnbnkmfldmeffmhgodmlhdnei-Default.desktop" Icon "whatsapp"
 set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-nfjdjopfnbnkmfldmeffmhgodmlhdnei-Default.desktop" Name "WhatsApp"
 set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/valve-vrmonitor.desktop" Name "SteamVR Monitor"
-set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/valve-vrmonitor.desktop" NoDisplay "true"
-set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/valve-URI-steamvr.desktop" NoDisplay "true"
-set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/valve-URI-vrmonitor.desktop" NoDisplay "true"
+set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/valve-vrmonitor.desktop" Name "SteamVR Monitor"
 set_launcher_entry $(find_launcher_by_name "Netflix") Categories "AudioVideo;Video;Player;"
 
 [ -f "${GLOBAL_LAUNCHERS_PATH}/io.elementary.files.desktop" ]  && set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Nautilus.desktop" NoDisplay "true"
