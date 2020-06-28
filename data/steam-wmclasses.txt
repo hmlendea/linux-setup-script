@@ -95,3 +95,13 @@
 287580=Pandora
 620980=beat\ saber.exe
 271590=gta5.exe
+207610=walkingdead101.exe
+246840=fate.exe
+266010=LYNE.x64
+306130=eso64.exe
+323850=lt-love
+470260=event0.exe
+588430=falloutshelter.exe
+728880=Overcooked2.x86_64
+859580=imperator
+813780=aoe2de_s.exe
