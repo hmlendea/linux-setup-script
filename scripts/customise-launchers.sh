@@ -14,6 +14,7 @@ STEAM_LAUNCHERS_PATH="${LOCAL_LAUNCHERS_PATH}/Steam"
 STEAM_PATH="${HOME_REAL}/.local/share/Steam"
 #STEAM_APPS_PATH="${HOME_REAL}/.local/share/Steam/steamapps/"
 STEAM_LIBRARY_PATHS=$(cat "${STEAM_PATH}/steamapps/libraryfolders.vdf" | grep "\"/" | sed 's/\"[0-9]\"//g' | sed 's/^ *//g' | sed 's/\t//g' | sed 's/\"//g')$(echo "/steamapps/")$(printf "\n${STEAM_PATH}/steamapps")
+STEAM_ICON_THEME_PATH="/usr/share/icons/steam"
 
 ICON_THEME=$(sudo -u ${USER_REAL} -H gsettings get org.gnome.desktop.interface icon-theme | tr -d "'")
 ICON_THEME_PATH="/usr/share/icons/"${ICON_THEME}
@@ -750,57 +751,62 @@ fi
 
 WMCLASSES_FILE="data/steam-wmclasses.txt"
 
-if [ ! -d "${STEAM_LAUNCHERS_PATH}" ]; then
-    mkdir -p "${STEAM_LAUNCHERS_PATH}"
-else
-    for STEAM_APP_LAUNCHER in ${STEAM_LAUNCHERS_PATH}/* ; do
-        APP_ID=$(cat "${STEAM_APP_LAUNCHER}" | grep "^Exec" | awk -F/ '{print $4}')
-        IS_APP_INSTALLED="false"
+[ ! -d "${STEAM_LAUNCHERS_PATH}" ]          && mkdir -p "${STEAM_LAUNCHERS_PATH}"
+[ ! -f "${STEAM_ICON_THEME_PATH}/48x48" ]   && mkdir -p "${STEAM_ICON_THEME_PATH}/48x48"
 
-        for STEAM_LIBRARY_PATH in ${STEAM_LIBRARY_PATHS}; do
-            if [ -f "${STEAM_LIBRARY_PATH}/appmanifest_${APP_ID}.acf" ]; then
-                IS_APP_INSTALLED="true"
-                break
-            fi
-        done
+for STEAM_APP_LAUNCHER in ${STEAM_LAUNCHERS_PATH}/* ; do
+    APP_ID=$(cat "${STEAM_APP_LAUNCHER}" | grep "^Exec" | awk -F/ '{print $4}')
+    IS_APP_INSTALLED="false"
 
-        if [ "${IS_APP_INSTALLED}" == "true" ]; then
-            set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" NoDisplay "false"
-        else
-            set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" NoDisplay "true"
+    for STEAM_LIBRARY_PATH in ${STEAM_LIBRARY_PATHS}; do
+        if [ -f "${STEAM_LIBRARY_PATH}/appmanifest_${APP_ID}.acf" ]; then
+            IS_APP_INSTALLED="true"
+            break
         fi
     done
-fi
+
+    if [ "${IS_APP_INSTALLED}" == "true" ]; then
+        set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" NoDisplay "false"
+    else
+        set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" NoDisplay "true"
+    fi
+
+    STEAM_ICON_PATH="${STEAM_ICON_THEME_PATH}/48x48/apps/steam_icon_${APP_ID}.jpg"
+    if [ ! -f "${STEAM_ICON_PATH}" ]; then
+        echo "Copying icon for Steam AppID ${APP_ID} into the Steam icon pack..."
+        cp "${STEAM_PATH}/appcache/librarycache/${APP_ID}_icon.jpg" "${STEAM_ICON_PATH}"
+    fi
+done
 
 for STEAM_LIBRARY_PATH in ${STEAM_LIBRARY_PATHS}; do
     if [ -d "${STEAM_LIBRARY_PATH}" ] && [ -d "${ICON_THEME_PATH}" ]; then
-
         if [ ! -f "${WMCLASSES_FILE}" ]; then
             touch "${WMCLASSES_FILE}"
         fi
 
         APP_IDS=$(ls "${STEAM_LIBRARY_PATH}" | grep "appmanifest_.*.acf" | awk -F_ '{print $2}' | awk -F. '{print $1}')
-        SIZE_DIR_NAME="48"
+        APPS_DIR_NAME="48/apps"
 
         if [ ! -d "${ICON_THEME_PATH}/48" ]; then
-            SIZE_DIR_NAME="48x48"
+            APPS_DIR_NAME="48x48/apps"
         fi
 
         for APP_ID in ${APP_IDS}; do
-            APP_ICON_PATH="${ICON_THEME_PATH}/${SIZE_DIR_NAME}/apps/steam_icon_${APP_ID}.svg"
+            APP_ICON_PATH="${ICON_THEME_PATH}/${APPS_DIR_NAME}/steam_icon_${APP_ID}.svg"
 
             if [ ! -f "${APP_ICON_PATH}" ]; then
                 for ICON_THEME_CANDIDATE in $(ls "/usr/share/icons/") ; do
                     ICON_THEME_CANDIDATE_PATH="/usr/share/icons/"${ICON_THEME_CANDIDATE}
 
-                    if [ -d "${ICON_THEME_CANDIDATE_PATH}/48" ]; then
-                        SIZE_DIR_NAME="48"
+                    if [ -d "${ICON_THEME_CANDIDATE_PATH}/48/apps" ]; then
+                        APPS_DIR_NAME="48/apps"
+                    elif [ -d "${ICON_THEME_CANDIDATE_PATH}/48x48/apps" ]; then
+                        APPS_DIR_NAME="48x48/apps"
                     else
-                        SIZE_DIR_NAME="48x48"
+                        continue
                     fi
 
-                    APP_ICON_PATH_CANDIDATE="${ICON_THEME_CANDIDATE_PATH}/${SIZE_DIR_NAME}/apps/steam_icon_${APP_ID}.svg"
-
+                    APP_ICON_PATH_CANDIDATE=$(find "${ICON_THEME_CANDIDATE_PATH}/${APPS_DIR_NAME}" -type f,l -iname "steam_icon_${APP_ID}.*" -exec readlink -f {} +)
                     if [ -f "${APP_ICON_PATH_CANDIDATE}" ]; then
                         APP_ICON_PATH=${APP_ICON_PATH_CANDIDATE}
                         break
