@@ -11,8 +11,9 @@ HOME_REAL="/home/${USER_REAL}"
 GLOBAL_LAUNCHERS_PATH="/usr/share/applications"
 LOCAL_LAUNCHERS_PATH="${HOME_REAL}/.local/share/applications"
 STEAM_LAUNCHERS_PATH="${LOCAL_LAUNCHERS_PATH}/Steam"
-#STEAM_APPS_PATH=$(cat "${HOME_REAL}/.local/share/Steam/steamapps/libraryfolders.vdf" | grep "\"/" | sed 's/\"[0-9]\"//g' | sed 's/^ *//g' | sed 's/\t//g' | sed 's/\"//g')$(echo "/steamapps/")
-STEAM_APPS_PATH="${HOME_REAL}/.local/share/Steam/steamapps/"
+STEAM_PATH="${HOME_REAL}/.local/share/Steam"
+#STEAM_APPS_PATH="${HOME_REAL}/.local/share/Steam/steamapps/"
+STEAM_LIBRARY_PATHS=$(cat "${STEAM_PATH}/steamapps/libraryfolders.vdf" | grep "\"/" | sed 's/\"[0-9]\"//g' | sed 's/^ *//g' | sed 's/\t//g' | sed 's/\"//g')$(echo "/steamapps/")$(printf "\n${STEAM_PATH}/steamapps")
 
 ICON_THEME=$(sudo -u ${USER_REAL} -H gsettings get org.gnome.desktop.interface icon-theme | tr -d "'")
 ICON_THEME_PATH="/usr/share/icons/"${ICON_THEME}
@@ -749,89 +750,102 @@ fi
 
 WMCLASSES_FILE="data/steam-wmclasses.txt"
 
-if [ -d "${STEAM_APPS_PATH}" ] && [ -d "${ICON_THEME_PATH}" ]; then
-    if [ ! -d "${STEAM_LAUNCHERS_PATH}" ]; then
-        mkdir -p "${STEAM_LAUNCHERS_PATH}"
-    fi
-
-    if [ ! -f "${WMCLASSES_FILE}" ]; then
-        touch "${WMCLASSES_FILE}"
-    fi
-
-    APP_IDS=$(ls "${STEAM_APPS_PATH}" | grep "appmanifest_.*.acf" | awk -F_ '{print $2}' | awk -F. '{print $1}')
-    SIZE_DIR_NAME="48"
-
-    if [ ! -d "${ICON_THEME_PATH}/48" ]; then
-        SIZE_DIR_NAME="48x48"
-    fi
-
+if [ ! -d "${STEAM_LAUNCHERS_PATH}" ]; then
+    mkdir -p "${STEAM_LAUNCHERS_PATH}"
+else
     for STEAM_APP_LAUNCHER in ${STEAM_LAUNCHERS_PATH}/* ; do
         APP_ID=$(cat "${STEAM_APP_LAUNCHER}" | grep "^Exec" | awk -F/ '{print $4}')
+        IS_APP_INSTALLED="false"
 
-        if [ ! -f "${STEAM_APPS_PATH}/appmanifest_${APP_ID}.acf" ]; then
+        for STEAM_LIBRARY_PATH in ${STEAM_LIBRARY_PATHS}; do
+            if [ -f "${STEAM_LIBRARY_PATH}/appmanifest_${APP_ID}.acf" ]; then
+                IS_APP_INSTALLED="true"
+                break
+            fi
+        done
+
+        if [ "${IS_APP_INSTALLED}" == "true" ]; then
+            set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" NoDisplay "false"
+        else
             set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" NoDisplay "true"
         fi
     done
+fi
 
-    for APP_ID in ${APP_IDS}; do
-        APP_ICON_PATH="${ICON_THEME_PATH}/${SIZE_DIR_NAME}/apps/steam_icon_${APP_ID}.svg"
+for STEAM_LIBRARY_PATH in ${STEAM_LIBRARY_PATHS}; do
+    if [ -d "${STEAM_LIBRARY_PATH}" ] && [ -d "${ICON_THEME_PATH}" ]; then
 
-        if [ ! -f "${APP_ICON_PATH}" ]; then
-            for ICON_THEME_CANDIDATE in $(ls "/usr/share/icons/") ; do
-                ICON_THEME_CANDIDATE_PATH="/usr/share/icons/"${ICON_THEME_CANDIDATE}
+        if [ ! -f "${WMCLASSES_FILE}" ]; then
+            touch "${WMCLASSES_FILE}"
+        fi
 
-                if [ -d "${ICON_THEME_CANDIDATE_PATH}/48" ]; then
-                    SIZE_DIR_NAME="48"
-                else
-                    SIZE_DIR_NAME="48x48"
-                fi
+        APP_IDS=$(ls "${STEAM_LIBRARY_PATH}" | grep "appmanifest_.*.acf" | awk -F_ '{print $2}' | awk -F. '{print $1}')
+        SIZE_DIR_NAME="48"
 
-                APP_ICON_PATH_CANDIDATE="${ICON_THEME_CANDIDATE_PATH}/${SIZE_DIR_NAME}/apps/steam_icon_${APP_ID}.svg"
+        if [ ! -d "${ICON_THEME_PATH}/48" ]; then
+            SIZE_DIR_NAME="48x48"
+        fi
 
-                if [ -f "${APP_ICON_PATH_CANDIDATE}" ]; then
-                    APP_ICON_PATH=${APP_ICON_PATH_CANDIDATE}
-                    break
-                fi
-            done
+        for APP_ID in ${APP_IDS}; do
+            APP_ICON_PATH="${ICON_THEME_PATH}/${SIZE_DIR_NAME}/apps/steam_icon_${APP_ID}.svg"
 
             if [ ! -f "${APP_ICON_PATH}" ]; then
-                APP_ICON_PATH="steam_icon_${APP_ID}"
+                for ICON_THEME_CANDIDATE in $(ls "/usr/share/icons/") ; do
+                    ICON_THEME_CANDIDATE_PATH="/usr/share/icons/"${ICON_THEME_CANDIDATE}
+
+                    if [ -d "${ICON_THEME_CANDIDATE_PATH}/48" ]; then
+                        SIZE_DIR_NAME="48"
+                    else
+                        SIZE_DIR_NAME="48x48"
+                    fi
+
+                    APP_ICON_PATH_CANDIDATE="${ICON_THEME_CANDIDATE_PATH}/${SIZE_DIR_NAME}/apps/steam_icon_${APP_ID}.svg"
+
+                    if [ -f "${APP_ICON_PATH_CANDIDATE}" ]; then
+                        APP_ICON_PATH=${APP_ICON_PATH_CANDIDATE}
+                        break
+                    fi
+                done
+
+                if [ ! -f "${APP_ICON_PATH}" ]; then
+                    APP_ICON_PATH="steam_icon_${APP_ID}"
+                fi
             fi
-        fi
 
-        APP_NAME=$(grep -h "\"name\"" "${STEAM_APPS_PATH}/appmanifest_${APP_ID}.acf" | sed 's/\"name\"//' | grep -o "\".*\"" | sed 's/\"//g')
-        DO_CREATE_LAUNCHER="true"
+            APP_NAME=$(grep -h "\"name\"" "${STEAM_LIBRARY_PATH}/appmanifest_${APP_ID}.acf" | sed 's/\"name\"//' | grep -o "\".*\"" | sed 's/\"//g')
+            DO_CREATE_LAUNCHER="true"
 
-        if [[ "${APP_NAME}" == "Steamworks Common Redistributables" ]] || [[ "${APP_NAME}" =~ ^Proton\ [0-9]+\.[0-9]+$ ]]; then
-            DO_CREATE_LAUNCHER="false"
-        fi
-
-        if [ "${DO_CREATE_LAUNCHER}" == "true" ]; then
-            APP_WMCLASS=""
-
-            if [ $(grep -c "^${APP_ID}=" "${WMCLASSES_FILE}") -ne 0 ]; then
-                APP_WMCLASS=$(cat "${WMCLASSES_FILE}" | grep "^${APP_ID}=" | awk -F= '{print $2}')
-            else
-                APP_WMCLASS=$(echo "${APP_NAME}" | sed 's/\ //g')
-                echo "CANNOT GET WMCLASS FOR STEAMAPP ${APP_ID} - ${APP_NAME}"
+            if [[ "${APP_NAME}" == "Steamworks Common Redistributables" ]] || [[ "${APP_NAME}" =~ ^Proton\ [0-9]+\.[0-9]+$ ]]; then
+                DO_CREATE_LAUNCHER="false"
             fi
 
-            create_launcher "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop"
-            set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" Name "${APP_NAME}"
-            set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" Comment "Play ${APP_NAME} on Steam"
-            set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" Comment[ro] "Joacă ${APP_NAME} pe Steam"
-            set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" Keywords "Game;Steam;${APP_ID};${APP_NAME};"
-            set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" Keywords[ro] "Joc;Steam;${APP_ID};${APP_NAME};"
-            set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" Exec "steam steam:\/\/rungameid\/${APP_ID}"
-            set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" Icon "${APP_ICON_PATH}"
-            set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" Categories "Game;Steam;"
-            set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" StartupWMClass "${APP_WMCLASS}"
-            set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" NoDisplay "false"
-        fi
-    done
+            if [ "${DO_CREATE_LAUNCHER}" == "true" ]; then
+                APP_WMCLASS=""
 
-    chown -R ${USER_REAL} "${STEAM_LAUNCHERS_PATH}"
-fi
+                if [ $(grep -c "^${APP_ID}=" "${WMCLASSES_FILE}") -ne 0 ]; then
+                    APP_WMCLASS=$(cat "${WMCLASSES_FILE}" | grep "^${APP_ID}=" | awk -F= '{print $2}')
+                else
+                    APP_WMCLASS=$(echo "${APP_NAME}" | sed 's/\ //g')
+                    echo "CANNOT GET WMCLASS FOR STEAMAPP ${APP_ID} - ${APP_NAME}"
+                fi
+
+                create_launcher "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop"
+                set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" Name "${APP_NAME}"
+                set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" Comment "Play ${APP_NAME} on Steam"
+                set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" Comment[ro] "Joacă ${APP_NAME} pe Steam"
+                set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" Keywords "Game;Steam;${APP_ID};${APP_NAME};"
+                set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" Keywords[ro] "Joc;Steam;${APP_ID};${APP_NAME};"
+                set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" Exec "steam steam:\/\/rungameid\/${APP_ID}"
+                set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" Icon "${APP_ICON_PATH}"
+                set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" Categories "Game;Steam;"
+                set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" StartupWMClass "${APP_WMCLASS}"
+                set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" NoDisplay "false"
+            fi
+        done
+
+        chown -R ${USER_REAL} "${STEAM_LAUNCHERS_PATH}"
+    fi
+done
 
 # Rebuild icon theme caches
 ICON_THEMES=$(find "/usr/share/icons/" -mindepth 1 -type d)
