@@ -749,7 +749,8 @@ fi
 
 # CREATE STEAM ICONS
 
-WMCLASSES_FILE="data/steam-wmclasses.txt"
+STEAM_WMCLASSES_FILE="data/steam-wmclasses.txt"
+STEAM_NAMES_FILE="data/steam-names.txt"
 
 [ ! -d "${STEAM_LAUNCHERS_PATH}" ]          && mkdir -p "${STEAM_LAUNCHERS_PATH}"
 [ ! -f "${STEAM_ICON_THEME_PATH}/48x48" ]   && mkdir -p "${STEAM_ICON_THEME_PATH}/48x48"
@@ -780,9 +781,8 @@ done
 
 for STEAM_LIBRARY_PATH in ${STEAM_LIBRARY_PATHS}; do
     if [ -d "${STEAM_LIBRARY_PATH}" ] && [ -d "${ICON_THEME_PATH}" ]; then
-        if [ ! -f "${WMCLASSES_FILE}" ]; then
-            touch "${WMCLASSES_FILE}"
-        fi
+        [ ! -f "${STEAM_WMCLASSES_FILE}" ]  && touch "${STEAM_WMCLASSES_FILE}"
+        [ ! -f "${STEAM_NAMES_FILE}" ]      && touch "${STEAM_NAMES_FILE}"
 
         APP_IDS=$(ls "${STEAM_LIBRARY_PATH}" | grep "appmanifest_.*.acf" | awk -F_ '{print $2}' | awk -F. '{print $1}')
         APPS_DIR_NAME="48/apps"
@@ -819,6 +819,11 @@ for STEAM_LIBRARY_PATH in ${STEAM_LIBRARY_PATHS}; do
             fi
 
             APP_NAME=$(grep -h "\"name\"" "${STEAM_LIBRARY_PATH}/appmanifest_${APP_ID}.acf" | sed 's/\"name\"//' | grep -o "\".*\"" | sed 's/\"//g')
+
+            if [ $(grep -c "^${APP_ID}=" "${STEAM_NAMES_FILE}") -ne 0 ]; then
+                APP_NAME=$(grep "^${APP_ID}=" "${STEAM_NAMES_FILE}" | awk -F= '{print $2}')
+            fi
+
             DO_CREATE_LAUNCHER="true"
 
             if [[ "${APP_NAME}" == "Steamworks Common Redistributables" ]] || [[ "${APP_NAME}" =~ ^Proton\ [0-9]+\.[0-9]+$ ]]; then
@@ -828,8 +833,8 @@ for STEAM_LIBRARY_PATH in ${STEAM_LIBRARY_PATHS}; do
             if [ "${DO_CREATE_LAUNCHER}" == "true" ]; then
                 APP_WMCLASS=""
 
-                if [ $(grep -c "^${APP_ID}=" "${WMCLASSES_FILE}") -ne 0 ]; then
-                    APP_WMCLASS=$(cat "${WMCLASSES_FILE}" | grep "^${APP_ID}=" | awk -F= '{print $2}')
+                if [ $(grep -c "^${APP_ID}=" "${STEAM_WMCLASSES_FILE}") -ne 0 ]; then
+                    APP_WMCLASS=$(grep "^${APP_ID}=" "${STEAM_WMCLASSES_FILE}" | awk -F= '{print $2}')
                 else
                     APP_WMCLASS=$(echo "${APP_NAME}" | sed 's/\ //g')
                     echo "CANNOT GET WMCLASS FOR STEAMAPP ${APP_ID} - ${APP_NAME}"
