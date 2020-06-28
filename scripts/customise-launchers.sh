@@ -286,6 +286,7 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-chrome.desktop" StartupWMCla
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-earth.desktop" Categories "Application;Network;Navigation;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-keep.desktop" Name "Keep"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-keep.desktop" Name[ro] "Keep"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-keep.desktop" StartupWMClass "google-keep-nativefier-d04d04"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gparted.desktop" Name "Partition Editor"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gparted.desktop" Name[ro] "Editor de Partiții"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gpicview.desktop" Name[ro] "Imagini"
