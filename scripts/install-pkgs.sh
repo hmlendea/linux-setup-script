@@ -226,6 +226,7 @@ if [[ "${ARCH}" == "x86_64" ]]; then
     install-pkg folder-color-nautilus-bzr
 
     # Fonts
+    install-pkg noto-fonts-emoji
     install-dep ttf-liberation
     install-dep ttf-croscore
     install-pkg ttf-hori
