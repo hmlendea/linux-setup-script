@@ -237,6 +237,7 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/dropbox.desktop" Categories "Networ
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/dropbox.desktop" Exec "dropbox start -i"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/electron.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/electron2.desktop" NoDisplay "true"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/electron7.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/engrampa.desktop" Name "Archive Manager"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/engrampa.desktop" Name[ro] "Arhive"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/eog.desktop" Name[ro] "Imagini"
@@ -753,8 +754,8 @@ fi
 STEAM_WMCLASSES_FILE="data/steam-wmclasses.txt"
 STEAM_NAMES_FILE="data/steam-names.txt"
 
-[ ! -d "${STEAM_LAUNCHERS_PATH}" ]          && mkdir -p "${STEAM_LAUNCHERS_PATH}"
-[ ! -f "${STEAM_ICON_THEME_PATH}/48x48" ]   && mkdir -p "${STEAM_ICON_THEME_PATH}/48x48"
+[ ! -d "${STEAM_LAUNCHERS_PATH}" ]              && mkdir -p "${STEAM_LAUNCHERS_PATH}"
+[ ! -f "${STEAM_ICON_THEME_PATH}/48x48/apps" ]  && mkdir -p "${STEAM_ICON_THEME_PATH}/48x48/apps"
 
 for STEAM_APP_LAUNCHER in ${STEAM_LAUNCHERS_PATH}/* ; do
     APP_ID=$(cat "${STEAM_APP_LAUNCHER}" | grep "^Exec" | awk -F/ '{print $4}')
