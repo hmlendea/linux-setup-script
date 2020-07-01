@@ -74,7 +74,7 @@
 22180=penumbra.bin
 261640=BorderlandsPreSqeuel
 105600=Terraria.bin.x86
-252950=RocketLeague
+252950=rocketleague.exe
 294100=RimWorldLinux.x86_64
 200710=Torchlight2.bin.x86_64
 383870=fw.x86_64
@@ -105,3 +105,5 @@
 728880=Overcooked2.x86_64
 859580=imperator
 813780=aoe2de_s.exe
+344040=voxelized.exe
+476240=knights.exe
