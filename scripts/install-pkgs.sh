@@ -271,6 +271,9 @@ if [[ "${ARCH}" == "x86_64" ]]; then
     # Tools
     install-pkg google-keep-nativefier
 
+    # Automation
+    install-pkg xdotool
+
     # Filesystem / Partitioning
     install-pkg gparted
     install-dep nilfs-utils
