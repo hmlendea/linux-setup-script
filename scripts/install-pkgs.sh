@@ -273,6 +273,7 @@ if [[ "${ARCH}" == "x86_64" ]]; then
 
     # Automation
     install-pkg xdotool
+    install-pkg wmctrl
 
     # Filesystem / Partitioning
     install-pkg gparted
