@@ -73,7 +73,7 @@
 220200=KSP.x86
 22180=penumbra.bin
 261640=BorderlandsPreSqeuel
-105600=Terraria.bin.x86
+105600=Terraria.bin.x86_64
 252950=rocketleague.exe
 294100=RimWorldLinux.x86_64
 200710=Torchlight2.bin.x86_64
@@ -107,3 +107,4 @@
 813780=aoe2de_s.exe
 344040=voxelized.exe
 476240=knights.exe
+241320=dew.exe
