@@ -231,6 +231,11 @@ if [[ "${ARCH}" == "x86_64" ]]; then
     install-dep ttf-croscore
     install-pkg ttf-hori
 
+    # Fonts - International
+    install-pkg ttf-freefont
+    install-pkg ttf-arphic-uming # CJK Ming
+    install-pkg ttf-baekmuk # Korean
+
     # Internet
     install-pkg google-chrome
     install-pkg transmission-gtk
