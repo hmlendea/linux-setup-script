@@ -104,7 +104,7 @@
 588430=falloutshelter.exe
 728880=Overcooked2.x86_64
 859580=imperator
-1017900=aoe2de_s.exe
+1017900=aoede_s.exe
 813780=aoe2de_s.exe
 344040=voxelized.exe
 476240=knights.exe
