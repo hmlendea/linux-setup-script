@@ -92,6 +92,7 @@ install-pkg sl
 install-pkg most
 install-pkg wget
 install-pkg usbutils
+install-pkg lshw
 
 install-dep dialog
 install-dep wpa_supplicant
@@ -206,12 +207,13 @@ if [[ "${ARCH}" == "x86_64" ]]; then
     install-pkg gnome-shell-extensions
     install-pkg gnome-shell-extension-installer
     install-pkg gnome-shell-extension-dash-to-dock
-    install-pkg gnome-shell-extension-mediaplayer-git
+    install-pkg gnome-shell-extension-mpris-indicator-button-git
+    install-pkg gnome-shell-extension-sound-output-device-choosery
     install-pkg gnome-shell-extension-gsconnect-git
     install-pkg gnome-shell-extension-multi-monitors-add-on-git
     install-pkg gnome-shell-extension-remove-dropdown-arrows
     install-pkg gnome-shell-extension-activities-config
-    install-pkg gnome-shell-extension-weather-git
+    install-pkg gnome-shell-extension-openweather-git
 
     # Themes
     install-pkg adapta-gtk-theme
