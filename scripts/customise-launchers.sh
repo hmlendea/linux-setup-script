@@ -12,9 +12,14 @@ GLOBAL_LAUNCHERS_PATH="/usr/share/applications"
 LOCAL_LAUNCHERS_PATH="${HOME_REAL}/.local/share/applications"
 STEAM_LAUNCHERS_PATH="${LOCAL_LAUNCHERS_PATH}/Steam"
 STEAM_PATH="${HOME_REAL}/.local/share/Steam"
-#STEAM_APPS_PATH="${HOME_REAL}/.local/share/Steam/steamapps/"
-STEAM_LIBRARY_PATHS=$(cat "${STEAM_PATH}/steamapps/libraryfolders.vdf" | grep "\"/" | sed 's/\"[0-9]\"//g' | sed 's/^ *//g' | sed 's/\t//g' | sed 's/\"//g')$(echo "/steamapps/")$(printf "\n${STEAM_PATH}/steamapps")
 STEAM_ICON_THEME_PATH="/usr/share/icons/steam"
+STEAM_LIBRARY_PATHS="${STEAM_PATH}/steamapps"
+STEAM_LIBRARY_CUSTOM_PATHS=$(cat "${STEAM_PATH}/steamapps/libraryfolders.vdf" | grep "\"/")
+
+if [ ! -z "${STEAM_LIBRARY_CUSTOM_PATHS}" ]; then
+    STEAM_LIBRARY_CUSTOM_PATHS=$(cat ${STEAM_LIBRARY_CUSTOM_PATHS} | sed 's/\"[0-9]\"//g' | sed 's/^ *//g' | sed 's/\t//g' | sed 's/\"//g')$(echo "/steamapps/")
+    STEAM_LIBRARY_PATHS=$(printf "${STEAM_LIBRARY_PATHS}\n${STEAM_LIBRARY_CUSTOM_PATHS}")
+fi
 
 ICON_THEME=$(sudo -u ${USER_REAL} -H gsettings get org.gnome.desktop.interface icon-theme | tr -d "'")
 ICON_THEME_PATH="/usr/share/icons/"${ICON_THEME}
