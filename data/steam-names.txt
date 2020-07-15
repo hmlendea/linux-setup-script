@@ -5,3 +5,5 @@
 241930=Middle-Earth: Shadow of Mordor
 289070=Civilisation VI
 570940=Dark Souls
+40950=Stronghold
+40970=Stronghold Crusader
