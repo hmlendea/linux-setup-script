@@ -119,3 +119,4 @@
 350080=wolfoldblood_x64.exe
 300300=ichi.exe
 242530=the chaos engine - remastered.exe
+40950=stronghold.exe
