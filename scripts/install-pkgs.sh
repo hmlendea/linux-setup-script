@@ -6,6 +6,7 @@ if [ -d "/sys/firmware/efi/efivars" ]; then
 	IS_EFI=1
 fi
 
+ARCH=${1}
 TEMP_DIR_PATH=".temp-sysinstall"
 mkdir -p "$TEMP_DIR_PATH"
 cd "$TEMP_DIR_PATH"
@@ -263,7 +264,7 @@ if [[ "${ARCH}" == "x86_64" ]]; then
     # Gaming
     install-pkg steam
     install-dep steam-native-runtime
-    install-pkg air-for-steam
+    install-pkg proton-ge-custom-stable-bin
 
     # Development
     install-pkg dotnet-sdk
