@@ -12,7 +12,7 @@ GLOBAL_LAUNCHERS_PATH="/usr/share/applications"
 LOCAL_LAUNCHERS_PATH="${HOME_REAL}/.local/share/applications"
 STEAM_LAUNCHERS_PATH="${LOCAL_LAUNCHERS_PATH}/Steam"
 STEAM_PATH="${HOME_REAL}/.local/share/Steam"
-STEAM_ICON_THEME_PATH="/usr/share/icons/steam"
+STEAM_ICON_THEME_PATH="${HOME_REAL}/.local/share/icons/steam"
 STEAM_LIBRARY_PATHS="${STEAM_PATH}/steamapps"
 STEAM_LIBRARY_CUSTOM_PATHS=$(cat "${STEAM_PATH}/steamapps/libraryfolders.vdf" | grep "\"/")
 
@@ -803,6 +803,8 @@ for STEAM_LIBRARY_PATH in ${STEAM_LIBRARY_PATHS}; do
             APP_ICON_PATH="${ICON_THEME_PATH}/${APPS_DIR_NAME}/steam_icon_${APP_ID}.svg"
 
             if [ ! -f "${APP_ICON_PATH}" ]; then
+                APP_ICON_PATH="${STEAM_ICON_THEME_PATH}/48x48/apps/steam_icon_${APP_ID}.jpg"
+
                 for ICON_THEME_CANDIDATE in $(ls "/usr/share/icons/") ; do
                     ICON_THEME_CANDIDATE_PATH="/usr/share/icons/"${ICON_THEME_CANDIDATE}
 
