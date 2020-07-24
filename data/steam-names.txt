@@ -7,3 +7,4 @@
 570940=Dark Souls
 40950=Stronghold
 40970=Stronghold Crusader
+644390=Lords of Waterdeep
