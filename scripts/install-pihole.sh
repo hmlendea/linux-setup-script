@@ -29,6 +29,8 @@ sudo systemctl stop systemd-resolved
 sudo systemctl start pihole-FTL
 sudo systemctl start lighttpd
 
+sudo usermod -a -G http pihole
+
 pihole -a -p
 
 echo "UPDATE THE HOSTS FILE!!!"
