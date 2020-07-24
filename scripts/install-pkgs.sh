@@ -209,7 +209,7 @@ if [[ "${ARCH}" == "x86_64" ]]; then
     install-pkg gnome-shell-extension-installer
     install-pkg gnome-shell-extension-dash-to-dock
     install-pkg gnome-shell-extension-mpris-indicator-button-git
-    install-pkg gnome-shell-extension-sound-output-device-choosery
+    install-pkg gnome-shell-extension-sound-output-device-chooser
     install-pkg gnome-shell-extension-gsconnect-git
     install-pkg gnome-shell-extension-multi-monitors-add-on-git
     install-pkg gnome-shell-extension-remove-dropdown-arrows
@@ -232,7 +232,7 @@ if [[ "${ARCH}" == "x86_64" ]]; then
     install-pkg noto-fonts-emoji
     install-dep ttf-liberation
     install-dep ttf-croscore
-    install-pkg ttf-hori
+    install-pkg hori-fonts
 
     # Fonts - International
     install-pkg ttf-freefont
