@@ -143,7 +143,7 @@ function set_custom_prompt {
     [ "$(whoami)" == "root" ]   && userColour="31" # Root = red
     [ "$(whoami)" == "guest" ]  && userColour="33" # Guest = yellow
 
-    [[ ${HOSTNAME} == *Craft ]] && hostColour="33" # Minecraft Server = Dark Yellow
+    [[ ${HOSTNAME} == *Craft ]] && hostColour="92" # Game Server = Light Green
     [[ ${HOSTNAME} == *Pi ]]    && hostColour="95" # RaspberryPi = Light Magenta
 
     local ps1user="\[\e[01;${userColour}m\]$USER\[\e[m\]"
