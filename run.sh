@@ -71,6 +71,8 @@ function remove-unused-dependencies() {
     fi
 }
 
+echo "ARCH: ${ARCH}"
+
 execute-script "install-pkgs.sh"
 
 update-system
