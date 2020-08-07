@@ -1,5 +1,5 @@
 #!/bin/bash
-
+ARCH=${1}
 IS_EFI=0
 
 if [ -d "/sys/firmware/efi/efivars" ]; then
@@ -137,7 +137,7 @@ install-pkg automake
 # Monitoring
 install-pkg alsi
 
-if [[ "${ARCH}" == "x86_64" ]]; then
+if [ "${ARCH}" == "x86_64" ]; then
     install-pkg grub
     install-pkg update-grub
 
@@ -235,9 +235,13 @@ if [[ "${ARCH}" == "x86_64" ]]; then
     install-pkg hori-fonts
 
     # Fonts - International
-    install-pkg ttf-freefont
-    install-pkg ttf-arphic-uming # CJK Ming
+    install-pkg noto-fonts-cjk # Chinese, Japanese, Korean
+    install-pkg ttf-amiri # Classical Arabic in Naskh style
+    install-pkg ttf-ancient-fonts # Aegean, Egyptian, Cuneiform, Anatolian, Maya, Analecta
     install-pkg ttf-baekmuk # Korean
+    install-pkg ttf-freefont
+    install-pkg ttf-hannom # Vietnamese
+    install-pkg ttf-ubraille # Braille
 
     # Internet
     install-pkg google-chrome
