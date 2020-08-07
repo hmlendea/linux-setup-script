@@ -6,7 +6,6 @@ if [ -d "/sys/firmware/efi/efivars" ]; then
 	IS_EFI=1
 fi
 
-ARCH=${1}
 TEMP_DIR_PATH=".temp-sysinstall"
 mkdir -p "$TEMP_DIR_PATH"
 cd "$TEMP_DIR_PATH"
