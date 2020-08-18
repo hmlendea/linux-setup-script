@@ -28,14 +28,14 @@ function is-package-installed() {
 
 function call-package-manager() {
 	ARGS=$*
+    PKG="${@: -1}"
 
 	if [ $(is-package-installed "${PKG}") -eq 0 ]; then
-		echo " >>> Installing package '$PKG'"
-
+		echo " >>> Installing package '${PKG}'"
 		if [ -f "/usr/bin/yaourt" ]; then
-			yaourt --noconfirm $ARGS
+			yaourt --noconfirm ${ARGS}
 		else
-			sudo pacman --noconfirm $ARGS
+			sudo pacman --noconfirm ${ARGS}
 		fi
 #	else
 #		echo " >>> Skipping package '$PKG' (already installed)"
@@ -54,26 +54,19 @@ function install-dep() {
 	call-package-manager -S --needed --asdeps "${PKG}"
 }
 
-function download-file {
-	URL=$1
-	FILE=$2
-
-	if [ ! -f "$FILE" ]; then
-		wget "$URL" -O "$FILE"
-	fi
-}
-
 function install-pkg-aur-manually() {
 	PKG=$1
 
-	if [ $(is-package-installed yaourt) -eq 0 ]; then
-		download-file "https://aur.archlinux.org/cgit/aur.git/snapshot/$PKG.tar.gz" "$PKG.tar.gz"
-		tar xvf "${PKG}.tar.gz"
+	if [ $(is-package-installed "${PKG}") -eq 0 ]; then
+       PKG_SNAPSHOT_URL="https://aur.archlinux.org/cgit/aur.git/snapshot/${PKG}.tar.gz"
 
-		cd "${PKG}"
-		makepkg -sri --noconfirm
-		cd ..
-	fi
+        wget ${PKG_SNAPSHOT_URL}
+	    tar xvf ${PKG}.tar.gz
+
+    	cd ${PKG}
+	    makepkg -sri --noconfirm
+	    cd ..
+    fi
 }
 
 # base-devel
