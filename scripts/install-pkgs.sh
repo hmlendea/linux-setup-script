@@ -2,6 +2,10 @@
 ARCH=${1}
 IS_EFI=0
 
+[ "${ARCH}" == "x86_64" ]   && ARCH_FAMILY="x86"
+[ "${ARCH}" == "aarch64" ]  && ARCH_FAMILY="arm"
+[ "${ARCH}" == "armv7l" ]   && ARCH_FAMILY="arm"
+
 if [ -d "/sys/firmware/efi/efivars" ]; then
 	IS_EFI=1
 fi
@@ -276,9 +280,11 @@ if [ "${ARCH}" == "x86_64" ]; then
     install-pkg electron
 
     install-pkg monogame-bin
-    install-pkg visual-studio-code-bin
 
-    install-pkg chromedriver
+    [ "${ARCH_FAMILY}" == "x86" ] && install-pkg visual-studio-code-bin
+    [ "${ARCH_FAMILY}" == "arm" ] && install-pkg code-headmelted-bin
+
+    [ "${ARCH_FAMILY}" == "x86" ] && install-pkg chromedriver
 
     # Tools
     install-pkg google-keep-nativefier

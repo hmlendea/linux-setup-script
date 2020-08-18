@@ -1,8 +1,10 @@
 #!/bin/bash
 
-if [[ "$1" != "x86_64" ]]; then
-    exit
-fi
+ARCH=${1}
+
+[ "${ARCH}" == "x86_64" ]   && ARCH_FAMILY="x86"
+[ "${ARCH}" == "aarch64" ]  && ARCH_FAMILY="arm"
+[ "${ARCH}" == "armv7l" ]   && ARCH_FAMILY="arm"
 
 USER_REAL=${SUDO_USER}
 [ ! -n "${USER_REAL}" ] && USER_REAL=${USER}
@@ -219,8 +221,11 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/cmake.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/CMake.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" Categories "TextEditor;Development;IDE;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" Icon "visual-studio-code"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" Keywords "VS;Code;VSCode;Visual Studio;Visual Studio Code;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" Name "Code"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" StartupWMClass "code"
+[ "${ARCH_FAMILY}" == "x86" ] && set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" StartupWMClass "code"
+[ "${ARCH_FAMILY}" == "arm" ] && set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" StartupWMClass "Code - OSS (headmelted)"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss-url-handler.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code.desktop" Name "Code"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code.desktop" StartupWMClass "code-oss"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/codeblocks.desktop" Name "Code::Blocks"
