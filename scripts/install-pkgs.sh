@@ -224,9 +224,11 @@ if [ "${ARCH}" == "x86_64" ]; then
     install-pkg folder-color-nautilus-bzr
 
     # Fonts
+    install-pkg noto-fonts
     install-pkg noto-fonts-emoji
-    install-dep ttf-liberation
+    install-pkg ttf-droid
     install-dep ttf-croscore
+    install-dep ttf-liberation
     install-pkg hori-fonts
 
     # Fonts - International
