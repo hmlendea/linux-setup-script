@@ -5,5 +5,5 @@ function enable-service {
     sudo systemctl start $1
 }
 
-enable-service "thermald.service"
-enable-service "ntpd.service"
+[ -f "/usr/bin/thermald" ]  && enable-service "thermald.service"
+[ -f "/usr/bin/ntpd" ]      && enable-service "ntpd.service"
