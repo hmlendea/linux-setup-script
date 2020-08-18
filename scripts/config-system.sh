@@ -98,6 +98,11 @@ if [ -f "/etc/default/grub" ]; then
 fi
 
 if [ -f "/usr/bin/gnome-shell" ]; then
+    if [ "${ARCH}" == "aarch64" ]; then
+        set_gsetting "org.gnome.settings-daemon.plugins.remote-display" active false
+        set_gsetting "org.gnome.desktop.interface" enable-animations false
+    fi
+
     set_gsetting "org.gnome.desktop.datetime" automatic-timezone true
 
     set_gsetting "org.gnome.desktop.privacy" old-files-age "uint32 14"
