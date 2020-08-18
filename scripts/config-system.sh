@@ -1,9 +1,5 @@
 #!/bin/bash
 
-if [[ "$1" != "x86_64" ]]; then
-    exit
-fi
-
 USER_REAL=$SUDO_USER
 [ ! -n "$USER_REAL" ] && USER_REAL=$USER
 HOME_REAL="/home/$USER_REAL"
@@ -76,17 +72,26 @@ set_gsetting() {
 # Xbox One Controller
 #echo "options bluetooth disable_ertm=1" | tee --append /etc/modprobe.d/xbox_bt.conf
 
-USING_NVIDIA_GPU=$(lspci | grep VGA | grep -c "NVIDIA")
+if [ "${ARCH}" == "x86_64" ]; then
+    USING_NVIDIA_GPU=$(lspci | grep VGA | grep -c "NVIDIA")
+else
+    USING_NVIDIA_GPU=0
+fi
 
 if [ $USING_NVIDIA_GPU = 1 ]; then
     set_modprobe_option nvidia-drm modset 1
 fi
+
 set_modprobe_option bluetooth disable_ertm 1    # Xbox One Controller Pairing
 set_modprobe_option btusb enable_autosuspend n  # Xbox One Controller Connecting, possibly other devices as well
 
-set_config_value "/etc/pulse/daemon.conf" resample-method speex-float-10
+if [ -f "/usr/bin/pulseaudio" ]; then
+    set_config_value "/etc/pulse/daemon.conf" resample-method speex-float-10
+fi
 
-set_config_value "$HOME_REAL/.alsoftrc" hrtf true
+if [ -d "/usr/bin/openal-info" ]; then
+    set_config_value "$HOME_REAL/.alsoftrc" hrtf true
+fi
 
 if [ -f "/etc/default/grub" ]; then
     set_config_value "/etc/default/grub" "GRUB_TIMEOUT" 1
@@ -120,7 +125,7 @@ if [ -f "/usr/bin/gnome-shell" ]; then
     set_gsetting "org.gnome.desktop.interface" show-battery-percentage "true"
     set_gsetting "org.gnome.desktop.interface" document-font-name "Sans Regular 12"
     set_gsetting "org.gnome.desktop.interface" font-name "Sans Regular 12"
-    set_gsetting "org.gnome.desktop.interface" monospace-font-name "Monospace 13"
+    set_gsetting "org.gnome.desktop.interface" monospace-font-name "Droid Sans Mono 13"
 
     if [ -d "/usr/share/themes/Adapta-Nokto-Eta" ]; then
         set_gsetting "org.gnome.desktop.interface" gtk-theme "Adapta-Nokto-Eta"
