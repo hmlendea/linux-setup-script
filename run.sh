@@ -13,12 +13,7 @@ if [ "${UID}" -eq 0 ]; then
     exit 1
 fi
 
-CPU_ARCHITECTURE=$(lscpu | grep "Architecture" | awk -F: '{print $2}' | sed 's/  //g')
-if [[ "${CPU_ARCHITECTURE}" == "x86_64" ]]; then
-    ARCH="x86_64"
-else
-    ARCH="arm"
-fi
+ARCH=$(lscpu | grep "Architecture" | awk -F: '{print $2}' | sed 's/  //g')
 
 if [ -f "/usr/bin/sudo" ]; then
     echo "I need sudo access!"

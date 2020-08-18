@@ -158,6 +158,7 @@ if [ "${ARCH}" == "x86_64" ]; then
     # Desktop Environment & Base applications
     install-pkg gnome-shell
     install-pkg gdm
+    install-pkg xdg-user-dirs-gtk
 
     install-pkg networkmanager
     install-pkg networkmanager-openvpn
