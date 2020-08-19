@@ -146,6 +146,9 @@ if [ "${ARCH}" == "x86_64" ]; then
 
     install-pkg gksu
 
+    # System management
+    install-pkg thermald
+
     # Runtimes
     install-pkg python
     install-pkg python2
