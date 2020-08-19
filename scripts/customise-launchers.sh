@@ -17,7 +17,7 @@ STEAM_LIBRARY_PATHS="${STEAM_PATH}/steamapps"
 STEAM_LIBRARY_CUSTOM_PATHS=$(cat "${STEAM_PATH}/steamapps/libraryfolders.vdf" | grep "\"/")
 
 if [ ! -z "${STEAM_LIBRARY_CUSTOM_PATHS}" ]; then
-    STEAM_LIBRARY_CUSTOM_PATHS=$(cat ${STEAM_LIBRARY_CUSTOM_PATHS} | sed 's/\"[0-9]\"//g' | sed 's/^ *//g' | sed 's/\t//g' | sed 's/\"//g')$(echo "/steamapps/")
+    STEAM_LIBRARY_CUSTOM_PATHS=$(echo ${STEAM_LIBRARY_CUSTOM_PATHS} | sed 's/\"[0-9]\"//g' | sed 's/^ *//g' | sed 's/\t//g' | sed 's/\"//g')$(echo "/steamapps/")
     STEAM_LIBRARY_PATHS=$(printf "${STEAM_LIBRARY_PATHS}\n${STEAM_LIBRARY_CUSTOM_PATHS}")
 fi
 
