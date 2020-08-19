@@ -90,6 +90,8 @@ execute-script-superuser "update-rcs.sh"
 
 execute-script "setup-git-gpg.sh"
 
+execute-script "enable-services.sh"
+
 if [[ "${ARCH}" == "x86_64" ]]; then
     sudo update-grub
 fi
