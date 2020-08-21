@@ -129,6 +129,7 @@ install-pkg automake
 
 # Monitoring
 install-pkg alsi
+install-pkg lm_sensors
 
 if [ "${ARCH}" == "x86_64" ]; then
     install-pkg grub
