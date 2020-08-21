@@ -6,3 +6,4 @@ function enable-service {
 }
 
 enable-service "thermald.service"
+enable-service "ntpd.service"
