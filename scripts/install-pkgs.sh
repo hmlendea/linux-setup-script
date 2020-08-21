@@ -85,12 +85,13 @@ install-pkg patch
 install-pkg sudo
 install-pkg man
 install-pkg ntp
+install-pkg man-pages
 install-pkg bash-completion
-install-pkg sl
 install-pkg most
 install-pkg wget
 install-pkg usbutils
 install-pkg lshw
+install-pkg sl
 
 install-dep dialog
 install-dep wpa_supplicant
