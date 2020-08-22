@@ -56,7 +56,7 @@ execute-script-superuser "configure-repositories.sh"
 execute-script "install-pkgs.sh"
 update-system
 execute-script "update-extensions.sh"
-execute-script-superused "uninstall-pkgs.sh"
+execute-script-superuser "uninstall-pkgs.sh"
 
 # Configure and customise the system
 execute-script "config-system.sh"
@@ -64,15 +64,12 @@ execute-script-superuser "set-system-locale-timedate.sh"
 execute-script-superuser "install-profiles.sh"
 execute-script-superuser "customise-launchers.sh"
 execute-script-superuser "enable-services.sh"
+execute-script-superuser "update-grub.sh"
 
 # Update the RCs
 execute-script "update-rcs.sh"
 execute-script-superuser "update-rcs.sh"
 
 execute-script "setup-git-gpg.sh"
-
-if [ -f "/usr/bin/update-grub" ]; then
-    sudo update-grub
-fi
 
 source ~/.bashrc
