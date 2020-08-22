@@ -27,7 +27,7 @@ function execute-script() {
     SCRIPT_NAME="$1"
     SCRIPT_PATH="${EXEDIR}/scripts/${SCRIPT_NAME}"
 
-    echo "Executing as $USER: '${SCRIPT_PATH}'..."
+    echo -e "Executing as \e[1;94m$USER\e[0;39m: '${SCRIPT_PATH}'..."
     /usr/bin/bash "${SCRIPT_PATH}" "${ARCH}"
 }
 
@@ -35,7 +35,7 @@ function execute-script-superuser() {
     SCRIPT_NAME="$1"
     SCRIPT_PATH="${EXEDIR}/scripts/${SCRIPT_NAME}"
 
-    echo "Executing as root: '${SCRIPT_PATH}'..."
+    echo -e "Executing as \e[1;91mroot\e[0;39m: '${SCRIPT_PATH}'..."
     sudo /usr/bin/bash "${SCRIPT_PATH}" "${ARCH}"
 }
 
