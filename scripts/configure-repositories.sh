@@ -7,7 +7,7 @@ PACMAN_CONF_FILE_PATH="/etc/pacman.conf"
 [ "${ARCH}" == "armv7l" ]   && ARCH_FAMILY="arm"
 
 function append_to_conf {
-    printf "$@" | sudo tee -a ${PACMAN_CONF_FILE_PATH} 1>/dev/null
+    printf "$@" >> ${PACMAN_CONF_FILE_PATH}
 }
 
 function add_repository {

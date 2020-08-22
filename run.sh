@@ -48,50 +48,30 @@ function update-system() {
     fi
 }
 
-function update-gnome-extensions() {
-    if [ -f "/usr/bin/gnome-shell-extension-installer" ]; then
-        echo "Updating GNOME extensions..."
-        gnome-shell-extension-installer --yes --update --restart-shell
-    fi
-}
-
-function remove-unused-dependencies() {
-    echo "Uninstalling unused dependencies ($UNUSED_DEPS_COUNT)..."
-
-    UNUSED_DEPS=$(pacman -Qdtq)
-    UNUSED_DEPS_COUNT=$(echo $UNUSED_DEPS | wc -w)
-
-    if [ -n "$UNUSED_DEPS" ]; then
-        sudo pacman --noconfirm -Rns $UNUSED_DEPS
-    fi
-}
-
 echo "ARCH: ${ARCH}"
 
+# Manage packages and extensions
 execute-script "install-pkgs.sh"
-
 update-system
-update-gnome-extensions
-remove-unused-dependencies
+execute-script "update-extensions.sh"
+execute-script-superused "uninstall-pkgs.sh"
 
+# Configure and customise the system
 execute-script "config-system.sh"
-
 execute-script-superuser "set-system-locale-timedate.sh"
 execute-script-superuser "install-profiles.sh"
 execute-script-superuser "customise-launchers.sh"
+execute-script-superuser "configure-repositories.sh"
+execute-script-superuser "enable-services.sh"
 
+# Update the RCs
 execute-script "update-rcs.sh"
 execute-script-superuser "update-rcs.sh"
 
 execute-script "setup-git-gpg.sh"
 
-execute-script "enable-services.sh"
-
-execute-script-superuser "configure-repositories.sh"
-
-if [[ "${ARCH}" == "x86_64" ]]; then
+if [ -f "/usr/bin/update-grub" ]; then
     sudo update-grub
 fi
 
 source ~/.bashrc
-
