@@ -35,5 +35,4 @@ fi
 
 if [ "${ARCH_FAMILY}" == "arm" ]; then
     add_repository "arch4edu" "https://mirrors.tuna.tsinghua.edu.cn/arch4edu/\$arch"
-    add_repository "archlinuxfr" "http://repo.archlinux.fr/\$arch"
 fi
