@@ -95,6 +95,7 @@ fi
 
 if [ -f "/etc/default/grub" ]; then
     set_config_value "/etc/default/grub" "GRUB_TIMEOUT" 1
+    set_config_value "/etc/default/grub" "GRUB_DISABLE_RECOVERY" true
 fi
 
 if [ -f "/usr/bin/gnome-shell" ]; then
