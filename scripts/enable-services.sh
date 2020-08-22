@@ -1,8 +1,8 @@
 #!/bin/bash
 
 function enable-service {
-    sudo systemctl enable $1
-    sudo systemctl start $1
+    systemctl enable $1
+    systemctl start $1
 }
 
 [ -f "/usr/bin/thermald" ]  && enable-service "thermald.service"
