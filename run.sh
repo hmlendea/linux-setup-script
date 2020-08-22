@@ -50,6 +50,8 @@ function update-system() {
 
 echo "ARCH: ${ARCH}"
 
+execute-script-superuser "configure-repositories.sh"
+
 # Manage packages and extensions
 execute-script "install-pkgs.sh"
 update-system
@@ -61,7 +63,6 @@ execute-script "config-system.sh"
 execute-script-superuser "set-system-locale-timedate.sh"
 execute-script-superuser "install-profiles.sh"
 execute-script-superuser "customise-launchers.sh"
-execute-script-superuser "configure-repositories.sh"
 execute-script-superuser "enable-services.sh"
 
 # Update the RCs

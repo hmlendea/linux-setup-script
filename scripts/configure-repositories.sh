@@ -10,29 +10,41 @@ function append_to_conf {
     printf "$@" >> ${PACMAN_CONF_FILE_PATH}
 }
 
+DATABASES_NEED_UPDATING=false
+
 function add_repository {
     NAME=${1}
     SERVER=${2}
-    SIGLEVEL=${3}
-    INCLUDE=${4}
+    INCLUDE=${3}
+    SIGLEVEL=${4}
+    KEY=${5}
 
     if [ ! $(grep "^\[${NAME}\]" ${PACMAN_CONF_FILE_PATH}) ]; then
         echo "Adding the \"${NAME}\" repository to \"${PACMAN_CONF_FILE_PATH}\"..." >&2
+
+        DATABASES_NEED_UPDATING=true
 
         append_to_conf "\n[${NAME}]\n"
         [ ! -z "${SERVER}" ]    && append_to_conf "Server = ${SERVER}\n"
         [ ! -z "${INCLUDE}" ]   && append_to_conf "Include = ${INCLUDE}\n"
         [ ! -z "${SIGLEVEL}" ]  && append_to_conf "SigLevel = ${SIGLEVEL}\n"
+
+        [ ! -z "${KEY}" ] && pacman-key --recv-keys ${KEY}
     fi
 }
 
-add_repository "hmlendea" "https://github.com/hmlendea/PKGBUILDs/releases/latest/download/" "Never"
+add_repository "hmlendea" "https://github.com/hmlendea/PKGBUILDs/releases/latest/download/" "" "Never"
 
 if [ "${ARCH_FAMILY}" == "x86" ]; then
-    add_repository "multilib" "" "" "/etc/pacman.d/mirrorlist"
-    add_repository "valveaur" "http://repo.steampowered.com/arch/valveaur/"
+    add_repository "multilib" "" "/etc/pacman.d/mirrorlist"
+    add_repository "valveaur" "http://repo.steampowered.com/arch/valveaur/" "" "" "8DC2CE3A3D245E64"
 fi
 
 if [ "${ARCH_FAMILY}" == "arm" ]; then
-    add_repository "arch4edu" "https://mirrors.tuna.tsinghua.edu.cn/arch4edu/\$arch"
+    add_repository "arch4edu" "https://mirrors.tuna.tsinghua.edu.cn/arch4edu/\$arch" "" "" "7931B6D628C8D3BA"
 fi
+
+if [ ${DATABASES_NEED_UPDATING} = true ]; then
+    pacman -Syy
+fi
+
