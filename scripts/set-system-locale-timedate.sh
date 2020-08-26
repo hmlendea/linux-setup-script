@@ -17,8 +17,9 @@ for LOCALE in $(awk '{print $1}' "${LOCALE_GEN_FILE_PATH}" | sed -e 's/\([^\.]*\
     fi
 done
 
-echo "Setting up the keymap..."
-echo "KEYMAP=ro-std" > "${VCONSOLE_CONF_FILE_PATH}"
+echo "Setting up the console font and keymap..."
+echo "FONT=eurlatgr" > "${VCONSOLE_CONF_FILE_PATH}"
+echo "KEYMAP=ro-std" >> "${VCONSOLE_CONF_FILE_PATH}"
 
 echo "Setting up the language..."
 echo "LANG=en_GB.UTF-8" > "${LOCALE_CONF_FILE_PATH}"
