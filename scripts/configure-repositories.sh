@@ -29,7 +29,11 @@ function add_repository {
         [ ! -z "${INCLUDE}" ]   && append_to_conf "Include = ${INCLUDE}\n"
         [ ! -z "${SIGLEVEL}" ]  && append_to_conf "SigLevel = ${SIGLEVEL}\n"
 
-        [ ! -z "${KEY}" ] && pacman-key --recv-keys ${KEY}
+        if [ ! -z "${KEY}" ]; then
+            pacman-key --recv-keys ${KEY}
+            pacman-key --finger ${KEY}
+            pacman-key --lsign ${KEY}
+        fi
     fi
 }
 
