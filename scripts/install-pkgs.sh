@@ -306,7 +306,7 @@ if [ "${ARCH}" == "x86_64" ]; then
     install-pkg start-wmclass
 
     # Libraries
-    install-pkg libc++
+    #install-pkg libc++
 fi
 
 if [ "${CHASSIS_TYPE}" == "Laptop" ]; then
