@@ -229,7 +229,7 @@ alias cd-="cd -"
 alias cd--="__destDir=\${OLDPWD2} && cd \${__destDir}"
 alias lsmnt='lsblk -l | tail -n +2 | awk '\''length($7) { print $1" => "$7 }'\'''
 alias grep='grep -a --color --text'
-alias pcregrep='pcgrep -a --color --text'
+alias pcregrep='pcregrep -a --color --text'
 alias uptime='uptime -p && printf "since " && uptime -s'
 
 [ -f "/usr/bin/systemctl" ]     &&  alias systemctl='systemctl --no-pager -l -n15'
