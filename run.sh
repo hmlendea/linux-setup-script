@@ -62,7 +62,11 @@ execute-script-superuser "uninstall-pkgs.sh"
 execute-script "config-system.sh"
 execute-script-superuser "set-system-locale-timedate.sh"
 execute-script-superuser "install-profiles.sh"
-execute-script-superuser "customise-launchers.sh"
+
+if [ $(pidof X) ]; then # Only customise launchers if X11 is running
+    execute-script-superuser "customise-launchers.sh"
+fi
+
 execute-script-superuser "enable-services.sh"
 execute-script-superuser "update-grub.sh"
 
