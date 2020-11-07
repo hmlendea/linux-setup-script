@@ -267,7 +267,7 @@ if [ "${ARCH}" == "x86_64" ]; then
 
     # Graphics
     install-pkg gimp
-    install-dep gimp-extras
+    install-pkg gimp-extras
     install-dep gimp-pixel-art-scalers
     install-pkg inkscape
 
