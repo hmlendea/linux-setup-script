@@ -63,7 +63,7 @@ execute-script "config-system.sh"
 execute-script-superuser "set-system-locale-timedate.sh"
 execute-script-superuser "install-profiles.sh"
 
-if [ $(pidof X) ]; then # Only customise launchers if X11 is running
+if [ -f "/etc/systemd/system/display-manager.service" ]; then # Only customise launchers a DM is used
     execute-script-superuser "customise-launchers.sh"
 fi
 
