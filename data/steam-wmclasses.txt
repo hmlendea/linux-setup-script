@@ -7,7 +7,7 @@
 221640=superhexagon.x86_64
 231160=TheSwapper.bin.x86_64
 379720=doomx64vk.exe
-108600=Game
+108600=Project Zomboid
 383150=DeadIslandGame
 275390=steam_app_275390
 319630=LifeIsStrange
