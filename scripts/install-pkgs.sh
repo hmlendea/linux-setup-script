@@ -181,6 +181,7 @@ if [ "${ARCH}" == "x86_64" ]; then
     install-pkg gnome-terminal
     install-pkg gnome-disk-utility
     install-pkg gnome-calculator
+    install-pkg gnome-clocks
     install-pkg gnome-contacts
     install-pkg gnome-weather
 
