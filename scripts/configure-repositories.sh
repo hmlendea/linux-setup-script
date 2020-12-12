@@ -44,9 +44,6 @@ if [ "${ARCH_FAMILY}" == "x86" ]; then
     add_repository "valveaur" "http://repo.steampowered.com/arch/valveaur/" "" "" "8DC2CE3A3D245E64"
 fi
 
-if [ "${ARCH_FAMILY}" == "arm" ]; then
-    add_repository "arch4edu" "https://mirrors.tuna.tsinghua.edu.cn/arch4edu/\$arch" "" "" "7931B6D628C8D3BA"
-fi
 
 if [ ${DATABASES_NEED_UPDATING} = true ]; then
     pacman -Syy
