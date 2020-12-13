@@ -37,9 +37,9 @@ function call-package-manager() {
 	if [ $(is-package-installed "${PKG}") -eq 0 ]; then
 		echo " >>> Installing package '${PKG}'"
 		if [ -f "/usr/bin/yaourt" ]; then
-			yaourt --noconfirm ${ARGS}
+            LANG=C LC_TIME="" yaourt --noconfirm ${ARGS}
 		else
-			sudo pacman --noconfirm ${ARGS}
+			LANG=C LC_TIME="" sudo pacman --noconfirm ${ARGS}
 		fi
 #	else
 #		echo " >>> Skipping package '$PKG' (already installed)"
@@ -136,26 +136,32 @@ install-pkg automake
 install-pkg alsi
 install-pkg lm_sensors
 
-if [ "${ARCH}" == "x86_64" ]; then
-    install-pkg grub
-    install-pkg update-grub
+if [ -f "/etc/systemd/system/display-manager.service" ]; then
+    if [ "${ARCH_FAMILY}" == "x86" ]; then
+        install-pkg grub
+        install-pkg update-grub
+        install-dep linux-headers
+    fi
 
-    # First things first
     install-pkg dkms
-    install-dep linux-headers
-
-    install-pkg gksu
+    [ "${ARCH_FAMILY}" == "x86" ] && install-pkg gksu
 
     # System management
-    install-pkg thermald
+    [ "${ARCH_FAMILY}" == "x86" ] && install-pkg thermald
 
     # Runtimes
     install-pkg python
     install-pkg python2
     install-pkg mono
-    install-pkg dotnet-runtime
-    install-pkg aspnet-runtime
     install-pkg jre-openjdk-headless
+
+    if [ "${ARCH_FAMILY}" == "x86" ]; then
+        install-pkg dotnet-runtime
+        install-pkg aspnet-runtime
+    elif [ "${ARCH_FAMILY}" == "arm" ]; then
+        install-pkg dotnet-runtime-bin
+        install-pkg aspnet-runtime-bin
+    fi
 
     # Display Server, Drivers, FileSystems, etc
     install-pkg xorg-server
@@ -250,16 +256,16 @@ if [ "${ARCH}" == "x86_64" ]; then
     install-pkg ttf-ubraille # Braille
 
     # Internet
-    install-pkg google-chrome
+    [ "${ARCH_FAMILY}" == "x86" ] && install-pkg google-chrome
+    [ "${ARCH_FAMILY}" == "arm" ] && install-pkg chromium
     install-pkg transmission-gtk
-
     install-pkg chrome-gnome-shell
 
     # Communication
-    install-pkg whatsapp-nativefier-dark
+    [ "${ARCH_FAMILY}" == "x86" ] && install-pkg whatsapp-nativefier-dark
 
     # Multimedia
-    install-pkg spotify
+    [ "${ARCH_FAMILY}" == "x86" ] && install-pkg spotify
     install-pkg lollypop
     install-pkg totem
 
@@ -269,28 +275,31 @@ if [ "${ARCH}" == "x86_64" ]; then
     # Graphics
     install-pkg gimp
     install-pkg gimp-extras
-    install-dep gimp-plugin-pixel-art-scalers
+    install-pkg gimp-plugin-pixel-art-scalers
     install-pkg inkscape
 
     # Gaming
-    install-pkg steam
-    install-dep steam-native-runtime
-    install-pkg proton-ge-custom-stable-bin
+    if [ "${ARCH_FAMILY}" == "x86" ]; then
+        install-pkg steam
+        install-dep steam-native-runtime
+        install-pkg proton-ge-custom-stable-bin
+    fi
 
     # Development
     install-pkg dotnet-sdk
     #install-pkg jdk
-    install-pkg electron
 
-    install-pkg monogame-bin
+    if [ "${ARCH_FAMILY}" == "x86" ]; then
+        install-pkg electron
+        install-pkg monogame-bin
+        install-pkg chromedriver
+    fi
 
     [ "${ARCH_FAMILY}" == "x86" ] && install-pkg visual-studio-code-bin
     [ "${ARCH_FAMILY}" == "arm" ] && install-pkg code-headmelted-bin
 
-    [ "${ARCH_FAMILY}" == "x86" ] && install-pkg chromedriver
-
     # Tools
-    install-pkg google-keep-nativefier
+    [ "${ARCH_FAMILY}" == "x86" ] && install-pkg google-keep-nativefier
 
     # Automation
     install-pkg xdotool
