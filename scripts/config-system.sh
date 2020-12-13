@@ -124,11 +124,15 @@ if [ -f "/usr/bin/gnome-shell" ]; then
     set_gsetting "org.gnome.desktop.wm.preferences" titlebar-font "Sans Regular 12"
 
     set_gsetting "org.gnome.shell.overrides" attach-modal-dialogs false
+    set_gsetting "org.gnome.mutter" attach-modal-dialogs false
 
     set_gsetting "org.gnome.desktop.sound" allow-volume-above-100-percent "true"
 
     set_gsetting "org.gnome.desktop.interface" clock-show-date "true"
     set_gsetting "org.gnome.desktop.interface" show-battery-percentage "true"
+
+    set_gsetting "org.gnome.desktop.peripherals.touchpad" disable-while-typing false
+
     set_gsetting "org.gnome.desktop.interface" document-font-name "Sans Regular 12"
     set_gsetting "org.gnome.desktop.interface" font-name "Sans Regular 12"
     set_gsetting "org.gnome.desktop.interface" monospace-font-name "Droid Sans Mono 13"
@@ -174,10 +178,12 @@ if [ -d "/usr/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com/" ]; th
     set_gsetting "org.gnome.shell.extensions.dash-to-dock" custom-theme-running-dots-color "#01a299"
     set_gsetting "org.gnome.shell.extensions.dash-to-dock" custom-theme-shrink true
     set_gsetting "org.gnome.shell.extensions.dash-to-dock" dock-position BOTTOM
+    set_gsetting "org.gnome.shell.extensions.dash-to-dock" intellihide-mode ALL_WINDOWS
     set_gsetting "org.gnome.shell.extensions.dash-to-dock" multi-monitor true
     set_gsetting "org.gnome.shell.extensions.dash-to-dock" running-indicator-style DOTS
     set_gsetting "org.gnome.shell.extensions.dash-to-dock" scroll-action cycle-windows
     set_gsetting "org.gnome.shell.extensions.dash-to-dock" show-show-apps-button false
+    set_gsetting "org.gnome.shell.extensions.dash-to-dock" show-trash false
     set_gsetting "org.gnome.shell.extensions.dash-to-dock" transparency-mode FIXED
 fi
 
