@@ -665,6 +665,11 @@ set_launcher_entry $(find_launcher_by_name "Netflix") Categories "AudioVideo;Vid
 
 [ -f "${GLOBAL_LAUNCHERS_PATH}/io.elementary.files.desktop" ]  && set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Nautilus.desktop" NoDisplay "true"
 
+if [ -f "${GLOBAL_LAUNCHERS_PATH}/chromium.desktop" ] && [ ! -f "${GLOBAL_LAUNCHERS_PATH}/google-chrome.desktop" ]; then
+    set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/chromium.desktop" Name "Chrome"
+    set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/chromium.desktop" Icon "google-chrome"
+fi
+
 # Themes
 set_theme "/usr/bin/tor-browser-en" "Adwaita"
 
