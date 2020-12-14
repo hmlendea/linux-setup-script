@@ -148,13 +148,14 @@ if [ -f "/usr/bin/gnome-shell" ]; then
     fi
 fi
 
-if [ -f "/usr/bin/gnome-terminal" ]; then
-    set_gsetting "org.gnome.Terminal.Legacy.Settings" default-show-menubar false
+if [ -f "/usr/bin/gedit" ]; then
+    set_gsetting "org.gnome.gedit.preferences.editor" highlight-current-line false
+    set_gsetting "org.gnome.gedit.preferences.editor" insert-spaces true
+    set_gsetting "org.gnome.gedit.preferences.editor" tabs-size 4
 fi
 
-if [ -f "/usr/bin/totem" ]; then
-    set_gsetting "org.gnome.totem" autoload-subtitles "true"
-    set_gsetting "org.gnome.totem" subtitle-font "Sans Bold 12"
+if [ -f "/usr/bin/gnome-terminal" ]; then
+    set_gsetting "org.gnome.Terminal.Legacy.Settings" default-show-menubar false
 fi
 
 if [ -f "/usr/bin/nautilus" ]; then
@@ -163,6 +164,11 @@ if [ -f "/usr/bin/nautilus" ]; then
     set_gsetting "org.gnome.nautilus.preferences" show-create-link true
     set_gsetting "org.gnome.nautilus.preferences" show-delete-permanently true
     set_gsetting "org.gnome.nautilus.window-state" sidebar-width 240
+fi
+
+if [ -f "/usr/bin/totem" ]; then
+    set_gsetting "org.gnome.totem" autoload-subtitles "true"
+    set_gsetting "org.gnome.totem" subtitle-font "Sans Bold 12"
 fi
 
 if [ -d "/usr/share/gnome-shell/extensions/user-theme@gnome-shell-extensions.gcampax.github.com/" ]; then
