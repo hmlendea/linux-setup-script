@@ -107,6 +107,7 @@ install-pkg-aur-manually package-query
 install-pkg-aur-manually yaourt
 install-pkg pacman-contrib
 install-pkg pacutils
+install-pkg yaourt-auto-sync
 
 # Partition editors
 install-pkg parted
