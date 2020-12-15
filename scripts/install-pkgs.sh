@@ -268,7 +268,7 @@ if [ -f "/etc/systemd/system/display-manager.service" ]; then
 
     # Multimedia
     [ "${ARCH_FAMILY}" == "x86" ] && install-pkg spotify
-    install-pkg lollypop
+    install-pkg rhythmbox
     install-pkg totem
 
     install-dep gst-plugins-ugly
