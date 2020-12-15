@@ -15,9 +15,19 @@ mkdir -p "$TEMP_DIR_PATH"
 cd "$TEMP_DIR_PATH"
 
 CHASSIS_TYPE="Desktop"
+LIGHTWEIGHT_DE=false
+HAS_GUI=false
 
 if [ -d "/sys/module/battery" ]; then
     CHASSIS_TYPE="Laptop"
+fi
+
+if [ -f "/etc/systemd/system/display-manager.service" ]; then
+    HAS_GUI=true
+
+    if [ "${ARCH_FAMILY}" == "arm" ]; then
+        LIGHTWEIGHT_DE=true
+    fi
 fi
 
 function is-package-installed() {
@@ -137,7 +147,7 @@ install-pkg automake
 install-pkg alsi
 install-pkg lm_sensors
 
-if [ -f "/etc/systemd/system/display-manager.service" ]; then
+if ${HAS_GUI}; then
     if [ "${ARCH_FAMILY}" == "x86" ]; then
         install-pkg grub
         install-pkg update-grub
