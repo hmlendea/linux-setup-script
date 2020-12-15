@@ -145,6 +145,7 @@ if [ -f "/etc/systemd/system/display-manager.service" ]; then
     fi
 
     install-pkg dkms
+    install-pkg rsync
     [ "${ARCH_FAMILY}" == "x86" ] && install-pkg gksu
 
     # System management
