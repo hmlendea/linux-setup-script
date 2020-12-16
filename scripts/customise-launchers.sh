@@ -36,10 +36,39 @@ find_launcher_by_name() {
     return 1
 }
 
+set_launcher_entries() {
+    FILE="${1}"
+    shift
+
+    if [ "$(( $# % 2))" -ne 0 ]; then
+        echo "ERROR: Invalid arguments for set_launcher_entries: $@" >&2
+        exit 1
+    fi
+
+    PAIRS_COUNT=$(($# / 2))
+
+    if [ ! -f "${FILE}" ]; then
+        return
+    fi
+
+    for I in { 1..$PAIRS_COUNT }; do
+        KEY=${1} && shift
+        VAL=${1} && shift
+
+        if [ ! -z "${KEY}" ] && [ ! -z "${VAL}" ]; then
+            set_launcher_entry "${FILE}" "${KEY}" "${VAL}"
+        fi
+    done
+}
+
 set_launcher_entry() {
     FILE="$1"
     KEY="$2"
     VAL="$3"
+
+    if [ "$#" != "3" ]; then
+        echo "ERROR: Invalid arguments for set_launcher_entry: $@" >&2
+    fi
 
     if [ ! -f "${FILE}" ]; then
         return
@@ -122,8 +151,9 @@ set_launcher_entry_romanian() {
     KEY_ROMANIAN="$2"
     VAL="$3"
 
-    set_launcher_entry "${FILE}" "${KEY_ROMANIAN}[ro_RO]" "${VAL}"
-    set_launcher_entry "${FILE}" "${KEY_ROMANIAN}[ro_MD]" "${VAL}"
+    set_launcher_entries "${FILE}" \
+        ${KEY_ROMANIAN}[ro_RO] "${VAL}" \
+        ${KEY_ROMANIAN}[ro_MD] "${VAL}"
 }
 
 set_launcher_entry_english() {
@@ -131,10 +161,11 @@ set_launcher_entry_english() {
     KEY_ENGLISH="$2"
     VAL="$3"
 
-    set_launcher_entry "${FILE}" "${KEY_ENGLISH}[en_AU]" "${VAL}"
-    set_launcher_entry "${FILE}" "${KEY_ENGLISH}[en_CA]" "${VAL}"
-    set_launcher_entry "${FILE}" "${KEY_ENGLISH}[en_GB]" "${VAL}"
-    set_launcher_entry "${FILE}" "${KEY_ENGLISH}[en_US]" "${VAL}"
+    set_launcher_entries "${FILE}" \
+        ${KEY_ENGLISH}[en_AU] "${VAL}" \
+        ${KEY_ENGLISH}[en_CA] "${VAL}" \
+        ${KEY_ENGLISH}[en_GB] "${VAL}" \
+        ${KEY_ENGLISH}[en_US] "${VAL}"
 }
 
 create_launcher() {
@@ -151,10 +182,11 @@ create_launcher() {
         printf "Exec=${NAME}\n" >> ${FILE}
         printf "StartupWMClass=${NAME}\n" >> ${FILE}
 
-        set_launcher_entry "${FILE}" "Name" "${NAME}"
-        set_launcher_entry "${FILE}" "Comment" "${NAME}"
-        set_launcher_entry "${FILE}" "Keywords" "${NAME};"
-        set_launcher_entry "${FILE}" "Icon" "${NAME}"
+        set_launcher_entries "${FILE}" \
+            Name "${NAME}" \
+            Comment "${NAME}" \
+            Keywords "${NAME};" \
+            Icon "${NAME}"
 
         chmod +x "${FILE}"
         echo "Created file '${FILE}'"
@@ -186,39 +218,31 @@ set_theme() {
 
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/7zFM.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/alltray.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/amidst.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/amidst.desktop" StartupWMClass "amidst-Amidst"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/amidst.desktop" \
+    NoDisplay "true" \
+    StartupWMClass "amidst-Amidst"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/android-studio.desktop" StartupWMClass "jetbrains-studio"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/assistant-qt4.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/assistant.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/avahi-discover.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/balena-etcher-electron.desktop" Name "Etcher"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/balena-etcher-electron.desktop" Name[ro] "Etcher"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/balena-etcher-electron.desktop" \
+    Name "Etcher" \
+    Name[ro] "Etcher"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/bssh.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/bvnc.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ca.desrt.dconf-editor.desktop" Icon "dconf-editor"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ca.desrt.dconf-editor.desktop" Name "Configuration Editor"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ca.desrt.dconf-editor.desktop" Name[ro] "Editor de Configurări"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/ca.desrt.dconf-editor.desktop" \
+    Icon "dconf-editor" \
+    Name "Configuration Editor" \
+    Name[ro] "Editor de Configurări"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/caffeine-indicator.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/caja-browser.desktop" Categories "GTK;Utility;Core;FileManager;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/caja-browser.desktop" Name "Files"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/caja-browser.desktop" Name[ro] "Fișiere"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/Cisco-PacketTracer.desktop" Categories "Network;Development;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/Cisco-PacketTracer.desktop" Icon "logview"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/Cisco-PacketTracer.desktop" StartupWMClass "PacketTracer6"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/Cisco-PacketTracer.desktop" \
+    Categories "Network;Development;" \
+    Icon "logview" \
+    StartupWMClass "PacketTracer6"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/cmake-gui.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/CMake.desktop" Icon "cmake"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/cmake.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/CMake.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" Categories "TextEditor;Development;IDE;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" Icon "visual-studio-code"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" Keywords "VS;Code;VSCode;Visual Studio;Visual Studio Code;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" Name "Code"
-[ "${ARCH_FAMILY}" == "x86" ] && set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" StartupWMClass "code"
-[ "${ARCH_FAMILY}" == "arm" ] && set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" StartupWMClass "Code - OSS (headmelted)"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss-url-handler.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code.desktop" Name "Code"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code.desktop" StartupWMClass "code-oss"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/codeblocks.desktop" Name "Code::Blocks"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/com.teamviewer.TeamViewer.desktop" Categories "Network;RemoteAccess;FileTransfer;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/com.teamviewer.TeamViewer.desktop" Icon "teamviewer"
@@ -255,9 +279,6 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/GameConqueror.desktop" Categories "
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/genymotion.desktop" Categories "Development;Emulator;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/genymotion.desktop" Icon "genymotion"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/geogebra.desktop" StartupWMClass "org-geogebra-desktop-GeoGebra3D"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ghetto-skype.desktop" Categories "Application;Network;Chat;InstantMessaging;Communication;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ghetto-skype.desktop" Icon "skype"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ghetto-skype.desktop" Name "Skype"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gimp.desktop" Name "GIMP"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gimp.desktop" StartupWMClass "Gimp-2.10"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gksu-properties.desktop" NoDisplay "true"
@@ -270,11 +291,6 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gnubg.desktop" Name "Backgammon"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gnubg.desktop" Name[ro] "Table"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/godot.desktop" Categories "Development;IDE;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/godot.desktop" StartupWMClass "Godot"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-chrome-unstable.desktop" Icon "google-chrome"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-chrome-unstable.desktop" Name "Chrome"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-chrome-unstable.desktop" StartupWMClass "Google-chrome-unstable"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-chrome.desktop" Name "Chrome"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-chrome.desktop" StartupWMClass "Google-chrome-stable"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-earth.desktop" Categories "Application;Network;Navigation;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-keep.desktop" Name "Keep"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-keep.desktop" Name[ro] "Keep"
@@ -303,42 +319,9 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ipython.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ipython2.desktop" Categories "Development;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ipython2.desktop" Icon "ipython"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ipython2.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/java-java-openjdk.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jconsole-java-openjdk.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jconsole-jdk10.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jconsole-jdk10.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jconsole-jdk11.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jconsole-jdk11.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jconsole-jdk12.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jconsole-jdk13.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jconsole-jdk8.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jconsole-jdk8.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jconsole-jdk9.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jconsole-jdk9.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jetbrains-idea-ce.desktop" Icon "idea"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jetbrains-idea-ce.desktop" Name "IntelliJ"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jetbrains-idea-ce.desktop" StartupWMClass "jetbrains-idea-ce"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jmc-jdk10.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jmc-jdk10.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jmc-jdk11.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jmc-jdk11.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jmc-jdk12.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jmc-jdk13.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jmc-jdk8.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jmc-jdk8.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jmc-jdk9.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jmc-jdk9.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jshell-java-openjdk.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jvisualvm-jdk10.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jvisualvm-jdk10.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jvisualvm-jdk11.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jvisualvm-jdk11.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jvisualvm-jdk12.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jvisualvm-jdk13.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jvisualvm-jdk8.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jvisualvm-jdk8.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jvisualvm-jdk9.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jvisualvm-jdk9.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/laptop-mode-tools.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/libreoffice-base.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/libreoffice-draw.desktop" NoDisplay "true"
@@ -425,39 +408,6 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/plank.desktop" NoDisplay true
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/playonlinux.desktop" Categories "Application;Emulator;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/playonlinux.desktop" Icon "playonlinux"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/playonlinux.desktop" StartupWMClass "Mainwindow.py"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-java-openjdk.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-jdk10.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-jdk10.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-jdk10.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-jdk11.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-jdk11.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-jdk11.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-jdk12.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-jdk12.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-jdk13.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-jdk13.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-jdk8.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-jdk8.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-jdk8.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-jdk9.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-jdk9.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-jdk9.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-jre10.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-jre10.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-jre10.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-jre11.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-jre11.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-jre11.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-jre12.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-jre12.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-jre13.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-jre13.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-jre8.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-jre8.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-jre8.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-jre9.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-jre9.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-jre9.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/popcorn-time-ce.desktop" Exec "start-wmclass popcorntime popcorntime"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/popcorn-time-ce.desktop" Icon "popcorn-time"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/popcorn-time-ce.desktop" StartupWMClass "popcorntime"
@@ -480,15 +430,6 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/rider.desktop" Icon "rider"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/simple-scan.desktop" Name "Scanner"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/simple-scan.desktop" Name[ro] "Scanner"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/simplescreenrecorder.desktop" Name "Screen Recorder"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/skype-desktop.desktop" Categories "Application;Network;InstantMessaging;Communication;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/skype-desktop.desktop" Icon "skype"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/skype-desktop.desktop" StartupWMClass "crx_monljlleikpphbhopghghdbggidfahha"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/skype.desktop" Categories "Application;Network;Communication;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/skype.desktop" Icon "skype"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/skypeforlinux.desktop" Categories "Application;Network;InstantMessaging;Communication;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/skypeforlinux.desktop" Icon "skype"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/skypeforlinux.desktop" Name "Skype"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/skypeforlinux.desktop" StartupWMClass "Skype"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/steam-native.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/steam-runtime.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/steam.desktop" Categories "Game;"
@@ -496,40 +437,6 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/steam.desktop" Exec "steam-start"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/steam.desktop" Name "Steam"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/stoken-gui-small.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/stoken-gui.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun_java-jdk10.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun_java-jdk10.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun_java-jdk11.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun_java-jdk11.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun_java-jdk12.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun_java-jdk13.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun_java-jdk8.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun_java-jdk8.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun_java-jdk9.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun_java-jdk9.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun_java-jre10.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun_java-jre10.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun_java-jre11.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun_java-jre11.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun_java-jre12.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun_java-jre13.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun_java-jre8.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun_java-jre8.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun_java-jre9.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun_java-jre9.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun-java-jdk10.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun-java-jdk11.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun-java-jdk8.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun-java-jdk9.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun-java-jre10.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun-java-jre11.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun-java-jre8.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun-java-jre9.desktop" Icon "java"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun-javaws-jre10.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun-javaws-jre11.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun-javaws-jre12.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun-javaws-jre13.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun-javaws-jre8.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/sun-javaws-jre9.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/system-config-printer.desktop" Name[ro] "Configurare Imprimantă"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/teamviewer.desktop" Categories "Network;RemoteAccess;FileTransfer;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/teams.desktop" Categories "Application;Network;Chat;InstantMessaging;Communication;"
@@ -560,28 +467,12 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/unity-monodevelop.desktop" Name "Mo
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/uxterm.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/vim.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/virtualbox.desktop" Name "VirtualBox"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/visual-studio-code.desktop" Name "Code"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/visual-studio-code.desktop" Keywords "VS;Code;VSCode;Visual Studio;Visual Studio Code;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/visual-studio-code.desktop" StartupWMClass "Code"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/vivaldi-preview.desktop" Name "Vivaldi"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/vlc.desktop" Name "VLC"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/wfica.desktop" Icon "citrix-receiver"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/wfica.desktop" Name "Citrix Receiver"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/wfica.desktop" Name[ro] "Receptor Citrix"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/wfica.desktop" StartupWMClass "Wfica"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsapp-desktop.desktop" Categories "Network;Chat;InstantMessaging;Communication;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsapp-desktop.desktop" Icon "whatsapp"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsapp-desktop.desktop" StartupWMClass "whatsapp"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier.desktop" Categories "Network;Chat;InstantMessaging;Communication;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier.desktop" Icon "whatsapp"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier.desktop" StartupWMClass "whatsapp-nativefier-d40211"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier-dark.desktop" Categories "Network;Chat;InstantMessaging;Communication;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier-dark.desktop" Icon "whatsapp"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier-dark.desktop" Name "WhatsApp"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier-dark.desktop" StartupWMClass "whatsapp-nativefier-d52542"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsie.desktop" Categories "Network;Chat;Communication;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsie.desktop" Icon "whatsapp"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsie.desktop" Name "WhatsApp"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/wireshark-gtk.desktop" Name "Wireshark"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/wmail.desktop" Icon "gmail"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/wmail.desktop" Name "GMail"
@@ -615,14 +506,15 @@ set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-lneaknkopdijkpnocmklfnjbeapig
 set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default.desktop" Name "Maps"
 set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default.desktop" Name[ro] "Hărți"
 set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default.desktop" NoDisplay "false"
-set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-nfjdjopfnbnkmfldmeffmhgodmlhdnei-Default.desktop" Categories "ChromeApp;Network;Chat;InstantMessaging;Communication;"
-set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-nfjdjopfnbnkmfldmeffmhgodmlhdnei-Default.desktop" Icon "whatsapp"
-set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-nfjdjopfnbnkmfldmeffmhgodmlhdnei-Default.desktop" Name "WhatsApp"
 set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/valve-vrmonitor.desktop" Name "SteamVR Monitor"
 set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/valve-vrmonitor.desktop" NoDisplay "true"
 set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/valve-URI-steamvr.desktop" NoDisplay "true"
 set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/valve-URI-vrmonitor.desktop" NoDisplay "true"
-set_launcher_entry $(find_launcher_by_name "Netflix") Categories "AudioVideo;Video;Player;"
+
+NETFLIX_LAUNCHER=$(find_launcher_by_name "Netflix")
+if [ ! -z "${NETFLIX_LAUNCHER}" ]; then
+    set_launcher_entry "$(find_launcher_by_name Netflix)" Categories "AudioVideo;Video;Player;"
+fi
 
 ########################
 ### ARCHIVE MANAGERS ###
@@ -630,9 +522,9 @@ set_launcher_entry $(find_launcher_by_name "Netflix") Categories "AudioVideo;Vid
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/engrampa.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FileRoller.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/xarchiver.desktop"; do
-    [ ! -f "${LAUNCHER}" ] && continue
-    set_launcher_entry "${LAUNCHER}" Name "Archives"
-    set_launcher_entry "${LAUNCHER}" Name[ro] "Arhive"
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Archives" \
+        Name[ro] "Arhive"
 done
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FileRoller.desktop" StartupWMClass "File-Roller"
 
@@ -641,20 +533,40 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FileRoller.desktop" Start
 ###################
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/galculator.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/mate-calc.desktop"; do
-    [ ! -f "${LAUNCHER}" ] && continue
-    set_launcher_entry "${LAUNCHER}" Name "Calculator"
-    set_launcher_entry "${LAUNCHER}" Name[ro] "Calculator"
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Calculator" \
+        Name[ro] "Calculator"
 done
+
+##############
+### CHROME ###
+##############
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/google-chrome-unstable.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/google-chrome.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Chrome" \
+        Name[ro] "Chrome" \
+        Icon "google-chrome"
+done
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-chrome-unstable.desktop" StartupWMClass "Google-chrome-unstable"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-chrome.desktop" StartupWMClass "Google-chrome-stable"
+
+if [ -f "${GLOBAL_LAUNCHERS_PATH}/chromium.desktop" ] && [ ! -f "${GLOBAL_LAUNCHERS_PATH}/google-chrome.desktop" ]; then
+    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/chromium.desktop" \
+        Name "Chrome" \
+        Name[ro] "Chrome" \
+        Icon "google-chrome"
+fi
 
 ############################
 ### DISK USAGE ANALYZERS ###
 ############################
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/baobab.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/mate-disk-usage-analyzer.desktop"; do
-    [ ! -f "${LAUNCHER}" ] && continue
-    set_launcher_entry "${LAUNCHER}" Name "Disk Usage"
-    set_launcher_entry "${LAUNCHER}" Name[ro] "Ocuparea Spațiului"
-    set_launcher_entry "${LAUNCHER}" OnlyShowIn ""
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Disk Usage" \
+        Name[ro] "Ocuparea Spațiului" \
+        OnlyShowIn ""
 done
 
 ########################
@@ -663,23 +575,24 @@ done
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/atril.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/epdfview.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/evince.desktop"; do
-    [ ! -f "${LAUNCHER}" ] && continue
-    set_launcher_entry "${LAUNCHER}" Name "Documents"
-    set_launcher_entry "${LAUNCHER}" Name[ro] "Documente"
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Documents" \
+        Name[ro] "Documente"
 done
 
 #####################
 ### FILE MANAGERS ###
 #####################
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/io.elementary.files.dekstop" \
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/caja-browser.dekstop" \
+                "${GLOBAL_LAUNCHERS_PATH}/io.elementary.files.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Nautilus.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/Thunar.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/thunar.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/pcmanfm.desktop"; do
-    [ ! -f "${LAUNCHER}" ] && continue
-    set_launcher_entry "${LAUNCHER}" Name "Files"
-    set_launcher_entry "${LAUNCHER}" Name[ro] "Fișiere"
-    set_launcher_entry "${LAUNCHER}" Categories "Utility;Core;FileManager;"
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Files" \
+        Name[ro] "Fișiere" \
+        Categories "Utility;Core;FileManager;"
 done
 
 #####################
@@ -688,9 +601,27 @@ done
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gpicview.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/eog.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/eom.desktop"; do
-    [ ! -f "${LAUNCHER}" ] && continue
-    set_launcher_entry "${LAUNCHER}" Name "Images"
-    set_launcher_entry "${LAUNCHER}" Name[ro] "Imagini"
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Images" \
+        Name[ro] "Imagini"
+done
+
+#################
+### JRE & JDK ###
+#################
+for JAVA_VERSION in { 8..24 }; do
+    for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/jconsole-jdk${JAVA_VERSION}.desktop" \
+                    "${GLOBAL_LAUNCHERS_PATH}/jmc-jdk${JAVA_VERSION}.desktop" \
+                    "${GLOBAL_LAUNCHERS_PATH}/jvisualvm-jdk${JAVA_VERSION}.desktop" \
+                    "${GLOBAL_LAUNCHERS_PATH}/policytool-jdk${JAVA_VERSION}.desktop" \
+                    "${GLOBAL_LAUNCHERS_PATH}/policytool-jre${JAVA_VERSION}.desktop" \
+                    "${GLOBAL_LAUNCHERS_PATH}/sun_java-jdk${JAVA_VERSION}.desktop" \
+                    "${GLOBAL_LAUNCHERS_PATH}/sun_java-jre${JAVA_VERSION}.desktop" \
+                    "${GLOBAL_LAUNCHERS_PATH}/sun_javaws-jre${JAVA_VERSION}.desktop"; do
+        set_launcher_entries "${LAUNCHER}" \
+            Icon "java" \
+            NoDisplay "true"
+    done
 done
 
 ###################
@@ -698,10 +629,10 @@ done
 ###################
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/mate-system-log.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Logs.desktop"; do
-    [ ! -f "${LAUNCHER}" ] && continue
-    set_launcher_entry "${LAUNCHER}" Name "Logs"
-    set_launcher_entry "${LAUNCHER}" Name[ro] "Loguri"
-    set_launcher_entry "${LAUNCHER}" OnlyShowIn ""
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Logs" \
+        Name[ro] "Loguri" \
+        OnlyShowIn ""
 done
 
 ######################
@@ -710,14 +641,30 @@ done
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gscreenshot.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/mate-screenshot.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Screenshot.desktop"; do
-    [ ! -f "${LAUNCHER}" ] && continue
-    set_launcher_entry "${LAUNCHER}" Name "Screenshot"
-    set_launcher_entry "${LAUNCHER}" Name[ro] "Captură de Ecran"
-    set_launcher_entry "${LAUNCHER}" Icon "applets-screenshooter"
-    set_launcher_entry "${LAUNCHER}" OnlyShowIn ""
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Screenshot" \
+        Name[ro] "Captură de Ecran" \
+        Icon "applets-screenshooter" \
+        OnlyShowIn ""
 done
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gscreenshot.desktop" Categories "Utility;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gscreenshot.desktop" StartupWMClass "gscreenshot"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gscreenshot.desktop" \
+    Categories "Utility;" \
+    StartupWMClass "gscreenshot"
+
+#############
+### SKYPE ###
+#############
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/ghetto-skype.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/skype-desktop.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/skype.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/skypeforlinux.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Skype" \
+        Icon "applets-screenshooter" \
+        Categories "Network;Chat;InstantMessaging;Communication;"
+done
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/skype-desktop.desktop" StartupWMClass "crx_monljlleikpphbhopghghdbggidfahha"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/skypeforlinux.desktop" StartupWMClass "Skype"
 
 #################
 ### TERMINALS ###
@@ -725,9 +672,9 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gscreenshot.desktop" StartupWMClass
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gnome-terminal.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/lxterminal.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/mate-terminal.desktop"; do
-    [ ! -f "${LAUNCHER}" ] && continue
-    set_launcher_entry "${LAUNCHER}" Name "Terminal"
-    set_launcher_entry "${LAUNCHER}" Name[ro] "Terminal"
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Terminal" \
+        Name[ro] "Terminal"
 done
 
 ####################
@@ -740,16 +687,49 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gedit.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/org.pantheon.scratch.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/medit.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/pluma.desktop"; do
-    [ ! -f "${LAUNCHER}" ] && continue
-    set_launcher_entry "${LAUNCHER}" Name "Text Editor"
-    set_launcher_entry "${LAUNCHER}" Name[ro] "Editor Text"
-    set_launcher_entry "${LAUNCHER}" Icon "accessories-text-editor"
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Text Editor" \
+        Name[ro] "Editor Text" \
+        Icon "accessories-text-editor"
 done
 
-if [ -f "${GLOBAL_LAUNCHERS_PATH}/chromium.desktop" ] && [ ! -f "${GLOBAL_LAUNCHERS_PATH}/google-chrome.desktop" ]; then
-    set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/chromium.desktop" Name "Chrome"
-    set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/chromium.desktop" Icon "google-chrome"
-fi
+###############
+### VS CODE ###
+###############
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/code.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/visual-studio-code.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Code" \
+        Name[ro] "Code" \
+        Keywords "VS;Code;VSCode;Visual Studio;Visual Studio Code;" \
+        Icon "accessories-text-editor"
+done
+[ "${ARCH_FAMILY}" == "x86" ] && set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" StartupWMClass "code"
+[ "${ARCH_FAMILY}" == "arm" ] && set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" StartupWMClass "Code - OSS (headmelted)"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss-url-handler.desktop" NoDisplay "true"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code.desktop" StartupWMClass "code-oss"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/visual-studio-code.desktop" StartupWMClass "Code"
+
+####################
+### WHATSAPP ###
+####################
+WHATSAPP_CATEGORIES="Network;Chat;InstantMessaging;Communication;"
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/whatsapp-desktop.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier-dark.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/whatsie.desktop" \
+                "${LOCAL_LAUNCHERS_PATH}/chrome-nfjdjopfnbnkmfldmeffmhgodmlhdnei-Default.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "WhatsApp" \
+        Name[ro] "WhatsApp" \
+        Icon "whatsapp" \
+        Categories "${WHATSAPP_CATEGORIES}"
+done
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsapp-desktop.desktop" StartupWMClass "whatsapp"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier.desktop" StartupWMClass "whatsapp-nativefier-d40211"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier-dark.desktop" StartupWMClass "whatsapp-nativefier-d52542"
+set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-nfjdjopfnbnkmfldmeffmhgodmlhdnei-Default.desktop" Categories "ChromeApp;${WHATSAPP_CATEGORIES}"
 
 # Themes
 set_theme "/usr/bin/tor-browser-en" "Adwaita"
