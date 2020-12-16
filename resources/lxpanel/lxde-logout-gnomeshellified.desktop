@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=Logout
+Icon=/home/horatiu/.config/lxpanel/LXDE/panels/power.png
+Exec=lxde-logout
+TryExec=lxsession-logout
+NoDisplay=true

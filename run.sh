@@ -74,6 +74,10 @@ execute-script-superuser "update-grub.sh"
 execute-script "update-rcs.sh"
 execute-script-superuser "update-rcs.sh"
 
+# Update the resources
+execute-script "update-resources.sh"
+execute-script-superuser "update-resources.sh"
+
 execute-script "setup-git-gpg.sh"
 
 source ~/.bashrc

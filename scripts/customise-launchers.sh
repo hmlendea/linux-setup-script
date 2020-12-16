@@ -193,7 +193,7 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/bssh.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/bvnc.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ca.desrt.dconf-editor.desktop" Icon "dconf-editor"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ca.desrt.dconf-editor.desktop" Name "Configuration Editor"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ca.desrt.dconf-editor.desktop" Name[ro] "Editor de configurări"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ca.desrt.dconf-editor.desktop" Name[ro] "Editor de Configurări"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/caffeine-indicator.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/caja-browser.desktop" Categories "GTK;Utility;Core;FileManager;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/caja-browser.desktop" Name "Files"
@@ -237,6 +237,7 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/electron7.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/factorio.desktop" Icon "factorio"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ffadomixer.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/firefox-developer.desktop" Categories "Network;WebBrowser;"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/fluid.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/fluxgui.desktop" Icon "fluxgui"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/fluxgui.desktop" Name "F.lux"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/fluxgui.desktop" StartupWMClass "Fluxgui.py"
@@ -351,12 +352,8 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/lxtask.desktop" Name[ro] "Manager d
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-color-select.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-dictionary.desktop" Name "Dictionary"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-dictionary.desktop" Name[ro] "Dicționar"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-disk-usage-analyzer.desktop" Name "Disk Usage Analyzer"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-disk-usage-analyzer.desktop" Name[ro] "Spațiu pe Disc"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-disk.desktop" Icon "gnome-disks"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-disk.desktop" Name[ro] "Discuri"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-screenshot.desktop" Name "Screenshot"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-screenshot.desktop" Name[ro] "Captură de ecran"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-search-tool.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-system-monitor.desktop" Name "System Monitor"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-system-monitor.desktop" Name[ro] "Monitor de Sistem"
@@ -419,6 +416,7 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/pavucontrol.desktop" Categories "Au
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/pavucontrol.desktop" Name "Audio Settings"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/PCSX2.desktop" Icon "pcsx2"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/picard.desktop" StartupWMClass ""
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/plank.desktop" NoDisplay true
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/playonlinux.desktop" Categories "Application;Emulator;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/playonlinux.desktop" Icon "playonlinux"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/playonlinux.desktop" StartupWMClass "Mainwindow.py"
@@ -535,10 +533,9 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/teamviewer.desktop" Icon "teamviewe
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/teamviewer.desktop" Name "TeamViewer"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/teamviewer.desktop" StartupWMClass "TeamViewer.exe"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/Thunar-bulk-rename.desktop" NoDisplay "true"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/thunar-bulk-rename.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/thunar-settings.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/thunar-volman-settings.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/Thunar.desktop" Name "Files"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/Thunar.desktop" Name[ro] "Fișiere"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/tilda.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/tiled.desktop" Categories "Development;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/tor-browser-en.desktop" Categories "Network;WebBrowser;"
@@ -548,6 +545,7 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/tor-browser-en.desktop" StartupWMCl
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/tracker-needle.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/tracker-preferences.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/transmission-gtk.desktop" Name "Torrents"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/transmission-gtk.desktop" Name[ro] "Torente"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/unity-editor.desktop" Categories "Development;IDE;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/unity-editor.desktop" Icon "unity-editor-icon"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/unity-editor.desktop" Name "Unity Editor"
@@ -643,6 +641,17 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/galculator.desktop" \
     set_launcher_entry "${LAUNCHER}" Name[ro] "Calculator"
 done
 
+############################
+### DISK USAGE ANALYZERS ###
+############################
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/baobab.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/mate-disk-usage-analyzer.desktop"; do
+    [ ! -f "${LAUNCHER}" ] && continue
+    set_launcher_entry "${LAUNCHER}" Name "Disk Usage"
+    set_launcher_entry "${LAUNCHER}" Name[ro] "Ocuparea Spațiului"
+    set_launcher_entry "${LAUNCHER}" OnlyShowIn ""
+done
+
 ########################
 ### DOCUMENT VIEWERS ###
 ########################
@@ -659,6 +668,8 @@ done
 #####################
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/io.elementary.files.dekstop" \
                 "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Nautilus.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/Thunar.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/thunar.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/pcmanfm.desktop"; do
     [ ! -f "${LAUNCHER}" ] && continue
     set_launcher_entry "${LAUNCHER}" Name "Files"
@@ -675,8 +686,33 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gpicview.desktop" \
     [ ! -f "${LAUNCHER}" ] && continue
     set_launcher_entry "${LAUNCHER}" Name "Images"
     set_launcher_entry "${LAUNCHER}" Name[ro] "Imagini"
-    set_launcher_entry "${LAUNCHER}" NoDisplay true
 done
+
+###################
+### LOG VIEWERS ###
+###################
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/mate-system-log.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Logs.desktop"; do
+    [ ! -f "${LAUNCHER}" ] && continue
+    set_launcher_entry "${LAUNCHER}" Name "Logs"
+    set_launcher_entry "${LAUNCHER}" Name[ro] "Loguri"
+    set_launcher_entry "${LAUNCHER}" OnlyShowIn ""
+done
+
+######################
+### SCREENSHOOTERS ###
+######################
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gscreenshot.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/mate-screenshot.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Screenshot.desktop"; do
+    [ ! -f "${LAUNCHER}" ] && continue
+    set_launcher_entry "${LAUNCHER}" Name "Screenshot"
+    set_launcher_entry "${LAUNCHER}" Name[ro] "Captură de Ecran"
+    set_launcher_entry "${LAUNCHER}" Icon "applets-screenshooter"
+    set_launcher_entry "${LAUNCHER}" OnlyShowIn ""
+done
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gscreenshot.desktop" Categories "Utility;"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gscreenshot.desktop" StartupWMClass "gscreenshot"
 
 #################
 ### TERMINALS ###

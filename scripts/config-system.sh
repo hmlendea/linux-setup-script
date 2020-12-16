@@ -1,21 +1,21 @@
 #!/bin/bash
 
-USER_REAL=$SUDO_USER
-[ ! -n "$USER_REAL" ] && USER_REAL=$USER
-HOME_REAL="/home/$USER_REAL"
+USER_REAL=${SUDO_USER}
+[ ! -n "${USER_REAL}" ] && USER_REAL=${USER}
+HOME_REAL="/home/${USER_REAL}"
 
 set_config_value() {
-    FILE="$1"
-    KEY="$2"
+    FILE="${1}"
+    KEY="${2}"
     VALUE_RAW="${@:3}"
 
-    if [ ! -f "$FILE" ]; then
+    if [ ! -f "${FILE}" ]; then
         # TODO: Handle directory creation
-        touch "$FILE"
+        touch "${FILE}"
     fi
 
-    VALUE=$(echo "$VALUE_RAW" | sed -e 's/[]\/$*.^|[]/\\&/g')
-    FILE_CONTENT=$(cat "$FILE")
+    VALUE=$(echo "${VALUE_RAW}" | sed -e 's/[]\/$*.^|[]/\\&/g')
+    FILE_CONTENT=$(cat "${FILE}")
 
     # If the value is not already set
     if [ $(grep -c "^${KEY}=${VALUE}$" <<< "$FILE_CONTENT") == 0 ]; then
@@ -28,7 +28,34 @@ set_config_value() {
             #printf "$LINE\n" >> "$FILE"
         fi
 
-        echo "$FILE >>> $KEY=$VALUE"
+        echo "${FILE} >>> ${KEY} = ${VALUE}"
+    fi
+}
+
+set_xml_node() {
+    FILE="${1}"
+    NODE_RAW="${2}"
+    VALUE_RAW="${@:3}"
+
+    if [ ! -f "${FILE}" ]; then
+        # TODO: Handle directory creation
+        touch "${FILE}"
+    fi
+
+    NAMESPACE=$(cat "${FILE}" | grep "xmlns=" | sed 's/.*xmlns=\"\([^\"]*\)\".*/\1/g')
+    VALUE=$(echo "${VALUE_RAW}" | sed -e 's/[]\/$*.^|[]/\\&/g')
+
+    if [ -z "${NAMESPACE}" ]; then
+        NODE=${NODE_RAW}
+    else
+        NODE=$(echo "${NODE_RAW}" | sed 's/\/\([^\/]\)/\/x:\1/g')
+    fi
+
+    OLD_VALUE=$(xmlstarlet sel -N x="${NAMESPACE}" -t -m ''"${NODE}"'' -v n -n "${FILE}")
+
+    if [ "${VALUE}" != "${OLD_VALUE}" ]; then
+        echo "${FILE} >>> ${NODE_RAW} = ${VALUE}"
+        xmlstarlet ed -L -N x="${NAMESPACE}" -u ''"${NODE}"'' -v ''"${VALUE}"'' "${FILE}"
     fi
 }
 
@@ -68,6 +95,15 @@ set_gsetting() {
     fi
 }
 
+get_openbox_font_weight() {
+    FONT_STYLE="$@"
+    if [ "${FONT_STYLE}" == "Bold" ]; then
+        echo "Bold"
+    else
+        echo "Normal"
+    fi
+}
+
 ### BLUETOOTH
 # Xbox One Controller
 #echo "options bluetooth disable_ertm=1" | tee --append /etc/modprobe.d/xbox_bt.conf
@@ -79,6 +115,23 @@ else
 fi
 
 # COMMON VALUES
+GTK2_THEME="Adapta-Nokto"
+GTK3_THEME="Adapta-Nokto-Eta"
+GTK_THEME=${GTK3_THEME}
+ICON_THEME="ePapirus"
+CURSOR_THEME="Paper"
+TITLEBAR_FONT_NAME="Cantarell"
+TITLEBAR_FONT_STYLE="Bold"
+TITLEBAR_FONT_SIZE="12"
+TITLEBAR_FONT="${TITLEBAR_FONT_NAME} ${TITLEBAR_FONT_STYLE} ${TITLEBAR_FONT_SIZE}"
+MENU_FONT_NAME=${TITLEBAR_FONT_NAME}
+MENU_FONT_STYLE="Regular"
+MENU_FONT_SIZE=${TITLEBAR_FONT_SIZE}
+MENU_FONT="${MENU_FONT_NAME} ${MENU_FONT_STYLE} ${MENU_FONT_SIZE}"
+MENUHEADER_FONT_NAME=${MENU_FONT_NAME}
+MENUHEADER_FONT_STYLE="Bold"
+MENUHEADER_FONT_SIZE=${MENU_FONT_SIZE}
+MENUHEADER_FONT="${MENUHEADER_FONT_NAME} ${MENUHEADER_FONT_STYLE} ${MENUHEADER_FONT_SIZE}"
 MONOSPACE_FONT="Droid Sans Mono 13"
 TERMINAL_BG="#1E272C"
 TERMINAL_FG="#CFD8DC"
@@ -142,7 +195,7 @@ if [ -f "/usr/bin/gnome-shell" ]; then
     set_gsetting "org.gnome.desktop.wm.keybindings" toggle-fullscreen "['<Super>f']"
 
     set_gsetting "org.gnome.desktop.wm.preferences" button-layout ":minimize,maximize,close"
-    set_gsetting "org.gnome.desktop.wm.preferences" titlebar-font "Sans Regular 12"
+    set_gsetting "org.gnome.desktop.wm.preferences" titlebar-font "${TITLEBAR_FONT}"
 
     set_gsetting "org.gnome.shell.overrides" attach-modal-dialogs false
     set_gsetting "org.gnome.mutter" attach-modal-dialogs false
@@ -158,14 +211,12 @@ if [ -f "/usr/bin/gnome-shell" ]; then
     set_gsetting "org.gnome.desktop.interface" font-name "Sans Regular 12"
     set_gsetting "org.gnome.desktop.interface" monospace-font-name "${MONOSPACE_FONT}"
 
-    if [ -d "/usr/share/themes/Adapta-Nokto-Eta" ]; then
-        set_gsetting "org.gnome.desktop.interface" gtk-theme "Adapta-Nokto-Eta"
-    elif [ -d "/usr/share/themes/Materia-dark-compact" ]; then
-        set_gsetting "org.gnome.desktop.interface" gtk-theme "Materia-dark-compact"
+    if [ -d "/usr/share/themes/${GTK_THEME}" ]; then
+        set_gsetting "org.gnome.desktop.interface" gtk-theme "${GTK_THEME}"
     fi
 
-    if [ -d "/usr/share/icons/ePapirus" ]; then
-        set_gsetting "org.gnome.desktop.interface" icon-theme "ePapirus"
+    if [ -d "/usr/share/icons/${ICON_THEME}" ]; then
+        set_gsetting "org.gnome.desktop.interface" icon-theme "${ICON_THEME}"
     fi
 fi
 
@@ -210,6 +261,57 @@ if [ -f "/usr/bin/panther_launcher" ]; then
     set_gsetting "org.rastersoft.panther" use-category true
 fi
 
+GTK2_CONFIG_FILE="${HOME_REAL}/.gtkrc-2.0"
+set_config_value "${GTK2_CONFIG_FILE}" gtk-theme-name "${GTK2_THEME}"
+set_config_value "${GTK2_CONFIG_FILE}" gtk-icon-theme-name "${ICON_THEME}"
+set_config_value "${GTK2_CONFIG_FILE}" gtk-cursor-theme-name "${ICON_THEME}"
+set_config_value "${GTK2_CONFIG_FILE}" gtk-button-images 0
+set_config_value "${GTK2_CONFIG_FILE}" gtk-menu-images 0
+set_config_value "${GTK2_CONFIG_FILE}" gtk-toolbar-style GTK_TOOLBAR_ICONS
+
+if [ -f "${HOME_REAL}/.config/gtk-3.0/settings.ini" ]; then
+    GTK3_CONFIG_FILE="${HOME_REAL}/.config/gtk-3.0/settings.ini"
+    set_config_value "${GTK3_CONFIG_FILE}" gtk-theme-name "${GTK_THEME}"
+    set_config_value "${GTK3_CONFIG_FILE}" gtk-icon-theme "${ICON_THEME}"
+    set_config_value "${GTK3_CONFIG_FILE}" gtk-cursor-theme-name "${CURSOR_THEME}"
+    set_config_value "${GTK3_CONFIG_FILE}" gtk-button-images 0
+    set_config_value "${GTK3_CONFIG_FILE}" gtk-menu-images 0
+    set_config_value "${GTK3_CONFIG_FILE}" gtk-toolar-style GTK_TOOLBAR_ICONS
+fi
+
+if [ -f "${HOME_REAL}/.config/lxsession/LXDE/desktop.conf" ]; then
+    LXSESSION_CONFIG_FILE="${HOME_REAL}/.config/lxsession/LXDE/desktop.conf"
+    set_config_value "${LXSESSION_CONFIG_FILE}" sNet/ThemeName "${GTK_THEME}"
+    set_config_value "${LXSESSION_CONFIG_FILE}" sNet/IconThemeName "${ICON_THEME}"
+    set_config_value "${LXSESSION_CONFIG_FILE}" sNet/CursorThemeName "${CURSOR_THEME}"
+    set_config_value "${LXSESSION_CONFIG_FILE}" iGtk/ButtonImages 0
+    set_config_value "${LXSESSION_CONFIG_FILE}" iGtk/MenuImages 0
+    set_config_value "${LXSESSION_CONFIG_FILE}" iGtk/ToolbarStyle 0
+fi
+
+if [ -f "/usr/bin/plank" ]; then
+    set_gsetting "net.launchpad.plank.docks.dock1" theme "Gtk+"
+    set_gsetting "net.launchpad.plank.docks.dock1" hide-mode "window-dodge"
+fi
+
+if [ -f "/usr/bin/openbox" ] && [ -f "/usr/bin/lxsession" ]; then
+    OPENBOX_LXDE_RC="${HOME_REAL}/.config/openbox/lxde-rc.xml"
+    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/name" "${GTK2_THEME}"
+    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/titleLayout" "LIMC"
+    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='ActiveWindow']/name" "${TITLEBAR_FONT_NAME}"
+    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='ActiveWindow']/size" "${TITLEBAR_FONT_SIZE}"
+    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='ActiveWindow']/weight" $(get_openbox_font_weight ${TITLEBAR_FONT_STYLE})
+    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='InactiveWindow']/name" "${TITLEBAR_FONT_NAME}"
+    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='InactiveWindow']/size" "${TITLEBAR_FONT_SIZE}"
+    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='InactiveWindow']/weight" $(get_openbox_font_weight ${TITLEBAR_FONT_STYLE})
+    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='MenuHeader']/name" "${MENUHEADER_FONT_NAME}"
+    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='MenuHeader']/size" "${MENUHEADER_FONT_SIZE}"
+    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='MenuHeader']/weight" $(get_openbox_font_weight ${MENUHEADER_FONT_STYLE})
+    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='MenuItem']/name" "${MENU_FONT_NAME}"
+    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='MenuItem']/size" "${MENU_FONT_SIZE}"
+    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='MenuItem']/weight" $(get_openbox_font_weight ${MENU_FONT_STYLE})
+fi
+
 ###################
 ### CALCULATORS ###
 ###################
@@ -238,11 +340,18 @@ if [ -f "/usr/bin/nautilus" ]; then
     set_gsetting "org.gnome.nautilus.window-state" sidebar-width 240
 fi
 if [ -f "/usr/bin/pcmanfm" ]; then
-    PCMANFM_CONFIG_FILE="${HOME_REAL}/.config/pcmanfm/default/pcmanfm.conf"
+    PCMANFM_CONFIG_FILE="${HOME_REAL}/.config/pcmanfm/LXDE/pcmanfm.conf"
     set_config_value "${PCMANFM_CONFIG_FILE}" always_show_tabs 0
     set_config_value "${PCMANFM_CONFIG_FILE}" max_tab_chars 48
     set_config_value "${PCMANFM_CONFIG_FILE}" pathbar_mode_buttons 1
     set_config_value "${PCMANFM_CONFIG_FILE}" toolbar "navigation;"
+fi
+if [ -f "${HOME_REAL}/.config/pcmanfm/LXDE/desktop-items-0.conf" ]; then
+    PCMANFM_DESKTOP_CONFIG_FILE="${HOME_REAL}/.config/pcmanfm/LXDE/desktop-items-0.conf"
+    set_config_value "${PCMANFM_DESKTOP_CONFIG_FILE}" folder ""
+    set_config_value "${PCMANFM_DESKTOP_CONFIG_FILE}" show_documents 0
+    set_config_value "${PCMANFM_DESKTOP_CONFIG_FILE}" show_trash 0
+    set_config_value "${PCMANFM_DESKTOP_CONFIG_FILE}" show_mounts 0
 fi
 
 ####################
@@ -296,4 +405,3 @@ if [ -f "/usr/bin/lxterminal" ]; then
     set_config_value "${LXTERMINAL_CONFIG_FILE}" hidescrollbar true
     set_config_value "${LXTERMINAL_CONFIG_FILE}" hidemenubar true
 fi
-
