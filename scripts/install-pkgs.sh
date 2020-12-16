@@ -15,7 +15,7 @@ mkdir -p "$TEMP_DIR_PATH"
 cd "$TEMP_DIR_PATH"
 
 CHASSIS_TYPE="Desktop"
-LIGHTWEIGHT_DE=false
+POWERFUL_PC=true
 HAS_GUI=false
 
 if [ -d "/sys/module/battery" ]; then
@@ -26,7 +26,7 @@ if [ -f "/etc/systemd/system/display-manager.service" ]; then
     HAS_GUI=true
 
     if [ "${ARCH_FAMILY}" == "arm" ]; then
-        LIGHTWEIGHT_DE=true
+        POWERFUL_PC=false
     fi
 fi
 
@@ -195,28 +195,44 @@ if ${HAS_GUI}; then
 
     install-pkg gnome-keyring
     install-dep gnome-control-center
-    install-pkg gnome-system-monitor
-    install-pkg gnome-terminal
+    ${POWERFUL_PC} && install-pkg gnome-system-monitor || install-pkg lxtask
+    ${POWERFUL_PC} && install-pkg gnome-terminal || install-pkg lxterminal
     install-pkg gnome-disk-utility
     install-pkg gnome-calculator
-    install-pkg gnome-clocks
-    install-pkg gnome-contacts
-    install-pkg gnome-weather
+    ${POWERFUL_PC} && install-pkg gnome-calculator || install-pkg mate-calc
 
-    install-pkg gnome-dds-thumbnailer
+    if ${POWERFUL_PC}; then
+        install-pkg gnome-clocks
+        install-pkg gnome-contacts
+        install-pkg gnome-weather
+    fi
 
-    install-pkg gnome-tweaks
+    # File management
+    if ${POWERFUL_PC}; then
+        install-pkg nautilus
+        install-pkg folder-color-nautilus-bzr
+        install-pkg gnome-dds-thumbnailer
+        install-pkg file-roller
+    else
+        install-pkg pcmanfm
+        install-pkg xarchiver
+    fi
+
+    ${POWERFUL_PC} && install-pkg gnome-tweaks
     install-pkg dconf-editor
 
+    ${POWERFUL_PC} && install-pkg gedit || install-pkg pluma
     install-pkg seahorse
-    install-pkg gedit
-    install-pkg evince
-    install-pkg baobab
+    ${POWERFUL_PC} && install-pkg evince || install-pkg epdfview
+    ${POWERFUL_PC} && install-pkg baobab || install-pkg xdiskusage
 
-    install-pkg eog
-    install-dep eog-plugins
+    if ${POWERFUL_PC}; then
+        install-pkg eog
+        install-dep eog-plugins
+    else
+        install-pkg gpicview
+    fi
 
-    install-pkg file-roller
     install-dep gnome-menus
 
     install-dep gvfs-afc
@@ -247,8 +263,6 @@ if ${HAS_GUI}; then
     install-pkg paper-icon-theme
 
     install-pkg gnome-backgrounds
-
-    install-pkg folder-color-nautilus-bzr
 
     # Fonts
     install-pkg noto-fonts

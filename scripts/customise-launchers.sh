@@ -81,10 +81,9 @@ set_launcher_entry() {
         set_launcher_entry_english "${FILE}" "Comment" "${VAL}"
     elif [ "${KEY_ESC}" = "Name" ]; then
         set_launcher_entry_english "${FILE}" "Name" "${VAL}"
+        set_launcher_entry_english "${FILE}" "GenericName" "${VAL}"
         set_launcher_entry_english "${FILE}" "X-GNOME-FullName" "${VAL}"
         set_launcher_entry_english "${FILE}" "X-MATE-FullName" "${VAL}"
-    elif [ "${KEY_ESC}" = "GenericName" ]; then
-        set_launcher_entry_english "${FILE}" "GenericName" "${VAL}"
     elif [ "${KEY_ESC}" = "Keywords" ]; then
         set_launcher_entry_english "${FILE}" "Keywords" "${VAL}"
     elif [ "${KEY_ESC}" = "X-GNOME-FullName" ]; then
@@ -99,10 +98,9 @@ set_launcher_entry() {
         set_launcher_entry_romanian "${FILE}" "Comment" "${VAL}"
     elif [ "${KEY_ESC}" = "Name\[ro\]" ]; then
         set_launcher_entry_romanian "${FILE}" "Name" "${VAL}"
+        set_launcher_entry_romanian "${FILE}" "GenericName" "${VAL}"
         set_launcher_entry_romanian "${FILE}" "X-GNOME-FullName" "${VAL}"
         set_launcher_entry_romanian "${FILE}" "X-MATE-FullName" "${VAL}"
-    elif [ "${KEY_ESC}" = "GenericName\[ro\]" ]; then
-        set_launcher_entry_romanian "${FILE}" "GenericName" "${VAL}"
     elif [ "${KEY_ESC}" = "Keywords\[ro\]" ]; then
         set_launcher_entry_romanian "${FILE}" "Keywords" "${VAL}"
     elif [ "${KEY_ESC}" = "X-GNOME-FullName\[ro\]" ]; then
@@ -188,8 +186,6 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/amidst.desktop" StartupWMClass "ami
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/android-studio.desktop" StartupWMClass "jetbrains-studio"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/assistant-qt4.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/assistant.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/atril.desktop" Name "Documents"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/atril.desktop" Name[ro] "Documente"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/avahi-discover.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/balena-etcher-electron.desktop" Name "Etcher"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/balena-etcher-electron.desktop" Name[ro] "Etcher"
@@ -238,13 +234,6 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/dropbox.desktop" Exec "dropbox star
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/electron.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/electron2.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/electron7.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/engrampa.desktop" Name "Archive Manager"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/engrampa.desktop" Name[ro] "Arhive"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/eog.desktop" Name[ro] "Imagini"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/eog.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/eom.desktop" Name "Image Viewer"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/eom.desktop" Name[ro] "Imagini"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/evince.desktop" Name[ro] "Documente"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/factorio.desktop" Icon "factorio"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ffadomixer.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/firefox-developer.desktop" Categories "Network;WebBrowser;"
@@ -256,10 +245,7 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/fma-config-tool.desktop" Name "File
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/freeciv-mp-gtk2.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/freeciv-mp.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/freeciv-server.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/galculator.desktop" Name "Calculator"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/galculator.desktop" Name[ro] "Calculator"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/GameConqueror.desktop" Categories "Utility;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gedit.desktop" Name "Text Editor"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/genymotion.desktop" Categories "Development;Emulator;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/genymotion.desktop" Icon "genymotion"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/geogebra.desktop" StartupWMClass "org-geogebra-desktop-GeoGebra3D"
@@ -272,7 +258,6 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gksu-properties.desktop" NoDisplay 
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gksu.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gnome-disks.desktop" Name[ro] "Discuri"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gnome-system-monitor.desktop" Name[ro] "Monitor de Sistem"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gnome-terminal.desktop" OnlyShowIn "GNOME;Unity;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gnome-twofactorauth.desktop" Categories "GNOME;GTK;Utility;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gnome-twofactorauth.desktop" Name "Authenticator"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gnubg.desktop" Name "Backgammon"
@@ -290,7 +275,6 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-keep.desktop" Name[ro] "Keep
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-keep.desktop" StartupWMClass "google-keep-nativefier-d04d04"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gparted.desktop" Name "Partition Editor"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gparted.desktop" Name[ro] "Editor de Partiții"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gpicview.desktop" Name[ro] "Imagini"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gtk-lshw.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gucharmap.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/hardinfo.desktop" Categories "System;Monitor;"
@@ -308,8 +292,6 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/intellij-idea-ce-eap.desktop" Start
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/intellij-idea-ce.desktop" Icon "idea"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/intellij-idea-ce.desktop" Name "IntelliJ"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/intellij-idea-ce.desktop" StartupWMClass "jetbrains-idea-ce"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/io.elementary.code.desktop" Icon "accessories-text-editor"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/io.elementary.code.desktop" Name "Text Editor"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ipython.desktop" Categories "Development;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ipython.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ipython2.desktop" Categories "Development;"
@@ -352,8 +334,6 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jvisualvm-jdk8.desktop" NoDisplay "
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jvisualvm-jdk9.desktop" Icon "java"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jvisualvm-jdk9.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/laptop-mode-tools.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/leafpad.desktop" Name "Text Editor"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/leafpad.desktop" Name[ro] "Editor Text"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/libreoffice-base.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/libreoffice-draw.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/libreoffice-math.desktop" NoDisplay "true"
@@ -367,11 +347,7 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/lxmusic.desktop" Name "Music"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/lxmusic.desktop" Name[ro] "Muzică"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/lxsession-default-apps.desktop" Name "Default Applications"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/lxsession-default-apps.desktop" Name[ro] "Aplicații implicite"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/lxterminal.desktop" Name "Terminal"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/lxterminal.desktop" Name[ro] "Terminal"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/lxterminal.desktop" OnlyShowIn "LXDE;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-calc.desktop" Name "Calculator"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-calc.desktop" Name[ro] "Calculator"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/lxtask.desktop" Name[ro] "Manager de Activități"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-color-select.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-dictionary.desktop" Name "Dictionary"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-dictionary.desktop" Name[ro] "Dicționar"
@@ -384,9 +360,6 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-screenshot.desktop" Name[ro] "
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-search-tool.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-system-monitor.desktop" Name "System Monitor"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-system-monitor.desktop" Name[ro] "Monitor de Sistem"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-terminal.desktop" Name "Terminal"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-terminal.desktop" Name[ro] "Terminal"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/medit.desktop" Name "Text Editor"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/messengerfordesktop.desktop" Categories "Application;Network;Chat;InstantMessaging;Communication;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/messengerfordesktop.desktop" Exec "start-wmclass messengerfordesktop fbmessenger"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/messengerfordesktop.desktop" Icon "fbmessenger"
@@ -433,35 +406,22 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Evolution.desktop" Name "
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FeedReader.desktop" Categories "Network;Feed;Utility;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FeedReader.desktop" Icon "feedreader"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FeedReader.desktop" Name "Feed Reader"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FileRoller.desktop" Name[ro] "Arhive"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FileRoller.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FileRoller.desktop" StartupWMClass "File-Roller"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.font-viewer.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.gedit.desktop" Name "Text Editor"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.gnome-2048.desktop" Icon "2048"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Lollypop.desktop" Icon "lollypop"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Maps.desktop" Categories "GNOME;GTK;Utility;Navigation;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Nautilus.desktop" OnlyShowIn "GNOME;Unity;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Photos.desktop" Icon "multimedia-photo-manager"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.SoundRecorder.desktop" Categories "GNOME;GTK;Utility;Audio;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.tweaks.desktop" Categories "GNOME;GTK;System;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.tweaks.desktop" Icon "utilities-tweak-tool"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Weather.Application.desktop" Categories "GNOME;GTK;Utility;Navigation;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.pantheon.scratch.desktop" Name "Text Editor"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/pavucontrol.desktop" Categories "Audio;Mixer;System;GTK;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/pavucontrol.desktop" Name "Audio Settings"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/pcmanfm.desktop" Categories "Utility;Core;FileManager;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/pcmanfm.desktop" Name "Files"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/pcmanfm.desktop" Name[ro] "Fișiere"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/pcmanfm.desktop" OnlyShowIn "LXDE;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/PCSX2.desktop" Icon "pcsx2"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/picard.desktop" StartupWMClass ""
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/playonlinux.desktop" Categories "Application;Emulator;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/playonlinux.desktop" Icon "playonlinux"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/playonlinux.desktop" StartupWMClass "Mainwindow.py"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/pluma.desktop" Name "Text Editor"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/pluma.desktop" Name[ro] "Editor Text"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/pluma.desktop" X-MATE-FullName[ro] "Editor Text"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-java-openjdk.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-jdk10.desktop" Icon "java"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/policytool-jdk10.desktop" NoDisplay "true"
@@ -631,8 +591,6 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/wps-office-wps.desktop" StartupWMCl
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/www.octave.org-octave.desktop" Icon "octave-logo"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/www.octave.org-octave.desktop" StartupWMClass "octave-gui"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/xampp-manager.desktop" Icon "xampp"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/xarchiver.desktop" Name "Archive Manager"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/xarchiver.desktop" Name[ro] "Arhive"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/xchat.desktop" Categories "Network;Communication;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/xchat.desktop" Name "XChat"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/xdvi.desktop" NoDisplay "true"
@@ -663,7 +621,89 @@ set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/valve-URI-steamvr.desktop" NoDisplay
 set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/valve-URI-vrmonitor.desktop" NoDisplay "true"
 set_launcher_entry $(find_launcher_by_name "Netflix") Categories "AudioVideo;Video;Player;"
 
-[ -f "${GLOBAL_LAUNCHERS_PATH}/io.elementary.files.desktop" ]  && set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Nautilus.desktop" NoDisplay "true"
+########################
+### Archive Managers ###
+########################
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/engrampa.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FileRoller.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/xarchiver.desktop"; do
+    [ ! -f "${LAUNCHER}" ] && continue
+    set_launcher_entry "${LAUNCHER}" Name "Archives"
+    set_launcher_entry "${LAUNCHER}" Name[ro] "Arhive"
+done
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FileRoller.desktop" StartupWMClass "File-Roller"
+
+###################
+### CALCULATORS ###
+###################
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/galculator.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/mate-calc.desktop"; do
+    [ ! -f "${LAUNCHER}" ] && continue
+    set_launcher_entry "${LAUNCHER}" Name "Calculator"
+    set_launcher_entry "${LAUNCHER}" Name[ro] "Calculator"
+done
+
+########################
+### DOCUMENT VIEWERS ###
+########################
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/atril.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/epdfview.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/evince.desktop"; do
+    [ ! -f "${LAUNCHER}" ] && continue
+    set_launcher_entry "${LAUNCHER}" Name "Documents"
+    set_launcher_entry "${LAUNCHER}" Name[ro] "Documente"
+done
+
+#####################
+### FILE MANAGERS ###
+#####################
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/io.elementary.files.dekstop" \
+                "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Nautilus.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/pcmanfm.desktop"; do
+    [ ! -f "${LAUNCHER}" ] && continue
+    set_launcher_entry "${LAUNCHER}" Name "Files"
+    set_launcher_entry "${LAUNCHER}" Name[ro] "Fișiere"
+    set_launcher_entry "${LAUNCHER}" Categories "Utility;Core;FileManager;"
+done
+
+#####################
+### IMAGE VIEWERS ###
+#####################
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gpicview.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/eog.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/eom.desktop"; do
+    [ ! -f "${LAUNCHER}" ] && continue
+    set_launcher_entry "${LAUNCHER}" Name "Images"
+    set_launcher_entry "${LAUNCHER}" Name[ro] "Imagini"
+    set_launcher_entry "${LAUNCHER}" NoDisplay true
+done
+
+#################
+### TERMINALS ###
+#################
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gnome-terminal.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/lxterminal.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/mate-terminal.desktop"; do
+    [ ! -f "${LAUNCHER}" ] && continue
+    set_launcher_entry "${LAUNCHER}" Name "Terminal"
+    set_launcher_entry "${LAUNCHER}" Name[ro] "Terminal"
+done
+
+####################
+### TEXT EDITORS ###
+####################
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gedit.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/io.elementary.code.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/leafpad.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/org.gnome.gedit.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/org.pantheon.scratch.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/medit.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/pluma.desktop"; do
+    [ ! -f "${LAUNCHER}" ] && continue
+    set_launcher_entry "${LAUNCHER}" Name "Text Editor"
+    set_launcher_entry "${LAUNCHER}" Name[ro] "Editor Text"
+    set_launcher_entry "${LAUNCHER}" Icon "accessories-text-editor"
+done
 
 if [ -f "${GLOBAL_LAUNCHERS_PATH}/chromium.desktop" ] && [ ! -f "${GLOBAL_LAUNCHERS_PATH}/google-chrome.desktop" ]; then
     set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/chromium.desktop" Name "Chrome"
