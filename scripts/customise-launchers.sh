@@ -63,10 +63,15 @@ set_launcher_entry() {
         FILE_CONTENTS=$(echo "${FILE_CONTENTS}" | head -n "${LAST_SECTION_LINE}")
     fi
 
-    if [ $(grep -c "^${KEY_ESC}=${VAL}$" <<< "${FILE_CONTENTS}") == 0 ]; then
+    if [ $(grep -c "^${KEY_ESC}=${VAL}$" <<< "${FILE_CONTENTS}") == 0 ] || \
+       [ $(grep -c "^${KEY_ESC}=$" <<< "${FILE_CONTENTS}") == 1 ]; then
         if [ $(grep -c "^${KEY_ESC}=.*$" <<< "${FILE_CONTENTS}") -gt 0 ]; then
-            sed -i '1,'"${LAST_SECTION_LINE}"' s|^'"${KEY_ESC}"'=.*$|'"${KEY_ESC}"'='"${VAL}"'|g' "${FILE}"
-        else
+            if [ -z "${VAL}" ]; then
+                sed -i '1,'"${LAST_SECTION_LINE}"' {/^'"${KEY_ESC}"'=.*$/d}' "${FILE}"
+            else
+                sed -i '1,'"${LAST_SECTION_LINE}"' s|^'"${KEY_ESC}"'=.*$|'"${KEY_ESC}"'='"${VAL}"'|g' "${FILE}"
+            fi
+        elif [ ! -z "${VAL}" ]; then
             if [ ${HAS_MULTIPLE_SECTIONS} == 1 ]; then
                 sed -i "${LAST_SECTION_LINE} i ${KEY_ESC}=${VAL_ESC}" "${FILE}"
             else
@@ -620,7 +625,7 @@ set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/valve-URI-vrmonitor.desktop" NoDispl
 set_launcher_entry $(find_launcher_by_name "Netflix") Categories "AudioVideo;Video;Player;"
 
 ########################
-### Archive Managers ###
+### ARCHIVE MANAGERS ###
 ########################
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/engrampa.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FileRoller.desktop" \
