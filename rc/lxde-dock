@@ -1,0 +1,48 @@
+# lxpanel <profile> config file. Manually editing is not recommended.
+# Use preference dialog in lxpanel to adjust config when you can.
+
+Global {
+  edge=bottom
+  monitor=0
+  height=64
+  iconsize=48
+  transparent=1
+  background=0
+  tintcolor=#bf3f3f
+  alpha=0
+  autohide=1
+  heightwhenhidden=0
+  setdocktype=1
+  setpartialstrut=0
+  width=33
+  widthtype=percent
+}
+Plugin {
+  type=space
+  Config {
+  }
+  expand=1
+}
+Plugin {
+  type=taskbar
+  Config {
+    IconsOnly=-1
+    FlatButton=-1
+    ShowAllDesks=-1
+    SameMonitorOnly=0
+    MaxTaskWidth=48
+    spacing=12
+    UseSmallerIcons=0
+    DisableUpscale=-1
+    GroupedTasks=1
+    UseUrgencyHint=-1
+    tooltips=-1
+  }
+  expand=0
+}
+Plugin {
+  type=space
+  Config {
+  }
+  expand=1
+}

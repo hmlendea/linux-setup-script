@@ -2,6 +2,11 @@
 ARCH=${1}
 IS_EFI=0
 
+if [ -z "${ARCH}" ]; then
+    echo "You must provide the system architecture!"
+    exit 1
+fi
+
 [ "${ARCH}" == "x86_64" ]   && ARCH_FAMILY="x86"
 [ "${ARCH}" == "aarch64" ]  && ARCH_FAMILY="arm"
 [ "${ARCH}" == "armv7l" ]   && ARCH_FAMILY="arm"
@@ -22,7 +27,8 @@ if [ -d "/sys/module/battery" ]; then
     CHASSIS_TYPE="Laptop"
 fi
 
-if [ -f "/etc/systemd/system/display-manager.service" ]; then
+if [ -f "/etc/systemd/system/display-manager.service" ] || \
+   [[ $(cat /etc/hostname) = *PC ]]; then
     HAS_GUI=true
 
     if [ "${ARCH_FAMILY}" == "arm" ]; then
@@ -47,9 +53,9 @@ function call-package-manager() {
 	if [ $(is-package-installed "${PKG}") -eq 0 ]; then
 		echo " >>> Installing package '${PKG}'"
 		if [ -f "/usr/bin/yaourt" ]; then
-            LANG=C LC_TIME="" yaourt --noconfirm ${ARGS}
+            LANG=C LC_TIME="" yaourt ${ARGS} --noconfirm
 		else
-			LANG=C LC_TIME="" sudo pacman --noconfirm ${ARGS}
+			LANG=C LC_TIME="" sudo pacman ${ARGS} --noconfirm
 		fi
 #	else
 #		echo " >>> Skipping package '$PKG' (already installed)"
@@ -182,9 +188,28 @@ if ${HAS_GUI}; then
     install-pkg xclip
 
     # Desktop Environment & Base applications
-    install-pkg gnome-shell
-    install-pkg gdm
-    install-pkg xdg-user-dirs-gtk
+    if ${POWERFUL_PC}; then
+        install-pkg gnome-shell
+        install-pkg gdm
+        install-pkg xdg-user-dirs-gtk
+        install-dep gnome-control-center
+        install-pkg gnome-tweaks
+        install-pkg gnome-backgrounds
+
+        install-pkg gnome-keyring
+        install-pkg seahorse
+
+        install-dep system-config-printer # Dep for gnome-control-center
+    else
+        install-pkg openbox
+        install-pkg lxde-common
+        install-pkg lxdm
+        install-pkg lxpanel
+        install-pkg lxsession
+        install-pkg lxappearance
+        install-pkg lxappearance-obconf
+        install-pkg plank
+    fi
 
     install-pkg networkmanager
     install-pkg networkmanager-openvpn
@@ -192,15 +217,11 @@ if ${HAS_GUI}; then
     install-pkg networkmanager-vpnc
     install-dep modemmanager
     install-dep dnsmasq
-    install-dep system-config-printer
 
-    install-pkg gnome-keyring
-    install-dep gnome-control-center
     ${POWERFUL_PC} && install-pkg gnome-system-monitor || install-pkg lxtask
     ${POWERFUL_PC} && install-pkg gnome-terminal || install-pkg lxterminal
-    install-pkg gnome-disk-utility
-    install-pkg gnome-calculator
     ${POWERFUL_PC} && install-pkg gnome-calculator || install-pkg mate-calc
+    install-pkg gnome-disk-utility
 
     if ${POWERFUL_PC}; then
         install-pkg gnome-clocks
@@ -215,17 +236,21 @@ if ${HAS_GUI}; then
         install-pkg gnome-dds-thumbnailer
         install-pkg file-roller
     else
-        install-pkg pcmanfm
+        install-pkg thunar
         install-pkg xarchiver
     fi
 
-    ${POWERFUL_PC} && install-pkg gnome-tweaks
     install-pkg dconf-editor
 
     ${POWERFUL_PC} && install-pkg gedit || install-pkg pluma
-    install-pkg seahorse
     ${POWERFUL_PC} && install-pkg evince || install-pkg epdfview
-    ${POWERFUL_PC} && install-pkg baobab || install-pkg xdiskusage
+
+    if ${POWERFUL_PC}; then
+        install-pkg baobab
+        install-pkg gnome-screenshot
+    else
+        install-pkg mate-utils
+    fi
 
     if ${POWERFUL_PC}; then
         install-pkg eog
@@ -234,26 +259,30 @@ if ${HAS_GUI}; then
         install-pkg gpicview
     fi
 
-    install-dep gnome-menus
+    if ${POWERFUL_PC}; then
+        install-dep gnome-menus
 
-    install-dep gvfs-afc
-    install-dep gvfs-smb
-    install-dep gvfs-gphoto2
-    install-dep gvfs-mtp
-    install-dep gvfs-goa
-    install-dep gvfs-nfs
-    install-dep gvfs-google
+        install-dep gvfs-afc
+        install-dep gvfs-smb
+        install-dep gvfs-gphoto2
+        install-dep gvfs-mtp
+        install-dep gvfs-goa
+        install-dep gvfs-nfs
+        install-dep gvfs-google
+    fi
 
-    install-pkg gnome-shell-extensions
-    install-pkg gnome-shell-extension-installer
-    install-pkg gnome-shell-extension-dash-to-dock
-    install-pkg gnome-shell-extension-mpris-indicator-button-git
-    install-pkg gnome-shell-extension-sound-output-device-chooser
-    install-pkg gnome-shell-extension-gsconnect-git
-    install-pkg gnome-shell-extension-multi-monitors-add-on-git
-    install-pkg gnome-shell-extension-remove-dropdown-arrows
-    install-pkg gnome-shell-extension-activities-config
-    install-pkg gnome-shell-extension-openweather-git
+    if ${POWERFUL_PC}; then
+        install-pkg gnome-shell-extensions
+        install-pkg gnome-shell-extension-installer
+        install-pkg gnome-shell-extension-dash-to-dock
+        install-pkg gnome-shell-extension-mpris-indicator-button-git
+        install-pkg gnome-shell-extension-sound-output-device-chooser
+        install-pkg gnome-shell-extension-gsconnect-git
+        install-pkg gnome-shell-extension-multi-monitors-add-on-git
+        install-pkg gnome-shell-extension-remove-dropdown-arrows
+        install-pkg gnome-shell-extension-activities-config
+        install-pkg gnome-shell-extension-openweather-git
+    fi
 
     # Themes
     install-pkg adapta-gtk-theme
@@ -262,8 +291,6 @@ if ${HAS_GUI}; then
     install-pkg numix-circle-icon-theme-git
     install-pkg papirus-icon-theme
     install-pkg paper-icon-theme
-
-    install-pkg gnome-backgrounds
 
     # Fonts
     install-pkg noto-fonts
@@ -286,18 +313,20 @@ if ${HAS_GUI}; then
     [ "${ARCH_FAMILY}" == "x86" ] && install-pkg google-chrome
     [ "${ARCH_FAMILY}" == "arm" ] && install-pkg chromium
     install-pkg transmission-gtk
-    install-pkg chrome-gnome-shell
+    ${POWERFUL_PC} && install-pkg chrome-gnome-shell
 
     # Communication
     [ "${ARCH_FAMILY}" == "x86" ] && install-pkg whatsapp-nativefier-dark
 
     # Multimedia
     [ "${ARCH_FAMILY}" == "x86" ] && install-pkg spotify
-    install-pkg rhythmbox
-    install-pkg totem
+    if ${POWERFUL_PC}; then
+        install-pkg rhythmbox
+        install-pkg totem
 
-    install-dep gst-plugins-ugly
-    install-dep gst-libav
+        install-dep gst-plugins-ugly
+        install-dep gst-libav
+    fi
 
     # Graphics
     install-pkg gimp
