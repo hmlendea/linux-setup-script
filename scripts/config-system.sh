@@ -7,7 +7,7 @@ HOME_REAL="/home/$USER_REAL"
 set_config_value() {
     FILE="$1"
     KEY="$2"
-    VALUE_RAW="$3"
+    VALUE_RAW="${@:3}"
 
     if [ ! -f "$FILE" ]; then
         # TODO: Handle directory creation
@@ -78,6 +78,27 @@ else
     USING_NVIDIA_GPU=0
 fi
 
+# COMMON VALUES
+MONOSPACE_FONT="Droid Sans Mono 13"
+TERMINAL_BG="#1E272C"
+TERMINAL_FG="#CFD8DC"
+TERMINAL_BLACK_D="#3D4D51"
+TERMINAL_BLACK_L="#555753"
+TERMINAL_RED_D="#CC0000"
+TERMINAL_RED_L="#EF2929"
+TERMINAL_GREEN_D="#4E9A06"
+TERMINAL_GREEN_L="#8AE234"
+TERMINAL_YELLOW_D="#C4A000"
+TERMINAL_YELLOW_L="#FCE94F"
+TERMINAL_BLUE_D="#3465A4"
+TERMINAL_BLUE_L="#729FCF"
+TERMINAL_PURPLE_D="#75507B"
+TERMINAL_PURPLE_L="#AD7FA8"
+TERMINAL_CYAN_D="#06989A"
+TERMINAL_CYAN_L="#34E2E2"
+TERMINAL_WHITE_D="#D3D7CF"
+TERMINAL_WHITE_L="#EEEEEC"
+
 if [ $USING_NVIDIA_GPU = 1 ]; then
     set_modprobe_option nvidia-drm modset 1
 fi
@@ -90,7 +111,7 @@ if [ -f "/usr/bin/pulseaudio" ]; then
 fi
 
 if [ -d "/usr/bin/openal-info" ]; then
-    set_config_value "$HOME_REAL/.alsoftrc" hrtf true
+    set_config_value "${HOME_REAL}/.alsoftrc" hrtf true
 fi
 
 if [ -f "/etc/default/grub" ]; then
@@ -135,7 +156,7 @@ if [ -f "/usr/bin/gnome-shell" ]; then
 
     set_gsetting "org.gnome.desktop.interface" document-font-name "Sans Regular 12"
     set_gsetting "org.gnome.desktop.interface" font-name "Sans Regular 12"
-    set_gsetting "org.gnome.desktop.interface" monospace-font-name "Droid Sans Mono 13"
+    set_gsetting "org.gnome.desktop.interface" monospace-font-name "${MONOSPACE_FONT}"
 
     if [ -d "/usr/share/themes/Adapta-Nokto-Eta" ]; then
         set_gsetting "org.gnome.desktop.interface" gtk-theme "Adapta-Nokto-Eta"
@@ -146,24 +167,6 @@ if [ -f "/usr/bin/gnome-shell" ]; then
     if [ -d "/usr/share/icons/ePapirus" ]; then
         set_gsetting "org.gnome.desktop.interface" icon-theme "ePapirus"
     fi
-fi
-
-if [ -f "/usr/bin/gedit" ]; then
-    set_gsetting "org.gnome.gedit.preferences.editor" highlight-current-line false
-    set_gsetting "org.gnome.gedit.preferences.editor" insert-spaces true
-    set_gsetting "org.gnome.gedit.preferences.editor" tabs-size 4
-fi
-
-if [ -f "/usr/bin/gnome-terminal" ]; then
-    set_gsetting "org.gnome.Terminal.Legacy.Settings" default-show-menubar false
-fi
-
-if [ -f "/usr/bin/nautilus" ]; then
-    set_gsetting "org.gnome.nautilus.icon-view" default-zoom-level "'small'"
-    set_gsetting "org.gnome.nautilus.preferences" executable-text-activation "'display'"
-    set_gsetting "org.gnome.nautilus.preferences" show-create-link true
-    set_gsetting "org.gnome.nautilus.preferences" show-delete-permanently true
-    set_gsetting "org.gnome.nautilus.window-state" sidebar-width 240
 fi
 
 if [ -f "/usr/bin/totem" ]; then
@@ -206,3 +209,91 @@ if [ -f "/usr/bin/panther_launcher" ]; then
     set_gsetting "org.rastersoft.panther" icon-size 48
     set_gsetting "org.rastersoft.panther" use-category true
 fi
+
+###################
+### CALCULATORS ###
+###################
+if [ -f "/usr/bin/mate-calc" ]; then
+    set_gsetting "org.mate.calc" show-thousands true
+fi
+
+########################
+### DOCUMENT VIEWERS ###
+########################
+if [ -f "/usr/bin/epdfview" ]; then
+    EPDFVIEW_CONFIG_FILE="${HOME_REAL}/.config/epdfview/main.conf"
+    set_config_value "${EPDFVIEW_CONFIG_FILE}" zoomToFit false
+    set_config_value "${EPDFVIEW_CONFIG_FILE}" zoomToWidth true
+    set_config_value "${EPDFVIEW_CONFIG_FILE}" browser "chromium %s"
+fi
+
+#####################
+### FILE MANAGERS ###
+#####################
+if [ -f "/usr/bin/nautilus" ]; then
+    set_gsetting "org.gnome.nautilus.icon-view" default-zoom-level "'small'"
+    set_gsetting "org.gnome.nautilus.preferences" executable-text-activation "'display'"
+    set_gsetting "org.gnome.nautilus.preferences" show-create-link true
+    set_gsetting "org.gnome.nautilus.preferences" show-delete-permanently true
+    set_gsetting "org.gnome.nautilus.window-state" sidebar-width 240
+fi
+if [ -f "/usr/bin/pcmanfm" ]; then
+    PCMANFM_CONFIG_FILE="${HOME_REAL}/.config/pcmanfm/default/pcmanfm.conf"
+    set_config_value "${PCMANFM_CONFIG_FILE}" always_show_tabs 0
+    set_config_value "${PCMANFM_CONFIG_FILE}" max_tab_chars 48
+    set_config_value "${PCMANFM_CONFIG_FILE}" pathbar_mode_buttons 1
+    set_config_value "${PCMANFM_CONFIG_FILE}" toolbar "navigation;"
+fi
+
+####################
+### TEXT EDITORS ###
+####################
+if [ -f "/usr/bin/gedit" ]; then
+    set_gsetting "org.gnome.gedit.preferences.editor" highlight-current-line false
+    set_gsetting "org.gnome.gedit.preferences.editor" insert-spaces true
+    set_gsetting "org.gnome.gedit.preferences.editor" tabs-size 4
+fi
+if [ -f "/usr/bin/pluma" ]; then
+    set_gsetting "org.mate.pluma" bracket-matching true
+    set_gsetting "org.mate.pluma" display-line-numbers true
+    set_gsetting "org.mate.pluma" editor-font "${MONOSPACE_FONT}"
+    set_gsetting "org.mate.pluma" enable-space-drawer-space "show-trailing"
+    set_gsetting "org.mate.pluma" enable-space-drawer-tab "show-all"
+    set_gsetting "org.mate.pluma" insert-spaces true
+    set_gsetting "org.mate.pluma" show-single-tab false
+    set_gsetting "org.mate.pluma" toolbar-visible false
+fi
+
+#################
+### TERMINALS ###
+#################
+if [ -f "/usr/bin/gnome-terminal" ]; then
+    set_gsetting "org.gnome.Terminal.Legacy.Settings" default-show-menubar false
+fi
+if [ -f "/usr/bin/lxterminal" ]; then
+    LXTERMINAL_CONFIG_FILE="${HOME_REAL}/.config/lxterminal/lxterminal.conf"
+    set_config_value "${LXTERMINAL_CONFIG_FILE}" fontname ${MONOSPACE_FONT}
+    set_config_value "${LXTERMINAL_CONFIG_FILE}" bgcolor ${TERMINAL_BG}
+    set_config_value "${LXTERMINAL_CONFIG_FILE}" fgcolor ${TERMINAL_FG}
+    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_0 ${TERMINAL_BLACK_D}
+    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_1 ${TERMINAL_RED_D}
+    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_2 ${TERMINAL_GREEN_D}
+    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_3 ${TERMINAL_YELLOW_D}
+    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_4 ${TERMINAL_BLUE_D}
+    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_5 ${TERMINAL_PURPLE_D}
+    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_6 ${TERMINAL_CYAN_D}
+    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_7 ${TERMINAL_WHITE_D}
+    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_8 ${TERMINAL_BLACK_L}
+    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_9 ${TERMINAL_RED_L}
+    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_10 ${TERMINAL_GREEN_L}
+    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_11 ${TERMINAL_YELLOW_L}
+    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_12 ${TERMINAL_BLUE_L}
+    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_13 ${TERMINAL_PURPLE_L}
+    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_14 ${TERMINAL_CYAN_L}
+    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_15 ${TERMINAL_WHITE_L}
+    set_config_value "${LXTERMINAL_CONFIG_FILE}" cursorblinks true
+    set_config_value "${LXTERMINAL_CONFIG_FILE}" cursorunderline true
+    set_config_value "${LXTERMINAL_CONFIG_FILE}" hidescrollbar true
+    set_config_value "${LXTERMINAL_CONFIG_FILE}" hidemenubar true
+fi
+
