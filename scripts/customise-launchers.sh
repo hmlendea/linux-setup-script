@@ -763,6 +763,21 @@ if [ -f "/usr/bin/winetricks" ]; then
     set_launcher_entry "${NEWLAUNCHER}" NoDisplay "true"
 fi
 
+if [ -f "/usr/bin/java" ] || [ -L "/usr/bin/java" ]; then
+    NEWLAUNCHER="${GLOBAL_LAUNCHERS_PATH}/run-java.desktop"
+
+    if [ ! -f "${NEWLAUNCHER}" ]; then
+        create_launcher "${NEWLAUNCHER}"
+    fi
+
+    set_launcher_entries "${NEWLAUNCHER}" \
+        Name "Java" \
+        Icon "java" \
+        Exec "java -jar %U" \
+        Terminal "true" \
+        NoDisplay "true"
+fi
+
 if [ -f "/usr/bin/mono" ]; then
     NEWLAUNCHER="${GLOBAL_LAUNCHERS_PATH}/run-mono.desktop"
 
@@ -770,11 +785,12 @@ if [ -f "/usr/bin/mono" ]; then
         create_launcher "${NEWLAUNCHER}"
     fi
 
-    set_launcher_entry "${NEWLAUNCHER}" Name "Run Software with Mono"
-    set_launcher_entry "${NEWLAUNCHER}" Icon "mono"
-    set_launcher_entry "${NEWLAUNCHER}" Exec "mono %U"
-    set_launcher_entry "${NEWLAUNCHER}" Terminal "true"
-    set_launcher_entry "${NEWLAUNCHER}" NoDisplay "true"
+    set_launcher_entries "${NEWLAUNCHER}" \
+        Name "Mono" \
+        Icon "mono" \
+        Exec "mono %U" \
+        Terminal "true" \
+        NoDisplay "true"
 fi
 
 if [ -f "/usr/bin/steam" ]; then
