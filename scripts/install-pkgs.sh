@@ -161,7 +161,7 @@ if ${HAS_GUI}; then
     fi
 
     install-pkg openssh
-    install-pkgdkms
+    install-pkg dkms
     install-pkg rsync
     [ "${ARCH_FAMILY}" == "x86" ] && install-pkg gksu
 
