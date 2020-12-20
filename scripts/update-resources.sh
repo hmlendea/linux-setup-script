@@ -3,9 +3,19 @@
 RESOURCES_DIR=$(pwd)"/resources"
 
 copy_res() {
-    SOURCE_FILE="${RESOURCES_DIR}/${1}"
-    TARGET_FILE="${2}"
+    APPLICATION="${1}
+    SOURCE_FILE="${RESOURCES_DIR}/${2}"
+    TARGET_FILE="${3}"
     TARGET_DIR=$(dirname "${TARGET_FILE}")
+
+    if [ ! -f "/usr/bin/lxpanel" ]; then
+        if [ -f "${TARGET_FILE}" ]; then
+            echo "Removing \"${TARGET_FILE}\""
+            rm "${TARGET_FILE}"
+        fi
+
+        return
+    fi
 
     if [ ! -d "${TARGET_DIR}" ]; then
         echo "Creating the directory: ${TARGET_DIR}" >&2
@@ -25,8 +35,9 @@ copy_res() {
     cp "${SOURCE_FILE}" "${TARGET_FILE}"
 }
 
-[ -f "/usr/bin/lxpanel" ]   && copy_res "lxpanel/applications.png"                      "${HOME}/.config/lxpanel/LXDE/panels/applications.png"
-[ -f "/usr/bin/lxpanel" ]   && copy_res "lxpanel/applications_ro.png"                   "${HOME}/.config/lxpanel/LXDE/panels/applications_ro.png"
-[ -f "/usr/bin/lxpanel" ]   && copy_res "lxpanel/power.png"                             "${HOME}/.config/lxpanel/LXDE/panels/power.png"
-[ -f "/usr/bin/lxpanel" ]   && copy_res "lxpanel/lxde-logout-gnomeshellified.desktop"   "/usr/share/applications/lxd-logout-gnomeshellified.desktop"
-[ -f "/usr/bin/plank" ]     && copy_res "plank/autostart.desktop"                       "${HOME}/.config/autostart/plank.desktop"
+copy_res "/usr/bin/lxpanel" "lxpanel/applications.png"              "${HOME}/.config/lxpanel/LXDE/panels/applications.png"
+copy_res "/usr/bin/lxpanel" "lxpanel/applications_ro.png"           "${HOME}/.config/lxpanel/LXDE/panels/applications_ro.png"
+copy_res "/usr/bin/lxpanel" "lxpanel/lxde-logout-gnomified.desktop" "/usr/share/applications/lxde-logout-gnomeshellified.desktop"
+copy_res "/usr/bin/lxpanel" "lxpanel/power.png"                     "${HOME}/.config/lxpanel/LXDE/panels/power.png"
+copy_res "/usr/bin/lxpanel" "plank/autostart.desktop"               "${HOME}/.config/autostart/plank.desktop"
+copy_res "/usr/bin/pcmanfm" "pcmanfm/open-in-terminal.desktop"      "${HOME}/.config/file-manager/actions/open-in-terminal.desktop"
