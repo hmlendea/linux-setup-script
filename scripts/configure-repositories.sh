@@ -45,6 +45,6 @@ if [ "${ARCH_FAMILY}" == "x86" ]; then
 fi
 
 
-#if [ ${DATABASES_NEED_UPDATING} = true ]; then
+if [ ${DATABASES_NEED_UPDATING} = true ]; then
     pacman -Syy
-#fi
+fi
