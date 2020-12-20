@@ -37,7 +37,7 @@ copy_res() {
 
 copy_res "/usr/bin/lxpanel" "lxpanel/applications.png"              "${HOME}/.config/lxpanel/LXDE/panels/applications.png"
 copy_res "/usr/bin/lxpanel" "lxpanel/applications_ro.png"           "${HOME}/.config/lxpanel/LXDE/panels/applications_ro.png"
-copy_res "/usr/bin/lxpanel" "lxpanel/lxde-logout-gnomified.desktop" "/usr/share/applications/lxde-logout-gnomeshellified.desktop"
 copy_res "/usr/bin/lxpanel" "lxpanel/power.png"                     "${HOME}/.config/lxpanel/LXDE/panels/power.png"
+copy_res "/usr/bin/lxpanel" "lxpanel/lxde-logout-gnomified.desktop" "${HOME}/.local/share/applications/lxde-logout-gnomified.desktop"
 copy_res "/usr/bin/lxpanel" "plank/autostart.desktop"               "${HOME}/.config/autostart/plank.desktop"
 copy_res "/usr/bin/pcmanfm" "pcmanfm/open-in-terminal.desktop"      "${HOME}/.config/file-manager/actions/open-in-terminal.desktop"
