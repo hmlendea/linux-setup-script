@@ -108,7 +108,7 @@ Plugin {
   type=launchbar
   Config {
     Button {
-      id=lxde-logout-gnomeshellified.desktop
+      id=lxde-logout-gnomified.desktop
     }
   }
 }

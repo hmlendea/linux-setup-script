@@ -719,7 +719,7 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/whatsapp-desktop.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier-dark.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/whatsie.desktop" \
-                "${LOCAL_LAUNCHERS_PATH}/chrome-nfjdjopfnbnkmfldmeffmhgodmlhdnei-Default.desktop"; do
+                "$(find_launcher_by_name WhatsApp)"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "WhatsApp" \
         Name[ro] "WhatsApp" \
