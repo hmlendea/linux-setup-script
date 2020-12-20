@@ -219,7 +219,6 @@ set_theme() {
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/7zFM.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/alltray.desktop" NoDisplay "true"
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/amidst.desktop" \
-    NoDisplay "true" \
     StartupWMClass "amidst-Amidst"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/android-studio.desktop" StartupWMClass "jetbrains-studio"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/assistant-qt4.desktop" NoDisplay "true"
