@@ -215,6 +215,8 @@ if ${HAS_GUI}; then
     install-pkg networkmanager-openvpn
     install-pkg networkmanager-pptp
     install-pkg networkmanager-vpnc
+    ! ${POWERFUL_PC} && install-pkg network-manager-applet
+
     install-dep modemmanager
     install-dep dnsmasq
 
@@ -236,7 +238,7 @@ if ${HAS_GUI}; then
         install-pkg gnome-dds-thumbnailer
         install-pkg file-roller
     else
-        install-pkg thunar
+        install-pkg pcmanfm
         install-pkg xarchiver
     fi
 
