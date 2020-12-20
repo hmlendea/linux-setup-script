@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Action
+Tooltip=Open in Terminal
+Tooltip[ro]=Deschide în Terminal
+Name=Open in Terminal
+Name[ro]=Deschide în Terminal
+Profiles=profile-one;
+Icon=utilities-terminal
+
+[X-Action-Profile profile-one]
+MimeTypes=inode/directory;
+Exec=lxterminal --working-directory="%f"
+Name=Default profile
