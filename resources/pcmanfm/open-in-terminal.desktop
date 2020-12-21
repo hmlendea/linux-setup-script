@@ -9,5 +9,5 @@ Icon=utilities-terminal
 
 [X-Action-Profile profile-one]
 MimeTypes=inode/directory;
-Exec=lxterminal --working-directory="%f"
+Exec=lxterminal --working-directory=%f
 Name=Default profile

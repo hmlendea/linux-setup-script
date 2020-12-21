@@ -3,7 +3,7 @@
 RESOURCES_DIR=$(pwd)"/resources"
 
 copy_res() {
-    APPLICATION="${1}
+    APPLICATION="${1}"
     SOURCE_FILE="${RESOURCES_DIR}/${2}"
     TARGET_FILE="${3}"
     TARGET_DIR=$(dirname "${TARGET_FILE}")
@@ -40,4 +40,7 @@ copy_res "/usr/bin/lxpanel" "lxpanel/applications_ro.png"           "${HOME}/.co
 copy_res "/usr/bin/lxpanel" "lxpanel/power.png"                     "${HOME}/.config/lxpanel/LXDE/panels/power.png"
 copy_res "/usr/bin/lxpanel" "lxpanel/lxde-logout-gnomified.desktop" "${HOME}/.local/share/applications/lxde-logout-gnomified.desktop"
 copy_res "/usr/bin/lxpanel" "plank/autostart.desktop"               "${HOME}/.config/autostart/plank.desktop"
-copy_res "/usr/bin/pcmanfm" "pcmanfm/open-in-terminal.desktop"      "${HOME}/.config/file-manager/actions/open-in-terminal.desktop"
+
+# PCManFM's context menu
+copy_res "/usr/bin/code-oss"    "pcmanfm/open-in-code.desktop"      "${HOME}/.local/share/file-manager/actions/open-in-code.desktop"
+copy_res "/usr/bin/lxterminal"  "pcmanfm/open-in-terminal.desktop"  "${HOME}/.local/share/file-manager/actions/open-in-terminal.desktop"

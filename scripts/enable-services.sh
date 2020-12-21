@@ -9,3 +9,4 @@ function enable-service {
 [ -f "/usr/bin/ntpd" ]                                  && enable-service "ntpd.service"
 [ -f "/usr/lib/systemd/system/yaourt-auto-sync.timer" ] && enable-service "yaourt-auto-sync.timer"
 [ -f "/lib/systemd/system/sshd.service" ]               && enable-service "sshd.service"
+[ -f "/usr/bin/blueman" ]                               && enable-service "bluetooth.service"

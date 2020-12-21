@@ -41,7 +41,7 @@ set_launcher_entries() {
     shift
 
     if [ "$(( $# % 2))" -ne 0 ]; then
-        echo "ERROR: Invalid arguments for set_launcher_entries: $@" >&2
+        echo "ERROR: Invalid arguments (count: $#) for set_launcher_entries: $@" >&2
         exit 1
     fi
 
@@ -62,12 +62,12 @@ set_launcher_entries() {
 }
 
 set_launcher_entry() {
-    FILE="$1"
-    KEY="$2"
-    VAL="$3"
+    FILE="${1}"
+    KEY="${2}"
+    VAL="${3}"
 
     if [ "$#" != "3" ]; then
-        echo "ERROR: Invalid arguments for set_launcher_entry: $@" >&2
+        echo "ERROR: Invalid arguments (count: $#) for set_launcher_entry: $@" >&2
     fi
 
     if [ ! -f "${FILE}" ]; then
@@ -259,9 +259,6 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/dosbox.desktop" Categories "Applica
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/dosbox.desktop" Name "DosBox"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/dropbox.desktop" Categories "Network;Cloud;FileSharing;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/dropbox.desktop" Exec "dropbox start -i"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/electron.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/electron2.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/electron7.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/factorio.desktop" Icon "factorio"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ffadomixer.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/firefox-developer.desktop" Categories "Network;WebBrowser;"
@@ -322,6 +319,7 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jetbrains-idea-ce.desktop" Icon "id
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jetbrains-idea-ce.desktop" Name "IntelliJ"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jetbrains-idea-ce.desktop" StartupWMClass "jetbrains-idea-ce"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/laptop-mode-tools.desktop" NoDisplay "true"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/libfm-pref-apps.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/libreoffice-base.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/libreoffice-draw.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/libreoffice-math.desktop" NoDisplay "true"
@@ -330,11 +328,15 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/linguist-qt4.desktop" NoDisplay "tr
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/linguist.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/lstopo.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/lxhotkey-gtk.desktop" Name[ro] "Scurtături de tastatură"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/lxmusic.desktop" MimeType "application/x-ogg;application/ogg;audio/x-vorbis+ogg;audio/vorbis;audio/x-vorbis;audio/x-scpls;audio/x-mp3;audio/x-mpeg;audio/mpeg;audio/x-mpegurl;audio/x-flac;audio/mp4;x-scheme-handler/itms;x-scheme-handler/itmss;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/lxmusic.desktop" Name "Music"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/lxmusic.desktop" Name[ro] "Muzică"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/lxsession-default-apps.desktop" Name "Default Applications"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/lxsession-default-apps.desktop" Name[ro] "Aplicații implicite"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/lxappearance.desktop" \
+    Name "Look and Feel" \
+    Name[ro] "Tema Interfeței"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/lxsession-edit.desktop" \
+    Name "Desktop Session Settings" \
+    Name[ro] "Opțiuni ale Sesiunilor Desktop"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/lxsession-default-apps.desktop" \
+    Name "Default Applications" \
+    Name[ro] "Aplicații Implicite"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/lxtask.desktop" Name[ro] "Manager de Activități"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-color-select.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-dictionary.desktop" Name "Dictionary"
@@ -365,6 +367,9 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/netbeans.desktop" Name "Netbeans"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/nfs2se.desktop" Icon "nfs2se"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/nfs2se.desktop" Name "Need for Speed 2"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/nfs2se.desktop" StartupWMClass "nfs2se"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/nm-connection-editor.desktop" \
+    Name "Network Connections" \
+    Name[ro] "Conexiuni de Rețea"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/nvidia-settings.desktop" Categories "System;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/nvidia-settings.desktop" Exec "gksu nvidia-settings"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/nvidia-settings.desktop" Icon "nvidia-settings"
@@ -395,12 +400,16 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.gnome-2048.desktop" Icon 
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Lollypop.desktop" Icon "lollypop"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Maps.desktop" Categories "GNOME;GTK;Utility;Navigation;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Photos.desktop" Icon "multimedia-photo-manager"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.seahorse.Application.desktop" Name[ro] "Parole și Chei"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.SoundRecorder.desktop" Categories "GNOME;GTK;Utility;Audio;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.tweaks.desktop" Categories "GNOME;GTK;System;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.tweaks.desktop" Icon "utilities-tweak-tool"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Weather.Application.desktop" Categories "GNOME;GTK;Utility;Navigation;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/pavucontrol.desktop" Categories "Audio;Mixer;System;GTK;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/pavucontrol.desktop" Name "Audio Settings"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/pcmanfm-desktop-pref.desktop" \
+    Name "Desktop Customiser" \
+    Name[ro] "Personalizare Desktop"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/PCSX2.desktop" Icon "pcsx2"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/picard.desktop" StartupWMClass ""
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/plank.desktop" NoDisplay true
@@ -527,6 +536,16 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/engrampa.desktop" \
 done
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FileRoller.desktop" StartupWMClass "File-Roller"
 
+##########################
+### BLUETOOTH MANAGERS ###
+##########################
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/blueman-manager.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Bluetooth Manager" \
+        Name[ro] "Manager Bluetooth"
+done
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FileRoller.desktop" StartupWMClass "File-Roller"
+
 ###################
 ### CALCULATORS ###
 ###################
@@ -577,6 +596,16 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/atril.desktop" \
     set_launcher_entries "${LAUNCHER}" \
         Name "Documents" \
         Name[ro] "Documente"
+done
+
+################
+### ELECTRON ###
+################
+for ELECTRON_VERSION in { 1..16 }; do
+    for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/electron.desktop" \
+                    "${GLOBAL_LAUNCHERS_PATH}/electron${ELECTRON_VERSION}.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        NoDisplay "true"
 done
 
 #####################
@@ -632,6 +661,16 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/mate-system-log.desktop" \
         Name "Logs" \
         Name[ro] "Loguri" \
         OnlyShowIn ""
+done
+
+####################
+### MUSIC PLAYER ###
+####################
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/lxmusic.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Music" \
+        Name[ro] "Muzică" \
+        MimeType "application/x-ogg;application/ogg;audio/x-vorbis+ogg;audio/vorbis;audio/x-vorbis;audio/x-scpls;audio/x-mp3;audio/x-mpeg;audio/mpeg;audio/x-mpegurl;audio/x-flac;audio/mp4;x-scheme-handler/itms;x-scheme-handler/itmss;"
 done
 
 ######################
@@ -702,7 +741,7 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" \
         Name "Code" \
         Name[ro] "Code" \
         Keywords "VS;Code;VSCode;Visual Studio;Visual Studio Code;" \
-        Icon "accessories-text-editor"
+        Icon "code"
 done
 [ "${ARCH_FAMILY}" == "x86" ] && set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" StartupWMClass "code"
 [ "${ARCH_FAMILY}" == "arm" ] && set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" StartupWMClass "Code - OSS (headmelted)"
