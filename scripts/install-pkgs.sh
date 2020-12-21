@@ -196,9 +196,6 @@ if ${HAS_GUI}; then
         install-pkg gnome-tweaks
         install-pkg gnome-backgrounds
 
-        install-pkg gnome-keyring
-        install-pkg seahorse
-
         install-dep system-config-printer # Dep for gnome-control-center
     else
         install-pkg openbox
@@ -211,6 +208,9 @@ if ${HAS_GUI}; then
         install-pkg plank
     fi
 
+    install-pkg gnome-keyring
+    install-pkg seahorse
+
     install-pkg networkmanager
     install-pkg networkmanager-openvpn
     install-pkg networkmanager-pptp
@@ -219,6 +219,12 @@ if ${HAS_GUI}; then
 
     install-dep modemmanager
     install-dep dnsmasq
+
+    if ${POWERFUL_PC}; then
+        install-pkg gnome-bluetooth
+    else
+        install-pkg blueman
+    fi
 
     ${POWERFUL_PC} && install-pkg gnome-system-monitor || install-pkg lxtask
     ${POWERFUL_PC} && install-pkg gnome-terminal || install-pkg lxterminal
