@@ -551,6 +551,16 @@ done
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-keep.desktop" StartupWMClass "google-keep-nativefier-d04d04"
 
 #####################
+### GOOGLE PHOTOS ###
+#####################
+for LAUNCHER in "$(find_launcher_by_name \"Google Photos\")"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Photos" \
+        Name[ro] "Fotografii" \
+        Categories "Network;Utility;Photography;"
+done
+
+#####################
 ### IMAGE VIEWERS ###
 #####################
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gpicview.desktop" \
@@ -598,6 +608,18 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/lxmusic.desktop"; do
         Name "Music" \
         Name[ro] "Muzică" \
         MimeType "application/x-ogg;application/ogg;audio/x-vorbis+ogg;audio/vorbis;audio/x-vorbis;audio/x-scpls;audio/x-mp3;audio/x-mpeg;audio/mpeg;audio/x-mpegurl;audio/x-flac;audio/mp4;x-scheme-handler/itms;x-scheme-handler/itmss;"
+done
+
+############
+### PLEX ###
+############
+for LAUNCHER in "${LOCAL_LAUNCHERS_PATH}/chrome-aghlkjcflkcaanjmefomlcfgflfdhkkg-Default.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Plex" \
+        Name[ro] "Plex" \
+        Icon "plexhometheater" \
+        Categories "AudioVideo;Audio;Video;Player;" \
+        StartupWMClass "crx_aghlkjcflkcaanjmefomlcfgflfdhkkg"
 done
 
 ######################
