@@ -1,20 +1,20 @@
 #!/bin/bash
 
-ARCH=${1}
+ARCH="${1}"
 
 [ "${ARCH}" == "x86_64" ]   && ARCH_FAMILY="x86"
 [ "${ARCH}" == "aarch64" ]  && ARCH_FAMILY="arm"
 [ "${ARCH}" == "armv7l" ]   && ARCH_FAMILY="arm"
 
-USER_REAL=${SUDO_USER}
-[ ! -n "${USER_REAL}" ] && USER_REAL=${USER}
+USER_REAL="${SUDO_USER}"
+[ -z "${USER_REAL}" ] && USER_REAL="${USER}"
 HOME_REAL="/home/${USER_REAL}"
 
 GLOBAL_LAUNCHERS_PATH="/usr/share/applications"
 LOCAL_LAUNCHERS_PATH="${HOME_REAL}/.local/share/applications"
 
-ICON_THEME=$(sudo -u ${USER_REAL} -H gsettings get org.gnome.desktop.interface icon-theme | tr -d "'")
-ICON_THEME_PATH="/usr/share/icons/"${ICON_THEME}
+ICON_THEME=$(sudo -u "${USER_REAL}" -H gsettings get org.gnome.desktop.interface icon-theme | tr -d "'")
+ICON_THEME_PATH="/usr/share/icons/${ICON_THEME}"
 
 find_launcher_by_name() {
     NAME_ENTRY_VALUE="$1"
@@ -29,7 +29,7 @@ find_launcher_by_name() {
     find "${GLOBAL_LAUNCHERS_PATH}" -type f -iname "*.desktop" -print0 | while IFS= read -r -d $'\0' LAUNCHER; do
         if grep -q "^Name="${NAME_ENTRY_VALUE}"$" "${LAUNCHER}"; then
             echo "${LAUNCHER}"
-            return -
+            return
         fi
     done
 
@@ -51,11 +51,11 @@ set_launcher_entries() {
         return
     fi
 
-    for I in { 1..$PAIRS_COUNT }; do
-        KEY=${1} && shift
-        VAL=${1} && shift
+    for I in { 1..${PAIRS_COUNT} }; do
+        KEY="${1}" && shift
+        VAL="${1}" && shift
 
-        if [ ! -z "${KEY}" ] && [ ! -z "${VAL}" ]; then
+        if [ -n "${KEY}" ] && [ -n "${VAL}" ]; then
             set_launcher_entry "${FILE}" "${KEY}" "${VAL}"
         fi
     done
@@ -100,7 +100,7 @@ set_launcher_entry() {
             else
                 sed -i '1,'"${LAST_SECTION_LINE}"' s|^'"${KEY_ESC}"'=.*$|'"${KEY_ESC}"'='"${VAL}"'|g' "${FILE}"
             fi
-        elif [ ! -z "${VAL}" ]; then
+        elif [ -n "${VAL}" ]; then
             if [ ${HAS_MULTIPLE_SECTIONS} == 1 ]; then
                 sed -i "${LAST_SECTION_LINE} i ${KEY_ESC}=${VAL_ESC}" "${FILE}"
             else
@@ -152,8 +152,8 @@ set_launcher_entry_romanian() {
     VAL="$3"
 
     set_launcher_entries "${FILE}" \
-        ${KEY_ROMANIAN}[ro_RO] "${VAL}" \
-        ${KEY_ROMANIAN}[ro_MD] "${VAL}"
+        "${KEY_ROMANIAN}[ro_RO]" "${VAL}" \
+        "${KEY_ROMANIAN}[ro_MD]" "${VAL}"
 }
 
 set_launcher_entry_english() {
@@ -162,25 +162,25 @@ set_launcher_entry_english() {
     VAL="$3"
 
     set_launcher_entries "${FILE}" \
-        ${KEY_ENGLISH}[en_AU] "${VAL}" \
-        ${KEY_ENGLISH}[en_CA] "${VAL}" \
-        ${KEY_ENGLISH}[en_GB] "${VAL}" \
-        ${KEY_ENGLISH}[en_US] "${VAL}"
+        "${KEY_ENGLISH}[en_AU]" "${VAL}" \
+        "${KEY_ENGLISH}[en_CA]" "${VAL}" \
+        "${KEY_ENGLISH}[en_GB]" "${VAL}" \
+        "${KEY_ENGLISH}[en_US]" "${VAL}"
 }
 
 create_launcher() {
     FILE="$*"
-    NAME=$(basename ${FILE} | cut -f 1 -d '.')
+    NAME=$(basename "${FILE}" | cut -f 1 -d '.')
     if [ ! -f "${FILE}" ]; then
-        touch ${FILE}
-        printf "[Desktop Entry]\n" >> ${FILE}
-        printf "Version=1.0\n" >> ${FILE}
-        printf "NoDisplay=false\n" >> ${FILE}
-        printf "Encoding=UTF-8\n" >> ${FILE}
-        printf "Type=Application\n" >> ${FILE}
-        printf "Terminal=false\n" >> ${FILE}
-        printf "Exec=${NAME}\n" >> ${FILE}
-        printf "StartupWMClass=${NAME}\n" >> ${FILE}
+        touch "${FILE}"
+        printf "[Desktop Entry]\n" >> "${FILE}"
+        printf "Version=1.0\n" >> "${FILE}"
+        printf "NoDisplay=false\n" >> "${FILE}"
+        printf "Encoding=UTF-8\n" >> "${FILE}"
+        printf "Type=Application\n" >> "${FILE}"
+        printf "Terminal=false\n" >> "${FILE}"
+        printf "Exec=${NAME}\n" >> "${FILE}"
+        printf "StartupWMClass=${NAME}\n" >> "${FILE}"
 
         set_launcher_entries "${FILE}" \
             Name "${NAME}" \
@@ -434,7 +434,7 @@ set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/valve-URI-steamvr.desktop" NoDisplay
 set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/valve-URI-vrmonitor.desktop" NoDisplay "true"
 
 NETFLIX_LAUNCHER=$(find_launcher_by_name "Netflix")
-if [ ! -z "${NETFLIX_LAUNCHER}" ]; then
+if [ -n "${NETFLIX_LAUNCHER}" ]; then
     set_launcher_entry "$(find_launcher_by_name Netflix)" Categories "AudioVideo;Video;Player;"
 fi
 
@@ -518,8 +518,9 @@ done
 for ELECTRON_VERSION in { 1..16 }; do
     for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/electron.desktop" \
                     "${GLOBAL_LAUNCHERS_PATH}/electron${ELECTRON_VERSION}.desktop"; do
-    set_launcher_entries "${LAUNCHER}" \
-        NoDisplay "true"
+        set_launcher_entries "${LAUNCHER}" \
+            NoDisplay "true"
+    done
 done
 
 #####################
@@ -794,7 +795,7 @@ if [ -f "/usr/bin/steam" ]; then
     STEAM_WMCLASSES_FILE="data/steam-wmclasses.txt"
     STEAM_NAMES_FILE="data/steam-names.txt"
 
-    if [ ! -z "${STEAM_LIBRARY_CUSTOM_PATHS}" ]; then
+    if [ -n "${STEAM_LIBRARY_CUSTOM_PATHS}" ]; then
         STEAM_LIBRARY_CUSTOM_PATHS=$(echo ${STEAM_LIBRARY_CUSTOM_PATHS} | sed 's/\"[0-9]\"//g' | sed 's/^ *//g' | sed 's/\t//g' | sed 's/\"//g')$(echo "/steamapps/")
         STEAM_LIBRARY_PATHS=$(printf "${STEAM_LIBRARY_PATHS}\n${STEAM_LIBRARY_CUSTOM_PATHS}")
     fi
@@ -819,10 +820,11 @@ if [ -f "/usr/bin/steam" ]; then
             set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" NoDisplay "true"
         fi
 
-        STEAM_ICON_PATH="${STEAM_ICON_THEME_PATH}/48x48/apps/steam_icon_${APP_ID}.jpg"
-        if [ ! -f "${STEAM_ICON_PATH}" ]; then
+        SOURCE_ICON_PATH="${STEAM_ICON_THEME_PATH}/48x48/apps/steam_icon_${APP_ID}.jpg"
+        TARGET_ICON_PATH="${STEAM_PATH}/appcache/librarycache/${APP_ID}_icon.jpg"
+        if [ -f "${SOURCE_ICON_PATH}" ] && [ ! -f "${TARGET_ICON_PATH}" ]; then
             echo "Copying icon for Steam AppID ${APP_ID} into the Steam icon pack..."
-            cp "${STEAM_PATH}/appcache/librarycache/${APP_ID}_icon.jpg" "${STEAM_ICON_PATH}"
+            cp "${SOURCE_ICON_PATH}" "${TARGET_ICON_PATH}"
         fi
     done
 
@@ -903,7 +905,7 @@ if [ -f "/usr/bin/steam" ]; then
                 fi
             done
 
-            chown -R ${USER_REAL} "${STEAM_LAUNCHERS_PATH}"
+            chown -R "${USER_REAL}" "${STEAM_LAUNCHERS_PATH}"
         fi
     done
 fi
@@ -918,4 +920,4 @@ for ICON_THEME in ${ICON_THEMES}; do
 done
 
 update-desktop-database
-update-desktop-database ${LOCAL_LAUNCHERS_PATH}
+update-desktop-database "${LOCAL_LAUNCHERS_PATH}"
