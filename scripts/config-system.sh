@@ -317,6 +317,13 @@ if [ -f "/usr/bin/openbox" ] && [ -f "/usr/bin/lxsession" ]; then
     set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='MenuItem']/weight" $(get_openbox_font_weight ${MENU_FONT_STYLE})
 fi
 
+########################
+### ARCHIVE MANAGERS ###
+########################
+if [ -f "/usr/bin/file-roller" ]; then
+    set_gsetting "org.gnome.file-roller.general" compression-level "maximum"
+fi
+
 ###################
 ### CALCULATORS ###
 ###################
