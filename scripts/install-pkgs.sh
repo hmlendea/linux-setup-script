@@ -1,5 +1,5 @@
 #!/bin/bash
-ARCH=${1}
+ARCH=$(lscpu | grep "Architecture" | awk -F: '{print $2}' | sed 's/  //g')
 IS_EFI=0
 
 if [ -z "${ARCH}" ]; then

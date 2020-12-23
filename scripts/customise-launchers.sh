@@ -1,7 +1,5 @@
 #!/bin/bash
-
-ARCH="${1}"
-
+ARCH=$(lscpu | grep "Architecture" | awk -F: '{print $2}' | sed 's/  //g')
 [ "${ARCH}" == "x86_64" ]   && ARCH_FAMILY="x86"
 [ "${ARCH}" == "aarch64" ]  && ARCH_FAMILY="arm"
 [ "${ARCH}" == "armv7l" ]   && ARCH_FAMILY="arm"
