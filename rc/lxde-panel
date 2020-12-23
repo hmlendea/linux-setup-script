@@ -30,7 +30,7 @@ Plugin {
 Plugin {
   type=menu
   Config {
-    image=/home/horatiu/.config/lxpanel/default/panels/applications_ro.png
+    image=/home/vasile/.config/lxpanel/default/panels/applications_ro.png
     system {
     }
     separator {
