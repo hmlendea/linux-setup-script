@@ -80,4 +80,7 @@ execute-script-superuser "update-resources.sh"
 
 execute-script "setup-git-gpg.sh"
 
+# Clean journals older than 1 week
+sudo journalctl -q --vacuum-time=7d
+
 source ~/.bashrc
