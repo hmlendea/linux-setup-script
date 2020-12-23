@@ -1,5 +1,5 @@
 #!/bin/bash
-ARCH=${1}
+ARCH=$(lscpu | grep "Architecture" | awk -F: '{print $2}' | sed 's/  //g')
 PACMAN_CONF_FILE_PATH="/etc/pacman.conf"
 
 [ "${ARCH}" == "x86_64" ]   && ARCH_FAMILY="x86"

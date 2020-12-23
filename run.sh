@@ -28,7 +28,7 @@ function execute-script() {
     SCRIPT_PATH="${EXEDIR}/scripts/${SCRIPT_NAME}"
 
     echo -e "Executing as \e[1;94m$USER\e[0;39m: '${SCRIPT_PATH}'..."
-    /usr/bin/bash "${SCRIPT_PATH}" "${ARCH}"
+    /usr/bin/bash "${SCRIPT_PATH}"
 }
 
 function execute-script-superuser() {
@@ -36,7 +36,7 @@ function execute-script-superuser() {
     SCRIPT_PATH="${EXEDIR}/scripts/${SCRIPT_NAME}"
 
     echo -e "Executing as \e[1;91mroot\e[0;39m: '${SCRIPT_PATH}'..."
-    sudo /usr/bin/bash "${SCRIPT_PATH}" "${ARCH}"
+    sudo /usr/bin/bash "${SCRIPT_PATH}"
 }
 
 function update-system() {
@@ -48,7 +48,7 @@ function update-system() {
     fi
 }
 
-echo "ARCH: ${ARCH}"
+echo "Architecture: ${ARCH}"
 
 execute-script-superuser "configure-repositories.sh"
 
