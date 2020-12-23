@@ -247,9 +247,6 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/com.teamviewer.TeamViewer.desktop" 
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/com.teamviewer.TeamViewer.desktop" Icon "teamviewer"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/com.teamviewer.TeamViewer.desktop" Name "TeamViewer"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/com.teamviewer.TeamViewer.desktop" StartupWMClass "TeamViewer"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/com.vinszent.GnomeTwitch.desktop" Icon "gnome-twitch"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/com.vinszent.GnomeTwitch.desktop" Name "Twitch"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/com.vinszent.GnomeTwitch.desktop" Name[ro] "Twitch"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/cups.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/designer-qt4.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/designer.desktop" NoDisplay "true"
@@ -257,24 +254,12 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/diffuse.desktop" Name "Diffuse"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/Discord.desktop" Icon "discord"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/dosbox.desktop" Categories "Application;Emulator;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/dosbox.desktop" Name "DosBox"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/dropbox.desktop" Categories "Network;Cloud;FileSharing;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/dropbox.desktop" Exec "dropbox start -i"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/factorio.desktop" Icon "factorio"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ffadomixer.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/firefox-developer.desktop" Categories "Network;WebBrowser;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/fluid.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/fluxgui.desktop" Icon "fluxgui"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/fluxgui.desktop" Name "F.lux"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/fluxgui.desktop" StartupWMClass "Fluxgui.py"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/fma-config-tool.desktop" Icon "nautilus-actions"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/fma-config-tool.desktop" Name "File Manager Actions"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/freeciv-mp-gtk2.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/freeciv-mp.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/freeciv-server.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/GameConqueror.desktop" Categories "Utility;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/genymotion.desktop" Categories "Development;Emulator;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/genymotion.desktop" Icon "genymotion"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/geogebra.desktop" StartupWMClass "org-geogebra-desktop-GeoGebra3D"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gimp.desktop" Name "GIMP"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gimp.desktop" StartupWMClass "Gimp-2.10"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gksu-properties.desktop" NoDisplay "true"
@@ -285,12 +270,6 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gnome-twofactorauth.desktop" Catego
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gnome-twofactorauth.desktop" Name "Authenticator"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gnubg.desktop" Name "Backgammon"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gnubg.desktop" Name[ro] "Table"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/godot.desktop" Categories "Development;IDE;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/godot.desktop" StartupWMClass "Godot"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-earth.desktop" Categories "Application;Network;Navigation;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-keep.desktop" Name "Keep"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-keep.desktop" Name[ro] "Keep"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-keep.desktop" StartupWMClass "google-keep-nativefier-d04d04"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gparted.desktop" Name "Partition Editor"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gparted.desktop" Name[ro] "Editor de Partiții"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gtk-lshw.desktop" NoDisplay "true"
@@ -301,29 +280,13 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/hardinfo.desktop" Name "Hardware In
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/hardinfo.desktop" Name[ro] "Informații Hardware"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/htop.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ibus-setup.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/idea.desktop" Name "IntelliJ"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/idea.desktop" StartupWMClass "jetbrains-idea-ce"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/inkscape.desktop" Name "Inkscape"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/intellij-idea-ce-eap.desktop" Icon "idea"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/intellij-idea-ce-eap.desktop" Name "IntelliJ"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/intellij-idea-ce-eap.desktop" StartupWMClass "jetbrains-idea-ce"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/intellij-idea-ce.desktop" Icon "idea"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/intellij-idea-ce.desktop" Name "IntelliJ"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/intellij-idea-ce.desktop" StartupWMClass "jetbrains-idea-ce"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ipython.desktop" Categories "Development;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ipython.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ipython2.desktop" Categories "Development;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ipython2.desktop" Icon "ipython"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ipython2.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jetbrains-idea-ce.desktop" Icon "idea"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jetbrains-idea-ce.desktop" Name "IntelliJ"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/jetbrains-idea-ce.desktop" StartupWMClass "jetbrains-idea-ce"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/laptop-mode-tools.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/libfm-pref-apps.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/libreoffice-base.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/libreoffice-draw.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/libreoffice-math.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/libreoffice-startcenter.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/linguist-qt4.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/linguist.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/lstopo.desktop" NoDisplay "true"
@@ -346,12 +309,6 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-disk.desktop" Name[ro] "Discur
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-search-tool.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-system-monitor.desktop" Name "System Monitor"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-system-monitor.desktop" Name[ro] "Monitor de Sistem"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/messengerfordesktop.desktop" Categories "Application;Network;Chat;InstantMessaging;Communication;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/messengerfordesktop.desktop" Exec "start-wmclass messengerfordesktop fbmessenger"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/messengerfordesktop.desktop" Icon "fbmessenger"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/messengerfordesktop.desktop" Name "Facebook Messenger"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/messengerfordesktop.desktop" StartupWMClass "fbmessenger"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/midori-private.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/minecraft-launcher.desktop" Name "Minecraft"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/minecraft-launcher.desktop" StartupWMClass "Minecraft* 1.16.4"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/monodevelop.desktop" Exec "env GNOME_DESKTOP_SESSION_ID="" monodevelop %F"
@@ -359,11 +316,6 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/Monogame\ Pipeline.desktop" NoDispl
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/Monogame\ Pipeline.desktop" StartupWMClass "Pipeline"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/MonogamePipeline.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/MonogamePipeline.desktop" StartupWMClass "Pipeline"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/nemo.desktop" Icon "nemo"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/nemo.desktop" Name "Files"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/nemo.desktop" Name[ro] "Fișiere"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/netbeans.desktop" Icon "netbeans"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/netbeans.desktop" Name "Netbeans"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/nfs2se.desktop" Icon "nfs2se"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/nfs2se.desktop" Name "Need for Speed 2"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/nfs2se.desktop" StartupWMClass "nfs2se"
@@ -374,13 +326,7 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/nvidia-settings.desktop" Categories
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/nvidia-settings.desktop" Exec "gksu nvidia-settings"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/nvidia-settings.desktop" Icon "nvidia-settings"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/nvidia-settings.desktop" Name "Nvidia Settings"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/nylas.desktop" Categories "GNOME;GTK;Email;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/nylas.desktop" Icon "gmail"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/nylas.desktop" Name "GMail"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/openarena-server.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.baedert.corebird.desktop" Categories "Network;GTK;Communication;Social;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.baedert.corebird.desktop" Icon "twitter"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.baedert.corebird.desktop" Name "Twitter"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.freedesktop.Piper.desktop" Categories "GNOME;GTK;System;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.freedesktop.Piper.desktop" Icon "gnome-settings-mouse"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.freedesktop.Piper.desktop" Name "Mouse Settings"
@@ -413,28 +359,14 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/pcmanfm-desktop-pref.desktop" \
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/PCSX2.desktop" Icon "pcsx2"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/picard.desktop" StartupWMClass ""
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/plank.desktop" NoDisplay true
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/playonlinux.desktop" Categories "Application;Emulator;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/playonlinux.desktop" Icon "playonlinux"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/playonlinux.desktop" StartupWMClass "Mainwindow.py"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/popcorn-time-ce.desktop" Exec "start-wmclass popcorntime popcorntime"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/popcorn-time-ce.desktop" Icon "popcorn-time"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/popcorn-time-ce.desktop" StartupWMClass "popcorntime"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/popcorntime-ce.desktop" Name "Popcorn Time"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/popcorntime.desktop" Categories "AudioVideo;Video;Player;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/popcorntime.desktop" Exec "start-wmclass popcorntime popcorntime"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/popcorntime.desktop" StartupWMClass "Popcorn-Time"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/postman.desktop" Categories "Development;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/postman.desktop" Icon "postman"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/pycharm-com-eap.desktop" Icon "pycharm"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/pycharm-com-eap.desktop" Name "PyCharm"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/pycharm-community-edition.desktop" StartupWMClass "jetbrains-pycharm-ce"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/qdbusviewer-qt4.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/qdbusviewer.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/qtconfig-qt4.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/qv4l2.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/qv4l2.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/qvidcap.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/rider.desktop" Icon "rider"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/simple-scan.desktop" Name "Scanner"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/simple-scan.desktop" Name[ro] "Scanner"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/simplescreenrecorder.desktop" Name "Screen Recorder"
@@ -475,26 +407,12 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/unity-monodevelop.desktop" Name "Mo
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/uxterm.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/vim.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/virtualbox.desktop" Name "VirtualBox"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/vivaldi-preview.desktop" Name "Vivaldi"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/vlc.desktop" Name "VLC"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/wfica.desktop" Icon "citrix-receiver"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/wfica.desktop" Name "Citrix Receiver"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/wfica.desktop" Name[ro] "Receptor Citrix"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/wfica.desktop" StartupWMClass "Wfica"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/wireshark-gtk.desktop" Name "Wireshark"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/wmail.desktop" Icon "gmail"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/wmail.desktop" Name "GMail"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/wps-office-et.desktop" Categories "QT;Office;Spreadsheet;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/wps-office-et.desktop" StartupWMClass "Et"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/wps-office-wpp.desktop" Categories "QT;Office;Presentation;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/wps-office-wpp.desktop" StartupWMClass "Wpp"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/wps-office-wps.desktop" Categories "QT;Office;WordProcessor;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/wps-office-wps.desktop" StartupWMClass "Wps"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/www.octave.org-octave.desktop" Icon "octave-logo"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/www.octave.org-octave.desktop" StartupWMClass "octave-gui"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/xampp-manager.desktop" Icon "xampp"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/xchat.desktop" Categories "Network;Communication;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/xchat.desktop" Name "XChat"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/xdvi.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/xterm.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/yelp.desktop" NoDisplay "true"
@@ -506,10 +424,6 @@ set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-aohghmighlieiainnegkcijnfilok
 set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-aohghmighlieiainnegkcijnfilokake-Default.desktop" NoDisplay "false"
 set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-app-list.desktop" NoDisplay "true"
 set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-hkgndiocipalkpejnpafdbdlfdjihomd-Default.desktop" Categories "ChromeApp;Network;FileTransfer;"
-set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-hmjkmjkepdijhoojdojkdfohbdgmmhki-Default.desktop" Categories "ChromeApp;Utility;"
-set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-hmjkmjkepdijhoojdojkdfohbdgmmhki-Default.desktop" Icon "google-keep"
-set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-hmjkmjkepdijhoojdojkdfohbdgmmhki-Default.desktop" Name "Keep"
-set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-hmjkmjkepdijhoojdojkdfohbdgmmhki-Default.desktop" NoDisplay "false"
 set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default.desktop" Categories "ChromeApp;Network;Navigation;"
 set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default.desktop" Name "Maps"
 set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default.desktop" Name[ro] "Hărți"
@@ -623,6 +537,20 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/caja-browser.dekstop" \
         Categories "Utility;Core;FileManager;"
 done
 
+###################
+### GOOGLE KEEP ###
+###################
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/google-keep.desktop" \
+                "$${LOCAL_LAUNCHERS_PATH}/chrome-hmjkmjkepdijhoojdojkdfohbdgmmhki-Default.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Keep" \
+        Name[ro] "Keep" \
+        Icon "google-keep" \
+        Categories "Utility;" \
+        NoDisplay false
+done
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-keep.desktop" StartupWMClass "google-keep-nativefier-d04d04"
+
 #####################
 ### IMAGE VIEWERS ###
 #####################
@@ -688,21 +616,6 @@ done
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gscreenshot.desktop" \
     Categories "Utility;" \
     StartupWMClass "gscreenshot"
-
-#############
-### SKYPE ###
-#############
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/ghetto-skype.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/skype-desktop.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/skype.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/skypeforlinux.desktop"; do
-    set_launcher_entries "${LAUNCHER}" \
-        Name "Skype" \
-        Icon "applets-screenshooter" \
-        Categories "Network;Chat;InstantMessaging;Communication;"
-done
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/skype-desktop.desktop" StartupWMClass "crx_monljlleikpphbhopghghdbggidfahha"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/skypeforlinux.desktop" StartupWMClass "Skype"
 
 #################
 ### TERMINALS ###
