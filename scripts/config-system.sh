@@ -83,15 +83,15 @@ set_modprobe_option() {
 }
 
 set_gsetting() {
-    SCHEMA="$1"
-    PROPERTY="$2"
-    VALUE="$3"
+    SCHEMA="${1}"
+    PROPERTY="${2}"
+    VALUE="${3}"
 
-    CURRENT_VALUE=$(gsettings get $SCHEMA $PROPERTY)
+    CURRENT_VALUE=$(gsettings get ${SCHEMA} ${PROPERTY})
 
-    if [ "$CURRENT_VALUE" != "$VALUE" ] && [ "$CURRENT_VALUE" != "'$VALUE'" ]; then
-        echo "GSettings >>> $SCHEMA.$PROPERTY=$VALUE"
-        gsettings set "$SCHEMA" "$PROPERTY" "$VALUE"
+    if [ "${CURRENT_VALUE}" != "${VALUE}" ] && [ "${CURRENT_VALUE}" != "'${VALUE}'" ]; then
+        echo "GSettings >>> ${SCHEMA}.${PROPERTY}=${VALUE}"
+        gsettings set "${SCHEMA}" "${PROPERTY}" "${VALUE}"
     fi
 }
 
@@ -321,7 +321,7 @@ fi
 ### ARCHIVE MANAGERS ###
 ########################
 if [ -f "/usr/bin/file-roller" ]; then
-    set_gsetting "org.gnome.file-roller.general" compression-level "maximum"
+    set_gsetting "org.gnome.FileRoller.General" compression-level "maximum"
 fi
 
 ###################
@@ -372,7 +372,7 @@ fi
 if [ -f "/usr/bin/gedit" ]; then
     set_gsetting "org.gnome.gedit.preferences.editor" highlight-current-line false
     set_gsetting "org.gnome.gedit.preferences.editor" insert-spaces true
-    set_gsetting "org.gnome.gedit.preferences.editor" tabs-size 4
+    set_gsetting "org.gnome.gedit.preferences.editor" tabs-size "uint32 4"
 fi
 if [ -f "/usr/bin/pluma" ]; then
     set_gsetting "org.mate.pluma" bracket-matching true
@@ -389,8 +389,8 @@ fi
 ### TERMINALS ###
 #################
 if [ -f "/usr/bin/gnome-terminal" ]; then
-    set_gsetting "org.gnome.terminal.legacy.Settings" default-show-menubar false
-    set_gsetting "org.gnome.terminal.legacy.Settings" new-tab-position "next"
+    set_gsetting "org.gnome.Terminal.Legacy.Settings" default-show-menubar false
+    set_gsetting "org.gnome.Terminal.Legacy.Settings" new-tab-position "next"
 fi
 
 if [ -f "/usr/bin/lxterminal" ]; then
