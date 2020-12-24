@@ -49,7 +49,7 @@ set_launcher_entries() {
         return
     fi
 
-    for I in { 1..${PAIRS_COUNT} }; do
+    for I in $(seq 1 ${PAIRS_COUNT}); do
         KEY="${1}" && shift
         VAL="${1}" && shift
 
@@ -513,12 +513,10 @@ done
 ################
 ### ELECTRON ###
 ################
-for ELECTRON_VERSION in { 1..16 }; do
-    for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/electron.desktop" \
-                    "${GLOBAL_LAUNCHERS_PATH}/electron${ELECTRON_VERSION}.desktop"; do
-        set_launcher_entries "${LAUNCHER}" \
-            NoDisplay "true"
-    done
+for ELECTRON_VERSION in "" {1..16}; do
+    LAUNCHER="${GLOBAL_LAUNCHERS_PATH}/electron${ELECTRON_VERSION}.desktop"
+    set_launcher_entries "${LAUNCHER}" \
+        NoDisplay "true"
 done
 
 #####################
@@ -574,7 +572,7 @@ done
 #################
 ### JRE & JDK ###
 #################
-for JAVA_VERSION in { 8..24 }; do
+for JAVA_VERSION in {8..24}; do
     for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/jconsole-jdk${JAVA_VERSION}.desktop" \
                     "${GLOBAL_LAUNCHERS_PATH}/jmc-jdk${JAVA_VERSION}.desktop" \
                     "${GLOBAL_LAUNCHERS_PATH}/jvisualvm-jdk${JAVA_VERSION}.desktop" \
@@ -674,8 +672,9 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" \
     set_launcher_entries "${LAUNCHER}" \
         Name "Code" \
         Name[ro] "Code" \
-        Keywords "VS;Code;VSCode;Visual Studio;Visual Studio Code;" \
-        Icon "code"
+        Icon "code" \
+        Keywords "VS;VSCode;Visual;Studio;Code;" \
+        Categories "Development;IDE;TextEditor;"
 done
 [ "${ARCH_FAMILY}" == "x86" ] && set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" StartupWMClass "code"
 [ "${ARCH_FAMILY}" == "arm" ] && set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" StartupWMClass "Code - OSS (headmelted)"
