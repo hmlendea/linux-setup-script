@@ -346,7 +346,7 @@ if ${HAS_GUI}; then
     if [ "${ARCH_FAMILY}" == "x86" ]; then
         install-pkg steam
         install-dep steam-native-runtime
-        install-pkg proton-ge-custom-stable-bin
+        install-pkg proton-ge-custom-bin
     fi
 
     # Development
