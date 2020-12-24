@@ -241,10 +241,6 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/CMake.desktop" Icon "cmake"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/cmake.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/CMake.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/codeblocks.desktop" Name "Code::Blocks"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/com.teamviewer.TeamViewer.desktop" Categories "Network;RemoteAccess;FileTransfer;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/com.teamviewer.TeamViewer.desktop" Icon "teamviewer"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/com.teamviewer.TeamViewer.desktop" Name "TeamViewer"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/com.teamviewer.TeamViewer.desktop" StartupWMClass "TeamViewer"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/cups.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/designer-qt4.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/designer.desktop" NoDisplay "true"
@@ -314,16 +310,19 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/Monogame\ Pipeline.desktop" NoDispl
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/Monogame\ Pipeline.desktop" StartupWMClass "Pipeline"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/MonogamePipeline.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/MonogamePipeline.desktop" StartupWMClass "Pipeline"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/nfs2se.desktop" Icon "nfs2se"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/nfs2se.desktop" Name "Need for Speed 2"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/nfs2se.desktop" StartupWMClass "nfs2se"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/nfs2se.desktop" \
+    Name "Need for Speed 2" \
+    Icon "nfs2se" \
+    StartupWMClass "nfs2se"
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/nm-connection-editor.desktop" \
     Name "Network Connections" \
     Name[ro] "Conexiuni de Rețea"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/nvidia-settings.desktop" Categories "System;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/nvidia-settings.desktop" Exec "gksu nvidia-settings"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/nvidia-settings.desktop" Icon "nvidia-settings"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/nvidia-settings.desktop" Name "Nvidia Settings"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/nvidia-settings.desktop" \
+    Name "Nvidia Settings" \
+    Name[ro] "Setări Nvidia" \
+    Icon "nvidia-settings" \
+    Categories "System;" \
+    Exec "gksu nvidia-settings"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/openarena-server.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.freedesktop.Piper.desktop" Categories "GNOME;GTK;System;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.freedesktop.Piper.desktop" Icon "gnome-settings-mouse"
@@ -363,53 +362,51 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/qdbusviewer-qt4.desktop" NoDisplay 
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/qdbusviewer.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/qtconfig-qt4.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/qv4l2.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/qv4l2.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/qvidcap.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/simple-scan.desktop" Name "Scanner"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/simple-scan.desktop" Name[ro] "Scanner"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/simplescreenrecorder.desktop" Name "Screen Recorder"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/steam-native.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/steam-runtime.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/steam.desktop" Categories "Game;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/steam.desktop" Exec "steam-start"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/steam.desktop" Name "Steam"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/steam.desktop" \
+    Name "Steam" \
+    Name[ro] "Steam" \
+    Categories "Game;Steam;" \
+    Exec "steam-start"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/stoken-gui-small.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/stoken-gui.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/system-config-printer.desktop" Name[ro] "Configurare Imprimantă"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/teamviewer.desktop" Categories "Network;RemoteAccess;FileTransfer;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/teams.desktop" Categories "Application;Network;Chat;InstantMessaging;Communication;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/teams.desktop" Name "Teams"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/teamviewer.desktop" Icon "teamviewer"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/teamviewer.desktop" Name "TeamViewer"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/teamviewer.desktop" StartupWMClass "TeamViewer.exe"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/teams.desktop" \
+    Name "Teams" \
+    Categories "Application;Network;Chat;InstantMessaging;Communication;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/Thunar-bulk-rename.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/thunar-bulk-rename.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/thunar-settings.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/thunar-volman-settings.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/tilda.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/tiled.desktop" Categories "Development;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/tor-browser-en.desktop" Categories "Network;WebBrowser;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/tor-browser-en.desktop" Icon "tor-browser-en"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/tor-browser-en.desktop" Name "Tor"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/tor-browser-en.desktop" StartupWMClass "Tor Browser"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/tor-browser-en.desktop" \
+    Name "Tor" \
+    Icon "tor-browser-en" \
+    Categories "Network;WebBrowser;" \
+    StartupWMClass "Tor Browser"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/tracker-needle.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/tracker-preferences.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/transmission-gtk.desktop" Name "Torrents"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/transmission-gtk.desktop" Name[ro] "Torente"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/unity-editor.desktop" Categories "Development;IDE;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/unity-editor.desktop" Icon "unity-editor-icon"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/unity-editor.desktop" Name "Unity Editor"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/unity-monodevelop.desktop" Categories "Development;IDE;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/unity-monodevelop.desktop" Icon "unity-monodevelop"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/unity-monodevelop.desktop" Name "MonoDevelop - Unity"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/transmission-gtk.desktop" \
+    Name "Torrents" \
+    Name[ro] "Torente"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/unity-editor.desktop" \
+    Name "Unity Editor" \
+    Icon "unity-editor-icon" \
+    Categories "Development;IDE;"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/unity-monodevelop.desktop" \
+    Name "MonoDevelop - Unity" \
+    Icon "unity-monodevelop" \
+    Categories "Development;IDE;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/uxterm.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/vim.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/virtualbox.desktop" Name "VirtualBox"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/vlc.desktop" Name "VLC"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/wfica.desktop" Icon "citrix-receiver"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/wfica.desktop" Name "Citrix Receiver"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/wfica.desktop" Name[ro] "Receptor Citrix"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/wfica.desktop" StartupWMClass "Wfica"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/wireshark-gtk.desktop" Name "Wireshark"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/xdvi.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/xterm.desktop" NoDisplay "true"
@@ -422,14 +419,16 @@ set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-aohghmighlieiainnegkcijnfilok
 set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-aohghmighlieiainnegkcijnfilokake-Default.desktop" NoDisplay "false"
 set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-app-list.desktop" NoDisplay "true"
 set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-hkgndiocipalkpejnpafdbdlfdjihomd-Default.desktop" Categories "ChromeApp;Network;FileTransfer;"
-set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default.desktop" Categories "ChromeApp;Network;Navigation;"
-set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default.desktop" Name "Maps"
-set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default.desktop" Name[ro] "Hărți"
-set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default.desktop" NoDisplay "false"
-set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/valve-vrmonitor.desktop" Name "SteamVR Monitor"
-set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/valve-vrmonitor.desktop" NoDisplay "true"
-set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/valve-URI-steamvr.desktop" NoDisplay "true"
-set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/valve-URI-vrmonitor.desktop" NoDisplay "true"
+set_launcher_entries "${LOCAL_LAUNCHERS_PATH}/chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default.desktop" \
+    Name "Maps" \
+    Name[ro] "Hărți" \
+    Categories "ChromeApp;Network;Navigation;" \
+    NoDisplay "false"
+set_launcher_entries "${LOCAL_LAUNCHERS_PATH}/valve-vrmonitor.desktop" \
+    Name "SteamVR Monitor" \
+    NoDisplay true
+set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/valve-URI-steamvr.desktop" NoDisplay true
+set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/valve-URI-vrmonitor.desktop" NoDisplay true
 
 NETFLIX_LAUNCHER=$(find_launcher_by_name "Netflix")
 if [ -n "${NETFLIX_LAUNCHER}" ]; then
@@ -487,6 +486,35 @@ if [ -f "${GLOBAL_LAUNCHERS_PATH}/chromium.desktop" ] && [ ! -f "${GLOBAL_LAUNCH
         Name[ro] "Chrome" \
         Icon "google-chrome"
 fi
+
+##############
+### CITRIX ###
+##############
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/configmgr.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/conncentre.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/wfcmgr.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/wfica.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Icon "citrix-receiver" \
+        NoDisplay true
+done
+
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/configmgr.desktop" \
+    Name "Citrix Receiver Preferences" \
+    Name[ro] "Configurare Receptor Citrix" \
+    StartupWMClass "Configmgr"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/conncentre.desktop" \
+    Name "Citrix Connection Centre" \
+    Name[ro] "Centrul de conexiuni Citrix" \
+    StartupWMClass "Conncenter"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/wfcmgr.desktop" \
+    Name "Citrix Receiver Self Service" \
+    Name[ro] "Asistență Receptor Citrix" \
+    StartupWMClass "Wfcmgr"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/wfica.desktop" \
+    Name "Citrix Receiver" \
+    Name[ro] "Receptor Citrix" \
+    StartupWMClass "Wfica"
 
 ############################
 ### DISK USAGE ANALYZERS ###
@@ -635,6 +663,19 @@ done
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gscreenshot.desktop" \
     Categories "Utility;" \
     StartupWMClass "gscreenshot"
+
+###################
+### TEAM VIEWER ###
+###################
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/com.teamviewer.TeamViewer.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/teamviewer.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "TeamViewer" \
+        Name[ro] "TeamViewer" \
+        Icon "teamviewer" \
+        Categories "Network;RemoteAccess;FileTransfer;" \
+        StartupWMClass "TeamViewer"
+done
 
 #################
 ### TERMINALS ###
@@ -896,7 +937,9 @@ if [ -f "/usr/bin/steam" ]; then
 
                 DO_CREATE_LAUNCHER="true"
 
-                if [[ "${APP_NAME}" == "Steamworks Common Redistributables" ]] || [[ "${APP_NAME}" =~ ^Proton\ [0-9]+\.[0-9]+$ ]]; then
+                if [[ "${APP_NAME}" == "Steamworks Common Redistributables" ]] || \
+                   [[ "${APP_NAME}" =~ ^Proton\ [0-9]+\.[0-9]+$ ]] || \
+                   [[ ${APP_NAME} == "Steam Linux Runtime*" ]]; then
                     DO_CREATE_LAUNCHER="false"
                 fi
 
@@ -911,16 +954,17 @@ if [ -f "/usr/bin/steam" ]; then
                     fi
 
                     create_launcher "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop"
-                    set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" Name "${APP_NAME}"
-                    set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" Comment "Play ${APP_NAME} on Steam"
-                    set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" Comment[ro] "Joacă ${APP_NAME} pe Steam"
-                    set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" Keywords "Game;Steam;${APP_ID};${APP_NAME};"
-                    set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" Keywords[ro] "Joc;Steam;${APP_ID};${APP_NAME};"
-                    set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" Exec "steam steam:\/\/rungameid\/${APP_ID}"
-                    set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" Icon "${APP_ICON_PATH}"
-                    set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" Categories "Game;Steam;"
-                    set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" StartupWMClass "${APP_WMCLASS}"
-                    set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" NoDisplay "false"
+                    set_launcher_entries "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" \
+                        Name "${APP_NAME}" \
+                        Comment "Play ${APP_NAME} on Steam" \
+                        Comment[ro] "Joacă ${APP_NAME} pe Steam" \
+                        Keywords "Game;Steam;${APP_ID};" \
+                        Keywords[ro] "Joc;Steam;${APP_ID};" \
+                        Exec "steam steam:\/\/rungameid\/${APP_ID}" \
+                        Icon "${APP_ICON_PATH}" \
+                        Categories "Game;Steam;" \
+                        StartupWMClass "${APP_WMCLASS}" \
+                        NoDisplay false
                 fi
             done
 
