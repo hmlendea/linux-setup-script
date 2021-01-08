@@ -487,6 +487,33 @@ if [ -f "${GLOBAL_LAUNCHERS_PATH}/chromium.desktop" ] && [ ! -f "${GLOBAL_LAUNCH
         Icon "google-chrome"
 fi
 
+#################
+### CHAT APPS ###
+#################
+CHAT_APP_CATEGORIES="Network;Chat;InstantMessaging;Communication;"
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/whatsapp-desktop.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier-dark.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/whatsie.desktop" \
+                "$(find_launcher_by_name WhatsApp)"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "WhatsApp" \
+        Name[ro] "WhatsApp" \
+        Icon "whatsapp" \
+        Categories "${CHAT_APP_CATEGORIES}"
+done
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsapp-desktop.desktop" StartupWMClass "whatsapp"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier.desktop" StartupWMClass "whatsapp-nativefier-d40211"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier-dark.desktop" StartupWMClass "whatsapp-nativefier-d52542"
+set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-nfjdjopfnbnkmfldmeffmhgodmlhdnei-Default.desktop" Categories "ChromeApp;${CHAT_APP_CATEGORIES}"
+
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/telegramdesktop.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Telegram" \
+        Name[ro] "Telegram" \
+        Categories "${CHAT_APP_CATEGORIES};Qt;"
+done
+
 ##############
 ### CITRIX ###
 ##############
@@ -722,26 +749,6 @@ done
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss-url-handler.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code.desktop" StartupWMClass "code-oss"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/visual-studio-code.desktop" StartupWMClass "Code"
-
-####################
-### WHATSAPP ###
-####################
-WHATSAPP_CATEGORIES="Network;Chat;InstantMessaging;Communication;"
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/whatsapp-desktop.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier-dark.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/whatsie.desktop" \
-                "$(find_launcher_by_name WhatsApp)"; do
-    set_launcher_entries "${LAUNCHER}" \
-        Name "WhatsApp" \
-        Name[ro] "WhatsApp" \
-        Icon "whatsapp" \
-        Categories "${WHATSAPP_CATEGORIES}"
-done
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsapp-desktop.desktop" StartupWMClass "whatsapp"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier.desktop" StartupWMClass "whatsapp-nativefier-d40211"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier-dark.desktop" StartupWMClass "whatsapp-nativefier-d52542"
-set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-nfjdjopfnbnkmfldmeffmhgodmlhdnei-Default.desktop" Categories "ChromeApp;${WHATSAPP_CATEGORIES}"
 
 # Themes
 set_theme "/usr/bin/tor-browser-en" "Adwaita"
