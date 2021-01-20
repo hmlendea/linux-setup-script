@@ -19,16 +19,31 @@ TEMP_DIR_PATH=".temp-sysinstall"
 mkdir -p "$TEMP_DIR_PATH"
 cd "$TEMP_DIR_PATH"
 
+CPU_MODEL=$(cat /proc/cpuinfo | \
+    grep "^model name" | \
+    awk -F: '{print $2}' | \
+    sed 's/^ *//g' | \
+    head -n 1 | \
+    sed 's/(TM)//g' | \
+    sed 's/(R)//g' | \
+    sed 's/ CPU//g' | \
+    sed 's/@ .*//g')
+
 CHASSIS_TYPE="Desktop"
 POWERFUL_PC=true
 HAS_GUI=false
+
+if [ $(echo ${CPU_MODEL} | grep -c "Atom") -ge 1 ]; then
+    POWERFUL_PC=false
+fi
 
 if [ -d "/sys/module/battery" ]; then
     CHASSIS_TYPE="Laptop"
 fi
 
 if [ -f "/etc/systemd/system/display-manager.service" ] || \
-   [[ $(cat /etc/hostname) = *PC ]]; then
+   [[ $(cat /etc/hostname) = *PC ]] || \
+   [[ $(cat /etc/hostname) = *Top ]]; then
     HAS_GUI=true
 
     if [ "${ARCH_FAMILY}" == "arm" ]; then
@@ -336,17 +351,19 @@ if ${HAS_GUI}; then
         install-dep gst-libav
     fi
 
-    # Graphics
-    install-pkg gimp
-    install-pkg gimp-extras
-    install-pkg gimp-plugin-pixel-art-scalers
-    install-pkg inkscape
+    if ${POWERFUL_PC}; then
+        # Graphics
+        install-pkg gimp
+        install-pkg gimp-extras
+        install-pkg gimp-plugin-pixel-art-scalers
+        install-pkg inkscape
 
-    # Gaming
-    if [ "${ARCH_FAMILY}" == "x86" ]; then
-        install-pkg steam
-        install-dep steam-native-runtime
-        install-pkg proton-ge-custom-bin
+        # Gaming
+        if [ "${ARCH_FAMILY}" == "x86" ]; then
+            install-pkg steam
+            install-dep steam-native-runtime
+            install-pkg proton-ge-custom-bin
+        fi
     fi
 
     # Development
