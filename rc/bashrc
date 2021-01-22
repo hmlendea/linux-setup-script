@@ -233,6 +233,7 @@ alias grep='grep -a --color --text'
 alias pcregrep='pcregrep -a --color --text'
 alias uptime='uptime -p && printf "since " && uptime -s'
 
+[ -f "/usr/bin/pacman" ]        &&  alias yaourt='pacman --color auto --noconfirm'
 [ -f "/usr/bin/systemctl" ]     &&  alias systemctl='systemctl --no-pager -l -n15'
 [ -f "/usr/bin/tmux" ]          &&  alias tmux-new='tmux new -s'
 [ -f "/usr/bin/tmux" ]          &&  alias tmux-resume='tmux attach-session -t'
