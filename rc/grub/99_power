@@ -1,0 +1,10 @@
+#!/bin/sh
+exec tail -n +3 $0
+
+menuentry "Reboot" {
+    reboot
+}
+
+menuentry "Power off" {
+    halt
+}
