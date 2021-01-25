@@ -9,6 +9,9 @@ NVIDIA_DRIVER="nvidia-390xx"
 
 install-pkg bumblebee
 install-dep bbswitch
+install-dep primus
+
+install-pkg optiprime
 
 install-pkg mesa
 install-pkg xf86-video-intel
