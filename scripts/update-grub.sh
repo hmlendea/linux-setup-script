@@ -48,5 +48,6 @@ rename-menuentry "Arch Linux" "Linux"
 rename-menuentry "Windows Boot Manager" "Windows"
 
 update-grub-rc "/primeos" "50_primeos"
+update-grub-rc "/blissos" "50_blissos"
 update-grub-rc "/android" "59_android"
 update-grub-rc "/" "99_power"
