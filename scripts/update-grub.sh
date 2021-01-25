@@ -32,7 +32,7 @@ function update-grub-rc {
         fi
 
         ${NEEDS_UPDATING} && cp "${SOURCE_RC_PATH}" "${TARGET_RC_PATH}"
-    else if [ -f "${TARGET_RC_PATH}" ]; then
+    elif [ -f "${TARGET_RC_PATH}" ]; then
         rm "${TARGET_RC_PATH}"
     fi
 }
@@ -49,3 +49,4 @@ rename-menuentry "Windows Boot Manager" "Windows"
 
 update-grub-rc "/primeos" "50_primeos"
 update-grub-rc "/android" "59_android"
+update-grub-rc "/" "99_power"
