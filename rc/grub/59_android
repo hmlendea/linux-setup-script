@@ -1,8 +1,0 @@
-#!/bin/sh
-exec tail -n +3 $0
-
-menuentry "Android" {
-  set root='(hd0,2)'
-  linux /android/kernel quiet root=/dev/ram0 androidboot.selinux=permissive acpi_sleep=s3_bios,s3_mode SRC=/android DATA=/data REMOUNT_RW=1
-  initrd /android/initrd.img
-}
