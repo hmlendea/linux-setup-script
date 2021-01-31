@@ -199,7 +199,7 @@ if ${HAS_GUI}; then
 
     # Display Server, Drivers, FileSystems, etc
     install-pkg xorg-server
-    install-pkg xf86-video-vesa
+    #install-pkg xf86-video-vesa
     install-pkg xclip
 
     # Desktop Environment & Base applications
