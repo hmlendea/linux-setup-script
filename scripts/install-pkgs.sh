@@ -333,10 +333,12 @@ if ${HAS_GUI}; then
     install-pkg ttf-ubraille # Braille
 
     # Internet
-    [ "${ARCH_FAMILY}" == "x86" ] && install-pkg google-chrome
-    [ "${ARCH_FAMILY}" == "arm" ] && install-pkg chromium
+    #[ "${ARCH_FAMILY}" == "x86" ] && install-pkg google-chrome
+    #[ "${ARCH_FAMILY}" == "arm" ] && install-pkg chromium
+    #${POWERFUL_PC} && install-pkg chrome-gnome-shell
+
+    install-pkg firefox
     install-pkg transmission-gtk
-    ${POWERFUL_PC} && install-pkg chrome-gnome-shell
 
     # Communication
     [ "${ARCH_FAMILY}" == "x86" ] && install-pkg whatsapp-nativefier-dark
