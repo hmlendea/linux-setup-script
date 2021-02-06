@@ -340,6 +340,7 @@ if ${HAS_GUI}; then
 
     # Communication
     [ "${ARCH_FAMILY}" == "x86" ] && install-pkg whatsapp-nativefier-dark
+    install-pkg telegram-desktop
 
     # Multimedia
     [ "${ARCH_FAMILY}" == "x86" ] && install-pkg spotify
