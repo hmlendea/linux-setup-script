@@ -258,6 +258,8 @@ if ${HAS_GUI}; then
         install-pkg folder-color-nautilus-bzr
         install-pkg gnome-dds-thumbnailer
         install-pkg file-roller
+
+        install-pkg code-nautilus-git
     else
         install-pkg pcmanfm
         install-pkg xarchiver
