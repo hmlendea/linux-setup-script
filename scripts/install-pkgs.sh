@@ -300,12 +300,9 @@ if ${HAS_GUI}; then
         install-pkg gnome-shell-extensions
         install-pkg gnome-shell-extension-installer
         install-pkg gnome-shell-extension-dash-to-dock
-        install-pkg gnome-shell-extension-mpris-indicator-button-git
         install-pkg gnome-shell-extension-sound-output-device-chooser
         install-pkg gnome-shell-extension-gsconnect-git
         install-pkg gnome-shell-extension-multi-monitors-add-on-git
-        install-pkg gnome-shell-extension-remove-dropdown-arrows
-        install-pkg gnome-shell-extension-activities-config
         install-pkg gnome-shell-extension-openweather-git
     fi
 
