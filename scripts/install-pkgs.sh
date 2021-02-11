@@ -197,7 +197,6 @@ if ${HAS_GUI}; then
     # Display Server, Drivers, FileSystems, etc
     install-pkg xorg-server
     #install-pkg xf86-video-vesa
-    install-pkg xclip
 
     # Desktop Environment & Base applications
     if ${POWERFUL_PC}; then
@@ -380,10 +379,6 @@ if ${HAS_GUI}; then
 
     # Tools
     [ "${ARCH_FAMILY}" == "x86" ] && install-pkg google-keep-nativefier
-
-    # Automation
-    install-pkg xdotool
-    install-pkg wmctrl
 
     # Filesystem / Partitioning
     install-pkg gparted
