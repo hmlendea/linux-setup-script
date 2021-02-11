@@ -1,0 +1,54 @@
+#!/bin/sh
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+alias sh=$SHELL
+alias sudo='sudo '
+alias ls='ls --color=auto'
+alias cd..='cd ..'
+alias cd...='cd ../..'
+alias cd....='cd ../../..'
+alias cd.....='cd ../../../..'
+alias cd......='cd ../../../../..'
+alias cd="OLDPWD2=\${OLDPWD} && cd"
+alias cd-="cd -"
+alias cd--="__destDir=\${OLDPWD2} && cd \${__destDir}"
+alias lsmnt='lsblk -l | tail -n +2 | awk '\''length($7) { print $1" => "$7 }'\'''
+alias grep='grep -a --color --text'
+alias pcregrep='pcregrep -a --color --text'
+alias uptime='uptime -p && printf "since " && uptime -s'
+
+[ -f "/usr/bin/pacman" ]        &&  alias yaourt='pacman --color auto --noconfirm'
+[ -f "/usr/bin/systemctl" ]     &&  alias systemctl='systemctl --no-pager -l -n15'
+[ -f "/usr/bin/tmux" ]          &&  alias tmux-new='tmux new -s'
+[ -f "/usr/bin/tmux" ]          &&  alias tmux-resume='tmux attach-session -t'
+[ -f "/usr/bin/yaourt" ]        &&  alias yaourt='sudo printf "" && yaourt --noconfirm' # --needed'
+[ -f "/usr/bin/wine" ]          &&  alias wine32='WINEARCH=win32 wine'
+[ -f "/usr/bin/wine" ]          &&  alias wine64='WINEARCH=win64 wine'
+[ -f "/usr/bin/xterm" ]         &&  alias xterm='xterm -rv'
+[ -f "/usr/bin/xprop" ]         &&  alias xprop-wmclass='xprop | grep "WM_CLASS"'
+[ -f "/usr/bin/wget" ]          &&  alias wget-persistent='wget -c --retry-connrefused --waitretry=1 --read-timeout=10 --timeout=5 -t 0'
+[ -f "/proc/acpi/bbswitch" ]    &&  alias bbswitch-status="awk '{print $2}' /proc/acpi/bbswitch"
+
+if [ -f "/usr/bin/git" ]; then
+    alias git="git --no-pager"
+    alias git-push="git fetch && git push"
+    alias git-pull="git fetch && git pull --rebase"
+    alias git-commit="git fetch && __gitCommit"
+fi
+
+if [ "${OSTYPE}" == "cygwin" ]; then
+    alias killall="taskkill /IM"
+fi
+
+### Fixes
+[ -f "/usr/bin/monodevelop" ]   &&  alias monodevelop="GNOME_DESKTOP_SESSION_ID="" monodevelop"
+[ -f "/usr/bin/dotnet" ]        &&  alias dotnet='TERM=xterm dotnet'
+
+### Per-application themes
+#[ -f "/usr/bin/gedit" ]         &&  alias gedit="GTK_THEME=Adapta-Nokto-Eta:dark gedit"
+[ -f "/usr/bin/libreoffice" ]   &&  alias libreoffice="GTK_THEME=\"$CURRENT_GTK_THEME:light\" libreoffice"
+
+if [ -n "${SSH_CLIENT}" ] || [ -n "${SSH_TTY}" ]; then
+    alias poweroff="echo Surely you don\'t mean to do that on the remote machine! && echo If you do, use \'command poweroff\' instead."
+fi

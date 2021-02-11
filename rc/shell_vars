@@ -1,0 +1,51 @@
+#!/bin/sh
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+### Environment variables
+#export TERM=linux
+export LD_LIBRARY_PATH="${LD_LIBRARY_PATH-}:/usr/lib32"
+export SHELL="/bin/bash"
+export OLDPWD=$(pwd)
+export OLDPWD2=${OLDPWD}
+
+[ -f "/usr/bin/dotnet" ]    &&  export DOTNET_CLI_TELEMETRY_OPTOUT=1        # Disable .NET Core telemetry
+[ -f "/usr/bin/dotnet" ]    &&  export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1  # Disable .NET Core first time message
+[ -f "/usr/bin/nano" ]      &&  export EDITOR=nano                          # Make nano the default editor
+[ -f "/usr/bin/optirun" ]   &&  export VGL_READBACK=pbo                     # Better optirun performance
+[ -f "/usr/bin/wine" ]      &&  export WINEARCH=win32                       # Make WINE default to 32bit
+[ -f "/usr/bin/steam" ]     &&  export STEAM_RUNTIME=0                      # Disable Steam Runtime
+
+[ -d "/opt/dotnet/" ]       &&  export DOTNET_ROOT="/opt/dotnet/"           # .NET Root
+[ -d "/usr/share/dotnet/" ] &&  export DOTNET_ROOT="/usr/share/dotnet/"     # .NET Root
+
+[ ! -z "${DOTNET_ROOT}" ]   &&  export MSBuildSDKsPath=$(printf "%s\n" ${DOTNET_ROOT}/sdk/*  | tail -1)"/Sdks/" # MS Build and Mono coexistance
+
+source ~/.shell_aliases
+
+### PATH
+
+function try_set_dotnet_tools_dir {
+    TARGET_PATH="$1"
+
+    if [ -d "$TARGET_PATH" ]; then
+        export PATH="$PATH:$TARGET_PATH"
+    fi
+}
+
+function try_set_android_sdk_home {
+    NEW_PATH="$*"
+
+    if [ -d "$NEW_PATH" ]; then
+        export ANDROID_HOME="$NEW_PATH"
+        export ANDROID_SDK_PATH="$NEW_PATH"
+
+        export PATH=${PATH}:${ANDROID_HOME}/tools
+        export PATH=${PATH}:${ANDROID_HOME}/platform-tools
+        export PATH=${PATH}:${ANDROID_HOME}/system-images
+    fi
+}
+
+try_set_dotnet_tools_dir "$HOME/.dotnet/tools"
+try_set_android_sdk_home "$HOME/.Android/Sdk"
+
