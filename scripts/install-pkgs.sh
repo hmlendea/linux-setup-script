@@ -115,14 +115,12 @@ install-pkg patch
 # Basics
 install-pkg sudo
 install-pkg man
-install-pkg ntp
 install-pkg man-pages
 install-pkg bash-completion
 install-pkg most
 install-pkg wget
 install-pkg usbutils
 install-pkg lshw
-install-pkg sl
 
 install-dep dialog
 install-dep wpa_supplicant
@@ -178,7 +176,6 @@ if ${HAS_GUI}; then
     install-pkg openssh
     install-pkg dkms
     install-pkg rsync
-    [ "${ARCH_FAMILY}" == "x86" ] && install-pkg gksu
 
     # System management
     [ "${ARCH_FAMILY}" == "x86" ] && install-pkg thermald
