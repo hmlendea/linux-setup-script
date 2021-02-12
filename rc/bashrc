@@ -1,6 +1,6 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-source ~/.bash_prompt
+source ~/.shell_prompt
 source ~/.shell_vars
 source ~/.shell_aliases
