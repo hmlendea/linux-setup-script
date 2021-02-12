@@ -37,7 +37,7 @@ if [ -f "/usr/bin/git" ]; then
     alias git-commit="git fetch && __gitCommit"
 fi
 
-if [ "${OSTYPE}" == "cygwin" ]; then
+if [ "${OSTYPE}" = "cygwin" ]; then
     alias killall="taskkill /IM"
 fi
 

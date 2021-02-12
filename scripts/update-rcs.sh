@@ -16,6 +16,7 @@ copy_rc() {
 }
 
 copy_rc "shell_aliases" "${HOME}/.shell_aliases"
+copy_rc "shell_prompt" "${HOME}/.shell_prompt"
 copy_rc "shell_vars" "${HOME}/.shell_vars"
 
 [ -f "/bin/bash" ] && copy_rc "bashrc" "${HOME}/.bashrc"

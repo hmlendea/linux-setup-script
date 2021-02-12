@@ -1,0 +1,186 @@
+#!/bin/sh
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+ENABLE_COLOURS=true
+ENABLE_GIT=true
+
+function get_git_branch_name {
+    local branchName=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+    echo ${branchName}
+}
+
+function get_git_branch_colour {
+    local branchName=$(get_git_branch_name)
+
+    if [ "${branchName}" = "HEAD" ]; then
+        echo "41"
+    elif [ "${branchName}" = "master" ]; then
+        echo "93"
+    else
+        echo "36"
+    fi
+}
+
+function get_git_branch_status {
+    BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+
+    if [ ! -z ${BRANCH_NAME} ]; then
+        UPSTREAM=${1:-'@{u}'}
+        LOCAL=$(git rev-parse @)
+        REMOTE=$(git rev-parse "$UPSTREAM" 2>/dev/null)
+
+        if [ -z ${REMOTE} ]; then
+            echo "local-only"
+        else
+            BASE=$(git merge-base @ "$UPSTREAM")
+            LOCAL_CHANGES=$(git diff-index --name-only HEAD --)
+
+            if [ ${LOCAL} = ${REMOTE} ]; then
+                if [ -z "${LOCAL_CHANGES}" ]; then
+                    echo "up-to-date"
+                else
+                    echo "local-changes"
+                fi
+            elif [ ${LOCAL} = ${BASE} ]; then
+                echo "behind"
+            elif [ ${REMOTE} = ${BASE} ]; then
+                echo "ahead"
+            else
+                echo "diverged"
+            fi
+        fi
+    fi
+}
+
+function get_git_branch_status_colour {
+    local branchStatus=$(get_git_branch_status)
+
+    if [ "${branchStatus}" = "local-changes" ]; then
+        echo "32"
+    elif [ "${branchStatus}" = "local-only" ]; then
+        echo "93"
+    elif [ "${branchStatus}" = "behind" ]; then
+        echo "31"
+    elif [ "${branchStatus}" = "ahead" ]; then
+        echo "92"
+    elif [ "${branchStatus}" = "diverged" ]; then
+        echo "91"
+    fi
+}
+
+function get_git_branch_status_indicator {
+    local branchStatus=$(get_git_branch_status)
+    local branchStatusIndicator=""
+
+    if [ "${branchStatus}" = "local-changes" ]; then
+        branchStatusIndicator="*" #" ■"
+    elif [ "${branchStatus}" = "local-only" ]; then
+        branchStatusIndicator="~"
+    elif [ "${branchStatus}" = "behind" ]; then
+        branchStatusIndicator="-" #" ▼"
+    elif [ "${branchStatus}" = "ahead" ]; then
+        branchStatusIndicator="+" #" ▲"
+    elif [ "${branchStatus}" = "diverged" ]; then
+        branchStatusIndicator="±" #" ♦"
+    fi
+
+    if [ -n "${branchStatusIndicator}" ]; then
+        echo " ${branchStatusIndicator}"
+    fi
+}
+
+function get_git_branch_separator {
+    local branchName=$(get_git_branch_name)
+
+    if [ ! -z ${branchName} ]; then
+        if [ -z $* ]; then
+            echo " "
+        else
+            echo $*
+        fi
+    fi
+}
+
+function get_path {
+    MAX_LENGTH=24
+    PWD=$(pwd)
+    CWD=${PWD##*/}
+
+    if [ "$HOME" = "$PWD" ]; then
+        echo "~"
+    elif [ ${#CWD} -gt $((MAX_LENGTH)) ]; then
+        echo ${CWD:0:$((MAX_LENGTH/2-1))}..${CWD:(-$((MAX_LENGTH/2-1)))}
+    elif [ "${PWD}" = "/${CWD}" ]; then
+        echo ${PWD}
+    else
+        echo ${CWD}
+    fi
+}
+
+function get_path_colour {
+    if [[ "$(pwd)" = "/" ]]; then
+        echo "41"
+    elif [[ "$(pwd)" = "/root" ]]; then
+        echo "41"
+    elif [[ "$(pwd)" = "/root/*" ]]; then
+        echo "41"
+    elif [[ "$(pwd)" = "/home/${USER}" ]]; then
+        echo "93"
+    elif [[ ! -w "$(pwd)" ]]; then
+        echo "31"
+    else
+        echo "33"
+    fi
+}
+
+function set_custom_prompt {
+    local userColour="34"   # Default = blue
+    local hostColour="32"   # Default = green
+
+    local separator1="@"
+    local separator2=":"
+    local separator3=">"
+
+    [ "$(whoami)" = "root" ]   && userColour="31" # Root = red
+    [ "$(whoami)" = "guest" ]  && userColour="33" # Guest = yellow
+
+    [[ ${HOSTNAME} = *Craft ]]     && hostColour="92" # Game Server = Light Green
+    [[ ${HOSTNAME} = *Pi ]]        && hostColour="95" # RaspberryPi = Light Magenta
+    [[ ${HOSTNAME} = RetroPie ]]   && hostColour="96" # RetroPie = Light Cyan
+
+    local ps1user="$USER"
+    local ps1host="\h"
+
+    local ps1path='$(get_path)'
+
+    if ${ENABLE_GIT}; then
+        local ps1gitSeparator1="\$(get_git_branch_separator '(')"
+        local ps1gitSeparator2="\$(get_git_branch_separator ')')\$(get_git_branch_separator ' ')"
+        local ps1gitBranchName="\$(get_git_branch_name)"
+        local ps1gitBranchIndicator="\$(get_git_branch_status_indicator)"
+    fi
+
+    if ${ENABLE_COLOURS}; then
+        ps1user="\[\e[01;${userColour}m\]${ps1user}\[\e[m\]"
+        ps1host="\[\e[${hostColour}m\]${ps1host}\[\e[m\]"
+
+        ps1path="\[\e[\$(get_path_colour)m\]${ps1path}\[\e[m\]"
+
+        if ${ENABLE_GIT}; then
+            ps1gitSeparator1="\[\e[m\]${ps1gitSeparator1}"
+            ps1gitSeparator2="\[\e[m\]${ps1gitSeparator2}"
+            ps1gitBranchName="\[\e[\$(get_git_branch_colour)m\]${ps1gitBranchName}"
+            ps1gitBranchIndicator="\[\e[\$(get_git_branch_status_colour)m\]${ps1gitBranchIndicator}\[\e[m\]"
+        fi
+    fi
+
+    local ps1git="${ps1gitSeparator1}${ps1gitBranchName}${ps1gitBranchIndicator}${ps1gitSeparator2}"
+    export PS1="$ps1user$separator1$ps1host$separator2${ps1path} $ps1git$separator3 "
+}
+
+if [ -z "${USER}" ] && [ ! -z "${USERNAME}" ]; then
+    export USER=${USERNAME}
+fi
+
+set_custom_prompt
