@@ -4,6 +4,7 @@
 
 ENABLE_COLOURS=true
 ENABLE_GIT=true
+ENABLE_GIT_STATUS=true
 
 function get_git_branch_name {
     local branchName=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
@@ -158,7 +159,8 @@ function set_custom_prompt {
         local ps1gitSeparator1="\$(get_git_branch_separator '(')"
         local ps1gitSeparator2="\$(get_git_branch_separator ')')\$(get_git_branch_separator ' ')"
         local ps1gitBranchName="\$(get_git_branch_name)"
-        local ps1gitBranchIndicator="\$(get_git_branch_status_indicator)"
+
+        ${ENABLE_GIT_STATUS} && local ps1gitBranchIndicator="\$(get_git_branch_status_indicator)"
     fi
 
     if ${ENABLE_COLOURS}; then
@@ -171,7 +173,8 @@ function set_custom_prompt {
             ps1gitSeparator1="\[\e[m\]${ps1gitSeparator1}"
             ps1gitSeparator2="\[\e[m\]${ps1gitSeparator2}"
             ps1gitBranchName="\[\e[\$(get_git_branch_colour)m\]${ps1gitBranchName}"
-            ps1gitBranchIndicator="\[\e[\$(get_git_branch_status_colour)m\]${ps1gitBranchIndicator}\[\e[m\]"
+
+            ${ENABLE_GIT_STATUS} && ps1gitBranchIndicator="\[\e[\$(get_git_branch_status_colour)m\]${ps1gitBranchIndicator}\[\e[m\]"
         fi
     fi
 
