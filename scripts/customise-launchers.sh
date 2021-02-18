@@ -246,8 +246,6 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/designer-qt4.desktop" NoDisplay "tr
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/designer.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/diffuse.desktop" Name "Diffuse"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/Discord.desktop" Icon "discord"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/dosbox.desktop" Categories "Application;Emulator;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/dosbox.desktop" Name "DosBox"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ffadomixer.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/firefox-developer.desktop" Categories "Network;WebBrowser;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/fluid.desktop" NoDisplay "true"
@@ -260,18 +258,22 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gksu-properties.desktop" NoDisplay 
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gksu.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gnome-disks.desktop" Name[ro] "Discuri"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gnome-system-monitor.desktop" Name[ro] "Monitor de Sistem"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gnome-twofactorauth.desktop" Categories "GNOME;GTK;Utility;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gnome-twofactorauth.desktop" Name "Authenticator"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gnubg.desktop" Name "Backgammon"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gnubg.desktop" Name[ro] "Table"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gparted.desktop" Name "Partition Editor"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gparted.desktop" Name[ro] "Editor de Partiții"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gnome-twofactorauth.desktop" \
+    Categories "GNOME;GTK;Utility;" \
+    Name "Authenticator"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gnubg.desktop" \
+    Name "Backgammon" \
+    Name[ro] "Table"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gparted.desktop" \
+    Name "Partition Editor" \
+    Name[ro] "Editor de Partiții"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gtk-lshw.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gucharmap.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/hardinfo.desktop" Categories "System;Monitor;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/hardinfo.desktop" Icon "hardinfo"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/hardinfo.desktop" Name "Hardware Information"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/hardinfo.desktop" Name[ro] "Informații Hardware"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/hardinfo.desktop" \
+    Categories "System;Monitor;" \
+    Icon "hardinfo" \
+    Name "Hardware Information" \
+    Name[ro] "Informații Hardware"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/htop.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ibus-setup.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/inkscape.desktop" Name "Inkscape"
@@ -306,10 +308,6 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-system-monitor.desktop" Name[r
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/minecraft-launcher.desktop" Name "Minecraft"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/minecraft-launcher.desktop" StartupWMClass "Minecraft* 1.16.4"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/monodevelop.desktop" Exec "env GNOME_DESKTOP_SESSION_ID="" monodevelop %F"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/Monogame\ Pipeline.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/Monogame\ Pipeline.desktop" StartupWMClass "Pipeline"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/MonogamePipeline.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/MonogamePipeline.desktop" StartupWMClass "Pipeline"
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/nfs2se.desktop" \
     Name "Need for Speed 2" \
     Icon "nfs2se" \
@@ -566,6 +564,15 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/atril.desktop" \
 done
 
 ################
+### DOSBOX ###
+################
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/dosbox.desktop"; do
+    set_launcher_enties "${LAUNCHER}" \
+        Categories "Application;Emulator;" \
+        Name "DosBox"
+done
+
+################
 ### ELECTRON ###
 ################
 for ELECTRON_VERSION in "" {1..16}; do
@@ -651,6 +658,16 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/mate-system-log.desktop" \
         Name "Logs" \
         Name[ro] "Loguri" \
         OnlyShowIn ""
+done
+
+################
+### MONOGAME ###
+################
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/Monogame\ Pipeline.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/MonogamePipeline.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        NoDisplay "true" \
+        StartupWMClass "Pipeline"
 done
 
 ####################
@@ -871,6 +888,7 @@ if [ -f "/usr/bin/steam" ]; then
     [ ! -f "${STEAM_ICON_THEME_PATH}/48x48/apps" ]  && mkdir -p "${STEAM_ICON_THEME_PATH}/48x48/apps"
 
     for STEAM_APP_LAUNCHER in ${STEAM_LAUNCHERS_PATH}/* ; do
+        echo "Scanning $STEAM_APP_LAUNCHER"
         APP_ID=$(cat "${STEAM_APP_LAUNCHER}" | grep "^Exec" | awk -F/ '{print $4}')
         IS_APP_INSTALLED="false"
 
