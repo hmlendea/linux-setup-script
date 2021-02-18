@@ -24,9 +24,44 @@ set_config_value() {
             sed -i 's|^'"${KEY}"'=.*$|'"${KEY}"'='"${VALUE}"'|g' "$FILE"
         else
             LINE="$KEY=$VALUE"
-            echo "$LINE" | sudo tee -a "$FILE"
+            echo "$LINE" | sudo tee -a "$FILE" &>/dev/null
             #printf "$LINE\n" >> "$FILE"
         fi
+
+        echo "${FILE} >>> ${KEY} = ${VALUE}"
+    fi
+}
+
+set_firefox_config_string() {
+    set_firefox_config "${1}" "${2}" "\"${@:3}\""
+}
+
+set_firefox_config() {
+    PROFILE="${1}"
+    KEY="${2}"
+    VALUE_RAW="${@:3}"
+
+    FILE="${HOME_REAL}/.mozilla/firefox/${PROFILE}/prefs.js"
+
+    if [ ! -f "${FILE}" ]; then
+        # TODO: Handle directory creation
+        touch "${FILE}"
+    fi
+
+    VALUE=$(echo "${VALUE_RAW}" | sed -e 's/[]\/$*.^|[]/\\&/g')
+    FILE_CONTENT=$(cat "${FILE}")
+
+    # If the value is not already set
+    if [ $(grep -c "^user_pref(\"${KEY}\", *${VALUE});$" <<< "${FILE_CONTENT}") == 0 ] && \
+       [ $(grep -c "^user_pref(\"${KEY}\", *\"${VALUE}\");$" <<< "${FILE_CONTENT}") == 0 ]; then
+        # If the config key already exists (with a different value)
+        if [ $(grep -c "^user_pref(\"${KEY}.*$" <<< "${FILE_CONTENT}") -gt 0 ]; then
+            sed -i '/^user_pref('"\"${KEY}"'/d' "${FILE}"
+        fi
+
+        LINE="user_pref(\"${KEY}\", ${VALUE});"
+        echo "${LINE}" | sudo tee -a "${FILE}" &>/dev/null
+        #printf "$LINE\n" >> "$FILE"
 
         echo "${FILE} >>> ${KEY} = ${VALUE}"
     fi
@@ -374,6 +409,16 @@ if [ -f "${HOME_REAL}/.config/pcmanfm/LXDE/desktop-items-0.conf" ]; then
     set_config_value "${PCMANFM_DESKTOP_CONFIG_FILE}" show_documents 0
     set_config_value "${PCMANFM_DESKTOP_CONFIG_FILE}" show_trash 0
     set_config_value "${PCMANFM_DESKTOP_CONFIG_FILE}" show_mounts 0
+fi
+
+###############
+### FIREFOX ###
+###############
+if [ -f "/usr/bin/firefox" ]; then
+    FIREFOX_PROFILES_INI_FILE="${HOME_REAL}/.mozilla/firefox/profiles.ini"
+    FIREFOX_PROFILE_ID=$(grep "^Path=" "${FIREFOX_PROFILES_INI_FILE}" | awk -F= '{print $2}')
+
+    set_firefox_config "${FIREFOX_PROFILE_ID}" full-screen-api.warning.timeout 0
 fi
 
 ####################
