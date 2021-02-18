@@ -224,11 +224,8 @@ if ${HAS_GUI}; then
 
     install-pkg networkmanager
     install-pkg networkmanager-openvpn
-    install-pkg networkmanager-pptp
-    install-pkg networkmanager-vpnc
     ! ${POWERFUL_PC} && install-pkg network-manager-applet
 
-    install-dep modemmanager
     install-dep dnsmasq
 
     if ${POWERFUL_PC}; then
