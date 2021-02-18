@@ -330,6 +330,8 @@ if ${HAS_GUI}; then
     #${POWERFUL_PC} && install-pkg chrome-gnome-shell
 
     install-pkg firefox
+    install-pkg firefox-h264ify
+
     install-pkg transmission-gtk
 
     # Communication
