@@ -266,6 +266,9 @@ if [ -f "/usr/bin/panther_launcher" ]; then
     set_gsetting "org.rastersoft.panther" use-category true
 fi
 
+ENVIRONMENT_VARS_FILE="/etc/environment"
+set_config_value "${ENVIRONMENT_VARS_FILE}" QT_QPA_PLATFORMTHEME "gtk3"
+
 GTK2_CONFIG_FILE="${HOME_REAL}/.gtkrc-2.0"
 set_config_value "${GTK2_CONFIG_FILE}" gtk-theme-name "${GTK2_THEME}"
 set_config_value "${GTK2_CONFIG_FILE}" gtk-icon-theme-name "${ICON_THEME}"
@@ -329,6 +332,13 @@ fi
 ###################
 if [ -f "/usr/bin/mate-calc" ]; then
     set_gsetting "org.mate.calc" show-thousands true
+fi
+
+#################
+### CHAT APPS ###
+#################
+if [ -f "/usr/bin/telegram-desktop" ]; then
+    set_config_value "${ENVIRONMENT_VARS_FILE}" TDESKTOP_I_KNOW_ABOUT_GTK_INCOMPATIBILITY "1"
 fi
 
 ########################
