@@ -418,7 +418,14 @@ if [ -f "/usr/bin/firefox" ]; then
     FIREFOX_PROFILES_INI_FILE="${HOME_REAL}/.mozilla/firefox/profiles.ini"
     FIREFOX_PROFILE_ID=$(grep "^Path=" "${FIREFOX_PROFILES_INI_FILE}" | awk -F= '{print $2}')
 
+    set_firefox_config "${FIREFOX_PROFILE_ID}" browser.urlbar.autoFill false
+    set_firefox_config "${FIREFOX_PROFILE_ID}" extensions.pocket.enabled false
+    set_firefox_config "${FIREFOX_PROFILE_ID}" extensions.screenshots.disabled true
+    set_firefox_config "${FIREFOX_PROFILE_ID}" findbar.highlightAll true
     set_firefox_config "${FIREFOX_PROFILE_ID}" full-screen-api.warning.timeout 0
+    set_firefox_config "${FIREFOX_PROFILE_ID}" media.autoplay.enabled false
+    set_firefox_config "${FIREFOX_PROFILE_ID}" security.insecure_connection_text.enabled true
+    set_firefox_config "${FIREFOX_PROFILE_ID}" toolkit.tabbox.switchByScrolling true
 fi
 
 ####################
