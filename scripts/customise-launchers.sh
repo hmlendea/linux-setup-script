@@ -191,29 +191,6 @@ create_launcher() {
     fi
 }
 
-set_theme() {
-    FILE="$1"
-    THEME="$2"
-    LINE="export GTK2_RC_FILES=\"\/usr\/share\/themes\/${THEME}\/gtk-2.0\/gtkrc\""
-    MODIFIED=0
-
-    if [ ! -f "${FILE}" ]; then
-        return
-    fi
-
-    if [ $(grep -c '^export GTK2_RC_FILES=.*$' "${FILE}") -eq 0 ]; then
-        MODIFIED=1
-        sed -i '2s/^/'"${LINE}"'\n/' "${FILE}"
-    elif [ $(grep -c '^'"${LINE}"'$' "${FILE}") -eq 0 ]; then
-        MODIFIED=1
-        sed -i 's/^export GTK2_RC_FILES=.*$/'"${LINE}"'/' "${FILE}"
-    fi
-
-    if [ ${MODIFIED} == 1 ]; then
-        echo "${FILE} --> ${LINE}"
-    fi
-}
-
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/7zFM.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/alltray.desktop" NoDisplay "true"
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/amidst.desktop" \
@@ -236,10 +213,6 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/Cisco-PacketTracer.desktop" \
     Categories "Network;Development;" \
     Icon "logview" \
     StartupWMClass "PacketTracer6"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/cmake-gui.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/CMake.desktop" Icon "cmake"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/cmake.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/CMake.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/codeblocks.desktop" Name "Code::Blocks"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/cups.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/designer-qt4.desktop" NoDisplay "true"
@@ -269,7 +242,7 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gparted.desktop" \
     Name[ro] "Editor de Partiții"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gtk-lshw.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gucharmap.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/hardinfo.desktop" \
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/hardinfo.desktop" \
     Categories "System;Monitor;" \
     Icon "hardinfo" \
     Name "Hardware Information" \
@@ -277,11 +250,6 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/hardinfo.desktop" \
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/htop.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ibus-setup.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/inkscape.desktop" Name "Inkscape"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ipython.desktop" Categories "Development;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ipython.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ipython2.desktop" Categories "Development;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ipython2.desktop" Icon "ipython"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ipython2.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/libfm-pref-apps.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/linguist-qt4.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/linguist.desktop" NoDisplay "true"
@@ -326,9 +294,6 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.freedesktop.Piper.desktop" Cate
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.freedesktop.Piper.desktop" Icon "gnome-settings-mouse"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.freedesktop.Piper.desktop" Name "Mouse Settings"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Calendar.desktop" Categories "GNOME;GTK;Utility;Calendar;Core;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Cheese.desktop" Icon "camera"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Cheese.desktop" Name "Camera"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Cheese.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Contacts.desktop" Categories "GNOME;GTK;Utility;ContactManagement;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.DiskUtility.desktop" Categories "GNOME;GTK;System;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Epiphany.desktop" Name "Epiphany"
@@ -339,15 +304,16 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FeedReader.desktop" Name 
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.font-viewer.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.gnome-2048.desktop" Icon "2048"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Lollypop.desktop" Icon "lollypop"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Maps.desktop" Categories "GNOME;GTK;Utility;Navigation;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Photos.desktop" Icon "multimedia-photo-manager"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.seahorse.Application.desktop" Name[ro] "Parole și Chei"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.SoundRecorder.desktop" Categories "GNOME;GTK;Utility;Audio;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.tweaks.desktop" Categories "GNOME;GTK;System;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.tweaks.desktop" Icon "utilities-tweak-tool"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Weather.Application.desktop" Categories "GNOME;GTK;Utility;Navigation;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/pavucontrol.desktop" Categories "Audio;Mixer;System;GTK;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/pavucontrol.desktop" Name "Audio Settings"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/pavucontrol.desktop" \
+    Categories "Audio;Mixer;System;GTK;" \
+    Name "Audio Settings" \
+    Name[ro] "Setări Audio"
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/pcmanfm-desktop-pref.desktop" \
     Name "Desktop Customiser" \
     Name[ro] "Personalizare Desktop"
@@ -417,11 +383,6 @@ set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-aohghmighlieiainnegkcijnfilok
 set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-aohghmighlieiainnegkcijnfilokake-Default.desktop" NoDisplay "false"
 set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-app-list.desktop" NoDisplay "true"
 set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-hkgndiocipalkpejnpafdbdlfdjihomd-Default.desktop" Categories "ChromeApp;Network;FileTransfer;"
-set_launcher_entries "${LOCAL_LAUNCHERS_PATH}/chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default.desktop" \
-    Name "Maps" \
-    Name[ro] "Hărți" \
-    Categories "ChromeApp;Network;Navigation;" \
-    NoDisplay "false"
 set_launcher_entries "${LOCAL_LAUNCHERS_PATH}/valve-vrmonitor.desktop" \
     Name "SteamVR Monitor" \
     NoDisplay true
@@ -463,6 +424,16 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/galculator.desktop" \
     set_launcher_entries "${LAUNCHER}" \
         Name "Calculator" \
         Name[ro] "Calculator"
+done
+
+##############
+### CAMERA ###
+##############
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Cheese.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Camera" \
+        Name[ro] "Cameră" \
+        Icon "camera"
 done
 
 ##############
@@ -541,6 +512,17 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/wfica.desktop" \
     Name[ro] "Receptor Citrix" \
     StartupWMClass "Wfica"
 
+#############
+### CMAKE ###
+#############
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/cmake.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/cmake-gui.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/CMake.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Icon "cmake" \
+        NoDisplay "true"
+done
+
 ############################
 ### DISK USAGE ANALYZERS ###
 ############################
@@ -567,7 +549,7 @@ done
 ### DOSBOX ###
 ################
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/dosbox.desktop"; do
-    set_launcher_enties "${LAUNCHER}" \
+    set_launcher_entries "${LAUNCHER}" \
         Categories "Application;Emulator;" \
         Name "DosBox"
 done
@@ -660,6 +642,21 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/mate-system-log.desktop" \
         OnlyShowIn ""
 done
 
+############
+### MAPS ###
+############
+MAPS_APP_CATEGORIES="Network;Utility;Navigation;"
+for LAUNCHER in "${LOCAL_LAUNCHERS_PATH}/chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Maps.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Maps" \
+        Name[ro] "Hărți" \
+        Categories "${MAPS_APP_CATEGORIES}" \
+        NoDisplay "false"
+done
+set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default.desktop" Categories "ChromeApp;${MAPS_APP_CATEGORIES}"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Maps.desktop" Categories "GNOME;GTK;${MAPS_APP_CATEGORIES}"
+
 ################
 ### MONOGAME ###
 ################
@@ -690,6 +687,17 @@ for LAUNCHER in "${LOCAL_LAUNCHERS_PATH}/chrome-aghlkjcflkcaanjmefomlcfgflfdhkkg
         Icon "plexhometheater" \
         Categories "AudioVideo;Audio;Video;Player;" \
         StartupWMClass "crx_aghlkjcflkcaanjmefomlcfgflfdhkkg"
+done
+
+##############
+### PYTHON ###
+##############
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/ipython.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/ipython2.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Categories "Development;" \
+        NoDisplay "true" \
+        Icon "ipython"
 done
 
 ######################
@@ -766,9 +774,6 @@ done
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss-url-handler.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code.desktop" StartupWMClass "code-oss"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/visual-studio-code.desktop" StartupWMClass "Code"
-
-# Themes
-set_theme "/usr/bin/tor-browser-en" "Adwaita"
 
 rm -rf "${HOME_REAL}/.local/share/applications/wine-*"
 rm -rf "${HOME_REAL}/.local/share/applications/wine"
@@ -888,7 +893,6 @@ if [ -f "/usr/bin/steam" ]; then
     [ ! -f "${STEAM_ICON_THEME_PATH}/48x48/apps" ]  && mkdir -p "${STEAM_ICON_THEME_PATH}/48x48/apps"
 
     for STEAM_APP_LAUNCHER in ${STEAM_LAUNCHERS_PATH}/* ; do
-        echo "Scanning $STEAM_APP_LAUNCHER"
         APP_ID=$(cat "${STEAM_APP_LAUNCHER}" | grep "^Exec" | awk -F/ '{print $4}')
         IS_APP_INSTALLED="false"
 
