@@ -418,14 +418,33 @@ if [ -f "/usr/bin/firefox" ]; then
     FIREFOX_PROFILES_INI_FILE="${HOME_REAL}/.mozilla/firefox/profiles.ini"
     FIREFOX_PROFILE_ID=$(grep "^Path=" "${FIREFOX_PROFILES_INI_FILE}" | awk -F= '{print $2}')
 
+    set_firefox_config "${FIREFOX_PROFILE_ID}" beacon.enabled false
+    set_firefox_config "${FIREFOX_PROFILE_ID}" browser.safebrowsing.downloads.remote.enabled false
+    set_firefox_config "${FIREFOX_PROFILE_ID}" browser.send_pings false
     set_firefox_config "${FIREFOX_PROFILE_ID}" browser.urlbar.autoFill false
+    set_firefox_config "${FIREFOX_PROFILE_ID}" browser.urlbar.speculativeConnect.enabled false
+    set_firefox_config "${FIREFOX_PROFILE_ID}" dom.event.clipboardevents.enabled false
     set_firefox_config "${FIREFOX_PROFILE_ID}" extensions.pocket.enabled false
     set_firefox_config "${FIREFOX_PROFILE_ID}" extensions.screenshots.disabled true
     set_firefox_config "${FIREFOX_PROFILE_ID}" findbar.highlightAll true
     set_firefox_config "${FIREFOX_PROFILE_ID}" full-screen-api.warning.timeout 0
     set_firefox_config "${FIREFOX_PROFILE_ID}" media.autoplay.enabled false
+    set_firefox_config "${FIREFOX_PROFILE_ID}" media.navigator.enabled false
+    set_firefox_config "${FIREFOX_PROFILE_ID}" network.IDN_show_punycode true
+    set_firefox_config "${FIREFOX_PROFILE_ID}" privacy.trackingprotection.enabled true
     set_firefox_config "${FIREFOX_PROFILE_ID}" security.insecure_connection_text.enabled true
     set_firefox_config "${FIREFOX_PROFILE_ID}" toolkit.tabbox.switchByScrolling true
+
+    # DNS Prefetching
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "network.dns.disablePrefetch" "true"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "network.dns.disablePrefetchFromHTTPS" "true"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "network.predictor.enabled" "false"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "network.predictor.enable-prefetch" "false"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "network.prefetch-next" "false"
+
+    # Fingerprinting
+    set_firefox_config "${FIREFOX_PROFILE_ID}" privacy.resistFingerprinting true
+    set_firefox_config "${FIREFOX_PROFILE_ID}" privacy.trackingprotection.fingerprinting.enabled true
 fi
 
 ####################
