@@ -418,22 +418,35 @@ if [ -f "/usr/bin/firefox" ]; then
     FIREFOX_PROFILES_INI_FILE="${HOME_REAL}/.mozilla/firefox/profiles.ini"
     FIREFOX_PROFILE_ID=$(grep "^Path=" "${FIREFOX_PROFILES_INI_FILE}" | awk -F= '{print $2}')
 
-    set_firefox_config "${FIREFOX_PROFILE_ID}" beacon.enabled false
-    set_firefox_config "${FIREFOX_PROFILE_ID}" browser.safebrowsing.downloads.remote.enabled false
-    set_firefox_config "${FIREFOX_PROFILE_ID}" browser.send_pings false
-    set_firefox_config "${FIREFOX_PROFILE_ID}" browser.urlbar.autoFill false
-    set_firefox_config "${FIREFOX_PROFILE_ID}" browser.urlbar.speculativeConnect.enabled false
-    set_firefox_config "${FIREFOX_PROFILE_ID}" dom.event.clipboardevents.enabled false
-    set_firefox_config "${FIREFOX_PROFILE_ID}" extensions.pocket.enabled false
-    set_firefox_config "${FIREFOX_PROFILE_ID}" extensions.screenshots.disabled true
-    set_firefox_config "${FIREFOX_PROFILE_ID}" findbar.highlightAll true
-    set_firefox_config "${FIREFOX_PROFILE_ID}" full-screen-api.warning.timeout 0
-    set_firefox_config "${FIREFOX_PROFILE_ID}" media.autoplay.enabled false
-    set_firefox_config "${FIREFOX_PROFILE_ID}" media.navigator.enabled false
-    set_firefox_config "${FIREFOX_PROFILE_ID}" network.IDN_show_punycode true
-    set_firefox_config "${FIREFOX_PROFILE_ID}" privacy.trackingprotection.enabled true
-    set_firefox_config "${FIREFOX_PROFILE_ID}" security.insecure_connection_text.enabled true
-    set_firefox_config "${FIREFOX_PROFILE_ID}" toolkit.tabbox.switchByScrolling true
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "beacon.enabled" "false"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.anchor_color" "#00BCD4"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.browser.in-content.dark-mode" "true"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.newtabpage.activity-stream.feeds.section.highlights" "false"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.newtabpage.activity-stream.feeds.snippets" "false"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.newtabpage.activity-stream.feeds.topsites" "false"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.safebrowsing.downloads.remote.enabled" "false"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.search.region" "RO"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.send_pings" "false"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.tabs.tabMinWidth" "0"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.tabs.insertAfterCurrent" "true"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.tabs.warnOnClose" "false"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.translation.detectLanguage" "true"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.underline_anchors" "false"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.uidensity" "1"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.autoFill" "false"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.speculativeConnect.enabled" "false"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "dom.event.clipboardevents.enabled" "false"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "extensions.pocket.enabled" "false"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "extensions.screenshots.disabled" "true"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "findbar.highlightAll" "true"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "full-screen-api.warning.timeout" "0"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "media.autoplay.enabled" "false"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "media.navigator.enabled" "false"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "network.IDN_show_punycode" "true"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "privacy.trackingprotection.enabled" "true"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "security.insecure_connection_text.enabled" "true"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "security.sandbox.content.level" "0" # iHD fix
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "toolkit.tabbox.switchByScrolling" "true"
 
     # DNS Prefetching
     set_firefox_config "${FIREFOX_PROFILE_ID}" "network.dns.disablePrefetch" "true"
