@@ -122,3 +122,4 @@
 40950=stronghold.exe
 1158310=ck3
 249630=Delver
+289300=facesofwar.exe
