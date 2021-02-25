@@ -437,7 +437,6 @@ if [ -f "/usr/bin/firefox" ]; then
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.autoFill" "false"
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.speculativeConnect.enabled" "false"
     set_firefox_config "${FIREFOX_PROFILE_ID}" "dom.event.clipboardevents.enabled" "false"
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "extensions.pocket.enabled" "false"
     set_firefox_config "${FIREFOX_PROFILE_ID}" "extensions.screenshots.disabled" "true"
     set_firefox_config "${FIREFOX_PROFILE_ID}" "findbar.highlightAll" "true"
     set_firefox_config "${FIREFOX_PROFILE_ID}" "full-screen-api.warning.timeout" "0"
@@ -448,6 +447,24 @@ if [ -f "/usr/bin/firefox" ]; then
     set_firefox_config "${FIREFOX_PROFILE_ID}" "security.insecure_connection_text.enabled" "true"
     set_firefox_config "${FIREFOX_PROFILE_ID}" "security.sandbox.content.level" "0" # iHD fix
     set_firefox_config "${FIREFOX_PROFILE_ID}" "toolkit.tabbox.switchByScrolling" "true"
+
+    # Useless features
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "extensions.pocket.enabled" "false"
+
+    # Telemetry
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.newtabpage.activity-stream.telemetry" "false"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.newtabpage.activity-stream.feeds.telemetry" "false"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.ping-centre.telemetry" "false"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "toolkit.telemetry.enabled" "false"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "toolkit.telemetry.archive.enabled" "false"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "toolkit.telemetry.bhrPing.enabled" "false"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "toolkit.telemetry.firstShutdownPing.enabled" "false"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "toolkit.telemetry.hybridContent.enabled" "false"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "toolkit.telemetry.newProfilePing.enabled" "false"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "toolkit.telemetry.reportingpolicy.firstRun" "false"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "toolkit.telemetry.shutdownPingSender.enabled" "false"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "toolkit.telemetry.unified" "false"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "toolkit.telemetry.updatePing.enabled" "false"
 
     # DNS Prefetching
     set_firefox_config "${FIREFOX_PROFILE_ID}" "network.dns.disablePrefetch" "true"
