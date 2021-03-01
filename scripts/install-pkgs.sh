@@ -228,6 +228,9 @@ if ${HAS_GUI}; then
 
     install-dep dnsmasq
 
+    # Audio drivers
+    install-pkg sennheiser-gsp670-pulseaudio-profile
+
     if ${POWERFUL_PC}; then
         install-pkg gnome-bluetooth
     else
@@ -330,7 +333,6 @@ if ${HAS_GUI}; then
     #${POWERFUL_PC} && install-pkg chrome-gnome-shell
 
     install-pkg firefox
-    install-pkg firefox-h264ify
 
     install-pkg transmission-gtk
 
