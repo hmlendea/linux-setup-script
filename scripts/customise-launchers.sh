@@ -340,9 +340,6 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/steam.desktop" \
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/stoken-gui-small.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/stoken-gui.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/system-config-printer.desktop" Name[ro] "Configurare Imprimantă"
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/teams.desktop" \
-    Name "Teams" \
-    Categories "Application;Network;Chat;InstantMessaging;Communication;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/Thunar-bulk-rename.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/thunar-bulk-rename.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/thunar-settings.desktop" NoDisplay "true"
@@ -460,6 +457,7 @@ fi
 ### CHAT APPS ###
 #################
 CHAT_APP_CATEGORIES="Network;Chat;InstantMessaging;Communication;"
+
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/whatsapp-desktop.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier-dark.desktop" \
@@ -476,11 +474,20 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier.desktop" Startu
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier-dark.desktop" StartupWMClass "whatsapp-nativefier-d52542"
 set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-nfjdjopfnbnkmfldmeffmhgodmlhdnei-Default.desktop" Categories "ChromeApp;${CHAT_APP_CATEGORIES}"
 
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/teams.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/teams-insiders.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Teams" \
+        Name[ro] "Teams" \
+        Icon "teams" \
+        Categories "${CHAT_APP_CATEGORIES}"
+done
+
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/telegramdesktop.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Telegram" \
         Name[ro] "Telegram" \
-        Categories "${CHAT_APP_CATEGORIES};Qt;"
+        Categories "Qt;${CHAT_APP_CATEGORIES};"
 done
 
 ##############
