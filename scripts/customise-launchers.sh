@@ -209,10 +209,6 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/ca.desrt.dconf-editor.desktop" \
     Name "Configuration Editor" \
     Name[ro] "Editor de Configurări"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/caffeine-indicator.desktop" NoDisplay "true"
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/Cisco-PacketTracer.desktop" \
-    Categories "Network;Development;" \
-    Icon "logview" \
-    StartupWMClass "PacketTracer6"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/codeblocks.desktop" Name "Code::Blocks"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/cups.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/designer-qt4.desktop" NoDisplay "true"
@@ -222,15 +218,11 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/Discord.desktop" Icon "discord"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ffadomixer.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/firefox-developer.desktop" Categories "Network;WebBrowser;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/fluid.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/fma-config-tool.desktop" Icon "nautilus-actions"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/fma-config-tool.desktop" Name "File Manager Actions"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/GameConqueror.desktop" Categories "Utility;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gimp.desktop" Name "GIMP"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gimp.desktop" StartupWMClass "Gimp-2.10"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gksu-properties.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gksu.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gnome-disks.desktop" Name[ro] "Discuri"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gnome-system-monitor.desktop" Name[ro] "Monitor de Sistem"
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gnome-twofactorauth.desktop" \
     Categories "GNOME;GTK;Utility;" \
     Name "Authenticator"
@@ -266,13 +258,7 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/lxsession-default-apps.desktop" \
     Name[ro] "Aplicații Implicite"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/lxtask.desktop" Name[ro] "Manager de Activități"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-color-select.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-dictionary.desktop" Name "Dictionary"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-dictionary.desktop" Name[ro] "Dicționar"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-disk.desktop" Icon "gnome-disks"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-disk.desktop" Name[ro] "Discuri"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-search-tool.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-system-monitor.desktop" Name "System Monitor"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-system-monitor.desktop" Name[ro] "Monitor de Sistem"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/minecraft-launcher.desktop" Name "Minecraft"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/minecraft-launcher.desktop" StartupWMClass "Minecraft* 1.16.4"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/monodevelop.desktop" Exec "env GNOME_DESKTOP_SESSION_ID="" monodevelop %F"
@@ -303,7 +289,6 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FeedReader.desktop" Icon 
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FeedReader.desktop" Name "Feed Reader"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.font-viewer.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.gnome-2048.desktop" Icon "2048"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Lollypop.desktop" Icon "lollypop"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Photos.desktop" Icon "multimedia-photo-manager"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.seahorse.Application.desktop" Name[ro] "Parole și Chei"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.SoundRecorder.desktop" Categories "GNOME;GTK;Utility;Audio;"
@@ -320,8 +305,6 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/pcmanfm-desktop-pref.desktop" \
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/PCSX2.desktop" Icon "pcsx2"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/picard.desktop" StartupWMClass ""
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/plank.desktop" NoDisplay true
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/postman.desktop" Categories "Development;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/postman.desktop" Icon "postman"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/qdbusviewer-qt4.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/qdbusviewer.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/qtconfig-qt4.desktop" NoDisplay "true"
@@ -364,13 +347,11 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/unity-monodevelop.desktop" \
     Name "MonoDevelop - Unity" \
     Icon "unity-monodevelop" \
     Categories "Development;IDE;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/uxterm.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/vim.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/virtualbox.desktop" Name "VirtualBox"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/vlc.desktop" Name "VLC"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/wireshark-gtk.desktop" Name "Wireshark"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/xdvi.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/xterm.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/yelp.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/zenmap-root.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/zenmap.desktop" NoDisplay "true"
@@ -530,6 +511,15 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/cmake.desktop" \
         NoDisplay "true"
 done
 
+####################
+### DICTIONARIES ###
+####################
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/mate-dictionary.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Dictionary" \
+        Name[ro] "Dicționar"
+done
+
 ############################
 ### DISK USAGE ANALYZERS ###
 ############################
@@ -539,6 +529,16 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/baobab.desktop" \
         Name "Disk Usage" \
         Name[ro] "Ocuparea Spațiului" \
         OnlyShowIn ""
+done
+
+######################
+### DISK UTILITIES ###
+######################
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gnome-disks.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/mate-disk.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name[ro] "Discuri"
+        Icon "gnome-disks"
 done
 
 ########################
@@ -696,6 +696,15 @@ for LAUNCHER in "${LOCAL_LAUNCHERS_PATH}/chrome-aghlkjcflkcaanjmefomlcfgflfdhkkg
         StartupWMClass "crx_aghlkjcflkcaanjmefomlcfgflfdhkkg"
 done
 
+###############
+### POSTMAN ###
+###############
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/postman.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Icon "postman" \
+        Categories "Development;"
+done
+
 ##############
 ### PYTHON ###
 ##############
@@ -723,6 +732,16 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gscreenshot.desktop" \
     Categories "Utility;" \
     StartupWMClass "gscreenshot"
 
+#######################
+### SYSTEM MONITORS ###
+#######################
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gnome-system-monitor.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/mate-system-monitor.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "System Monitor" \
+        Name[ro] "Monitor de Sistem"
+done
+
 ###################
 ### TEAM VIEWER ###
 ###################
@@ -746,6 +765,9 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gnome-terminal.desktop" \
         Name "Terminal" \
         Name[ro] "Terminal"
 done
+
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/xterm.desktop" NoDisplay "true"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/uxterm.desktop" NoDisplay "true"
 
 ####################
 ### TEXT EDITORS ###
