@@ -220,6 +220,9 @@ if [ -f "/usr/bin/gnome-shell" ]; then
 
     set_gsetting "org.gnome.desktop.datetime" automatic-timezone true
 
+    set_gsetting "org.gnome.desktop.interface" clock-show-weekday true
+    set_gsetting "org.gnome.desktop.interface" enable-hot-corners false
+
     set_gsetting "org.gnome.desktop.privacy" old-files-age "uint32 14"
     set_gsetting "org.gnome.desktop.privacy" remove-old-temp-files "true"
     set_gsetting "org.gnome.desktop.privacy" remove-old-trash-files "true"
@@ -234,7 +237,9 @@ if [ -f "/usr/bin/gnome-shell" ]; then
     set_gsetting "org.gnome.desktop.wm.keybindings" switch-group-backward "['<Shift><Super>Tab']"
     set_gsetting "org.gnome.desktop.wm.keybindings" toggle-fullscreen "['<Super>f']"
 
-    set_gsetting "org.gnome.desktop.wm.preferences" button-layout ":minimize,maximize,close"
+    #set_gsetting "org.gnome.desktop.wm.preferences" button-layout ":minimize,maximize,close"
+    set_gsetting "org.gnome.desktop.wm.preferences" button-layout "close,maximize,minimize:"
+    set_gsetting "org.gnome.desktop.wm.preferences" theme "${GTK3_THEME}"
     set_gsetting "org.gnome.desktop.wm.preferences" titlebar-font "${TITLEBAR_FONT}"
 
     set_gsetting "org.gnome.shell.overrides" attach-modal-dialogs false
