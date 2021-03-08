@@ -479,7 +479,7 @@ if [ -f "/usr/bin/firefox" ]; then
     set_firefox_config "${FIREFOX_PROFILE_ID}" "network.prefetch-next" "false"
 
     # Fingerprinting
-    set_firefox_config "${FIREFOX_PROFILE_ID}" privacy.resistFingerprinting true
+    #set_firefox_config "${FIREFOX_PROFILE_ID}" privacy.resistFingerprinting true
     set_firefox_config "${FIREFOX_PROFILE_ID}" privacy.trackingprotection.fingerprinting.enabled true
 fi
 
