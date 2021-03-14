@@ -537,7 +537,7 @@ done
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gnome-disks.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/mate-disk.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        Name[ro] "Discuri"
+        Name[ro] "Discuri" \
         Icon "gnome-disks"
 done
 
