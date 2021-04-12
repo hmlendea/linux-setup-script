@@ -1,6 +1,14 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-source ~/.shell_prompt
-source ~/.shell_vars
-source ~/.shell_aliases
+function loadSource {
+    FILE=$@
+
+    if [ -f "${FILE}" ]; then
+        source "${FILE}"
+    fi
+}
+
+loadSource ~/.shell_prompt
+loadSource ~/.shell_vars
+loadSource ~/.shell_aliases
