@@ -425,7 +425,6 @@ if [ -f "/usr/bin/firefox" ]; then
 
     set_firefox_config "${FIREFOX_PROFILE_ID}" "beacon.enabled" "false"
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.anchor_color" "#00BCD4"
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.browser.in-content.dark-mode" "true"
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.newtabpage.activity-stream.feeds.section.highlights" "false"
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.newtabpage.activity-stream.feeds.snippets" "false"
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.newtabpage.activity-stream.feeds.topsites" "false"
@@ -452,6 +451,12 @@ if [ -f "/usr/bin/firefox" ]; then
     set_firefox_config "${FIREFOX_PROFILE_ID}" "security.insecure_connection_text.enabled" "true"
     set_firefox_config "${FIREFOX_PROFILE_ID}" "security.sandbox.content.level" "0" # iHD fix
     set_firefox_config "${FIREFOX_PROFILE_ID}" "toolkit.tabbox.switchByScrolling" "true"
+
+    # Appearance
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "devtools.theme" "dark"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.browser.in-content.dark-mode" "true"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "ui.systemUsesDarkTheme" "true"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "widget.disable-native-theme-for-content" "true"
 
     # Useless features
     set_firefox_config "${FIREFOX_PROFILE_ID}" "extensions.pocket.enabled" "false"
