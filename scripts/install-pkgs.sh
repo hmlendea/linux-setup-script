@@ -208,6 +208,7 @@ if ${HAS_GUI}; then
         install-dep gnome-control-center
         install-pkg gnome-tweaks
         install-pkg gnome-backgrounds
+        install-pkg gnome-font-viewer
 
         install-dep system-config-printer # Dep for gnome-control-center
     else
