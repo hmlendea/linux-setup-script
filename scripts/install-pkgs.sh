@@ -187,8 +187,10 @@ if ${HAS_GUI}; then
     install-pkg jre-openjdk-headless
 
     if [ "${ARCH_FAMILY}" == "x86" ]; then
-        install-pkg dotnet-runtime-3.1
-        install-pkg aspnet-runtime-3.1
+        install-pkg dotnet-runtime
+        install-pkg aspnet-runtime
+#        install-pkg dotnet-runtime-3.1
+#        install-pkg aspnet-runtime-3.1
     elif [ "${ARCH_FAMILY}" == "arm" ]; then
         install-pkg dotnet-runtime-bin
         install-pkg aspnet-runtime-bin
@@ -368,7 +370,8 @@ if ${HAS_GUI}; then
     fi
 
     # Development
-    install-pkg dotnet-sdk-3.1
+    install-pkg dotnet-sdk
+#    install-pkg dotnet-sdk-3.1
     #install-pkg jdk
 
     if [ "${ARCH_FAMILY}" == "x86" ]; then
