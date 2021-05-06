@@ -385,7 +385,8 @@ if ${HAS_GUI}; then
     [ "${ARCH_FAMILY}" == "arm" ] && install-pkg code-headmelted-bin
 
     # Tools
-    [ "${ARCH_FAMILY}" == "x86" ] && install-pkg google-keep-nativefier
+    [ "${ARCH_FAMILY}" == "x86" ] && install-pkg simplenote-electron-bin
+    [ "${ARCH_FAMILY}" == "arm" ] && install-pkg simplenote-electron-arm-bin
 
     # Filesystem / Partitioning
     install-pkg gparted
