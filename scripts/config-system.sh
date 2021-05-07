@@ -440,7 +440,7 @@ if [ -f "/usr/bin/firefox" ]; then
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.uidensity" "1"
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.autoFill" "false"
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.speculativeConnect.enabled" "false"
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "dom.event.clipboardevents.enabled" "false"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "dom.event.clipboardevents.enabled" "true" # Fix for Google's office suite
     set_firefox_config "${FIREFOX_PROFILE_ID}" "extensions.screenshots.disabled" "true"
     set_firefox_config "${FIREFOX_PROFILE_ID}" "findbar.highlightAll" "true"
     set_firefox_config "${FIREFOX_PROFILE_ID}" "full-screen-api.warning.timeout" "0"
