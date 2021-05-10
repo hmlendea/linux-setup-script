@@ -421,7 +421,7 @@ fi
 ###############
 if [ -f "/usr/bin/firefox" ]; then
     FIREFOX_PROFILES_INI_FILE="${HOME_REAL}/.mozilla/firefox/profiles.ini"
-    FIREFOX_PROFILE_ID=$(grep "^Path=" "${FIREFOX_PROFILES_INI_FILE}" | awk -F= '{print $2}')
+    FIREFOX_PROFILE_ID=$(grep "^Path=" "${FIREFOX_PROFILES_INI_FILE}" | awk -F= '{print $2}' | head -n 1)
 
     set_firefox_config "${FIREFOX_PROFILE_ID}" "beacon.enabled" "false"
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.anchor_color" "#00BCD4"
