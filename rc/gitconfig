@@ -27,6 +27,8 @@
     textconv = astextplain
 [rebase]
     autosquash = true
+[init]
+    defaultBranch = master
 [help]
     format = html
 [http]
@@ -36,3 +38,4 @@
     lg = !git --no-pager log --reverse --pretty='%C(yellow)%h %C(bold blue)%<(16,trunc)%an%Creset %Cgreen%ad%Creset %s%C(auto)%d%Creset' --date=format:%H:%M -n32
     jeff = !git diff --ignore-space-at-eol -b -w --ignore-blank-lines
     new-branch = !git branch $1 && git checkout $1 && git push -u origin $1
+
