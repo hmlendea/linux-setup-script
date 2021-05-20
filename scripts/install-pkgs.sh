@@ -169,6 +169,7 @@ install-pkg lm_sensors
 if ${HAS_GUI}; then
     if [ "${ARCH_FAMILY}" == "x86" ]; then
         install-pkg grub
+        install-dep os-prober
         install-pkg update-grub
         install-dep linux-headers
     fi
