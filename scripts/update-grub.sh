@@ -13,14 +13,22 @@ function update-grub-rc {
     SOURCE_RC_PATH="${SOURCE_GRUB_RC_DIR}/${RC_FILE}"
     TARGET_RC_PATH="${TARGET_GRUB_RC_DIR}/${RC_FILE}"
 
-    if [ -d "${ROOT_DIR}" ]; then
+    if [ -d "${ROOT_DIR}" ] || [ "${ROOT_DIR}" == "/" ]; then
+        DO_COPY=false
+
         if [ -f "${TARGET_RC_PATH}" ]; then
             SOURCE_RC_CHECKSUM=$(sha256sum "${SOURCE_RC_PATH}")
             TARGET_RC_CHECKSUM=$(sha256sum "${TARGET_RC_PATH}")
 
             if [ "${SOURCE_RC_CHECKSUM}" != "${TARGET_RC_CHECKSUM}" ]; then
-                cp "${SOURCE_RC_PATH}" "${TARGET_RC_PATH}"
+                DO_COPY=true
             fi
+        else
+            DO_COPY=true
+        fi
+
+        if ${DO_COPY}; then
+            cp "${SOURCE_RC_PATH}" "${TARGET_RC_PATH}"
         fi
     elif [ -f "${TARGET_RC_PATH}" ]; then
         rm "${TARGET_RC_PATH}"
