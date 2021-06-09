@@ -439,7 +439,8 @@ fi
 #################
 CHAT_APP_CATEGORIES="Network;Chat;InstantMessaging;Communication;"
 
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/whatsapp-desktop.desktop" \
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/whatsapp-for-linux.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/whatsapp-desktop.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier-dark.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/whatsie.desktop" \

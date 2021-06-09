@@ -343,7 +343,7 @@ if ${HAS_GUI}; then
     install-pkg transmission-gtk
 
     # Communication
-    [ "${ARCH_FAMILY}" == "x86" ] && install-pkg whatsapp-nativefier-dark
+    [ "${ARCH_FAMILY}" == "x86" ] && install-pkg whatsapp-for-linux
     install-pkg telegram-desktop
 
     # Multimedia
