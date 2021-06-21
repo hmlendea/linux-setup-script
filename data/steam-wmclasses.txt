@@ -120,7 +120,7 @@
 728880=Overcooked2.x86_64
 736260=Chowdren
 804850=pax nova.exe
-813780=aoe2de_s.exe
+813780=steam_app_813780
 857980=void bastards.exe
 858810=steam_app_858810
 859580=imperator
