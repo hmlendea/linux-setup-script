@@ -368,6 +368,7 @@ if ${HAS_GUI}; then
             install-pkg steam
             install-dep steam-native-runtime
             install-pkg proton-ge-custom-bin
+            install-pkg luxtorpeda-git
         fi
     fi
 
