@@ -109,6 +109,7 @@
 350080=wolfoldblood_x64.exe
 362890=bms_linux
 367520=hollow_knight.x86_64
+374320=darksoulsiii.exe
 379720=doomx64vk.exe
 383150=DeadIslandGame
 383870=fw.x86_64
