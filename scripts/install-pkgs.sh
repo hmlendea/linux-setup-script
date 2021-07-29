@@ -163,7 +163,7 @@ install-pkg git
 install-pkg automake
 
 # Monitoring
-install-pkg alsi
+install-pkg neofetch
 install-pkg lm_sensors
 
 if ${HAS_GUI}; then
