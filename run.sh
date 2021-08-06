@@ -41,8 +41,8 @@ function execute-script-superuser() {
 
 function update-system() {
     echo "Updating the system..."
-    if [ -f "/usr/bin/yaourt" ]; then
-        yaourt -Suya --noconfirm --needed
+    if [ -f "/usr/bin/paru" ]; then
+        paru -Suya --noconfirm --needed
     else
         sudo pacman -Suy
     fi

@@ -6,11 +6,20 @@
 #export TERM=linux
 export LD_LIBRARY_PATH="${LD_LIBRARY_PATH-}:/usr/lib32"
 export SHELL="/bin/bash"
+
 export OLDPWD=$(pwd)
 export OLDPWD2=${OLDPWD}
 
 [ -f "/usr/bin/nano" ]      &&  export EDITOR=nano                          # Make nano the default editor
 [ -f "/usr/bin/optirun" ]   &&  export VGL_READBACK=pbo                     # Better optirun performance
+
+if [ "/usr/bin/paru" ]; then
+    PACKAGE_MANAGER="paru"
+elif [ "/usr/bin/yaourt" ]; then
+    PACKAGE_MANAGER="yaourt"
+else
+    PACKAGE_MANAGER="pacman"
+fi
 
 if [ "/usr/bin/dotnet" ]; then
     export DOTNET_CLI_TELEMETRY_OPTOUT=1        # Disable .NET Core telemetry
