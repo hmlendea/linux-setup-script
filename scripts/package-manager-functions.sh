@@ -16,8 +16,8 @@ function call-package-manager() {
 	if [ $(is-package-installed "${PKG}") -eq 0 ]; then
 		echo " >>> Installing package '$PKG'"
 
-		if [ -f "/usr/bin/yaourt" ]; then
-			yaourt --noconfirm $ARGS
+		if [ -f "/usr/bin/paru" ]; then
+			paru --noconfirm $ARGS
 		else
 			sudo pacman --noconfirm $ARGS
 		fi
@@ -50,7 +50,7 @@ function download-file {
 function install-pkg-aur-manually() {
 	PKG=$1
 
-	if [ $(is-package-installed yaourt) -eq 0 ]; then
+	if [ $(is-package-installed ${PKG}) -eq 0 ]; then
 		download-file "https://aur.archlinux.org/cgit/aur.git/snapshot/$PKG.tar.gz" "$PKG.tar.gz"
 		tar xvf "${PKG}.tar.gz"
 
