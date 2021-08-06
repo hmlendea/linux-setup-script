@@ -9,43 +9,19 @@ export SHELL="/bin/bash"
 export OLDPWD=$(pwd)
 export OLDPWD2=${OLDPWD}
 
-[ -f "/usr/bin/dotnet" ]    &&  export DOTNET_CLI_TELEMETRY_OPTOUT=1        # Disable .NET Core telemetry
-[ -f "/usr/bin/dotnet" ]    &&  export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1  # Disable .NET Core first time message
 [ -f "/usr/bin/nano" ]      &&  export EDITOR=nano                          # Make nano the default editor
 [ -f "/usr/bin/optirun" ]   &&  export VGL_READBACK=pbo                     # Better optirun performance
-[ -f "/usr/bin/wine" ]      &&  export WINEARCH=win32                       # Make WINE default to 32bit
-[ -f "/usr/bin/steam" ]     &&  export STEAM_RUNTIME=0                      # Disable Steam Runtime
 
-[ -d "/opt/dotnet/" ]       &&  export DOTNET_ROOT="/opt/dotnet/"           # .NET Root
-[ -d "/usr/share/dotnet/" ] &&  export DOTNET_ROOT="/usr/share/dotnet/"     # .NET Root
+if [ "/usr/bin/dotnet" ]; then
+    export DOTNET_CLI_TELEMETRY_OPTOUT=1        # Disable .NET Core telemetry
+    export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1  # Disable .NET Core first time message
 
-[ ! -z "${DOTNET_ROOT}" ]   &&  export MSBuildSDKsPath=$(printf "%s\n" ${DOTNET_ROOT}/sdk/*  | tail -1)"/Sdks/" # MS Build and Mono coexistance
+    [ -d "/opt/dotnet/" ]       &&  export DOTNET_ROOT="/opt/dotnet/"           # .NET Root
+    [ -d "/usr/share/dotnet/" ] &&  export DOTNET_ROOT="/usr/share/dotnet/"     # .NET Root
 
-source ~/.shell_aliases
+    # MS Build and Mono coexistance
+    [ ! -z "${DOTNET_ROOT}" ]   &&  export MSBuildSDKsPath=$(printf "%s\n" ${DOTNET_ROOT}/sdk/*  | tail -1)"/Sdks/"
 
-### PATH
-
-function try_set_dotnet_tools_dir {
-    TARGET_PATH="$1"
-
-    if [ -d "$TARGET_PATH" ]; then
-        export PATH="$PATH:$TARGET_PATH"
-    fi
-}
-
-function try_set_android_sdk_home {
-    NEW_PATH="$*"
-
-    if [ -d "$NEW_PATH" ]; then
-        export ANDROID_HOME="$NEW_PATH"
-        export ANDROID_SDK_PATH="$NEW_PATH"
-
-        export PATH=${PATH}:${ANDROID_HOME}/tools
-        export PATH=${PATH}:${ANDROID_HOME}/platform-tools
-        export PATH=${PATH}:${ANDROID_HOME}/system-images
-    fi
-}
-
-try_set_dotnet_tools_dir "$HOME/.dotnet/tools"
-try_set_android_sdk_home "$HOME/.Android/Sdk"
-
+    DOTNET_TOOLS_DIR="${HOME}/.dotnet/tools"
+    [ -d "${DOTNET_TOOLS_DIR}" ] && export PATH="$PATH:${DOTNET_TOOLS_DIR}"
+fi
