@@ -86,7 +86,7 @@
 271590=gta5.exe
 274170=HotlineMiami2
 275390=steam_app_275390
-275850=nms.exe
+275850=steam_app_275850
 281990=stellaris
 286690=metro
 287450=steam_app_287450
