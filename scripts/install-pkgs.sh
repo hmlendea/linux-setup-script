@@ -303,7 +303,7 @@ if ${HAS_GUI}; then
         install-pkg gnome-shell-extension-installer
         install-pkg gnome-shell-extension-dash-to-dock
         install-pkg gnome-shell-extension-sound-output-device-chooser
-        install-pkg gnome-shell-extension-gsconnect-git
+        install-pkg gnome-shell-extension-gsconnect
         install-pkg gnome-shell-extension-multi-monitors-add-on-git
         install-pkg gnome-shell-extension-openweather-git
     fi
@@ -366,7 +366,7 @@ if ${HAS_GUI}; then
         # Gaming
         if [ "${ARCH_FAMILY}" == "x86" ]; then
             install-pkg steam
-            install-dep steam-native-runtime
+            #install-dep steam-native-runtime
             install-pkg proton-ge-custom-bin
             install-pkg luxtorpeda-git
         fi
