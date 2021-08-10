@@ -7,17 +7,13 @@ ENABLE_GIT=true
 ENABLE_GIT_STATUS=true
 
 function get_git_prompt {
-    [ ! ${ENABLE_GIT} ] && return
+    ! ${ENABLE_GIT} && return
 
     BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
 
     [ -z "${BRANCH_NAME}" ] && return
 
-    BRANCH_STATUS=$(get_git_branch_status)
-
     BRANCH_NAME_COLOUR="36"
-    BRANCH_STATUS_COLOUR=""
-    BRANCH_STATUS_INDICATOR=""
 
     if [ "${BRANCH_NAME}" = "HEAD" ]; then
         BRANCH_NAME_COLOUR="41"
@@ -25,24 +21,30 @@ function get_git_prompt {
         BRANCH_NAME_COLOUR="93"
     fi
 
-    if [ "${BRANCH_STATUS}" = "local-changes" ]; then
-        BRANCH_STATUS_COLOUR="32"
-        BRANCH_STATUS_INDICATOR="*" #" ■"
-    elif [ "${BRANCH_STATUS}" = "local-only" ]; then
-        BRANCH_STATUS_COLOUR="93"
-        BRANCH_STATUS_INDICATOR="~"
-    elif [ "${BRANCH_STATUS}" = "behind" ]; then
-        BRANCH_STATUS_COLOUR="31"
-        BRANCH_STATUS_INDICATOR="-" #" ▼"
-    elif [ "${BRANCH_STATUS}" = "ahead" ]; then
-        BRANCH_STATUS_COLOUR="92"
-        BRANCH_STATUS_INDICATOR="+" #" ▲"
-    elif [ "${BRANCH_STATUS}" = "diverged" ]; then
-        BRANCH_STATUS_COLOUR="91"
-        BRANCH_STATUS_INDICATOR="±" #" ♦"
-    fi
+    if ${ENABLE_GIT_STATUS} ; then
+        BRANCH_STATUS=$(get_git_branch_status)
+        BRANCH_STATUS_COLOUR=""
+        BRANCH_STATUS_INDICATOR=""
 
-    [ -n "${BRANCH_STATUS_INDICATOR}" ] && BRANCH_STATUS_INDICATOR=" ${BRANCH_STATUS_INDICATOR}"
+        if [ "${BRANCH_STATUS}" = "local-changes" ]; then
+            BRANCH_STATUS_COLOUR="32"
+            BRANCH_STATUS_INDICATOR="*" #" ■"
+        elif [ "${BRANCH_STATUS}" = "local-only" ]; then
+            BRANCH_STATUS_COLOUR="93"
+            BRANCH_STATUS_INDICATOR="~"
+        elif [ "${BRANCH_STATUS}" = "behind" ]; then
+            BRANCH_STATUS_COLOUR="31"
+            BRANCH_STATUS_INDICATOR="-" #" ▼"
+        elif [ "${BRANCH_STATUS}" = "ahead" ]; then
+            BRANCH_STATUS_COLOUR="92"
+            BRANCH_STATUS_INDICATOR="+" #" ▲"
+        elif [ "${BRANCH_STATUS}" = "diverged" ]; then
+            BRANCH_STATUS_COLOUR="91"
+            BRANCH_STATUS_INDICATOR="±" #" ♦"
+        fi
+
+        [ -n "${BRANCH_STATUS_INDICATOR}" ] && BRANCH_STATUS_INDICATOR=" ${BRANCH_STATUS_INDICATOR}"
+    fi
 
     PS1_BRANCH_SEPARATOR1="("
     PS1_BRANCH_NAME=${BRANCH_NAME}
@@ -50,10 +52,10 @@ function get_git_prompt {
     PS1_BRANCH_SEPARATOR2=")"
 
     if ${ENABLE_COLOURS}; then
-        PS1_BRANCH_SEPARATOR1="\033[0m${PS1_BRANCH_SEPARATOR1}"
-        PS1_BRANCH_NAME="\033[00;${BRANCH_NAME_COLOUR}m${BRANCH_NAME}"
-        PS1_BRANCH_STATUS="\033[00;${BRANCH_STATUS_COLOUR}m${BRANCH_STATUS_INDICATOR}"
-        PS1_BRANCH_SEPARATOR2="\033[0m${PS1_BRANCH_SEPARATOR2}"
+        PS1_BRANCH_SEPARATOR1="\001\033[0m\002${PS1_BRANCH_SEPARATOR1}"
+        PS1_BRANCH_NAME="\001\033[00;${BRANCH_NAME_COLOUR}m\002${BRANCH_NAME}"
+        [ -n "${PS1_BRANCH_STATUS}" ] && PS1_BRANCH_STATUS="\001\033[00;${BRANCH_STATUS_COLOUR}m\002${BRANCH_STATUS_INDICATOR}"
+        PS1_BRANCH_SEPARATOR2="\001\033[0m\002${PS1_BRANCH_SEPARATOR2}"
     fi
 
     echo -e -n "${PS1_BRANCH_SEPARATOR1}${PS1_BRANCH_NAME}${PS1_BRANCH_STATUS}${PS1_BRANCH_SEPARATOR2} "
