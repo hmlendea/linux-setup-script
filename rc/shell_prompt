@@ -6,106 +6,88 @@ ENABLE_COLOURS=true
 ENABLE_GIT=true
 ENABLE_GIT_STATUS=true
 
-function get_git_branch_name {
-    local branchName=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
-    echo ${branchName}
-}
+function get_git_prompt {
+    [ ! ${ENABLE_GIT} ] && return
 
-function get_git_branch_colour {
-    local branchName=$(get_git_branch_name)
+    BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
 
-    if [ "${branchName}" = "HEAD" ]; then
-        echo "41"
-    elif [ "${branchName}" = "master" ]; then
-        echo "93"
-    else
-        echo "36"
+    [ -z "${BRANCH_NAME}" ] && return
+
+    BRANCH_STATUS=$(get_git_branch_status)
+
+    BRANCH_NAME_COLOUR="36"
+    BRANCH_STATUS_COLOUR=""
+    BRANCH_STATUS_INDICATOR=""
+
+    if [ "${BRANCH_NAME}" = "HEAD" ]; then
+        BRANCH_NAME_COLOUR="41"
+    elif [ "${BRANCH_NAME}" = "master" ]; then
+        BRANCH_NAME_COLOUR="93"
     fi
+
+    if [ "${BRANCH_STATUS}" = "local-changes" ]; then
+        BRANCH_STATUS_COLOUR="32"
+        BRANCH_STATUS_INDICATOR="*" #" ■"
+    elif [ "${BRANCH_STATUS}" = "local-only" ]; then
+        BRANCH_STATUS_COLOUR="93"
+        BRANCH_STATUS_INDICATOR="~"
+    elif [ "${BRANCH_STATUS}" = "behind" ]; then
+        BRANCH_STATUS_COLOUR="31"
+        BRANCH_STATUS_INDICATOR="-" #" ▼"
+    elif [ "${BRANCH_STATUS}" = "ahead" ]; then
+        BRANCH_STATUS_COLOUR="92"
+        BRANCH_STATUS_INDICATOR="+" #" ▲"
+    elif [ "${BRANCH_STATUS}" = "diverged" ]; then
+        BRANCH_STATUS_COLOUR="91"
+        BRANCH_STATUS_INDICATOR="±" #" ♦"
+    fi
+
+    [ -n "${BRANCH_STATUS_INDICATOR}" ] && BRANCH_STATUS_INDICATOR=" ${BRANCH_STATUS_INDICATOR}"
+
+    PS1_BRANCH_SEPARATOR1="("
+    PS1_BRANCH_NAME=${BRANCH_NAME}
+    PS1_BRANCH_STATUS=${BRANCH_STATUS_INDICATOR}
+    PS1_BRANCH_SEPARATOR2=")"
+
+    if ${ENABLE_COLOURS}; then
+        PS1_BRANCH_SEPARATOR1="\033[0m${PS1_BRANCH_SEPARATOR1}"
+        PS1_BRANCH_NAME="\033[00;${BRANCH_NAME_COLOUR}m${BRANCH_NAME}"
+        PS1_BRANCH_STATUS="\033[00;${BRANCH_STATUS_COLOUR}m${BRANCH_STATUS_INDICATOR}"
+        PS1_BRANCH_SEPARATOR2="\033[0m${PS1_BRANCH_SEPARATOR2}"
+    fi
+
+    echo -e -n "${PS1_BRANCH_SEPARATOR1}${PS1_BRANCH_NAME}${PS1_BRANCH_STATUS}${PS1_BRANCH_SEPARATOR2} "
 }
 
 function get_git_branch_status {
-    BRANCH_NAME=$(get_git_branch_name)
+    UPSTREAM=${1:-'@{u}'}
+    LOCAL=$(git rev-parse @)
+    REMOTE=$(git rev-parse "$UPSTREAM" 2>/dev/null)
 
-    if [ ! -z ${BRANCH_NAME} ]; then
-        UPSTREAM=${1:-'@{u}'}
-        LOCAL=$(git rev-parse @)
-        REMOTE=$(git rev-parse "$UPSTREAM" 2>/dev/null)
+    if [ -z ${REMOTE} ]; then
+       echo "local-only"
+    else
+        BASE=$(git merge-base @ "$UPSTREAM")
+        LOCAL_CHANGES=$(git diff-index --name-only HEAD --)
 
-        if [ -z ${REMOTE} ]; then
-            echo "local-only"
-        else
-            BASE=$(git merge-base @ "$UPSTREAM")
-            LOCAL_CHANGES=$(git diff-index --name-only HEAD --)
-
-            if [ ${LOCAL} = ${REMOTE} ]; then
-                if [ -z "${LOCAL_CHANGES}" ]; then
-                    echo "up-to-date"
-                else
-                    echo "local-changes"
-                fi
-            elif [ ${LOCAL} = ${BASE} ]; then
-                echo "behind"
-            elif [ ${REMOTE} = ${BASE} ]; then
-                echo "ahead"
+        if [ ${LOCAL} = ${REMOTE} ]; then
+            if [ -z "${LOCAL_CHANGES}" ]; then
+                echo "up-to-date"
             else
-                echo "diverged"
+                echo "local-changes"
             fi
-        fi
-    fi
-}
-
-function get_git_branch_status_colour {
-    local branchStatus=$(get_git_branch_status)
-
-    if [ "${branchStatus}" = "local-changes" ]; then
-        echo "32"
-    elif [ "${branchStatus}" = "local-only" ]; then
-        echo "93"
-    elif [ "${branchStatus}" = "behind" ]; then
-        echo "31"
-    elif [ "${branchStatus}" = "ahead" ]; then
-        echo "92"
-    elif [ "${branchStatus}" = "diverged" ]; then
-        echo "91"
-    fi
-}
-
-function get_git_branch_status_indicator {
-    local branchStatus=$(get_git_branch_status)
-    local branchStatusIndicator=""
-
-    if [ "${branchStatus}" = "local-changes" ]; then
-        branchStatusIndicator="*" #" ■"
-    elif [ "${branchStatus}" = "local-only" ]; then
-        branchStatusIndicator="~"
-    elif [ "${branchStatus}" = "behind" ]; then
-        branchStatusIndicator="-" #" ▼"
-    elif [ "${branchStatus}" = "ahead" ]; then
-        branchStatusIndicator="+" #" ▲"
-    elif [ "${branchStatus}" = "diverged" ]; then
-        branchStatusIndicator="±" #" ♦"
-    fi
-
-    if [ -n "${branchStatusIndicator}" ]; then
-        echo " ${branchStatusIndicator}"
-    fi
-}
-
-function get_git_branch_separator {
-    local branchName=$(get_git_branch_name)
-
-    if [ ! -z ${branchName} ]; then
-        if [ -z $* ]; then
-            echo " "
+        elif [ ${LOCAL} = ${BASE} ]; then
+            echo "behind"
+        elif [ ${REMOTE} = ${BASE} ]; then
+            echo "ahead"
         else
-            echo $*
+            echo "diverged"
         fi
     fi
 }
 
 function get_path {
     MAX_LENGTH=24
-    PWD=$(pwd)
     CWD=${PWD##*/}
 
     if [ "$HOME" = "$PWD" ]; then
@@ -120,15 +102,15 @@ function get_path {
 }
 
 function get_path_colour {
-    if [[ "$(pwd)" = "/" ]]; then
+    if [[ "${PWD}" = "/" ]]; then
         echo "41"
-    elif [[ "$(pwd)" = "/root" ]]; then
+    elif [[ "${PWD}" = "/root" ]]; then
         echo "41"
-    elif [[ "$(pwd)" = "/root/*" ]]; then
+    elif [[ "${PWD}" = "/root/*" ]]; then
         echo "41"
-    elif [[ "$(pwd)" = "/home/${USER}" ]]; then
+    elif [[ "${PWD}" = "/home/${USER}" ]]; then
         echo "93"
-    elif [[ ! -w "$(pwd)" ]]; then
+    elif [[ ! -w "${PWD}" ]]; then
         echo "31"
     else
         echo "33"
@@ -152,37 +134,15 @@ function set_custom_prompt {
 
     local ps1user="$USER"
     local ps1host="\h"
-
     local ps1path='$(get_path)'
-
-    if ${ENABLE_GIT}; then
-        local ps1gitBranchName="\$(get_git_branch_name)"
-
-        if [ -n "${ps1gitBranchName}" ]; then
-            local ps1gitSeparator1="\$(get_git_branch_separator '(')"
-            local ps1gitSeparator2="\$(get_git_branch_separator ')')\$(get_git_branch_separator ' ')"
-
-            ${ENABLE_GIT_STATUS} && local ps1gitBranchIndicator="\$(get_git_branch_status_indicator)"
-        fi
-    fi
 
     if ${ENABLE_COLOURS}; then
         ps1user="\[\e[01;${userColour}m\]${ps1user}\[\e[m\]"
         ps1host="\[\e[${hostColour}m\]${ps1host}\[\e[m\]"
-
         ps1path="\[\e[\$(get_path_colour)m\]${ps1path}\[\e[m\]"
-
-        if ${ENABLE_GIT}; then
-            ps1gitSeparator1="\[\e[m\]${ps1gitSeparator1}"
-            ps1gitSeparator2="\[\e[m\]${ps1gitSeparator2}"
-            ps1gitBranchName="\[\e[\$(get_git_branch_colour)m\]${ps1gitBranchName}"
-
-            ${ENABLE_GIT_STATUS} && ps1gitBranchIndicator="\[\e[\$(get_git_branch_status_colour)m\]${ps1gitBranchIndicator}\[\e[m\]"
-        fi
     fi
 
-    local ps1git="${ps1gitSeparator1}${ps1gitBranchName}${ps1gitBranchIndicator}${ps1gitSeparator2}"
-    export PS1="$ps1user$separator1$ps1host$separator2${ps1path} $ps1git$separator3 "
+    export PS1="$ps1user$separator1$ps1host$separator2${ps1path} \$(get_git_prompt)$separator3 "
 }
 
 if [ -z "${USER}" ] && [ ! -z "${USERNAME}" ]; then
