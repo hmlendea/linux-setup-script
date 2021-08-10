@@ -17,8 +17,7 @@ alias lsmnt='lsblk -l | tail -n +2 | awk '\''length($7) { print $1" => "$7 }'\''
 alias grep='grep -a --color --text'
 alias pcregrep='pcregrep -a --color --text'
 alias uptime='uptime -p && printf "since " && uptime -s'
-alias yeet='sudo printf "" && ${PACKAGE_MANAGER} --noconfirm'
-alias yaourt='yeet'
+alias ${PACKAGE_MANAGER}='sudo printf "" && ${PACKAGE_MANAGER} --noconfirm'
 
 [ -f "/usr/bin/systemctl" ]     &&  alias systemctl='systemctl --no-pager -l -n20'
 [ -f "/usr/bin/tmux" ]          &&  alias tmux-new='tmux new -s'
@@ -38,6 +37,25 @@ fi
 if [ "${OSTYPE}" = "cygwin" ]; then
     alias killall="taskkill /IM"
 fi
+
+### Package manager
+CAN_PM_ALIAS_AUTOCOMPLETE=false
+for COMPLETION_SOURCE in "/usr/share/bash-completion/completions/${PACKAGE_MANAGER}.bash" \
+                         "/usr/share/bash-completion/completions/${PACKAGE_MANAGER}"; do
+    if [ -f "${COMPLETION_SOURCE}" ]; then
+        CAN_PM_ALIAS_AUTOCOMPLETE=true
+        source "${COMPLETION_SOURCE}"
+        break
+    fi
+done
+
+function set-pm-alias {
+    alias "${1}"='${PACKAGE_MANAGER}'
+    ${CAN_PM_ALIAS_AUTOCOMPLETE} && complete -F _${PACKAGE_MANAGER} yeet
+}
+
+set-pm-alias yeet
+set-pm-alias yaourt
 
 ### Fixes
 [ -f "/usr/bin/monodevelop" ]   &&  alias monodevelop="GNOME_DESKTOP_SESSION_ID="" monodevelop"
