@@ -63,29 +63,34 @@ function get_git_prompt {
 
 function get_git_branch_status {
     UPSTREAM=${1:-'@{u}'}
-    LOCAL=$(git rev-parse @)
     REMOTE=$(git rev-parse "$UPSTREAM" 2>/dev/null)
 
     if [ -z ${REMOTE} ]; then
        echo "local-only"
-    else
-        BASE=$(git merge-base @ "$UPSTREAM")
-        LOCAL_CHANGES=$(git diff-index --name-only HEAD --)
+	   return
+	fi
 
-        if [ ${LOCAL} = ${REMOTE} ]; then
-            if [ -z "${LOCAL_CHANGES}" ]; then
-                echo "up-to-date"
-            else
-                echo "local-changes"
-            fi
-        elif [ ${LOCAL} = ${BASE} ]; then
-            echo "behind"
-        elif [ ${REMOTE} = ${BASE} ]; then
-            echo "ahead"
+    LOCAL=$(git rev-parse @)
+
+    if [ ${LOCAL} = ${REMOTE} ]; then
+		LOCAL_CHANGES=$(git diff-index --name-only HEAD --)
+
+        if [ -n "${LOCAL_CHANGES}" ]; then
+            echo "local-changes"
         else
-            echo "diverged"
+            echo "up-to-date"
         fi
-    fi
+	else
+		BASE=$(git merge-base @ "$UPSTREAM")
+
+		if [ ${LOCAL} = ${BASE} ]; then
+			echo "behind"
+		elif [ ${REMOTE} = ${BASE} ]; then
+			echo "ahead"
+		else
+			echo "diverged"
+		fi
+	fi
 }
 
 function get_path {
