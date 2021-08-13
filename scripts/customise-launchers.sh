@@ -219,8 +219,6 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ffadomixer.desktop" NoDisplay "true
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/firefox-developer.desktop" Categories "Network;WebBrowser;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/fluid.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/GameConqueror.desktop" Categories "Utility;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gimp.desktop" Name "GIMP"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gimp.desktop" StartupWMClass "Gimp-2.10"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gksu-properties.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gksu.desktop" NoDisplay "true"
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gnome-twofactorauth.desktop" \
@@ -259,8 +257,6 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/lxsession-default-apps.desktop" \
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/lxtask.desktop" Name[ro] "Manager de Activități"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-color-select.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-search-tool.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/minecraft-launcher.desktop" Name "Minecraft"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/minecraft-launcher.desktop" StartupWMClass "Minecraft* 1.16.4"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/monodevelop.desktop" Exec "env GNOME_DESKTOP_SESSION_ID="" monodevelop %F"
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/nfs2se.desktop" \
     Name "Need for Speed 2" \
@@ -276,24 +272,23 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/nvidia-settings.desktop" \
     Categories "System;" \
     Exec "gksu nvidia-settings"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/openarena-server.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.freedesktop.Piper.desktop" Categories "GNOME;GTK;System;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.freedesktop.Piper.desktop" Icon "gnome-settings-mouse"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.freedesktop.Piper.desktop" Name "Mouse Settings"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/org.freedesktop.Piper.desktop" \
+    Name "Mouse Settings" \
+    Icon "gnome-settings-mouse" \
+    Categories "GNOME;GTK;System;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Calendar.desktop" Categories "GNOME;GTK;Utility;Calendar;Core;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Contacts.desktop" Categories "GNOME;GTK;Utility;ContactManagement;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.DiskUtility.desktop" Categories "GNOME;GTK;System;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Epiphany.desktop" Name "Epiphany"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Evolution.desktop" Name "Mail"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FeedReader.desktop" Categories "Network;Feed;Utility;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FeedReader.desktop" Icon "feedreader"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FeedReader.desktop" Name "Feed Reader"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.font-viewer.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.gnome-2048.desktop" Icon "2048"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Photos.desktop" Icon "multimedia-photo-manager"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.seahorse.Application.desktop" Name[ro] "Parole și Chei"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.SoundRecorder.desktop" Categories "GNOME;GTK;Utility;Audio;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.tweaks.desktop" Categories "GNOME;GTK;System;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.tweaks.desktop" Icon "utilities-tweak-tool"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/org.gnome.tweaks.desktop" \
+    Icon "utilities-tweak-tool" \
+    Categories "GNOME;GTK;System;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Weather.Application.desktop" Categories "GNOME;GTK;Utility;Navigation;"
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/pavucontrol.desktop" \
     Categories "Audio;Mixer;System;GTK;" \
@@ -310,16 +305,10 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/qdbusviewer.desktop" NoDisplay "tru
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/qtconfig-qt4.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/qv4l2.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/qvidcap.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/simple-scan.desktop" Name "Scanner"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/simple-scan.desktop" Name[ro] "Scanner"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/simple-scan.desktop" \
+    Name "Scanner" \
+    Name[ro] "Scanner"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/simplescreenrecorder.desktop" Name "Screen Recorder"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/steam-native.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/steam-runtime.desktop" NoDisplay "true"
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/steam.desktop" \
-    Name "Steam" \
-    Name[ro] "Steam" \
-    Categories "Game;Steam;" \
-    Exec "steam-start"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/stoken-gui-small.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/stoken-gui.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/system-config-printer.desktop" Name[ro] "Configurare Imprimantă"
@@ -355,17 +344,7 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/xdvi.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/yelp.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/zenmap-root.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/zenmap.desktop" NoDisplay "true"
-set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-aiahmijlpehemcpleichkcokhegllfjl-Default.desktop" Categories "ChromeApp;Education;"
-set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-aiahmijlpehemcpleichkcokhegllfjl-Default.desktop" Name "Duolingo"
-set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-aohghmighlieiainnegkcijnfilokake-Default.desktop" Categories "ChromeApp;Office;WordProcessor;"
-set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-aohghmighlieiainnegkcijnfilokake-Default.desktop" NoDisplay "false"
 set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-app-list.desktop" NoDisplay "true"
-set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-hkgndiocipalkpejnpafdbdlfdjihomd-Default.desktop" Categories "ChromeApp;Network;FileTransfer;"
-set_launcher_entries "${LOCAL_LAUNCHERS_PATH}/valve-vrmonitor.desktop" \
-    Name "SteamVR Monitor" \
-    NoDisplay true
-set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/valve-URI-steamvr.desktop" NoDisplay true
-set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/valve-URI-vrmonitor.desktop" NoDisplay true
 
 NETFLIX_LAUNCHER=$(find_launcher_by_name "Netflix")
 if [ -n "${NETFLIX_LAUNCHER}" ]; then
@@ -475,9 +454,17 @@ done
 ##############
 ### CITRIX ###
 ##############
+
+if [ -d "/opt/Citrix" ]; then
+    if [ ! -f "${GLOBAL_LAUNCHERS_PATH}wfsplash.desktop" ]; then
+        create_launcher "${GLOBAL_LAUNCHERS_PATH}/wfsplash.desktop"
+    fi
+fi
+
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/configmgr.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/conncentre.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/wfcmgr.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/wfsplash.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/wfica.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Icon "citrix-receiver" \
@@ -496,6 +483,10 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/wfcmgr.desktop" \
     Name "Citrix Receiver Self Service" \
     Name[ro] "Asistență Receptor Citrix" \
     StartupWMClass "Wfcmgr"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/wfsplash.desktop" \
+    Name "Citrix Splash" \
+    Categories "Application;Network;X-Red-Hat-Base;X-SuSE-Core-Internet;" \
+    StartupWMClass "Wfica_Splash" # InitPanel_popup
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/wfica.desktop" \
     Name "Citrix Receiver" \
     Name[ro] "Receptor Citrix" \
@@ -571,6 +562,16 @@ for ELECTRON_VERSION in "" {1..16}; do
         NoDisplay "true"
 done
 
+####################
+### FEED READERS ###
+####################
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FeedReader.dekstop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Feed Reader" \
+        Icon "feedreader" \
+        Categories "Network;Feed;Utility;"
+done
+
 #####################
 ### FILE MANAGERS ###
 #####################
@@ -584,6 +585,15 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/caja-browser.dekstop" \
         Name "Files" \
         Name[ro] "Fișiere" \
         Categories "Utility;Core;FileManager;"
+done
+
+############
+### GIMP ###
+############
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gimp.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "GIMP" \
+        StartupWMClass "Gimp-2.10"
 done
 
 ###################
@@ -665,6 +675,15 @@ done
 set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default.desktop" Categories "ChromeApp;${MAPS_APP_CATEGORIES}"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Maps.desktop" Categories "GNOME;GTK;${MAPS_APP_CATEGORIES}"
 
+#################
+### MINECRAFT ###
+#################
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/minecraft-launcher.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Minecraft" \
+        StartupWMClass "Minecraft* 1.16.4"
+done
+
 ################
 ### MONOGAME ###
 ################
@@ -729,9 +748,26 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gscreenshot.desktop" \
         Icon "applets-screenshooter" \
         OnlyShowIn ""
 done
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gscreenshot.desktop" \
-    Categories "Utility;" \
-    StartupWMClass "gscreenshot"
+
+#############
+### STEAM ###
+#############
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/steam-native.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/steam-runtime.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/valve-URI-steamvr.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/valve-URI-vrmonitor"; do
+    set_launcher_entry "${LAUNCHER}" NoDisplay true
+done
+
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/steam.desktop" \
+    Name "Steam" \
+    Name[ro] "Steam" \
+    Categories "Game;Steam;" \
+    Exec "steam-start"
+
+set_launcher_entries "${LOCAL_LAUNCHERS_PATH}/valve-vrmonitor.desktop" \
+    Name "SteamVR Monitor" \
+    NoDisplay true
 
 #######################
 ### SYSTEM MONITORS ###
@@ -767,8 +803,10 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gnome-terminal.desktop" \
         Name[ro] "Terminal"
 done
 
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/xterm.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/uxterm.desktop" NoDisplay "true"
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/xterm.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/uxterm.desktop"; do
+    set_launcher_entry "${LAUNCHER}" NoDisplay "true"
+done
 
 ####################
 ### TEXT EDITORS ###
@@ -799,8 +837,10 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" \
         Keywords "VS;VSCode;Visual;Studio;Code;" \
         Categories "Development;IDE;TextEditor;"
 done
+
 [ "${ARCH_FAMILY}" == "x86" ] && set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" StartupWMClass "code"
 [ "${ARCH_FAMILY}" == "arm" ] && set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" StartupWMClass "Code - OSS (headmelted)"
+
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss-url-handler.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code.desktop" StartupWMClass "code-oss"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/visual-studio-code.desktop" StartupWMClass "Code"
@@ -814,32 +854,31 @@ rm -rf "${HOME_REAL}/.config/menus/applications-merged/user-chrome-apps.menu"
 if [ -f "/usr/bin/wine" ]; then
     if [ ! -f "winecfg.desktop" ]; then
         create_launcher "${GLOBAL_LAUNCHERS_PATH}/winecfg.desktop"
-        set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/winecfg.desktop" Name "Wine Configuration"
-        set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/winecfg.desktop" Categories "Wine;Emulator;System;Settings;"
-        set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/winecfg.desktop" StartupWMClass "winecfg.exe"
+
+        set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/winecfg.desktop" \
+            Name "Wine Configuration" \
+            Categories "Wine;Emulator;System;Settings;" \
+            StartupWMClass "winecfg.exe"
     fi
 fi
 
 if [ -f "/usr/bin/winetricks" ]; then
     NEWLAUNCHER="${GLOBAL_LAUNCHERS_PATH}/winetricks.desktop"
 
-    if [ ! -f "winetricks.desktop" ]; then
-        create_launcher "${NEWLAUNCHER}"
-    fi
+    [ ! -f "winetricks.desktop" ] && create_launcher "${NEWLAUNCHER}"
 
-    set_launcher_entry "${NEWLAUNCHER}" Name "Winetricks"
-    set_launcher_entry "${NEWLAUNCHER}" Icon "winetricks"
-    set_launcher_entry "${NEWLAUNCHER}" Categories "Wine;Emulator;"
-    set_launcher_entry "${NEWLAUNCHER}" StartupWMClass "winetricks"
-    set_launcher_entry "${NEWLAUNCHER}" NoDisplay "true"
+    set_launcher_entries "${NEWLAUNCHER}" \
+        Name "Winetricks" \
+        Icon "winetricks" \
+        Categories "Wine;Emulator;" \
+        StartupWMClass "winetricks" \
+        NoDisplay "true"
 fi
 
 if [ -f "/usr/bin/java" ] || [ -L "/usr/bin/java" ]; then
     NEWLAUNCHER="${GLOBAL_LAUNCHERS_PATH}/run-java.desktop"
 
-    if [ ! -f "${NEWLAUNCHER}" ]; then
-        create_launcher "${NEWLAUNCHER}"
-    fi
+    [ ! -f "${NEWLAUNCHER}" ] && create_launcher "${NEWLAUNCHER}"
 
     set_launcher_entries "${NEWLAUNCHER}" \
         Name "Java" \
@@ -852,9 +891,7 @@ fi
 if [ -f "/usr/bin/mono" ]; then
     NEWLAUNCHER="${GLOBAL_LAUNCHERS_PATH}/run-mono.desktop"
 
-    if [ ! -f "${NEWLAUNCHER}" ]; then
-        create_launcher "${NEWLAUNCHER}"
-    fi
+    [ ! -f "${NEWLAUNCHER}" ] && create_launcher "${NEWLAUNCHER}"
 
     set_launcher_entries "${NEWLAUNCHER}" \
         Name "Mono" \
@@ -868,39 +905,35 @@ if [ -f "/usr/bin/steam" ]; then
     LAUNCHER_FILE_NAME="steam-streaming-client.desktop"
     LAUNCHER_FILE_PATH="${GLOBAL_LAUNCHERS_PATH}/${LAUNCHER_FILE_NAME}"
 
-    if [ ! -f "steam-streaming-client.desktop" ]; then
-        create_launcher "${LAUNCHER_FILE_PATH}"
-    fi
+    [ ! -f "steam-streaming-client.desktop" ] && create_launcher "${LAUNCHER_FILE_PATH}"
 
-    set_launcher_entry "${LAUNCHER_FILE_PATH}" Name "Streaming Client"
-    set_launcher_entry "${LAUNCHER_FILE_PATH}" Comment "Steam Streaming Client"
-    set_launcher_entry "${LAUNCHER_FILE_PATH}" Exec "steam"
-    set_launcher_entry "${LAUNCHER_FILE_PATH}" Icon "steam"
-    set_launcher_entry "${LAUNCHER_FILE_PATH}" Categories "Game;Steam;"
-    set_launcher_entry "${LAUNCHER_FILE_PATH}" StartupWMClass "streaming_client"
-    set_launcher_entry "${LAUNCHER_FILE_PATH}" NoDisplay "true"
+    set_launcher_entries "${LAUNCHER_FILE_PATH}" \
+        Name "Streaming Client" \
+        Comment "Steam Streaming Client" \
+        Exec "steam" \
+        Icon "steam" \
+        Categories "Game;Steam;" \
+        StartupWMClass "streaming_client" \
+        NoDisplay "true"
 fi
 
 if [ -d "/opt/android-studio" ]; then
-    if [ ! -f "${LOCAL_LAUNCHERS_PATH}/android-sdk-manager.desktop" ]; then
-        create_launcher "${LOCAL_LAUNCHERS_PATH}/android-sdk-manager.desktop"
-    fi
+    [ ! -f "${LOCAL_LAUNCHERS_PATH}/android-sdk-manager.desktop" ] && create_launcher "${LOCAL_LAUNCHERS_PATH}/android-sdk-manager.desktop"
+    [ ! -f "${LOCAL_LAUNCHERS_PATH}/android-avd-manager.desktop" ] && create_launcher "${LOCAL_LAUNCHERS_PATH}/android-avd-manager.desktop"
 
-    if [ ! -f "${LOCAL_LAUNCHERS_PATH}/android-avd-manager.desktop" ]; then
-        create_launcher "${LOCAL_LAUNCHERS_PATH}/android-avd-manager.desktop"
-    fi
+    set_launcher_entries "${LOCAL_LAUNCHERS_PATH}/android-sdk-manager.desktop" \
+        Name "Android SDK Manager" \
+        Exec ${HOME_REAL}"\/Android\/Sdk\/tools\/android sdk" \
+        Categories "Development;" \
+        StartupWMClass "Android SDK Manager" \
+        Icon "android-sdk" \
+        NoDisplay "true"
 
-    set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/android-sdk-manager.desktop" Name "Android SDK Manager"
-    set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/android-sdk-manager.desktop" Exec ${HOME_REAL}"\/Android\/Sdk\/tools\/android sdk"
-    set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/android-sdk-manager.desktop" Categories "Development;"
-    set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/android-sdk-manager.desktop" StartupWMClass "Android SDK Manager"
-    set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/android-sdk-manager.desktop" Icon "android-sdk"
-    set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/android-sdk-manager.desktop" NoDisplay "true"
-
-    set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/android-avd-manager.desktop" Name "Android Virtual Device Manager"
-    set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/android-avd-manager.desktop" Exec ${HOME_REAL}"\/Android\/Sdk\/tools\/android avd"
-    set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/android-avd-manager.desktop" Categories "Emulator;"
-    set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/android-avd-manager.desktop" Icon "android-sdk"
+    set_launcher_entries "${LOCAL_LAUNCHERS_PATH}/android-avd-manager.desktop" \
+        Name "Android Virtual Device Manager" \
+        Exec ${HOME_REAL}"\/Android\/Sdk\/tools\/android avd" \
+        Categories "Emulator;" \
+        Icon "android-sdk"
 fi
 
 # CREATE STEAM ICONS
