@@ -150,8 +150,8 @@ else
 fi
 
 # COMMON VALUES
-GTK2_THEME="Adapta-Nokto"
-GTK3_THEME="Adapta-Nokto-Eta"
+GTK2_THEME="ZorinGray-Dark"
+GTK3_THEME="ZorinGray-Dark"
 GTK_THEME=${GTK3_THEME}
 ICON_THEME="ePapirus"
 CURSOR_THEME="Paper"
