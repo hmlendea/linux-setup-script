@@ -309,8 +309,7 @@ if ${HAS_GUI}; then
     fi
 
     # Themes
-    install-pkg adapta-gtk-theme
-    install-dep gtk-engine-murrine
+    install-pkg zorin-desktop-themes
 
     install-pkg numix-circle-icon-theme-git
     install-pkg papirus-icon-theme
