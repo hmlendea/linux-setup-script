@@ -17,7 +17,6 @@ alias lsmnt='lsblk -l | tail -n +2 | awk '\''length($7) { print $1" => "$7 }'\''
 alias grep='grep -a --color --text'
 alias pcregrep='pcregrep -a --color --text'
 alias uptime='uptime -p && printf "since " && uptime -s'
-alias ${PACKAGE_MANAGER}='sudo printf "" && ${PACKAGE_MANAGER} --noconfirm'
 
 [ -f "/usr/bin/systemctl" ]     &&  alias systemctl='systemctl --no-pager -l -n20'
 [ -f "/usr/bin/tmux" ]          &&  alias tmux-new='tmux new -s'
@@ -39,7 +38,9 @@ if [ "${OSTYPE}" = "cygwin" ]; then
 fi
 
 ### Package manager
-CAN_PM_ALIAS_AUTOCOMPLETE=false
+local PACKAGE_MANAGER_CMD='sudo printf "" && ${PACKAGE_MANAGER} --noconfirm'
+local CAN_PM_ALIAS_AUTOCOMPLETE=false
+
 for COMPLETION_SOURCE in "/usr/share/bash-completion/completions/${PACKAGE_MANAGER}.bash" \
                          "/usr/share/bash-completion/completions/${PACKAGE_MANAGER}"; do
     if [ -f "${COMPLETION_SOURCE}" ]; then
@@ -50,12 +51,14 @@ for COMPLETION_SOURCE in "/usr/share/bash-completion/completions/${PACKAGE_MANAG
 done
 
 function set-pm-alias {
-    alias "${1}"='${PACKAGE_MANAGER}'
+    alias "${1}"="${PACKAGE_MANAGER_CMD}"
     ${CAN_PM_ALIAS_AUTOCOMPLETE} && complete -F _${PACKAGE_MANAGER} "${1}"
 }
 
 set-pm-alias yeet
 set-pm-alias yaourt
+
+alias ${PACKAGE_MANAGER}='sudo printf "" && ${PACKAGE_MANAGER_CMD} --noconfirm'
 
 ### Fixes
 [ -f "/usr/bin/monodevelop" ]   &&  alias monodevelop="GNOME_DESKTOP_SESSION_ID="" monodevelop"
