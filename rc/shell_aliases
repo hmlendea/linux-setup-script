@@ -51,7 +51,7 @@ done
 
 function set-pm-alias {
     alias "${1}"='${PACKAGE_MANAGER}'
-    ${CAN_PM_ALIAS_AUTOCOMPLETE} && complete -F _${PACKAGE_MANAGER} yeet
+    ${CAN_PM_ALIAS_AUTOCOMPLETE} && complete -F _${PACKAGE_MANAGER} "${1}"
 }
 
 set-pm-alias yeet
