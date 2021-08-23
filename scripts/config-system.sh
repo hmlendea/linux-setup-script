@@ -221,6 +221,18 @@ if [ -f "/etc/default/grub" ]; then
     set_config_value "/etc/default/grub" "GRUB_DISABLE_RECOVERY" true
 fi
 
+if [ -f "/usr/bin/gnome-calculator" ]; then
+    set_gsetting "org.gnome.calculator" show-thousands true
+fi
+
+if [ -f "/usr/bin/gnome-contacts" ]; then
+    set_gsetting "org.gnome.Contacts" sort-on-surname true
+fi
+
+if [ -f "/usr/bin/gnome-screenshot" ]; then
+    set_gsetting "org.gnome.gnome-screenshot" last-save-directory "${HOME}/Pictures"
+fi
+
 if [ -f "/usr/bin/gnome-shell" ]; then
     if [ "${ARCH}" == "aarch64" ]; then
         set_gsetting "org.gnome.settings-daemon.plugins.remote-display" active false
@@ -251,9 +263,6 @@ if [ -f "/usr/bin/gnome-shell" ]; then
     set_gsetting "org.gnome.desktop.wm.preferences" theme "${GTK3_THEME}"
     set_gsetting "org.gnome.desktop.wm.preferences" titlebar-font "${TITLEBAR_FONT}"
 
-    set_gsetting "org.gnome.shell.overrides" attach-modal-dialogs false
-    set_gsetting "org.gnome.mutter" attach-modal-dialogs false
-
     set_gsetting "org.gnome.desktop.sound" allow-volume-above-100-percent "true"
 
     set_gsetting "org.gnome.desktop.interface" clock-show-date "true"
@@ -272,6 +281,15 @@ if [ -f "/usr/bin/gnome-shell" ]; then
     if [ -d "/usr/share/icons/${ICON_THEME}" ]; then
         set_gsetting "org.gnome.desktop.interface" icon-theme "${ICON_THEME}"
     fi
+
+    set_gsetting "org.gnome.mutter" attach-modal-dialogs false
+    set_gsetting "org.gnome.mutter" center-new-windows true
+
+    set_gsetting "org.gnome.settings-daemon.plugins.color" night-light-enabled "true"
+    set_gsetting "org.gnome.settings-daemon.plugins.power" sleep-inactive-ac-timeout "1800"
+    set_gsetting "org.gnome.settings-daemon.plugins.power" sleep-inactive-battery-timeout "900"
+
+    set_gsetting "org.gnome.shell.overrides" attach-modal-dialogs false
 fi
 
 if [ -f "/usr/bin/totem" ]; then
