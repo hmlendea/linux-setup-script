@@ -26,6 +26,9 @@ alias uptime='uptime -p && printf "since " && uptime -s'
 [ -f "/usr/bin/wget" ]          &&  alias wget-persistent='wget -c --retry-connrefused --waitretry=1 --read-timeout=10 --timeout=5 -t 0'
 [ -f "/proc/acpi/bbswitch" ]    &&  alias bbswitch-status="awk '{print $2}' /proc/acpi/bbswitch"
 
+[ -f "/usr/bin/alsi" ] && [ ! -f "/usr/bin/neofetch" ] && alias neofetch='alsi'
+[ -f "/usr/bin/neofetch" ] && [ ! -f "/usr/bin/alsi" ] && alias alsi='neofetch'
+
 if [ -f "/usr/bin/git" ]; then
     alias git="git --no-pager"
     alias git-push="git fetch && git push"
