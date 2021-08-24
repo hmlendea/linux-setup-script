@@ -423,7 +423,6 @@ fi
 #####################
 if [ -f "/usr/bin/nautilus" ]; then
     set_gsetting "org.gnome.nautilus.icon-view" default-zoom-level "'small'"
-    set_gsetting "org.gnome.nautilus.preferences" executable-text-activation "'display'"
     set_gsetting "org.gnome.nautilus.preferences" show-create-link true
     set_gsetting "org.gnome.nautilus.preferences" show-delete-permanently true
     set_gsetting "org.gnome.nautilus.window-state" sidebar-width 240
