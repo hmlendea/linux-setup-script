@@ -153,7 +153,7 @@ fi
 GTK2_THEME="ZorinGray-Dark"
 GTK3_THEME="ZorinGray-Dark"
 GTK_THEME=${GTK3_THEME}
-ICON_THEME="ePapirus"
+ICON_THEME="Papirus-Dark"
 ICON_THEME_FOLDER_COLOUR="grey"
 CURSOR_THEME="Paper"
 INTERFACE_FONT_NAME="Sans"
@@ -266,21 +266,14 @@ if [ -f "/usr/bin/gnome-shell" ]; then
     set_gsetting "org.gnome.desktop.sound" allow-volume-above-100-percent "true"
 
     set_gsetting "org.gnome.desktop.interface" clock-show-date "true"
+    set_gsetting "org.gnome.desktop.interface" document-font-name "Sans Regular 12"
+    set_gsetting "org.gnome.desktop.interface" font-name "Sans Regular 12"
+    set_gsetting "org.gnome.desktop.interface" gtk-theme "${GTK_THEME}"
+    set_gsetting "org.gnome.desktop.interface" icon-theme "${ICON_THEME}"
+    set_gsetting "org.gnome.desktop.interface" monospace-font-name "${MONOSPACE_FONT}"
     set_gsetting "org.gnome.desktop.interface" show-battery-percentage "true"
 
     set_gsetting "org.gnome.desktop.peripherals.touchpad" disable-while-typing false
-
-    set_gsetting "org.gnome.desktop.interface" document-font-name "Sans Regular 12"
-    set_gsetting "org.gnome.desktop.interface" font-name "Sans Regular 12"
-    set_gsetting "org.gnome.desktop.interface" monospace-font-name "${MONOSPACE_FONT}"
-
-    if [ -d "/usr/share/themes/${GTK_THEME}" ]; then
-        set_gsetting "org.gnome.desktop.interface" gtk-theme "${GTK_THEME}"
-    fi
-
-    if [ -d "/usr/share/icons/${ICON_THEME}" ]; then
-        set_gsetting "org.gnome.desktop.interface" icon-theme "${ICON_THEME}"
-    fi
 
     set_gsetting "org.gnome.mutter" attach-modal-dialogs false
     set_gsetting "org.gnome.mutter" center-new-windows true
@@ -337,6 +330,9 @@ ENVIRONMENT_VARS_FILE="/etc/environment"
 set_config_value "${ENVIRONMENT_VARS_FILE}" QT_QPA_PLATFORMTHEME "gtk3"
 
 GTK2_CONFIG_FILE="${HOME_REAL}/.gtkrc-2.0"
+GTK3_CONFIG_FILE="${HOME_REAL}/.config/gtk-3.0/settings.ini"
+GTK4_CONFIG_FILE="${HOME_REAL}/.config/gtk-4.0/settings.ini"
+
 set_config_value "${GTK2_CONFIG_FILE}" gtk-theme-name "${GTK2_THEME}"
 set_config_value "${GTK2_CONFIG_FILE}" gtk-icon-theme-name "${ICON_THEME}"
 set_config_value "${GTK2_CONFIG_FILE}" gtk-cursor-theme-name "${ICON_THEME}"
@@ -344,14 +340,18 @@ set_config_value "${GTK2_CONFIG_FILE}" gtk-button-images 0
 set_config_value "${GTK2_CONFIG_FILE}" gtk-menu-images 0
 set_config_value "${GTK2_CONFIG_FILE}" gtk-toolbar-style GTK_TOOLBAR_ICONS
 
-if [ -f "${HOME_REAL}/.config/gtk-3.0/settings.ini" ]; then
-    GTK3_CONFIG_FILE="${HOME_REAL}/.config/gtk-3.0/settings.ini"
+if [ -f "${GTK3_CONFIG_FILE}" ]; then
+    set_config_value "${GTK3_CONFIG_FILE}" gtk-application-prefer-dark-theme 1
     set_config_value "${GTK3_CONFIG_FILE}" gtk-theme-name "${GTK_THEME}"
     set_config_value "${GTK3_CONFIG_FILE}" gtk-icon-theme "${ICON_THEME}"
     set_config_value "${GTK3_CONFIG_FILE}" gtk-cursor-theme-name "${CURSOR_THEME}"
     set_config_value "${GTK3_CONFIG_FILE}" gtk-button-images 0
     set_config_value "${GTK3_CONFIG_FILE}" gtk-menu-images 0
     set_config_value "${GTK3_CONFIG_FILE}" gtk-toolar-style GTK_TOOLBAR_ICONS
+fi
+
+if [ -f "${GTK4_CONFIG_FILE}" ]; then
+    set_config_value "${GTK4_CONFIG_FILE}" gtk-application-prefer-dark-theme 1
 fi
 
 if [ -f "${HOME_REAL}/.config/lxsession/LXDE/desktop.conf" ]; then
@@ -539,8 +539,8 @@ fi
 if [ -f "/usr/bin/gnome-terminal" ]; then
     set_gsetting "org.gnome.Terminal.Legacy.Settings" default-show-menubar false
     set_gsetting "org.gnome.Terminal.Legacy.Settings" new-tab-position "next"
+    set_gsetting "org.gnome.Terminal.Legacy.Settings" theme-variant 'dark'
 fi
-
 if [ -f "/usr/bin/lxterminal" ]; then
     LXTERMINAL_CONFIG_FILE="${HOME_REAL}/.config/lxterminal/lxterminal.conf"
     set_config_value "${LXTERMINAL_CONFIG_FILE}" fontname ${MONOSPACE_FONT}
