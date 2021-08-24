@@ -255,7 +255,7 @@ if ${HAS_GUI}; then
     # File management
     if ${POWERFUL_PC}; then
         install-pkg nautilus
-        install-pkg folder-color-nautilus-bzr
+        install-pkg folder-color-nautilus
         install-pkg gnome-dds-thumbnailer
         install-pkg file-roller
 
@@ -304,6 +304,7 @@ if ${HAS_GUI}; then
         install-pkg gnome-shell-extension-dash-to-dock
         install-pkg gnome-shell-extension-sound-output-device-chooser
         install-pkg gnome-shell-extension-gsconnect
+        install-pkg gnome-shell-extension-hide-activities-git
         install-pkg gnome-shell-extension-multi-monitors-add-on-git
         install-pkg gnome-shell-extension-openweather-git
     fi
