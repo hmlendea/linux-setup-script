@@ -160,6 +160,10 @@ INTERFACE_FONT_NAME="Sans"
 INTERFACE_FONT_STYLE="Regular"
 INTERFACE_FONT_SIZE="12"
 INTERFACE_FONT="${INTERFACE_FONT_NAME} ${INTERFACE_FONT_STYLE} ${INTERFACE_FONT_SIZE}"
+DOCUMENT_FONT_NAME=${INTERFACE_FONT_NAME}
+DOCUMENT_FONT_STYLE=${INTERFACE_FONT_STYLE}
+DOCUMENT_FONT_SIZE=${INTERFACE_FONT_SIZE}
+DOCUMENT_FONT="${DOCUMENT_FONT_NAME} ${DOCUMENT_FONT_STYLE} ${DOCUMENT_FONT_SIZE}"
 TITLEBAR_FONT_NAME=${INTERFACE_FONT_NAME}
 TITLEBAR_FONT_STYLE="Bold"
 TITLEBAR_FONT_SIZE=${INTERFACE_FONT_SIZE}
@@ -173,6 +177,7 @@ MENUHEADER_FONT_STYLE=${TITLEBAR_FONT_STYLE}
 MENUHEADER_FONT_SIZE=${MENU_FONT_SIZE}
 MENUHEADER_FONT="${MENUHEADER_FONT_NAME} ${MENUHEADER_FONT_STYLE} ${MENUHEADER_FONT_SIZE}"
 MONOSPACE_FONT="Droid Sans Mono 13"
+SUBTITLES_FONT="${INTERFACE_FONT_NAME} Bold 20"
 FONT_COLOUR="#FFFFFF" # "#CFD8DC"
 TERMINAL_BG="#202020"
 TERMINAL_FG=${FONT_COLOUR}
@@ -221,10 +226,6 @@ if [ -f "/etc/default/grub" ]; then
     set_config_value "/etc/default/grub" "GRUB_DISABLE_RECOVERY" true
 fi
 
-if [ -f "/usr/bin/gnome-calculator" ]; then
-    set_gsetting "org.gnome.calculator" show-thousands true
-fi
-
 if [ -f "/usr/bin/gnome-contacts" ]; then
     set_gsetting "org.gnome.Contacts" sort-on-surname true
 fi
@@ -268,8 +269,8 @@ if [ -f "/usr/bin/gnome-shell" ]; then
     set_gsetting "org.gnome.desktop.sound" allow-volume-above-100-percent "true"
 
     set_gsetting "org.gnome.desktop.interface" clock-show-date "true"
-    set_gsetting "org.gnome.desktop.interface" document-font-name "Sans Regular 12"
-    set_gsetting "org.gnome.desktop.interface" font-name "Sans Regular 12"
+    set_gsetting "org.gnome.desktop.interface" document-font-name "${DOCUMENT_FONT}"
+    set_gsetting "org.gnome.desktop.interface" font-name "${INTERFACE_FONT}"
     set_gsetting "org.gnome.desktop.interface" gtk-theme "${GTK_THEME}"
     set_gsetting "org.gnome.desktop.interface" icon-theme "${ICON_THEME}"
     set_gsetting "org.gnome.desktop.interface" monospace-font-name "${MONOSPACE_FONT}"
@@ -287,31 +288,8 @@ if [ -f "/usr/bin/gnome-shell" ]; then
     set_gsetting "org.gnome.shell.overrides" attach-modal-dialogs false
 fi
 
-if [ -f "/usr/bin/totem" ]; then
-    set_gsetting "org.gnome.totem" autoload-subtitles "true"
-    set_gsetting "org.gnome.totem" subtitle-font "Sans Bold 12"
-fi
-
 if [ -d "/usr/share/gnome-shell/extensions/user-theme@gnome-shell-extensions.gcampax.github.com/" ]; then
-    if [ -d "/usr/share/themes/Materia-dark-compact" ]; then
-        set_gsetting "org.gnome.shell.extensions.user-theme" name "Materia-dark-compact"
-    fi
-fi
-
-if [ -d "/usr/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com/" ]; then
-    set_gsetting "org.gnome.shell.extensions.dash-to-dock" background-opacity 0.0
-    set_gsetting "org.gnome.shell.extensions.dash-to-dock" click-action minimize
-    set_gsetting "org.gnome.shell.extensions.dash-to-dock" custom-theme-customize-running-dots true
-    set_gsetting "org.gnome.shell.extensions.dash-to-dock" custom-theme-running-dots-color "#01a299"
-    set_gsetting "org.gnome.shell.extensions.dash-to-dock" custom-theme-shrink true
-    set_gsetting "org.gnome.shell.extensions.dash-to-dock" dock-position BOTTOM
-    set_gsetting "org.gnome.shell.extensions.dash-to-dock" intellihide-mode ALL_WINDOWS
-    set_gsetting "org.gnome.shell.extensions.dash-to-dock" multi-monitor true
-    set_gsetting "org.gnome.shell.extensions.dash-to-dock" running-indicator-style DOTS
-    set_gsetting "org.gnome.shell.extensions.dash-to-dock" scroll-action cycle-windows
-    set_gsetting "org.gnome.shell.extensions.dash-to-dock" show-show-apps-button false
-    set_gsetting "org.gnome.shell.extensions.dash-to-dock" show-trash false
-    set_gsetting "org.gnome.shell.extensions.dash-to-dock" transparency-mode FIXED
+    set_gsetting "org.gnome.shell.extensions.user-theme" name "${GTK_THEME}"
 fi
 
 if [ -d "/usr/share/gnome-shell/extensions/weather-extension@xeked.com" ]; then
@@ -345,11 +323,11 @@ set_config_value "${GTK2_CONFIG_FILE}" gtk-toolbar-style GTK_TOOLBAR_ICONS
 if [ -f "${GTK3_CONFIG_FILE}" ]; then
     set_config_value "${GTK3_CONFIG_FILE}" gtk-application-prefer-dark-theme 1
     set_config_value "${GTK3_CONFIG_FILE}" gtk-theme-name "${GTK_THEME}"
-    set_config_value "${GTK3_CONFIG_FILE}" gtk-icon-theme "${ICON_THEME}"
+    set_config_value "${GTK3_CONFIG_FILE}" gtk-icon-theme-name "${ICON_THEME}"
     set_config_value "${GTK3_CONFIG_FILE}" gtk-cursor-theme-name "${CURSOR_THEME}"
     set_config_value "${GTK3_CONFIG_FILE}" gtk-button-images 0
     set_config_value "${GTK3_CONFIG_FILE}" gtk-menu-images 0
-    set_config_value "${GTK3_CONFIG_FILE}" gtk-toolar-style GTK_TOOLBAR_ICONS
+    set_config_value "${GTK3_CONFIG_FILE}" gtk-toolbar-style GTK_TOOLBAR_ICONS
 fi
 
 if [ -f "${GTK4_CONFIG_FILE}" ]; then
@@ -364,11 +342,6 @@ if [ -f "${HOME_REAL}/.config/lxsession/LXDE/desktop.conf" ]; then
     set_config_value "${LXSESSION_CONFIG_FILE}" iGtk/ButtonImages 0
     set_config_value "${LXSESSION_CONFIG_FILE}" iGtk/MenuImages 0
     set_config_value "${LXSESSION_CONFIG_FILE}" iGtk/ToolbarStyle 0
-fi
-
-if [ -f "/usr/bin/plank" ]; then
-    set_gsetting "net.launchpad.plank.docks.dock1" theme "Gtk+"
-    set_gsetting "net.launchpad.plank.docks.dock1" hide-mode "window-dodge"
 fi
 
 if [ -f "/usr/bin/openbox" ] && [ -f "/usr/bin/lxsession" ]; then
@@ -399,6 +372,9 @@ fi
 ###################
 ### CALCULATORS ###
 ###################
+if [ -f "/usr/bin/gnome-calculator" ]; then
+    set_gsetting "org.gnome.calculator" show-thousands true
+fi
 if [ -f "/usr/bin/mate-calc" ]; then
     set_gsetting "org.mate.calc" show-thousands true
 fi
@@ -415,6 +391,29 @@ if [ -f "/usr/bin/whatsapp-for-linux" ]; then
     # Disable tray because tray icons don't work and the window becomes inaccessible
     set_config_value "${WAPP_CONFIG_FILE}" close_to_tray false
     set_config_value "${WAPP_CONFIG_FILE}" start_in_tray false
+fi
+
+#############
+### DOCKS ###
+#############
+if [ -d "/usr/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com/" ]; then
+    set_gsetting "org.gnome.shell.extensions.dash-to-dock" background-opacity 0.0
+    set_gsetting "org.gnome.shell.extensions.dash-to-dock" click-action minimize
+    set_gsetting "org.gnome.shell.extensions.dash-to-dock" custom-theme-customize-running-dots true
+    set_gsetting "org.gnome.shell.extensions.dash-to-dock" custom-theme-running-dots-color "#01a299"
+    set_gsetting "org.gnome.shell.extensions.dash-to-dock" custom-theme-shrink true
+    set_gsetting "org.gnome.shell.extensions.dash-to-dock" dock-position BOTTOM
+    set_gsetting "org.gnome.shell.extensions.dash-to-dock" intellihide-mode ALL_WINDOWS
+    set_gsetting "org.gnome.shell.extensions.dash-to-dock" multi-monitor true
+    set_gsetting "org.gnome.shell.extensions.dash-to-dock" running-indicator-style DOTS
+    set_gsetting "org.gnome.shell.extensions.dash-to-dock" scroll-action cycle-windows
+    set_gsetting "org.gnome.shell.extensions.dash-to-dock" show-show-apps-button false
+    set_gsetting "org.gnome.shell.extensions.dash-to-dock" show-trash false
+    set_gsetting "org.gnome.shell.extensions.dash-to-dock" transparency-mode FIXED
+fi
+if [ -f "/usr/bin/plank" ]; then
+    set_gsetting "net.launchpad.plank.docks.dock1" theme "Gtk+"
+    set_gsetting "net.launchpad.plank.docks.dock1" hide-mode "window-dodge"
 fi
 
 ########################
@@ -577,4 +576,12 @@ if [ -f "/usr/bin/lxterminal" ]; then
     set_config_value "${LXTERMINAL_CONFIG_FILE}" cursorunderline true
     set_config_value "${LXTERMINAL_CONFIG_FILE}" hidescrollbar true
     set_config_value "${LXTERMINAL_CONFIG_FILE}" hidemenubar true
+fi
+
+#####################
+### VIDEO PLAYERS ###
+#####################
+if [ -f "/usr/bin/totem" ]; then
+    set_gsetting "org.gnome.totem" autoload-subtitles "true"
+    set_gsetting "org.gnome.totem" subtitle-font "${SUBTITLES_FONT}"
 fi
