@@ -150,9 +150,9 @@ else
 fi
 
 # COMMON VALUES
-GTK2_THEME="ZorinGray-Dark"
-GTK3_THEME="ZorinGray-Dark"
-GTK_THEME=${GTK3_THEME}
+GTK_THEME="ZorinGrey-Dark"
+GTK2_THEME="${GTK_THEME}"
+GTK3_THEME="${GTK_THEME}"
 ICON_THEME="Papirus-Dark"
 ICON_THEME_FOLDER_COLOUR="grey"
 CURSOR_THEME="Paper"
@@ -247,6 +247,8 @@ if [ -f "/usr/bin/gnome-shell" ]; then
     set_gsetting "org.gnome.desktop.privacy" old-files-age "uint32 14"
     set_gsetting "org.gnome.desktop.privacy" remove-old-temp-files "true"
     set_gsetting "org.gnome.desktop.privacy" remove-old-trash-files "true"
+
+    set_gsetting "org.gnome.desktop.peripherals.mouse" accel-profile "flat"
 
     set_gsetting "org.gnome.desktop.peripherals.touchpad" click-method "default"
     set_gsetting "org.gnome.desktop.peripherals.touchpad" tap-to-click "true"
@@ -407,6 +409,13 @@ fi
 if [ -f "/usr/bin/telegram-desktop" ]; then
     set_config_value "${ENVIRONMENT_VARS_FILE}" TDESKTOP_I_KNOW_ABOUT_GTK_INCOMPATIBILITY "1"
 fi
+if [ -f "/usr/bin/whatsapp-for-linux" ]; then
+    WAPP_CONFIG_FILE="${HOME}/.config/whatsapp-for-linux/settings.conf"
+
+    # Disable tray because tray icons don't work and the window becomes inaccessible
+    set_config_value "${WAPP_CONFIG_FILE}" close_to_tray false
+    set_config_value "${WAPP_CONFIG_FILE}" start_in_tray false
+fi
 
 ########################
 ### DOCUMENT VIEWERS ###
@@ -423,6 +432,7 @@ fi
 #####################
 if [ -f "/usr/bin/nautilus" ]; then
     set_gsetting "org.gnome.nautilus.icon-view" default-zoom-level "'small'"
+    set_gsetting "org.gnome.nautilus.list-view" default-zoom-level "'small'"
     set_gsetting "org.gnome.nautilus.preferences" show-create-link true
     set_gsetting "org.gnome.nautilus.preferences" show-delete-permanently true
     set_gsetting "org.gnome.nautilus.window-state" sidebar-width 240
@@ -520,6 +530,7 @@ fi
 if [ -f "/usr/bin/gedit" ]; then
     set_gsetting "org.gnome.gedit.preferences.editor" highlight-current-line false
     set_gsetting "org.gnome.gedit.preferences.editor" insert-spaces true
+    set_gsetting "org.gnome.gedit.preferences.editor" restore-cursor-position true
     set_gsetting "org.gnome.gedit.preferences.editor" tabs-size "uint32 4"
 fi
 if [ -f "/usr/bin/pluma" ]; then
