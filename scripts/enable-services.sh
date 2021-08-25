@@ -1,10 +1,13 @@
 #!/bin/bash
 
 function enable-service {
-    systemctl enable $1
-    systemctl start $1
+    local SERVICE="${1}"
+
+    systemctl enable "${SERVICE}"
+    systemctl start "${SERVICE}"
 }
 
+[ -f "/usr/bin/cupsd" ]                                     && enable-service "cups.service"
 [ -f "/usr/bin/thermald" ]                                  && enable-service "thermald.service"
 [ -f "/usr/bin/networkctl" ]                                && enable-service "NetworkManager.service"
 [ -f "/usr/bin/ntpd" ]                                      && enable-service "ntpd.service"
