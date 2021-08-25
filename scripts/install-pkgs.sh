@@ -154,6 +154,7 @@ install-pkg p7zip
 install-pkg lrzip
 
 install-pkg cron
+install-pkg realtime-privileges
 
 # CLI
 install-pkg nano-syntax-highlighting
@@ -210,8 +211,6 @@ if ${HAS_GUI}; then
         install-pkg gnome-tweaks
         install-pkg gnome-backgrounds
         install-pkg gnome-font-viewer
-
-        install-dep system-config-printer # Dep for gnome-control-center
     else
         install-pkg openbox
         install-pkg lxde-common
@@ -334,12 +333,7 @@ if ${HAS_GUI}; then
     install-pkg ttf-ubraille # Braille
 
     # Internet
-    #[ "${ARCH_FAMILY}" == "x86" ] && install-pkg google-chrome
-    #[ "${ARCH_FAMILY}" == "arm" ] && install-pkg chromium
-    #${POWERFUL_PC} && install-pkg chrome-gnome-shell
-
     install-pkg firefox
-
     install-pkg transmission-gtk
 
     # Communication
@@ -400,9 +394,6 @@ if ${HAS_GUI}; then
 
     install-pkg xorg-xkill
     install-pkg start-wmclass
-
-    # Libraries
-    #install-pkg libc++
 fi
 
 if [ "${CHASSIS_TYPE}" == "Laptop" ]; then
