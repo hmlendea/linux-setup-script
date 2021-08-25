@@ -264,7 +264,8 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/nfs2se.desktop" \
     StartupWMClass "nfs2se"
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/nm-connection-editor.desktop" \
     Name "Network Connections" \
-    Name[ro] "Conexiuni de Rețea"
+    Name[ro] "Conexiuni de Rețea" \
+    NoDisplay "true"
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/nvidia-settings.desktop" \
     Name "Nvidia Settings" \
     Name[ro] "Setări Nvidia" \
@@ -658,6 +659,18 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/mate-system-log.desktop" \
         Name "Logs" \
         Name[ro] "Loguri" \
         OnlyShowIn ""
+done
+
+####################
+### MAIL CLIENTS ###
+####################
+MAIL_APP_CATEGORIES="Network;Email;"
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/electron-mail.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Mail" \
+        Name[ro] "Mail" \
+        Categories "${MAIL_APP_CATEGORIES}" \
+        NoDisplay "false"
 done
 
 ############
