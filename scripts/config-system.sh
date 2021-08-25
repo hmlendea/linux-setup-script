@@ -292,11 +292,6 @@ if [ -d "/usr/share/gnome-shell/extensions/user-theme@gnome-shell-extensions.gca
     set_gsetting "org.gnome.shell.extensions.user-theme" name "${GTK_THEME}"
 fi
 
-if [ -d "/usr/share/gnome-shell/extensions/weather-extension@xeked.com" ]; then
-    set_gsetting "org.gnome.shell.extensions.weather" show-comment-in-panel true
-    set_gsetting "org.gnome.shell.extensions.weather" city "[<(uint32 2, <('Cluj-Napoca', 'LRCL', true, [(0.81652319590691635, 0.41131593287109447)], [(0.81623231933377882, 0.41189770347066179)])>)>]"
-fi
-
 if [ -d "/usr/share/gnome-shell/extensions/multi-monitors-add-on@spin83" ]; then
     set_gsetting "org.gnome.shell.extensions.multi-monitors-add-on" show-indicator false
 fi
@@ -584,4 +579,17 @@ fi
 if [ -f "/usr/bin/totem" ]; then
     set_gsetting "org.gnome.totem" autoload-subtitles "true"
     set_gsetting "org.gnome.totem" subtitle-font "${SUBTITLES_FONT}"
+fi
+
+#######################
+### Weather Plugins ###
+#######################
+if [ -d "/usr/share/gnome-shell/extensions/openweather-extension@jenslody.de" ]; then
+    set_gsetting "org.gnome.shell.extensions.openweather" pressure-unit "bar"
+    set_gsetting "org.gnome.shell.extensions.openweather" unit "celsius"
+    set_gsetting "org.gnome.shell.extensions.openweather" wind-speed-unit "kph"
+fi
+if [ -d "/usr/share/gnome-shell/extensions/weather-extension@xeked.com" ]; then
+    set_gsetting "org.gnome.shell.extensions.weather" show-comment-in-panel true
+    set_gsetting "org.gnome.shell.extensions.weather" city "[<(uint32 2, <('Cluj-Napoca', 'LRCL', true, [(0.81652319590691635, 0.41131593287109447)], [(0.81623231933377882, 0.41189770347066179)])>)>]"
 fi
