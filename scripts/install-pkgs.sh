@@ -211,6 +211,8 @@ if ${HAS_GUI}; then
         install-pkg gnome-tweaks
         install-pkg gnome-backgrounds
         install-pkg gnome-font-viewer
+
+        install-pkg dialect
     else
         install-pkg openbox
         install-pkg lxde-common
@@ -248,6 +250,7 @@ if ${HAS_GUI}; then
     if ${POWERFUL_PC}; then
         install-pkg gnome-clocks
         install-pkg gnome-contacts
+        install-pkg gnome-maps
         install-pkg gnome-weather
     fi
 
@@ -334,7 +337,9 @@ if ${HAS_GUI}; then
 
     # Internet
     install-pkg firefox
-    install-pkg transmission-gtk
+
+    ${POWERFUL_PC} && install-pkg fragments ||
+                      install-pkg transmission-gtk
 
     # Communication
     [ "${ARCH_FAMILY}" == "x86" ] && install-pkg whatsapp-for-linux

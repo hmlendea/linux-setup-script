@@ -326,9 +326,6 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/tor-browser-en.desktop" \
     StartupWMClass "Tor Browser"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/tracker-needle.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/tracker-preferences.desktop" NoDisplay "true"
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/transmission-gtk.desktop" \
-    Name "Torrents" \
-    Name[ro] "Torente"
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/unity-editor.desktop" \
     Name "Unity Editor" \
     Icon "unity-editor-icon" \
@@ -835,6 +832,25 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gedit.desktop" \
         Name "Text Editor" \
         Name[ro] "Editor Text" \
         Icon "accessories-text-editor"
+done
+
+###########################
+### TORRENT DOWNLOADERS ###
+###########################
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/de.haeckerfelix.Fragments.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/transmission-gtk.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Torrents" \
+        Name[ro] "Torente"
+done
+
+########################
+### TRANSLATION APPS ###
+########################
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/com.github.gi_lom.dialect.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Translate" \
+        Name[ro] "Traduceri"
 done
 
 ###############
