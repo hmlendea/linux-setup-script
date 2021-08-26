@@ -67,6 +67,31 @@ function set_firefox_config() {
     fi
 }
 
+function set_json_value() {
+    local FILE_PATH="${1}"
+
+    if [ ! -f "${FILE_PATH}" ]; then
+        return
+    fi
+
+    local PROPERTY="${2}"
+    local VALUE=$(echo "${@:3}" | sed -e 's/[]\/$*.^|[]/\\&/g')
+
+    local FILE_CONTENT=$(cat "${FILE_PATH}" | grep -v "^[ \t]*//" | tr -d '\n' | sed 's/,[ \t]*}/ }/g')
+    local CURRENT_VALUE=$(jq "${PROPERTY}" <<< ${FILE_CONTENT})
+
+    if [ "${VALUE}" != "false" ] && [ "${VALUE}" != "true" ] && \
+       ! [[ ${VALUE} =~ ^[0-9]+([.][0-9]+)?$ ]]; then
+        VALUE="\"${VALUE}\""
+    fi
+
+    # If the value is not already set
+    if [ "${VALUE}" != "${CURRENT_VALUE}" ]; then
+        jq "${PROPERTY}"'='"${VALUE}" <<< ${FILE_CONTENT} > "${FILE_PATH}"
+        echo "${FILE_PATH} >>> ${PROPERTY} = ${VALUE}"
+    fi
+}
+
 function set_xml_node() {
     FILE="${1}"
     NODE_RAW="${2}"
@@ -175,6 +200,8 @@ CURSOR_THEME="Paper"
 [ "${GTK_THEME_VARIANT}" == "dark" ] && GTK_THEME_IS_DARK=true      || GTK_THEME_IS_DARK=false
 [ "${GTK_THEME_VARIANT}" == "dark" ] && GTK_THEME_IS_DARK_BINARY=1  || GTK_THEME_IS_DARK_BINARY=0
 
+GTK_THEME_BG_COLOUR="#202020"
+
 # FONT FACES
 INTERFACE_FONT_NAME="Sans"
 INTERFACE_FONT_STYLE="Regular"
@@ -223,7 +250,7 @@ TEXT_EDITOR_FONT="${TEXT_EDITOR_FONT_NAME} ${TEXT_EDITOR_FONT_STYLE} ${TEXT_EDIT
 
 # FONT COLOURS
 FONT_COLOUR="#FFFFFF" # "#CFD8DC"
-TERMINAL_BG="#202020"
+TERMINAL_BG=${GTK_THEME_BG_COLOUR}
 TERMINAL_FG=${FONT_COLOUR}
 TERMINAL_BLACK_D="#3D4D51"
 TERMINAL_BLACK_L="#555753"
@@ -242,9 +269,10 @@ TERMINAL_CYAN_L="#34E2E2"
 TERMINAL_WHITE_D="#D3D7CF"
 TERMINAL_WHITE_L="#EEEEEC"
 
-# TERMINAL SIZE
+# TERMINAL
 TERMINAL_SIZE_COLS=100
 TERMINAL_SIZE_ROWS=32
+TERMINAL_SCROLLBACK_SIZE=15000
 
 if [ ${SCREEN_RESOLUTION_V} -lt 1080 ]; then
     TERMINAL_SIZE_COLS=80
@@ -431,6 +459,9 @@ fi
 #################
 ### CHAT APPS ###
 #################
+if [ -f "/usr/bin/discord" ]; then
+    set_json_value "${HOME}/.config/discord/settings.json" '.BACKGROUND_COLOR' ${GTK_THEME_BG_COLOUR}
+fi
 if [ -f "/usr/bin/telegram-desktop" ]; then
     set_config_value "${ENVIRONMENT_VARS_FILE}" TDESKTOP_I_KNOW_ABOUT_GTK_INCOMPATIBILITY "1"
 fi
@@ -581,6 +612,32 @@ if [ -f "/usr/bin/firefox" ]; then
 fi
 
 ############
+### IDEs ###
+############
+if [ -f "/usr/bin/code" ]; then
+    VSCODE_CONFIG_FILE="${HOME}/.config/Code/User/settings.json"
+
+    # Appearance
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.codeLens"]' false
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.roundedSelection"]' true
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.minimap.maxColumn"]' 100
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.minimap.renderCharacters"]' false
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["peacock.affectActivityBar"]' false
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["peacock.affectTabActiveBorder"]' true
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["peacock.showColorInStatusBar"]' false
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["window.autoDetectColorScheme"]' true
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["window.menuBarVisibility"]' "toggle"
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["workbench.colorTheme"]' "Default Dark+"
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["workbench.iconTheme"]' "seti"
+
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.autoClosingBrackets"]' false
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["explorer.confirmDragAndDrop"]' false
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["explorer.confirmDelete"]' false
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["git.autofetch"]' true
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.scrollback"]' ${TERMINAL_SCROLLBACK_SIZE}
+fi
+
+############
 ### MAPS ###
 ############
 if [ -f "/usr/bin/gnome-maps" ]; then
@@ -616,6 +673,7 @@ if [ -f "/usr/bin/gnome-terminal" ]; then
     # Others
     set_gsetting ${GNOME_TERMINAL_PROFILE_SCHEMA} audible-bell false
     set_gsetting ${GNOME_TERMINAL_PROFILE_SCHEMA} cursor-shape "ibeam"
+    set_gsetting ${GNOME_TERMINAL_PROFILE_SCHEMA} scrollback-lines ${TERMINAL_SCROLLBACK_SIZE}
     set_gsetting ${GNOME_TERMINAL_PROFILE_SCHEMA} scrollbar-policy "never"
     set_gsetting ${GNOME_TERMINAL_PROFILE_SCHEMA} visible-name "NuciTerm"
 fi
