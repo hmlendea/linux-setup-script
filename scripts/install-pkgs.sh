@@ -279,8 +279,6 @@ if ${HAS_GUI}; then
         install-pkg mate-utils
     fi
 
-    [ "${ARCH_FAMILY}" == "x86" ] && install-pkg color-picker
-
     if ${POWERFUL_PC}; then
         install-pkg eog
         install-dep eog-plugins
