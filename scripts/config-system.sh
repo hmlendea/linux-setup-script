@@ -273,6 +273,7 @@ TERMINAL_WHITE_L="#EEEEEC"
 TERMINAL_SIZE_COLS=100
 TERMINAL_SIZE_ROWS=32
 TERMINAL_SCROLLBACK_SIZE=15000
+TERMINAL_BOLD_TEXT_IS_BRIGHT=false
 
 if [ ${SCREEN_RESOLUTION_V} -lt 1080 ]; then
     TERMINAL_SIZE_COLS=80
@@ -629,6 +630,7 @@ if [ -f "/usr/bin/code" ]; then
     set_json_value "${VSCODE_CONFIG_FILE}" '.["window.menuBarVisibility"]' "toggle"
     set_json_value "${VSCODE_CONFIG_FILE}" '.["workbench.colorTheme"]' "Default Dark+"
     set_json_value "${VSCODE_CONFIG_FILE}" '.["workbench.iconTheme"]' "seti"
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.drawBoldTextInBrightColors"]' ${TERMINAL_BOLD_TEXT_IS_BRIGHT}
 
     set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.autoClosingBrackets"]' false
     set_json_value "${VSCODE_CONFIG_FILE}" '.["explorer.confirmDragAndDrop"]' false
@@ -658,8 +660,8 @@ if [ -f "/usr/bin/gnome-terminal" ]; then
     # Theme / colours
     set_gsetting ${GNOME_TERMINAL_PROFILE_SCHEMA} background-color ${TERMINAL_BG}
     set_gsetting ${GNOME_TERMINAL_PROFILE_SCHEMA} foreground-color ${TERMINAL_FG}
-#    set_gsetting ${GNOME_TERMINAL_PROFILE_SCHEMA} palette "['rgb(61,77,81)', 'rgb(204,0,0)', 'rgb(78,154,6)', 'rgb(196,160,0)', 'rgb(52,101,164)', 'rgb(117,80,123)', 'rgb(6,152,154)', 'rgb(211,215,207)', 'rgb(85,87,83)', 'rgb(239,41,41)', 'rgb(138,226,52)', 'rgb(252,233,79)', 'rgb(114,159,207)', 'rgb(173,127,168)', 'rgb(52,226,226)', 'rgb(238,238,236)']"
     set_gsetting ${GNOME_TERMINAL_PROFILE_SCHEMA} palette "['${TERMINAL_BLACK_D}', '${TERMINAL_RED_D}', '${TERMINAL_GREEN_D}', '${TERMINAL_YELLOW_D}', '${TERMINAL_BLUE_D}', '${TERMINAL_PURPLE_D}', '${TERMINAL_CYAN_D}', '${TERMINAL_WHITE_D}', '${TERMINAL_BLACK_L}', '${TERMINAL_RED_L}', '${TERMINAL_GREEN_L}', '${TERMINAL_YELLOW_L}', '${TERMINAL_BLUE_L}', '${TERMINAL_PURPLE_L}', '${TERMINAL_CYAN_L}', '${TERMINAL_WHITE_L}']"
+    set_gsetting ${GNOME_TERMINAL_PROFILE_SCHEMA} bold-is-bright ${TERMINAL_BOLD_TEXT_IS_BRIGHT}
     set_gsetting ${GNOME_TERMINAL_PROFILE_SCHEMA} use-theme-colors false
 
     # Size
