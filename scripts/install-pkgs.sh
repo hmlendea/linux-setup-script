@@ -397,6 +397,7 @@ if ${HAS_GUI}; then
     install-dep udftools
     install-dep f2fs-tools
 
+    install-pkg xorg-xdpyinfo
     install-pkg xorg-xkill
     install-pkg start-wmclass
 fi

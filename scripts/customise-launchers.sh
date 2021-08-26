@@ -679,7 +679,6 @@ for LAUNCHER in "${LOCAL_LAUNCHERS_PATH}/chrome-lneaknkopdijkpnocmklfnjbeapigfbh
     set_launcher_entries "${LAUNCHER}" \
         Name "Maps" \
         Name[ro] "Hărți" \
-        Categories "${MAPS_APP_CATEGORIES}" \
         NoDisplay "false"
 done
 set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default.desktop" Categories "ChromeApp;${MAPS_APP_CATEGORIES}"
