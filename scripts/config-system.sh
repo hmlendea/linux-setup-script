@@ -586,6 +586,16 @@ if [ -f "/usr/bin/pluma" ]; then
     set_gsetting "org.mate.pluma" toolbar-visible false
 fi
 
+###########################
+### TORRENT DOWNLOADERS ###
+###########################
+if [ -f "/usr/bin/fragments" ]; then
+    set_gsetting de.haeckerfelix.Fragments download-folder "${HOME}/Downloads"
+    set_gsetting de.haeckerfelix.Fragments enable-dark-theme ${GTK_THEME_IS_DARK}
+    set_gsetting de.haeckerfelix.Fragments encryption-mode 1
+    set_gsetting de.haeckerfelix.Fragments max-downloads 5
+fi
+
 ########################
 ### TRANSLATION APPS ###
 ########################
