@@ -163,7 +163,9 @@ set_launcher_entry_english() {
         "${KEY_ENGLISH}[en_AU]" "${VAL}" \
         "${KEY_ENGLISH}[en_CA]" "${VAL}" \
         "${KEY_ENGLISH}[en_GB]" "${VAL}" \
-        "${KEY_ENGLISH}[en_US]" "${VAL}"
+        "${KEY_ENGLISH}[en_NZ]" "${VAL}" \
+        "${KEY_ENGLISH}[en_US]" "${VAL}" \
+        "${KEY_ENGLISH}[en_ZA]" "${VAL}"
 }
 
 create_launcher() {
@@ -199,15 +201,8 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/android-studio.desktop" StartupWMCl
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/assistant-qt4.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/assistant.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/avahi-discover.desktop" NoDisplay "true"
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/balena-etcher-electron.desktop" \
-    Name "Etcher" \
-    Name[ro] "Etcher"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/bssh.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/bvnc.desktop" NoDisplay "true"
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/ca.desrt.dconf-editor.desktop" \
-    Icon "dconf-editor" \
-    Name "Configuration Editor" \
-    Name[ro] "Editor de Configurări"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/caffeine-indicator.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/codeblocks.desktop" Name "Code::Blocks"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/cups.desktop" NoDisplay "true"
@@ -285,7 +280,6 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Evolution.desktop" Name "
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.font-viewer.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.gnome-2048.desktop" Icon "2048"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Photos.desktop" Icon "multimedia-photo-manager"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.seahorse.Application.desktop" Name[ro] "Parole și Chei"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.SoundRecorder.desktop" Categories "GNOME;GTK;Utility;Audio;"
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/org.gnome.tweaks.desktop" \
     Icon "utilities-tweak-tool" \
@@ -371,6 +365,14 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/blueman-manager.desktop"; do
 done
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FileRoller.desktop" StartupWMClass "File-Roller"
 
+############################
+### BOOTABLE MEDIA MAKER ###
+############################
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/balena-etcher-electron.desktop" \
+    Name "Etcher" \
+    Name[ro] "Etcher" \
+    Categories "Filesystem;X-GNOME-Utilities;"
+
 ###################
 ### CALCULATORS ###
 ###################
@@ -415,7 +417,6 @@ fi
 ### CHAT APPS ###
 #################
 CHAT_APP_CATEGORIES="Network;Chat;InstantMessaging;Communication;"
-
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/whatsapp-for-linux.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/whatsapp-desktop.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier.desktop" \
@@ -514,10 +515,11 @@ done
 ### DISK USAGE ANALYZERS ###
 ############################
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/baobab.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/mate-disk-usage-analyzer.desktop"; do
+                "${GLOBAL_LAUNCHERS_PATH}/mate-disk-usage-analyzer.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/org.gnome.baobab.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Disk Usage" \
-        Name[ro] "Ocuparea Spațiului" \
+        Name[ro] "Utilizarea Discului" \
         OnlyShowIn ""
 done
 
@@ -536,7 +538,8 @@ done
 ########################
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/atril.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/epdfview.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/evince.desktop"; do
+                "${GLOBAL_LAUNCHERS_PATH}/evince.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Evince.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Documents" \
         Name[ro] "Documente"
@@ -559,6 +562,12 @@ for ELECTRON_VERSION in "" {1..16}; do
     set_launcher_entries "${LAUNCHER}" \
         NoDisplay "true"
 done
+
+##########################
+### EXTENSION MANAGERS ###
+##########################
+EXTENSION_MANAGER_CATEGORIES="System;"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Extensions.desktop" Categories "GNOME;GTK;${EXTENSION_MANAGER_CATEGORIES}"
 
 ####################
 ### FEED READERS ###
@@ -623,7 +632,8 @@ done
 #####################
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gpicview.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/eog.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/eom.desktop"; do
+                "${GLOBAL_LAUNCHERS_PATH}/eom.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/org.gnome.eog.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Images" \
         Name[ro] "Imagini"
@@ -673,7 +683,7 @@ done
 ############
 ### MAPS ###
 ############
-MAPS_APP_CATEGORIES="Network;Utility;Navigation;"
+MAPS_APP_CATEGORIES="Utility;Navigation;"
 for LAUNCHER in "${LOCAL_LAUNCHERS_PATH}/chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Maps.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
@@ -712,6 +722,13 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/lxmusic.desktop"; do
         Name[ro] "Muzică" \
         MimeType "application/x-ogg;application/ogg;audio/x-vorbis+ogg;audio/vorbis;audio/x-vorbis;audio/x-scpls;audio/x-mp3;audio/x-mpeg;audio/mpeg;audio/x-mpegurl;audio/x-flac;audio/mp4;x-scheme-handler/itms;x-scheme-handler/itmss;"
 done
+
+#########################
+### PASSWORD MANAGERS ###
+#########################
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/org.gnome.seahorse.Application.desktop" \
+    Name[ro] "Parole și Chei" \
+    NoDisplay true
 
 ############
 ### PLEX ###
@@ -757,6 +774,25 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gscreenshot.desktop" \
         Icon "applets-screenshooter" \
         OnlyShowIn ""
 done
+
+#####################
+### SETTINGS APPS ###
+#####################
+SETTINGS_APP_CATEGORIES="System;" #"Settings;"
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gnome-control-center.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Settings" \
+        Name[ro] "Setări"
+done
+
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/ca.desrt.dconf-editor.desktop" \
+    Name "Configurations" \
+    Name[ro] "Configurări" \
+    Icon "dconf-editor" \
+    Categories "GNOME;GTK;${SETTINGS_APP_CATEGORIES}"
+
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gnome-control-center.desktop" Categories "GNOME;GTK;${SETTINGS_APP_CATEGORIES}"
+
 
 #############
 ### STEAM ###
@@ -836,21 +872,26 @@ done
 ###########################
 ### TORRENT DOWNLOADERS ###
 ###########################
+TORRENT_APP_CATEGORIES="Network;FileTransfer;P2P;"
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/de.haeckerfelix.Fragments.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/transmission-gtk.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Torrents" \
         Name[ro] "Torente"
 done
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/de.haeckerfelix.Fragments.desktop" Categories "GNOME;GTK;${TORRENT_APP_CATEGORIES}"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/transmission-gtk.desktop" Categories "GTK;${TORRENT_APP_CATEGORIES}"
 
 ########################
 ### TRANSLATION APPS ###
 ########################
+MAPS_APP_CATEGORIES="Utility;"
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/com.github.gi_lom.dialect.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Translate" \
         Name[ro] "Traduceri"
 done
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/com.github.gi_lom.dialect.desktop" Categories "GNOME;GTK;${MAPS_APP_CATEGORIES}"
 
 ###############
 ### VS CODE ###
