@@ -151,11 +151,16 @@ fi
 
 # COMMON VALUES
 GTK_THEME="ZorinGrey-Dark"
+GTK_THEME_VARIANT="dark"
 GTK2_THEME="${GTK_THEME}"
 GTK3_THEME="${GTK_THEME}"
 ICON_THEME="Papirus-Dark"
 ICON_THEME_FOLDER_COLOUR="grey"
 CURSOR_THEME="Paper"
+
+[ "${GTK_THEME_VARIANT}" == "dark" ] && GTK_THEME_IS_DARK=true      || GTK_THEME_IS_DARK=false
+[ "${GTK_THEME_VARIANT}" == "dark" ] && GTK_THEME_IS_DARK_BINARY=1  || GTK_THEME_IS_DARK_BINARY=0
+
 INTERFACE_FONT_NAME="Sans"
 INTERFACE_FONT_STYLE="Regular"
 INTERFACE_FONT_SIZE="12"
@@ -316,7 +321,7 @@ set_config_value "${GTK2_CONFIG_FILE}" gtk-menu-images 0
 set_config_value "${GTK2_CONFIG_FILE}" gtk-toolbar-style GTK_TOOLBAR_ICONS
 
 if [ -f "${GTK3_CONFIG_FILE}" ]; then
-    set_config_value "${GTK3_CONFIG_FILE}" gtk-application-prefer-dark-theme 1
+    set_config_value "${GTK3_CONFIG_FILE}" gtk-application-prefer-dark-theme ${GTK_THEME_IS_DARK_BINARY}
     set_config_value "${GTK3_CONFIG_FILE}" gtk-theme-name "${GTK_THEME}"
     set_config_value "${GTK3_CONFIG_FILE}" gtk-icon-theme-name "${ICON_THEME}"
     set_config_value "${GTK3_CONFIG_FILE}" gtk-cursor-theme-name "${CURSOR_THEME}"
@@ -326,7 +331,7 @@ if [ -f "${GTK3_CONFIG_FILE}" ]; then
 fi
 
 if [ -f "${GTK4_CONFIG_FILE}" ]; then
-    set_config_value "${GTK4_CONFIG_FILE}" gtk-application-prefer-dark-theme 1
+    set_config_value "${GTK3_CONFIG_FILE}" gtk-application-prefer-dark-theme ${GTK_THEME_IS_DARK_BINARY}
 fi
 
 if [ -f "${HOME_REAL}/.config/lxsession/LXDE/desktop.conf" ]; then
@@ -483,9 +488,10 @@ if [ -f "/usr/bin/firefox" ]; then
     set_firefox_config "${FIREFOX_PROFILE_ID}" "toolkit.tabbox.switchByScrolling" "true"
 
     # Appearance
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "devtools.theme" "dark"
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.browser.in-content.dark-mode" "true"
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "ui.systemUsesDarkTheme" "true"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "devtools.theme" ${GTK_THEME_VARIANT}
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.in-content.dark-mode" ${GTK_THEME_IS_DARK}
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "ui.systemUsesDarkTheme" ${GTK_THEME_IS_DARK}
+
     set_firefox_config "${FIREFOX_PROFILE_ID}" "widget.disable-native-theme-for-content" "true"
 
     # Useless features
@@ -518,24 +524,11 @@ if [ -f "/usr/bin/firefox" ]; then
     set_firefox_config "${FIREFOX_PROFILE_ID}" privacy.trackingprotection.fingerprinting.enabled true
 fi
 
-####################
-### TEXT EDITORS ###
-####################
-if [ -f "/usr/bin/gedit" ]; then
-    set_gsetting "org.gnome.gedit.preferences.editor" highlight-current-line false
-    set_gsetting "org.gnome.gedit.preferences.editor" insert-spaces true
-    set_gsetting "org.gnome.gedit.preferences.editor" restore-cursor-position true
-    set_gsetting "org.gnome.gedit.preferences.editor" tabs-size "uint32 4"
-fi
-if [ -f "/usr/bin/pluma" ]; then
-    set_gsetting "org.mate.pluma" bracket-matching true
-    set_gsetting "org.mate.pluma" display-line-numbers true
-    set_gsetting "org.mate.pluma" editor-font "${MONOSPACE_FONT}"
-    set_gsetting "org.mate.pluma" enable-space-drawer-space "show-trailing"
-    set_gsetting "org.mate.pluma" enable-space-drawer-tab "show-all"
-    set_gsetting "org.mate.pluma" insert-spaces true
-    set_gsetting "org.mate.pluma" show-single-tab false
-    set_gsetting "org.mate.pluma" toolbar-visible false
+############
+### MAPS ###
+############
+if [ -f "/usr/bin/gnome-maps" ]; then
+    set_gsetting org.gnome.Maps night-mode true
 fi
 
 #################
@@ -544,7 +537,7 @@ fi
 if [ -f "/usr/bin/gnome-terminal" ]; then
     set_gsetting "org.gnome.Terminal.Legacy.Settings" default-show-menubar false
     set_gsetting "org.gnome.Terminal.Legacy.Settings" new-tab-position "next"
-    set_gsetting "org.gnome.Terminal.Legacy.Settings" theme-variant 'dark'
+    set_gsetting "org.gnome.Terminal.Legacy.Settings" theme-variant ${GTK_THEME_VARIANT}
 fi
 if [ -f "/usr/bin/lxterminal" ]; then
     LXTERMINAL_CONFIG_FILE="${HOME_REAL}/.config/lxterminal/lxterminal.conf"
@@ -571,6 +564,34 @@ if [ -f "/usr/bin/lxterminal" ]; then
     set_config_value "${LXTERMINAL_CONFIG_FILE}" cursorunderline true
     set_config_value "${LXTERMINAL_CONFIG_FILE}" hidescrollbar true
     set_config_value "${LXTERMINAL_CONFIG_FILE}" hidemenubar true
+fi
+
+####################
+### TEXT EDITORS ###
+####################
+if [ -f "/usr/bin/gedit" ]; then
+    set_gsetting "org.gnome.gedit.preferences.editor" highlight-current-line false
+    set_gsetting "org.gnome.gedit.preferences.editor" insert-spaces true
+    set_gsetting "org.gnome.gedit.preferences.editor" restore-cursor-position true
+    set_gsetting "org.gnome.gedit.preferences.editor" tabs-size "uint32 4"
+fi
+if [ -f "/usr/bin/pluma" ]; then
+    set_gsetting "org.mate.pluma" bracket-matching true
+    set_gsetting "org.mate.pluma" display-line-numbers true
+    set_gsetting "org.mate.pluma" editor-font "${MONOSPACE_FONT}"
+    set_gsetting "org.mate.pluma" enable-space-drawer-space "show-trailing"
+    set_gsetting "org.mate.pluma" enable-space-drawer-tab "show-all"
+    set_gsetting "org.mate.pluma" insert-spaces true
+    set_gsetting "org.mate.pluma" show-single-tab false
+    set_gsetting "org.mate.pluma" toolbar-visible false
+fi
+
+########################
+### TRANSLATION APPS ###
+########################
+if [ -f "/usr/bin/dialect" ]; then
+    set_gsetting com.github.gi_lom.dialect dark-mode ${GTK_THEME_IS_DARK}
+    set_gsetting com.github.gi_lom.dialect show-pronunciation true
 fi
 
 #####################
