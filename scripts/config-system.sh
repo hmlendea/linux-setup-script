@@ -4,7 +4,7 @@ USER_REAL=${SUDO_USER}
 [ ! -n "${USER_REAL}" ] && USER_REAL=${USER}
 HOME_REAL="/home/${USER_REAL}"
 
-set_config_value() {
+function set_config_value() {
     FILE="${1}"
     KEY="${2}"
     VALUE_RAW="${@:3}"
@@ -32,11 +32,11 @@ set_config_value() {
     fi
 }
 
-set_firefox_config_string() {
+function set_firefox_config_string() {
     set_firefox_config "${1}" "${2}" "\"${@:3}\""
 }
 
-set_firefox_config() {
+function set_firefox_config() {
     PROFILE="${1}"
     KEY="${2}"
     VALUE_RAW="${@:3}"
@@ -67,7 +67,7 @@ set_firefox_config() {
     fi
 }
 
-set_xml_node() {
+function set_xml_node() {
     FILE="${1}"
     NODE_RAW="${2}"
     VALUE_RAW="${@:3}"
@@ -94,7 +94,7 @@ set_xml_node() {
     fi
 }
 
-set_modprobe_option() {
+function set_modprobe_option() {
     FILE="/etc/modprobe.d/hori-system-config.conf"
     MODULE="$1"
     KEY="$2"
@@ -117,20 +117,29 @@ set_modprobe_option() {
     fi
 }
 
-set_gsetting() {
+function get_gsetting() {
     SCHEMA="${1}"
     PROPERTY="${2}"
-    VALUE="${3}"
+    VALUE=$(gsettings get "${SCHEMA}" "${PROPERTY}" | sed "s/^'\(.*\)'$/\1/g")
 
-    CURRENT_VALUE=$(gsettings get ${SCHEMA} ${PROPERTY})
+    echo "${VALUE}"
+}
 
-    if [ "${CURRENT_VALUE}" != "${VALUE}" ] && [ "${CURRENT_VALUE}" != "'${VALUE}'" ]; then
+function set_gsetting() {
+    SCHEMA="${1}"
+    PROPERTY="${2}"
+    VALUE="${@:3}"
+
+    CURRENT_VALUE=$(get_gsetting ${SCHEMA} ${PROPERTY})
+
+    if [ "${CURRENT_VALUE}" != "${VALUE}" ] && \
+       [ "${CURRENT_VALUE}" != "'${VALUE}'" ]; then
         echo "GSettings >>> ${SCHEMA}.${PROPERTY}=${VALUE}"
         gsettings set "${SCHEMA}" "${PROPERTY}" "${VALUE}"
     fi
 }
 
-get_openbox_font_weight() {
+function get_openbox_font_weight() {
     FONT_STYLE="$@"
     if [ "${FONT_STYLE}" == "Bold" ]; then
         echo "Bold"
@@ -149,7 +158,12 @@ else
     USING_NVIDIA_GPU=0
 fi
 
-# COMMON VALUES
+# SCREEN RESOLUTION
+SCREEN_RESOLUTION=$(xdpyinfo | grep "dimensions" | sed 's/^[^0-9]*\([0-9]*x[0-9]*\) pixels.*/\1/g')
+SCREEN_RESOLUTION_H=$(echo ${SCREEN_RESOLUTION} | awk -F "x" '{print $1}')
+SCREEN_RESOLUTION_V=$(echo ${SCREEN_RESOLUTION} | awk -F "x" '{print $2}')
+
+# THEMES
 GTK_THEME="ZorinGrey-Dark"
 GTK_THEME_VARIANT="dark"
 GTK2_THEME="${GTK_THEME}"
@@ -161,28 +175,53 @@ CURSOR_THEME="Paper"
 [ "${GTK_THEME_VARIANT}" == "dark" ] && GTK_THEME_IS_DARK=true      || GTK_THEME_IS_DARK=false
 [ "${GTK_THEME_VARIANT}" == "dark" ] && GTK_THEME_IS_DARK_BINARY=1  || GTK_THEME_IS_DARK_BINARY=0
 
+# FONT FACES
 INTERFACE_FONT_NAME="Sans"
 INTERFACE_FONT_STYLE="Regular"
 INTERFACE_FONT_SIZE="12"
-INTERFACE_FONT="${INTERFACE_FONT_NAME} ${INTERFACE_FONT_STYLE} ${INTERFACE_FONT_SIZE}"
+[ ${SCREEN_RESOLUTION_V} -lt 1080 ] && INTERFACE_FONT_SIZE=10
+
 DOCUMENT_FONT_NAME=${INTERFACE_FONT_NAME}
 DOCUMENT_FONT_STYLE=${INTERFACE_FONT_STYLE}
 DOCUMENT_FONT_SIZE=${INTERFACE_FONT_SIZE}
-DOCUMENT_FONT="${DOCUMENT_FONT_NAME} ${DOCUMENT_FONT_STYLE} ${DOCUMENT_FONT_SIZE}"
+
 TITLEBAR_FONT_NAME=${INTERFACE_FONT_NAME}
 TITLEBAR_FONT_STYLE="Bold"
 TITLEBAR_FONT_SIZE=${INTERFACE_FONT_SIZE}
-TITLEBAR_FONT="${TITLEBAR_FONT_NAME} ${TITLEBAR_FONT_STYLE} ${TITLEBAR_FONT_SIZE}"
+
 MENU_FONT_NAME=${TITLEBAR_FONT_NAME}
 MENU_FONT_STYLE=${INTERFACE_FONT_STYLE}
 MENU_FONT_SIZE=${TITLEBAR_FONT_SIZE}
-MENU_FONT="${MENU_FONT_NAME} ${MENU_FONT_STYLE} ${MENU_FONT_SIZE}"
+
 MENUHEADER_FONT_NAME=${MENU_FONT_NAME}
 MENUHEADER_FONT_STYLE=${TITLEBAR_FONT_STYLE}
 MENUHEADER_FONT_SIZE=${MENU_FONT_SIZE}
+
+MONOSPACE_FONT_NAME="Droid Sans"
+MONOSPACE_FONT_STYLE="Mono"
+MONOSPACE_FONT_SIZE=13
+[ ${SCREEN_RESOLUTION_V} -lt 1080 ] && MONOSPACE_FONT_SIZE=12
+
+SUBTITLES_FONR_NAME=${INTERFACE_FONT_NAME}
+SUBTITLES_FONT_STYLE="Bold"
+SUBTITLES_FONT_SIZE=20
+[ ${SCREEN_RESOLUTION_V} -lt 1080 ] && SUBTITLES_FONT_SIZE=17
+
+TEXT_EDITOR_FONT_NAME=${MONOSPACE_FONT_NAME}
+TEXT_EDITOR_FONT_STYLE=${MONOSPACE_FONT_STYLE}
+TEXT_EDITOR_FONT_SIZE=12
+[ ${SCREEN_RESOLUTION_V} -lt 1080 ] && TEXT_EDITOR_FONT_SIZE=11
+
+INTERFACE_FONT="${INTERFACE_FONT_NAME} ${INTERFACE_FONT_STYLE} ${INTERFACE_FONT_SIZE}"
+DOCUMENT_FONT="${DOCUMENT_FONT_NAME} ${DOCUMENT_FONT_STYLE} ${DOCUMENT_FONT_SIZE}"
+TITLEBAR_FONT="${TITLEBAR_FONT_NAME} ${TITLEBAR_FONT_STYLE} ${TITLEBAR_FONT_SIZE}"
+MENU_FONT="${MENU_FONT_NAME} ${MENU_FONT_STYLE} ${MENU_FONT_SIZE}"
 MENUHEADER_FONT="${MENUHEADER_FONT_NAME} ${MENUHEADER_FONT_STYLE} ${MENUHEADER_FONT_SIZE}"
-MONOSPACE_FONT="Droid Sans Mono 13"
-SUBTITLES_FONT="${INTERFACE_FONT_NAME} Bold 20"
+MONOSPACE_FONT="${MONOSPACE_FONT_NAME} ${MONOSPACE_FONT_STYLE} ${MONOSPACE_FONT_SIZE}"
+SUBTITLES_FONT="${SUBTITLES_FONT_NAME} ${SUBTITLES_FONT_STYLES} ${SUBTITLES_FONT_SIZE}"
+TEXT_EDITOR_FONT="${TEXT_EDITOR_FONT_NAME} ${TEXT_EDITOR_FONT_STYLE} ${TEXT_EDITOR_FONT_SIZE}"
+
+# FONT COLOURS
 FONT_COLOUR="#FFFFFF" # "#CFD8DC"
 TERMINAL_BG="#202020"
 TERMINAL_FG=${FONT_COLOUR}
@@ -202,6 +241,15 @@ TERMINAL_CYAN_D="#06989A"
 TERMINAL_CYAN_L="#34E2E2"
 TERMINAL_WHITE_D="#D3D7CF"
 TERMINAL_WHITE_L="#EEEEEC"
+
+# TERMINAL SIZE
+TERMINAL_SIZE_COLS=100
+TERMINAL_SIZE_ROWS=32
+
+if [ ${SCREEN_RESOLUTION_V} -lt 1080 ]; then
+    TERMINAL_SIZE_COLS=80
+    TERMINAL_SIZE_ROWS=24
+fi
 
 if [[ "${ICON_THEME}" == *"Papirus"* ]]; then
     CURRENT_PAPIRUS_FOLDER_COLOUR=$(papirus-folders -l -t "${ICON_THEME}" | grep ">" | sed 's/ *> *//g')
@@ -227,8 +275,9 @@ if [ -d "/usr/bin/openal-info" ]; then
 fi
 
 if [ -f "/etc/default/grub" ]; then
-    set_config_value "/etc/default/grub" "GRUB_TIMEOUT" 1
-    set_config_value "/etc/default/grub" "GRUB_DISABLE_RECOVERY" true
+    GRUB_CONFIG_FILE="/etc/default/grub"
+    set_config_value "${GRUB_CONFIG_FILE}" "GRUB_TIMEOUT" 1
+    set_config_value "${GRUB_CONFIG_FILE}" "GRUB_DISABLE_RECOVERY" true
 fi
 
 if [ -f "/usr/bin/gnome-contacts" ]; then
@@ -393,6 +442,13 @@ if [ -f "/usr/bin/whatsapp-for-linux" ]; then
     set_config_value "${WAPP_CONFIG_FILE}" start_in_tray false
 fi
 
+#############################
+### CONFIGURATION EDITORS ###
+#############################
+if [ -f "/usr/bin/dconf-editor" ]; then
+    set_gsetting ca.desrt.dconf-editor.Settings show-warning false
+fi
+
 #############
 ### DOCKS ###
 #############
@@ -430,8 +486,8 @@ fi
 ### FILE MANAGERS ###
 #####################
 if [ -f "/usr/bin/nautilus" ]; then
-    set_gsetting "org.gnome.nautilus.icon-view" default-zoom-level "'small'"
-    set_gsetting "org.gnome.nautilus.list-view" default-zoom-level "'small'"
+    set_gsetting "org.gnome.nautilus.icon-view" default-zoom-level "small"
+    set_gsetting "org.gnome.nautilus.list-view" default-zoom-level "small"
     set_gsetting "org.gnome.nautilus.preferences" show-create-link true
     set_gsetting "org.gnome.nautilus.preferences" show-delete-permanently true
     set_gsetting "org.gnome.nautilus.window-state" sidebar-width 240
@@ -535,9 +591,33 @@ fi
 ### TERMINALS ###
 #################
 if [ -f "/usr/bin/gnome-terminal" ]; then
-    set_gsetting "org.gnome.Terminal.Legacy.Settings" default-show-menubar false
-    set_gsetting "org.gnome.Terminal.Legacy.Settings" new-tab-position "next"
-    set_gsetting "org.gnome.Terminal.Legacy.Settings" theme-variant ${GTK_THEME_VARIANT}
+    GNOME_TERMINAL_PROFILE_ID=$(get_gsetting org.gnome.Terminal.ProfilesList default)
+    GNOME_TERMINAL_PROFILE_SCHEMA="org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:${GNOME_TERMINAL_PROFILE_ID}/"
+
+    set_gsetting org.gnome.Terminal.Legacy.Settings default-show-menubar false
+    set_gsetting org.gnome.Terminal.Legacy.Settings new-tab-position "next"
+    set_gsetting org.gnome.Terminal.Legacy.Settings theme-variant ${GTK_THEME_VARIANT}
+
+    # Theme / colours
+    set_gsetting ${GNOME_TERMINAL_PROFILE_SCHEMA} background-color ${TERMINAL_BG}
+    set_gsetting ${GNOME_TERMINAL_PROFILE_SCHEMA} foreground-color ${TERMINAL_FG}
+#    set_gsetting ${GNOME_TERMINAL_PROFILE_SCHEMA} palette "['rgb(61,77,81)', 'rgb(204,0,0)', 'rgb(78,154,6)', 'rgb(196,160,0)', 'rgb(52,101,164)', 'rgb(117,80,123)', 'rgb(6,152,154)', 'rgb(211,215,207)', 'rgb(85,87,83)', 'rgb(239,41,41)', 'rgb(138,226,52)', 'rgb(252,233,79)', 'rgb(114,159,207)', 'rgb(173,127,168)', 'rgb(52,226,226)', 'rgb(238,238,236)']"
+    set_gsetting ${GNOME_TERMINAL_PROFILE_SCHEMA} palette "['${TERMINAL_BLACK_D}', '${TERMINAL_RED_D}', '${TERMINAL_GREEN_D}', '${TERMINAL_YELLOW_D}', '${TERMINAL_BLUE_D}', '${TERMINAL_PURPLE_D}', '${TERMINAL_CYAN_D}', '${TERMINAL_WHITE_D}', '${TERMINAL_BLACK_L}', '${TERMINAL_RED_L}', '${TERMINAL_GREEN_L}', '${TERMINAL_YELLOW_L}', '${TERMINAL_BLUE_L}', '${TERMINAL_PURPLE_L}', '${TERMINAL_CYAN_L}', '${TERMINAL_WHITE_L}']"
+    set_gsetting ${GNOME_TERMINAL_PROFILE_SCHEMA} use-theme-colors false
+
+    # Size
+    set_gsetting ${GNOME_TERMINAL_PROFILE_SCHEMA} default-size-columns ${TERMINAL_SIZE_COLS}
+    set_gsetting ${GNOME_TERMINAL_PROFILE_SCHEMA} default-size-rows ${TERMINAL_SIZE_ROWS}
+
+    # Font
+    set_gsetting ${GNOME_TERMINAL_PROFILE_SCHEMA} font ${MONOSPACE_FONT}
+    set_gsetting ${GNOME_TERMINAL_PROFILE_SCHEMA} use-system-font true
+
+    # Others
+    set_gsetting ${GNOME_TERMINAL_PROFILE_SCHEMA} audible-bell false
+    set_gsetting ${GNOME_TERMINAL_PROFILE_SCHEMA} cursor-shape "ibeam"
+    set_gsetting ${GNOME_TERMINAL_PROFILE_SCHEMA} scrollbar-policy "never"
+    set_gsetting ${GNOME_TERMINAL_PROFILE_SCHEMA} visible-name "NuciTerm"
 fi
 if [ -f "/usr/bin/lxterminal" ]; then
     LXTERMINAL_CONFIG_FILE="${HOME_REAL}/.config/lxterminal/lxterminal.conf"
@@ -570,20 +650,34 @@ fi
 ### TEXT EDITORS ###
 ####################
 if [ -f "/usr/bin/gedit" ]; then
-    set_gsetting "org.gnome.gedit.preferences.editor" highlight-current-line false
-    set_gsetting "org.gnome.gedit.preferences.editor" insert-spaces true
-    set_gsetting "org.gnome.gedit.preferences.editor" restore-cursor-position true
-    set_gsetting "org.gnome.gedit.preferences.editor" tabs-size "uint32 4"
+    if [ "${TEXT_EDITOR_FONT}" != "${MONOSPACE_FONT}" ]; then
+        set_gsetting org.gnome.gedit.preferences.editor editor-font "${TEXT_EDITOR_FONT}"
+        set_gsetting org.gnome.gedit.preferences.editor use-default-font false
+    else
+        set_gsetting org.gnome.gedit.preferences.editor use-default-font true
+    fi
+
+    set_gsetting org.gnome.gedit.preferences.editor highlight-current-line false
+    set_gsetting org.gnome.gedit.preferences.editor insert-spaces true
+    set_gsetting org.gnome.gedit.preferences.editor restore-cursor-position true
+    set_gsetting org.gnome.gedit.preferences.editor tabs-size "uint32 4"
 fi
 if [ -f "/usr/bin/pluma" ]; then
-    set_gsetting "org.mate.pluma" bracket-matching true
-    set_gsetting "org.mate.pluma" display-line-numbers true
-    set_gsetting "org.mate.pluma" editor-font "${MONOSPACE_FONT}"
-    set_gsetting "org.mate.pluma" enable-space-drawer-space "show-trailing"
-    set_gsetting "org.mate.pluma" enable-space-drawer-tab "show-all"
-    set_gsetting "org.mate.pluma" insert-spaces true
-    set_gsetting "org.mate.pluma" show-single-tab false
-    set_gsetting "org.mate.pluma" toolbar-visible false
+    if [ "${TEXT_EDITOR_FONT}" != "${MONOSPACE_FONT}" ]; then
+        set_gsetting org.mate.pluma editor-font "${TEXT_EDITOR_FONT}"
+        set_gsetting org.mate.pluma use-default-font false
+    else
+        set_gsetting org.mate.pluma use-default-font true
+    fi
+
+    set_gsetting org.mate.pluma auto-indent true
+    set_gsetting org.mate.pluma bracket-matching true
+    set_gsetting org.mate.pluma display-line-numbers true
+    set_gsetting org.mate.pluma enable-space-drawer-space "show-trailing"
+    set_gsetting org.mate.pluma enable-space-drawer-tab "show-all"
+    set_gsetting org.mate.pluma insert-spaces true
+    set_gsetting org.mate.pluma show-single-tab false
+    set_gsetting org.mate.pluma toolbar-visible false
 fi
 
 ###########################
