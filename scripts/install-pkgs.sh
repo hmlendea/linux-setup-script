@@ -311,6 +311,7 @@ if ${HAS_GUI}; then
 
     # Themes
     install-pkg zorin-desktop-themes
+    install-pkg vimix-cursors
 
     install-pkg numix-circle-icon-theme-git
     install-pkg papirus-icon-theme
