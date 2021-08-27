@@ -14,8 +14,8 @@ LOCAL_LAUNCHERS_PATH="${HOME_REAL}/.local/share/applications"
 ICON_THEME=$(sudo -u "${USER_REAL}" -H gsettings get org.gnome.desktop.interface icon-theme | tr -d "'")
 ICON_THEME_PATH="/usr/share/icons/${ICON_THEME}"
 
-find_launcher_by_name() {
-    NAME_ENTRY_VALUE="$1"
+function find_launcher_by_name() {
+    local NAME_ENTRY_VALUE="$1"
 
     find "${LOCAL_LAUNCHERS_PATH}" -type f -iname "*.desktop" -print0 | while IFS= read -r -d $'\0' LAUNCHER; do
         if grep -q "^Name="${NAME_ENTRY_VALUE}"$" "${LAUNCHER}"; then
@@ -34,8 +34,8 @@ find_launcher_by_name() {
     return 1
 }
 
-set_launcher_entries() {
-    FILE="${1}"
+function set_launcher_entries() {
+    local FILE="${1}"
     shift
 
     if [ "$(( $# % 2))" -ne 0 ]; then
@@ -43,15 +43,15 @@ set_launcher_entries() {
         exit 1
     fi
 
-    PAIRS_COUNT=$(($# / 2))
+    local PAIRS_COUNT=$(($# / 2))
 
     if [ ! -f "${FILE}" ]; then
         return
     fi
 
     for I in $(seq 1 ${PAIRS_COUNT}); do
-        KEY="${1}" && shift
-        VAL="${1}" && shift
+        local KEY="${1}" && shift
+        local VAL="${1}" && shift
 
         if [ -n "${KEY}" ] && [ -n "${VAL}" ]; then
             set_launcher_entry "${FILE}" "${KEY}" "${VAL}"
@@ -59,10 +59,10 @@ set_launcher_entries() {
     done
 }
 
-set_launcher_entry() {
-    FILE="${1}"
-    KEY="${2}"
-    VAL="${3}"
+function set_launcher_entry() {
+    local FILE="${1}"
+    local KEY="${2}"
+    local VAL="${@:3}"
 
     if [ "$#" != "3" ]; then
         echo "ERROR: Invalid arguments (count: $#) for set_launcher_entry: $@" >&2
@@ -76,13 +76,13 @@ set_launcher_entry() {
         chmod +x "${FILE}"
     fi
 
-    KEY_ESC=$(echo "${KEY}" | sed -e 's/[]\/$*.^|[]/\\&/g')
-    VAL_ESC=$(echo "${VAL}" | sed -e 's/[]\/$*.^|[]/\\&/g')
+    local KEY_ESC=$(echo "${KEY}" | sed -e 's/[]\/$*.^|[]/\\&/g')
+    local VAL_ESC=$(echo "${VAL}" | sed -e 's/[]\/$*.^|[]/\\&/g')
 
-    HAS_MULTIPLE_SECTIONS=0
-    LAST_SECTION_LINE=$(wc -l "${FILE}" | awk '{print $1}')
+    local HAS_MULTIPLE_SECTIONS=0
+    local LAST_SECTION_LINE=$(wc -l "${FILE}" | awk '{print $1}')
 
-    FILE_CONTENTS=$(cat "${FILE}")
+    local FILE_CONTENTS=$(cat "${FILE}")
 
     if [ $(grep -c "^\[.*\]$" <<< "${FILE_CONTENTS}") -gt 1 ]; then
         HAS_MULTIPLE_SECTIONS=1
@@ -144,52 +144,53 @@ set_launcher_entry() {
     fi
 }
 
-set_launcher_entry_romanian() {
-    FILE="$1"
-    KEY_ROMANIAN="$2"
-    VAL="$3"
+function set_launcher_entry_romanian() {
+    local FILE="${1}"
+    local KEY="${2}"
+    local VAL="${@:3}"
 
     set_launcher_entries "${FILE}" \
-        "${KEY_ROMANIAN}[ro_RO]" "${VAL}" \
-        "${KEY_ROMANIAN}[ro_MD]" "${VAL}"
+        "${KEY}[ro_RO]" "${VAL}" \
+        "${KEY}[ro_MD]" "${VAL}"
 }
 
-set_launcher_entry_english() {
-    FILE="$1"
-    KEY_ENGLISH="$2"
-    VAL="$3"
+function set_launcher_entry_english() {
+    local FILE="${1}"
+    local KEY="${2}"
+    local VAL="${@:3}"
 
     set_launcher_entries "${FILE}" \
-        "${KEY_ENGLISH}[en_AU]" "${VAL}" \
-        "${KEY_ENGLISH}[en_CA]" "${VAL}" \
-        "${KEY_ENGLISH}[en_GB]" "${VAL}" \
-        "${KEY_ENGLISH}[en_NZ]" "${VAL}" \
-        "${KEY_ENGLISH}[en_US]" "${VAL}" \
-        "${KEY_ENGLISH}[en_ZA]" "${VAL}"
+        "${KEY}[en_AU]" "${VAL}" \
+        "${KEY}[en_CA]" "${VAL}" \
+        "${KEY}[en_GB]" "${VAL}" \
+        "${KEY}[en_NZ]" "${VAL}" \
+        "${KEY}[en_US]" "${VAL}" \
+        "${KEY}[en_ZA]" "${VAL}"
 }
 
-create_launcher() {
-    FILE="$*"
-    NAME=$(basename "${FILE}" | cut -f 1 -d '.')
-    if [ ! -f "${FILE}" ]; then
-        touch "${FILE}"
-        printf "[Desktop Entry]\n" >> "${FILE}"
-        printf "Version=1.0\n" >> "${FILE}"
-        printf "NoDisplay=false\n" >> "${FILE}"
-        printf "Encoding=UTF-8\n" >> "${FILE}"
-        printf "Type=Application\n" >> "${FILE}"
-        printf "Terminal=false\n" >> "${FILE}"
-        printf "Exec=${NAME}\n" >> "${FILE}"
-        printf "StartupWMClass=${NAME}\n" >> "${FILE}"
+function create_launcher() {
+    local FILE_PATH="$*"
+    local NAME=$(basename "${FILE_PATH}" | cut -f 1 -d '.')
 
-        set_launcher_entries "${FILE}" \
-            Name "${NAME}" \
-            Comment "${NAME}" \
-            Keywords "${NAME};" \
-            Icon "${NAME}"
+    if [ ! -f "${FILE_PATH}" ]; then
+        touch "${FILE_PATH}"
+        {
+            printf "[Desktop Entry]\n"
+            printf "Version=1.0\n"
+            printf "NoDisplay=false\n"
+            printf "Encoding=UTF-8\n"
+            printf "Type=Application\n"
+            printf "Terminal=false\n"
+            printf "Exec=${NAME}\n"
+            printf "StartupWMClass=${NAME}\n"
+            printf "Name=${NAME}\n"
+            printf "Comment=${NAME}\n"
+            printf "Keywords=${NAME}\n"
+            printf "Icon=${NAME}\n"
+        } >> "${FILE_PATH}"
 
-        chmod +x "${FILE}"
-        echo "Created file '${FILE}'"
+        chmod +x "${FILE_PATH}"
+        echo "Created file '${FILE_PATH}'"
     fi
 }
 
@@ -250,7 +251,6 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.DiskUtility.desktop" Cate
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Epiphany.desktop" Name "Epiphany"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.font-viewer.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.gnome-2048.desktop" Icon "2048"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Photos.desktop" Icon "multimedia-photo-manager"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.SoundRecorder.desktop" Categories "GNOME;GTK;Utility;Audio;"
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/org.gnome.tweaks.desktop" \
     Icon "utilities-tweak-tool" \
@@ -597,7 +597,7 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/Thunar-bulk-rename.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/thunar-bulk-rename.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/thunar-settings.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/thunar-volman-settings.desktop"; do
-    set_laucher_entry "${LAUNCHER}" NoDisplay true
+    set_launcher_entry "${LAUNCHER}" NoDisplay true
 done
 
 ###################
@@ -613,16 +613,6 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/google-keep.desktop" \
         NoDisplay false
 done
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-keep.desktop" StartupWMClass "google-keep-nativefier-d04d04"
-
-#####################
-### GOOGLE PHOTOS ###
-#####################
-for LAUNCHER in "$(find_launcher_by_name \"Google Photos\")"; do
-    set_launcher_entries "${LAUNCHER}" \
-        Name "Photos" \
-        Name[ro] "Fotografii" \
-        Categories "Network;Utility;Photography;"
-done
 
 #####################
 ### IMAGE EDITORS ###
@@ -770,6 +760,18 @@ done
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/org.gnome.seahorse.Application.desktop" \
     Name[ro] "Parole și Chei" \
     NoDisplay true
+
+####################
+### PHOTO ALBUMS ###
+####################
+for LAUNCHER in "$(find_launcher_by_name \"Google Photos\")"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Photos" \
+        Name[ro] "Fotografii" \
+        Categories "Network;Utility;Photography;"
+done
+
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Photos.desktop" Icon "multimedia-photo-manager"
 
 ############
 ### PLEX ###
@@ -1008,25 +1010,6 @@ if [ -f "/usr/bin/steam" ]; then
         NoDisplay "true"
 fi
 
-if [ -d "/opt/android-studio" ]; then
-    [ ! -f "${LOCAL_LAUNCHERS_PATH}/android-sdk-manager.desktop" ] && create_launcher "${LOCAL_LAUNCHERS_PATH}/android-sdk-manager.desktop"
-    [ ! -f "${LOCAL_LAUNCHERS_PATH}/android-avd-manager.desktop" ] && create_launcher "${LOCAL_LAUNCHERS_PATH}/android-avd-manager.desktop"
-
-    set_launcher_entries "${LOCAL_LAUNCHERS_PATH}/android-sdk-manager.desktop" \
-        Name "Android SDK Manager" \
-        Exec ${HOME_REAL}"\/Android\/Sdk\/tools\/android sdk" \
-        Categories "Development;" \
-        StartupWMClass "Android SDK Manager" \
-        Icon "android-sdk" \
-        NoDisplay "true"
-
-    set_launcher_entries "${LOCAL_LAUNCHERS_PATH}/android-avd-manager.desktop" \
-        Name "Android Virtual Device Manager" \
-        Exec ${HOME_REAL}"\/Android\/Sdk\/tools\/android avd" \
-        Categories "Emulator;" \
-        Icon "android-sdk"
-fi
-
 # CREATE STEAM ICONS
 
 if [ -f "/usr/bin/steam" ]; then
@@ -1034,7 +1017,7 @@ if [ -f "/usr/bin/steam" ]; then
     STEAM_LAUNCHERS_PATH="${LOCAL_LAUNCHERS_PATH}/Steam"
     STEAM_ICON_THEME_PATH="${HOME_REAL}/.local/share/icons/steam"
     STEAM_LIBRARY_PATHS="${STEAM_PATH}/steamapps"
-    STEAM_LIBRARY_CUSTOM_PATHS=$(cat "${STEAM_PATH}/steamapps/libraryfolders.vdf" | grep "\"/")
+    STEAM_LIBRARY_CUSTOM_PATHS=$(grep "\"/" "${STEAM_PATH}/steamapps/libraryfolders.vdf")
     STEAM_WMCLASSES_FILE="data/steam-wmclasses.txt"
     STEAM_NAMES_FILE="data/steam-names.txt"
 
@@ -1046,8 +1029,8 @@ if [ -f "/usr/bin/steam" ]; then
     [ ! -d "${STEAM_LAUNCHERS_PATH}" ]              && mkdir -p "${STEAM_LAUNCHERS_PATH}"
     [ ! -f "${STEAM_ICON_THEME_PATH}/48x48/apps" ]  && mkdir -p "${STEAM_ICON_THEME_PATH}/48x48/apps"
 
-    for STEAM_APP_LAUNCHER in ${STEAM_LAUNCHERS_PATH}/* ; do
-        APP_ID=$(cat "${STEAM_APP_LAUNCHER}" | grep "^Exec" | awk -F/ '{print $4}')
+    for STEAM_APP_LAUNCHER in "${STEAM_LAUNCHERS_PATH}"/* ; do
+        APP_ID=$(grep "^Exec" "${STEAM_APP_LAUNCHER}" | awk -F/ '{print $4}')
         IS_APP_INSTALLED="false"
 
         for STEAM_LIBRARY_PATH in ${STEAM_LIBRARY_PATHS}; do
