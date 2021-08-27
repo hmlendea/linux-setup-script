@@ -198,9 +198,6 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/amidst.desktop" \
     StartupWMClass "amidst-Amidst"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/cups.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/GameConqueror.desktop" Categories "Utility;"
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gnome-twofactorauth.desktop" \
-    Categories "GNOME;GTK;Utility;" \
-    Name "Authenticator"
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gnubg.desktop" \
     Name "Backgammon" \
     Name[ro] "Table"
@@ -234,12 +231,6 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/nm-connection-editor.desktop" \
     Name "Network Connections" \
     Name[ro] "Conexiuni de Rețea" \
     NoDisplay "true"
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/nvidia-settings.desktop" \
-    Name "Nvidia Settings" \
-    Name[ro] "Setări Nvidia" \
-    Icon "nvidia-settings" \
-    Categories "System;" \
-    Exec "gksu nvidia-settings"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/openarena-server.desktop" NoDisplay "true"
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/org.freedesktop.Piper.desktop" \
     Name "Mouse Settings" \
@@ -257,20 +248,16 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/org.gnome.tweaks.desktop" \
     Categories "GNOME;GTK;System;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Weather.Application.desktop" Categories "GNOME;GTK;Utility;Navigation;"
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/pavucontrol.desktop" \
-    Categories "Audio;Mixer;System;GTK;" \
+    Categories "GTK;System;Audio;Mixer;" \
     Name "Audio Settings" \
     Name[ro] "Setări Audio"
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/pcmanfm-desktop-pref.desktop" \
     Name "Desktop Customiser" \
     Name[ro] "Personalizare Desktop"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/PCSX2.desktop" Icon "pcsx2"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/picard.desktop" StartupWMClass ""
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/plank.desktop" NoDisplay true
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/qdbusviewer-qt4.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/qdbusviewer.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/qtconfig-qt4.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/qv4l2.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/qvidcap.desktop" NoDisplay "true"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/qv4l2.desktop" NoDisplay true
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/qvidcap.desktop" NoDisplay true
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/simple-scan.desktop" \
     Name "Scanner" \
     Name[ro] "Scanner"
@@ -278,24 +265,11 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/simplescreenrecorder.desktop" Name 
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/stoken-gui-small.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/stoken-gui.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/system-config-printer.desktop" Name[ro] "Configurare Imprimantă"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/tilda.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/tiled.desktop" Categories "Development;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/tracker-needle.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/tracker-preferences.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/vim.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/virtualbox.desktop" Name "VirtualBox"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/vlc.desktop" Name "VLC"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/wireshark-gtk.desktop" Name "Wireshark"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/xdvi.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/yelp.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/zenmap-root.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/zenmap.desktop" NoDisplay "true"
 set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-app-list.desktop" NoDisplay "true"
-
-NETFLIX_LAUNCHER=$(find_launcher_by_name "Netflix")
-if [ -n "${NETFLIX_LAUNCHER}" ]; then
-    set_launcher_entry "$(find_launcher_by_name Netflix)" Categories "AudioVideo;Video;Player;"
-fi
+set_launcher_entry "$(find_launcher_by_name Netflix)" Categories "AudioVideo;Video;Player;"
 
 ########################
 ### ARCHIVE MANAGERS ###
@@ -535,6 +509,7 @@ done
 ########################
 ### DOCUMENT VIEWERS ###
 ########################
+DOCUMENT_VIEWER_CATEGORIES="Office;Viewer;"
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/atril.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/epdfview.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/evince.desktop" \
@@ -544,13 +519,14 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/atril.desktop" \
         Name[ro] "Documente"
 done
 
-################
-### DOSBOX ###
-################
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/dosbox.desktop"; do
-    set_launcher_entries "${LAUNCHER}" \
-        Categories "Application;Emulator;" \
-        Name "DosBox"
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/atril.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/epdfview.desktop"; do
+    set_launcher_entry "${LAUNCHER}" Categories "GTK;${DOCUMENT_VIEWER_CATEGORIES}"
+done
+
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/evince.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Evince.desktop"; do
+    set_launcher_entry "${LAUNCHER}" Categories "GNOME;GTK;${DOCUMENT_VIEWER_CATEGORIES}"
 done
 
 ################
@@ -562,6 +538,19 @@ for ELECTRON_VERSION in "" {1..16}; do
         NoDisplay "true"
 done
 
+#################
+### EMULATORS ###
+#################
+EMULATOR_CATEGORIES="Game;Application;Emulator;"
+
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/dosbox.desktop" \
+    Name "DosBox" \
+    Categories ${EMULATOR_CATEGORIES}
+
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/PCSX2.desktop" \
+    Icon "pcsx2" \
+    Categories ${EMULATOR_CATEGORIES}
+
 ##########################
 ### EXTENSION MANAGERS ###
 ##########################
@@ -571,16 +560,16 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Extensions.desktop" Categ
 ####################
 ### FEED READERS ###
 ####################
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FeedReader.dekstop"; do
-    set_launcher_entries "${LAUNCHER}" \
-        Name "Feed Reader" \
-        Icon "feedreader" \
-        Categories "Network;Feed;Utility;"
-done
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FeedReader.dekstop" \
+    Name "Feed Reader" \
+    Icon "feedreader" \
+    Categories "GNOME;GTK;Network;Feed;Utility;"
 
 #####################
 ### FILE MANAGERS ###
 #####################
+FILE_MANAGER_CATEGORIES="Utility;Core;FileManager;FileTools;"
+
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/caja-browser.dekstop" \
                 "${GLOBAL_LAUNCHERS_PATH}/io.elementary.files.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Nautilus.desktop" \
@@ -589,9 +578,18 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/caja-browser.dekstop" \
                 "${GLOBAL_LAUNCHERS_PATH}/pcmanfm.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Files" \
-        Name[ro] "Fișiere" \
-        Categories "Utility;Core;FileManager;"
+        Name[ro] "Fișiere"
 done
+
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/caja.dekstop" \
+                "${GLOBAL_LAUNCHERS_PATH}/Thunar.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/thunar.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/pcmanfm.desktop"; do
+    set_launcher_entry "${LAUNCHER}" Categories "GTK;${FILE_MANAGER_CATEGORIES}"
+done
+
+set_launcher_entry "${GLOBAL_LAUNCHER_PATH}/io.elementary.files.desktop" Categories "Pantheon;GTK;${FILE_MANAGER_CATEGORIES}"
+set_launcher_entry "${GLOBAL_LAUNCHER_PATH}/org.gnome.Nautilus.desktop" Categories "GNOME;GTK;${FILE_MANAGER_CATEGORIES}"
 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/Thunar-bulk-rename.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/thunar-bulk-rename.desktop" \
@@ -599,20 +597,6 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/Thunar-bulk-rename.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/thunar-volman-settings.desktop"; do
     set_launcher_entry "${LAUNCHER}" NoDisplay true
 done
-
-###################
-### GOOGLE KEEP ###
-###################
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/google-keep.desktop" \
-                "$${LOCAL_LAUNCHERS_PATH}/chrome-hmjkmjkepdijhoojdojkdfohbdgmmhki-Default.desktop"; do
-    set_launcher_entries "${LAUNCHER}" \
-        Name "Keep" \
-        Name[ro] "Keep" \
-        Icon "google-keep" \
-        Categories "Utility;" \
-        NoDisplay false
-done
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-keep.desktop" StartupWMClass "google-keep-nativefier-d04d04"
 
 #####################
 ### IMAGE EDITORS ###
@@ -753,6 +737,33 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/lxmusic.desktop"; do
         Name[ro] "Muzică" \
         MimeType "application/x-ogg;application/ogg;audio/x-vorbis+ogg;audio/vorbis;audio/x-vorbis;audio/x-scpls;audio/x-mp3;audio/x-mpeg;audio/mpeg;audio/x-mpegurl;audio/x-flac;audio/mp4;x-scheme-handler/itms;x-scheme-handler/itmss;"
 done
+
+#################
+### NOTE APPS ###
+#################
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/google-keep.desktop" \
+                "$${LOCAL_LAUNCHERS_PATH}/chrome-hmjkmjkepdijhoojdojkdfohbdgmmhki-Default.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Keep" \
+        Name[ro] "Keep" \
+        Icon "google-keep" \
+        Categories "Utility;" \
+        NoDisplay false
+done
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-keep.desktop" StartupWMClass "google-keep-nativefier-d04d04"
+
+##############
+### NVIDIA ###
+##############
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/nvidia-settings.desktop" \
+    Name "Nvidia Settings" \
+    Name[ro] "Setări Nvidia" \
+    Icon "nvidia-settings" \
+    Categories "System;"
+
+if [ -f "/usr/bin/optirun" ]; then
+    set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/nvidia-settings.desktop" Exec "optirun -b none nvidia-settings -c :8"
+fi
 
 #########################
 ### PASSWORD MANAGERS ###
@@ -1060,10 +1071,10 @@ if [ -f "/usr/bin/steam" ]; then
             [ ! -f "${STEAM_NAMES_FILE}" ]      && touch "${STEAM_NAMES_FILE}"
 
             APP_IDS=$(ls "${STEAM_LIBRARY_PATH}" | grep "appmanifest_.*.acf" | awk -F_ '{print $2}' | awk -F. '{print $1}')
-            APPS_DIR_NAME="48/apps"
+            APPS_DIR_NAME="48x48/apps"
 
-            if [ ! -d "${ICON_THEME_PATH}/48" ]; then
-                APPS_DIR_NAME="48x48/apps"
+            if [ ! -d "${ICON_THEME_PATH}/${APPS_DIR_NAME}" ]; then
+                APPS_DIR_NAME="48/apps"
             fi
 
             for APP_ID in ${APP_IDS}; do
