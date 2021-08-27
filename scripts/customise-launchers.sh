@@ -193,29 +193,10 @@ create_launcher() {
     fi
 }
 
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/7zFM.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/alltray.desktop" NoDisplay "true"
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/amidst.desktop" \
     StartupWMClass "amidst-Amidst"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/android-studio.desktop" StartupWMClass "jetbrains-studio"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/assistant-qt4.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/assistant.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/avahi-discover.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/bssh.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/bvnc.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/caffeine-indicator.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/codeblocks.desktop" Name "Code::Blocks"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/cups.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/designer-qt4.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/designer.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/diffuse.desktop" Name "Diffuse"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/Discord.desktop" Icon "discord"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ffadomixer.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/firefox-developer.desktop" Categories "Network;WebBrowser;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/fluid.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/GameConqueror.desktop" Categories "Utility;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gksu-properties.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gksu.desktop" NoDisplay "true"
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gnome-twofactorauth.desktop" \
     Categories "GNOME;GTK;Utility;" \
     Name "Authenticator"
@@ -226,18 +207,11 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gparted.desktop" \
     Name "Partition Editor" \
     Name[ro] "Editor de Partiții"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gtk-lshw.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gucharmap.desktop" NoDisplay "true"
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/hardinfo.desktop" \
     Categories "System;Monitor;" \
     Icon "hardinfo" \
     Name "Hardware Information" \
     Name[ro] "Informații Hardware"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/htop.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/ibus-setup.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/inkscape.desktop" Name "Inkscape"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/libfm-pref-apps.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/linguist-qt4.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/linguist.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/lstopo.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/lxhotkey-gtk.desktop" Name[ro] "Scurtături de tastatură"
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/lxappearance.desktop" \
@@ -249,10 +223,8 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/lxsession-edit.desktop" \
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/lxsession-default-apps.desktop" \
     Name "Default Applications" \
     Name[ro] "Aplicații Implicite"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/lxtask.desktop" Name[ro] "Manager de Activități"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-color-select.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-search-tool.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/monodevelop.desktop" Exec "env GNOME_DESKTOP_SESSION_ID="" monodevelop %F"
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/nfs2se.desktop" \
     Name "Need for Speed 2" \
     Icon "nfs2se" \
@@ -276,7 +248,6 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Calendar.desktop" Categor
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Contacts.desktop" Categories "GNOME;GTK;Utility;ContactManagement;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.DiskUtility.desktop" Categories "GNOME;GTK;System;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Epiphany.desktop" Name "Epiphany"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Evolution.desktop" Name "Mail"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.font-viewer.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.gnome-2048.desktop" Icon "2048"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Photos.desktop" Icon "multimedia-photo-manager"
@@ -307,27 +278,10 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/simplescreenrecorder.desktop" Name 
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/stoken-gui-small.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/stoken-gui.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/system-config-printer.desktop" Name[ro] "Configurare Imprimantă"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/Thunar-bulk-rename.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/thunar-bulk-rename.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/thunar-settings.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/thunar-volman-settings.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/tilda.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/tiled.desktop" Categories "Development;"
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/tor-browser-en.desktop" \
-    Name "Tor" \
-    Icon "tor-browser-en" \
-    Categories "Network;WebBrowser;" \
-    StartupWMClass "Tor Browser"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/tracker-needle.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/tracker-preferences.desktop" NoDisplay "true"
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/unity-editor.desktop" \
-    Name "Unity Editor" \
-    Icon "unity-editor-icon" \
-    Categories "Development;IDE;"
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/unity-monodevelop.desktop" \
-    Name "MonoDevelop - Unity" \
-    Icon "unity-monodevelop" \
-    Categories "Development;IDE;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/vim.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/virtualbox.desktop" Name "VirtualBox"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/vlc.desktop" Name "VLC"
@@ -353,7 +307,17 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/engrampa.desktop" \
         Name "Archives" \
         Name[ro] "Arhive"
 done
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/7zFM.desktop" NoDisplay "true"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FileRoller.desktop" StartupWMClass "File-Roller"
+
+#############
+### AVAHI ###
+#############
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/avahi-discover.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/bssh.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/bvnc.desktop"; do
+    set_launcher_entry "${LAUNCHER}.desktop" NoDisplay "true"
+done
 
 ##########################
 ### BLUETOOTH MANAGERS ###
@@ -363,7 +327,6 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/blueman-manager.desktop"; do
         Name "Bluetooth Manager" \
         Name[ro] "Manager Bluetooth"
 done
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FileRoller.desktop" StartupWMClass "File-Roller"
 
 ############################
 ### BOOTABLE MEDIA MAKER ###
@@ -393,30 +356,36 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Cheese.desktop"; do
         Icon "camera"
 done
 
-##############
-### CHROME ###
-##############
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/google-chrome-unstable.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/google-chrome.desktop"; do
-    set_launcher_entries "${LAUNCHER}" \
-        Name "Chrome" \
-        Name[ro] "Chrome" \
-        Icon "google-chrome"
-done
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-chrome-unstable.desktop" StartupWMClass "Google-chrome-unstable"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-chrome.desktop" StartupWMClass "Google-chrome-stable"
-
-if [ -f "${GLOBAL_LAUNCHERS_PATH}/chromium.desktop" ] && [ ! -f "${GLOBAL_LAUNCHERS_PATH}/google-chrome.desktop" ]; then
-    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/chromium.desktop" \
-        Name "Chrome" \
-        Name[ro] "Chrome" \
-        Icon "google-chrome"
-fi
-
 #################
 ### CHAT APPS ###
 #################
 CHAT_APP_CATEGORIES="Network;Chat;InstantMessaging;Communication;"
+
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/discord.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Icon "discord" \
+        Categories ${CHAT_APP_CATEGORIES}
+done
+
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/teams.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/teams-insiders.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Teams" \
+        Name[ro] "Teams" \
+        Icon "teams" \
+        Categories ${CHAT_APP_CATEGORIES}
+done
+
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/meowgram.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/telegramdesktop.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Telegram" \
+        Name[ro] "Telegram"
+done
+
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/meowgram.desktop" Categories "GTK;${CHAT_APP_CATEGORIES}"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/telegramdesktop.desktop" Categories "Qt;${CHAT_APP_CATEGORIES}"
+
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/whatsapp-for-linux.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/whatsapp-desktop.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier.desktop" \
@@ -429,26 +398,11 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/whatsapp-for-linux.desktop" \
         Icon "whatsapp" \
         Categories "${CHAT_APP_CATEGORIES}"
 done
+
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsapp-desktop.desktop" StartupWMClass "whatsapp"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier.desktop" StartupWMClass "whatsapp-nativefier-d40211"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier-dark.desktop" StartupWMClass "whatsapp-nativefier-d52542"
 set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-nfjdjopfnbnkmfldmeffmhgodmlhdnei-Default.desktop" Categories "ChromeApp;${CHAT_APP_CATEGORIES}"
-
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/teams.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/teams-insiders.desktop"; do
-    set_launcher_entries "${LAUNCHER}" \
-        Name "Teams" \
-        Name[ro] "Teams" \
-        Icon "teams" \
-        Categories "${CHAT_APP_CATEGORIES}"
-done
-
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/telegramdesktop.desktop"; do
-    set_launcher_entries "${LAUNCHER}" \
-        Name "Telegram" \
-        Name[ro] "Telegram" \
-        Categories "Qt;${CHAT_APP_CATEGORIES};"
-done
 
 ##############
 ### CITRIX ###
@@ -501,6 +455,51 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/cmake.desktop" \
         Icon "cmake" \
         NoDisplay "true"
 done
+
+################################
+### DEVELOPMENT ENVIRONMENTS ###
+################################
+DEVELOPMENT_ENVIRONMENT_CATEGORIES="Development;IDE;"
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/code.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/visual-studio-code.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Code" \
+        Name[ro] "Code" \
+        Icon "code" \
+        Keywords "VS;VSCode;Visual;Studio;Code;" \
+        Categories "${DEVELOPMENT_ENVIRONMENT_CATEGORIES};TextEditor;"
+done
+
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/monodevelop.desktop" \
+    Exec "env GNOME_DESKTOP_SESSION_ID="" monodevelop %F" \
+    Categories ${DEVELOPMENT_ENVIRONMENT_CATEGORIES}
+
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/unity-editor.desktop" \
+    Name "Unity Editor" \
+    Icon "unity-editor-icon" \
+    Categories ${DEVELOPMENT_ENVIRONMENT_CATEGORIES}
+
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/unity-monodevelop.desktop" \
+    Name "MonoDevelop - Unity" \
+    Icon "unity-monodevelop" \
+    Categories ${DEVELOPMENT_ENVIRONMENT_CATEGORIES}
+
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/codeblocks.desktop" \
+    Name "Code::Blocks" \
+    Categories "GTK;${DEVELOPMENT_ENVIRONMENT_CATEGORIES}"
+
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/android-studio.desktop" \
+    StartupWMClass "jetbrains-studio"
+
+if [ "${ARCH_FAMILY}" == "x86" ]; then
+    set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" StartupWMClass "code"
+    set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss-url-handler.desktop" NoDisplay "true"
+    set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code.desktop" StartupWMClass "code-oss"
+    set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/visual-studio-code.desktop" StartupWMClass "Code"
+elif [ "${ARCH_FAMILY}" == "arm" ]; then
+    set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" StartupWMClass "Code - OSS (headmelted)"
+fi
 
 ####################
 ### DICTIONARIES ###
@@ -594,13 +593,11 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/caja-browser.dekstop" \
         Categories "Utility;Core;FileManager;"
 done
 
-############
-### GIMP ###
-############
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gimp.desktop"; do
-    set_launcher_entries "${LAUNCHER}" \
-        Name "GIMP" \
-        StartupWMClass "Gimp-2.10"
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/Thunar-bulk-rename.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/thunar-bulk-rename.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/thunar-settings.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/thunar-volman-settings.desktop"; do
+    set_laucher_entry "${LAUNCHER}" NoDisplay true
 done
 
 ###################
@@ -628,6 +625,25 @@ for LAUNCHER in "$(find_launcher_by_name \"Google Photos\")"; do
 done
 
 #####################
+### IMAGE EDITORS ###
+#####################
+IMAGE_EDITOR_CATEGORIES="Graphics;2DGraphics;"
+
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gimp.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "GIMP" \
+        Categories "GTK;${IMAGE_EDITOR_CATEGORIES};RasterGraphics;" \
+        StartupWMClass "Gimp-2.10"
+done
+
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/inkscape.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/org.inkscape.Inkscape.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Inkscape" \
+        Categories "GTK;${IMAGE_EDITOR_CATEGORIES};VectorGraphics;"
+done
+
+#####################
 ### IMAGE VIEWERS ###
 #####################
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gpicview.desktop" \
@@ -638,6 +654,30 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gpicview.desktop" \
         Name "Images" \
         Name[ro] "Imagini"
 done
+
+#########################
+### INTERNET BROWSERS ###
+#########################
+INTERNET_BROWSER_CATEGORIES="Network;WebBrowser;"
+
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/firefox-developer.desktop" Categories ${INTERNET_BROWSER_CATEGORIES}
+
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/google-chrome-unstable.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/google-chrome.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Chrome" \
+        Name[ro] "Chrome" \
+        Icon "google-chrome"
+done
+
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-chrome-unstable.desktop" StartupWMClass "Google-chrome-unstable"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-chrome.desktop" StartupWMClass "Google-chrome-stable"
+
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/tor-browser-en.desktop" \
+    Name "Tor" \
+    Icon "tor-browser-en" \
+    Categories ${INTERNET_BROWSER_CATEGORIES} \
+    StartupWMClass "Tor Browser"
 
 #################
 ### JRE & JDK ###
@@ -672,7 +712,8 @@ done
 ### MAIL CLIENTS ###
 ####################
 MAIL_APP_CATEGORIES="Network;Email;"
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/electron-mail.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/electron-mail.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Evolution.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Mail" \
         Name[ro] "Mail" \
@@ -786,8 +827,8 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gnome-control-center.desktop"; do
 done
 
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/ca.desrt.dconf-editor.desktop" \
-    Name "Configurations" \
-    Name[ro] "Configurări" \
+    Name "Configurator" \
+    Name[ro] "Configurator" \
     Icon "dconf-editor" \
     Categories "GNOME;GTK;${SETTINGS_APP_CATEGORIES}"
 
@@ -814,15 +855,17 @@ set_launcher_entries "${LOCAL_LAUNCHERS_PATH}/valve-vrmonitor.desktop" \
     Name "SteamVR Monitor" \
     NoDisplay true
 
-#######################
-### SYSTEM MONITORS ###
-#######################
+#####################
+### TASK MANAGERS ###
+#####################
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gnome-system-monitor.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/mate-system-monitor.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "System Monitor" \
         Name[ro] "Monitor de Sistem"
 done
+
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/lxtask.desktop" Name[ro] "Manager de Activități"
 
 ###################
 ### TEAM VIEWER ###
@@ -892,27 +935,6 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/com.github.gi_lom.dialect.desktop"; do
         Name[ro] "Traduceri"
 done
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/com.github.gi_lom.dialect.desktop" Categories "GNOME;GTK;${MAPS_APP_CATEGORIES}"
-
-###############
-### VS CODE ###
-###############
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/code.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/visual-studio-code.desktop"; do
-    set_launcher_entries "${LAUNCHER}" \
-        Name "Code" \
-        Name[ro] "Code" \
-        Icon "code" \
-        Keywords "VS;VSCode;Visual;Studio;Code;" \
-        Categories "Development;IDE;TextEditor;"
-done
-
-[ "${ARCH_FAMILY}" == "x86" ] && set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" StartupWMClass "code"
-[ "${ARCH_FAMILY}" == "arm" ] && set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" StartupWMClass "Code - OSS (headmelted)"
-
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss-url-handler.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code.desktop" StartupWMClass "code-oss"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/visual-studio-code.desktop" StartupWMClass "Code"
 
 rm -rf "${HOME_REAL}/.local/share/applications/wine-*"
 rm -rf "${HOME_REAL}/.local/share/applications/wine"
