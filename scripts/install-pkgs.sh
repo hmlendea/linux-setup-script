@@ -153,7 +153,6 @@ install-pkg unace
 install-pkg p7zip
 install-pkg lrzip
 
-install-pkg cron
 install-pkg realtime-privileges
 
 # CLI
@@ -191,8 +190,6 @@ if ${HAS_GUI}; then
     if [ "${ARCH_FAMILY}" == "x86" ]; then
         install-pkg dotnet-runtime
         install-pkg aspnet-runtime
-#        install-pkg dotnet-runtime-3.1
-#        install-pkg aspnet-runtime-3.1
     elif [ "${ARCH_FAMILY}" == "arm" ]; then
         install-pkg dotnet-runtime-bin
         install-pkg aspnet-runtime-bin
@@ -236,15 +233,18 @@ if ${HAS_GUI}; then
     # Audio drivers
     install-pkg sennheiser-gsp670-pulseaudio-profile
 
-    if ${POWERFUL_PC}; then
-        install-pkg gnome-bluetooth
-    else
-        install-pkg blueman
-    fi
+    ${POWERFUL_PC} && install-pkg gnome-bluetooth \
+                   || install-pkg blueman
 
-    ${POWERFUL_PC} && install-pkg gnome-system-monitor || install-pkg lxtask
-    ${POWERFUL_PC} && install-pkg gnome-terminal || install-pkg lxterminal
-    ${POWERFUL_PC} && install-pkg gnome-calculator || install-pkg mate-calc
+    ${POWERFUL_PC} && install-pkg gnome-system-monitor \
+                   || install-pkg lxtask
+
+    ${POWERFUL_PC} && install-pkg gnome-terminal \
+                   || install-pkg lxterminal
+
+    ${POWERFUL_PC} && install-pkg gnome-calculator \
+                   || install-pkg mate-calc
+
     install-pkg gnome-disk-utility
 
     if ${POWERFUL_PC}; then
@@ -269,8 +269,11 @@ if ${HAS_GUI}; then
 
     install-pkg dconf-editor
 
-    ${POWERFUL_PC} && install-pkg gedit || install-pkg pluma
-    ${POWERFUL_PC} && install-pkg evince || install-pkg epdfview
+    ${POWERFUL_PC} && install-pkg gedit \
+                   || install-pkg pluma
+
+    ${POWERFUL_PC} && install-pkg evince \
+                   || install-pkg epdfview
 
     if ${POWERFUL_PC}; then
         install-pkg baobab
@@ -279,12 +282,8 @@ if ${HAS_GUI}; then
         install-pkg mate-utils
     fi
 
-    if ${POWERFUL_PC}; then
-        install-pkg eog
-        install-dep eog-plugins
-    else
-        install-pkg gpicview
-    fi
+    ${POWERFUL_PC} && install-pkg eog \
+                   || install-pkg gpicview
 
     if ${POWERFUL_PC}; then
         install-dep gnome-menus
@@ -337,8 +336,8 @@ if ${HAS_GUI}; then
     # Internet
     install-pkg firefox
 
-    ${POWERFUL_PC} && install-pkg fragments ||
-                      install-pkg transmission-gtk
+    ${POWERFUL_PC} && install-pkg fragments \
+                   || install-pkg transmission-gtk
 
     # Communication
     [ "${ARCH_FAMILY}" == "x86" ] && install-pkg whatsapp-for-linux
