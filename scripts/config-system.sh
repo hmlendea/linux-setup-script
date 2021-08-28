@@ -663,6 +663,7 @@ if [ -f "/usr/bin/gnome-terminal" ]; then
     set_gsetting ${GNOME_TERMINAL_PROFILE_SCHEMA} palette "['${TERMINAL_BLACK_D}', '${TERMINAL_RED_D}', '${TERMINAL_GREEN_D}', '${TERMINAL_YELLOW_D}', '${TERMINAL_BLUE_D}', '${TERMINAL_PURPLE_D}', '${TERMINAL_CYAN_D}', '${TERMINAL_WHITE_D}', '${TERMINAL_BLACK_L}', '${TERMINAL_RED_L}', '${TERMINAL_GREEN_L}', '${TERMINAL_YELLOW_L}', '${TERMINAL_BLUE_L}', '${TERMINAL_PURPLE_L}', '${TERMINAL_CYAN_L}', '${TERMINAL_WHITE_L}']"
     set_gsetting ${GNOME_TERMINAL_PROFILE_SCHEMA} bold-is-bright ${TERMINAL_BOLD_TEXT_IS_BRIGHT}
     set_gsetting ${GNOME_TERMINAL_PROFILE_SCHEMA} use-theme-colors false
+    set_gsetting ${GNOME_TERMINAL_PROFILE_SCHEMA} scrollbar-policy "never"
 
     # Size
     set_gsetting ${GNOME_TERMINAL_PROFILE_SCHEMA} default-size-columns ${TERMINAL_SIZE_COLS}
@@ -676,34 +677,45 @@ if [ -f "/usr/bin/gnome-terminal" ]; then
     set_gsetting ${GNOME_TERMINAL_PROFILE_SCHEMA} audible-bell false
     set_gsetting ${GNOME_TERMINAL_PROFILE_SCHEMA} cursor-shape "ibeam"
     set_gsetting ${GNOME_TERMINAL_PROFILE_SCHEMA} scrollback-lines ${TERMINAL_SCROLLBACK_SIZE}
-    set_gsetting ${GNOME_TERMINAL_PROFILE_SCHEMA} scrollbar-policy "never"
     set_gsetting ${GNOME_TERMINAL_PROFILE_SCHEMA} visible-name "NuciTerm"
 fi
 if [ -f "/usr/bin/lxterminal" ]; then
     LXTERMINAL_CONFIG_FILE="${HOME_REAL}/.config/lxterminal/lxterminal.conf"
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" fontname ${MONOSPACE_FONT}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" bgcolor ${TERMINAL_BG}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" fgcolor ${TERMINAL_FG}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_0 ${TERMINAL_BLACK_D}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_1 ${TERMINAL_RED_D}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_2 ${TERMINAL_GREEN_D}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_3 ${TERMINAL_YELLOW_D}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_4 ${TERMINAL_BLUE_D}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_5 ${TERMINAL_PURPLE_D}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_6 ${TERMINAL_CYAN_D}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_7 ${TERMINAL_WHITE_D}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_8 ${TERMINAL_BLACK_L}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_9 ${TERMINAL_RED_L}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_10 ${TERMINAL_GREEN_L}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_11 ${TERMINAL_YELLOW_L}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_12 ${TERMINAL_BLUE_L}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_13 ${TERMINAL_PURPLE_L}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_14 ${TERMINAL_CYAN_L}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_15 ${TERMINAL_WHITE_L}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" cursorblinks true
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" cursorunderline true
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" hidescrollbar true
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" hidemenubar true
+
+    # Theme / colours
+    set_config_value ${LXTERMINAL_CONFIG_FILE} bgcolor ${TERMINAL_BG}
+    set_config_value ${LXTERMINAL_CONFIG_FILE} fgcolor ${TERMINAL_FG}
+    set_config_value ${LXTERMINAL_CONFIG_FILE} palette_color_0 ${TERMINAL_BLACK_D}
+    set_config_value ${LXTERMINAL_CONFIG_FILE} palette_color_1 ${TERMINAL_RED_D}
+    set_config_value ${LXTERMINAL_CONFIG_FILE} palette_color_2 ${TERMINAL_GREEN_D}
+    set_config_value ${LXTERMINAL_CONFIG_FILE} palette_color_3 ${TERMINAL_YELLOW_D}
+    set_config_value ${LXTERMINAL_CONFIG_FILE} palette_color_4 ${TERMINAL_BLUE_D}
+    set_config_value ${LXTERMINAL_CONFIG_FILE} palette_color_5 ${TERMINAL_PURPLE_D}
+    set_config_value ${LXTERMINAL_CONFIG_FILE} palette_color_6 ${TERMINAL_CYAN_D}
+    set_config_value ${LXTERMINAL_CONFIG_FILE} palette_color_7 ${TERMINAL_WHITE_D}
+    set_config_value ${LXTERMINAL_CONFIG_FILE} palette_color_8 ${TERMINAL_BLACK_L}
+    set_config_value ${LXTERMINAL_CONFIG_FILE} palette_color_9 ${TERMINAL_RED_L}
+    set_config_value ${LXTERMINAL_CONFIG_FILE} palette_color_10 ${TERMINAL_GREEN_L}
+    set_config_value ${LXTERMINAL_CONFIG_FILE} palette_color_11 ${TERMINAL_YELLOW_L}
+    set_config_value ${LXTERMINAL_CONFIG_FILE} palette_color_12 ${TERMINAL_BLUE_L}
+    set_config_value ${LXTERMINAL_CONFIG_FILE} palette_color_13 ${TERMINAL_PURPLE_L}
+    set_config_value ${LXTERMINAL_CONFIG_FILE} palette_color_14 ${TERMINAL_CYAN_L}
+    set_config_value ${LXTERMINAL_CONFIG_FILE} palette_color_15 ${TERMINAL_WHITE_L}
+    set_config_value ${LXTERMINAL_CONFIG_FILE} boldbright ${TERMINAL_BOLD_TEXT_IS_BRIGHT}
+    set_config_value ${LXTERMINAL_CONFIG_FILE} hidemenubar true
+    set_config_value ${LXTERMINAL_CONFIG_FILE} hidescrollbar true
+
+    # Size
+    set_config_value ${LXTERMINAL_CONFIG_FILE} geometry_columns ${TERMINAL_SIZE_COLS}
+    set_config_value ${LXTERMINAL_CONFIG_FILE} geometry_rows ${TERMINAL_SIZE_ROWS}
+
+    # Font
+    set_config_value ${LXTERMINAL_CONFIG_FILE} fontname ${MONOSPACE_FONT}
+
+    # Others
+    set_config_value ${LXTERMINAL_CONFIG_FILE} scrollback ${TERMINAL_SCROLLBACK_SIZE}
+    set_config_value ${LXTERMINAL_CONFIG_FILE} cursorblinks true
+    set_config_value ${LXTERMINAL_CONFIG_FILE} cursorunderline true
 fi
 
 ####################
@@ -756,6 +768,7 @@ fi
 if [ -f "/usr/bin/dialect" ]; then
     set_gsetting com.github.gi_lom.dialect dark-mode ${GTK_THEME_IS_DARK}
     set_gsetting com.github.gi_lom.dialect show-pronunciation true
+    set_gsetting com.github.gi_lom.dialect translate-accel 1
 fi
 
 #####################
