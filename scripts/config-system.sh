@@ -461,6 +461,11 @@ if [ -f "/usr/bin/whatsapp-for-linux" ]; then
     set_config_value "${WAPP_CONFIG_FILE}" close_to_tray false
     set_config_value "${WAPP_CONFIG_FILE}" start_in_tray false
 fi
+if [ -f "/usr/bin/whatsapp-nativefier" ]; then
+    WAPP_CONFIG_FILE="/opt/whatsapp-nativefier/resources/app/nativefier.json"
+
+    sudo bash -c "$(declare -f set_json_value); set_json_value \"${WAPP_CONFIG_FILE}\" '.tray' \"start-in-tray\""
+fi
 
 #############################
 ### CONFIGURATION EDITORS ###
