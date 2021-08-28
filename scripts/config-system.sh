@@ -290,6 +290,8 @@ fi
 set_modprobe_option bluetooth disable_ertm 1    # Xbox One Controller Pairing
 set_modprobe_option btusb enable_autosuspend n  # Xbox One Controller Connecting, possibly other devices as well
 
+set_gsetting org.gtk.Settings.FileChooser startup-mode 'cwd'
+
 if [ -f "/usr/bin/pulseaudio" ]; then
     set_config_value "/etc/pulse/daemon.conf" resample-method speex-float-10
 fi
@@ -374,6 +376,7 @@ ENVIRONMENT_VARS_FILE="/etc/environment"
 set_config_value "${ENVIRONMENT_VARS_FILE}" QT_QPA_PLATFORMTHEME "gtk3"
 
 GTK2_CONFIG_FILE="${HOME_REAL}/.gtkrc-2.0"
+GTK2_FILECHOOSER_CONFIG_FILE="${HOME_REAL}/.config/gtk-2.0/filechooser.ini"
 GTK3_CONFIG_FILE="${HOME_REAL}/.config/gtk-3.0/settings.ini"
 GTK4_CONFIG_FILE="${HOME_REAL}/.config/gtk-4.0/settings.ini"
 
@@ -383,6 +386,10 @@ set_config_value "${GTK2_CONFIG_FILE}" gtk-cursor-theme-name "${ICON_THEME}"
 set_config_value "${GTK2_CONFIG_FILE}" gtk-button-images 0
 set_config_value "${GTK2_CONFIG_FILE}" gtk-menu-images 0
 set_config_value "${GTK2_CONFIG_FILE}" gtk-toolbar-style GTK_TOOLBAR_ICONS
+
+if [ -f "${GTK2_FILECHOOSER_CONFIG_FILE}" ]; then
+    set_config_value "${GTK2_FILECHOOSER_CONFIG_FILE}" StartupMode=cwd
+fi
 
 if [ -f "${GTK3_CONFIG_FILE}" ]; then
     set_config_value "${GTK3_CONFIG_FILE}" gtk-application-prefer-dark-theme ${GTK_THEME_IS_DARK_BINARY}
