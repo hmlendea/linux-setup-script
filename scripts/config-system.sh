@@ -308,6 +308,7 @@ if [ -f "/etc/default/grub" ]; then
 fi
 
 if [ -f "/usr/bin/gnome-contacts" ]; then
+    set_gsetting "org.gnome.Contacts" did-initial-setup true
     set_gsetting "org.gnome.Contacts" sort-on-surname true
 fi
 
@@ -325,6 +326,8 @@ if [ -f "/usr/bin/gnome-shell" ]; then
 
     set_gsetting "org.gnome.desktop.interface" clock-show-weekday true
     set_gsetting "org.gnome.desktop.interface" enable-hot-corners false
+    set_gsetting "org.gnome.desktop.interface" toolbar-icons-size 'small'
+    set_gsetting "org.gnome.desktop.interface" toolbar-style 'icons'
 
     set_gsetting "org.gnome.desktop.privacy" old-files-age "uint32 14"
     set_gsetting "org.gnome.desktop.privacy" remove-old-temp-files "true"
@@ -446,7 +449,10 @@ fi
 ### CALCULATORS ###
 ###################
 if [ -f "/usr/bin/gnome-calculator" ]; then
-    set_gsetting "org.gnome.calculator" show-thousands true
+    GNOME_CALCULATOR_SCHEMA="org.gnome.calculator"
+    set_gsetting "${GNOME_CALCULATOR_SCHEMA}" show-thousands true
+    set_gsetting "${GNOME_CALCULATOR_SCHEMA}" source-currency 'EUR'
+    set_gsetting "${GNOME_CALCULATOR_SCHEMA}" target-currency 'RON'
 fi
 if [ -f "/usr/bin/mate-calc" ]; then
     set_gsetting "org.mate.calc" show-thousands true
@@ -654,6 +660,8 @@ fi
 if [ -f "/usr/bin/gnome-shell" ]; then
     # Keyboard
     set_gsetting org.gnome.desktop.peripherals.keyboard numlock-state true
+    set_gsetting org.gnome.desktop.input-sources sources "[('xkb', 'ro')]"
+    set_gsetting org.gnome.desktop.input-sources xkb-options "['lv3:ralt_switch']"
 
     # Keybindings
     set_gsetting org.gnome.settings-daemon.plugins.media-keys logout "['<Alt>l']"
@@ -666,6 +674,7 @@ if [ -f "/usr/bin/gnome-shell" ]; then
 
     # Mouse
     set_gsetting org.gnome.desktop.peripherals.mouse accel-profile "flat"
+    set_gsetting org.gnome.desktop.peripherals.mouse speed -1.0
 fi
 
 ############
@@ -680,6 +689,19 @@ fi
 ###################
 if [ -f "/usr/bin/gnome-shell" ]; then
     set_gsetting org.gnome.settings-daemon.plugins.color night-light-enabled true
+fi
+
+#####################
+### NOTIFICATIONS ###
+#####################
+if [ -f "/usr/bin/gnome-shell" ]; then
+    GNOME_NOTIFICATIONS_SCHEMA="org.gnome.desktop.notifications.application:/org/gnome/desktop/notifications/application"
+
+    # Disable
+    [ -f "/usr/bin/simplenote" ] && set_gsetting "${GNOME_NOTIFICATIONS_SCHEMA}/simplenote/" enable false
+
+    # Hide on lockscreen
+    set_gsetting "${GNOME_NOTIFICATIONS_SCHEMA}/gnome-power-panel/" show-in-lock-screen false
 fi
 
 ########################
@@ -837,13 +859,21 @@ if [ -f "/usr/bin/totem" ]; then
     set_gsetting "${TOTEM_SCHEMA}" subtitle-font "${SUBTITLES_FONT}"
 fi
 
-#######################
-### Weather Plugins ###
-#######################
+##############################
+### WEATHER APPS & PLUGINS ###
+##############################
+if [ -f "/usr/bin/gnome-weather" ]; then
+    GNOME_WEATHER_SCHEMA="org.gnome/GWeather"
+
+    set_gsetting "${GNOME_WEATHER_SCHEMA}" distance-unit 'km'
+    set_gsetting "${GNOME_WEATHER_SCHEMA}" pressure-unit 'mb'
+    set_gsetting "${GNOME_WEATHER_SCHEMA}" speed-unit 'kph'
+    set_gsetting "${GNOME_WEATHER_SCHEMA}" temperature-unit 'centigrade'
+fi
 if [ -d "/usr/share/gnome-shell/extensions/openweather-extension@jenslody.de" ]; then
     OPENWEATHER_GSEXT_SCHEMA="org.gnome.shell.extensions.openweather"
 
-    set_gsetting "${OPENWEATHER_GSEXT_SCHEMA}" pressure-unit "bar"
+    set_gsetting "${OPENWEATHER_GSEXT_SCHEMA}" pressure-unit "mbar"
     set_gsetting "${OPENWEATHER_GSEXT_SCHEMA}" unit "celsius"
     set_gsetting "${OPENWEATHER_GSEXT_SCHEMA}" wind-speed-unit "kph"
 fi
