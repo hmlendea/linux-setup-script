@@ -1116,7 +1116,7 @@ if [ -f "/usr/bin/steam" ]; then
 
                 if [[ "${APP_NAME}" == "Steamworks Common Redistributables" ]] || \
                    [[ "${APP_NAME}" =~ ^Proton\ [0-9]+\.[0-9]+$ ]] || \
-                   [[ ${APP_NAME} == "Steam Linux Runtime*" ]]; then
+                   [[ "${APP_NAME}" == "Steam Linux Runtime"* ]]; then
                     DO_CREATE_LAUNCHER="false"
                 fi
 
