@@ -31,10 +31,17 @@ CPU_MODEL=$(cat /proc/cpuinfo | \
 
 CHASSIS_TYPE="Desktop"
 POWERFUL_PC=true
+GAMING_PC=false
 HAS_GUI=false
 
 if [ $(echo ${CPU_MODEL} | grep -c "Atom") -ge 1 ]; then
     POWERFUL_PC=false
+fi
+
+if [ "${CPU_MODEL}" == "Intel Core i7-3610QM" ]; then
+    GAMING_PC=false
+else
+    GAMING_PC=true
 fi
 
 if [ -d "/sys/module/battery" ]; then
@@ -363,7 +370,7 @@ if ${HAS_GUI}; then
         install-pkg inkscape
 
         # Gaming
-        if [ "${ARCH_FAMILY}" == "x86" ]; then
+        if ${GAMING_PC}; then
             install-pkg steam
             #install-dep steam-native-runtime
             install-pkg proton-ge-custom-bin
