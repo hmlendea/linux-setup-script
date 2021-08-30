@@ -320,6 +320,7 @@ if ${HAS_GUI}; then
     install-pkg vimix-cursors
     install-pkg papirus-icon-theme
     install-pkg papirus-folders
+    install-pkg grub-theme-vimix
 
     # Themes - Fallbacks
     install-pkg numix-circle-icon-theme-git
