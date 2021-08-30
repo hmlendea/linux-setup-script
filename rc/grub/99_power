@@ -1,14 +1,10 @@
 #!/bin/sh
 exec tail -n +3 $0
 
-menuentry "* UEFI Firmware Settings" {
-    fwsetup
-}
-
-menuentry "* Reboot" {
+menuentry "Reboot" --class reboot {
     reboot
 }
 
-menuentry "* Power off" {
+menuentry "Power off" --class poweroff {
     halt
 }
