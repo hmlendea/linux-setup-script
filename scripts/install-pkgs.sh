@@ -27,7 +27,9 @@ CPU_MODEL=$(cat /proc/cpuinfo | \
     sed 's/(TM)//g' | \
     sed 's/(R)//g' | \
     sed 's/ CPU//g' | \
-    sed 's/@ .*//g')
+    sed 's/@ .*//g' | \
+    sed 's/^[ \t]*//g' | \
+    sed 's/[ \t]*$//g')
 
 CHASSIS_TYPE="Desktop"
 POWERFUL_PC=true
@@ -38,10 +40,12 @@ if [ $(echo ${CPU_MODEL} | grep -c "Atom") -ge 1 ]; then
     POWERFUL_PC=false
 fi
 
-if [ "${CPU_MODEL}" == "Intel Core i7-3610QM" ]; then
-    GAMING_PC=false
-else
-    GAMING_PC=true
+if ${POWERFUL_PC}; then
+    if [ "${CPU_MODEL}" == "Intel Core i7-3610QM" ]; then
+        GAMING_PC=false
+    else
+        GAMING_PC=true
+    fi
 fi
 
 if [ -d "/sys/module/battery" ]; then
@@ -313,6 +317,7 @@ if ${HAS_GUI}; then
         install-pkg gnome-shell-extension-hide-activities-git
         install-pkg gnome-shell-extension-multi-monitors-add-on-git
         install-pkg gnome-shell-extension-openweather-git
+        install-pkg gnome-shell-extension-wintile
     fi
 
     # Themes
