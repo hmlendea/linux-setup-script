@@ -589,6 +589,7 @@ if [ -f "/usr/bin/firefox" ]; then
     set_firefox_config "${FIREFOX_PROFILE_ID}" "extensions.screenshots.disabled" "true"
     set_firefox_config "${FIREFOX_PROFILE_ID}" "findbar.highlightAll" "true"
     set_firefox_config "${FIREFOX_PROFILE_ID}" "full-screen-api.warning.timeout" "0"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "identity.fxaccounts.account.device.name" ${HOSTNAME}
     set_firefox_config "${FIREFOX_PROFILE_ID}" "media.autoplay.enabled" "false"
     set_firefox_config "${FIREFOX_PROFILE_ID}" "media.navigator.enabled" "false"
     set_firefox_config "${FIREFOX_PROFILE_ID}" "network.IDN_show_punycode" "true"
@@ -838,6 +839,14 @@ if [ -f "/usr/bin/pluma" ]; then
     set_gsetting "${PLUMA_SCHEMA}" insert-spaces true
     set_gsetting "${PLUMA_SCHEMA}" show-single-tab false
     set_gsetting "${PLUMA_SCHEMA}" toolbar-visible false
+fi
+
+##############
+### Tiling ###
+##############
+if [ -d "/usr/share/gnome-shell/extensions/wintile@nowsci.com/" ]; then
+    WINTILE_SCHEMA="org.gnome.shell.extensions.wintile"
+#    set_gsetting "${WINTILE_SCHEMA}" use-minimize false
 fi
 
 ###########################
