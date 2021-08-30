@@ -5,30 +5,31 @@ USER_REAL=${SUDO_USER}
 HOME_REAL="/home/${USER_REAL}"
 
 function set_config_value() {
-    FILE="${1}"
-    KEY="${2}"
-    VALUE_RAW="${@:3}"
+    local FILE_PATH="${1}"
+    local KEY="${2}"
+    local VALUE_RAW="${@:3}"
 
-    if [ ! -f "${FILE}" ]; then
+    if [ ! -f "${FILE_PATH}" ]; then
         # TODO: Handle directory creation
-        touch "${FILE}"
+        touch "${FILE_PATH}"
     fi
 
-    VALUE=$(echo "${VALUE_RAW}" | sed -e 's/[]\/$*.^|[]/\\&/g')
-    FILE_CONTENT=$(cat "${FILE}")
+    #local VALUE=$(echo "${VALUE_RAW}" | sed -e 's/[]\/$*.^|[]/\\&/g')
+    local VALUE=$VALUE_RAW
+    local FILE_CONTENT=$(cat "${FILE_PATH}")
 
     # If the value is not already set
     if [ $(grep -c "^${KEY}=${VALUE}$" <<< "$FILE_CONTENT") == 0 ]; then
         # If the config key already exists (with a different value)
         if [ $(grep -c "^${KEY}=.*$" <<< "$FILE_CONTENT") -gt 0 ]; then
-            sed -i 's|^'"${KEY}"'=.*$|'"${KEY}"'='"${VALUE}"'|g' "$FILE"
+            sudo sed -i 's|^'"${KEY}"'=.*$|'"${KEY}"'='"${VALUE}"'|g' "${FILE_PATH}"
         else
-            LINE="$KEY=$VALUE"
-            echo "$LINE" | sudo tee -a "$FILE" &>/dev/null
-            #printf "$LINE\n" >> "$FILE"
+            LINE="${KEY}=${VALUE}"
+            echo "${LINE}" | sudo tee -a "${FILE_PATH}" &>/dev/null
+            #printf "${LINE}\n" >> "${FILE_PATH}"
         fi
 
-        echo "${FILE} >>> ${KEY} = ${VALUE}"
+        echo "${FILE_PATH} >>> ${KEY} = ${VALUE}"
     fi
 }
 
@@ -292,28 +293,12 @@ set_modprobe_option btusb enable_autosuspend n  # Xbox One Controller Connecting
 
 set_gsetting org.gtk.Settings.FileChooser startup-mode 'cwd'
 
-if [ -f "/usr/bin/pulseaudio" ]; then
-    set_config_value "/etc/pulse/daemon.conf" resample-method speex-float-10
-fi
-
-if [ -d "/usr/bin/openal-info" ]; then
-    set_config_value "${HOME_REAL}/.alsoftrc" hrtf true
-fi
-
 if [ -f "/etc/default/grub" ]; then
     GRUB_CONFIG_FILE="/etc/default/grub"
 
-    set_config_value "${GRUB_CONFIG_FILE}" "GRUB_TIMEOUT" 1
     set_config_value "${GRUB_CONFIG_FILE}" "GRUB_DISABLE_RECOVERY" true
-fi
-
-if [ -f "/usr/bin/gnome-contacts" ]; then
-    set_gsetting "org.gnome.Contacts" did-initial-setup true
-    set_gsetting "org.gnome.Contacts" sort-on-surname true
-fi
-
-if [ -f "/usr/bin/gnome-screenshot" ]; then
-    set_gsetting "org.gnome.gnome-screenshot" last-save-directory "${HOME}/Pictures"
+    set_config_value "${GRUB_CONFIG_FILE}" "GRUB_TIMEOUT" 1
+    set_config_value "${GRUB_CONFIG_FILE}" "GRUB_THEME" "/usr/share/grub/themes/Vimix/theme.txt"
 fi
 
 if [ -f "/usr/bin/gnome-shell" ]; then
@@ -341,8 +326,6 @@ if [ -f "/usr/bin/gnome-shell" ]; then
     set_gsetting "org.gnome.desktop.wm.preferences" theme "${GTK3_THEME}"
     set_gsetting "org.gnome.desktop.wm.preferences" titlebar-font "${TITLEBAR_FONT}"
 
-    set_gsetting "org.gnome.desktop.sound" allow-volume-above-100-percent "true"
-
     set_gsetting "org.gnome.desktop.interface" clock-show-date "true"
     set_gsetting "org.gnome.desktop.interface" document-font-name "${DOCUMENT_FONT}"
     set_gsetting "org.gnome.desktop.interface" font-name "${INTERFACE_FONT}"
@@ -358,6 +341,8 @@ if [ -f "/usr/bin/gnome-shell" ]; then
 
     set_gsetting org.gnome.settings-daemon.plugins.housekeeping free-size-gb-no-notify 2
     set_gsetting org.gnome.settings-daemon.plugins.color night-light-enabled true
+
+    set_gsetting org.gnome.SessionManager logout-prompt false
 
     set_gsetting "org.gnome.shell.overrides" attach-modal-dialogs false
 fi
@@ -445,6 +430,20 @@ if [ -f "/usr/bin/file-roller" ]; then
     set_gsetting "org.gnome.FileRoller.General" compression-level "maximum"
 fi
 
+#############
+### Audio ###
+#############
+if [ -f "/usr/bin/gnome-shell" ]; then
+    set_gsetting org.gnome.desktop.sound allow-volume-above-100-percent "true"
+    set_gsetting org.gnome.settings-daemon.plugins.media-keys volume-step 3
+fi
+if [ -d "/usr/bin/openal-info" ]; then
+    set_config_value "${HOME_REAL}/.alsoftrc" hrtf true
+fi
+if [ -f "/usr/bin/pulseaudio" ]; then
+    set_config_value "/etc/pulse/daemon.conf" resample-method speex-float-10
+fi
+
 ###################
 ### CALCULATORS ###
 ###################
@@ -485,6 +484,14 @@ fi
 #############################
 if [ -f "/usr/bin/dconf-editor" ]; then
     set_gsetting ca.desrt.dconf-editor.Settings show-warning false
+fi
+
+################
+### Contacts ###
+################
+if [ -f "/usr/bin/gnome-contacts" ]; then
+    set_gsetting "org.gnome.Contacts" did-initial-setup true
+    set_gsetting "org.gnome.Contacts" sort-on-surname true
 fi
 
 #############
@@ -715,6 +722,13 @@ if [ -f "/usr/bin/gnome-shell" ]; then
     set_gsetting "${GNOME_POWER_SCHEMA}" sleep-inactive-battery-timeout 900
 fi
 
+###################
+### Screenshots ###
+###################
+if [ -f "/usr/bin/gnome-screenshot" ]; then
+    set_gsetting "org.gnome.gnome-screenshot" last-save-directory "${HOME}/Pictures"
+fi
+
 #################
 ### TERMINALS ###
 #################
@@ -862,14 +876,6 @@ fi
 ##############################
 ### WEATHER APPS & PLUGINS ###
 ##############################
-if [ -f "/usr/bin/gnome-weather" ]; then
-    GNOME_WEATHER_SCHEMA="org.gnome/GWeather"
-
-    set_gsetting "${GNOME_WEATHER_SCHEMA}" distance-unit 'km'
-    set_gsetting "${GNOME_WEATHER_SCHEMA}" pressure-unit 'mb'
-    set_gsetting "${GNOME_WEATHER_SCHEMA}" speed-unit 'kph'
-    set_gsetting "${GNOME_WEATHER_SCHEMA}" temperature-unit 'centigrade'
-fi
 if [ -d "/usr/share/gnome-shell/extensions/openweather-extension@jenslody.de" ]; then
     OPENWEATHER_GSEXT_SCHEMA="org.gnome.shell.extensions.openweather"
 
