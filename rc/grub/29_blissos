@@ -1,8 +1,8 @@
 #!/bin/sh
 exec tail -n +3 $0
 
-menuentry "Phoenix OS" {
-    set bootdir="/phoenixos"
+menuentry "Bliss OS" --class bliss {
+    set bootdir="/blissos"
     set root='(hd0,2)'
 
     linux $bootdir/kernel quiet root=/dev/ram0 androidboot.selinux=permissive acpi_sleep=s3_bios,s3_mode SRC=$bootdir DATA=/data REMOUNT_RW=1

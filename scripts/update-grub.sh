@@ -2,7 +2,7 @@
 
 SOURCE_GRUB_RC_DIR=$(pwd)"/rc/grub"
 TARGET_GRUB_RC_DIR="/etc/grub.d"
-GRUB_CFG_FILE_PATH="/boot/grub/grub.cfg"
+GRUB_CFG_PATH="/boot/grub/grub.cfg"
 
 [ ! -f "/usr/bin/grub-reboot" ] && exit 1
 
@@ -39,13 +39,23 @@ function rename-menuentry {
     OLD_NAME=${1}
     NEW_NAME=${2}
 
-    sed -i 's/^menuentry ['\''\"]'"${OLD_NAME}"'[^'\''\"]*['\''\"]/menuentry '\'"${NEW_NAME}"\''/g' ${GRUB_CFG_FILE_PATH}
+    sed -i 's/^menuentry ['\''\"]'"${OLD_NAME}"'[^'\''\"]*['\''\"]/menuentry '\'"${NEW_NAME}"\''/g' ${GRUB_CFG_PATH}
 }
 
-update-grub-rc "/android" "50_android"
-update-grub-rc "/blissos" "50_blissos"
-update-grub-rc "/phoenixos" "50_phoenixos"
-update-grub-rc "/primeos" "50_primeos"
+function remove_advanced_options {
+    local STARTING_LINE=$(cat "${GRUB_CFG_PATH}" | grep -n "Advanced options for" | awk -F: '{print $1}' | head -n 1)
+    local END_LINE=$(cat "${GRUB_CFG_PATH}" | grep -n "### END /etc/grub.d/10_linux" | awk -F: '{print $1}' | head -n 1)
+    local EOF_LINE=$(wc -l "${GRUB_CFG_PATH}" | awk '{print $1}')
+
+    END_LINE=$((END_LINE-1))
+
+    sed -i ${STARTING_LINE},${END_LINE}d "${GRUB_CFG_PATH}"
+}
+
+update-grub-rc "/android" "29_android"
+update-grub-rc "/blissos" "29_blissos"
+update-grub-rc "/phoenixos" "29_phoenixos"
+update-grub-rc "/primeos" "29_primeos"
 update-grub-rc "/" "99_power"
 
 if [ -f "/usr/bin/update-grub" ]; then
@@ -56,3 +66,4 @@ fi
 
 #rename-menuentry "Arch Linux" "Linux"
 rename-menuentry "Windows Boot Manager" "Windows"
+remove_advanced_options
