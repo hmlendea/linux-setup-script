@@ -370,6 +370,7 @@ if ${HAS_GUI}; then
     if ${POWERFUL_PC}; then
         install-pkg rhythmbox
         install-pkg totem
+        install-pkg spotify
 
         install-dep gst-plugins-ugly
         install-dep gst-libav
