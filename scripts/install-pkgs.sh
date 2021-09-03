@@ -80,6 +80,10 @@ function call-package-manager() {
 		echo " >>> Installing package '${PKG}'"
 		if [ -f "/usr/bin/paru" ]; then
             LANG=C LC_TIME="" paru ${ARGS} --noconfirm
+		elif [ -f "/usr/bin/yay" ]; then
+            LANG=C LC_TIME="" yay ${ARGS} --noconfirm
+		elif [ -f "/usr/bin/yaourt" ]; then
+            LANG=C LC_TIME="" yaourt ${ARGS} --noconfirm
 		else
 			LANG=C LC_TIME="" sudo pacman ${ARGS} --noconfirm
 		fi
@@ -144,7 +148,10 @@ install-pkg openssl-1.0 # Required to run ASP .NET Core apps
 
 # Package manager
 install-pkg-aur-manually package-query
-install-pkg-aur-manually paru-bin
+
+[ "${ARCH}" == "armv7l" ] && install-pkg-aur-manually yay-bin \
+                          || install-pkg-aur-manually paru-bin
+
 install-pkg pacman-contrib
 install-pkg pacutils
 install-pkg yaourt-auto-sync
