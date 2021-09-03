@@ -179,10 +179,21 @@ else
     USING_NVIDIA_GPU=0
 fi
 
-# SCREEN RESOLUTION
-SCREEN_RESOLUTION=$(xdpyinfo | grep "dimensions" | sed 's/^[^0-9]*\([0-9]*x[0-9]*\) pixels.*/\1/g')
-SCREEN_RESOLUTION_H=$(echo ${SCREEN_RESOLUTION} | awk -F "x" '{print $1}')
-SCREEN_RESOLUTION_V=$(echo ${SCREEN_RESOLUTION} | awk -F "x" '{print $2}')
+IS_SERVER=false
+SCREEN_RESOLUTION_H=0
+SCREEN_RESOLUTION_V=0
+
+if [ -f "/usr/bin/xdpyinfo" ]; then
+    SCREEN_RESOLUTION=$(xdpyinfo | grep "dimensions" | sed 's/^[^0-9]*\([0-9]*x[0-9]*\) pixels.*/\1/g')
+
+    if [ -n "${SCREEN_RESOLUTION}" ]; then
+        IS_SERVER=false
+        SCREEN_RESOLUTION_H=$(echo ${SCREEN_RESOLUTION} | awk -F "x" '{print $1}')
+        SCREEN_RESOLUTION_V=$(echo ${SCREEN_RESOLUTION} | awk -F "x" '{print $2}')
+    else
+        IS_SERVER=true
+    fi
+fi
 
 # THEMES
 GTK_THEME="ZorinGrey-Dark"
@@ -276,11 +287,13 @@ if [ ${SCREEN_RESOLUTION_V} -lt 1080 ]; then
     TERMINAL_SIZE_ROWS=24
 fi
 
-if [[ "${ICON_THEME}" == *"Papirus"* ]]; then
-    CURRENT_PAPIRUS_FOLDER_COLOUR=$(papirus-folders -l -t "${ICON_THEME}" | grep ">" | sed 's/ *> *//g')
+if [ ! ${IS_SERVER} ]; then
+    if [[ "${ICON_THEME}" == *"Papirus"* ]]; then
+        CURRENT_PAPIRUS_FOLDER_COLOUR=$(papirus-folders -l -t "${ICON_THEME}" | grep ">" | sed 's/ *> *//g')
 
-    if [ "${CURRENT_PAPIRUS_FOLDER_COLOUR}" != "${ICON_THEME_FOLDER_COLOUR}" ]; then
-        papirus-folders -t "${ICON_THEME}" -C "${ICON_THEME_FOLDER_COLOUR}"
+        if [ "${CURRENT_PAPIRUS_FOLDER_COLOUR}" != "${ICON_THEME_FOLDER_COLOUR}" ]; then
+            papirus-folders -t "${ICON_THEME}" -C "${ICON_THEME_FOLDER_COLOUR}"
+        fi
     fi
 fi
 
