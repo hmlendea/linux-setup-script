@@ -846,6 +846,7 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/ca.desrt.dconf-editor.desktop" \
     Categories "GNOME;GTK;${SETTINGS_APP_CATEGORIES}"
 
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gnome-control-center.desktop" Categories "GNOME;GTK;${SETTINGS_APP_CATEGORIES}"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/openrgb.desktop" Categories "Qt;System;"
 
 
 #############
