@@ -212,7 +212,7 @@ GTK_THEME_BG_COLOUR="#202020"
 # FONT FACES
 INTERFACE_FONT_NAME="Sans"
 INTERFACE_FONT_STYLE="Regular"
-INTERFACE_FONT_SIZE="12"
+INTERFACE_FONT_SIZE=11
 [ ${SCREEN_RESOLUTION_V} -lt 1080 ] && INTERFACE_FONT_SIZE=10
 
 DOCUMENT_FONT_NAME=${INTERFACE_FONT_NAME}
@@ -221,7 +221,8 @@ DOCUMENT_FONT_SIZE=${INTERFACE_FONT_SIZE}
 
 TITLEBAR_FONT_NAME=${INTERFACE_FONT_NAME}
 TITLEBAR_FONT_STYLE="Bold"
-TITLEBAR_FONT_SIZE=${INTERFACE_FONT_SIZE}
+TITLEBAR_FONT_SIZE=12
+[ ${SCREEN_RESOLUTION_V} -lt 1080 ] && TITLEBAR_FONT_SIZE=11
 
 MENU_FONT_NAME=${TITLEBAR_FONT_NAME}
 MENU_FONT_STYLE=${INTERFACE_FONT_STYLE}
@@ -492,6 +493,13 @@ if [ -f "/usr/bin/whatsapp-nativefier" ]; then
     sudo bash -c "$(declare -f set_json_value); set_json_value \"${WAPP_CONFIG_FILE}\" '.tray' \"start-in-tray\""
 fi
 
+##############
+### Citrix ###
+##############
+if [ -d "/opt/Citrix" ]; then
+    set_config_value "${HOME_REAL}/.ICAClient/wfclient.ini" SSLCiphers "ALL" # TODO: Make sure it's put under [WFClient]
+fi
+
 #############################
 ### CONFIGURATION EDITORS ###
 #############################
@@ -695,7 +703,7 @@ if [ -f "/usr/bin/gnome-shell" ]; then
 
     # Mouse
     set_gsetting org.gnome.desktop.peripherals.mouse accel-profile "flat"
-    set_gsetting org.gnome.desktop.peripherals.mouse speed -1.0
+    set_gsetting org.gnome.desktop.peripherals.mouse speed 0.17999999999999999 # 0.18 can't be set
 fi
 
 ############
@@ -743,9 +751,9 @@ if [ -f "/usr/bin/gnome-screenshot" ]; then
     set_gsetting "org.gnome.gnome-screenshot" last-save-directory "${HOME}/Pictures"
 fi
 
-#################
-### TERMINALS ###
-#################
+################
+### Terminal ###
+################
 if [ -f "/usr/bin/gnome-terminal" ]; then
     GNOME_TERMINAL_SCHEMA="org.gnome.Terminal.Legacy"
     GNOME_TERMINAL_PROFILE_ID=$(get_gsetting org.gnome.Terminal.ProfilesList default)
