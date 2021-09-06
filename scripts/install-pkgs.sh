@@ -119,15 +119,8 @@ function install-pkg-aur-manually() {
     fi
 }
 
-# base-devel
-install-pkg binutils
-install-pkg gcc
-install-pkg pkgconf
-install-pkg make
-install-pkg fakeroot
-install-pkg patch
-
 # Basics
+install-pkg base-devel
 install-pkg sudo
 install-pkg man
 install-pkg man-pages
