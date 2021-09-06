@@ -24,6 +24,7 @@
 40800=SuperMeatBoy
 40950=stronghold.exe
 45500=clickr.exe
+47780=steam_app_47780
 48000=limbo
 49520=Borderlands2
 50300=specops.i386
@@ -83,6 +84,7 @@
 261640=BorderlandsPreSqeuel
 266010=LYNE.x64
 266840=aomx.exe
+271570=SpaceFarmers.x86
 271590=gta5.exe
 274170=HotlineMiami2
 275390=steam_app_275390
@@ -98,6 +100,7 @@
 301520=Robocraft.x86_64
 304930=Unturned.x86_64
 306130=eso64.exe
+312900=steam_app_312900
 313340=Mountain.x86_64
 319630=LifeIsStrange
 322330=dontstarve_steam
