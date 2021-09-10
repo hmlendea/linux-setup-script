@@ -344,6 +344,7 @@ if [ -f "/usr/bin/gnome-shell" ]; then
     set_gsetting "org.gnome.desktop.wm.preferences" titlebar-font "${TITLEBAR_FONT}"
 
     set_gsetting "org.gnome.desktop.interface" clock-show-date "true"
+    set_gsetting "org.gnome.desktop.interface" cursor-theme "${CURSOR_THEME}"
     set_gsetting "org.gnome.desktop.interface" document-font-name "${DOCUMENT_FONT}"
     set_gsetting "org.gnome.desktop.interface" font-name "${INTERFACE_FONT}"
     set_gsetting "org.gnome.desktop.interface" gtk-theme "${GTK_THEME}"
@@ -387,7 +388,7 @@ GTK4_CONFIG_FILE="${HOME_REAL}/.config/gtk-4.0/settings.ini"
 
 set_config_value "${GTK2_CONFIG_FILE}" gtk-theme-name "${GTK2_THEME}"
 set_config_value "${GTK2_CONFIG_FILE}" gtk-icon-theme-name "${ICON_THEME}"
-set_config_value "${GTK2_CONFIG_FILE}" gtk-cursor-theme-name "${ICON_THEME}"
+set_config_value "${GTK2_CONFIG_FILE}" gtk-cursor-theme-name "${CURSOR_THEME}"
 set_config_value "${GTK2_CONFIG_FILE}" gtk-button-images 0
 set_config_value "${GTK2_CONFIG_FILE}" gtk-menu-images 0
 set_config_value "${GTK2_CONFIG_FILE}" gtk-toolbar-style GTK_TOOLBAR_ICONS
