@@ -26,8 +26,6 @@ fi
 
 
 [ -f "/usr/bin/systemctl" ]     &&  alias systemctl='systemctl --no-pager -l -n20'
-[ -f "/usr/bin/tmux" ]          &&  alias tmux-new='tmux new -s'
-[ -f "/usr/bin/tmux" ]          &&  alias tmux-resume='tmux attach-session -t'
 [ -f "/usr/bin/xterm" ]         &&  alias xterm='xterm -rv'
 [ -f "/usr/bin/xprop" ]         &&  alias xprop-wmclass='xprop | grep "WM_CLASS"'
 [ -f "/usr/bin/wget" ]          &&  alias wget-persistent='wget -c --retry-connrefused --waitretry=1 --read-timeout=10 --timeout=5 -t 0'
@@ -41,6 +39,12 @@ if [ -f "/usr/bin/git" ]; then
     alias git-push="git fetch && git push"
     alias git-pull="git fetch && git pull --rebase"
     alias git-commit="git fetch && __gitCommit"
+fi
+
+if [ -f "/usr/bin/tmux" ]; then
+    alias tmux-new='tmux new -s'
+    alias tmux-resume='tmux attach-session -t'
+    alias tmux-list='tmux list-session'
 fi
 
 if [ "${OSTYPE}" = "cygwin" ]; then
