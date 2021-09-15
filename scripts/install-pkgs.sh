@@ -267,6 +267,7 @@ if ${HAS_GUI}; then
     install-pkg gnome-disk-utility
 
     if ${POWERFUL_PC}; then
+        install-pkg gnome-calendar
         install-pkg gnome-clocks
         install-pkg gnome-contacts
         install-pkg gnome-maps
@@ -400,7 +401,6 @@ if ${HAS_GUI}; then
 
     if [ "${ARCH_FAMILY}" == "x86" ]; then
         install-pkg electron
-        install-pkg monogame-bin
         install-pkg chromedriver
     fi
 
