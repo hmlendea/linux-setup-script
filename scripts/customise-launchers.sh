@@ -320,6 +320,20 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/galculator.desktop" \
         Name[ro] "Calculator"
 done
 
+################
+### Calendar ###
+################
+CALENDAR_CATEGORIES="Office;Calendar;Utility;Core;"
+
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Calendar.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Calendar" \
+        Name[ro] "Calendar" \
+        Icon "calendar"
+done
+
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Calendar.desktop" Categories "GNOME;GTK;${CALENDAR_CATEGORIES}"
+
 ##############
 ### CAMERA ###
 ##############
