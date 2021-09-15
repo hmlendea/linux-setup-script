@@ -52,8 +52,14 @@ if [ "${OSTYPE}" = "cygwin" ]; then
 fi
 
 ### Package manager
-local PACKAGE_MANAGER_CMD='sudo printf "" && ${PACKAGE_MANAGER} --noconfirm'
+local PACKAGE_MANAGER_CMD='sudo printf "" && ${PACKAGE_MANAGER}'
 local CAN_PM_ALIAS_AUTOCOMPLETE=false
+
+if [ "${PACKAGE_MANAGER}" == "paru" ]; then
+    PACKAGE_MANAGER_CMD="${PACKAGE_MANAGER_CMD} --skipreview --noredownload --norebuild --sudoloop --bottomup"
+elif [ "${PACKAGE_MANAGER}" == "yaourt" ]; then
+    PACKAGE_MANAGER_CMD="${PACKAGE_MANAGER_CMD} --noconfirm"
+fi
 
 for COMPLETION_SOURCE in "/usr/share/bash-completion/completions/${PACKAGE_MANAGER}.bash" \
                          "/usr/share/bash-completion/completions/${PACKAGE_MANAGER}"; do
@@ -64,15 +70,8 @@ for COMPLETION_SOURCE in "/usr/share/bash-completion/completions/${PACKAGE_MANAG
     fi
 done
 
-function set-pm-alias {
-    alias "${1}"="${PACKAGE_MANAGER_CMD}"
-    ${CAN_PM_ALIAS_AUTOCOMPLETE} && complete -F _${PACKAGE_MANAGER} "${1}"
-}
-
-set-pm-alias yeet
-set-pm-alias yaourt
-
-alias ${PACKAGE_MANAGER}='sudo printf "" && ${PACKAGE_MANAGER_CMD} --noconfirm'
+alias yeet="${PACKAGE_MANAGER_CMD}"
+${CAN_PM_ALIAS_AUTOCOMPLETE} && complete -F _${PACKAGE_MANAGER} yeet
 
 ### Fixes
 [ -f "/usr/bin/monodevelop" ]   &&  alias monodevelop="GNOME_DESKTOP_SESSION_ID="" monodevelop"
