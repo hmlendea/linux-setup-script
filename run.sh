@@ -42,9 +42,9 @@ function execute-script-superuser() {
 function update-system() {
     echo "Updating the system..."
     if [ -f "/usr/bin/paru" ]; then
-        paru -Suya --noconfirm --needed
+        paru -Syu --noconfirm --needed --skipreview --noredownload --norebuild --sudoloop
     else
-        sudo pacman -Suy
+        sudo pacman -Syu
     fi
 }
 
