@@ -236,7 +236,6 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/org.freedesktop.Piper.desktop" \
     Name "Mouse Settings" \
     Icon "gnome-settings-mouse" \
     Categories "GNOME;GTK;System;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Calendar.desktop" Categories "GNOME;GTK;Utility;Calendar;Core;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Contacts.desktop" Categories "GNOME;GTK;Utility;ContactManagement;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.DiskUtility.desktop" Categories "GNOME;GTK;System;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Epiphany.desktop" Name "Epiphany"
@@ -778,6 +777,15 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/nvidia-settings.desktop" \
 if [ -f "/usr/bin/optirun" ]; then
     set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/nvidia-settings.desktop" Exec "optirun -b none nvidia-settings -c :8"
 fi
+
+###################
+### Office Apps ###
+###################
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-base.desktop" Name "Base"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-draw.desktop" Name "Draw"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-impress.desktop" Name "Impress"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-math.desktop" Name "Math"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-writer.desktop" Name "Writer"
 
 #########################
 ### PASSWORD MANAGERS ###
