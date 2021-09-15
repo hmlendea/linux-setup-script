@@ -660,6 +660,16 @@ if [ -f "/usr/bin/firefox" ]; then
     set_firefox_config "${FIREFOX_PROFILE_ID}" privacy.trackingprotection.fingerprinting.enabled true
 fi
 
+#################
+### GSConnect ###
+#################
+if [ -d "/usr/share/gnome-shell/extensions/gsconnect@andyholmes.github.io" ] \
+|| [ -d "${HOME}/.local/share/gnome-shell/extensions/gsconnect@andyholmes.github.io" ]; then
+    GSCONNECT_SCHEMA="org.gnome.Shell.Extensions.GSConnect"
+
+    set_gsetting "${GSCONNECT_SCHEMA}" name "${HOSTNAME}"
+fi
+
 ############
 ### IDEs ###
 ############
