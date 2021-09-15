@@ -781,11 +781,30 @@ fi
 ###################
 ### Office Apps ###
 ###################
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-base.desktop" Name "Base"
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-draw.desktop" Name "Draw"
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-impress.desktop" Name "Impress"
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-math.desktop" Name "Math"
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-writer.desktop" Name "Writer"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-base.desktop" \
+    Name "Base" \
+    Name[ro] "Baze" \
+    NoDisplay true
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-calc.desktop" \
+    Name "Calc" \
+    Name[ro] "Calcul" \
+    NoDisplay true
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-draw.desktop" \
+    Name "Draw" \
+    Name[ro] "Schițe" \
+    NoDisplay true
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-impress.desktop" \
+    Name "Impress" \
+    Name[ro] "Prezentări" \
+    NoDisplay true
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-math.desktop" \
+    Name "Math" \
+    Name[ro] "Mate" \
+    NoDisplay true
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-writer.desktop" \
+    Name "Writer" \
+    Name[ro] "Scriitor" \
+    NoDisplay true
 
 #########################
 ### PASSWORD MANAGERS ###
