@@ -24,6 +24,7 @@ else
     alias ls='ls --color=auto -h --hyperlink=always'
 fi
 
+[ ! -f "/usr/bin/sl" ] && alias sl=ls
 
 [ -f "/usr/bin/systemctl" ]     &&  alias systemctl='systemctl --no-pager -l -n20'
 [ -f "/usr/bin/xterm" ]         &&  alias xterm='xterm -rv'
