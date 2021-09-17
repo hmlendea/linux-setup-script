@@ -5,6 +5,14 @@ USER_REAL=${SUDO_USER}
 HOME_REAL="/home/${USER_REAL}"
 
 function set_config_value() {
+    local SEPARATOR="="
+
+    if [ "${1}" == "--separator" ]; then
+        shift
+        SEPARATOR="${1}"
+        shift
+    fi
+
     local FILE_PATH="${1}"
     local KEY="${2}"
     local VALUE_RAW="${@:3}"
@@ -19,17 +27,17 @@ function set_config_value() {
     local FILE_CONTENT=$(cat "${FILE_PATH}")
 
     # If the value is not already set
-    if [ $(grep -c "^${KEY}=${VALUE}$" <<< "$FILE_CONTENT") == 0 ]; then
+    if [ $(grep -c "^${KEY}${SEPARATOR}${VALUE}$" <<< "$FILE_CONTENT") == 0 ]; then
         # If the config key already exists (with a different value)
-        if [ $(grep -c "^${KEY}=.*$" <<< "$FILE_CONTENT") -gt 0 ]; then
-            sudo sed -i 's|^'"${KEY}"'=.*$|'"${KEY}"'='"${VALUE}"'|g' "${FILE_PATH}"
+        if [ $(grep -c "^${KEY}${SEPARATOR}.*$" <<< "$FILE_CONTENT") -gt 0 ]; then
+            sudo sed -i 's|^'"${KEY}${SEPARATOR}"'.*$|'"${KEY}${SEPARATOR}${VALUE}"'|g' "${FILE_PATH}"
         else
-            LINE="${KEY}=${VALUE}"
+            LINE="${KEY}${SEPARATOR}${VALUE}"
             echo "${LINE}" | sudo tee -a "${FILE_PATH}" &>/dev/null
             #printf "${LINE}\n" >> "${FILE_PATH}"
         fi
 
-        echo "${FILE_PATH} >>> ${KEY} = ${VALUE}"
+        echo "${FILE_PATH} >>> ${KEY} ${SEPARATOR} ${VALUE}"
     fi
 }
 
@@ -725,6 +733,26 @@ fi
 ############
 if [ -f "/usr/bin/gnome-maps" ]; then
     set_gsetting org.gnome.Maps night-mode true
+fi
+
+#################
+### MINECRAFT ###
+#################
+MC_DIR="${HOME}/.minecraft"
+MC_OPTIONS_FILE="${MC_DIR}/options.txt"
+MC_LAUNCHER_PROFILES_FILE="${MC_DIR}/launcher_profiles.json"
+MC_LAUNCHER_SETTINGS_FILE="${MC_DIR}/launcher_settings.json"
+
+if [ -f "${MC_OPTIONS_FILE}" ]; then
+    DEVICE_ID=$(shuf -i1000000000000000000-9999999999999999999 -n1)
+
+    set_config_value --separator ":" "${MC_OPTIONS_FILE}" true
+    set_config_value --separator ":" "${MC_OPTIONS_FILE}" darkMojangStudiosBackground ${GTK_THEME_IS_DARK}
+    set_config_value --separator ":" "${MC_OPTIONS_FILE}" pauseOnLostFocus false
+
+    set_json_value "${MC_LAUNCHER_PROFILES_FILE}" '.settings.crashAssistance' false
+    set_json_value "${MC_LAUNCHER_SETTINGS_FILE}" '.deviceId' ${DEVICE_ID}
+    set_json_value "${MC_LAUNCHER_SETTINGS_FILE}" '.locale' en-GB
 fi
 
 ###################
