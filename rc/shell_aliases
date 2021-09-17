@@ -56,7 +56,10 @@ local PACKAGE_MANAGER_CMD='sudo printf "" && ${PACKAGE_MANAGER}'
 local CAN_PM_ALIAS_AUTOCOMPLETE=false
 
 if [ "${PACKAGE_MANAGER}" == "paru" ]; then
-    PACKAGE_MANAGER_CMD="${PACKAGE_MANAGER_CMD} --skipreview --noredownload --norebuild --sudoloop --bottomup"
+    PACKAGE_MANAGER_CMD="${PACKAGE_MANAGER_CMD} --noredownload --norebuild --sudoloop" # Optimisations
+    #PACKAGE_MANAGER_CMD="${PACKAGE_MANAGER_CMD} --nouseask --noprovides --skipreview" # Prompt skip
+    PACKAGE_MANAGER_CMD="${PACKAGE_MANAGER_CMD} --noconfirm" # Prompt skip
+    PACKAGE_MANAGER_CMD="${PACKAGE_MANAGER_CMD} --bottomup --color auto" # Visuals
 elif [ "${PACKAGE_MANAGER}" == "yaourt" ]; then
     PACKAGE_MANAGER_CMD="${PACKAGE_MANAGER_CMD} --noconfirm"
 fi

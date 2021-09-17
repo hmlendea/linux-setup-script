@@ -73,19 +73,21 @@ function is-package-installed() {
 }
 
 function call-package-manager() {
-	ARGS=$*
+	ARGS=${@:1:$#-1}
     PKG="${@: -1}"
+
+    PM_ARGS="${ARGS} --noconfirm --needed"
 
 	if [ $(is-package-installed "${PKG}") -eq 0 ]; then
 		echo " >>> Installing package '${PKG}'"
 		if [ -f "/usr/bin/paru" ]; then
-            LANG=C LC_TIME="" paru ${ARGS} --noconfirm
+            LANG=C LC_TIME="" paru ${PM_ARGS} --noredownload --norebuild --sudoloop
 		elif [ -f "/usr/bin/yay" ]; then
-            LANG=C LC_TIME="" yay ${ARGS} --noconfirm
+            LANG=C LC_TIME="" yay ${PM_ARGS}
 		elif [ -f "/usr/bin/yaourt" ]; then
-            LANG=C LC_TIME="" yaourt ${ARGS} --noconfirm
+            LANG=C LC_TIME="" yaourt ${PM_ARGS}
 		else
-			LANG=C LC_TIME="" sudo pacman ${ARGS} --noconfirm
+			LANG=C LC_TIME="" sudo pacman ${PM_ARGS}
 		fi
 #	else
 #		echo " >>> Skipping package '$PKG' (already installed)"
@@ -93,15 +95,15 @@ function call-package-manager() {
 }
 
 function install-pkg() {
-	PKG="$1"
+	PKG="${1}"
 
-	call-package-manager -S --needed "${PKG}"
+	call-package-manager -S --asexplicit "${PKG}"
 }
 
 function install-dep() {
-	PKG="$1"
+	PKG="${1}"
 
-	call-package-manager -S --needed --asdeps "${PKG}"
+	call-package-manager -S --asdeps "${PKG}"
 }
 
 function install-pkg-aur-manually() {
