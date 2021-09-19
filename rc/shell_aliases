@@ -18,10 +18,10 @@ alias pcregrep='pcregrep -a --color --text'
 alias uptime='uptime -p && printf "since " && uptime -s'
 
 if [ -n "${SSH_CLIENT}" ] || [ -n "${SSH_TTY}" ]; then
-    alias ls='ls --color=auto -h'
+    alias ls='ls --color=auto -h -Q'
     alias poweroff="echo Surely you don\'t mean to do that on the remote machine! && echo If you do, use \'command poweroff\' instead."
 else
-    alias ls='ls --color=auto -h --hyperlink=always'
+    alias ls='ls --color=auto -h -Q --hyperlink=always'
 fi
 
 [ ! -f "/usr/bin/sl" ] && alias sl=ls
