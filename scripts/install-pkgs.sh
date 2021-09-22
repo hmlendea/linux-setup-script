@@ -361,6 +361,7 @@ if ${HAS_GUI}; then
 
     # Internet
     install-pkg firefox
+    install-pkg chrome-gnome-shell # Also used for Firefox
 
     ${POWERFUL_PC} && install-pkg fragments \
                    || install-pkg transmission-gtk
