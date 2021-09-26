@@ -76,12 +76,12 @@ function call-package-manager() {
 	ARGS=${@:1:$#-1}
     PKG="${@: -1}"
 
-    PM_ARGS="${ARGS} --noconfirm --needed"
+    PM_ARGS="${ARGS} ${PKG} --noconfirm --needed"
 
 	if [ $(is-package-installed "${PKG}") -eq 0 ]; then
 		echo " >>> Installing package '${PKG}'"
 		if [ -f "/usr/bin/paru" ]; then
-            LANG=C LC_TIME="" paru ${PM_ARGS} --noredownload --norebuild --sudoloop
+            LANG=C LC_TIME="" paru ${PM_ARGS} --noprovides --noredownload --norebuild --sudoloop
 		elif [ -f "/usr/bin/yay" ]; then
             LANG=C LC_TIME="" yay ${PM_ARGS}
 		elif [ -f "/usr/bin/yaourt" ]; then
@@ -140,7 +140,6 @@ install-pkg wget
 install-pkg usbutils
 install-pkg lshw
 
-install-dep dialog
 install-dep wpa_supplicant
 install-pkg net-tools
 install-pkg wireless_tools
