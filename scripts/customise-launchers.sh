@@ -728,7 +728,7 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Maps.desktop" Categories 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/minecraft-launcher.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Minecraft" \
-        StartupWMClass "Minecraft* 1.16.4"
+        StartupWMClass "Minecraft 1.17.1"
 done
 
 ################
