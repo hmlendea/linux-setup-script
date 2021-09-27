@@ -30,6 +30,7 @@
 50300=specops.i386
 57300=Amnesia.bin.x86_64
 65980=CivBE
+70000=steam_app_70000
 70300=vvvvvv.x86_64
 91310=DeadIslandGame
 98200=FrozenSynapse
