@@ -120,7 +120,7 @@ function set_xml_node() {
         NODE=$(echo "${NODE_RAW}" | sed 's/\/\([^\/]\)/\/x:\1/g')
     fi
 
-    OLD_VALUE=$(xmlstarlet sel -N x="${NAMESPACE}" -t -m ''"${NODE}"'' -v n -n "${FILE}")
+    OLD_VALUE=$(xmlstarlet sel -N x="${NAMESPACE}" -t -v ''"${NODE}"'' -n "${FILE}")
 
     if [ "${VALUE}" != "${OLD_VALUE}" ]; then
         echo "${FILE} >>> ${NODE_RAW} = ${VALUE}"
@@ -212,8 +212,13 @@ ICON_THEME="Papirus-Dark"
 ICON_THEME_FOLDER_COLOUR="grey"
 CURSOR_THEME="Vimix-white-cursors"
 
-[ "${GTK_THEME_VARIANT}" == "dark" ] && GTK_THEME_IS_DARK=true      || GTK_THEME_IS_DARK=false
-[ "${GTK_THEME_VARIANT}" == "dark" ] && GTK_THEME_IS_DARK_BINARY=1  || GTK_THEME_IS_DARK_BINARY=0
+if [ "${GTK_THEME_VARIANT}" == "dark" ]; then
+    GTK_THEME_IS_DARK=true
+    GTK_THEME_IS_DARK_BINARY=1
+else
+    GTK_THEME_IS_DARK=false
+    GTK_THEME_IS_DARK_BINARY=0
+fi
 
 GTK_THEME_BG_COLOUR="#202020"
 
@@ -668,6 +673,50 @@ if [ -f "/usr/bin/firefox" ]; then
     set_firefox_config "${FIREFOX_PROFILE_ID}" privacy.trackingprotection.fingerprinting.enabled true
 fi
 
+##############################
+### Games & Game Launchers ###
+##############################
+MC_DIR="${HOME}/.minecraft"
+MC_OPTIONS_FILE="${MC_DIR}/options.txt"
+MC_LAUNCHER_PROFILES_FILE="${MC_DIR}/launcher_profiles.json"
+MC_LAUNCHER_SETTINGS_FILE="${MC_DIR}/launcher_settings.json"
+
+if [ -f "${MC_OPTIONS_FILE}" ]; then
+    DEVICE_ID=$(shuf -i1000000000000000000-9999999999999999999 -n1)
+
+    set_config_value --separator ":" "${MC_OPTIONS_FILE}" true
+    set_config_value --separator ":" "${MC_OPTIONS_FILE}" darkMojangStudiosBackground ${GTK_THEME_IS_DARK}
+    set_config_value --separator ":" "${MC_OPTIONS_FILE}" pauseOnLostFocus false
+
+    set_json_value "${MC_LAUNCHER_PROFILES_FILE}" '.settings.crashAssistance' false
+    set_json_value "${MC_LAUNCHER_SETTINGS_FILE}" '.deviceId' ${DEVICE_ID}
+    set_json_value "${MC_LAUNCHER_SETTINGS_FILE}" '.locale' en-GB
+fi
+
+PDX_LAUNCHER_DATA_DIR="${HOME}/.local/share/Paradox Interactive/launcher-v2"
+PDX_LAUNCHER_USER_SETTINGS_FILE="${PDX_LAUNCHER_DATA_DIR}/userSettings.json"
+
+if [ -f "${PDX_LAUNCHER_USER_SETTINGS_FILE}" ]; then
+    set_json_value "${PDX_LAUNCHER_USER_SETTINGS_FILE}" '.allowPersonalizedContent' false
+fi
+
+ASPYR_DIR="{HOME}/.local/share/Aspyr"
+CIV5_DIR="${ASPYR_DIR}/Sid Meier's Civilization 5"
+CIV5_USER_SETTINGS_FILE="${CIV5_DIR}/UserSettings.ini"
+
+if [ -f "${CIV5_USER_SETTINGS_FILE}" ]; then
+    set_config_value "${CIV5_USER_SETTINGS_FILE}" "AdvisorLevel" 0
+    set_config_value "${CIV5_USER_SETTINGS_FILE}" "TutorialLevel" 0
+    set_config_value "${CIV5_USER_SETTINGS_FILE}" "SkipIntroVideo" 1
+fi
+
+TERRARIA_DIR="${HOME}/.local/share/Terraria"
+TERRARIA_CONFIG_FILE="${TERRARIA_DIR}/config.json"
+
+if [ -f "${TERRARIA_CONFIG_FILE}" ]; then
+    set_json_value "${TERRARIA_CONFIG_FILE}" ".QuickLaunch" true
+fi
+
 #################
 ### GSConnect ###
 #################
@@ -705,6 +754,19 @@ if [ -f "/usr/bin/code" ]; then
     set_json_value "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.scrollback"]' ${TERMINAL_SCROLLBACK_SIZE}
 fi
 
+################
+### INKSCAPE ###
+################
+if [ -f "/usr/bin/inkscape" ]; then
+    INKSCAPE_PREFERENCES_FILE="${HOME}/.config/inkscape/preferences.xml"
+
+    set_xml_node "${INKSCAPE_PREFERENCES_FILE}" "//group[@id='theme']/@defaultPreferDarkTheme" "${GTK_THEME_IS_DARK_BINARY}"
+    set_xml_node "${INKSCAPE_PREFERENCES_FILE}" "//group[@id='theme']/@defaultGtkTheme" "${GTK_THEME}"
+    set_xml_node "${INKSCAPE_PREFERENCES_FILE}" "//group[@id='theme']/@defaultIconTheme" "${ICON_THEME}"
+    set_xml_node "${INKSCAPE_PREFERENCES_FILE}" "//group[@id='theme']/@darkTheme" "${GTK_THEME_IS_DARK_BINARY}"
+    set_xml_node "${INKSCAPE_PREFERENCES_FILE}" "//group[@id='theme']/@preferDarkTheme" "${GTK_THEME_IS_DARK_BINARY}"
+fi
+
 ########################
 ### KEYBOARD & MOUSE ###
 ########################
@@ -733,26 +795,6 @@ fi
 ############
 if [ -f "/usr/bin/gnome-maps" ]; then
     set_gsetting org.gnome.Maps night-mode true
-fi
-
-#################
-### MINECRAFT ###
-#################
-MC_DIR="${HOME}/.minecraft"
-MC_OPTIONS_FILE="${MC_DIR}/options.txt"
-MC_LAUNCHER_PROFILES_FILE="${MC_DIR}/launcher_profiles.json"
-MC_LAUNCHER_SETTINGS_FILE="${MC_DIR}/launcher_settings.json"
-
-if [ -f "${MC_OPTIONS_FILE}" ]; then
-    DEVICE_ID=$(shuf -i1000000000000000000-9999999999999999999 -n1)
-
-    set_config_value --separator ":" "${MC_OPTIONS_FILE}" true
-    set_config_value --separator ":" "${MC_OPTIONS_FILE}" darkMojangStudiosBackground ${GTK_THEME_IS_DARK}
-    set_config_value --separator ":" "${MC_OPTIONS_FILE}" pauseOnLostFocus false
-
-    set_json_value "${MC_LAUNCHER_PROFILES_FILE}" '.settings.crashAssistance' false
-    set_json_value "${MC_LAUNCHER_SETTINGS_FILE}" '.deviceId' ${DEVICE_ID}
-    set_json_value "${MC_LAUNCHER_SETTINGS_FILE}" '.locale' en-GB
 fi
 
 ###################
