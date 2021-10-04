@@ -89,6 +89,8 @@ function set_json_value() {
     local FILE_CONTENT=$(cat "${FILE_PATH}" | grep -v "^[ \t]*//" | tr -d '\n' | sed 's/,[ \t]*}/ }/g')
     local CURRENT_VALUE=$(jq "${PROPERTY}" <<< ${FILE_CONTENT})
 
+    VALUE=$(echo "${VALUE}" | sed 's/\\\././g') # dirty fix
+
     if [ "${VALUE}" != "false" ] && [ "${VALUE}" != "true" ] && \
        ! [[ ${VALUE} =~ ^[0-9]+([.][0-9]+)?$ ]]; then
         VALUE="\"${VALUE}\""
@@ -99,6 +101,10 @@ function set_json_value() {
         jq "${PROPERTY}"'='"${VALUE}" <<< ${FILE_CONTENT} > "${FILE_PATH}"
         echo "${FILE_PATH} >>> ${PROPERTY} = ${VALUE}"
     fi
+}
+
+function set_json_value_root() {
+    sudo bash -c "$(declare -f set_json_value); set_json_value \"${1}\" '${2}' \"${3}\""
 }
 
 function set_xml_node() {
@@ -203,6 +209,10 @@ if [ -f "/usr/bin/xdpyinfo" ]; then
     fi
 fi
 
+[ ${SCREEN_RESOLUTION_V} -le 2160 ] && ZOOM_LEVEL=1.15
+[ ${SCREEN_RESOLUTION_V} -le 1440 ] && ZOOM_LEVEL=1.10
+[ ${SCREEN_RESOLUTION_V} -le 1080 ] && ZOOM_LEVEL=1.00
+
 # THEMES
 GTK_THEME="ZorinGrey-Dark"
 GTK_THEME_VARIANT="dark"
@@ -226,7 +236,7 @@ GTK_THEME_BG_COLOUR="#202020"
 INTERFACE_FONT_NAME="Sans"
 INTERFACE_FONT_STYLE="Regular"
 INTERFACE_FONT_SIZE=11
-[ ${SCREEN_RESOLUTION_V} -lt 1080 ] && INTERFACE_FONT_SIZE=10
+[ ${SCREEN_RESOLUTION_V} -lt 1440 ] && INTERFACE_FONT_SIZE=10
 
 DOCUMENT_FONT_NAME=${INTERFACE_FONT_NAME}
 DOCUMENT_FONT_STYLE=${INTERFACE_FONT_STYLE}
@@ -506,8 +516,13 @@ if [ -f "/usr/bin/whatsapp-for-linux" ]; then
 fi
 if [ -f "/usr/bin/whatsapp-nativefier" ]; then
     WAPP_CONFIG_FILE="/opt/whatsapp-nativefier/resources/app/nativefier.json"
+    WAPP_PREFERENCES_FILE="${HOME}/.config/whatsapp-nativefier-d40211/Preferences"
 
-    sudo bash -c "$(declare -f set_json_value); set_json_value \"${WAPP_CONFIG_FILE}\" '.tray' \"start-in-tray\""
+    #sudo bash -c "$(declare -f set_json_value); set_json_value \"${WAPP_CONFIG_FILE}\" '.tray' \"start-in-tray\""
+    set_json_value_root "${WAPP_CONFIG_FILE}" '.tray' "start-in-tray"
+
+    set_json_value_root "${WAPP_CONFIG_FILE}" '.zoom' "${ZOOM_LEVEL}"
+    #set_json_value "${WAPP_PREFERENCES_FILE}" '.partition.per_host_zoom_levels[]."web.whatsapp.com"' "${ZOOM_LEVEL}"
 fi
 
 ##############
@@ -576,7 +591,7 @@ fi
 if [ -f "/usr/bin/nautilus" ]; then
     NAUTILUS_SCHEMA="org.gnome.nautilus"
 
-    set_gsetting "${NAUTILUS_SCHEMA}.icon-view" default-zoom-level "small"
+    set_gsetting "${NAUTILUS_SCHEMA}.icon-view" default-zoom-level "standard"
     set_gsetting "${NAUTILUS_SCHEMA}.list-view" default-zoom-level "small"
     set_gsetting "${NAUTILUS_SCHEMA}.preferences" show-create-link true
     set_gsetting "${NAUTILUS_SCHEMA}.preferences" show-delete-permanently true
@@ -615,7 +630,7 @@ if [ -f "/usr/bin/firefox" ]; then
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.search.region" "RO"
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.send_pings" "false"
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.tabs.delayHidingAudioPlayingIconMS" "0"
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.tabs.insertAfterCurrent" "true"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.tabs.insertAfterCurrent" "false"
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.tabs.tabMinWidth" "0"
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.tabs.warnOnClose" "false"
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.translation.detectLanguage" "true"
@@ -735,12 +750,17 @@ if [ -f "/usr/bin/code" ]; then
 
     # Appearance
     set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.codeLens"]' false
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.find.autoFindInSelection"]' "multiline"
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.find.seedSearchStringFromSelection"]' "never"
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.fontFamily"]' "${MONOSPACE_FONT_NAME} ${MONOSPACE_FONT_STYLE}"
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.fontSize"]' $((MONOSPACE_FONT_SIZE+3))
     set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.roundedSelection"]' true
     set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.minimap.maxColumn"]' 100
     set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.minimap.renderCharacters"]' false
     set_json_value "${VSCODE_CONFIG_FILE}" '.["peacock.affectActivityBar"]' false
     set_json_value "${VSCODE_CONFIG_FILE}" '.["peacock.affectTabActiveBorder"]' true
     set_json_value "${VSCODE_CONFIG_FILE}" '.["peacock.showColorInStatusBar"]' false
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["update.mode"]' "none"
     set_json_value "${VSCODE_CONFIG_FILE}" '.["window.autoDetectColorScheme"]' true
     set_json_value "${VSCODE_CONFIG_FILE}" '.["window.menuBarVisibility"]' "toggle"
     set_json_value "${VSCODE_CONFIG_FILE}" '.["workbench.colorTheme"]' "Default Dark+"
@@ -751,7 +771,15 @@ if [ -f "/usr/bin/code" ]; then
     set_json_value "${VSCODE_CONFIG_FILE}" '.["explorer.confirmDragAndDrop"]' false
     set_json_value "${VSCODE_CONFIG_FILE}" '.["explorer.confirmDelete"]' false
     set_json_value "${VSCODE_CONFIG_FILE}" '.["git.autofetch"]' true
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["git.autofetchPeriod"]' 300
     set_json_value "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.scrollback"]' ${TERMINAL_SCROLLBACK_SIZE}
+
+    # C#
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["omnisharp.enableDecompilationSupport"]' true
+
+    # Telemetry
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["telemetry.enableCrashReporter"]' false
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["telemetry.enableTelemetry"]' false
 fi
 
 ################
