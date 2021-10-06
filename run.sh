@@ -60,9 +60,8 @@ function update-system() {
     fi
 }
 
-echo "Distro:       ${DISTRO}"
-echo "Distro kind:  ${DISTRO_FAMILY}"
-echo "Architecture: ${ARCH}"
+echo "Distro:       ${DISTRO} (${DISTRO_FAMILY})"
+echo "Architecture: ${ARCH} (${ARCH_FAMILY})"
 echo "CPU:          ${CPU_MODEL}"
 echo "Chassis:      ${CHASSIS_TYPE}"
 echo "GUI:          ${HAS_GUI}"
