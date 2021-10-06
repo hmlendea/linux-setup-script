@@ -7,8 +7,13 @@
 export LD_LIBRARY_PATH="${LD_LIBRARY_PATH-}:/usr/lib32"
 export SHELL="/bin/bash"
 
-export OLDPWD=$(pwd)
-export OLDPWD2=${OLDPWD}
+if [ -z "${USER}" ]; then
+    if [ ! -z "${USERNAME}" ]; then
+        export USER=${USERNAME}
+    else
+        export USER=$(whoami)
+    fi
+fi
 
 [ -f "/usr/bin/nano" ]      &&  export EDITOR=nano                          # Make nano the default editor
 [ -f "/usr/bin/optirun" ]   &&  export VGL_READBACK=pbo                     # Better optirun performance
