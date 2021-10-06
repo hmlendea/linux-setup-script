@@ -1,9 +1,13 @@
 #!/bin/bash
+DISTRO=$(uname -r | sed 's/^[0-9.]*-\([A-Za-z]*\).*$/\1/g')
+ROOT_PATH=""
+
+[ "${DISTRO}" == "lineageos" ] && ROOT_PATH="/data/data/com.termux/files/usr"
 
 USER_REAL=${SUDO_USER}
 [ ! -n "${USER_REAL}" ] && USER_REAL=${USER}
 
-HOME_REAL=$(grep "${USER_REAL}" "/etc/passwd" 2>/dev/null | cut -f6 -d":")
+HOME_REAL=$(grep "${USER_REAL}" "${ROOT_PATH}/etc/passwd" 2>/dev/null | cut -f6 -d":")
 
 if [ ! -d "${HOME_REAL}" ]; then
     if [ -d "/data/data/com.termux/files/home" ]; then
@@ -158,7 +162,7 @@ function set_xml_node() {
 }
 
 function set_modprobe_option() {
-    FILE="/etc/modprobe.d/hori-system-config.conf"
+    FILE="${ROOT_PATH}/etc/modprobe.d/hori-system-config.conf"
     MODULE="${1}"
     KEY="${2}"
     VALUE="${3}"
@@ -197,6 +201,8 @@ function set_gsetting() {
     PROPERTY="${2}"
     VALUE="${@:3}"
 
+    [ ! -f "${ROOT_PATH}/usr/bin/gsettings" ] && return
+
     CURRENT_VALUE=$(get_gsetting "${SCHEMA}" "${PROPERTY}")
 
     if [ "${CURRENT_VALUE}" != "${VALUE}" ] && \
@@ -224,7 +230,7 @@ IS_SERVER=false
 SCREEN_RESOLUTION_H=0
 SCREEN_RESOLUTION_V=0
 
-if [ -f "/usr/bin/xdpyinfo" ]; then
+if [ -f "${ROOT_PATH}/usr/bin/xdpyinfo" ]; then
     SCREEN_RESOLUTION=$(xdpyinfo | grep "dimensions" | sed 's/^[^0-9]*\([0-9]*x[0-9]*\) pixels.*/\1/g')
 
     if [ -n "${SCREEN_RESOLUTION}" ]; then
@@ -360,15 +366,15 @@ set_modprobe_option btusb enable_autosuspend n  # Xbox One Controller Connecting
 
 set_gsetting org.gtk.Settings.FileChooser startup-mode 'cwd'
 
-if [ -f "/etc/default/grub" ]; then
-    GRUB_CONFIG_FILE="/etc/default/grub"
+if [ -f "${ROOT_PATH}/etc/default/grub" ]; then
+    GRUB_CONFIG_FILE="${ROOT_PATH}/etc/default/grub"
 
     set_config_value "${GRUB_CONFIG_FILE}" "GRUB_DISABLE_RECOVERY" true
     set_config_value "${GRUB_CONFIG_FILE}" "GRUB_TIMEOUT" 1
-    set_config_value "${GRUB_CONFIG_FILE}" "GRUB_THEME" "/usr/share/grub/themes/Vimix/theme.txt"
+    set_config_value "${GRUB_CONFIG_FILE}" "GRUB_THEME" "${ROOT_PATH}/usr/share/grub/themes/Vimix/theme.txt"
 fi
 
-if [ -f "/usr/bin/gnome-shell" ]; then
+if [ -f "${ROOT_PATH}/usr/bin/gnome-shell" ]; then
     if [ "${ARCH}" == "aarch64" ]; then
         set_gsetting "org.gnome.settings-daemon.plugins.remote-display" active false
         set_gsetting "org.gnome.desktop.interface" enable-animations false
@@ -415,20 +421,20 @@ if [ -f "/usr/bin/gnome-shell" ]; then
     set_gsetting "org.gnome.shell.overrides" attach-modal-dialogs false
 fi
 
-if [ -d "/usr/share/gnome-shell/extensions/user-theme@gnome-shell-extensions.gcampax.github.com/" ]; then
+if [ -d "${ROOT_PATH}/usr/share/gnome-shell/extensions/user-theme@gnome-shell-extensions.gcampax.github.com/" ]; then
     set_gsetting "org.gnome.shell.extensions.user-theme" name "${GTK_THEME}"
 fi
 
-if [ -d "/usr/share/gnome-shell/extensions/multi-monitors-add-on@spin83" ]; then
+if [ -d "${ROOT_PATH}/usr/share/gnome-shell/extensions/multi-monitors-add-on@spin83" ]; then
     set_gsetting "org.gnome.shell.extensions.multi-monitors-add-on" show-indicator false
 fi
 
-if [ -f "/usr/bin/panther_launcher" ]; then
+if [ -f "${ROOT_PATH}/usr/bin/panther_launcher" ]; then
     set_gsetting "org.rastersoft.panther" icon-size 48
     set_gsetting "org.rastersoft.panther" use-category true
 fi
 
-ENVIRONMENT_VARS_FILE="/etc/environment"
+ENVIRONMENT_VARS_FILE="${ROOT_PATH}/etc/environment"
 set_config_value "${ENVIRONMENT_VARS_FILE}" QT_QPA_PLATFORMTHEME "gtk3"
 
 GTK2_CONFIG_FILE="${HOME_REAL}/.gtkrc-2.0"
@@ -472,7 +478,7 @@ if [ -f "${HOME_REAL}/.config/lxsession/LXDE/desktop.conf" ]; then
     set_config_value "${LXSESSION_CONFIG_FILE}" iGtk/ToolbarStyle 0
 fi
 
-if [ -f "/usr/bin/openbox" ] && [ -f "/usr/bin/lxsession" ]; then
+if [ -f "${ROOT_PATH}/usr/bin/openbox" ] && [ -f "${ROOT_PATH}/usr/bin/lxsession" ]; then
     OPENBOX_LXDE_RC="${HOME_REAL}/.config/openbox/lxde-rc.xml"
 
     set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/name" "${GTK2_THEME}"
@@ -494,55 +500,55 @@ fi
 ########################
 ### ARCHIVE MANAGERS ###
 ########################
-if [ -f "/usr/bin/file-roller" ]; then
+if [ -f "${ROOT_PATH}/usr/bin/file-roller" ]; then
     set_gsetting "org.gnome.FileRoller.General" compression-level "maximum"
 fi
 
 #############
 ### Audio ###
 #############
-if [ -f "/usr/bin/gnome-shell" ]; then
+if [ -f "${ROOT_PATH}/usr/bin/gnome-shell" ]; then
     set_gsetting org.gnome.desktop.sound allow-volume-above-100-percent "true"
     set_gsetting org.gnome.settings-daemon.plugins.media-keys volume-step 3
 fi
-if [ -d "/usr/bin/openal-info" ]; then
+if [ -d "${ROOT_PATH}/usr/bin/openal-info" ]; then
     set_config_value "${HOME_REAL}/.alsoftrc" hrtf true
 fi
-if [ -f "/usr/bin/pulseaudio" ]; then
-    set_config_value "/etc/pulse/daemon.conf" resample-method speex-float-10
+if [ -f "${ROOT_PATH}/usr/bin/pulseaudio" ]; then
+    set_config_value "${ROOT_PATH}/etc/pulse/daemon.conf" resample-method speex-float-10
 fi
 
 ###################
 ### CALCULATORS ###
 ###################
-if [ -f "/usr/bin/gnome-calculator" ]; then
+if [ -f "${ROOT_PATH}/usr/bin/gnome-calculator" ]; then
     GNOME_CALCULATOR_SCHEMA="org.gnome.calculator"
     set_gsetting "${GNOME_CALCULATOR_SCHEMA}" show-thousands true
     set_gsetting "${GNOME_CALCULATOR_SCHEMA}" source-currency 'EUR'
     set_gsetting "${GNOME_CALCULATOR_SCHEMA}" target-currency 'RON'
 fi
-if [ -f "/usr/bin/mate-calc" ]; then
+if [ -f "${ROOT_PATH}/usr/bin/mate-calc" ]; then
     set_gsetting "org.mate.calc" show-thousands true
 fi
 
 #################
 ### CHAT APPS ###
 #################
-if [ -f "/usr/bin/discord" ]; then
+if [ -f "${ROOT_PATH}/usr/bin/discord" ]; then
     set_json_value "${HOME_REAL}/.config/discord/settings.json" '.BACKGROUND_COLOR' ${GTK_THEME_BG_COLOUR}
 fi
-if [ -f "/usr/bin/telegram-desktop" ]; then
+if [ -f "${ROOT_PATH}/usr/bin/telegram-desktop" ]; then
     set_config_value "${ENVIRONMENT_VARS_FILE}" TDESKTOP_I_KNOW_ABOUT_GTK_INCOMPATIBILITY "1"
 fi
-if [ -f "/usr/bin/whatsapp-for-linux" ]; then
+if [ -f "${ROOT_PATH}/usr/bin/whatsapp-for-linux" ]; then
     WAPP_CONFIG_FILE="${HOME_REAL}/.config/whatsapp-for-linux/settings.conf"
 
     # Disable tray because tray icons don't work and the window becomes inaccessible
     set_config_value "${WAPP_CONFIG_FILE}" close_to_tray false
     set_config_value "${WAPP_CONFIG_FILE}" start_in_tray false
 fi
-if [ -f "/usr/bin/whatsapp-nativefier" ]; then
-    WAPP_CONFIG_FILE="/opt/whatsapp-nativefier/resources/app/nativefier.json"
+if [ -f "${ROOT_PATH}/usr/bin/whatsapp-nativefier" ]; then
+    WAPP_CONFIG_FILE="${ROOT_PATH}/opt/whatsapp-nativefier/resources/app/nativefier.json"
     WAPP_PREFERENCES_FILE="${HOME}/.config/whatsapp-nativefier-d40211/Preferences"
 
     #sudo bash -c "$(declare -f set_json_value); set_json_value \"${WAPP_CONFIG_FILE}\" '.tray' \"start-in-tray\""
@@ -555,21 +561,21 @@ fi
 ##############
 ### Citrix ###
 ##############
-if [ -d "/opt/Citrix" ]; then
+if [ -d "${ROOT_PATH}/opt/Citrix" ]; then
     set_config_value "${HOME_REAL}/.ICAClient/wfclient.ini" SSLCiphers "ALL" # TODO: Make sure it's put under [WFClient]
 fi
 
 #############################
 ### CONFIGURATION EDITORS ###
 #############################
-if [ -f "/usr/bin/dconf-editor" ]; then
+if [ -f "${ROOT_PATH}/usr/bin/dconf-editor" ]; then
     set_gsetting ca.desrt.dconf-editor.Settings show-warning false
 fi
 
 ################
 ### Contacts ###
 ################
-if [ -f "/usr/bin/gnome-contacts" ]; then
+if [ -f "${ROOT_PATH}/usr/bin/gnome-contacts" ]; then
     set_gsetting "org.gnome.Contacts" did-initial-setup true
     set_gsetting "org.gnome.Contacts" sort-on-surname true
 fi
@@ -577,7 +583,7 @@ fi
 #############
 ### DOCKS ###
 #############
-if [ -d "/usr/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com/" ]; then
+if [ -d "${ROOT_PATH}/usr/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com/" ]; then
     DTD_SCHEMA="org.gnome.shell.extensions.dash-to-dock"
 
     set_gsetting "${DTD_SCHEMA}" background-opacity 0.0
@@ -594,7 +600,7 @@ if [ -d "/usr/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com/" ]; th
     set_gsetting "${DTD_SCHEMA}" show-trash false
     set_gsetting "${DTD_SCHEMA}" transparency-mode FIXED
 fi
-if [ -f "/usr/bin/plank" ]; then
+if [ -f "${ROOT_PATH}/usr/bin/plank" ]; then
     PLANK_SCHEMA="net.launchpad.plank.docks.dock1"
 
     set_gsetting "${PLANK_SCHEMA}" theme "Gtk+"
@@ -604,7 +610,7 @@ fi
 ########################
 ### DOCUMENT VIEWERS ###
 ########################
-if [ -f "/usr/bin/epdfview" ]; then
+if [ -f "${ROOT_PATH}/usr/bin/epdfview" ]; then
     EPDFVIEW_CONFIG_FILE="${HOME_REAL}/.config/epdfview/main.conf"
 
     set_config_value "${EPDFVIEW_CONFIG_FILE}" zoomToFit false
@@ -615,7 +621,7 @@ fi
 #####################
 ### FILE MANAGERS ###
 #####################
-if [ -f "/usr/bin/nautilus" ]; then
+if [ -f "${ROOT_PATH}/usr/bin/nautilus" ]; then
     NAUTILUS_SCHEMA="org.gnome.nautilus"
 
     set_gsetting "${NAUTILUS_SCHEMA}.icon-view" default-zoom-level "standard"
@@ -624,7 +630,7 @@ if [ -f "/usr/bin/nautilus" ]; then
     set_gsetting "${NAUTILUS_SCHEMA}.preferences" show-delete-permanently true
     set_gsetting "${NAUTILUS_SCHEMA}.window-state" sidebar-width 240
 fi
-if [ -f "/usr/bin/pcmanfm" ]; then
+if [ -f "${ROOT_PATH}/usr/bin/pcmanfm" ]; then
     PCMANFM_CONFIG_FILE="${HOME_REAL}/.config/pcmanfm/LXDE/pcmanfm.conf"
 
     set_config_value "${PCMANFM_CONFIG_FILE}" always_show_tabs 0
@@ -644,7 +650,7 @@ fi
 ###############
 ### FIREFOX ###
 ###############
-if [ -f "/usr/bin/firefox" ]; then
+if [ -f "${ROOT_PATH}/usr/bin/firefox" ]; then
     FIREFOX_PROFILES_INI_FILE="${HOME_REAL}/.mozilla/firefox/profiles.ini"
     FIREFOX_PROFILE_ID=$(grep "^Path=" "${FIREFOX_PROFILES_INI_FILE}" | awk -F= '{print $2}' | head -n 1)
 
@@ -762,7 +768,7 @@ fi
 #################
 ### GSConnect ###
 #################
-if [ -d "/usr/share/gnome-shell/extensions/gsconnect@andyholmes.github.io" ] \
+if [ -d "${ROOT_PATH}/usr/share/gnome-shell/extensions/gsconnect@andyholmes.github.io" ] \
 || [ -d "${HOME}/.local/share/gnome-shell/extensions/gsconnect@andyholmes.github.io" ]; then
     GSCONNECT_SCHEMA="org.gnome.Shell.Extensions.GSConnect"
 
@@ -772,7 +778,7 @@ fi
 ############
 ### IDEs ###
 ############
-if [ -f "/usr/bin/code" ]; then
+if [ -f "${ROOT_PATH}/usr/bin/code" ]; then
     VSCODE_CONFIG_FILE="${HOME}/.config/Code/User/settings.json"
 
     # Appearance
@@ -812,7 +818,7 @@ fi
 ################
 ### INKSCAPE ###
 ################
-if [ -f "/usr/bin/inkscape" ]; then
+if [ -f "${ROOT_PATH}/usr/bin/inkscape" ]; then
     INKSCAPE_PREFERENCES_FILE="${HOME}/.config/inkscape/preferences.xml"
 
     set_xml_node "${INKSCAPE_PREFERENCES_FILE}" "//group[@id='theme']/@defaultPreferDarkTheme" "${GTK_THEME_IS_DARK_BINARY}"
@@ -825,7 +831,7 @@ fi
 ########################
 ### KEYBOARD & MOUSE ###
 ########################
-if [ -f "/usr/bin/gnome-shell" ]; then
+if [ -f "${ROOT_PATH}/usr/bin/gnome-shell" ]; then
     # Keyboard
     set_gsetting org.gnome.desktop.peripherals.keyboard numlock-state true
     set_gsetting org.gnome.desktop.input-sources sources "[('xkb', 'ro')]"
@@ -848,25 +854,25 @@ fi
 ############
 ### MAPS ###
 ############
-if [ -f "/usr/bin/gnome-maps" ]; then
+if [ -f "${ROOT_PATH}/usr/bin/gnome-maps" ]; then
     set_gsetting org.gnome.Maps night-mode true
 fi
 
 ###################
 ### NIGHT LIGHT ###
 ###################
-if [ -f "/usr/bin/gnome-shell" ]; then
+if [ -f "${ROOT_PATH}/usr/bin/gnome-shell" ]; then
     set_gsetting org.gnome.settings-daemon.plugins.color night-light-enabled true
 fi
 
 #####################
 ### NOTIFICATIONS ###
 #####################
-if [ -f "/usr/bin/gnome-shell" ]; then
+if [ -f "${ROOT_PATH}/usr/bin/gnome-shell" ]; then
     GNOME_NOTIFICATIONS_SCHEMA="org.gnome.desktop.notifications.application:/org/gnome/desktop/notifications/application"
 
     # Disable
-    [ -f "/usr/bin/simplenote" ] && set_gsetting "${GNOME_NOTIFICATIONS_SCHEMA}/simplenote/" enable false
+    [ -f "${ROOT_PATH}/usr/bin/simplenote" ] && set_gsetting "${GNOME_NOTIFICATIONS_SCHEMA}/simplenote/" enable false
 
     # Hide on lockscreen
     set_gsetting "${GNOME_NOTIFICATIONS_SCHEMA}/gnome-power-panel/" show-in-lock-screen false
@@ -875,7 +881,7 @@ fi
 ########################
 ### POWER MANAGEMENT ###
 ########################
-if [ -f "/usr/bin/gnome-shell" ]; then
+if [ -f "${ROOT_PATH}/usr/bin/gnome-shell" ]; then
     GNOME_POWER_SCHEMA="org.gnome.settings-daemon.plugins.power"
 
     set_gsetting "${GNOME_POWER_SCHEMA}" idle-dim true
@@ -886,14 +892,14 @@ fi
 ###################
 ### Screenshots ###
 ###################
-if [ -f "/usr/bin/gnome-screenshot" ]; then
+if [ -f "${ROOT_PATH}/usr/bin/gnome-screenshot" ]; then
     set_gsetting "org.gnome.gnome-screenshot" last-save-directory "${HOME}/Pictures"
 fi
 
 ################
 ### Terminal ###
 ################
-if [ -f "/usr/bin/gnome-terminal" ]; then
+if [ -f "${ROOT_PATH}/usr/bin/gnome-terminal" ]; then
     GNOME_TERMINAL_SCHEMA="org.gnome.Terminal.Legacy"
     GNOME_TERMINAL_PROFILE_ID=$(get_gsetting org.gnome.Terminal.ProfilesList default)
     GNOME_TERMINAL_PROFILE_SCHEMA="${GNOME_TERMINAL_SCHEMA}.Profile:/org/gnome/terminal/legacy/profiles:/:${GNOME_TERMINAL_PROFILE_ID}/"
@@ -924,7 +930,7 @@ if [ -f "/usr/bin/gnome-terminal" ]; then
     set_gsetting "${GNOME_TERMINAL_PROFILE_SCHEMA}" scrollback-lines ${TERMINAL_SCROLLBACK_SIZE}
     set_gsetting "${GNOME_TERMINAL_PROFILE_SCHEMA}" visible-name "NuciTerm"
 fi
-if [ -f "/usr/bin/lxterminal" ]; then
+if [ -f "${ROOT_PATH}/usr/bin/lxterminal" ]; then
     LXTERMINAL_CONFIG_FILE="${HOME_REAL}/.config/lxterminal/lxterminal.conf"
 
     # Theme / colours
@@ -966,7 +972,7 @@ fi
 ####################
 ### TEXT EDITORS ###
 ####################
-if [ -f "/usr/bin/gedit" ]; then
+if [ -f "${ROOT_PATH}/usr/bin/gedit" ]; then
     GEDIT_EDITOR_SCHEMA="org.gnome.gedit.preferences.editor"
 
     if [ "${TEXT_EDITOR_FONT}" != "${MONOSPACE_FONT}" ]; then
@@ -981,7 +987,7 @@ if [ -f "/usr/bin/gedit" ]; then
     set_gsetting "${GEDIT_EDITOR_SCHEMA}" restore-cursor-position true
     set_gsetting "${GEDIT_EDITOR_SCHEMA}" tabs-size "uint32 4"
 fi
-if [ -f "/usr/bin/pluma" ]; then
+if [ -f "${ROOT_PATH}/usr/bin/pluma" ]; then
     PLUMA_SCHEMA="org.mate.pluma"
 
     if [ "${TEXT_EDITOR_FONT}" != "${MONOSPACE_FONT}" ]; then
@@ -1004,7 +1010,7 @@ fi
 ##############
 ### Tiling ###
 ##############
-if [ -d "/usr/share/gnome-shell/extensions/wintile@nowsci.com/" ]; then
+if [ -d "${ROOT_PATH}/usr/share/gnome-shell/extensions/wintile@nowsci.com/" ]; then
     WINTILE_SCHEMA="org.gnome.shell.extensions.wintile"
 #    set_gsetting "${WINTILE_SCHEMA}" use-minimize false
 fi
@@ -1012,7 +1018,7 @@ fi
 ###########################
 ### TORRENT DOWNLOADERS ###
 ###########################
-if [ -f "/usr/bin/fragments" ]; then
+if [ -f "${ROOT_PATH}/usr/bin/fragments" ]; then
     FRAGMENTS_SCHEMA="de.haeckerfelix.Fragments"
 
     set_gsetting "${FRAGMENTS_SCHEMA}" download-folder "${HOME}/Downloads"
@@ -1024,7 +1030,7 @@ fi
 ########################
 ### TRANSLATION APPS ###
 ########################
-if [ -f "/usr/bin/dialect" ]; then
+if [ -f "${ROOT_PATH}/usr/bin/dialect" ]; then
     DIALECT_SCHEMA="com.github.gi_lom.dialect"
 
     set_gsetting "${DIALECT_SCHEMA}" dark-mode ${GTK_THEME_IS_DARK}
@@ -1035,7 +1041,7 @@ fi
 #####################
 ### VIDEO PLAYERS ###
 #####################
-if [ -f "/usr/bin/totem" ]; then
+if [ -f "${ROOT_PATH}/usr/bin/totem" ]; then
     TOTEM_SCHEMA="org.gnome.totem"
 
     set_gsetting "${TOTEM_SCHEMA}" autoload-subtitles "true"
@@ -1045,14 +1051,14 @@ fi
 ##############################
 ### WEATHER APPS & PLUGINS ###
 ##############################
-if [ -d "/usr/share/gnome-shell/extensions/openweather-extension@jenslody.de" ]; then
+if [ -d "${ROOT_PATH}/usr/share/gnome-shell/extensions/openweather-extension@jenslody.de" ]; then
     OPENWEATHER_GSEXT_SCHEMA="org.gnome.shell.extensions.openweather"
 
     set_gsetting "${OPENWEATHER_GSEXT_SCHEMA}" pressure-unit "mbar"
     set_gsetting "${OPENWEATHER_GSEXT_SCHEMA}" unit "celsius"
     set_gsetting "${OPENWEATHER_GSEXT_SCHEMA}" wind-speed-unit "kph"
 fi
-if [ -d "/usr/share/gnome-shell/extensions/weather-extension@xeked.com" ]; then
+if [ -d "${ROOT_PATH}/usr/share/gnome-shell/extensions/weather-extension@xeked.com" ]; then
     WEATHER_GSEXT_SCHEMA="org.gnome.shell.extensions.weather"
 
     set_gsetting "${WEATHER_GSEXT_SCHEMA}" show-comment-in-panel true
