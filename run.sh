@@ -13,8 +13,7 @@ if [ "${UID}" -eq 0 ]; then
     exit 1
 fi
 
-ARCH=$(lscpu | grep "Architecture" | awk -F: '{print $2}' | sed 's/  //g')
-DISTRO=$(uname -r | sed 's/^[0-9.]*-\([A-Za-z]*\).*$/\1/g')
+source "${EXEDIR}/scripts/_common.sh"
 
 if [ -f "/usr/bin/sudo" ]; then
     echo "I need sudo access!"

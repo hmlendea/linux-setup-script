@@ -1,67 +1,9 @@
 #!/bin/bash
-ARCH=$(lscpu | grep "Architecture" | awk -F: '{print $2}' | sed 's/  //g')
-DISTRO=$(uname -r | sed 's/^[0-9.]*-\([A-Za-z]*\).*$/\1/g')
-IS_EFI=0
-
-if [ -z "${ARCH}" ]; then
-    echo "You must provide the system architecture!"
-    exit 1
-fi
-
-[ "${ARCH}" == "x86_64" ]   && ARCH_FAMILY="x86"
-[ "${ARCH}" == "aarch64" ]  && ARCH_FAMILY="arm"
-[ "${ARCH}" == "armv7l" ]   && ARCH_FAMILY="arm"
-
-if [ -d "/sys/firmware/efi/efivars" ]; then
-	IS_EFI=1
-fi
+source "scripts/_common.sh"
 
 TEMP_DIR_PATH=".temp-sysinstall"
 mkdir -p "$TEMP_DIR_PATH"
 cd "$TEMP_DIR_PATH"
-
-CPU_MODEL=$(cat /proc/cpuinfo | \
-    grep "^model name" | \
-    awk -F: '{print $2}' | \
-    sed 's/^ *//g' | \
-    head -n 1 | \
-    sed 's/(TM)//g' | \
-    sed 's/(R)//g' | \
-    sed 's/ CPU//g' | \
-    sed 's/@ .*//g' | \
-    sed 's/^[ \t]*//g' | \
-    sed 's/[ \t]*$//g')
-
-CHASSIS_TYPE="Desktop"
-POWERFUL_PC=true
-GAMING_PC=false
-HAS_GUI=false
-
-if [ $(echo ${CPU_MODEL} | grep -c "Atom") -ge 1 ]; then
-    POWERFUL_PC=false
-fi
-
-if ${POWERFUL_PC}; then
-    if [ "${CPU_MODEL}" == "Intel Core i7-3610QM" ]; then
-        GAMING_PC=false
-    else
-        GAMING_PC=true
-    fi
-fi
-
-if [ -d "/sys/module/battery" ]; then
-    CHASSIS_TYPE="Laptop"
-fi
-
-if [ -f "/etc/systemd/system/display-manager.service" ] || \
-   [[ "${HOSTNAME}" = *PC ]] || \
-   [[ "${HOSTNAME}" = *Top ]]; then
-    HAS_GUI=true
-
-    if [ "${ARCH_FAMILY}" == "arm" ]; then
-        POWERFUL_PC=false
-    fi
-fi
 
 function is-package-installed() {
 	PKG=$1
@@ -90,11 +32,11 @@ function call-package-manager() {
         if [ "${DISTRO}" == "arch" ]; then
             ARCH_COMMON_ARGS="${PM_ARGS} --noconfirm --needed"
 
-    		if [ -f "/usr/bin/paru" ]; then
+    		if [ -f "${ROOT_USR_BIN}/paru" ]; then
                 LANG=C LC_TIME="" paru ${ARGS} ${PKG} ${ARCH_COMMON_ARGS} --noprovides --noredownload --norebuild --sudoloop
-		    elif [ -f "/usr/bin/yay" ]; then
+		    elif [ -f "${ROOT_USR_BIN}/yay" ]; then
                 LANG=C LC_TIME="" yay ${ARGS} ${PKG} ${ARCH_COMMON_ARGS}
-    		elif [ -f "/usr/bin/yaourt" ]; then
+    		elif [ -f "${ROOT_USR_BIN}/yaourt" ]; then
                 LANG=C LC_TIME="" yaourt ${ARGS} ${PKG} ${ARCH_COMMON_ARGS}
 		    else
 			    LANG=C LC_TIME="" sudo pacman ${ARGS} ${PKG} ${ARCH_COMMON_ARGS}

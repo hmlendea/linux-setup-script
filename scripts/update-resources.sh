@@ -1,4 +1,5 @@
 #!/bin/bash
+source "scripts/_common.sh"
 
 RESOURCES_DIR=$(pwd)"/resources"
 
@@ -8,7 +9,7 @@ copy_res() {
     TARGET_FILE="${3}"
     TARGET_DIR=$(dirname "${TARGET_FILE}")
 
-    if [ ! -f "/usr/bin/lxpanel" ]; then
+    if [ ! -f "${ROOT_USR_BIN}/lxpanel" ]; then
         if [ -f "${TARGET_FILE}" ]; then
             echo "Removing \"${TARGET_FILE}\""
             rm "${TARGET_FILE}"
@@ -35,12 +36,12 @@ copy_res() {
     cp "${SOURCE_FILE}" "${TARGET_FILE}"
 }
 
-copy_res "/usr/bin/lxpanel" "lxpanel/applications.png"              "${HOME}/.config/lxpanel/LXDE/panels/applications.png"
-copy_res "/usr/bin/lxpanel" "lxpanel/applications_ro.png"           "${HOME}/.config/lxpanel/LXDE/panels/applications_ro.png"
-copy_res "/usr/bin/lxpanel" "lxpanel/power.png"                     "${HOME}/.config/lxpanel/LXDE/panels/power.png"
-copy_res "/usr/bin/lxpanel" "lxpanel/lxde-logout-gnomified.desktop" "${HOME}/.local/share/applications/lxde-logout-gnomified.desktop"
-copy_res "/usr/bin/lxpanel" "plank/autostart.desktop"               "${HOME}/.config/autostart/plank.desktop"
+copy_res "${ROOT_USR_BIN}/lxpanel" "lxpanel/applications.png"               "${HOME}/.config/lxpanel/LXDE/panels/applications.png"
+copy_res "${ROOT_USR_BIN}/lxpanel" "lxpanel/applications_ro.png"            "${HOME}/.config/lxpanel/LXDE/panels/applications_ro.png"
+copy_res "${ROOT_USR_BIN}/lxpanel" "lxpanel/power.png"                      "${HOME}/.config/lxpanel/LXDE/panels/power.png"
+copy_res "${ROOT_USR_BIN}/lxpanel" "lxpanel/lxde-logout-gnomified.desktop"  "${HOME}/.local/share/applications/lxde-logout-gnomified.desktop"
+copy_res "${ROOT_USR_BIN}/lxpanel" "plank/autostart.desktop"                "${HOME}/.config/autostart/plank.desktop"
 
 # PCManFM's context menu
-copy_res "/usr/bin/code-oss"    "pcmanfm/open-in-code.desktop"      "${HOME}/.local/share/file-manager/actions/open-in-code.desktop"
-copy_res "/usr/bin/lxterminal"  "pcmanfm/open-in-terminal.desktop"  "${HOME}/.local/share/file-manager/actions/open-in-terminal.desktop"
+copy_res "${ROOT_USR_BIN}/code-oss"     "pcmanfm/open-in-code.desktop"      "${HOME}/.local/share/file-manager/actions/open-in-code.desktop"
+copy_res "${ROOT_USR_BIN}/lxterminal"   "pcmanfm/open-in-terminal.desktop"  "${HOME}/.local/share/file-manager/actions/open-in-terminal.desktop"

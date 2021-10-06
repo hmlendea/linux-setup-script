@@ -1,9 +1,12 @@
 #!/bin/bash
+source "scripts/_common.sh"
 
-LOCALE_GEN_FILE_PATH="/etc/locale.gen"
-LOCALE_CONF_FILE_PATH="/etc/locale.conf"
-VCONSOLE_CONF_FILE_PATH="/etc/vconsole.conf"
-LOCALTIME_FILE_PATH="/etc/localtime"
+[[ "${DISTRO}" != "arch" ]] && exit
+
+LOCALE_GEN_FILE_PATH="${ROOT_ETC}/locale.gen"
+LOCALE_CONF_FILE_PATH="${ROOT_ETC}/locale.conf"
+VCONSOLE_CONF_FILE_PATH="${ROOT_ETC}/vconsole.conf"
+LOCALTIME_FILE_PATH="${ROOT_ETC}/localtime"
 
 echo "en_GB.UTF-8 UTF-8" >  "${LOCALE_GEN_FILE_PATH}"
 echo "en_US.UTF-8 UTF-8" >> "${LOCALE_GEN_FILE_PATH}"

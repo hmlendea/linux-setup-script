@@ -1,10 +1,9 @@
 #!/bin/bash
+source "scripts/_common.sh"
 
-if [[ "$1" != "x86_64" ]]; then
-    exit
-fi
+[[ "${ARCH}" != "x86_64" ]] && exit
 
-SYSTEM_PROFILES_DIRECTORY_PATH="/etc/profile.d"
+SYSTEM_PROFILES_DIRECTORY_PATH="${ROOT_ETC}/profile.d"
 
 for PROFILE_FILE_NAME in $(ls "profiles"); do
     PROFILE_SOURCE_FILE_PATH="${PWD}/profiles/${PROFILE_FILE_NAME}"

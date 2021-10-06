@@ -1,6 +1,7 @@
 #!/bin/bash
+source "scripts/_common.sh"
 
-GROUPS_FILE="/etc/group"
+GROUPS_FILE="${ROOT_ETC}/group"
 
 function does_group_exist() {
     local GROUP_NAME="${1}"

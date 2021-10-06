@@ -1,8 +1,7 @@
 #!/bin/bash
-ARCH=$(lscpu | grep "Architecture" | awk -F: '{print $2}' | sed 's/  //g')
-DISTRO=$(uname -r | sed 's/^[0-9.]*-\([A-Za-z]*\).*$/\1/g')
+source "scripts/_common.sh"
 
-PACMAN_CONF_FILE_PATH="/etc/pacman.conf"
+PACMAN_CONF_FILE_PATH="${ROOT_ETC}/pacman.conf"
 
 [ "${ARCH}" == "x86_64" ]   && ARCH_FAMILY="x86"
 [ "${ARCH}" == "aarch64" ]  && ARCH_FAMILY="arm"
@@ -44,7 +43,7 @@ function add_repository {
 add_repository "hmlendea" "https://github.com/hmlendea/PKGBUILDs/releases/latest/download/" "" "Never"
 
 if [ "${ARCH_FAMILY}" == "x86" ]; then
-    add_repository "multilib" "" "/etc/pacman.d/mirrorlist"
+    add_repository "multilib" "" "${ROOT_ETC}/pacman.d/mirrorlist"
     add_repository "valveaur" "http://repo.steampowered.com/arch/valveaur/" "" "" "8DC2CE3A3D245E64"
 fi
 

@@ -1,19 +1,20 @@
 #!/bin/bash
+source "scripts/_common.sh"
 
 SOURCE_GRUB_RC_DIR=$(pwd)"/rc/grub"
-TARGET_GRUB_RC_DIR="/etc/grub.d"
-GRUB_CFG_PATH="/boot/grub/grub.cfg"
+TARGET_GRUB_RC_DIR="${ROOT_ETC}/grub.d"
+GRUB_CFG_PATH="${ROOT_BOOT}/grub/grub.cfg"
 
-[ ! -f "/usr/bin/grub-reboot" ] && exit 1
+[ ! -f "${ROOT_USR_BIN}/grub-reboot" ] && exit 1
 
 function update-grub-rc {
-    ROOT_DIR="${1}"
+    OS_ROOT_DIR="${1}"
     RC_FILE="${2}"
 
     SOURCE_RC_PATH="${SOURCE_GRUB_RC_DIR}/${RC_FILE}"
     TARGET_RC_PATH="${TARGET_GRUB_RC_DIR}/${RC_FILE}"
 
-    if [ -d "${ROOT_DIR}" ] || [ "${ROOT_DIR}" == "/" ]; then
+    if [ -d "${OS_ROOT_DIR}" ] || [ "${OS_ROOT_DIR}" == "/" ]; then
         DO_COPY=false
 
         if [ -f "${TARGET_RC_PATH}" ]; then
@@ -58,7 +59,7 @@ update-grub-rc "/phoenixos" "29_phoenixos"
 update-grub-rc "/primeos" "29_primeos"
 update-grub-rc "/" "99_power"
 
-if [ -f "/usr/bin/update-grub" ]; then
+if [ -f "${ROOT_USR_BIN}/update-grub" ]; then
     update-grub
 else
     grub-mkconfig -o /boot/grub/grub.cfg
