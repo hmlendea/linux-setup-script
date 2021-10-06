@@ -9,9 +9,10 @@ export SHELL="/bin/bash"
 
 if [ -z "${USER}" ]; then
     if [ ! -z "${USERNAME}" ]; then
-        export USER=${USERNAME}
+        export USER="${USERNAME}"
     else
-        export USER=$(whoami)
+        export USER="$(whoami)"
+        export USERNAME="${USER}"
     fi
 fi
 
