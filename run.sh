@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE" ]; do
   EXEDIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
@@ -18,7 +18,7 @@ export USER="$(whoami)"
 
 source "${EXEDIR}/scripts/_common.sh"
 
-if [ -f "/usr/bin/sudo" ]; then
+if [ -f "${ROOT_USR_BIN}/sudo" ]; then
     echo "I need sudo access!"
     sudo printf "Thank you!\n\n"
 fi
@@ -28,7 +28,7 @@ function execute-script() {
     SCRIPT_PATH="${EXEDIR}/scripts/${SCRIPT_NAME}"
 
     echo -e "Executing as \e[1;94m$USER\e[0;39m: '${SCRIPT_PATH}'..."
-    /usr/bin/bash "${SCRIPT_PATH}"
+    "${ROOT_USR_BIN}/bash" "${SCRIPT_PATH}"
 }
 
 function execute-script-superuser() {
@@ -37,9 +37,9 @@ function execute-script-superuser() {
 
     echo -e "Executing as \e[1;91mroot\e[0;39m: '${SCRIPT_PATH}'..."
 
-    if [ -f "/usr/bin/sudo" ] ||
+    if [ -f "${ROOT_USR_BIN}/sudo" ] ||
        [ -f "/data/data/com.termux/files/usr/bin/sudo" ]; then
-        sudo /usr/bin/bash "${SCRIPT_PATH}"
+        sudo "${ROOT_USR_BIN}/bash" "${SCRIPT_PATH}"
     else
         echo "ERROR: Please make sure 'sudo' is installed and configured"
     fi
@@ -49,7 +49,7 @@ function update-system() {
     echo "Updating the system..."
 
     if [ "${DISTRO_FAMILY}" == "arch" ]; then
-        if [ -f "/usr/bin/paru" ]; then
+        if [ -f "${ROOT_USR_BIN}/paru" ]; then
             paru -Syu --noconfirm --needed --noredownload --norebuild --sudoloop
         else
             sudo pacman -Syu
@@ -104,6 +104,6 @@ execute-script "setup-git-gpg.sh"
 execute-script "assign-users-and-groups.sh"
 
 # Clean journals older than 1 week
-sudo journalctl -q --vacuum-time=7d
+[ -f "${ROOT_USR_BIN}/journalctl" ] && sudo journalctl -q --vacuum-time=7d
 
 source ~/.bashrc

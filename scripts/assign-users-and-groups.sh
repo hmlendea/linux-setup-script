@@ -3,6 +3,8 @@ source "scripts/_common.sh"
 
 GROUPS_FILE="${ROOT_ETC}/group"
 
+[ ! -f "${GROUPS_FILE}" ] && exit
+
 function does_group_exist() {
     local GROUP_NAME="${1}"
 
