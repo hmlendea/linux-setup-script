@@ -3,8 +3,10 @@
 function enable-service {
     local SERVICE="${1}"
 
-    systemctl enable "${SERVICE}"
-    systemctl start "${SERVICE}"
+    if [ -f "/usr/bin/systemctl" ]; then
+        systemctl enable "${SERVICE}"
+        systemctl start "${SERVICE}"
+    fi
 }
 
 [ -f "/usr/bin/cupsd" ]                                     && enable-service "cups.service"

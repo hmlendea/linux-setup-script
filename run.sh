@@ -14,6 +14,7 @@ if [ "${UID}" -eq 0 ]; then
 fi
 
 ARCH=$(lscpu | grep "Architecture" | awk -F: '{print $2}' | sed 's/  //g')
+DISTRO=$(uname -r | sed 's/^[0-9.]*-\([A-Za-z]*\).*$/\1/g')
 
 if [ -f "/usr/bin/sudo" ]; then
     echo "I need sudo access!"
@@ -41,10 +42,16 @@ function execute-script-superuser() {
 
 function update-system() {
     echo "Updating the system..."
-    if [ -f "/usr/bin/paru" ]; then
-        paru -Syu --noconfirm --needed --noredownload --norebuild --sudoloop
-    else
-        sudo pacman -Syu
+
+    if [ "${DISTRO}" == "arch" ]; then
+        if [ -f "/usr/bin/paru" ]; then
+            paru -Syu --noconfirm --needed --noredownload --norebuild --sudoloop
+        else
+            sudo pacman -Syu
+        fi
+    elif [ "${DISTRO}" == "lineageos" ]; then
+        yes | pkg update
+        yes | pkg upgrade
     fi
 }
 
