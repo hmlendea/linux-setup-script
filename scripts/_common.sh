@@ -1,21 +1,22 @@
 #!/bin/bash
 
 # Architecture
-ARCH=$(lscpu | grep "Architecture" | awk -F: '{print $2}' | sed 's/  //g')
+ARCH=$(lscpu | grep "Architecture" | awk -F: '{print $2}' | sed 's/  //g' | sed 's/^ *//g')
 
 [ "${ARCH}" == "x86_64" ]   && ARCH_FAMILY="x86"
 [ "${ARCH}" == "aarch64" ]  && ARCH_FAMILY="arm"
 [ "${ARCH}" == "armv7l" ]   && ARCH_FAMILY="arm"
+[ "${ARCH}" == "armv8l" ]   && ARCH_FAMILY="arm"
 
 # Distribution
 KERNEL_VERSION=$(uname -r)
 DISTRO=$(echo "${KERNEL_VERSION}" | sed 's/^[0-9.]*-\([A-Za-z]*\).*$/\1/g')
 
-if [ "${DISTRO_FAMILY}" == "lineageos" ] || [ $(uname -a | grep -c "Android") -ge 1 ]; then
+if [ "${DISTRO}" == "lineageos" ] || [ $(uname -a | grep -c "Android") -ge 1 ]; then
     DISTRO_FAMILY="android"
 fi
 
-if [ "${DISTRO_FAMILY}" == "arch" ]; then
+if [ "${DISTRO}" == "arch" ]; then
     DISTRO_FAMILY="arch"
 fi
 
