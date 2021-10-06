@@ -341,14 +341,16 @@ if [ ! ${IS_SERVER} ]; then
     fi
 fi
 
-if [ $USING_NVIDIA_GPU = 1 ]; then
-    set_modprobe_option nvidia-drm modset 1
+if [ -d "${ROOT_ETC}/modprobe.d" ]; then
+    if [ $USING_NVIDIA_GPU = 1 ]; then
+        set_modprobe_option nvidia-drm modset 1
+    fi
+
+    set_modprobe_option bluetooth disable_ertm 1    # Xbox One Controller Pairing
+    set_modprobe_option btusb enable_autosuspend n  # Xbox One Controller Connecting, possibly other devices as well
+
+    set_gsetting org.gtk.Settings.FileChooser startup-mode 'cwd'
 fi
-
-set_modprobe_option bluetooth disable_ertm 1    # Xbox One Controller Pairing
-set_modprobe_option btusb enable_autosuspend n  # Xbox One Controller Connecting, possibly other devices as well
-
-set_gsetting org.gtk.Settings.FileChooser startup-mode 'cwd'
 
 if [ -f "${ROOT_ETC}/default/grub" ]; then
     GRUB_CONFIG_FILE="${ROOT_ETC}/default/grub"
