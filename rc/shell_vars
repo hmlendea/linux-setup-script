@@ -2,23 +2,19 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-function does-bin-exist() {
-    BIN="${@}"
+ROOT_PATH=""
+[ -d "/data/data/com.termux" ] && ROOT_PATH="/data/data/com.termux/files"
 
-    if [ "${BIN:0:1}" == "/" ] && [ -f "${BIN}" ]; then
-        return true
-    elif [ $(does-bin-exist "${BIN}") ] ||
-         [ -f "/data/data/com.termux/files/usr/bin/${BIN}" ]; then
-        return true
-    else
-        return false
-    fi
-}
+ROOT_BIN="${ROOT_PATH}/bin"
+ROOT_OPT="${ROOT_PATH}/opt"
+ROOT_USR="${ROOT_PATH}/usr"
+ROOT_USR_BIN="${ROOT_USR}/bin"
+ROOT_USR_SHARE="${ROOT_USR}/share"
 
 ### Environment variables
 #export TERM=linux
 export LD_LIBRARY_PATH="${LD_LIBRARY_PATH-}:/usr/lib32"
-export SHELL="/bin/bash"
+export SHELL="${ROOT_BIN}/bash"
 
 if [ -z "${USER}" ]; then
     if [ ! -z "${USERNAME}" ]; then
@@ -29,25 +25,25 @@ if [ -z "${USER}" ]; then
     fi
 fi
 
-[ $(does-bin-exist "nano") ]    && export EDITOR=nano       # Make nano the default editor
-[ $(does-bin-exist "optirun") ] && export VGL_READBACK=pbo  # Better optirun performance
+[ -f "${ROOT_USR_BIN}/nano" ]    && export EDITOR=nano       # Make nano the default editor
+[ -f "${ROOT_USR_BIN}/optirun" ] && export VGL_READBACK=pbo  # Better optirun performance
 
-if [ $(does-bin-exist "paru") ]; then
+if [ -f "${ROOT_USR_BIN}/paru" ]; then
     PACKAGE_MANAGER="paru"
-elif [ $(does-bin-exist "yay") ]; then
+elif [ -f "${ROOT_USR_BIN}/yay" ]; then
     PACKAGE_MANAGER="yay"
-elif [ $(does-bin-exist "yaourt") ]; then
+elif [ -f "${ROOT_USR_BIN}/yaourt" ]; then
     PACKAGE_MANAGER="yaourt"
 else
     PACKAGE_MANAGER="pacman"
 fi
 
-if [ $(does-bin-exist "dotnet") ]; then
+if [ -f "${ROOT_USR_BIN}/dotnet" ]; then
     export DOTNET_CLI_TELEMETRY_OPTOUT=1        # Disable .NET Core telemetry
     export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1  # Disable .NET Core first time message
 
-    [ -d "/opt/dotnet/" ]       &&  export DOTNET_ROOT="/opt/dotnet/"           # .NET Root
-    [ -d "/usr/share/dotnet/" ] &&  export DOTNET_ROOT="/usr/share/dotnet/"     # .NET Root
+    [ -d "${ROOT_OPT}/dotnet/" ]       &&   export DOTNET_ROOT="${ROOT_OPT}/dotnet/"        # .NET Root
+    [ -d "${ROOT_USR_SHARE}/dotnet/" ] &&   export DOTNET_ROOT="${ROOT_USR_SHARE}/dotnet/"  # .NET Root
 
     # MS Build and Mono coexistance
     [ ! -z "${DOTNET_ROOT}" ]   &&  export MSBuildSDKsPath=$(printf "%s\n" ${DOTNET_ROOT}/sdk/*  | tail -1)"/Sdks/"
