@@ -8,13 +8,13 @@ cd "$TEMP_DIR_PATH"
 function is-package-installed() {
 	PKG=$1
 
-    if [ "${DISTRO}" == "arch" ]; then
+    if [ "${DISTRO_FAMILY}" == "arch" ]; then
     	if (pacman -Q "${PKG}" > /dev/null); then
 	    	echo 1
 	    else
 		    echo 0
 	    fi
-    elif [ "${DISTRO}" == "lineageos" ]; then
+    elif [ "${DISTRO_FAMILY}" == "android" ]; then
         if (pkg list-installed | grep "^${PKG}/" > /dev/null); then
             echo 1
         else
@@ -29,7 +29,7 @@ function call-package-manager() {
 
 	if [ $(is-package-installed "${PKG}") -eq 0 ]; then
 		echo " >>> Installing package '${PKG}'"
-        if [ "${DISTRO}" == "arch" ]; then
+        if [ "${DISTRO_FAMILY}" == "arch" ]; then
             ARCH_COMMON_ARGS="${PM_ARGS} --noconfirm --needed"
 
     		if [ -f "${ROOT_USR_BIN}/paru" ]; then
@@ -41,7 +41,7 @@ function call-package-manager() {
 		    else
 			    LANG=C LC_TIME="" sudo pacman ${ARGS} ${PKG} ${ARCH_COMMON_ARGS}
 		    fi
-        elif [ "${DISTRO}" == "lineageos" ]; then
+        elif [ "${DISTRO_FAMILY}" == "android" ]; then
             pkg ${ARGS} ${PKG}
         fi
 #	else
@@ -52,9 +52,9 @@ function call-package-manager() {
 function install-pkg() {
 	PKG="${1}"
 
-    if [ "${DISTRO}" == "arch" ]; then
+    if [ "${DISTRO_FAMILY}" == "arch" ]; then
     	call-package-manager -S --asexplicit "${PKG}"
-    elif [ "${DISTRO}" == "lineageos" ]; then
+    elif [ "${DISTRO_FAMILY}" == "android" ]; then
         call-package-manager install "${PKG}"
     fi
 }
@@ -62,9 +62,9 @@ function install-pkg() {
 function install-dep() {
 	PKG="${1}"
 
-    if [ "${DISTRO}" == "arch" ]; then
+    if [ "${DISTRO_FAMILY}" == "arch" ]; then
     	call-package-manager -S --asexplicit "${PKG}"
-    elif [ "${DISTRO}" == "lineageos" ]; then
+    elif [ "${DISTRO_FAMILY}" == "android" ]; then
         call-package-manager install "${PKG}" # TODO: See if there is a way to mark them as dep
     fi
 }
@@ -84,14 +84,14 @@ function install-pkg-aur-manually() {
     fi
 }
 
-if [ "${DISTRO}" == "lineageos" ]; then
+if [ "${DISTRO_FAMILY}" == "android" ]; then
     install-pkg coreutils
     install-pkg git
     install-pkg man
     install-pkg openssh
     install-pkg tsu # sudo
     exit
-elif [ "${DISTRO}" != "arch" ]; then
+elif [ "${DISTRO_FAMILY}" != "arch" ]; then
     exit
 fi
 

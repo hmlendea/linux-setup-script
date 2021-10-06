@@ -48,18 +48,20 @@ function execute-script-superuser() {
 function update-system() {
     echo "Updating the system..."
 
-    if [ "${DISTRO}" == "arch" ]; then
+    if [ "${DISTRO_FAMILY}" == "arch" ]; then
         if [ -f "/usr/bin/paru" ]; then
             paru -Syu --noconfirm --needed --noredownload --norebuild --sudoloop
         else
             sudo pacman -Syu
         fi
-    elif [ "${DISTRO}" == "lineageos" ]; then
+    elif [ "${DISTRO_FAMILY}" == "android" ]; then
         yes | pkg update
         yes | pkg upgrade
     fi
 }
 
+echo "Distro:       ${DISTRO}"
+echo "Distro kind:  ${DISTRO_FAMILY}"
 echo "Architecture: ${ARCH}"
 echo "CPU:          ${CPU_MODEL}"
 echo "Chassis:      ${CHASSIS_TYPE}"
@@ -75,19 +77,19 @@ execute-script-superuser "configure-repositories.sh"
 execute-script "install-pkgs.sh"
 update-system
 execute-script "update-extensions.sh"
-[ "${DISTRO}" != "lineageos" ] && execute-script-superuser "uninstall-pkgs.sh"
+[ "${DISTRO_FAMILY}" != "android" ] && execute-script-superuser "uninstall-pkgs.sh"
 
 # Configure and customise the system
 execute-script "config-system.sh"
-[ "${DISTRO}" != "lineageos" ] && execute-script-superuser "set-system-locale-timedate.sh"
-[ "${DISTRO}" != "lineageos" ] && execute-script-superuser "install-profiles.sh"
+[ "${DISTRO_FAMILY}" != "android" ] && execute-script-superuser "set-system-locale-timedate.sh"
+[ "${DISTRO_FAMILY}" != "android" ] && execute-script-superuser "install-profiles.sh"
 
 if [ -f "/etc/systemd/system/display-manager.service" ]; then # Only customise launchers a DM is used
     execute-script-superuser "customise-launchers.sh"
 fi
 
-[ "${DISTRO}" != "lineageos" ] && execute-script-superuser "enable-services.sh"
-[ "${DISTRO}" != "lineageos" ] && execute-script-superuser "update-grub.sh"
+[ "${DISTRO_FAMILY}" != "android" ] && execute-script-superuser "enable-services.sh"
+[ "${DISTRO_FAMILY}" != "android" ] && execute-script-superuser "update-grub.sh"
 
 # Update the RCs
 execute-script "update-rcs.sh"
