@@ -98,7 +98,7 @@ execute-script "setup-git-gpg.sh"
 execute-script "assign-users-and-groups.sh"
 
 # Clean journals older than 1 week
-if [ ${HAS_SU_PRIVILEGES} && [ -f "${ROOT_USR_BIN}/journalctl" ]; then
+if ${HAS_SU_PRIVILEGES} && [ -f "${ROOT_USR_BIN}/journalctl" ]; then
     sudo journalctl -q --vacuum-time=7d
 fi
 
