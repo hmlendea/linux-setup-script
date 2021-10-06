@@ -39,10 +39,20 @@ function set_config_value() {
     if [ $(grep -c "^${KEY}${SEPARATOR}${VALUE}$" <<< "$FILE_CONTENT") == 0 ]; then
         # If the config key already exists (with a different value)
         if [ $(grep -c "^${KEY}${SEPARATOR}.*$" <<< "$FILE_CONTENT") -gt 0 ]; then
-            sudo sed -i 's|^'"${KEY}${SEPARATOR}"'.*$|'"${KEY}${SEPARATOR}${VALUE}"'|g' "${FILE_PATH}"
+            if [ -w "${FILE_PATH}" ]; then
+                sed -i 's|^'"${KEY}${SEPARATOR}"'.*$|'"${KEY}${SEPARATOR}${VALUE}"'|g' "${FILE_PATH}"
+            else
+                sudo sed -i 's|^'"${KEY}${SEPARATOR}"'.*$|'"${KEY}${SEPARATOR}${VALUE}"'|g' "${FILE_PATH}"
+            fi
         else
             LINE="${KEY}${SEPARATOR}${VALUE}"
-            echo "${LINE}" | sudo tee -a "${FILE_PATH}" &>/dev/null
+
+            if [ -w "${FILE_PATH}" ]; then
+                echo "${LINE}" >> "${FILE_PATH}" 2>/dev/null
+            else
+                echo "${LINE}" | sudo tee -a "${FILE_PATH}" &>/dev/null
+            fi
+
             #printf "${LINE}\n" >> "${FILE_PATH}"
         fi
 
@@ -78,8 +88,12 @@ function set_firefox_config() {
         fi
 
         LINE="user_pref(\"${KEY}\", ${VALUE});"
-        echo "${LINE}" | sudo tee -a "${FILE}" &>/dev/null
-        #printf "$LINE\n" >> "$FILE"
+
+        if [ -w "${FILE_PATH}" ]; then
+            printf "${LINE}\n" >> "${FILE}" 2>/dev/null
+        else
+            echo "${LINE}" | sudo tee -a "${FILE}" &>/dev/null
+        fi
 
         echo "${FILE} >>> ${KEY} = ${VALUE}"
     fi
@@ -145,24 +159,28 @@ function set_xml_node() {
 
 function set_modprobe_option() {
     FILE="/etc/modprobe.d/hori-system-config.conf"
-    MODULE="$1"
-    KEY="$2"
-    VALUE="$3"
+    MODULE="${1}"
+    KEY="${2}"
+    VALUE="${3}"
 
-    FILE_CONTENT=$(cat "$FILE")
+    FILE_CONTENT=$(cat "${FILE}")
 
     # If the option is not already set
-    if [ $(grep -c "^options ${MODULE} ${KEY}=${VALUE}$" <<< "$FILE_CONTENT") == 0 ]; then
+    if [ $(grep -c "^options ${MODULE} ${KEY}=${VALUE}$" <<< "${FILE_CONTENT}") == 0 ]; then
         # If the option key already exists (with a different value)
-        if [ $(grep -c "^options ${MODULE} ${KEY}=.*$" <<< "$FILE_CONTENT") -gt 0 ]; then
-            sed -i 's|^options '"${MODULE} ${KEY}"'=.*$|options '"${MODULE} ${KEY}"'='"${VALUE}"'|g' "$FILE"
+        if [ $(grep -c "^options ${MODULE} ${KEY}=.*$" <<< "${FILE_CONTENT}") -gt 0 ]; then
+            sed -i 's|^options '"${MODULE} ${KEY}"'=.*$|options '"${MODULE} ${KEY}"'='"${VALUE}"'|g' "${FILE}"
         else
-            LINE="options $MODULE $KEY=$VALUE"
-            echo "$LINE" | sudo tee -a "$FILE"
-            #printf "$LINE\n" >> "$FILE"
+            LINE="options ${MODULE} ${KEY}=${VALUE}"
+
+            if [ -w "${FILE_PATH}" ]; then
+                printf "${LINE}\n" >> "${FILE}" 2>/dev/null
+            else
+                echo "${LINE}" | sudo tee -a "${FILE}"
+            fi
         fi
 
-        echo "$FILE >>> $KEY=$VALUE"
+        echo "${FILE} >>> ${KEY}=${VALUE}"
     fi
 }
 
