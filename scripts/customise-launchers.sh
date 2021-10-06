@@ -1,18 +1,13 @@
 #!/bin/bash
-ARCH=$(lscpu | grep "Architecture" | awk -F: '{print $2}' | sed 's/  //g')
-[ "${ARCH}" == "x86_64" ]   && ARCH_FAMILY="x86"
-[ "${ARCH}" == "aarch64" ]  && ARCH_FAMILY="arm"
-[ "${ARCH}" == "armv7l" ]   && ARCH_FAMILY="arm"
+source "scripts/_common.sh"
 
-USER_REAL="${SUDO_USER}"
-[ -z "${USER_REAL}" ] && USER_REAL="${USER}"
-HOME_REAL="/home/${USER_REAL}"
+! ${HAS_GUI} && exit
 
-GLOBAL_LAUNCHERS_PATH="/usr/share/applications"
+GLOBAL_LAUNCHERS_PATH="${ROOT_USR_SHARE}/applications"
 LOCAL_LAUNCHERS_PATH="${HOME_REAL}/.local/share/applications"
 
 ICON_THEME=$(sudo -u "${USER_REAL}" -H gsettings get org.gnome.desktop.interface icon-theme | tr -d "'")
-ICON_THEME_PATH="/usr/share/icons/${ICON_THEME}"
+ICON_THEME_PATH="${ROOT_USR_SHARE}/icons/${ICON_THEME}"
 
 function find_launcher_by_name() {
     local NAME_ENTRY_VALUE="$1"
@@ -395,7 +390,7 @@ set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-nfjdjopfnbnkmfldmeffmhgodmlhd
 ### CITRIX ###
 ##############
 
-if [ -d "/opt/Citrix" ]; then
+if [ -d "${ROOT_OPT}/Citrix" ]; then
     if [ ! -f "${GLOBAL_LAUNCHERS_PATH}wfsplash.desktop" ]; then
         create_launcher "${GLOBAL_LAUNCHERS_PATH}/wfsplash.desktop"
     fi
@@ -774,7 +769,7 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/nvidia-settings.desktop" \
     Icon "nvidia-settings" \
     Categories "System;"
 
-if [ -f "/usr/bin/optirun" ]; then
+if [ -f "${ROOT_USR_BIN}/optirun" ]; then
     set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/nvidia-settings.desktop" Exec "optirun -b none nvidia-settings -c :8"
 fi
 
@@ -997,7 +992,7 @@ rm -rf "${HOME_REAL}/.config/menus/applications-merged/user-chrome-apps.menu"
 
 # CREATE ICONS
 
-if [ -d "/usr/share/gnome-shell/extensions/gsconnect@andyholmes.github.io" ] \
+if [ -d "${ROOT_USR_SHARE}/gnome-shell/extensions/gsconnect@andyholmes.github.io" ] \
 || [ -d "${HOME}/.local/share/gnome-shell/extensions/gsconnect@andyholmes.github.io" ]; then
     LAUNCHER="${GLOBAL_LAUNCHERS_PATH}/io.github.andyholmes.gsconnect.desktop"
 
@@ -1005,7 +1000,7 @@ if [ -d "/usr/share/gnome-shell/extensions/gsconnect@andyholmes.github.io" ] \
 
     set_launcher_entries "${LAUNCHER}" \
         Name "GSConnect" \
-        Exec "/usr/share/gnome-shell/extensions/gsconnect@andyholmes.github.io/gsconnect-preferences" \
+        Exec "${ROOT_USR_SHARE}/gnome-shell/extensions/gsconnect@andyholmes.github.io/gsconnect-preferences" \
         Comment "GSConnect" \
         Keywords "GSConnect;KDEConnect;" \
         Icon "org.gnome.Shell.Extensions.GSConnect" \
@@ -1013,7 +1008,7 @@ if [ -d "/usr/share/gnome-shell/extensions/gsconnect@andyholmes.github.io" ] \
         NoDisplay true
 fi
 
-if [ -f "/usr/bin/wine" ]; then
+if [ -f "${ROOT_USR_BIN}/wine" ]; then
     if [ ! -f "winecfg.desktop" ]; then
         create_launcher "${GLOBAL_LAUNCHERS_PATH}/winecfg.desktop"
 
@@ -1024,7 +1019,7 @@ if [ -f "/usr/bin/wine" ]; then
     fi
 fi
 
-if [ -f "/usr/bin/winetricks" ]; then
+if [ -f "${ROOT_USR_BIN}/winetricks" ]; then
     NEWLAUNCHER="${GLOBAL_LAUNCHERS_PATH}/winetricks.desktop"
 
     [ ! -f "winetricks.desktop" ] && create_launcher "${NEWLAUNCHER}"
@@ -1037,7 +1032,7 @@ if [ -f "/usr/bin/winetricks" ]; then
         NoDisplay "true"
 fi
 
-if [ -f "/usr/bin/java" ] || [ -L "/usr/bin/java" ]; then
+if [ -f "${ROOT_USR_BIN}/java" ] || [ -L "${ROOT_USR_BIN}/java" ]; then
     NEWLAUNCHER="${GLOBAL_LAUNCHERS_PATH}/run-java.desktop"
 
     [ ! -f "${NEWLAUNCHER}" ] && create_launcher "${NEWLAUNCHER}"
@@ -1050,7 +1045,7 @@ if [ -f "/usr/bin/java" ] || [ -L "/usr/bin/java" ]; then
         NoDisplay "true"
 fi
 
-if [ -f "/usr/bin/mono" ]; then
+if [ -f "${ROOT_USR_BIN}/mono" ]; then
     NEWLAUNCHER="${GLOBAL_LAUNCHERS_PATH}/run-mono.desktop"
 
     [ ! -f "${NEWLAUNCHER}" ] && create_launcher "${NEWLAUNCHER}"
@@ -1063,7 +1058,7 @@ if [ -f "/usr/bin/mono" ]; then
         NoDisplay "true"
 fi
 
-if [ -f "/usr/bin/steam" ]; then
+if [ -f "${ROOT_USR_BIN}/steam" ]; then
     LAUNCHER_FILE_NAME="steam-streaming-client.desktop"
     LAUNCHER_FILE_PATH="${GLOBAL_LAUNCHERS_PATH}/${LAUNCHER_FILE_NAME}"
 
@@ -1081,7 +1076,7 @@ fi
 
 # CREATE STEAM ICONS
 
-if [ -f "/usr/bin/steam" ]; then
+if [ -f "${ROOT_USR_BIN}/steam" ]; then
     STEAM_PATH="${HOME_REAL}/.local/share/Steam"
     STEAM_LAUNCHERS_PATH="${LOCAL_LAUNCHERS_PATH}/Steam"
     STEAM_ICON_THEME_PATH="${HOME_REAL}/.local/share/icons/steam"
@@ -1141,8 +1136,8 @@ if [ -f "/usr/bin/steam" ]; then
                 if [ ! -f "${APP_ICON_PATH}" ]; then
                     APP_ICON_PATH="${STEAM_ICON_THEME_PATH}/48x48/apps/steam_icon_${APP_ID}.jpg"
 
-                    for ICON_THEME_CANDIDATE in $(ls "/usr/share/icons/") ; do
-                        ICON_THEME_CANDIDATE_PATH="/usr/share/icons/"${ICON_THEME_CANDIDATE}
+                    for ICON_THEME_CANDIDATE in $(ls "${ROOT_USR_SHARE}/icons/") ; do
+                        ICON_THEME_CANDIDATE_PATH="${ROOT_USR_SHARE}/icons/"${ICON_THEME_CANDIDATE}
 
                         if [ -d "${ICON_THEME_CANDIDATE_PATH}/48/apps" ]; then
                             APPS_DIR_NAME="48/apps"
@@ -1209,11 +1204,11 @@ if [ -f "/usr/bin/steam" ]; then
 fi
 
 # Rebuild icon theme caches
-ICON_THEMES=$(find "/usr/share/icons/" -mindepth 1 -type d)
+ICON_THEMES=$(find "${ROOT_USR_SHARE}/icons/" -mindepth 1 -type d)
 
 for ICON_THEME in ${ICON_THEMES}; do
-    if [ -f "/usr/share/icons/${ICON_THEMES}/index.theme" ]; then
-        gtk-update-icon-cache "/usr/share/icons/${ICON_THEME}"
+    if [ -f "${ROOT_USR_SHARE}/icons/${ICON_THEMES}/index.theme" ]; then
+        gtk-update-icon-cache "${ROOT_USR_SHARE}/icons/${ICON_THEME}"
     fi
 done
 
