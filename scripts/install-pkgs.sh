@@ -42,7 +42,7 @@ function call-package-manager() {
 			    LANG=C LC_TIME="" sudo pacman ${ARGS} ${PKG} ${ARCH_COMMON_ARGS}
 		    fi
         elif [ "${DISTRO_FAMILY}" == "android" ]; then
-            pkg ${ARGS} ${PKG}
+            yes | pkg ${ARGS} ${PKG}
         fi
 #	else
 #		echo " >>> Skipping package '$PKG' (already installed)"
