@@ -143,6 +143,7 @@ function install-pkg-aur-manually() {
 }
 
 if [ "${DISTRO}" == "lineageos" ]; then
+    install-pkg coreutils
     install-pkg git
     install-pkg man
     install-pkg openssh
