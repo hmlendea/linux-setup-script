@@ -2,6 +2,19 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+function does-bin-exist() {
+    BIN="${@}"
+
+    if [ "${BIN:0:1}" == "/" ] && [ -f "${BIN}" ]; then
+        return true
+    elif [ $(does-bin-exist "${BIN}") ] ||
+         [ -f "/data/data/com.termux/files/usr/bin/${BIN}" ]; then
+        return true
+    else
+        return false
+    fi
+}
+
 alias sh=${SHELL}
 alias sudo='sudo '
 alias cd..='cd ..'
@@ -24,25 +37,25 @@ else
     alias ls='ls --color=auto -h -Q --hyperlink=always'
 fi
 
-[ ! -f "/usr/bin/sl" ] && alias sl=ls
+[ ! $(does-bin-exist "sl") ] && alias sl=ls
 
-[ -f "/usr/bin/systemctl" ]     &&  alias systemctl='systemctl --no-pager -l -n20'
-[ -f "/usr/bin/xterm" ]         &&  alias xterm='xterm -rv'
-[ -f "/usr/bin/xprop" ]         &&  alias xprop-wmclass='xprop | grep "WM_CLASS"'
-[ -f "/usr/bin/wget" ]          &&  alias wget-persistent='wget -c --retry-connrefused --waitretry=1 --read-timeout=10 --timeout=5 -t 0'
-[ -f "/proc/acpi/bbswitch" ]    &&  alias bbswitch-status="awk '{print $2}' /proc/acpi/bbswitch"
+[ $(does-bin-exist "systemctl") ]   &&  alias systemctl='systemctl --no-pager -l -n20'
+[ $(does-bin-exist "xterm") ]       &&  alias xterm='xterm -rv'
+[ $(does-bin-exist "xprop") ]       &&  alias xprop-wmclass='xprop | grep "WM_CLASS"'
+[ $(does-bin-exist "wget") ]        &&  alias wget-persistent='wget -c --retry-connrefused --waitretry=1 --read-timeout=10 --timeout=5 -t 0'
+[ $(does-bin-exist "bbswitch") ]    &&  alias bbswitch-status="awk '{print $2}' /proc/acpi/bbswitch"
 
-[ -f "/usr/bin/alsi" ] && [ ! -f "/usr/bin/neofetch" ] && alias neofetch='alsi'
-[ -f "/usr/bin/neofetch" ] && [ ! -f "/usr/bin/alsi" ] && alias alsi='neofetch'
+[ $(does-bin-exist "alsi") ]        && [ ! $(does-bin-exist "neofetch") ]   && alias neofetch='alsi'
+[ $(does-bin-exist "neofetch") ]    && [ ! $(does-bin-exist "alsi") ]       && alias alsi='neofetch'
 
-if [ -f "/usr/bin/git" ]; then
+if [ $(does-bin-exist "git") ]; then
     alias git="git --no-pager"
     alias git-push="git fetch && git push"
     alias git-pull="git fetch && git pull --rebase"
     alias git-commit="git fetch && __gitCommit"
 fi
 
-if [ -f "/usr/bin/tmux" ]; then
+if [ $(does-bin-exist "tmux") ]; then
     alias tmux-new='tmux new -s'
     alias tmux-resume='tmux attach-session -t'
     alias tmux-list='tmux list-session'
@@ -78,5 +91,5 @@ alias yeet="${PACKAGE_MANAGER_CMD}"
 ${CAN_PM_ALIAS_AUTOCOMPLETE} && complete -F _${PACKAGE_MANAGER} yeet
 
 ### Fixes
-[ -f "/usr/bin/monodevelop" ]   &&  alias monodevelop="GNOME_DESKTOP_SESSION_ID="" monodevelop"
-[ -f "/usr/bin/dotnet" ]        &&  alias dotnet='TERM=xterm dotnet'
+[ $(does-bin-exist "monodevelop") ]   &&  alias monodevelop="GNOME_DESKTOP_SESSION_ID="" monodevelop"
+[ $(does-bin-exist "dotnet") ]        &&  alias dotnet='TERM=xterm dotnet'

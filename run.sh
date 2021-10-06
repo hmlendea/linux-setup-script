@@ -19,9 +19,6 @@ DISTRO=$(uname -r | sed 's/^[0-9.]*-\([A-Za-z]*\).*$/\1/g')
 if [ -f "/usr/bin/sudo" ]; then
     echo "I need sudo access!"
     sudo printf "Thank you!\n\n"
-else
-    echo "ERROR: Please make sure 'sudo' is installed and configured"
-    exit 1
 fi
 
 function execute-script() {
@@ -37,7 +34,13 @@ function execute-script-superuser() {
     SCRIPT_PATH="${EXEDIR}/scripts/${SCRIPT_NAME}"
 
     echo -e "Executing as \e[1;91mroot\e[0;39m: '${SCRIPT_PATH}'..."
-    sudo /usr/bin/bash "${SCRIPT_PATH}"
+
+    if [ -f "/usr/bin/sudo" ] ||
+       [ -f "/data/data/com.termux/files/usr/bin/sudo" ]; then
+        sudo /usr/bin/bash "${SCRIPT_PATH}"
+    else
+        echo "ERROR: Please make sure 'sudo' is installed and configured"
+    fi
 }
 
 function update-system() {
@@ -57,25 +60,25 @@ function update-system() {
 
 echo "Architecture: ${ARCH}"
 
-execute-script-superuser "configure-repositories.sh"
+[ "${DISTRO}" != "lineageos" ] && execute-script-superuser "configure-repositories.sh"
 
 # Manage packages and extensions
 execute-script "install-pkgs.sh"
 update-system
 execute-script "update-extensions.sh"
-execute-script-superuser "uninstall-pkgs.sh"
+[ "${DISTRO}" != "lineageos" ] && execute-script-superuser "uninstall-pkgs.sh"
 
 # Configure and customise the system
 execute-script "config-system.sh"
-execute-script-superuser "set-system-locale-timedate.sh"
-execute-script-superuser "install-profiles.sh"
+[ "${DISTRO}" != "lineageos" ] && execute-script-superuser "set-system-locale-timedate.sh"
+[ "${DISTRO}" != "lineageos" ] && execute-script-superuser "install-profiles.sh"
 
 if [ -f "/etc/systemd/system/display-manager.service" ]; then # Only customise launchers a DM is used
     execute-script-superuser "customise-launchers.sh"
 fi
 
-execute-script-superuser "enable-services.sh"
-execute-script-superuser "update-grub.sh"
+[ "${DISTRO}" != "lineageos" ] && execute-script-superuser "enable-services.sh"
+[ "${DISTRO}" != "lineageos" ] && execute-script-superuser "update-grub.sh"
 
 # Update the RCs
 execute-script "update-rcs.sh"
