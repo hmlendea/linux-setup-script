@@ -58,8 +58,15 @@ function update-system() {
 }
 
 echo "Architecture: ${ARCH}"
+echo "CPU:          ${CPU_MODEL}"
+echo "Chassis:      ${CHASSIS_TYPE}"
+echo "GUI:          ${HAS_GUI}"
+echo "EFI support:  ${IS_EFI}"
+echo "Powerful PC:  ${POWERFUL_PC}"
+echo "Gaming PC:    ${GAMING_PC}"
+echo ""
 
-[ "${DISTRO}" != "lineageos" ] && execute-script-superuser "configure-repositories.sh"
+execute-script-superuser "configure-repositories.sh"
 
 # Manage packages and extensions
 execute-script "install-pkgs.sh"
