@@ -47,6 +47,6 @@ if [ "${ARCH_FAMILY}" == "x86" ]; then
     add_repository "valveaur" "http://repo.steampowered.com/arch/valveaur/" "" "" "8DC2CE3A3D245E64"
 fi
 
-if [ "${DISTRO}" == "arch" ] && ${DATABASES_NEED_UPDATING}; then
+if [ "${DISTRO_FAMILY}" == "arch" ] && ${DATABASES_NEED_UPDATING}; then
     pacman -Syy
 fi

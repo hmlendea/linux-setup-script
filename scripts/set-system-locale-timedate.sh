@@ -1,7 +1,7 @@
 #!/bin/bash
 source "scripts/_common.sh"
 
-[[ "${DISTRO}" != "arch" ]] && exit
+[[ "${DISTRO_FAMILY}" != "arch" ]] && exit
 
 LOCALE_GEN_FILE_PATH="${ROOT_ETC}/locale.gen"
 LOCALE_CONF_FILE_PATH="${ROOT_ETC}/locale.conf"

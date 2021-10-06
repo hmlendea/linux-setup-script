@@ -11,9 +11,17 @@ ARCH=$(lscpu | grep "Architecture" | awk -F: '{print $2}' | sed 's/  //g')
 KERNEL_VERSION=$(uname -r)
 DISTRO=$(echo "${KERNEL_VERSION}" | sed 's/^[0-9.]*-\([A-Za-z]*\).*$/\1/g')
 
+if [ "${DISTRO_FAMILY}" == "lineageos" ] || [ $(uname -a | grep -c "Android") -ge 1 ]; then
+    DISTRO_FAMILY="android"
+fi
+
+if [ "${DISTRO_FAMILY}" == "arch" ]; then
+    DISTRO_FAMILY="arch"
+fi
+
 # Root partition mount point
 ROOT_PATH=""
-[ "${DISTRO}" == "lineageos" ] && ROOT_PATH="/data/data/com.termux/files/usr"
+[ "${DISTRO_FAMILY}" == "android" ] && ROOT_PATH="/data/data/com.termux/files/usr"
 
 ROOT_BIN="${ROOT_PATH}/bin"
 ROOT_BOOT="${ROOT_PATH}/boot"
@@ -62,7 +70,7 @@ fi
 
 if [ -d "${ROOT_SYS}/module/battery" ]; then
     CHASSIS_TYPE="Laptop"
-elif [ "${DISTRO}" == "lineageos" ]; then
+elif [ "${DISTRO_FAMILY}" == "android" ]; then
     CHASSIS_TYPE="Phone"
 fi
 
