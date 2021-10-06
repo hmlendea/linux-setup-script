@@ -144,7 +144,9 @@ function install-pkg-aur-manually() {
 
 if [ "${DISTRO}" == "lineageos" ]; then
     install-pkg git
+    install-pkg man
     install-pkg openssh
+    install-pkg tsu # sudo
     exit
 elif [ "${DISTRO}" != "arch" ]; then
     exit

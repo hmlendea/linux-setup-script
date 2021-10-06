@@ -1,5 +1,7 @@
 #!/bin/bash
 ARCH=$(lscpu | grep "Architecture" | awk -F: '{print $2}' | sed 's/  //g')
+DISTRO=$(uname -r | sed 's/^[0-9.]*-\([A-Za-z]*\).*$/\1/g')
+
 PACMAN_CONF_FILE_PATH="/etc/pacman.conf"
 
 [ "${ARCH}" == "x86_64" ]   && ARCH_FAMILY="x86"
@@ -18,6 +20,8 @@ function add_repository {
     INCLUDE=${3}
     SIGLEVEL=${4}
     KEY=${5}
+
+    [ ! -f "${PACMAN_CONF_FILE_PATH}" ] && return
 
     if [ ! $(grep "^\[${NAME}\]" ${PACMAN_CONF_FILE_PATH}) ]; then
         echo "Adding the \"${NAME}\" repository to \"${PACMAN_CONF_FILE_PATH}\"..." >&2
@@ -44,7 +48,6 @@ if [ "${ARCH_FAMILY}" == "x86" ]; then
     add_repository "valveaur" "http://repo.steampowered.com/arch/valveaur/" "" "" "8DC2CE3A3D245E64"
 fi
 
-
-if [ ${DATABASES_NEED_UPDATING} = true ]; then
+if [ "${DISTRO}" == "arch" ] && ${DATABASES_NEED_UPDATING}; then
     pacman -Syy
 fi
