@@ -95,7 +95,7 @@ execute-script-superuser "update-resources.sh"
 execute-script "setup-git-gpg.sh"
 
 # Assign users and groups
-execute-script "assign-users-and-groups.sh"
+execute-script-superuser "assign-users-and-groups.sh"
 
 # Clean journals older than 1 week
 if ${HAS_SU_PRIVILEGES} && [ -f "${ROOT_USR_BIN}/journalctl" ]; then
