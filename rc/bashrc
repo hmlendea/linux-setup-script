@@ -9,9 +9,8 @@ function loadSource {
     fi
 }
 
-
-loadSource ~/.shell_prompt
 loadSource ~/.shell_vars
 loadSource ~/.shell_aliases
+loadSource ~/.shell_prompt
 
 [ -f "/usr/share/blesh/ble.sh" ] && source "/usr/share/blesh/ble.sh"

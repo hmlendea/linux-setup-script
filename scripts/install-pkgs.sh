@@ -1,5 +1,6 @@
 #!/bin/bash
 ARCH=$(lscpu | grep "Architecture" | awk -F: '{print $2}' | sed 's/  //g')
+DISTRO=$(uname -r | sed 's/^[0-9.]*-\([A-Za-z]*\).*$/\1/g')
 IS_EFI=0
 
 if [ -z "${ARCH}" ]; then
@@ -53,8 +54,8 @@ if [ -d "/sys/module/battery" ]; then
 fi
 
 if [ -f "/etc/systemd/system/display-manager.service" ] || \
-   [[ $(cat /etc/hostname) = *PC ]] || \
-   [[ $(cat /etc/hostname) = *Top ]]; then
+   [[ "${HOSTNAME}" = *PC ]] || \
+   [[ "${HOSTNAME}" = *Top ]]; then
     HAS_GUI=true
 
     if [ "${ARCH_FAMILY}" == "arm" ]; then
@@ -65,30 +66,42 @@ fi
 function is-package-installed() {
 	PKG=$1
 
-	if (pacman -Q "${PKG}" > /dev/null); then
-		echo 1
-	else
-		echo 0
-	fi
+    if [ "${DISTRO}" == "arch" ]; then
+    	if (pacman -Q "${PKG}" > /dev/null); then
+	    	echo 1
+	    else
+		    echo 0
+	    fi
+    elif [ "${DISTRO}" == "lineageos" ]; then
+        if (pkg list-installed | grep "^${PKG}/" > /dev/null); then
+            echo 1
+        else
+            echo 0
+        fi
+    fi
 }
 
 function call-package-manager() {
 	ARGS=${@:1:$#-1}
     PKG="${@: -1}"
 
-    PM_ARGS="${ARGS} ${PKG} --noconfirm --needed"
-
 	if [ $(is-package-installed "${PKG}") -eq 0 ]; then
 		echo " >>> Installing package '${PKG}'"
-		if [ -f "/usr/bin/paru" ]; then
-            LANG=C LC_TIME="" paru ${PM_ARGS} --noprovides --noredownload --norebuild --sudoloop
-		elif [ -f "/usr/bin/yay" ]; then
-            LANG=C LC_TIME="" yay ${PM_ARGS}
-		elif [ -f "/usr/bin/yaourt" ]; then
-            LANG=C LC_TIME="" yaourt ${PM_ARGS}
-		else
-			LANG=C LC_TIME="" sudo pacman ${PM_ARGS}
-		fi
+        if [ "${DISTRO}" == "arch" ]; then
+            ARCH_COMMON_ARGS="${PM_ARGS} --noconfirm --needed"
+
+    		if [ -f "/usr/bin/paru" ]; then
+                LANG=C LC_TIME="" paru ${ARGS} ${PKG} ${ARCH_COMMON_ARGS} --noprovides --noredownload --norebuild --sudoloop
+		    elif [ -f "/usr/bin/yay" ]; then
+                LANG=C LC_TIME="" yay ${ARGS} ${PKG} ${ARCH_COMMON_ARGS}
+    		elif [ -f "/usr/bin/yaourt" ]; then
+                LANG=C LC_TIME="" yaourt ${ARGS} ${PKG} ${ARCH_COMMON_ARGS}
+		    else
+			    LANG=C LC_TIME="" sudo pacman ${ARGS} ${PKG} ${ARCH_COMMON_ARGS}
+		    fi
+        elif [ "${DISTRO}" == "lineageos" ]; then
+            pkg ${ARGS} ${PKG}
+        fi
 #	else
 #		echo " >>> Skipping package '$PKG' (already installed)"
 	fi
@@ -97,13 +110,21 @@ function call-package-manager() {
 function install-pkg() {
 	PKG="${1}"
 
-	call-package-manager -S --asexplicit "${PKG}"
+    if [ "${DISTRO}" == "arch" ]; then
+    	call-package-manager -S --asexplicit "${PKG}"
+    elif [ "${DISTRO}" == "lineageos" ]; then
+        call-package-manager install "${PKG}"
+    fi
 }
 
 function install-dep() {
 	PKG="${1}"
 
-	call-package-manager -S --asdeps "${PKG}"
+    if [ "${DISTRO}" == "arch" ]; then
+    	call-package-manager -S --asexplicit "${PKG}"
+    elif [ "${DISTRO}" == "lineageos" ]; then
+        call-package-manager install "${PKG}" # TODO: See if there is a way to mark them as dep
+    fi
 }
 
 function install-pkg-aur-manually() {
@@ -120,6 +141,14 @@ function install-pkg-aur-manually() {
 	    cd ..
     fi
 }
+
+if [ "${DISTRO}" == "lineageos" ]; then
+    install-pkg git
+    install-pkg openssh
+    exit
+elif [ "${DISTRO}" != "arch" ]; then
+    exit
+fi
 
 # base-devel
 install-pkg autoconf
