@@ -24,18 +24,18 @@ if [ -f "${ROOT_USR_BIN}/sudo" ]; then
 fi
 
 function execute-script() {
-    SCRIPT_NAME="$1"
+    SCRIPT_NAME="${1}"
     SCRIPT_PATH="${EXEDIR}/scripts/${SCRIPT_NAME}"
 
-    echo -e "Executing as \e[1;94m$USER\e[0;39m: '${SCRIPT_PATH}'..."
+    echo -e "Executing as \e[1;94m$USER\e[0;39m: '${SCRIPT_NAME}'..."
     "${ROOT_BIN}/bash" "${SCRIPT_PATH}"
 }
 
 function execute-script-superuser() {
-    SCRIPT_NAME="$1"
+    SCRIPT_NAME="${1}"
     SCRIPT_PATH="${EXEDIR}/scripts/${SCRIPT_NAME}"
 
-    echo -e "Executing as \e[1;91mroot\e[0;39m: '${SCRIPT_PATH}'..."
+    echo -e "Executing as \e[1;91mroot\e[0;39m: '${SCRIPT_NAME}'..."
 
     if [ -f "${ROOT_USR_BIN}/sudo" ] ||
        [ -f "/data/data/com.termux/files/usr/bin/sudo" ]; then
