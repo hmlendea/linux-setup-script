@@ -13,6 +13,9 @@ if [ "${UID}" -eq 0 ]; then
     exit 1
 fi
 
+# Make sure the USER envar is set (on Android it is not)
+export USER="$(whoami)"
+
 source "${EXEDIR}/scripts/_common.sh"
 
 if [ -f "/usr/bin/sudo" ]; then
