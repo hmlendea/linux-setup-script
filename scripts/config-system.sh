@@ -2,7 +2,16 @@
 
 USER_REAL=${SUDO_USER}
 [ ! -n "${USER_REAL}" ] && USER_REAL=${USER}
-HOME_REAL="/home/${USER_REAL}"
+
+HOME_REAL=$(grep "${USER_REAL}" "/etc/passwd" 2>/dev/null | cut -f6 -d":")
+
+if [ ! -d "${HOME_REAL}" ]; then
+    if [ -d "/data/data/com.termux/files/home" ]; then
+        HOME_REAL="/data/data/com.termux/files/home"
+    else
+        HOME_REAL="/home/${USER_REAL}"
+    fi
+fi
 
 function set_config_value() {
     local SEPARATOR="="
