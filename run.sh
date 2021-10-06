@@ -28,7 +28,7 @@ function execute-script() {
     SCRIPT_PATH="${EXEDIR}/scripts/${SCRIPT_NAME}"
 
     echo -e "Executing as \e[1;94m$USER\e[0;39m: '${SCRIPT_PATH}'..."
-    "${ROOT_USR_BIN}/bash" "${SCRIPT_PATH}"
+    "${ROOT_BIN}/bash" "${SCRIPT_PATH}"
 }
 
 function execute-script-superuser() {
@@ -39,7 +39,7 @@ function execute-script-superuser() {
 
     if [ -f "${ROOT_USR_BIN}/sudo" ] ||
        [ -f "/data/data/com.termux/files/usr/bin/sudo" ]; then
-        sudo "${ROOT_USR_BIN}/bash" "${SCRIPT_PATH}"
+        sudo "${ROOT_BIN}/bash" "${SCRIPT_PATH}"
     else
         echo "ERROR: Please make sure 'sudo' is installed and configured"
     fi
