@@ -18,7 +18,7 @@ export USER="$(whoami)"
 
 source "${EXEDIR}/scripts/_common.sh"
 
-if [ -f "${ROOT_USR_BIN}/sudo" ]; then
+if ${HAS_SU_PRIVILEGES}; then
     echo "I need sudo access!"
     sudo printf "Thank you!\n\n"
 fi
@@ -32,17 +32,13 @@ function execute-script() {
 }
 
 function execute-script-superuser() {
+    ! ${HAS_SU_PRIVILEGES} && return
+
     SCRIPT_NAME="${1}"
     SCRIPT_PATH="${EXEDIR}/scripts/${SCRIPT_NAME}"
 
     echo -e "Executing as \e[1;91mroot\e[0;39m: '${SCRIPT_NAME}'..."
-
-    if [ -f "${ROOT_USR_BIN}/sudo" ] ||
-       [ -f "/data/data/com.termux/files/usr/bin/sudo" ]; then
-        sudo "${ROOT_BIN}/bash" "${SCRIPT_PATH}"
-    else
-        echo "ERROR: Please make sure 'sudo' is installed and configured"
-    fi
+    sudo "${ROOT_BIN}/bash" "${SCRIPT_PATH}"
 }
 
 function update-system() {
@@ -83,9 +79,7 @@ execute-script "config-system.sh"
 [ "${DISTRO_FAMILY}" != "android" ] && execute-script-superuser "set-system-locale-timedate.sh"
 [ "${DISTRO_FAMILY}" != "android" ] && execute-script-superuser "install-profiles.sh"
 
-if [ -f "/etc/systemd/system/display-manager.service" ]; then # Only customise launchers a DM is used
-    execute-script-superuser "customise-launchers.sh"
-fi
+${HAS_GUI} && execute-script-superuser "customise-launchers.sh"
 
 [ "${DISTRO_FAMILY}" != "android" ] && execute-script-superuser "enable-services.sh"
 [ "${DISTRO_FAMILY}" != "android" ] && execute-script-superuser "update-grub.sh"
@@ -104,6 +98,8 @@ execute-script "setup-git-gpg.sh"
 execute-script "assign-users-and-groups.sh"
 
 # Clean journals older than 1 week
-[ -f "${ROOT_USR_BIN}/journalctl" ] && sudo journalctl -q --vacuum-time=7d
+if [ ${HAS_SU_PRIVILEGES} && [ -f "${ROOT_USR_BIN}/journalctl" ]; then
+    sudo journalctl -q --vacuum-time=7d
+fi
 
 source ~/.bashrc

@@ -56,6 +56,7 @@ POWERFUL_PC=false
 GAMING_PC=false
 HAS_GUI=false
 IS_EFI=0
+HAS_SU_PRIVILEGES=false
 
 if [ -n "${CPU_MODEL}" ] && [ $(echo ${CPU_MODEL} | grep -c "Atom") -le 1 ]; then
     POWERFUL_PC=true
@@ -86,6 +87,15 @@ if [ -f "${ROOT_ETC}/systemd/system/display-manager.service" ] || \
 
     if [ "${ARCH_FAMILY}" == "arm" ]; then
         POWERFUL_PC=false
+    fi
+fi
+
+if [ -f "${ROOT_BIN}/sudo" ] ||
+   [ -f "${ROOT_USR_BIN}/sudo" ]; then
+    if [ "${DISTRO_FAMILY}" == "android" ]; then
+        [ -f "/sbin/su" ] && HAS_SU_PRIVILEGES=true
+    else
+        HAS_SU_PRIVILEGES=true
     fi
 fi
 
