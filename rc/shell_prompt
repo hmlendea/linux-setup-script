@@ -115,7 +115,8 @@ function get_path_colour {
         echo "41"
     elif [[ "${PWD}" = "/root/*" ]]; then
         echo "41"
-    elif [[ "${PWD}" = "/home/${USER}" ]]; then
+    elif [[ "${PWD}" == "/home/${USER}" ]] ||
+         [[ "${PWD}" == "${HOME}" ]]; then
         echo "93"
     elif [[ ! -w "${PWD}" ]]; then
         echo "31"
@@ -151,9 +152,5 @@ function set_custom_prompt {
 
     export PS1="$ps1user$separator1$ps1host$separator2${ps1path} \$(get_git_prompt)$separator3 "
 }
-
-if [ -z "${USER}" ] && [ ! -z "${USERNAME}" ]; then
-    export USER=${USERNAME}
-fi
 
 set_custom_prompt
