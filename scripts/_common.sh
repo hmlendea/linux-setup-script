@@ -28,38 +28,42 @@ ROOT_USR_LIB="${ROOT_USR}/lib"
 ROOT_USR_SHARE="${ROOT_USR}/share"
 
 # System characteristics
-CPU_MODEL=$(cat "${ROOT_PROC}/cpuinfo" | \
-    grep "^model name" | \
-    awk -F: '{print $2}' | \
-    sed 's/^ *//g' | \
-    head -n 1 | \
-    sed 's/(TM)//g' | \
-    sed 's/(R)//g' | \
-    sed 's/ CPU//g' | \
-    sed 's/@ .*//g' | \
-    sed 's/^[ \t]*//g' | \
-    sed 's/[ \t]*$//g')
+if [ -f "${ROOT_PROC}/cpuinfo" ]; then
+    CPU_MODEL=$(cat "${ROOT_PROC}/cpuinfo" | \
+        grep "^model name" | \
+        awk -F: '{print $2}' | \
+        sed 's/^ *//g' | \
+        head -n 1 | \
+        sed 's/(TM)//g' | \
+        sed 's/(R)//g' | \
+        sed 's/ CPU//g' | \
+        sed 's/@ .*//g' | \
+        sed 's/^[ \t]*//g' | \
+        sed 's/[ \t]*$//g')
+fi
 
 CHASSIS_TYPE="Desktop"
-POWERFUL_PC=true
+POWERFUL_PC=false
 GAMING_PC=false
 HAS_GUI=false
 IS_EFI=0
 
-if [ $(echo ${CPU_MODEL} | grep -c "Atom") -ge 1 ]; then
-    POWERFUL_PC=false
+if [ -n "${CPU_MODEL}" ] && [ $(echo ${CPU_MODEL} | grep -c "Atom") -le 1 ]; then
+    POWERFUL_PC=true
 fi
 
 if ${POWERFUL_PC}; then
     if [ "${CPU_MODEL}" == "Intel Core i7-3610QM" ]; then
         GAMING_PC=false
-    else
+    elif [ -n "${CPU_MODE}" ]; then
         GAMING_PC=true
     fi
 fi
 
 if [ -d "${ROOT_SYS}/module/battery" ]; then
     CHASSIS_TYPE="Laptop"
+elif [ "${DISTRO}" == "lineageos" ]; then
+    CHASSIS_TYPE="Phone"
 fi
 
 if [ -d "${ROOT_SYS}/firmware/efi/efivars" ]; then
