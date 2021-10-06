@@ -997,6 +997,22 @@ rm -rf "${HOME_REAL}/.config/menus/applications-merged/user-chrome-apps.menu"
 
 # CREATE ICONS
 
+if [ -d "/usr/share/gnome-shell/extensions/gsconnect@andyholmes.github.io" ] \
+|| [ -d "${HOME}/.local/share/gnome-shell/extensions/gsconnect@andyholmes.github.io" ]; then
+    LAUNCHER="${GLOBAL_LAUNCHERS_PATH}/io.github.andyholmes.gsconnect.desktop"
+
+    [ ! -f "${LAUNCHER}" ] && create_launcher "${LAUNCHER}"
+
+    set_launcher_entries "${LAUNCHER}" \
+        Name "GSConnect" \
+        Exec "/usr/share/gnome-shell/extensions/gsconnect@andyholmes.github.io/gsconnect-preferences" \
+        Comment "GSConnect" \
+        Keywords "GSConnect;KDEConnect;" \
+        Icon "org.gnome.Shell.Extensions.GSConnect" \
+        StartupWMClass "gsconnect" \
+        NoDisplay true
+fi
+
 if [ -f "/usr/bin/wine" ]; then
     if [ ! -f "winecfg.desktop" ]; then
         create_launcher "${GLOBAL_LAUNCHERS_PATH}/winecfg.desktop"
