@@ -32,7 +32,7 @@ function add_user_to_group() {
 
     if $(does_group_exist "${GROUP_NAME}"); then
         if ! $(is_user_in_group "${GROUP_NAME}" "${USER_NAME}"); then
-            sudo usermod -a -G "${GROUP_NAME}" "${USER_NAME}"
+            usermod -a -G "${GROUP_NAME}" "${USER_NAME}"
         fi
     fi
 }
