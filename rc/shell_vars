@@ -3,7 +3,7 @@
 [[ $- != *i* ]] && return
 
 ROOT_PATH=""
-[ -d "/data/data/com.termux" ] && ROOT_PATH="/data/data/com.termux/files"
+[ -d "/data/data/com.termux" ] && ROOT_PATH="/data/data/com.termux/files/usr"
 
 ROOT_BIN="${ROOT_PATH}/bin"
 ROOT_OPT="${ROOT_PATH}/opt"
