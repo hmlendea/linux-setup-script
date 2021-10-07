@@ -84,7 +84,16 @@ function install-pkg-aur-manually() {
     fi
 }
 
-install-pkg openssh
+# Basics
+install-pkg man
+install-pkg most
+install-pkg wget
+
+[ "${DISTRO_FAMILY}" == "arch" ]    && install-pkg man-pages || \
+[ "${DISTRO_FAMILY}" == "android" ] && install-pkg manpages
+
+[ "${DISTRO_FAMILY}" == "arch" ]    && install-pkg sudo || \
+[ "${DISTRO_FAMILY}" == "android" ] && install-pkg tsu
 
 # Development
 install-pkg git
@@ -97,9 +106,17 @@ install-pkg xmlstarlet  # XML parser
 # Monitoring
 install-pkg neofetch
 
+# Networking
+install-pkg openssh
+install-pkg wireless_tools
+install-pkg wol
+
+# Archives
+install-pkg unzip
+install-pkg unrar
+
 if [ "${DISTRO_FAMILY}" == "android" ]; then
     install-pkg coreutils
-    install-pkg man
     install-pkg tsu # sudo
     exit
 elif [ "${DISTRO_FAMILY}" != "arch" ]; then
@@ -116,19 +133,12 @@ install-pkg fakeroot
 install-pkg patch
 
 # Basics
-install-pkg sudo
-install-pkg man
-install-pkg man-pages
 install-pkg bash-completion
-install-pkg most
-install-pkg wget
 install-pkg usbutils
 install-pkg lshw
 
 install-dep wpa_supplicant
 install-pkg net-tools
-install-pkg wireless_tools
-install-pkg wol
 install-pkg dnsutils
 
 install-pkg openssl-1.0 # Required to run ASP .NET Core apps
@@ -152,8 +162,6 @@ install-pkg exfat-utils
 install-pkg xfsprogs
 
 # Archives
-install-pkg unzip
-install-pkg unrar
 install-pkg unace
 install-pkg p7zip
 install-pkg lrzip
