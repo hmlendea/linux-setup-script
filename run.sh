@@ -66,6 +66,10 @@ echo "Powerful PC:  ${POWERFUL_PC}"
 echo "Gaming PC:    ${GAMING_PC}"
 echo ""
 
+# Remove the MOTD
+[ -f "${ROOT_ETC}/motd" ] && remove "${ROOT_ETC}/motd"
+
+# Configure package repositories
 execute-script-superuser "configure-repositories.sh"
 
 # Manage packages and extensions
