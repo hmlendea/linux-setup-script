@@ -36,19 +36,25 @@ ROOT_USR_LIB="${ROOT_USR}/lib"
 ROOT_USR_SHARE="${ROOT_USR}/share"
 
 # System characteristics
-if [ -f "${ROOT_PROC}/cpuinfo" ]; then
+if [ -f "${ROOT_USR_BIN}/lscpu" ]; then
+    CPU_MODEL=$(lscpu | \
+        grep "^Model name:" | \
+        awk -F: '{print $2}')
+elif [ -f "${ROOT_PROC}/cpuinfo" ]; then
     CPU_MODEL=$(cat "${ROOT_PROC}/cpuinfo" | \
         grep "^model name" | \
-        awk -F: '{print $2}' | \
-        sed 's/^ *//g' | \
+        awk -F: '{print $2}')
+fi
+
+CPU_MODEL=$(echo "${CPU_MODEL}" | \
         head -n 1 | \
+        sed 's/^\s*\(.*\)\s*$/\1/g' | \
         sed 's/(TM)//g' | \
         sed 's/(R)//g' | \
         sed 's/ CPU//g' | \
         sed 's/@ .*//g' | \
         sed 's/^[ \t]*//g' | \
         sed 's/[ \t]*$//g')
-fi
 
 CHASSIS_TYPE="Desktop"
 POWERFUL_PC=false
