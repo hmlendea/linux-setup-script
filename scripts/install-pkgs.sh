@@ -84,11 +84,18 @@ function install-pkg-aur-manually() {
     fi
 }
 
+install-pkg openssh
+
+# Development
+install-pkg git
+install-pkg automake
+
+# Monitoring
+install-pkg neofetch
+
 if [ "${DISTRO_FAMILY}" == "android" ]; then
     install-pkg coreutils
-    install-pkg git
     install-pkg man
-    install-pkg openssh
     install-pkg tsu # sudo
     exit
 elif [ "${DISTRO_FAMILY}" != "arch" ]; then
@@ -152,12 +159,7 @@ install-pkg realtime-privileges
 # CLI
 install-pkg nano-syntax-highlighting
 
-# Development
-install-pkg git
-install-pkg automake
-
 # Monitoring
-install-pkg neofetch
 install-pkg lm_sensors
 
 if ${HAS_GUI}; then
@@ -168,7 +170,6 @@ if ${HAS_GUI}; then
         install-dep linux-headers
     fi
 
-    install-pkg openssh
     install-pkg dkms
     install-pkg rsync
 
