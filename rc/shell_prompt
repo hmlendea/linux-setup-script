@@ -140,6 +140,11 @@ function set_custom_prompt {
     [[ ${HOSTNAME} = *Pi ]]        && hostColour="95" # RaspberryPi = Light Magenta
     [[ ${HOSTNAME} = RetroPie ]]   && hostColour="96" # RetroPie = Light Cyan
 
+    if [[ ${HOSTNAME} = Telefon-* ]] || \
+       [[ -d "/data/data/com.termux/files" ]]; then
+        hostColour="93" # Phone = Light Yellow
+    fi
+
     local ps1user="$USER"
     local ps1host='$(hostname)' # "\h"
     local ps1path='$(get_path)'
