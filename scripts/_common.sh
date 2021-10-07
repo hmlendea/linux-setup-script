@@ -124,3 +124,14 @@ function remove() {
         sudo rm $@
     fi
 }
+
+function file-append-line() {
+    FILE_PATH="${1}"
+    LINE="${@:2}"
+
+    if [ -w "${FILE_PATH}" ]; then
+        printf "${LINE}\n" >> "${FILE_PATH}" 2>/dev/null
+    else
+        echo "${LINE}" | sudo tee -a "${FILE_PATH}"
+    fi
+}
