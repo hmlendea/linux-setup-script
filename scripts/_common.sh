@@ -114,3 +114,13 @@ if [ ! -d "${HOME_REAL}" ]; then
         HOME_REAL="/home/${USER_REAL}"
     fi
 fi
+
+# Functions
+
+function remove() {
+    if [ -w "${FILE}" ]; then
+        rm $@
+    else
+        sudo rm $@
+    fi
+}
