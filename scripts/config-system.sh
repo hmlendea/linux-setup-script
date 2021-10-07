@@ -76,7 +76,7 @@ function set_firefox_config() {
 function set_json_value() {
     local FILE_PATH="${1}"
 
-    [ ! -f "${ROOT_USR_BIN}/jq" ] && return
+    [ ! $(does-bin-exist "jq") ] && return
     [ ! -f "${FILE_PATH}" ] && return
 
     local PROPERTY="${2}"
@@ -100,7 +100,10 @@ function set_json_value() {
 }
 
 function set_json_value_root() {
-    sudo bash -c "$(declare -f set_json_value); set_json_value \"${1}\" '${2}' \"${3}\""
+    if ${HAS_SU_PRIVILEGES}; then
+        local FUNCTION_DECLARATIONS="$(declare -f set_json_value); $(declare -f does-bin-exist)"
+        sudo bash -c "${FUNCTION_DECLARATIONS}; set_json_value \"${1}\" '${2}' \"${3}\""
+    fi
 }
 
 function set_xml_node() {
@@ -108,7 +111,7 @@ function set_xml_node() {
     NODE_RAW="${2}"
     VALUE_RAW="${@:3}"
 
-    [ ! -f "${ROOT_USR_BIN}/xmlstarlet" ] && return
+    ! $(does-bin-exist "xmlstarlet") && return
     [ ! -f "${FILE}" ] && return
 
     NAMESPACE=$(cat "${FILE}" | grep "xmlns=" | sed 's/.*xmlns=\"\([^\"]*\)\".*/\1/g')
@@ -162,7 +165,7 @@ function set_gsetting() {
     PROPERTY="${2}"
     VALUE="${@:3}"
 
-    [ ! -f "${ROOT_USR_BIN}/gsettings" ] && return
+    $(does-bin-exist "gsettings") && return
 
     CURRENT_VALUE=$(get_gsetting "${SCHEMA}" "${PROPERTY}")
 
@@ -191,7 +194,7 @@ IS_SERVER=false
 SCREEN_RESOLUTION_H=0
 SCREEN_RESOLUTION_V=0
 
-if [ -f "${ROOT_USR_BIN}/xdpyinfo" ]; then
+if $(does-bin-exist "xdpyinfo"); then
     SCREEN_RESOLUTION=$(xdpyinfo | grep "dimensions" | sed 's/^[^0-9]*\([0-9]*x[0-9]*\) pixels.*/\1/g')
 
     if [ -n "${SCREEN_RESOLUTION}" ]; then
@@ -337,7 +340,7 @@ if [ -f "${ROOT_ETC}/default/grub" ]; then
     set_config_value "${GRUB_CONFIG_FILE}" "GRUB_THEME" "${ROOT_USR}/share/grub/themes/Vimix/theme.txt"
 fi
 
-if [ -f "${ROOT_USR_BIN}/gnome-shell" ]; then
+if $(does-bin-exist "gnome-shell"); then
     if [ "${ARCH}" == "aarch64" ]; then
         set_gsetting "org.gnome.settings-daemon.plugins.remote-display" active false
         set_gsetting "org.gnome.desktop.interface" enable-animations false
@@ -392,7 +395,7 @@ if [ -d "${ROOT_USR}/share/gnome-shell/extensions/multi-monitors-add-on@spin83" 
     set_gsetting "org.gnome.shell.extensions.multi-monitors-add-on" show-indicator false
 fi
 
-if [ -f "${ROOT_USR_BIN}/panther_launcher" ]; then
+if $(does-bin-exist "panther_launcher"); then
     set_gsetting "org.rastersoft.panther" icon-size 48
     set_gsetting "org.rastersoft.panther" use-category true
 fi
@@ -441,7 +444,7 @@ if [ -f "${HOME_REAL}/.config/lxsession/LXDE/desktop.conf" ]; then
     set_config_value "${LXSESSION_CONFIG_FILE}" iGtk/ToolbarStyle 0
 fi
 
-if [ -f "${ROOT_USR_BIN}/openbox" ] && [ -f "${ROOT_USR_BIN}/lxsession" ]; then
+if $(does-bin-exist "openbox") && $(does-bin-exist "lxsession"); then
     OPENBOX_LXDE_RC="${HOME_REAL}/.config/openbox/lxde-rc.xml"
 
     set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/name" "${GTK2_THEME}"
@@ -463,54 +466,54 @@ fi
 ########################
 ### ARCHIVE MANAGERS ###
 ########################
-if [ -f "${ROOT_USR_BIN}/file-roller" ]; then
+if $(does-bin-exist "file-roller"); then
     set_gsetting "org.gnome.FileRoller.General" compression-level "maximum"
 fi
 
 #############
 ### Audio ###
 #############
-if [ -f "${ROOT_USR_BIN}/gnome-shell" ]; then
+if $(does-bin-exist "gnome-shell"); then
     set_gsetting org.gnome.desktop.sound allow-volume-above-100-percent "true"
     set_gsetting org.gnome.settings-daemon.plugins.media-keys volume-step 3
 fi
-if [ -d "${ROOT_USR_BIN}/openal-info" ]; then
+if $(does-bin-exist "openal-info"); then
     set_config_value "${HOME_REAL}/.alsoftrc" hrtf true
 fi
-if [ -f "${ROOT_USR_BIN}/pulseaudio" ]; then
+if $(does-bin-exist "pulseaudio"); then
     set_config_value "${ROOT_ETC}/pulse/daemon.conf" resample-method speex-float-10
 fi
 
 ###################
 ### CALCULATORS ###
 ###################
-if [ -f "${ROOT_USR_BIN}/gnome-calculator" ]; then
+if $(does-bin-exist "gnome-calculator"); then
     GNOME_CALCULATOR_SCHEMA="org.gnome.calculator"
     set_gsetting "${GNOME_CALCULATOR_SCHEMA}" show-thousands true
     set_gsetting "${GNOME_CALCULATOR_SCHEMA}" source-currency 'EUR'
     set_gsetting "${GNOME_CALCULATOR_SCHEMA}" target-currency 'RON'
 fi
-if [ -f "${ROOT_USR_BIN}/mate-calc" ]; then
+if $(does-bin-exist "mate-calc"); then
     set_gsetting "org.mate.calc" show-thousands true
 fi
 
 #################
 ### CHAT APPS ###
 #################
-if [ -f "${ROOT_USR_BIN}/discord" ]; then
+if $(does-bin-exist "discord"); then
     set_json_value "${HOME_REAL}/.config/discord/settings.json" '.BACKGROUND_COLOR' ${GTK_THEME_BG_COLOUR}
 fi
-if [ -f "${ROOT_USR_BIN}/telegram-desktop" ]; then
+if $(does-bin-exist "telegram-desktop"); then
     set_config_value "${ENVIRONMENT_VARS_FILE}" TDESKTOP_I_KNOW_ABOUT_GTK_INCOMPATIBILITY "1"
 fi
-if [ -f "${ROOT_USR_BIN}/whatsapp-for-linux" ]; then
+if $(does-bin-exist "whatsapp-for-linux"); then
     WAPP_CONFIG_FILE="${HOME_REAL}/.config/whatsapp-for-linux/settings.conf"
 
     # Disable tray because tray icons don't work and the window becomes inaccessible
     set_config_value "${WAPP_CONFIG_FILE}" close_to_tray false
     set_config_value "${WAPP_CONFIG_FILE}" start_in_tray false
 fi
-if [ -f "${ROOT_USR_BIN}/whatsapp-nativefier" ]; then
+if $(does-bin-exist "whatsapp-nativefier"); then
     WAPP_CONFIG_FILE="${ROOT_OPT}/whatsapp-nativefier/resources/app/nativefier.json"
     WAPP_PREFERENCES_FILE="${HOME}/.config/whatsapp-nativefier-d40211/Preferences"
 
@@ -531,14 +534,14 @@ fi
 #############################
 ### CONFIGURATION EDITORS ###
 #############################
-if [ -f "${ROOT_USR_BIN}/dconf-editor" ]; then
+if $(does-bin-exist "dconf-editor"); then
     set_gsetting ca.desrt.dconf-editor.Settings show-warning false
 fi
 
 ################
 ### Contacts ###
 ################
-if [ -f "${ROOT_USR_BIN}/gnome-contacts" ]; then
+if $(does-bin-exist "gnome-contacts"); then
     set_gsetting "org.gnome.Contacts" did-initial-setup true
     set_gsetting "org.gnome.Contacts" sort-on-surname true
 fi
@@ -563,7 +566,7 @@ if [ -d "${ROOT_USR}/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com/
     set_gsetting "${DTD_SCHEMA}" show-trash false
     set_gsetting "${DTD_SCHEMA}" transparency-mode FIXED
 fi
-if [ -f "${ROOT_USR_BIN}/plank" ]; then
+if $(does-bin-exist "plank"); then
     PLANK_SCHEMA="net.launchpad.plank.docks.dock1"
 
     set_gsetting "${PLANK_SCHEMA}" theme "Gtk+"
@@ -573,7 +576,7 @@ fi
 ########################
 ### DOCUMENT VIEWERS ###
 ########################
-if [ -f "${ROOT_USR_BIN}/epdfview" ]; then
+if $(does-bin-exist "epdfview"); then
     EPDFVIEW_CONFIG_FILE="${HOME_REAL}/.config/epdfview/main.conf"
 
     set_config_value "${EPDFVIEW_CONFIG_FILE}" zoomToFit false
@@ -584,7 +587,7 @@ fi
 #####################
 ### FILE MANAGERS ###
 #####################
-if [ -f "${ROOT_USR_BIN}/nautilus" ]; then
+if $(does-bin-exist "nautilus"); then
     NAUTILUS_SCHEMA="org.gnome.nautilus"
 
     set_gsetting "${NAUTILUS_SCHEMA}.icon-view" default-zoom-level "standard"
@@ -593,7 +596,7 @@ if [ -f "${ROOT_USR_BIN}/nautilus" ]; then
     set_gsetting "${NAUTILUS_SCHEMA}.preferences" show-delete-permanently true
     set_gsetting "${NAUTILUS_SCHEMA}.window-state" sidebar-width 240
 fi
-if [ -f "${ROOT_USR_BIN}/pcmanfm" ]; then
+if $(does-bin-exist "pcmanfm"); then
     PCMANFM_CONFIG_FILE="${HOME_REAL}/.config/pcmanfm/LXDE/pcmanfm.conf"
 
     set_config_value "${PCMANFM_CONFIG_FILE}" always_show_tabs 0
@@ -613,7 +616,7 @@ fi
 ###############
 ### FIREFOX ###
 ###############
-if [ -f "${ROOT_USR_BIN}/firefox" ]; then
+if $(does-bin-exist "firefox"); then
     FIREFOX_PROFILES_INI_FILE="${HOME_REAL}/.mozilla/firefox/profiles.ini"
     FIREFOX_PROFILE_ID=$(grep "^Path=" "${FIREFOX_PROFILES_INI_FILE}" | awk -F= '{print $2}' | head -n 1)
 
@@ -741,7 +744,7 @@ fi
 ############
 ### IDEs ###
 ############
-if [ -f "${ROOT_USR_BIN}/code" ]; then
+if $(does-bin-exist "code"); then
     VSCODE_CONFIG_FILE="${HOME}/.config/Code/User/settings.json"
 
     # Appearance
@@ -781,7 +784,7 @@ fi
 ################
 ### INKSCAPE ###
 ################
-if [ -f "${ROOT_USR_BIN}/inkscape" ]; then
+if $(does-bin-exist "inkscape"); then
     INKSCAPE_PREFERENCES_FILE="${HOME}/.config/inkscape/preferences.xml"
 
     set_xml_node "${INKSCAPE_PREFERENCES_FILE}" "//group[@id='theme']/@defaultPreferDarkTheme" "${GTK_THEME_IS_DARK_BINARY}"
@@ -794,7 +797,7 @@ fi
 ########################
 ### KEYBOARD & MOUSE ###
 ########################
-if [ -f "${ROOT_USR_BIN}/gnome-shell" ]; then
+if $(does-bin-exist "gnome-shell"); then
     # Keyboard
     set_gsetting org.gnome.desktop.peripherals.keyboard numlock-state true
     set_gsetting org.gnome.desktop.input-sources sources "[('xkb', 'ro')]"
@@ -817,25 +820,25 @@ fi
 ############
 ### MAPS ###
 ############
-if [ -f "${ROOT_USR_BIN}/gnome-maps" ]; then
+if $(does-bin-exist "gnome-maps"); then
     set_gsetting org.gnome.Maps night-mode true
 fi
 
 ###################
 ### NIGHT LIGHT ###
 ###################
-if [ -f "${ROOT_USR_BIN}/gnome-shell" ]; then
+if $(does-bin-exist "gnome-shell"); then
     set_gsetting org.gnome.settings-daemon.plugins.color night-light-enabled true
 fi
 
 #####################
 ### NOTIFICATIONS ###
 #####################
-if [ -f "${ROOT_USR_BIN}/gnome-shell" ]; then
+if $(does-bin-exist "gnome-shell"); then
     GNOME_NOTIFICATIONS_SCHEMA="org.gnome.desktop.notifications.application:/org/gnome/desktop/notifications/application"
 
     # Disable
-    [ -f "${ROOT_USR_BIN}/simplenote" ] && set_gsetting "${GNOME_NOTIFICATIONS_SCHEMA}/simplenote/" enable false
+    $(does-bin-exist "simplenote") && set_gsetting "${GNOME_NOTIFICATIONS_SCHEMA}/simplenote/" enable false
 
     # Hide on lockscreen
     set_gsetting "${GNOME_NOTIFICATIONS_SCHEMA}/gnome-power-panel/" show-in-lock-screen false
@@ -844,7 +847,7 @@ fi
 ########################
 ### POWER MANAGEMENT ###
 ########################
-if [ -f "${ROOT_USR_BIN}/gnome-shell" ]; then
+if $(does-bin-exist "gnome-shell"); then
     GNOME_POWER_SCHEMA="org.gnome.settings-daemon.plugins.power"
 
     set_gsetting "${GNOME_POWER_SCHEMA}" idle-dim true
@@ -855,14 +858,14 @@ fi
 ###################
 ### Screenshots ###
 ###################
-if [ -f "${ROOT_USR_BIN}/gnome-screenshot" ]; then
+if $(does-bin-exist "gnome-screenshot"); then
     set_gsetting "org.gnome.gnome-screenshot" last-save-directory "${HOME}/Pictures"
 fi
 
 ################
 ### Terminal ###
 ################
-if [ -f "${ROOT_USR_BIN}/gnome-terminal" ]; then
+if $(does-bin-exist "gnome-terminal"); then
     GNOME_TERMINAL_SCHEMA="org.gnome.Terminal.Legacy"
     GNOME_TERMINAL_PROFILE_ID=$(get_gsetting org.gnome.Terminal.ProfilesList default)
     GNOME_TERMINAL_PROFILE_SCHEMA="${GNOME_TERMINAL_SCHEMA}.Profile:/org/gnome/terminal/legacy/profiles:/:${GNOME_TERMINAL_PROFILE_ID}/"
@@ -893,7 +896,8 @@ if [ -f "${ROOT_USR_BIN}/gnome-terminal" ]; then
     set_gsetting "${GNOME_TERMINAL_PROFILE_SCHEMA}" scrollback-lines ${TERMINAL_SCROLLBACK_SIZE}
     set_gsetting "${GNOME_TERMINAL_PROFILE_SCHEMA}" visible-name "NuciTerm"
 fi
-if [ -f "${ROOT_USR_BIN}/lxterminal" ]; then
+
+if $(does-bin-exist "lxterminal"); then
     LXTERMINAL_CONFIG_FILE="${HOME_REAL}/.config/lxterminal/lxterminal.conf"
 
     # Theme / colours
@@ -935,7 +939,7 @@ fi
 ####################
 ### TEXT EDITORS ###
 ####################
-if [ -f "${ROOT_USR_BIN}/gedit" ]; then
+if $(does-bin-exist "gedit"); then
     GEDIT_EDITOR_SCHEMA="org.gnome.gedit.preferences.editor"
 
     if [ "${TEXT_EDITOR_FONT}" != "${MONOSPACE_FONT}" ]; then
@@ -950,7 +954,7 @@ if [ -f "${ROOT_USR_BIN}/gedit" ]; then
     set_gsetting "${GEDIT_EDITOR_SCHEMA}" restore-cursor-position true
     set_gsetting "${GEDIT_EDITOR_SCHEMA}" tabs-size "uint32 4"
 fi
-if [ -f "${ROOT_USR_BIN}/pluma" ]; then
+if $(does-bin-exist "pluma"); then
     PLUMA_SCHEMA="org.mate.pluma"
 
     if [ "${TEXT_EDITOR_FONT}" != "${MONOSPACE_FONT}" ]; then
@@ -981,7 +985,7 @@ fi
 ###########################
 ### TORRENT DOWNLOADERS ###
 ###########################
-if [ -f "${ROOT_USR_BIN}/fragments" ]; then
+if $(does-bin-exist "fragments"); then
     FRAGMENTS_SCHEMA="de.haeckerfelix.Fragments"
 
     set_gsetting "${FRAGMENTS_SCHEMA}" download-folder "${HOME}/Downloads"
@@ -993,7 +997,7 @@ fi
 ########################
 ### TRANSLATION APPS ###
 ########################
-if [ -f "${ROOT_USR_BIN}/dialect" ]; then
+if $(does-bin-exist "dialect"); then
     DIALECT_SCHEMA="com.github.gi_lom.dialect"
 
     set_gsetting "${DIALECT_SCHEMA}" dark-mode ${GTK_THEME_IS_DARK}
@@ -1004,7 +1008,7 @@ fi
 #####################
 ### VIDEO PLAYERS ###
 #####################
-if [ -f "${ROOT_USR_BIN}/totem" ]; then
+if $(does-bin-exist "totem"); then
     TOTEM_SCHEMA="org.gnome.totem"
 
     set_gsetting "${TOTEM_SCHEMA}" autoload-subtitles "true"
