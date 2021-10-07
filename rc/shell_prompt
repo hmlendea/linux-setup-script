@@ -136,12 +136,14 @@ function set_custom_prompt {
     [ "$(whoami)" = "root" ]   && userColour="31" # Root = red
     [ "$(whoami)" = "guest" ]  && userColour="33" # Guest = yellow
 
-    [[ ${HOSTNAME} = *Craft ]]     && hostColour="92" # Game Server = Light Green
-    [[ ${HOSTNAME} = *Pi ]]        && hostColour="95" # RaspberryPi = Light Magenta
-    [[ ${HOSTNAME} = RetroPie ]]   && hostColour="96" # RetroPie = Light Cyan
-
-    if [[ ${HOSTNAME} = Telefon-* ]] || \
-       [[ -d "/data/data/com.termux/files" ]]; then
+    if [[ ${HOSTNAME} = *Craft ]]; then
+        hostColour="92" # Game Server = Light Green
+    elif [[ ${HOSTNAME} = *Pi ]]; then
+        hostColour="95" # RaspberryPi = Light Magenta
+    elif [[ ${HOSTNAME} = RetroPie ]]; then
+        hostColour="96" # RetroPie = Light Cyan
+    elif [[ ${HOSTNAME} = Telefon-* ]] || \
+         [[ -d "/data/data/com.termux/files" ]]; then
         hostColour="93" # Phone = Light Yellow
     fi
 
