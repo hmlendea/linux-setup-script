@@ -56,7 +56,7 @@ POWERFUL_PC=false
 GAMING_PC=false
 HAS_GUI=false
 IS_EFI=0
-HAS_SU_PRIVILEGES=false
+HAS_SU_PRIVILEGES=true
 
 if [ -d "${ROOT_SYS}/module/battery" ]; then
     CHASSIS_TYPE="Laptop"
@@ -64,7 +64,12 @@ elif [ "${DISTRO_FAMILY}" == "android" ]; then
     CHASSIS_TYPE="Phone"
 fi
 
-if [ "${CHASSIS_TYPE}" != "Phone" ]; then
+if [ "${CHASSIS_TYPE}" == "Phone" ]; then
+    POWERFUL_PC=false
+    GAMING_PC=false
+    IS_EFI=false
+    HAS_SU_PRIVILEGES=false
+else
     if [ "${ARCH_FAMILY}" == "x86" ]; then
         if [ -n "${CPU_MODEL}" ] && [ $(echo ${CPU_MODEL} | grep -c "Atom") -le 1 ]; then
             POWERFUL_PC=true
@@ -78,13 +83,8 @@ if [ "${CHASSIS_TYPE}" != "Phone" ]; then
             GAMING_PC=true
         fi
     fi
-else
-    POWERFUL_PC=false
-    GAMING_PC=false
-fi
 
-if [ -d "${ROOT_SYS}/firmware/efi/efivars" ]; then
-	IS_EFI=1
+    [ -d "${ROOT_SYS}/firmware/efi/efivars" ] && IS_EFI=1
 fi
 
 if [ -f "${ROOT_ETC}/systemd/system/display-manager.service" ] || \
