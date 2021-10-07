@@ -90,6 +90,10 @@ install-pkg openssh
 install-pkg git
 install-pkg automake
 
+# Parsers
+install-pkg jq          # JSON parser
+install-pkg xmlstarlet  # XML parser
+
 # Monitoring
 install-pkg neofetch
 

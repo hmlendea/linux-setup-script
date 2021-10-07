@@ -76,9 +76,8 @@ function set_firefox_config() {
 function set_json_value() {
     local FILE_PATH="${1}"
 
-    if [ ! -f "${FILE_PATH}" ]; then
-        return
-    fi
+    [ ! -f "${ROOT_USR_BIN}/jq" ] && return
+    [ ! -f "${FILE_PATH}" ] && return
 
     local PROPERTY="${2}"
     local VALUE=$(echo "${@:3}" | sed -e 's/[]\/$*.^|[]/\\&/g')
@@ -109,10 +108,8 @@ function set_xml_node() {
     NODE_RAW="${2}"
     VALUE_RAW="${@:3}"
 
-    if [ ! -f "${FILE}" ]; then
-        # TODO: Handle directory creation
-        touch "${FILE}"
-    fi
+    [ ! -f "${ROOT_USR_BIN}/xmlstarlet" ] && return
+    [ ! -f "${FILE}" ] && return
 
     NAMESPACE=$(cat "${FILE}" | grep "xmlns=" | sed 's/.*xmlns=\"\([^\"]*\)\".*/\1/g')
     VALUE=$(echo "${VALUE_RAW}" | sed -e 's/[]\/$*.^|[]/\\&/g')
