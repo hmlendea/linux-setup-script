@@ -33,15 +33,7 @@ function set_config_value() {
                 sudo sed -i 's|^'"${KEY}${SEPARATOR}"'.*$|'"${KEY}${SEPARATOR}${VALUE}"'|g' "${FILE_PATH}"
             fi
         else
-            LINE="${KEY}${SEPARATOR}${VALUE}"
-
-            if [ -w "${FILE_PATH}" ]; then
-                echo "${LINE}" >> "${FILE_PATH}" 2>/dev/null
-            else
-                echo "${LINE}" | sudo tee -a "${FILE_PATH}" &>/dev/null
-            fi
-
-            #printf "${LINE}\n" >> "${FILE_PATH}"
+            file-append-line "${FILE_PATH}" "${KEY}${SEPARATOR}${VALUE}"
         fi
 
         echo "${FILE_PATH} >>> ${KEY} ${SEPARATOR} ${VALUE}"
@@ -75,13 +67,7 @@ function set_firefox_config() {
             sed -i '/^user_pref('"\"${KEY}"'/d' "${FILE}"
         fi
 
-        LINE="user_pref(\"${KEY}\", ${VALUE});"
-
-        if [ -w "${FILE_PATH}" ]; then
-            printf "${LINE}\n" >> "${FILE}" 2>/dev/null
-        else
-            echo "${LINE}" | sudo tee -a "${FILE}" &>/dev/null
-        fi
+        file-append-line "${FILE}" "user_pref(\"${KEY}\", ${VALUE});"
 
         echo "${FILE} >>> ${KEY} = ${VALUE}"
     fi
@@ -159,13 +145,7 @@ function set_modprobe_option() {
         if [ $(grep -c "^options ${MODULE} ${KEY}=.*$" <<< "${FILE_CONTENT}") -gt 0 ]; then
             sed -i 's|^options '"${MODULE} ${KEY}"'=.*$|options '"${MODULE} ${KEY}"'='"${VALUE}"'|g' "${FILE}"
         else
-            LINE="options ${MODULE} ${KEY}=${VALUE}"
-
-            if [ -w "${FILE_PATH}" ]; then
-                printf "${LINE}\n" >> "${FILE}" 2>/dev/null
-            else
-                echo "${LINE}" | sudo tee -a "${FILE}"
-            fi
+            file-append-line "${FILE}" "options ${MODULE} ${KEY}=${VALUE}"
         fi
 
         echo "${FILE} >>> ${KEY}=${VALUE}"
