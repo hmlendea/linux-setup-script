@@ -10,15 +10,14 @@ ARCH=$(lscpu | grep "Architecture" | awk -F: '{print $2}' | sed 's/  //g' | sed 
 
 # Distribution
 KERNEL_VERSION=$(uname -r)
-DISTRO=$(echo "${KERNEL_VERSION}" | sed 's/^[0-9.]*-\([A-Za-z]*\).*$/\1/g')
+DISTRO=$(echo "${KERNEL_VERSION}" | sed 's/^[0-9.-]*-\([A-Za-z]*\).*$/\1/g')
 
 if [ "${DISTRO}" == "lineageos" ] || [ $(uname -a | grep -c "Android") -ge 1 ]; then
     DISTRO_FAMILY="android"
 fi
 
-if [ "${DISTRO}" == "arch" ]; then
-    DISTRO_FAMILY="arch"
-fi
+[ "${DISTRO}" == "ARCH" ] && DISTRO="arch"
+[ "${DISTRO}" == "arch" ] && DISTRO_FAMILY="arch"
 
 # Root partition mount point
 ROOT_PATH=""
