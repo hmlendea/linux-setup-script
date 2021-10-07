@@ -80,13 +80,13 @@ execute-script "update-extensions.sh"
 
 # Configure and customise the system
 execute-script "config-system.sh"
-[ "${DISTRO_FAMILY}" != "android" ] && execute-script-superuser "set-system-locale-timedate.sh"
+[ "${DISTRO_FAMILY}" == "arch" ] && execute-script-superuser "set-system-locale-timedate.sh"
 [ "${DISTRO_FAMILY}" != "android" ] && execute-script-superuser "install-profiles.sh"
 
 ${HAS_GUI} && execute-script-superuser "customise-launchers.sh"
 
-[ "${DISTRO_FAMILY}" != "android" ] && execute-script-superuser "enable-services.sh"
-[ "${DISTRO_FAMILY}" != "android" ] && execute-script-superuser "update-grub.sh"
+$(does-bin-exist "systemctl") && execute-script-superuser "enable-services.sh"
+$(does-bin-exist "grub-mkconfig") && execute-script-superuser "update-grub.sh"
 
 # Update the RCs
 execute-script "update-rcs.sh"
