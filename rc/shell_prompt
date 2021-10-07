@@ -141,7 +141,7 @@ function set_custom_prompt {
     [[ ${HOSTNAME} = RetroPie ]]   && hostColour="96" # RetroPie = Light Cyan
 
     local ps1user="$USER"
-    local ps1host="\h"
+    local ps1host='$(hostname)' # "\h"
     local ps1path='$(get_path)'
 
     if ${ENABLE_COLOURS}; then

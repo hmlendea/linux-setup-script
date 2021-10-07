@@ -3,7 +3,7 @@
 [[ $- != *i* ]] && return
 
 ROOT_PATH=""
-[ -d "/data/data/com.termux" ] && ROOT_PATH="/data/data/com.termux/files/usr"
+[ -d "/data/data/com.termux" ] && ROOT_PATH="/data/data/com.termux/files"
 
 ROOT_PROC="${ROOT_PATH}/proc"
 ROOT_USR="${ROOT_PATH}/usr"
@@ -33,11 +33,11 @@ fi
 
 [ ! -f "${ROOT_USR_BIN}/sl" ] && alias sl=ls
 
-[ -f "${ROOT_USR_BIN}/systemctl" ]   &&  alias systemctl='systemctl --no-pager -l -n20'
-[ -f "${ROOT_USR_BIN}/xterm" ]       &&  alias xterm='xterm -rv'
-[ -f "${ROOT_USR_BIN}/xprop" ]       &&  alias xprop-wmclass='xprop | grep "WM_CLASS"'
-[ -f "${ROOT_USR_BIN}/wget" ]        &&  alias wget-persistent='wget -c --retry-connrefused --waitretry=1 --read-timeout=10 --timeout=5 -t 0'
-[ -f "${ROOT_PROC}/acpi/bbswitch" ]    &&  alias bbswitch-status="awk '{print $2}' /proc/acpi/bbswitch"
+[ -f "${ROOT_USR_BIN}/systemctl" ]  && alias systemctl='systemctl --no-pager -l -n20'
+[ -f "${ROOT_USR_BIN}/xterm" ]      && alias xterm='xterm -rv'
+[ -f "${ROOT_USR_BIN}/xprop" ]      && alias xprop-wmclass='xprop | grep "WM_CLASS"'
+[ -f "${ROOT_USR_BIN}/wget" ]       && alias wget-persistent='wget -c --retry-connrefused --waitretry=1 --read-timeout=10 --timeout=5 -t 0'
+[ -f "${ROOT_PROC}/acpi/bbswitch" ] && alias bbswitch-status="awk '{print $2}' /proc/acpi/bbswitch"
 
 [ -f "${ROOT_USR_BIN}/alsi" ]        && [ ! -f "${ROOT_USR_BIN}/neofetch" ]   && alias neofetch='alsi'
 [ -f "${ROOT_USR_BIN}/neofetch" ]    && [ ! -f "${ROOT_USR_BIN}/alsi" ]       && alias alsi='neofetch'
@@ -53,6 +53,14 @@ if [ -f "${ROOT_USR_BIN}/tmux" ]; then
     alias tmux-new='tmux new -s'
     alias tmux-resume='tmux attach-session -t'
     alias tmux-list='tmux list-session'
+fi
+
+if [ ! -f "${ROOT_USR_BIN}/hostname" ]; then
+    if [ -f "${ROOT_USR_BIN}/hostnamectl" ]; then
+        alias hostname='hostnamectl hostname'
+    else
+        alias hostname="cat ${ROOT_ETC}/hostname"
+    fi
 fi
 
 if [ "${OSTYPE}" = "cygwin" ]; then
