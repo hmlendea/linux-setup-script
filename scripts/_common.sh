@@ -35,8 +35,40 @@ ROOT_USR_BIN="${ROOT_USR}/bin"
 ROOT_USR_LIB="${ROOT_USR}/lib"
 ROOT_USR_SHARE="${ROOT_USR}/share"
 
+# Functions
+
+function does-bin-exist() {
+    BINARY_NAME="${@}"
+
+    if [ -f "${ROOT_BIN}/${BINARY_NAME}" ] \
+    || [ -f "${ROOT_USR_BIN}/${BINARY_NAME}" ]; then
+        return 0 # True
+    fi
+
+    return 1 # False
+}
+
+function remove() {
+    if [ -w "${FILE}" ]; then
+        rm $@
+    else
+        sudo rm $@
+    fi
+}
+
+function file-append-line() {
+    FILE_PATH="${1}"
+    LINE="${@:2}"
+
+    if [ -w "${FILE_PATH}" ]; then
+        printf "${LINE}\n" >> "${FILE_PATH}" 2>/dev/null
+    else
+        echo "${LINE}" | sudo tee -a "${FILE_PATH}"
+    fi
+}
+
 # System characteristics
-if [ -f "${ROOT_USR_BIN}/lscpu" ]; then
+if $(does-bin-exist "lscpu" ); then
     CPU_MODEL=$(lscpu | \
         grep "^Model name:" | \
         awk -F: '{print $2}')
@@ -98,8 +130,7 @@ if [ -f "${ROOT_ETC}/systemd/system/display-manager.service" ] || \
     HAS_GUI=true
 fi
 
-if [ -f "${ROOT_BIN}/sudo" ] ||
-   [ -f "${ROOT_USR_BIN}/sudo" ]; then
+if $(does-bin-exist "sudo"); then
     if [ "${DISTRO_FAMILY}" == "android" ]; then
         [ -f "/sbin/su" ] && HAS_SU_PRIVILEGES=true
     else
@@ -120,24 +151,3 @@ if [ ! -d "${HOME_REAL}" ]; then
         HOME_REAL="/home/${USER_REAL}"
     fi
 fi
-
-# Functions
-
-function remove() {
-    if [ -w "${FILE}" ]; then
-        rm $@
-    else
-        sudo rm $@
-    fi
-}
-
-function file-append-line() {
-    FILE_PATH="${1}"
-    LINE="${@:2}"
-
-    if [ -w "${FILE_PATH}" ]; then
-        printf "${LINE}\n" >> "${FILE_PATH}" 2>/dev/null
-    else
-        echo "${LINE}" | sudo tee -a "${FILE_PATH}"
-    fi
-}

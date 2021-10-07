@@ -45,7 +45,7 @@ function update-system() {
     echo "Updating the system..."
 
     if [ "${DISTRO_FAMILY}" == "arch" ]; then
-        if [ -f "${ROOT_USR_BIN}/paru" ]; then
+        if $(does-bin-exist "paru"); then
             paru -Syu --noconfirm --needed --noredownload --norebuild --sudoloop
         else
             sudo pacman -Syu
@@ -102,7 +102,7 @@ execute-script "setup-git-gpg.sh"
 execute-script-superuser "assign-users-and-groups.sh"
 
 # Clean journals older than 1 week
-if ${HAS_SU_PRIVILEGES} && [ -f "${ROOT_USR_BIN}/journalctl" ]; then
+if ${HAS_SU_PRIVILEGES} && $(does-bin-exist "journalctl"); then
     sudo journalctl -q --vacuum-time=7d
 fi
 
