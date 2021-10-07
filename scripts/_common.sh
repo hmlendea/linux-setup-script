@@ -58,22 +58,29 @@ HAS_GUI=false
 IS_EFI=0
 HAS_SU_PRIVILEGES=false
 
-if [ -n "${CPU_MODEL}" ] && [ $(echo ${CPU_MODEL} | grep -c "Atom") -le 1 ]; then
-    POWERFUL_PC=true
-fi
-
-if ${POWERFUL_PC}; then
-    if [ "${CPU_MODEL}" == "Intel Core i7-3610QM" ]; then
-        GAMING_PC=false
-    elif [ -n "${CPU_MODE}" ]; then
-        GAMING_PC=true
-    fi
-fi
-
 if [ -d "${ROOT_SYS}/module/battery" ]; then
     CHASSIS_TYPE="Laptop"
 elif [ "${DISTRO_FAMILY}" == "android" ]; then
     CHASSIS_TYPE="Phone"
+fi
+
+if [ "${CHASSIS_TYPE}" != "Phone" ]; then
+    if [ "${ARCH_FAMILY}" == "x86" ]; then
+        if [ -n "${CPU_MODEL}" ] && [ $(echo ${CPU_MODEL} | grep -c "Atom") -le 1 ]; then
+            POWERFUL_PC=true
+        fi
+    fi
+
+    if ${POWERFUL_PC}; then
+        if [ "${CPU_MODEL}" == "Intel Core i7-3610QM" ]; then
+            GAMING_PC=false
+        elif [ -n "${CPU_MODE}" ]; then
+            GAMING_PC=true
+        fi
+    fi
+else
+    POWERFUL_PC=false
+    GAMING_PC=false
 fi
 
 if [ -d "${ROOT_SYS}/firmware/efi/efivars" ]; then
@@ -84,10 +91,6 @@ if [ -f "${ROOT_ETC}/systemd/system/display-manager.service" ] || \
    [[ "${HOSTNAME}" = *PC ]] || \
    [[ "${HOSTNAME}" = *Top ]]; then
     HAS_GUI=true
-
-    if [ "${ARCH_FAMILY}" == "arm" ]; then
-        POWERFUL_PC=false
-    fi
 fi
 
 if [ -f "${ROOT_BIN}/sudo" ] ||
