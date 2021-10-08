@@ -24,9 +24,17 @@ alias grep='grep -a --color --text'
 alias pcregrep='pcregrep -a --color --text'
 alias uptime='uptime -p && printf "since " && uptime -s'
 
+IS_SSH=false
 if [ -n "${SSH_CLIENT}" ] || [ -n "${SSH_TTY}" ]; then
+    IS_SSH=true
+fi
+
+COREUTILS_VERSION=$(ls --version | head -n 1 | awk '{print $4}' | awk -F. '{print $1}')
+
+${IS_SSH} && alias poweroff="echo Surely you don\'t mean to do that on the remote machine! && echo If you do, use \'command poweroff\' instead."
+
+if ${IS_SSH} || [[ ${COREUTILS_VERSION} -lt 9 ]]; then
     alias ls='ls --color=auto -h -Q'
-    alias poweroff="echo Surely you don\'t mean to do that on the remote machine! && echo If you do, use \'command poweroff\' instead."
 else
     alias ls='ls --color=auto -h -Q --hyperlink=always'
 fi
