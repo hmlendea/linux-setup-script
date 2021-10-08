@@ -185,7 +185,7 @@ function get_openbox_font_weight() {
 #echo "options bluetooth disable_ertm=1" | tee --append /etc/modprobe.d/xbox_bt.conf
 
 if [ "${ARCH}" == "x86_64" ]; then
-    USING_NVIDIA_GPU=$(lspci | grep VGA | grep -c "NVIDIA")
+    $(does-bin-exist "lspci") && USING_NVIDIA_GPU=$(lspci | grep VGA | grep -c "NVIDIA")
 else
     USING_NVIDIA_GPU=0
 fi
