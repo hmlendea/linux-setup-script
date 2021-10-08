@@ -1,23 +1,23 @@
 #!/bin/bash
 
-# Architecture
-ARCH=$(lscpu | grep "Architecture" | awk -F: '{print $2}' | sed 's/  //g' | sed 's/^ *//g')
-
-[ "${ARCH}" == "x86_64" ]   && ARCH_FAMILY="x86"
-[ "${ARCH}" == "aarch64" ]  && ARCH_FAMILY="arm"
-[ "${ARCH}" == "armv7l" ]   && ARCH_FAMILY="arm"
-[ "${ARCH}" == "armv8l" ]   && ARCH_FAMILY="arm"
-
 # Distribution
 KERNEL_VERSION=$(uname -r)
 DISTRO=$(echo "${KERNEL_VERSION}" | sed 's/^[0-9.-]*-\([A-Za-z]*\).*$/\1/g')
+OS=$(uname -s)
 
 if [ "${DISTRO}" == "lineageos" ] || [ $(uname -a | grep -c "Android") -ge 1 ]; then
     DISTRO_FAMILY="android"
+    OS="Android"
 fi
 
 [ "${DISTRO}" == "ARCH" ] && DISTRO="arch"
 [ "${DISTRO}" == "arch" ] && DISTRO_FAMILY="arch"
+
+if [ "${OS}" == "CYGWIN_NT-10.0" ]; then
+    DISTRO="Cygwin"
+    DISTRO_FAMILY="Windows"
+    OS="Windows"
+fi
 
 # Root partition mount point
 ROOT_PATH=""
@@ -67,6 +67,18 @@ function file-append-line() {
     fi
 }
 
+# Architecture
+ARCH=$(uname -m)
+
+if [ -z "${ARCH}" ] && $(does-bin "uname"); then
+    ARCH=$(lscpu | grep "Architecture" | awk -F: '{print $2}' | sed 's/  //g' | sed 's/^ *//g')
+fi
+
+[ "${ARCH}" == "x86_64" ]   && ARCH_FAMILY="x86"
+[ "${ARCH}" == "aarch64" ]  && ARCH_FAMILY="arm"
+[ "${ARCH}" == "armv7l" ]   && ARCH_FAMILY="arm"
+[ "${ARCH}" == "armv8l" ]   && ARCH_FAMILY="arm"
+
 # System characteristics
 if $(does-bin-exist "lscpu" ); then
     CPU_MODEL=$(lscpu | \
@@ -95,7 +107,8 @@ HAS_GUI=false
 IS_EFI=0
 HAS_SU_PRIVILEGES=true
 
-if [ -d "${ROOT_SYS}/module/battery" ]; then
+if [ -d "${ROOT_SYS}/module/battery" ] \
+&& [ -d "${ROOT_PROC}/acpi/button/lid"; then
     CHASSIS_TYPE="Laptop"
 elif [ "${DISTRO_FAMILY}" == "android" ]; then
     CHASSIS_TYPE="Phone"
@@ -136,6 +149,8 @@ if $(does-bin-exist "sudo"); then
     else
         HAS_SU_PRIVILEGES=true
     fi
+else
+    HAS_SU_PRIVILEGES=false
 fi
 
 # Username and home directory
