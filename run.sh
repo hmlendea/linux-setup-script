@@ -66,7 +66,6 @@ echo "EFI support:  ${IS_EFI}"
 echo "Powerful PC:  ${POWERFUL_PC}"
 echo "Gaming PC:    ${GAMING_PC}"
 echo ""
-exit
 
 # Remove the MOTD
 [ -f "${ROOT_ETC}/motd" ] && remove "${ROOT_ETC}/motd"

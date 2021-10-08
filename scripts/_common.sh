@@ -108,7 +108,7 @@ IS_EFI=0
 HAS_SU_PRIVILEGES=true
 
 if [ -d "${ROOT_SYS}/module/battery" ] \
-&& [ -d "${ROOT_PROC}/acpi/button/lid"; then
+&& [ -d "${ROOT_PROC}/acpi/button/lid" ]; then
     CHASSIS_TYPE="Laptop"
 elif [ "${DISTRO_FAMILY}" == "android" ]; then
     CHASSIS_TYPE="Phone"
