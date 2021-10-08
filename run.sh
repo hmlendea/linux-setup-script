@@ -56,6 +56,7 @@ function update-system() {
     fi
 }
 
+echo "OS:           ${OS}"
 echo "Distro:       ${DISTRO} (${DISTRO_FAMILY})"
 echo "Architecture: ${ARCH} (${ARCH_FAMILY})"
 echo "CPU:          ${CPU_MODEL}"
@@ -65,6 +66,7 @@ echo "EFI support:  ${IS_EFI}"
 echo "Powerful PC:  ${POWERFUL_PC}"
 echo "Gaming PC:    ${GAMING_PC}"
 echo ""
+exit
 
 # Remove the MOTD
 [ -f "${ROOT_ETC}/motd" ] && remove "${ROOT_ETC}/motd"
@@ -72,34 +74,39 @@ echo ""
 # Configure package repositories
 execute-script-superuser "configure-repositories.sh"
 
-# Manage packages and extensions
-execute-script "install-pkgs.sh"
-update-system
-execute-script "update-extensions.sh"
-[ "${DISTRO_FAMILY}" != "android" ] && execute-script-superuser "uninstall-pkgs.sh"
+# Package management
+if [ "${OS}" != "Windows" ]; then
+    # Manage packages and extensions
+    execute-script "install-pkgs.sh"
+    update-system
+    execute-script "update-extensions.sh"
+    [ "${DISTRO_FAMILY}" != "android" ] && execute-script-superuser "uninstall-pkgs.sh"
+
+    if [ "${OS}" == "Linux" ] && ${HAS_GUI}; then
+        execute-script-superuser "customise-launchers.sh"
+    fi
+fi
 
 # Configure and customise the system
 execute-script "config-system.sh"
 [ "${DISTRO_FAMILY}" == "arch" ] && execute-script-superuser "set-system-locale-timedate.sh"
 [ "${DISTRO_FAMILY}" != "android" ] && execute-script-superuser "install-profiles.sh"
 
-${HAS_GUI} && execute-script-superuser "customise-launchers.sh"
-
 $(does-bin-exist "systemctl") && execute-script-superuser "enable-services.sh"
 $(does-bin-exist "grub-mkconfig") && execute-script-superuser "update-grub.sh"
 
 # Update the RCs
 execute-script "update-rcs.sh"
-execute-script-superuser "update-rcs.sh"
+[ "${OS}" == "Linux" ] && execute-script-superuser "update-rcs.sh"
 
 # Update the resources
 execute-script "update-resources.sh"
-execute-script-superuser "update-resources.sh"
+[ "${OS}" == "Linux" ] && execute-script-superuser "update-resources.sh"
 
 execute-script "setup-git-gpg.sh"
 
 # Assign users and groups
-execute-script-superuser "assign-users-and-groups.sh"
+[ "${OS}" == "Linux" ] && execute-script-superuser "assign-users-and-groups.sh"
 
 # Clean journals older than 1 week
 if ${HAS_SU_PRIVILEGES} && $(does-bin-exist "journalctl"); then
