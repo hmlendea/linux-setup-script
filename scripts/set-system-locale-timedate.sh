@@ -7,6 +7,7 @@ LOCALE_GEN_FILE_PATH="${ROOT_ETC}/locale.gen"
 LOCALE_CONF_FILE_PATH="${ROOT_ETC}/locale.conf"
 VCONSOLE_CONF_FILE_PATH="${ROOT_ETC}/vconsole.conf"
 LOCALTIME_FILE_PATH="${ROOT_ETC}/localtime"
+KEYBOARD_LAYOUTS_PATH="${ROOT_USR_SHARE}/X11/xkb/symbols"
 
 echo "en_GB.UTF-8 UTF-8" >  "${LOCALE_GEN_FILE_PATH}"
 echo "en_US.UTF-8 UTF-8" >> "${LOCALE_GEN_FILE_PATH}"
@@ -39,4 +40,10 @@ if [ ! -f "${LOCALTIME_FILE_PATH}" ]; then
 
     ln -sf "/usr/share/zoneinfo/Europe/Bucharest" "${LOCALTIME_FILE_PATH}"
     hwclock --systohc
+fi
+
+# Update the X11 keyboard layout definitions
+if [ -d "${KEYBOARD_LAYOUTS_PATH}" ]; then
+    echo "Updating the keyboard layouts..."
+    update-file-if-needed "${REPO_KEYBOARD_LAYOUTS_DIR}/ro" "${KEYBOARD_LAYOUTS_PATH}/ro"
 fi

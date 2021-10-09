@@ -1,5 +1,21 @@
 #!/bin/bash
 
+# Get local path
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do
+  REPO_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+  SOURCE="$(readlink "$SOURCE")"
+  [[ $SOURCE != /* ]] && SOURCE="$EXEDIR/$SOURCE"
+done
+REPO_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+REPO_DIR=$(realpath "${REPO_DIR}/..")
+
+REPO_DATA_DIR="${REPO_DIR}/data"
+REPO_RC_DIR="${REPO_DIR}/rc"
+REPO_SCRIPTS_DIR="${REPO_DIR}/scripts"
+
+REPO_KEYBOARD_LAYOUTS_DIR="${REPO_RC_DIR}/keyboard-layouts"
+
 # Distribution
 KERNEL_VERSION=$(uname -r)
 DISTRO=$(echo "${KERNEL_VERSION}" | sed 's/^[0-9.-]*-\([A-Za-z]*\).*$/\1/g')
@@ -64,6 +80,40 @@ function file-append-line() {
         printf "${LINE}\n" >> "${FILE_PATH}" 2>/dev/null
     else
         echo "${LINE}" | sudo tee -a "${FILE_PATH}"
+    fi
+}
+
+function get-file-checksum() {
+    [ ! -f "${@}" ] && return
+    sha512sum "${@}" | awk '{print $1}'
+}
+
+function does-file-need-updating() {
+    local SOURCE_FILE_PATH="${1}"
+    local TARGET_FILE_PATH="${2}"
+    local FILES_ARE_SAME=false
+
+    [ ! -f "${SOURCE_FILE_PATH}" ] && return 1 # False
+
+    if [ -f "${TARGET_FILE_PATH}" ]; then
+        local SOURCE_FILE_CHECKSUM=$(get-file-checksum "${SOURCE_FILE_PATH}")
+        local TARGET_FILE_CHECKSUM=$(get-file-checksum "${TARGET_FILE_PATH}")
+
+        if [ "${SOURCE_FILE_CHECKSUM}" == "${TARGET_FILE_CHECKSUM}" ]; then
+            FILES_ARE_SAME=true
+        fi
+    fi
+
+    ${FILES_ARE_SAME} && return 1 || return 0
+}
+
+function update-file-if-needed() {
+    local SOURCE_FILE_PATH="${1}"
+    local TARGET_FILE_PATH="${2}"
+
+    if $(does-file-need-updating "${SOURCE_FILE_PATH}" "${TARGET_FILE_PATH}"); then
+        echo "Copying \"${SOURCE_FILE_PATH}\" to \"${TARGET_FILE_PATH}\"..."
+        cp "${SOURCE_FILE_PATH}" "${TARGET_FILE_PATH}"
     fi
 }
 
