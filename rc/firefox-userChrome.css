@@ -1,0 +1,11 @@
+.titlebar-min { 
+-moz-box-ordinal-group:2;
+}
+
+#titlebar-buttonbox,
+#window-controls,
+.titlebar-buttonbox-container {
+    padding-right: 0px !important;
+    margin-right: 0px !important;
+    right: 0px !important;
+}
