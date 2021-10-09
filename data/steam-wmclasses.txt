@@ -53,6 +53,7 @@
 214770=game-bin
 215510=rocketbirds.bin.x86
 218620=payday2_release
+218740=steam_app_218740
 219740=dontstarve_steam
 220200=KSP.x86
 221380=aok hd.exe
@@ -105,7 +106,7 @@
 312900=steam_app_312900
 313340=Mountain.x86_64
 319630=LifeIsStrange
-322330=dontstarve_steam
+322330=dontstarve_steam_x64
 322500=SUPERHOT.x86_64
 323190=frostpunk.exe
 323850=lt-love
