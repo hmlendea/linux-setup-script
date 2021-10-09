@@ -76,8 +76,8 @@ function set_firefox_config() {
 function set_json_value() {
     local FILE_PATH="${1}"
 
-    [ ! $(does-bin-exist "jq") ] && return
-    [ ! -f "${FILE_PATH}" ] && return
+    ( ! $(does-bin-exist "jq")) && return
+    ( ! -f "${FILE_PATH}") && return
 
     local PROPERTY="${2}"
     local VALUE=$(echo "${@:3}" | sed -e 's/[]\/$*.^|[]/\\&/g')
@@ -111,8 +111,8 @@ function set_xml_node() {
     NODE_RAW="${2}"
     VALUE_RAW="${@:3}"
 
-    ! $(does-bin-exist "xmlstarlet") && return
-    [ ! -f "${FILE}" ] && return
+    (! $(does-bin-exist "xmlstarlet")) && return
+    (! -f "${FILE}") && return
 
     NAMESPACE=$(cat "${FILE}" | grep "xmlns=" | sed 's/.*xmlns=\"\([^\"]*\)\".*/\1/g')
     VALUE=$(echo "${VALUE_RAW}" | sed -e 's/[]\/$*.^|[]/\\&/g')
@@ -659,6 +659,7 @@ if $(does-bin-exist "firefox"); then
     # Appearance
     set_firefox_config "${FIREFOX_PROFILE_ID}" "devtools.theme" ${GTK_THEME_VARIANT}
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.in-content.dark-mode" ${GTK_THEME_IS_DARK}
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.tabs.drawInTitlebar" true
     set_firefox_config "${FIREFOX_PROFILE_ID}" "ui.systemUsesDarkTheme" ${GTK_THEME_IS_DARK}
 
     set_firefox_config "${FIREFOX_PROFILE_ID}" "widget.disable-native-theme-for-content" "true"
