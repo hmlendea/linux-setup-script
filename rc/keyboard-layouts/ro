@@ -44,7 +44,9 @@ xkb_symbols "basic" {
     key <AD02> { [            w,           W,           ssharp,       U1e9e ] };
     key <AD03> { [            e,           E,         EuroSign              ] };
     key <AD05> { [            t,           T,            U021b,       U021a ] };
+    key <AD07> { [            u,           U,       udiaeresis,  Udiaeresis ] };
     key <AD08> { [            i,           I,      icircumflex, Icircumflex ] };
+    key <AD09> { [            o,           O,       odiaeresis,  Odiaeresis ] };
     key <AD10> { [            p,           P,          section              ] };
     key <AD11> { [  bracketleft,   braceleft, doublelowquotemark            ] };
     key <AD12> { [ bracketright,  braceright, rightdoublequotemark          ] };
@@ -53,10 +55,11 @@ xkb_symbols "basic" {
     key <AC03> { [            d,           D,          dstroke,     Dstroke ] };
     key <AC09> { [            l,           L,          lstroke,     Lstroke ] };
     key <LSGT> { [    backslash,         bar                                ] };
-    key <AB03> { [            c,           C,        copyright              ] };
+    key <AB03> { [            c,           C,         ccedilla,    Ccedilla ] };
     key <AB06> { [            n,           N,           ntilde,      Ntilde ] };
     key <AB08> { [        comma,        less,    guillemotleft              ] };
     key <AB09> { [       period,     greater,   guillemotright              ] };
+    key <AB10> { [        slash,     question,    questiondown              ] };
 
     key <KPDL> { [    KP_Delete,  KP_Decimal,    KP_Separator, KP_Separator ] };
 
