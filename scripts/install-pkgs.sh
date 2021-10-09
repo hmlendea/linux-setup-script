@@ -234,7 +234,7 @@ if ${HAS_GUI}; then
 
         install-pkg dialect
     else
-        install-pkg openbox
+        install-pkg mutter # openbox
         install-pkg lxde-common
         install-pkg lxdm
         install-pkg lxpanel
