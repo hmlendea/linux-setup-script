@@ -436,6 +436,16 @@ fi
 if [ -f "${HOME_REAL}/.config/lxsession/LXDE/desktop.conf" ]; then
     LXSESSION_CONFIG_FILE="${HOME_REAL}/.config/lxsession/LXDE/desktop.conf"
 
+    LXDE_WM=""
+
+    if [ -f "${ROOT_USR_BIN}/openbox" ]; then
+        LXDE_WM="openbox-lxde"
+    elif [ -f "${ROOT_USR_BIN}/mutter" ]; then
+        LXDE_WM="mutter"
+    fi
+
+    [ -n "${LXDE_WM}" ] && set_config_value "${LXSESSION_CONFIG_FILE}" window_manager "${LXDE_WM}"
+
     set_config_value "${LXSESSION_CONFIG_FILE}" sNet/ThemeName "${GTK_THEME}"
     set_config_value "${LXSESSION_CONFIG_FILE}" sNet/IconThemeName "${ICON_THEME}"
     set_config_value "${LXSESSION_CONFIG_FILE}" sNet/CursorThemeName "${CURSOR_THEME}"
