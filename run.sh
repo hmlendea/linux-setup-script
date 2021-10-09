@@ -78,10 +78,14 @@ if [ "${OS}" != "Windows" ]; then
     # Manage packages and extensions
     execute-script "install-pkgs.sh"
     update-system
-    execute-script "update-extensions.sh"
     [ "${DISTRO_FAMILY}" != "android" ] && execute-script-superuser "uninstall-pkgs.sh"
 
-    if [ "${OS}" == "Linux" ] && ${HAS_GUI}; then
+fi
+
+if [ "${OS}" == "Linux" ]; then
+    execute-script "update-extensions.sh"
+
+    if ${HAS_GUI}; then
         execute-script-superuser "customise-launchers.sh"
     fi
 fi
@@ -99,8 +103,10 @@ execute-script "update-rcs.sh"
 [ "${OS}" == "Linux" ] && execute-script-superuser "update-rcs.sh"
 
 # Update the resources
-execute-script "update-resources.sh"
-[ "${OS}" == "Linux" ] && execute-script-superuser "update-resources.sh"
+if [ "${OS}" == "Linux" ]; then
+    execute-script "update-resources.sh"
+    execute-script-superuser "update-resources.sh"
+fi
 
 execute-script "setup-git-gpg.sh"
 
