@@ -1086,8 +1086,14 @@ if [ -f "${ROOT_USR_BIN}/steam" ]; then
     STEAM_NAMES_FILE="data/steam-names.txt"
 
     if [ -n "${STEAM_LIBRARY_CUSTOM_PATHS}" ]; then
-        STEAM_LIBRARY_CUSTOM_PATHS=$(echo ${STEAM_LIBRARY_CUSTOM_PATHS} | sed 's/\"[0-9]\"//g' | sed 's/^ *//g' | sed 's/\t//g' | sed 's/\"//g')$(echo "/steamapps/")
-        STEAM_LIBRARY_PATHS=$(printf "${STEAM_LIBRARY_PATHS}\n${STEAM_LIBRARY_CUSTOM_PATHS}")
+        STEAM_LIBRARY_CUSTOM_PATHS=$(echo ${STEAM_LIBRARY_CUSTOM_PATHS} | \
+                                        sed 's/\"[0-9]\"//g' | \
+                                        sed 's/^ *//g' | \
+                                        sed 's/\t//g' | \
+                                        sed 's/\"//g' | \
+                                        sed 's/^ *path *//g' | \
+                                        sed 's/$/\/steamapps/g')
+        STEAM_LIBRARY_PATHS=$(printf "${STEAM_LIBRARY_PATHS}\n${STEAM_LIBRARY_CUSTOM_PATHS}" | sort | uniq)
     fi
 
     [ ! -d "${STEAM_LAUNCHERS_PATH}" ]              && mkdir -p "${STEAM_LAUNCHERS_PATH}"
@@ -1123,7 +1129,7 @@ if [ -f "${ROOT_USR_BIN}/steam" ]; then
             [ ! -f "${STEAM_WMCLASSES_FILE}" ]  && touch "${STEAM_WMCLASSES_FILE}"
             [ ! -f "${STEAM_NAMES_FILE}" ]      && touch "${STEAM_NAMES_FILE}"
 
-            APP_IDS=$(ls "${STEAM_LIBRARY_PATH}" | grep "appmanifest_.*.acf" | awk -F_ '{print $2}' | awk -F. '{print $1}')
+            APP_IDS=$(ls "${STEAM_LIBRARY_PATH}" | grep "appmanifest_.*.acf" | awk -F_ '{print $2}' | awk -F. '{print $1}' | sort -h)
             APPS_DIR_NAME="48x48/apps"
 
             if [ ! -d "${ICON_THEME_PATH}/${APPS_DIR_NAME}" ]; then
