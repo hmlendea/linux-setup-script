@@ -155,9 +155,10 @@ function set_modprobe_option() {
 function get_gsetting() {
     SCHEMA="${1}"
     PROPERTY="${2}"
-    VALUE=$(gsettings get "${SCHEMA}" "${PROPERTY}" | sed "s/^'\(.*\)'$/\1/g")
 
-    echo "${VALUE}"
+    (! $(does-bin-exist "gsettings")) && return
+
+    echo $(gsettings get "${SCHEMA}" "${PROPERTY}" | sed "s/^'\(.*\)'$/\1/g")
 }
 
 function set_gsetting() {
@@ -165,7 +166,7 @@ function set_gsetting() {
     PROPERTY="${2}"
     VALUE="${@:3}"
 
-    $(does-bin-exist "gsettings") && return
+    (! $(does-bin-exist "gsettings")) && return
 
     CURRENT_VALUE=$(get_gsetting "${SCHEMA}" "${PROPERTY}")
 
@@ -360,11 +361,6 @@ if $(does-bin-exist "gnome-shell"); then
     set_gsetting "org.gnome.desktop.peripherals.touchpad" click-method "default"
     set_gsetting "org.gnome.desktop.peripherals.touchpad" tap-to-click "true"
 
-    #set_gsetting "org.gnome.desktop.wm.preferences" button-layout ":minimize,maximize,close"
-    set_gsetting "org.gnome.desktop.wm.preferences" button-layout "close,maximize,minimize:"
-    set_gsetting "org.gnome.desktop.wm.preferences" theme "${GTK3_THEME}"
-    set_gsetting "org.gnome.desktop.wm.preferences" titlebar-font "${TITLEBAR_FONT}"
-
     set_gsetting "org.gnome.desktop.interface" clock-show-date "true"
     set_gsetting "org.gnome.desktop.interface" cursor-theme "${CURSOR_THEME}"
     set_gsetting "org.gnome.desktop.interface" document-font-name "${DOCUMENT_FONT}"
@@ -438,9 +434,9 @@ if [ -f "${HOME_REAL}/.config/lxsession/LXDE/desktop.conf" ]; then
 
     LXDE_WM=""
 
-    if [ -f "${ROOT_USR_BIN}/openbox" ]; then
+    if $(does-bin-exist "openbox"); then
         LXDE_WM="openbox-lxde"
-    elif [ -f "${ROOT_USR_BIN}/mutter" ]; then
+    elif $(does-bin-exist "mutter"); then
         LXDE_WM="mutter"
     fi
 
@@ -815,16 +811,20 @@ if $(does-bin-exist "gnome-shell"); then
 
     # Keybindings
     set_gsetting org.gnome.settings-daemon.plugins.media-keys logout "['<Alt>l']"
-    set_gsetting org.gnome.desktop.wm.keybindings panel-run-dialog "['<Super>r']"
-    set_gsetting org.gnome.desktop.wm.keybindings switch-applications "['<Alt>Tab']"
-    set_gsetting org.gnome.desktop.wm.keybindings switch-applications-backward "['<Shift><Alt>Tab']"
-    set_gsetting org.gnome.desktop.wm.keybindings switch-group "['<Super>Tab']"
-    set_gsetting org.gnome.desktop.wm.keybindings switch-group-backward "['<Shift><Super>Tab']"
-    set_gsetting org.gnome.desktop.wm.keybindings toggle-fullscreen "['<Super>f']"
 
     # Mouse
     set_gsetting org.gnome.desktop.peripherals.mouse accel-profile "flat"
     set_gsetting org.gnome.desktop.peripherals.mouse speed 0.17999999999999999 # 0.18 can't be set
+fi
+if $(does-bin-exist "mutter"); then
+    MUTTER_KEYBINDINGS_SCHEMA="org.gnome.desktop.wm.keybindings"
+
+    set_gsetting "${MUTTER_KEYBINDINGS_SCHEMA}" panel-run-dialog "['<Super>r']"
+    set_gsetting "${MUTTER_KEYBINDINGS_SCHEMA}" switch-applications "['<Alt>Tab']"
+    set_gsetting "${MUTTER_KEYBINDINGS_SCHEMA}" switch-applications-backward "['<Shift><Alt>Tab']"
+    set_gsetting "${MUTTER_KEYBINDINGS_SCHEMA}" switch-group "['<Super>Tab']"
+    set_gsetting "${MUTTER_KEYBINDINGS_SCHEMA}" switch-group-backward "['<Shift><Super>Tab']"
+    set_gsetting "${MUTTER_KEYBINDINGS_SCHEMA}" toggle-fullscreen "['<Super>f']"
 fi
 
 ############
@@ -1040,4 +1040,14 @@ if [ -d "${ROOT_USR}/share/gnome-shell/extensions/weather-extension@xeked.com" ]
 
     set_gsetting "${WEATHER_GSEXT_SCHEMA}" show-comment-in-panel true
     set_gsetting "${WEATHER_GSEXT_SCHEMA}" city "[<(uint32 2, <('Cluj-Napoca', 'LRCL', true, [(0.81652319590691635, 0.41131593287109447)], [(0.81623231933377882, 0.41189770347066179)])>)>]"
+fi
+
+#######################
+### Window Managers ###
+#######################
+if $(does-bin-exist "mutter"); then
+    #set_gsetting "org.gnome.desktop.wm.preferences" button-layout ":minimize,maximize,close"
+    set_gsetting "org.gnome.desktop.wm.preferences" button-layout "close,maximize,minimize:"
+    set_gsetting "org.gnome.desktop.wm.preferences" theme "${GTK3_THEME}"
+    set_gsetting "org.gnome.desktop.wm.preferences" titlebar-font "${TITLEBAR_FONT}"
 fi
