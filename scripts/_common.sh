@@ -109,8 +109,14 @@ function does-file-need-updating() {
 function update-file-if-needed() {
     local SOURCE_FILE_PATH="${1}"
     local TARGET_FILE_PATH="${2}"
+    local TARGET_DIR=$(dirname "${TARGET_FILE_PATH}")
 
     if $(does-file-need-updating "${SOURCE_FILE_PATH}" "${TARGET_FILE_PATH}"); then
+        if [ ! -d "${TARGET_DIR}" ]; then
+            echo "Creating the directory: ${TARGET_DIR}" >&2
+            mkdir -p "${TARGET_DIR}"
+        fi
+
         echo "Copying \"${SOURCE_FILE_PATH}\" to \"${TARGET_FILE_PATH}\"..."
         cp "${SOURCE_FILE_PATH}" "${TARGET_FILE_PATH}"
     fi
