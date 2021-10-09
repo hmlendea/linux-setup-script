@@ -52,7 +52,6 @@ ROOT_USR_LIB="${ROOT_USR}/lib"
 ROOT_USR_SHARE="${ROOT_USR}/share"
 
 # Functions
-
 function does-bin-exist() {
     BINARY_NAME="${@}"
 
