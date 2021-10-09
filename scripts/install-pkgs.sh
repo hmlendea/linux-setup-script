@@ -84,23 +84,10 @@ function install-pkg-aur-manually() {
     fi
 }
 
-##################
-### base-devel ###
-##################
-install-pkg autoconf
-install-pkg binutils
-install-pkg make
-install-pkg fakeroot
-install-pkg patch
-
-if [ "${DISTRO_FAMILY}" == "arch" ]; then
-    install-pkg gcc
-    install-pkg pkgconf
-fi
-
 ##############
 ### Basics ###
 ##############
+install-pkg coreutils
 install-pkg man
 install-pkg most
 install-pkg wget
@@ -116,6 +103,20 @@ elif [ "${DISTROY_FAMILY}" == "android" ]; then
     install-pkg manpages
 
     [ -f "/sbin/su" ] && install-pkg tsu
+fi
+
+##################
+### base-devel ###
+##################
+install-pkg autoconf
+install-pkg binutils
+install-pkg make
+install-pkg fakeroot
+install-pkg patch
+
+if [ "${DISTRO_FAMILY}" == "arch" ]; then
+    install-pkg gcc
+    install-pkg pkgconf
 fi
 
 ###################
@@ -152,11 +153,7 @@ install-pkg wol
 install-pkg unzip
 install-pkg unrar
 
-if [ "${DISTRO_FAMILY}" == "android" ]; then
-    install-pkg coreutils
-    install-pkg tsu # sudo
-    exit
-elif [ "${DISTRO_FAMILY}" != "arch" ]; then
+if [ "${DISTRO_FAMILY}" != "arch" ]; then
     exit
 fi
 
