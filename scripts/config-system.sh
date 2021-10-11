@@ -683,11 +683,14 @@ if $(does-bin-exist "firefox"); then
     set_firefox_config "${FIREFOX_PROFILE_ID}" "toolkit.telemetry.updatePing.enabled" "false"
 
     # DNS Prefetching
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "network.dns.disablePrefetch" "true"
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "network.dns.disablePrefetchFromHTTPS" "true"
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "network.predictor.enabled" "false"
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "network.predictor.enable-prefetch" "false"
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "network.prefetch-next" "false"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "network.dns.disablePrefetch" true
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "network.dns.disablePrefetchFromHTTPS" true
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "network.predictor.enabled" false
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "network.predictor.enable-prefetch" false
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "network.prefetch-next" false
+
+    # Security
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "dom.security.https_first" true
 
     # Fingerprinting
     #set_firefox_config "${FIREFOX_PROFILE_ID}" privacy.resistFingerprinting true
