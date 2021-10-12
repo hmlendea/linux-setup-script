@@ -150,6 +150,7 @@ install-pkg wol
 ################
 ### Archives ###
 ################
+install-pkg cabextract
 install-pkg unzip
 install-pkg unrar
 
