@@ -142,10 +142,14 @@ install-pkg neofetch
 install-pkg dnsutils
 install-pkg net-tools
 install-pkg openssh
-install-pkg wireless_tools
 install-pkg wol
 
-[ "${DISTRO_FAMILY}" == "arch" ] && install-pkg wpa_supplicant
+if [ "${DISTRO_FAMILY}" == "arch" ]; then
+    install-pkg wireless_tools
+    install-pkg wpa_supplicant
+elif [ "${DISTRO_FAMILY}" == "Android" ]; then
+    install-pkg wireless-tools
+fi
 
 ################
 ### Archives ###
