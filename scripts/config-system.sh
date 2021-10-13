@@ -759,8 +759,6 @@ if $(does-bin-exist "code"); then
 
     # Appearance
     set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.codeLens"]' false
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.find.autoFindInSelection"]' "multiline"
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.find.seedSearchStringFromSelection"]' "never"
     set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.fontFamily"]' "${MONOSPACE_FONT_NAME} ${MONOSPACE_FONT_STYLE}"
     set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.fontSize"]' $((MONOSPACE_FONT_SIZE+3))
     set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.roundedSelection"]' true
@@ -776,7 +774,10 @@ if $(does-bin-exist "code"); then
     set_json_value "${VSCODE_CONFIG_FILE}" '.["workbench.iconTheme"]' "seti"
     set_json_value "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.drawBoldTextInBrightColors"]' ${TERMINAL_BOLD_TEXT_IS_BRIGHT}
 
+    # Editor behaviour
     set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.autoClosingBrackets"]' false
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.find.autoFindInSelection"]' "multiline"
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.find.seedSearchStringFromSelection"]' "selection"
     set_json_value "${VSCODE_CONFIG_FILE}" '.["explorer.confirmDragAndDrop"]' false
     set_json_value "${VSCODE_CONFIG_FILE}" '.["explorer.confirmDelete"]' false
     set_json_value "${VSCODE_CONFIG_FILE}" '.["git.autofetch"]' true
