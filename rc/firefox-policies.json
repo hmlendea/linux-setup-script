@@ -1,0 +1,9 @@
+{
+    "policies": {
+        "Certificates": {
+            "Install": [
+                "/usr/share/ca-certificates/aspnet/https.crt"
+            ]
+        }
+    }
+}

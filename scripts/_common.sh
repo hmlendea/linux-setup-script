@@ -118,7 +118,8 @@ function update-file-if-needed() {
         fi
 
         echo "Copying \"${SOURCE_FILE_PATH}\" to \"${TARGET_FILE_PATH}\"..."
-        cp "${SOURCE_FILE_PATH}" "${TARGET_FILE_PATH}"
+        [ -w "${TARGET_FILE_PATH}" ] && cp "${SOURCE_FILE_PATH}" "${TARGET_FILE_PATH}" \
+                                     || sudo cp "${SOURCE_FILE_PATH}" "${TARGET_FILE_PATH}"
     fi
 }
 
