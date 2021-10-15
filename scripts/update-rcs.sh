@@ -21,4 +21,5 @@ if $(does-bin-exist "firefox"); then
     FIREFOX_PROFILE_ID=$(grep "^Path=" "${FIREFOX_PROFILES_INI_FILE}" | awk -F= '{print $2}' | head -n 1)
 
     update-file-if-needed "${REPO_RC_DIR}/firefox-userChrome.css" "${HOME}/.mozilla/firefox/${FIREFOX_PROFILE_ID}/chrome/userChrome.css"
+    update-file-if-needed "${REPO_RC_DIR}/firefox-policies.json" "/usr/lib/firefox/distribution/policies.json"
 fi
