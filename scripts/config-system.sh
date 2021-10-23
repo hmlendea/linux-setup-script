@@ -598,6 +598,7 @@ if $(does-bin-exist "nautilus"); then
 
     set_gsetting "${NAUTILUS_SCHEMA}.icon-view" default-zoom-level "standard"
     set_gsetting "${NAUTILUS_SCHEMA}.list-view" default-zoom-level "small"
+    set_gsetting "${NAUTILUS_SCHEMA}.preferences" search-view 'list-view'
     set_gsetting "${NAUTILUS_SCHEMA}.preferences" show-create-link true
     set_gsetting "${NAUTILUS_SCHEMA}.preferences" show-delete-permanently true
     set_gsetting "${NAUTILUS_SCHEMA}.window-state" sidebar-width 240
@@ -691,6 +692,14 @@ if $(does-bin-exist "firefox"); then
 
     # Security
     set_firefox_config "${FIREFOX_PROFILE_ID}" "dom.security.https_first" true
+
+    # URL bar
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.groupLabels.enabled" false
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.quicksuggest.enabled" true
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.suggest.calculator" true
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.suggest.quicksuggest" true
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.quicksuggest.scenario" 'offline'
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.suggest.quicksuggest.sponsored" false
 
     # Fingerprinting
     #set_firefox_config "${FIREFOX_PROFILE_ID}" privacy.resistFingerprinting true
