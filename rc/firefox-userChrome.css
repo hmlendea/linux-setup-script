@@ -50,12 +50,13 @@
 #urlbar-container,
 #search-container {
     padding-block: 0 !important;
-    margin-inline: 25px !important;
+    margin-inline: 16px !important;
     background-color: #191919 !important;
     outline: none !important;
     border: none !important;
     box-shadow: none !important;
 }
+
 #urlbar-container,
 #search-container,
 #urlbar > #urlbar-background {
@@ -101,6 +102,30 @@ toolbar#nav-bar {
 #personal-bookmarks toolbarbutton.bookmark-item {
     margin-left: 0px !important;
     margin-right: 0px !important;
+}
+
+toolbarbutton#_446900e4-71c2-419f-a6a7-df9c091e268b_-browser-action,
+toolbarbutton#authenticator_mymindstorm-browser-action {
+    --webextension-menupanel-image: none !important;
+    --webextension-menupanel-image-light: none !important;
+    --webextension-menupanel-image-dark: none !important;
+    --webextension-menupanel-image-2x: none !important;
+    --webextension-menupanel-image-2x-light: none !important;
+    --webextension-menupanel-image-2x-dark: none !important;
+    --webextension-toolbar-image: none !important;
+    --webextension-toolbar-image-light: none !important;
+    --webextension-toolbar-image-dark: none !important;
+    --webextension-toolbar-image-2x: none !important;
+    --webextension-toolbar-image-2x-light: none !important;
+    --webextension-toolbar-image-2x-dark: none !important;
+}
+toolbarbutton#_446900e4-71c2-419f-a6a7-df9c091e268b_-browser-action.toolbarbutton-1.chromeclass-toolbar-additional.panel-no-padding.webextension-browser-action stack.toolbarbutton-badge-stack image.toolbarbutton-icon {
+    --webextension-toolbar-image: none !important;
+    background: url("https://i.imgur.com/ZBd4va6.png") no-repeat center/20px;
+}
+toolbarbutton#authenticator_mymindstorm-browser-action.toolbarbutton-1.chromeclass-toolbar-additional.panel-no-padding.webextension-browser-action stack.toolbarbutton-badge-stack image.toolbarbutton-icon {
+    --webextension-toolbar-image: none !important;
+    background: url("https://materialdesignicons.com/api/download/779E7DDE-0ACE-4752-9966-22761E2A128A/FFFFFF/1/FFFFFF/0/48") no-repeat center/20px;
 }
 
 toolbarbutton.bookmark-item[label="Bitwarden"] > image { visibility: hidden; }
