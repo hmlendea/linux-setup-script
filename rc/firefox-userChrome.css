@@ -17,7 +17,7 @@
     width: 0 !important;
 }
 
-/* Hide ContextMenu Items */
+/* Hide context menu items */
 #contentAreaContextMenu #context-bookmarklink,
 #contentAreaContextMenu #context-openlinkincurrent,
 #contentAreaContextMenu #context-openlinkinusercontext-menu,
@@ -32,6 +32,14 @@
 #contentAreaContextMenu #context-viewpartialsource-selection {
     display: none !important;
 }
+/* Hide tab context menu items */
+#tabContextMenu #context_bookmarkTab,
+#tabContextMenu #context_closeTabOptions,
+#tabContextMenu #context_selectAllTabs,
+#tabContextMenu #context_moveTabOptions,
+#tabContextMenu #context_sendTabToDevice {
+    display: none !important;
+}
 
 #nav-bar{
   --toolbarbutton-inner-padding: 6px;
@@ -41,4 +49,98 @@
 
 #urlbar-container, #search-container {
     padding-block: 0 !important;
+}
+
+/* Spacing between bookmars in the bookmark bar */
+#PlacesToolbarItems > .bookmark-item {
+    margin-inline: 0 !important
+}
+
+/* Adjust bookmark icons padding on the bookmark bar */
+#bookmarks-ptf toolbarbutton.bookmark-item .toolbarbutton-text,
+#personal-bookmarks toolbarbutton.bookmark-item .toolbarbutton-text,
+#personal-bookmarks toolbarbutton.bookmark-item .toolbarbutton-text-shadow {
+    padding-left: 2px !important;
+}
+
+/* Show bookmark icons correctly on the bookmark bar */
+#bookmarks-ptf toolbarbutton.bookmark-item .toolbarbutton-icon,
+#personal-bookmarks toolbarbutton.bookmark-item .toolbarbutton-icon {
+    display: block !important;
+    width: 16px !important;
+    height: 16px !important;
+    padding: 0px !important;
+    margin: 0px !important;
+}
+
+/* Hide bookmark names on the bookmark bar */
+#bookmarks-ptf toolbarbutton.bookmark-item[image]:not([image=""]):not([container="true"]) .toolbarbutton-text,
+#personal-bookmarks toolbarbutton.bookmark-item[image]:not([image=""]):not([container="true"]) .toolbarbutton-text,
+#personal-bookmarks toolbarbutton.bookmark-item[image]:not([image=""]):not([container="true"]) .toolbarbutton-text-shadow {
+    display: none !important;
+}
+
+#bookmarks-ptf toolbarbutton.bookmark-item,
+#personal-bookmarks toolbarbutton.bookmark-item {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+}
+
+toolbarbutton.bookmark-item[label="Bitwarden"] > image { visibility: hidden; }
+toolbarbutton.bookmark-item[label="Bitwarden"] {
+    background: url("https://materialdesignicons.com/api/download/9E908727-9325-4FC6-B8B8-C5CA52A7A827/FFFFFF/1/FFFFFF/0/48") no-repeat center/20px;
+}
+
+toolbarbutton.bookmark-item[label="Digi Cloud"] > image { visibility: hidden; }
+toolbarbutton.bookmark-item[label="Digi Cloud"] {
+    background: url("https://materialdesignicons.com/api/download/CF07C502-388E-4A65-BD89-FACCFD00C245/FFFFFF/1/FFFFFF/0/48") no-repeat center/20px;
+}
+
+toolbarbutton.bookmark-item[label="Drive"] > image,
+toolbarbutton.bookmark-item[label="Google Drive"] > image { visibility: hidden;}
+toolbarbutton.bookmark-item[label="Drive"],
+toolbarbutton.bookmark-item[label="Google Drive"] {
+    background: url("https://materialdesignicons.com/api/download/EE98C0AD-0A55-4A6B-BB7A-01CBD3D819A2/FFFFFF/1/FFFFFF/0/48") no-repeat center/20px;
+}
+
+toolbarbutton.bookmark-item[label="Google Photos"],
+toolbarbutton.bookmark-item[label="Photos"] > image { visibility: hidden; }
+toolbarbutton.bookmark-item[label="Google Photos"],
+toolbarbutton.bookmark-item[label="Photos"] {
+    background: url("https://materialdesignicons.com/api/download/3238BA72-FEE8-4C90-A440-AD701359A7BC/FFFFFF/1/FFFFFF/0/48") no-repeat center/20px;
+}
+
+toolbarbutton.bookmark-item[label="GitHub"] > image { visibility: hidden; }
+toolbarbutton.bookmark-item[label="GitHub"] {
+    background: url("https://materialdesignicons.com/api/download/5C6175DD-8549-4004-AB77-A545D721A0DE/FFFFFF/1/FFFFFF/0/48") no-repeat center/20px;
+}
+
+toolbarbutton.bookmark-item[label="Home Assistant"],
+toolbarbutton.bookmark-item[label="HomeAssistant"] > image { visibility: hidden; }
+toolbarbutton.bookmark-item[label="Home Assistant"],
+toolbarbutton.bookmark-item[label="HomeAssistant"] {
+    background: url("https://materialdesignicons.com/api/download/80923357-29F3-429E-A186-F3561451398C/FFFFFF/1/FFFFFF/0/48") no-repeat center/20px;
+}
+
+toolbarbutton.bookmark-item[label="Gaming on Linux"] > image { visibility: hidden;}
+toolbarbutton.bookmark-item[label="Gaming on Linux"] {
+    background: url("https://materialdesignicons.com/api/download/B2649A8A-D1EC-43AF-9C99-F233AF709155/FFFFFF/1/FFFFFF/0/48") no-repeat center/20px;
+}
+
+toolbarbutton.bookmark-item[label="Odysee"] > image { visibility: hidden;}
+toolbarbutton.bookmark-item[label="Odysee"] { background: url("https://i.imgur.com/RCztW7t.png") no-repeat center/20px; }
+
+toolbarbutton.bookmark-item[label="ProtonMail"] > image { visibility: hidden;}
+toolbarbutton.bookmark-item[label="ProtonMail"] {
+    background: url("https://materialdesignicons.com/api/download/14AAE073-8399-4D67-9F7E-8E9424328681/FFFFFF/1/FFFFFF/0/48") no-repeat center/20px;
+}
+
+toolbarbutton.bookmark-item[label="Steam"] > image { visibility: hidden; }
+toolbarbutton.bookmark-item[label="Steam"] {
+    background: url("https://materialdesignicons.com/api/download/FBD721A3-7CD8-4769-902C-2B434CA107EE/FFFFFF/1/FFFFFF/0/48") no-repeat center/20px;
+}
+
+toolbarbutton.bookmark-item[label="YouTube"] > image { visibility: hidden; }
+toolbarbutton.bookmark-item[label="YouTube"] {
+    background: url("https://materialdesignicons.com/api/download/0A078909-90AF-41F5-8E76-CAB565D49AAA/FFFFFF/1/FFFFFF/0/48") no-repeat center/20px;
 }
