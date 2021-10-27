@@ -1,5 +1,5 @@
-.titlebar-min { 
--moz-box-ordinal-group:2;
+.titlebar-min {
+    -moz-box-ordinal-group:2;
 }
 
 #titlebar-buttonbox,
@@ -8,4 +8,37 @@
     padding-right: 0px !important;
     margin-right: 0px !important;
     right: 0px !important;
+}
+
+/* Get rid of the empty space to the left of the tabs */
+.titlebar-placeholder[type="pre-tabs"], /* Firefox 64 */
+.titlebar-spacer[type="pre-tabs"] { /* Firefox 65 */
+    display: none !important;
+    width: 0 !important;
+}
+
+/* Hide ContextMenu Items */
+#contentAreaContextMenu #context-bookmarklink,
+#contentAreaContextMenu #context-openlinkincurrent,
+#contentAreaContextMenu #context-openlinkinusercontext-menu,
+#contentAreaContextMenu #context-selectall,
+#contentAreaContextMenu #context-sendaudio,
+#contentAreaContextMenu #context-sendimage,
+#contentAreaContextMenu #context-sendlinktodevice,
+#contentAreaContextMenu #context-sendpagetodevice,
+#contentAreaContextMenu #context-sendvideo,
+#contentAreaContextMenu #context-sep-sendlinktodevice,
+#contentAreaContextMenu #context-sep-sendpagetodevice,
+#contentAreaContextMenu #context-viewpartialsource-selection {
+    display: none !important;
+}
+
+#nav-bar{
+  --toolbarbutton-inner-padding: 6px;
+  --toolbarbutton-outer-padding: 0;
+  --urlbar-icon-padding: 2px;
+}
+
+#urlbar-container, #search-container {
+    padding-block: 0 !important;
 }
