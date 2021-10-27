@@ -8,7 +8,7 @@ while [ -h "$SOURCE" ]; do
   [[ $SOURCE != /* ]] && SOURCE="$EXEDIR/$SOURCE"
 done
 REPO_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
-REPO_DIR=$(realpath "${REPO_DIR}/..")
+REPO_DIR=$(realpath "${REPO_DIR}/../..")
 
 REPO_DATA_DIR="${REPO_DIR}/data"
 REPO_RC_DIR="${REPO_DIR}/rc"
@@ -78,7 +78,7 @@ function file-append-line() {
     if [ -w "${FILE_PATH}" ]; then
         printf "${LINE}\n" >> "${FILE_PATH}" 2>/dev/null
     else
-        echo "${LINE}" | sudo tee -a "${FILE_PATH}"
+        echo "${LINE}" | sudo tee -a "${FILE_PATH}" >/dev/null
     fi
 }
 
