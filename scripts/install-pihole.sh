@@ -21,6 +21,9 @@ sudo sed -i 's/^server\.port.*$/server.port = 8093/' "/etc/lighttpd/lighttpd.con
 sudo sed -i 's/^#DBINTERVAL=.*/DBINTERVAL=60.0/' "/etc/pihole/pihole-FTL.conf"
 sudo sed -i 's/^#IGNORE_LOCALHOST=.*/IGNORE_LOCALHOST=yes/' "/etc/pihole/pihole-FTL.conf"
 
+set_config_value "/etc/dnsmasq.d/01-pihole.conf" "local-ttl" 3600 # 60 minutes
+set_config_value "/etc/dnsmasq.d/01-pihole.conf" "min-cache-ttl" 1800 # 30 minutes
+
 sudo systemctl disable systemd-resolved
 sudo systemctl enable pihole-FTL
 sudo systemctl enable lighttpd
