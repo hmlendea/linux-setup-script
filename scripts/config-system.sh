@@ -692,6 +692,7 @@ if $(does-bin-exist "firefox"); then
 
     # Security
     set_firefox_config "${FIREFOX_PROFILE_ID}" "dom.security.https_first" true
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "dom.security.https_only_mode" true
 
     # URL bar
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.groupLabels.enabled" false
