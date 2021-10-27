@@ -1,5 +1,5 @@
 #!/bin/bash
-source "scripts/_common.sh"
+source "scripts/common/common.sh"
 
 GROUPS_FILE="${ROOT_ETC}/group"
 

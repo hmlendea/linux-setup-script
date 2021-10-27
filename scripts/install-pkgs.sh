@@ -1,5 +1,5 @@
 #!/bin/bash
-source "scripts/_common.sh"
+source "scripts/common/common.sh"
 
 TEMP_DIR_PATH=".temp-sysinstall"
 mkdir -p "$TEMP_DIR_PATH"

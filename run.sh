@@ -16,7 +16,7 @@ fi
 # Make sure the USER envar is set (on Android it is not)
 export USER="$(whoami)"
 
-source "${EXEDIR}/scripts/_common.sh"
+source "${EXEDIR}/scripts/common/common.sh"
 
 if ${HAS_SU_PRIVILEGES}; then
     echo "I need sudo access!"

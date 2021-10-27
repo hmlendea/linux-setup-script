@@ -1,5 +1,5 @@
 #!/bin/bash
-source "scripts/_common.sh"
+source "scripts/common/common.sh"
 
 PACMAN_CONF_FILE_PATH="${ROOT_ETC}/pacman.conf"
 
