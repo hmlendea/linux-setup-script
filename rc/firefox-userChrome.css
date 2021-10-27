@@ -87,9 +87,7 @@
 }
 
 toolbarbutton.bookmark-item[label="Bitwarden"] > image { visibility: hidden; }
-toolbarbutton.bookmark-item[label="Bitwarden"] {
-    background: url("https://materialdesignicons.com/api/download/9E908727-9325-4FC6-B8B8-C5CA52A7A827/FFFFFF/1/FFFFFF/0/48") no-repeat center/20px;
-}
+toolbarbutton.bookmark-item[label="Bitwarden"] { background: url("https://i.imgur.com/ZBd4va6.png") no-repeat center/20px; }
 
 toolbarbutton.bookmark-item[label="Digi Cloud"] > image { visibility: hidden; }
 toolbarbutton.bookmark-item[label="Digi Cloud"] {
