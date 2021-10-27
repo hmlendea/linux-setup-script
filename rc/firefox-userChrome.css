@@ -87,8 +87,6 @@ toolbar#nav-bar {
     display: block !important;
     width: 16px !important;
     height: 16px !important;
-    padding: 0px !important;
-    margin: 0px !important;
 }
 
 /* Hide bookmark names on the bookmark bar */
@@ -97,12 +95,18 @@ toolbar#nav-bar {
 #personal-bookmarks toolbarbutton.bookmark-item[image]:not([image=""]):not([container="true"]) .toolbarbutton-text-shadow {
     display: none !important;
 }
-
+    
 #bookmarks-ptf toolbarbutton.bookmark-item,
-#personal-bookmarks toolbarbutton.bookmark-item {
-    margin-left: 0px !important;
-    margin-right: 0px !important;
+#personal-bookmarks {
+    margin-left: 16px !important;
 }
+
+#back-button { list-style-image: none !important; }
+#back-button > image { background: url("https://materialdesignicons.com/api/download/C21995A9-094F-4EA8-9127-BA0506B240A6/FFFFFF/1/FFFFFF/0/48") no-repeat center/20px; }
+#forward-button { list-style-image: none !important; }
+#forward-button { background: url("https://materialdesignicons.com/api/download/05F25B05-A6D6-4863-8B21-6969E10329CF/FFFFFF/1/FFFFFF/0/48") no-repeat center/20px; }
+#reload-button { list-style-image: none !important; }
+#reload-button { background: url("https://materialdesignicons.com/api/download/AD3C7A2B-0B64-4183-9452-C96EAAF3E08E/FFFFFF/1/FFFFFF/0/48") no-repeat center/20px; }
 
 toolbarbutton#_446900e4-71c2-419f-a6a7-df9c091e268b_-browser-action,
 toolbarbutton#authenticator_mymindstorm-browser-action {
