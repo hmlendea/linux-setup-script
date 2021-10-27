@@ -1,12 +1,34 @@
 #!/bin/bash
 source "scripts/_common.sh"
 
+function does-systemd-service-exist-at-location {
+    local SERVICE_NAME="${1}"
+    local LOCATION="${2}"
+
+    [ -f "${LOCATION}/${SERVICE_NAME}" ] && return 0
+    [ -f "${LOCATION}/${SERVICE_NAME}.service" ] && return 0
+
+    return 1 # False
+}
+
+function does-systemd-service-exist {
+    local SERVICE_NAME="${@}"
+
+    $(does-service-exist-at-location "${SERVICE_NAME}" "/etc/systemd/system") && return 0
+    $(does-service-exist-at-location "${SERVICE_NAME}" "/lib/systemd/system") && return 0
+    $(does-service-exist-at-location "${SERVICE_NAME}" "/usr/lib/systemd/system") && return 0
+
+    return 1 # False
+}
+
 function enable-service {
-    local SERVICE="${1}"
+    local SERVICE_NAME="${@}"
 
     if [ -f "${ROOT_USR_BIN}/systemctl" ]; then
-        systemctl enable "${SERVICE}"
-        systemctl start "${SERVICE}"
+        (! $(does-service-exist "${SERVICE_NAME}" )) && echo $SERVICE_NAME && return
+
+        systemctl enable "${SERVICE_NAME}"
+        systemctl start "${SERVICE_NAME}"
     fi
 }
 
