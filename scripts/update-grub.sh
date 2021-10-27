@@ -1,5 +1,5 @@
 #!/bin/bash
-source "scripts/_common.sh"
+source "scripts/common/common.sh"
 
 SOURCE_GRUB_RC_DIR=$(pwd)"/rc/grub"
 TARGET_GRUB_RC_DIR="${ROOT_ETC}/grub.d"

@@ -1,5 +1,5 @@
 #!/bin/bash
-source "scripts/_common.sh"
+source "scripts/common/common.sh"
 
 if [ -f "${ROOT_USR_BIN}/gnome-shell-extension-installer" ]; then
     echo "Updating GNOME Shell extensions..."

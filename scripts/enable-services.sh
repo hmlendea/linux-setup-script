@@ -1,5 +1,5 @@
 #!/bin/bash
-source "scripts/_common.sh"
+source "scripts/common/common.sh"
 
 function does-systemd-service-exist-at-location {
     local SERVICE_NAME="${1}"

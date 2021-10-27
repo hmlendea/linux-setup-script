@@ -1,5 +1,5 @@
 #!/bin/bash
-source "scripts/_common.sh"
+source "scripts/common/common.sh"
 
 [[ "${ARCH}" != "x86_64" ]] && exit
 
