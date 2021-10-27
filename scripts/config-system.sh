@@ -705,6 +705,9 @@ if $(does-bin-exist "firefox"); then
     # Fingerprinting
     #set_firefox_config "${FIREFOX_PROFILE_ID}" privacy.resistFingerprinting true
     set_firefox_config "${FIREFOX_PROFILE_ID}" privacy.trackingprotection.fingerprinting.enabled true
+
+    # Identity
+    set_firefox_config "${FIREFOX_PROFILE_ID}" identity.fxaccounts.account.device.name "${HOSTNAME}"
 fi
 
 ##############################
