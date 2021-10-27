@@ -47,8 +47,25 @@
   --urlbar-icon-padding: 2px;
 }
 
-#urlbar-container, #search-container {
+#urlbar-container,
+#search-container {
     padding-block: 0 !important;
+    margin-inline: 25px !important;
+    background-color: #191919 !important;
+    outline: none !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+#urlbar-container,
+#search-container,
+#urlbar > #urlbar-background {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+toolbar#nav-bar {
+   background-color: #191919 !important;
+   background-image: none !important;
 }
 
 /* Spacing between bookmars in the bookmark bar */
