@@ -294,6 +294,17 @@ if $(does-bin-exist "openbox") && $(does-bin-exist "lxsession"); then
     set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='MenuItem']/weight" "$(get_openbox_font_weight ${MENU_FONT_STYLE})"
 fi
 
+###################
+### Ad Blockers ###
+###################
+
+if $(does-bin-exist "pihole-FTL"); then
+    PIHOLE_DNSMASQ_CONFIG_PATH="/etc/dnsmasq.d/01-pihole.conf"
+
+    set_config_value "${PIHOLE_DNSMASQ_CONFIG_PATH}" "local-ttl" 3600 # 60 minutes
+    set_config_value "${PIHOLE_DNSMASQ_CONFIG_PATH}" "min-cache-ttl" 900 # 15 minutes
+fi
+
 ########################
 ### ARCHIVE MANAGERS ###
 ########################
