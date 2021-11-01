@@ -688,6 +688,17 @@ if $(does-bin-exist "gnome-maps"); then
     set_gsetting org.gnome.Maps night-mode true
 fi
 
+################
+### NEOFETCH ###
+################
+if $(does-bin-exist "neofetch"); then
+    NEOFETCH_CONFIG_DIR="${HOME_REAL}/.config/neofetch"
+    NEOFETCH_CONFIG_FILE="${NEOFETCH_CONFIG_DIR}/config.conf"
+    NEOFETCH_CUSTOM_ASCII_FILE="${NEOFETCH_CONFIG_DIR}/neofetch-distro-ascii"
+
+    [ -f "${NEOFETCH_CUSTOM_ASCII_FILE}" ] && set_config_value "${NEOFETCH_CONFIG_FILE}" image_source "\"${NEOFETCH_CUSTOM_ASCII_FILE}\""
+fi
+
 ###################
 ### NIGHT LIGHT ###
 ###################

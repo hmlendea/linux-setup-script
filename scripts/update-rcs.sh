@@ -17,9 +17,15 @@ $(does-bin-exist "lxpanel") && update-file-if-needed "${REPO_RC_DIR}/lxde-panel"
 #[ -f "${ROOT_USR_BIN}/lxpanel" ]   && copy_rc "lxde-dock" "${HOME}/.config/lxpanel/LXDE/panels/dock"
 
 if $(does-bin-exist "firefox"); then
-    FIREFOX_PROFILES_INI_FILE="${HOME_REAL}/.mozilla/firefox/profiles.ini"
+    FIREFOX_PROFILES_DIR="${HOME_REAL}/.mozilla/firefox"
+    FIREFOX_PROFILES_INI_FILE="${FIREFOX_PROFILES_DIR}/profiles.ini"
     FIREFOX_PROFILE_ID=$(grep "^Path=" "${FIREFOX_PROFILES_INI_FILE}" | awk -F= '{print $2}' | head -n 1)
 
-    update-file-if-needed "${REPO_RC_DIR}/firefox-userChrome.css" "${HOME}/.mozilla/firefox/${FIREFOX_PROFILE_ID}/chrome/userChrome.css"
+    update-file-if-needed "${REPO_RC_DIR}/firefox-userChrome.css" "${FIREFOX_PROFILES_DIR}/${FIREFOX_PROFILE_ID}/chrome/userChrome.css"
     update-file-if-needed "${REPO_RC_DIR}/firefox-policies.json" "/usr/lib/firefox/distribution/policies.json"
+fi
+
+if $(does-bin-exist "neofetch"); then
+    NEOFETCH_CONFIG_DIR="${HOME_REAL}/.config/neofetch"
+    update-file-if-needed "${REPO_RC_DIR}/neofetch-arch-ascii" "${NEOFETCH_CONFIG_DIR}/neofetch-distro-ascii"
 fi
