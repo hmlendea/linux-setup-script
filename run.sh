@@ -90,17 +90,17 @@ if [ "${OS}" == "Linux" ]; then
     fi
 fi
 
+# Update the RCs
+execute-script "update-rcs.sh"
+[ "${OS}" == "Linux" ] && execute-script-superuser "update-rcs.sh"
+
 # Configure and customise the system
-execute-script "config-system.sh"
+execute-script "config-system.sh" # Run after update-rcs.sh
 [ "${DISTRO_FAMILY}" == "arch" ] && execute-script-superuser "set-system-locale-timedate.sh"
 [ "${DISTRO_FAMILY}" != "android" ] && execute-script-superuser "install-profiles.sh"
 
 $(does-bin-exist "systemctl") && execute-script-superuser "enable-services.sh"
-$(does-bin-exist "grub-mkconfig") && execute-script-superuser "update-grub.sh"
-
-# Update the RCs
-execute-script "update-rcs.sh"
-[ "${OS}" == "Linux" ] && execute-script-superuser "update-rcs.sh"
+$(does-bin-exist "grub-mkconfig") && execute-script-superuser "update-grub.sh" # Run after config-system.sh
 
 # Update the resources
 if [ "${OS}" == "Linux" ]; then
