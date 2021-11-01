@@ -14,8 +14,21 @@ ROOT_USR_SHARE="${ROOT_USR}/share"
 ### Environment variables
 #export TERM=linux
 export LD_LIBRARY_PATH="${LD_LIBRARY_PATH-}:/usr/lib32"
-export SHELL="${ROOT_BIN}/bash"
 
+# Shell
+export SHELL="${ROOT_BIN}/bash"
+export HISTSIZE=10000
+
+# Shell colours
+export LESS_TERMCAP_mb=$'\e[1;32m'
+export LESS_TERMCAP_md=$'\e[1;36m' # Cyan
+export LESS_TERMCAP_me=$'\e[0m'
+export LESS_TERMCAP_se=$'\e[0m'
+export LESS_TERMCAP_so=$'\e[01;97m' # White
+export LESS_TERMCAP_ue=$'\e[0m'
+export LESS_TERMCAP_us=$'\e[1;4;033m'
+
+# User
 if [ -z "${USER}" ]; then
     if [ ! -z "${USERNAME}" ]; then
         export USER="${USERNAME}"
