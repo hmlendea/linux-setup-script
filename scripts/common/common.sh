@@ -63,13 +63,21 @@ function does-bin-exist() {
     return 1 # False
 }
 
+function run-as-su() {
+    if [ "${UID}" == 0 ]; then
+        $@
+    elif ${HAS_SU_PRIVILEGES}; then
+        sudo $@
+    else
+        echo "Failed to run '$@': Missing SU privileges!"
+    fi
+}
+
 function remove() {
     if [ -w "${FILE}" ]; then
         rm $@
-    elif ${HAS_SU_PRIVILEGES}; then
-        sudo rm $@
     else
-        echo "Fail: Missing SU privileges!"
+        run-as-su rm $@
     fi
 }
 
@@ -79,10 +87,8 @@ function file-append-line() {
 
     if [ -w "${FILE_PATH}" ]; then
         printf "${LINE}\n" >> "${FILE_PATH}" 2>/dev/null
-    elif ${HAS_SU_PRIVILEGES}; then
-        echo "${LINE}" | sudo tee -a "${FILE_PATH}" >/dev/null
     else
-        echo "Fail: Missing SU privileges!"
+        echo "${LINE}" | run-as-su tee -a "${FILE_PATH}" >/dev/null
     fi
 }
 
@@ -124,10 +130,8 @@ function update-file-if-needed() {
         echo "Copying \"${SOURCE_FILE_PATH}\" to \"${TARGET_FILE_PATH}\"..."
         if [ -w "${TARGET_FILE_PATH}" ]; then
             cp "${SOURCE_FILE_PATH}" "${TARGET_FILE_PATH}"
-        elif ${HAS_SU_PRIVILEGES}; then
-            sudo cp "${SOURCE_FILE_PATH}" "${TARGET_FILE_PATH}"
         else
-            echo "Fail: Missing SU privileges!"
+            run-as-su cp "${SOURCE_FILE_PATH}" "${TARGET_FILE_PATH}"
         fi
     fi
 }

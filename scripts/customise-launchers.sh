@@ -7,7 +7,7 @@ source "scripts/common/common.sh"
 GLOBAL_LAUNCHERS_PATH="${ROOT_USR_SHARE}/applications"
 LOCAL_LAUNCHERS_PATH="${HOME_REAL}/.local/share/applications"
 
-ICON_THEME=$(sudo -u "${USER_REAL}" -H gsettings get org.gnome.desktop.interface icon-theme | tr -d "'")
+ICON_THEME=$(run-as-su -u "${USER_REAL}" -H gsettings get org.gnome.desktop.interface icon-theme | tr -d "'")
 ICON_THEME_PATH="${ROOT_USR_SHARE}/icons/${ICON_THEME}"
 
 function find_launcher_by_name() {

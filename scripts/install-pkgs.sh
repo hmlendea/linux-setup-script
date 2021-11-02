@@ -39,7 +39,7 @@ function call-package-manager() {
     		elif [ -f "${ROOT_USR_BIN}/yaourt" ]; then
                 LANG=C LC_TIME="" yaourt ${ARGS} ${PKG} ${ARCH_COMMON_ARGS}
 		    else
-			    LANG=C LC_TIME="" sudo pacman ${ARGS} ${PKG} ${ARCH_COMMON_ARGS}
+			    LANG=C LC_TIME="" run-as-su pacman ${ARGS} ${PKG} ${ARCH_COMMON_ARGS}
 		    fi
         elif [ "${DISTRO_FAMILY}" == "android" ]; then
             yes | pkg ${ARGS} ${PKG}
