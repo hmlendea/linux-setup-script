@@ -66,7 +66,7 @@ function does-bin-exist() {
 function remove() {
     if [ -w "${FILE}" ]; then
         rm $@
-    else
+    elif ${HAS_SU_PRIVILEGES}; then
         sudo rm $@
     fi
 }
@@ -77,7 +77,7 @@ function file-append-line() {
 
     if [ -w "${FILE_PATH}" ]; then
         printf "${LINE}\n" >> "${FILE_PATH}" 2>/dev/null
-    else
+    elif ${HAS_SU_PRIVILEGES}; then
         echo "${LINE}" | sudo tee -a "${FILE_PATH}" >/dev/null
     fi
 }
@@ -118,8 +118,11 @@ function update-file-if-needed() {
         fi
 
         echo "Copying \"${SOURCE_FILE_PATH}\" to \"${TARGET_FILE_PATH}\"..."
-        [ -w "${TARGET_FILE_PATH}" ] && cp "${SOURCE_FILE_PATH}" "${TARGET_FILE_PATH}" \
-                                     || sudo cp "${SOURCE_FILE_PATH}" "${TARGET_FILE_PATH}"
+        if [ -w "${TARGET_FILE_PATH}" ]; then
+            cp "${SOURCE_FILE_PATH}" "${TARGET_FILE_PATH}" \
+        elif ${HAS_SU_PRIVILEGES}; then
+            sudo cp "${SOURCE_FILE_PATH}" "${TARGET_FILE_PATH}"
+        fi
     fi
 }
 
