@@ -8,10 +8,10 @@ done
 EXEDIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 cd "$EXEDIR"
 
-if [ "${UID}" -eq 0 ]; then
-    echo "ERROR: You should not run this script as root!!!"
-    exit 1
-fi
+#if [ "${UID}" -eq 0 ]; then
+#    echo "ERROR: You should not run this script as root!!!"
+#    exit 1
+#fi
 
 # Make sure the USER envar is set (on Android it is not)
 export USER="$(whoami)"
@@ -24,6 +24,8 @@ if ${HAS_SU_PRIVILEGES}; then
 fi
 
 function execute-script() {
+    [ "${UID}" -eq 0 ] && return
+
     SCRIPT_NAME="${1}"
     SCRIPT_PATH="${EXEDIR}/scripts/${SCRIPT_NAME}"
 
