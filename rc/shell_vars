@@ -17,7 +17,8 @@ export LD_LIBRARY_PATH="${LD_LIBRARY_PATH-}:/usr/lib32"
 
 # Shell
 export SHELL="${ROOT_BIN}/bash"
-export HISTSIZE=10000
+export HISTSIZE=10000           # Set the Bash history size to 10K entries
+export HISTCONTROL=ignoredups   # Ignore repeated entries in the Bash history
 
 # Shell colours
 export LESS_TERMCAP_mb=$'\e[1;32m'
