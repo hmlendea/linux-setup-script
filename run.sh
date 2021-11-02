@@ -8,11 +8,6 @@ done
 EXEDIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 cd "$EXEDIR"
 
-#if [ "${UID}" -eq 0 ]; then
-#    echo "ERROR: You should not run this script as root!!!"
-#    exit 1
-#fi
-
 # Make sure the USER envar is set (on Android it is not)
 export USER="$(whoami)"
 
@@ -34,7 +29,7 @@ function execute-script() {
 }
 
 function execute-script-superuser() {
-    ! ${HAS_SU_PRIVILEGES} && exit
+    ! ${HAS_SU_PRIVILEGES} && return
 
     SCRIPT_NAME="${1}"
     SCRIPT_PATH="${EXEDIR}/scripts/${SCRIPT_NAME}"
@@ -44,7 +39,7 @@ function execute-script-superuser() {
 }
 
 function update-system() {
-    ! ${HAS_SU_PRIVILEGES} && exit
+    ! ${HAS_SU_PRIVILEGES} && return
 
     echo "Updating the system..."
 
