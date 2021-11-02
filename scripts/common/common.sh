@@ -68,6 +68,8 @@ function remove() {
         rm $@
     elif ${HAS_SU_PRIVILEGES}; then
         sudo rm $@
+    else
+        echo "Fail: Missing SU privileges!"
     fi
 }
 
@@ -79,6 +81,8 @@ function file-append-line() {
         printf "${LINE}\n" >> "${FILE_PATH}" 2>/dev/null
     elif ${HAS_SU_PRIVILEGES}; then
         echo "${LINE}" | sudo tee -a "${FILE_PATH}" >/dev/null
+    else
+        echo "Fail: Missing SU privileges!"
     fi
 }
 
@@ -122,6 +126,8 @@ function update-file-if-needed() {
             cp "${SOURCE_FILE_PATH}" "${TARGET_FILE_PATH}" \
         elif ${HAS_SU_PRIVILEGES}; then
             sudo cp "${SOURCE_FILE_PATH}" "${TARGET_FILE_PATH}"
+        else
+            echo "Fail: Missing SU privileges!"
         fi
     fi
 }
