@@ -19,7 +19,7 @@ function call-package-manager() {
 		if [ -f "/usr/bin/paru" ]; then
 			paru --noconfirm $ARGS
 		else
-			sudo pacman --noconfirm $ARGS
+			run-as-su pacman --noconfirm $ARGS
 		fi
 #	else
 #		echo " >>> Skipping package '$PKG' (already installed)"

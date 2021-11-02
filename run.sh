@@ -19,8 +19,8 @@ export USER="$(whoami)"
 source "${EXEDIR}/scripts/common/common.sh"
 
 if ${HAS_SU_PRIVILEGES}; then
-    echo "I need sudo access!"
-    sudo printf "Thank you!\n\n"
+    echo "I need SU privileges!"
+    run-as-su printf "Thank you!\n\n"
 fi
 
 function execute-script() {
@@ -40,11 +40,7 @@ function execute-script-superuser() {
     SCRIPT_PATH="${EXEDIR}/scripts/${SCRIPT_NAME}"
 
     echo -e "Executing as \e[1;91mroot\e[0;39m: '${SCRIPT_NAME}'..."
-    if [ "${UID}" == 0 ]; then
-        "${ROOT_BIN}/bash" "${SCRIPT_PATH}"
-    else
-        sudo "${ROOT_BIN}/bash" "${SCRIPT_PATH}"
-    fi
+    run-as-su "${ROOT_BIN}/bash" "${SCRIPT_PATH}"
 }
 
 function update-system() {
@@ -55,10 +51,8 @@ function update-system() {
     if [ "${DISTRO_FAMILY}" == "arch" ]; then
         if $(does-bin-exist "paru"); then
             paru -Syu --noconfirm --needed --noredownload --norebuild --sudoloop
-        elif [ "${UID}" == 0 ]; then
-            pacman -Syu
         else
-            sudo pacman -Syu
+            run-as-su pacman -Syu
         fi
     elif [ "${DISTRO_FAMILY}" == "android" ]; then
         yes | pkg update
@@ -125,7 +119,7 @@ execute-script "setup-git-gpg.sh"
 
 # Clean journals older than 1 week
 if ${HAS_SU_PRIVILEGES} && $(does-bin-exist "journalctl"); then
-    sudo journalctl -q --vacuum-time=7d
+    run-as-su journalctl -q --vacuum-time=7d
 fi
 
 source ~/.bashrc
