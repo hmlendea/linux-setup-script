@@ -34,7 +34,7 @@ function execute-script() {
 }
 
 function execute-script-superuser() {
-    ! ${HAS_SU_PRIVILEGES} && then
+    ! ${HAS_SU_PRIVILEGES} && exit
 
     SCRIPT_NAME="${1}"
     SCRIPT_PATH="${EXEDIR}/scripts/${SCRIPT_NAME}"
@@ -48,7 +48,7 @@ function execute-script-superuser() {
 }
 
 function update-system() {
-    ! ${HAS_SU_PRIVILEGES} && then
+    ! ${HAS_SU_PRIVILEGES} && exit
 
     echo "Updating the system..."
 
