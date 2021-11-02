@@ -34,21 +34,29 @@ function execute-script() {
 }
 
 function execute-script-superuser() {
-    ! ${HAS_SU_PRIVILEGES} && return
+    ! ${HAS_SU_PRIVILEGES} && then
 
     SCRIPT_NAME="${1}"
     SCRIPT_PATH="${EXEDIR}/scripts/${SCRIPT_NAME}"
 
     echo -e "Executing as \e[1;91mroot\e[0;39m: '${SCRIPT_NAME}'..."
-    sudo "${ROOT_BIN}/bash" "${SCRIPT_PATH}"
+    if [ "${UID}" == 0 ]; then
+        "${ROOT_BIN}/bash" "${SCRIPT_PATH}"
+    else
+        sudo "${ROOT_BIN}/bash" "${SCRIPT_PATH}"
+    fi
 }
 
 function update-system() {
+    ! ${HAS_SU_PRIVILEGES} && then
+
     echo "Updating the system..."
 
     if [ "${DISTRO_FAMILY}" == "arch" ]; then
         if $(does-bin-exist "paru"); then
             paru -Syu --noconfirm --needed --noredownload --norebuild --sudoloop
+        elif [ "${UID}" == 0 ]; then
+            pacman -Syu
         else
             sudo pacman -Syu
         fi
