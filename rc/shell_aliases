@@ -29,11 +29,13 @@ if [ -n "${SSH_CLIENT}" ] || [ -n "${SSH_TTY}" ]; then
     IS_SSH=true
 fi
 
-COREUTILS_VERSION=$(ls --version | head -n 1 | awk '{print $4}' | awk -F. '{print $1}')
+if [ ! -f "/bin/busybox" ]; then
+    COREUTILS_VERSION=$(ls --version | head -n 1 | awk '{print $4}' | awk -F. '{print $1}')
+fi
 
 ${IS_SSH} && alias poweroff="echo Surely you don\'t mean to do that on the remote machine! && echo If you do, use \'command poweroff\' instead."
 
-if ${IS_SSH} || [[ ${COREUTILS_VERSION} -lt 9 ]]; then
+if ${IS_SSH} || [[ -f "/bin/busybox" ]] || [[ ${COREUTILS_VERSION} -lt 9 ]]; then
     alias ls='ls --color=auto -h -Q'
 else
     alias ls='ls --color=auto -h -Q --hyperlink=always'
