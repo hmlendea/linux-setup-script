@@ -20,10 +20,13 @@ $(does-bin-exist "lxpanel") && update-file-if-needed "${REPO_RC_DIR}/lxde-panel"
 if $(does-bin-exist "firefox"); then
     FIREFOX_PROFILES_DIR="${HOME_REAL}/.mozilla/firefox"
     FIREFOX_PROFILES_INI_FILE="${FIREFOX_PROFILES_DIR}/profiles.ini"
-    FIREFOX_PROFILE_ID=$(grep "^Path=" "${FIREFOX_PROFILES_INI_FILE}" | awk -F= '{print $2}' | head -n 1)
 
-    update-file-if-needed "${REPO_RC_DIR}/firefox-userChrome.css" "${FIREFOX_PROFILES_DIR}/${FIREFOX_PROFILE_ID}/chrome/userChrome.css"
-    update-file-if-needed "${REPO_RC_DIR}/firefox-policies.json" "/usr/lib/firefox/distribution/policies.json"
+    if [ -f "${FIREFOX_PROFILES_INI_FILE}" ]; then
+        FIREFOX_PROFILE_ID=$(grep "^Path=" "${FIREFOX_PROFILES_INI_FILE}" | awk -F= '{print $2}' | head -n 1)
+
+        update-file-if-needed "${REPO_RC_DIR}/firefox-userChrome.css" "${FIREFOX_PROFILES_DIR}/${FIREFOX_PROFILE_ID}/chrome/userChrome.css"
+        update-file-if-needed "${REPO_RC_DIR}/firefox-policies.json" "/usr/lib/firefox/distribution/policies.json"
+    fi
 fi
 
 if $(does-bin-exist "neofetch"); then

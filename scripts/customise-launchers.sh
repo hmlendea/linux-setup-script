@@ -2,6 +2,7 @@
 source "scripts/common/common.sh"
 
 ! ${HAS_GUI} && exit
+[ "${UID}" == 0 ] && exit
 
 GLOBAL_LAUNCHERS_PATH="${ROOT_USR_SHARE}/applications"
 LOCAL_LAUNCHERS_PATH="${HOME_REAL}/.local/share/applications"
@@ -12,12 +13,14 @@ ICON_THEME_PATH="${ROOT_USR_SHARE}/icons/${ICON_THEME}"
 function find_launcher_by_name() {
     local NAME_ENTRY_VALUE="$1"
 
-    find "${LOCAL_LAUNCHERS_PATH}" -type f -iname "*.desktop" -print0 | while IFS= read -r -d $'\0' LAUNCHER; do
-        if grep -q "^Name="${NAME_ENTRY_VALUE}"$" "${LAUNCHER}"; then
-            echo "${LAUNCHER}"
-            return 0
-        fi
-    done
+    if [ -d "${LOCAL_LAUNCHERS_PATH}" ]; then
+        find "${LOCAL_LAUNCHERS_PATH}" -type f -iname "*.desktop" -print0 | while IFS= read -r -d $'\0' LAUNCHER; do
+            if grep -q "^Name="${NAME_ENTRY_VALUE}"$" "${LAUNCHER}"; then
+                echo "${LAUNCHER}"
+                return 0
+            fi
+        done
+    fi
 
     find "${GLOBAL_LAUNCHERS_PATH}" -type f -iname "*.desktop" -print0 | while IFS= read -r -d $'\0' LAUNCHER; do
         if grep -q "^Name="${NAME_ENTRY_VALUE}"$" "${LAUNCHER}"; then
