@@ -123,7 +123,7 @@ function update-file-if-needed() {
 
         echo "Copying \"${SOURCE_FILE_PATH}\" to \"${TARGET_FILE_PATH}\"..."
         if [ -w "${TARGET_FILE_PATH}" ]; then
-            cp "${SOURCE_FILE_PATH}" "${TARGET_FILE_PATH}" \
+            cp "${SOURCE_FILE_PATH}" "${TARGET_FILE_PATH}"
         elif ${HAS_SU_PRIVILEGES}; then
             sudo cp "${SOURCE_FILE_PATH}" "${TARGET_FILE_PATH}"
         else
