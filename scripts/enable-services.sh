@@ -25,7 +25,7 @@ function enable-service {
     local SERVICE_NAME="${@}"
 
     if [ -f "${ROOT_USR_BIN}/systemctl" ]; then
-        (! $(does-systemd-service-exist "${SERVICE_NAME}" )) && echo $SERVICE_NAME && return
+        (! $(does-systemd-service-exist "${SERVICE_NAME}" )) && return
 
         systemctl enable "${SERVICE_NAME}"
         systemctl start "${SERVICE_NAME}"
