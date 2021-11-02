@@ -222,6 +222,8 @@ else
     HAS_SU_PRIVILEGES=false
 fi
 
+[ "${UID}" == 0 ] && HAS_SU_PRIVILEGES=true
+
 # Username and home directory
 USER_REAL=${SUDO_USER}
 [ ! -n "${USER_REAL}" ] && USER_REAL=${USER}
