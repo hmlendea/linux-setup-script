@@ -187,6 +187,8 @@ if [ -d "${ROOT_SYS}/module/battery" ] \
     CHASSIS_TYPE="Laptop"
 elif [ "${DISTRO_FAMILY}" == "android" ]; then
     CHASSIS_TYPE="Phone"
+elif [ $(uname -r | grep "raspberry" -c) -ge 1 ]; then
+    CHASSIS_TYPE="SBC"
 fi
 
 if [ "${CHASSIS_TYPE}" == "Phone" ]; then
