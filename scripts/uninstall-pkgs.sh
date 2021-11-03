@@ -1,7 +1,7 @@
 #!/bin/bash
 source "scripts/common/common.sh"
 
-[[ "${DISTRO_FAMILY}" != "arch" ]] && exit
+[[ "${DISTRO_FAMILY}" != "Arch" ]] && exit
 
 UNUSED_DEPS=$(pacman -Qdtq)
 UNUSED_DEPS_COUNT=$(echo ${UNUSED_DEPS} | wc -w)

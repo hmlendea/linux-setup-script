@@ -43,13 +43,13 @@ function update-system() {
 
     echo "Updating the system..."
 
-    if [ "${DISTRO_FAMILY}" == "arch" ]; then
+    if [ "${DISTRO_FAMILY}" == "Arch" ]; then
         if $(does-bin-exist "paru"); then
             paru -Syu --noconfirm --needed --noredownload --norebuild --sudoloop
         else
             run-as-su pacman -Syu
         fi
-    elif [ "${DISTRO_FAMILY}" == "android" ]; then
+    elif [ "${DISTRO_FAMILY}" == "Android" ]; then
         yes | pkg update
         yes | pkg upgrade
     fi
@@ -77,7 +77,7 @@ if [ "${OS}" != "Windows" ]; then
     # Manage packages and extensions
     execute-script "install-pkgs.sh"
     update-system
-    [ "${DISTRO_FAMILY}" != "android" ] && execute-script-superuser "uninstall-pkgs.sh"
+    [ "${DISTRO_FAMILY}" != "Android" ] && execute-script-superuser "uninstall-pkgs.sh"
 
 fi
 
@@ -95,8 +95,8 @@ execute-script "update-rcs.sh"
 
 # Configure and customise the system
 execute-script "config-system.sh" # Run after update-rcs.sh
-[ "${DISTRO_FAMILY}" == "arch" ] && execute-script-superuser "set-system-locale-timedate.sh"
-[ "${DISTRO_FAMILY}" != "android" ] && execute-script-superuser "install-profiles.sh"
+[ "${DISTRO_FAMILY}" == "Arch" ] && execute-script-superuser "set-system-locale-timedate.sh"
+[ "${DISTRO_FAMILY}" != "Android" ] && execute-script-superuser "install-profiles.sh"
 
 $(does-bin-exist "systemctl") && execute-script-superuser "enable-services.sh"
 $(does-bin-exist "grub-mkconfig") && execute-script-superuser "update-grub.sh" # Run after config-system.sh
