@@ -18,7 +18,13 @@ REPO_KEYBOARD_LAYOUTS_DIR="${REPO_RC_DIR}/keyboard-layouts"
 
 # Distribution
 KERNEL_VERSION=$(uname -r)
-DISTRO=$(echo "${KERNEL_VERSION}" | sed 's/^[0-9.-]*\(-\([A-Za-z0-9]*\)\)*-\([A-Za-z]*\).*$/\3/g')
+
+if [ -f "/etc/os-release" ]; then
+    DISTRO=$(grep "^ID" "/etc/os-release" | tail -n 1 | awk -F'=' '{print $2}')
+else
+    DISTRO=$(echo "${KERNEL_VERSION}" | sed -e 's/^[^-]*-//g' -e 's/^[0-9][0-9]*-//g' -e 's/raspberrypi-//g' -e 's/-[0-9]*$//g' -e 's/-[a-z0-9]*$//g')
+fi
+
 OS=$(uname -s)
 
 if [ "${DISTRO}" == "lineageos" ] || [ $(uname -a | grep -c "Android") -ge 1 ]; then
