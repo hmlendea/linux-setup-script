@@ -8,13 +8,13 @@ cd "$TEMP_DIR_PATH"
 function is-package-installed() {
 	PKG=$1
 
-    if [ "${DISTRO_FAMILY}" == "arch" ]; then
+    if [ "${DISTRO_FAMILY}" == "Arch" ]; then
     	if (pacman -Q "${PKG}" > /dev/null); then
 	    	echo 1
 	    else
 		    echo 0
 	    fi
-    elif [ "${DISTRO_FAMILY}" == "android" ]; then
+    elif [ "${DISTRO_FAMILY}" == "Android" ]; then
         if (pkg list-installed | grep "^${PKG}/" > /dev/null); then
             echo 1
         else
@@ -29,7 +29,7 @@ function call-package-manager() {
 
 	if [ $(is-package-installed "${PKG}") -eq 0 ]; then
 		echo " >>> Installing package '${PKG}'"
-        if [ "${DISTRO_FAMILY}" == "arch" ]; then
+        if [ "${DISTRO_FAMILY}" == "Arch" ]; then
             ARCH_COMMON_ARGS="${PM_ARGS} --noconfirm --needed"
 
     		if [ -f "${ROOT_USR_BIN}/paru" ]; then
@@ -41,7 +41,7 @@ function call-package-manager() {
 		    else
 			    LANG=C LC_TIME="" run-as-su pacman ${ARGS} ${PKG} ${ARCH_COMMON_ARGS}
 		    fi
-        elif [ "${DISTRO_FAMILY}" == "android" ]; then
+        elif [ "${DISTRO_FAMILY}" == "Android" ]; then
             yes | pkg ${ARGS} ${PKG}
         fi
 #	else
@@ -52,9 +52,9 @@ function call-package-manager() {
 function install-pkg() {
 	PKG="${1}"
 
-    if [ "${DISTRO_FAMILY}" == "arch" ]; then
+    if [ "${DISTRO_FAMILY}" == "Arch" ]; then
     	call-package-manager -S --asexplicit "${PKG}"
-    elif [ "${DISTRO_FAMILY}" == "android" ]; then
+    elif [ "${DISTRO_FAMILY}" == "Android" ]; then
         call-package-manager install "${PKG}"
     fi
 }
@@ -62,9 +62,9 @@ function install-pkg() {
 function install-dep() {
 	PKG="${1}"
 
-    if [ "${DISTRO_FAMILY}" == "arch" ]; then
+    if [ "${DISTRO_FAMILY}" == "Arch" ]; then
     	call-package-manager -S --asexplicit "${PKG}"
-    elif [ "${DISTRO_FAMILY}" == "android" ]; then
+    elif [ "${DISTRO_FAMILY}" == "Android" ]; then
         call-package-manager install "${PKG}" # TODO: See if there is a way to mark them as dep
     fi
 }
@@ -92,14 +92,14 @@ install-pkg man
 install-pkg most
 install-pkg wget
 
-if [ "${DISTRO_FAMILY}" == "arch" ]; then
+if [ "${DISTRO_FAMILY}" == "Arch" ]; then
     install-pkg bash-completion
     install-pkg usbutils
     install-pkg lshw
 
     install-pkg man-pages
     install-pkg sudo
-elif [ "${DISTROY_FAMILY}" == "android" ]; then
+elif [ "${DISTROY_FAMILY}" == "Android" ]; then
     install-pkg manpages
 
     [ -f "/sbin/su" ] && install-pkg tsu
@@ -114,7 +114,7 @@ install-pkg make
 install-pkg fakeroot
 install-pkg patch
 
-if [ "${DISTRO_FAMILY}" == "arch" ]; then
+if [ "${DISTRO_FAMILY}" == "Arch" ]; then
     install-pkg gcc
     install-pkg pkgconf
 fi
@@ -144,7 +144,7 @@ install-pkg net-tools
 install-pkg openssh
 install-pkg wol
 
-if [ "${DISTRO_FAMILY}" == "arch" ]; then
+if [ "${DISTRO_FAMILY}" == "Arch" ]; then
     install-pkg wireless_tools
     install-pkg wpa_supplicant
 elif [ "${DISTRO_FAMILY}" == "Android" ]; then
@@ -158,7 +158,7 @@ install-pkg cabextract
 install-pkg unzip
 install-pkg unrar
 
-if [ "${DISTRO_FAMILY}" != "arch" ]; then
+if [ "${DISTRO_FAMILY}" != "Arch" ]; then
     exit
 fi
 

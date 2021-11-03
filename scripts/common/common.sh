@@ -27,13 +27,15 @@ fi
 
 OS=$(uname -s)
 
-if [ "${DISTRO}" == "lineageos" ] || [ $(uname -a | grep -c "Android") -ge 1 ]; then
-    DISTRO_FAMILY="android"
+if [ "${DISTRO}" == "arch" ] \
+|| [ "${DISTRO}" == "ARCH" ]; then
+    DISTRO="Arch Linux"
+    DISTRO_FAMILY="Arch"
+elif [ "${DISTRO}" == "lineageos" ] || [ $(uname -a | grep -c "Android") -ge 1 ]; then
+    DISTRO="LineageOS"
+    DISTRO_FAMILY="Android"
     OS="Android"
 fi
-
-[ "${DISTRO}" == "ARCH" ] && DISTRO="arch"
-[ "${DISTRO}" == "arch" ] && DISTRO_FAMILY="arch"
 
 if [ "${OS}" == "CYGWIN_NT-10.0" ]; then
     DISTRO="Cygwin"
@@ -43,7 +45,7 @@ fi
 
 # Root partition mount point
 ROOT_PATH=""
-[ "${DISTRO_FAMILY}" == "android" ] && ROOT_PATH="/data/data/com.termux/files/usr"
+[ "${DISTRO_FAMILY}" == "Android" ] && ROOT_PATH="/data/data/com.termux/files/usr"
 
 ROOT_BIN="${ROOT_PATH}/bin"
 ROOT_BOOT="${ROOT_PATH}/boot"
@@ -185,7 +187,7 @@ HAS_SU_PRIVILEGES=true
 if [ -d "${ROOT_SYS}/module/battery" ] \
 && [ -d "${ROOT_PROC}/acpi/button/lid" ]; then
     CHASSIS_TYPE="Laptop"
-elif [ "${DISTRO_FAMILY}" == "android" ]; then
+elif [ "${DISTRO_FAMILY}" == "Android" ]; then
     CHASSIS_TYPE="Phone"
 elif [ $(uname -r | grep "raspberry" -c) -ge 1 ]; then
     CHASSIS_TYPE="SBC"
@@ -221,7 +223,7 @@ if [ -f "${ROOT_ETC}/systemd/system/display-manager.service" ] || \
 fi
 
 if $(does-bin-exist "sudo"); then
-    if [ "${DISTRO_FAMILY}" == "android" ]; then
+    if [ "${DISTRO_FAMILY}" == "Android" ]; then
         [ -f "/sbin/su" ] && HAS_SU_PRIVILEGES=true
     else
         HAS_SU_PRIVILEGES=true
