@@ -18,7 +18,7 @@ REPO_KEYBOARD_LAYOUTS_DIR="${REPO_RC_DIR}/keyboard-layouts"
 
 # Distribution
 KERNEL_VERSION=$(uname -r)
-DISTRO=$(echo "${KERNEL_VERSION}" | sed 's/^[0-9.-]*-\([A-Za-z]*\).*$/\1/g')
+DISTRO=$(echo "${KERNEL_VERSION}" | sed 's/^[0-9.-]*\(-\([A-Za-z]*\)\)*-\([A-Za-z]*\).*$/\3/g')
 OS=$(uname -s)
 
 if [ "${DISTRO}" == "lineageos" ] || [ $(uname -a | grep -c "Android") -ge 1 ]; then
