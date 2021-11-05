@@ -172,7 +172,8 @@ CPU_MODEL=$(echo "${CPU_MODEL}" | \
         sed 's/^\s*\(.*\)\s*$/\1/g' | \
         sed 's/(TM)//g' | \
         sed 's/(R)//g' | \
-        sed 's/ CPU//g' | \
+        sed 's/ [48][ -][Cc]ore//g' | \
+        sed 's/ \(CPU\|Processor\)//g' | \
         sed 's/@ .*//g' | \
         sed 's/^[ \t]*//g' | \
         sed 's/[ \t]*$//g')
