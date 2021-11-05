@@ -1,13 +1,12 @@
 #!/bin/bash
 source "scripts/common/common.sh"
 
-! ${HAS_GUI} && exit
-[ "${UID}" == 0 ] && exit
+(! ${HAS_GUI}) && exit
 
 GLOBAL_LAUNCHERS_PATH="${ROOT_USR_SHARE}/applications"
 LOCAL_LAUNCHERS_PATH="${HOME_REAL}/.local/share/applications"
 
-ICON_THEME=$(run-as-su -u "${USER_REAL}" -H gsettings get org.gnome.desktop.interface icon-theme | tr -d "'")
+ICON_THEME=$(sudo -u "${USER_REAL}" -H gsettings get org.gnome.desktop.interface icon-theme | tr -d "'")
 ICON_THEME_PATH="${ROOT_USR_SHARE}/icons/${ICON_THEME}"
 
 function find_launcher_by_name() {
@@ -826,14 +825,17 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Photos.desktop" Icon "mul
 ############
 ### PLEX ###
 ############
-for LAUNCHER in "${LOCAL_LAUNCHERS_PATH}/chrome-aghlkjcflkcaanjmefomlcfgflfdhkkg-Default.desktop"; do
+for LAUNCHER in "${LOCAL_LAUNCHERS_PATH}/chrome-aghlkjcflkcaanjmefomlcfgflfdhkkg-Default.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/plexmediaplayer.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Plex" \
         Name[ro] "Plex" \
         Icon "plexhometheater" \
-        Categories "AudioVideo;Audio;Video;Player;" \
-        StartupWMClass "crx_aghlkjcflkcaanjmefomlcfgflfdhkkg"
+        Categories "AudioVideo;Audio;Video;Player;" 
 done
+
+set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-aghlkjcflkcaanjmefomlcfgflfdhkkg-Default.desktop" StartupWMClass "crx_aghlkjcflkcaanjmefomlcfgflfdhkkg"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/plexmediaplayer.desktop" StartupWMClass "plexmediaplayer"
 
 ###############
 ### POSTMAN ###
