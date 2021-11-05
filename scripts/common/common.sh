@@ -136,7 +136,7 @@ function update-file-if-needed() {
         fi
 
         echo "Copying \"${SOURCE_FILE_PATH}\" to \"${TARGET_FILE_PATH}\"..."
-        if [ -w "${TARGET_FILE_PATH}" ]; then
+        if [ -w "${TARGET_DIR}" ]; then
             cp "${SOURCE_FILE_PATH}" "${TARGET_FILE_PATH}"
         else
             run-as-su cp "${SOURCE_FILE_PATH}" "${TARGET_FILE_PATH}"

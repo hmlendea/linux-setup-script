@@ -39,5 +39,5 @@ if $(does-bin-exist "neofetch"); then
         NEOFETCH_ASCII_LOGO_FILE="${REPO_RC_DIR}/neofetch-lineageos-ascii"
     fi
 
-    if [ -f "${NEOFETCH_ASCII_LOGO_FILE}" ] && update-file-if-needed "${NEOFETCH_ASCII_LOGO_FILE}" "${NEOFETCH_CONFIG_DIR}/neofetch-distro-ascii"
+    [ -f "${NEOFETCH_ASCII_LOGO_FILE}" ] && update-file-if-needed "${NEOFETCH_ASCII_LOGO_FILE}" "${NEOFETCH_CONFIG_DIR}/neofetch-distro-ascii"
 fi
