@@ -31,5 +31,13 @@ fi
 
 if $(does-bin-exist "neofetch"); then
     NEOFETCH_CONFIG_DIR="${HOME_REAL}/.config/neofetch"
-    update-file-if-needed "${REPO_RC_DIR}/neofetch-arch-ascii" "${NEOFETCH_CONFIG_DIR}/neofetch-distro-ascii"
+    NEOFETCH_ASCII_LOGO_FILE=""
+
+    if [ "${DISTRO}" == "Arch Linux" ]; then
+        NEOFETCH_ASCII_LOGO_FILE="${REPO_RC_DIR}/neofetch-arch-ascii"
+    elif [ "${DISTRO}" == "LineageOS" ]; then
+        NEOFETCH_ASCII_LOGO_FILE="${REPO_RC_DIR}/neofetch-lineageos-ascii"
+    fi
+
+    if [ -f "${NEOFETCH_ASCII_LOGO_FILE}" ] && update-file-if-needed "${NEOFETCH_ASCII_LOGO_FILE}" "${NEOFETCH_CONFIG_DIR}/neofetch-distro-ascii"
 fi
