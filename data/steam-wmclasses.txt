@@ -102,7 +102,7 @@
 300300=ichi.exe
 301520=Robocraft.x86_64
 304930=Unturned.x86_64
-306130=eso64.exe
+306130=steam_app_306130
 312900=steam_app_312900
 313340=Mountain.x86_64
 319630=LifeIsStrange
