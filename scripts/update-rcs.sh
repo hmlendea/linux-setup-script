@@ -8,6 +8,7 @@ update-file-if-needed "${REPO_RC_DIR}/shell_vars" "${HOME}/.shell_vars"
 
 if $(does-bin-exist "bash"); then
     update-file-if-needed "${REPO_RC_DIR}/bashrc" "${HOME}/.bashrc"
+    update-file-if-needed "${REPO_RC_DIR}/bashrc" "${HOME}/.bash_profile"
     update-file-if-needed "${REPO_RC_DIR}/bashrc" "${HOME}/.bash_prompt"
 fi
 
