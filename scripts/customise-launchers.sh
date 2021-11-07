@@ -1081,6 +1081,39 @@ fi
 
 # CREATE STEAM ICONS
 
+function getSteamAppIconPath() {
+    local STEAM_APP_ID="${@}"
+    local APPS_DIR_NAME="48x48/apps"
+
+    [ ! -d "${ICON_THEME_PATH}/${APPS_DIR_NAME}" ] && APPS_DIR_NAME="48/apps"
+
+    local MAIN_APP_ICON_PATH="${ICON_THEME_PATH}/${APPS_DIR_NAME}/steam_icon_${APP_ID}.svg"
+    local STEAM_APP_ICON_PATH="${STEAM_ICON_THEME_PATH}/48x48/apps/steam_icon_${APP_ID}.jpg"
+
+    if [ -f "${MAIN_APP_ICON_PATH}" ]; then
+        echo "${MAIN_APP_ICON_PATH}"
+    elif [ -f "${STEAM_APP_ICON_PATH}" ]; then
+        echo "${STEAM_APP_ICON_PATH}"
+    else
+        for ICON_THEME_CANDIDATE in "${ROOT_USR_SHARE}/icons/"* ; do
+            if [ -d "${ICON_THEME_CANDIDATE_PATH}/48/apps" ]; then
+                APPS_DIR_NAME="48/apps"
+            elif [ -d "${ICON_THEME_CANDIDATE_PATH}/48x48/apps" ]; then
+                APPS_DIR_NAME="48x48/apps"
+            else
+                continue
+            fi
+
+            local CANDIDATE_APP_ICON_PATH=$(find "${ICON_THEME_CANDIDATE}/${APPS_DIR_NAME}" -type f,l -iname "steam_icon_${APP_ID}.*" -exec readlink -f {} +)
+
+            if [ -f "${CANDIDATE_APP_ICON_PATH}" ]; then
+                echo "${CANDIDATE_APP_ICON_PATH}"
+                break
+            fi
+        done
+    fi
+}
+
 if [ -f "${ROOT_USR_BIN}/steam" ]; then
     STEAM_PATH="${HOME_REAL}/.local/share/Steam"
     STEAM_LAUNCHERS_PATH="${LOCAL_LAUNCHERS_PATH}/Steam"
@@ -1106,20 +1139,16 @@ if [ -f "${ROOT_USR_BIN}/steam" ]; then
 
     for STEAM_APP_LAUNCHER in "${STEAM_LAUNCHERS_PATH}"/* ; do
         APP_ID=$(grep "^Exec" "${STEAM_APP_LAUNCHER}" | awk -F/ '{print $4}')
-        IS_APP_INSTALLED="false"
+        IS_APP_MISSING=true
 
         for STEAM_LIBRARY_PATH in ${STEAM_LIBRARY_PATHS}; do
             if [ -f "${STEAM_LIBRARY_PATH}/appmanifest_${APP_ID}.acf" ]; then
-                IS_APP_INSTALLED="true"
+                IS_APP_MISSING=false
                 break
             fi
         done
 
-        if [ "${IS_APP_INSTALLED}" == "true" ]; then
-            set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" NoDisplay "false"
-        else
-            set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" NoDisplay "true"
-        fi
+        set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" NoDisplay "${IS_APP_MISSING}"
 
         SOURCE_ICON_PATH="${STEAM_ICON_THEME_PATH}/48x48/apps/steam_icon_${APP_ID}.jpg"
         TARGET_ICON_PATH="${STEAM_PATH}/appcache/librarycache/${APP_ID}_icon.jpg"
@@ -1142,34 +1171,7 @@ if [ -f "${ROOT_USR_BIN}/steam" ]; then
             fi
 
             for APP_ID in ${APP_IDS}; do
-                APP_ICON_PATH="${ICON_THEME_PATH}/${APPS_DIR_NAME}/steam_icon_${APP_ID}.svg"
-
-                if [ ! -f "${APP_ICON_PATH}" ]; then
-                    APP_ICON_PATH="${STEAM_ICON_THEME_PATH}/48x48/apps/steam_icon_${APP_ID}.jpg"
-
-                    for ICON_THEME_CANDIDATE in $(ls "${ROOT_USR_SHARE}/icons/") ; do
-                        ICON_THEME_CANDIDATE_PATH="${ROOT_USR_SHARE}/icons/"${ICON_THEME_CANDIDATE}
-
-                        if [ -d "${ICON_THEME_CANDIDATE_PATH}/48/apps" ]; then
-                            APPS_DIR_NAME="48/apps"
-                        elif [ -d "${ICON_THEME_CANDIDATE_PATH}/48x48/apps" ]; then
-                            APPS_DIR_NAME="48x48/apps"
-                        else
-                            continue
-                        fi
-
-                        APP_ICON_PATH_CANDIDATE=$(find "${ICON_THEME_CANDIDATE_PATH}/${APPS_DIR_NAME}" -type f,l -iname "steam_icon_${APP_ID}.*" -exec readlink -f {} +)
-                        if [ -f "${APP_ICON_PATH_CANDIDATE}" ]; then
-                            APP_ICON_PATH=${APP_ICON_PATH_CANDIDATE}
-                            break
-                        fi
-                    done
-
-                    if [ ! -f "${APP_ICON_PATH}" ]; then
-                        APP_ICON_PATH="steam_icon_${APP_ID}"
-                    fi
-                fi
-
+                APP_ICON_PATH=$(getSteamAppIconPath "${APP_ID}")
                 APP_NAME=$(grep -h "\"name\"" "${STEAM_LIBRARY_PATH}/appmanifest_${APP_ID}.acf" | sed 's/\"name\"//' | grep -o "\".*\"" | sed 's/\"//g')
 
                 if [ $(grep -c "^${APP_ID}=" "${STEAM_NAMES_FILE}") -ne 0 ]; then
