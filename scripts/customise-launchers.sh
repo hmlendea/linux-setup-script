@@ -1087,13 +1087,10 @@ function getSteamAppIconPath() {
 
     [ ! -d "${ICON_THEME_PATH}/${APPS_DIR_NAME}" ] && APPS_DIR_NAME="48/apps"
 
-    local MAIN_APP_ICON_PATH="${ICON_THEME_PATH}/${APPS_DIR_NAME}/steam_icon_${APP_ID}.svg"
-    local STEAM_APP_ICON_PATH="${STEAM_ICON_THEME_PATH}/48x48/apps/steam_icon_${APP_ID}.jpg"
+    local APP_ICON_PATH="${ICON_THEME_PATH}/${APPS_DIR_NAME}/steam_icon_${APP_ID}.svg"
 
     if [ -f "${MAIN_APP_ICON_PATH}" ]; then
         echo "${MAIN_APP_ICON_PATH}"
-    elif [ -f "${STEAM_APP_ICON_PATH}" ]; then
-        echo "${STEAM_APP_ICON_PATH}"
     else
         for ICON_THEME_CANDIDATE in "${ROOT_USR_SHARE}/icons/"* ; do
             if [ -d "${ICON_THEME_CANDIDATE_PATH}/48/apps" ]; then
@@ -1104,13 +1101,18 @@ function getSteamAppIconPath() {
                 continue
             fi
 
-            local CANDIDATE_APP_ICON_PATH=$(find "${ICON_THEME_CANDIDATE}/${APPS_DIR_NAME}" -type f,l -iname "steam_icon_${APP_ID}.*" -exec readlink -f {} +)
+            APP_ICON_PATH=$(find "${ICON_THEME_CANDIDATE}/${APPS_DIR_NAME}" -type f,l -iname "steam_icon_${APP_ID}.*" -exec readlink -f {} +)
 
-            if [ -f "${CANDIDATE_APP_ICON_PATH}" ]; then
-                echo "${CANDIDATE_APP_ICON_PATH}"
-                break
+            if [ -f "${APP_ICON_PATH}" ]; then
+                echo "${APP_ICON_PATH}"
+                return
             fi
         done
+    fi
+
+    if [ ! -f "${APP_ICON_PATH}" ]; then
+        APP_ICON_PATH="${STEAM_ICON_THEME_PATH}/48x48/apps/steam_icon_${APP_ID}.jpg"
+        [ -f "${APP_ICON_PATH}" ] && echo "${APP_ICON_PATH}"
     fi
 }
 
@@ -1149,13 +1151,7 @@ if [ -f "${ROOT_USR_BIN}/steam" ]; then
         done
 
         set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" NoDisplay "${IS_APP_MISSING}"
-
-        SOURCE_ICON_PATH="${STEAM_ICON_THEME_PATH}/48x48/apps/steam_icon_${APP_ID}.jpg"
-        TARGET_ICON_PATH="${STEAM_PATH}/appcache/librarycache/${APP_ID}_icon.jpg"
-        if [ -f "${SOURCE_ICON_PATH}" ] && [ ! -f "${TARGET_ICON_PATH}" ]; then
-            echo "Copying icon for Steam AppID ${APP_ID} into the Steam icon pack..."
-            cp "${SOURCE_ICON_PATH}" "${TARGET_ICON_PATH}"
-        fi
+        update-file-if-needed "${STEAM_PATH}/appcache/librarycache/${APP_ID}_icon.jpg" "${STEAM_ICON_THEME_PATH}/48x48/apps/steam_icon_${APP_ID}.jpg"
     done
 
     for STEAM_LIBRARY_PATH in ${STEAM_LIBRARY_PATHS}; do
