@@ -107,7 +107,7 @@ if [ "${OS}" == "Linux" ]; then
     execute-script-superuser "update-resources.sh"
 fi
 
-execute-script "setup-git-gpg.sh"
+execute-script "git/setup-gpg-key.sh"
 
 # Assign users and groups
 [ "${OS}" == "Linux" ] && execute-script-superuser "assign-users-and-groups.sh"
