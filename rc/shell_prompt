@@ -13,12 +13,15 @@ function get_git_prompt {
 
     [ -z "${BRANCH_NAME}" ] && return
 
+    BRANCH_NAME_STYLE="00" # Not bold
     BRANCH_NAME_COLOUR="36"
 
     if [ "${BRANCH_NAME}" = "HEAD" ]; then
-        BRANCH_NAME_COLOUR="41"
+        BRANCH_NAME_STYLE="01" # Bold
+        BRANCH_NAME_COLOUR="41" # Red background
     elif [ "${BRANCH_NAME}" = "master" ]; then
-        BRANCH_NAME_COLOUR="93"
+        BRANCH_NAME_STYLE="01" # Bold
+        BRANCH_NAME_COLOUR="93" # Light Yellow
     fi
 
     if ${ENABLE_GIT_STATUS} ; then
@@ -53,7 +56,7 @@ function get_git_prompt {
 
     if ${ENABLE_COLOURS}; then
         PS1_BRANCH_SEPARATOR1="\001\033[0m\002${PS1_BRANCH_SEPARATOR1}"
-        PS1_BRANCH_NAME="\001\033[00;${BRANCH_NAME_COLOUR}m\002${BRANCH_NAME}"
+        PS1_BRANCH_NAME="\001\033[${BRANCH_NAME_STYLE};${BRANCH_NAME_COLOUR}m\002${BRANCH_NAME}"
         [ -n "${PS1_BRANCH_STATUS}" ] && PS1_BRANCH_STATUS="\001\033[00;${BRANCH_STATUS_COLOUR}m\002${BRANCH_STATUS_INDICATOR}"
         PS1_BRANCH_SEPARATOR2="\001\033[0m\002${PS1_BRANCH_SEPARATOR2}"
     fi
