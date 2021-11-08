@@ -36,7 +36,7 @@ function set_launcher_entries() {
     shift
 
     if [ "$(( $# % 2))" -ne 0 ]; then
-        echo "ERROR: Invalid arguments (count: $#) for set_launcher_entries: $@" >&2
+        echo "ERROR: Invalid arguments (count: $#) for set_launcher_entries: ${*}" >&2
         exit 1
     fi
 
@@ -62,7 +62,7 @@ function set_launcher_entry() {
     local VAL="${@:3}"
 
     if [ "$#" != "3" ]; then
-        echo "ERROR: Invalid arguments (count: $#) for set_launcher_entry: $@" >&2
+        echo "ERROR: Invalid arguments (count: $#) for set_launcher_entry: ${*}" >&2
     fi
 
     if [ ! -f "${FILE}" ]; then
@@ -292,11 +292,9 @@ done
 ##########################
 ### BLUETOOTH MANAGERS ###
 ##########################
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/blueman-manager.desktop"; do
-    set_launcher_entries "${LAUNCHER}" \
-        Name "Bluetooth Manager" \
-        Name[ro] "Manager Bluetooth"
-done
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/blueman-manager.desktop" \
+    Name "Bluetooth Manager" \
+    Name[ro] "Manager Bluetooth"
 
 ############################
 ### BOOTABLE MEDIA MAKER ###
@@ -321,35 +319,28 @@ done
 ################
 CALENDAR_CATEGORIES="Office;Calendar;Utility;Core;"
 
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Calendar.desktop"; do
-    set_launcher_entries "${LAUNCHER}" \
-        Name "Calendar" \
-        Name[ro] "Calendar" \
-        Icon "calendar"
-done
-
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Calendar.desktop" Categories "GNOME;GTK;${CALENDAR_CATEGORIES}"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Calendar.desktop" \
+    Name "Calendar" \
+    Name[ro] "Calendar" \
+    Icon "calendar" \
+    Categories "GNOME;GTK;${CALENDAR_CATEGORIES}"
 
 ##############
 ### CAMERA ###
 ##############
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Cheese.desktop"; do
-    set_launcher_entries "${LAUNCHER}" \
-        Name "Camera" \
-        Name[ro] "Cameră" \
-        Icon "camera"
-done
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Cheese.desktop" \
+    Name "Camera" \
+    Name[ro] "Cameră" \
+    Icon "camera"
 
 #################
 ### CHAT APPS ###
 #################
 CHAT_APP_CATEGORIES="Network;Chat;InstantMessaging;Communication;"
 
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/discord.desktop"; do
-    set_launcher_entries "${LAUNCHER}" \
-        Icon "discord" \
-        Categories ${CHAT_APP_CATEGORIES}
-done
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/discord.desktop" \
+    Icon "discord" \
+    Categories "${CHAT_APP_CATEGORIES}"
 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/teams.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/teams-insiders.desktop"; do
@@ -357,7 +348,7 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/teams.desktop" \
         Name "Teams" \
         Name[ro] "Teams" \
         Icon "teams" \
-        Categories ${CHAT_APP_CATEGORIES}
+        Categories "${CHAT_APP_CATEGORIES}"
 done
 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/meowgram.desktop" \
@@ -488,11 +479,9 @@ fi
 ####################
 ### DICTIONARIES ###
 ####################
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/mate-dictionary.desktop"; do
-    set_launcher_entries "${LAUNCHER}" \
-        Name "Dictionary" \
-        Name[ro] "Dicționar"
-done
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/mate-dictionary.desktop" \
+    Name "Dictionary" \
+    Name[ro] "Dicționar"
 
 ############################
 ### DISK USAGE ANALYZERS ###
@@ -611,14 +600,12 @@ done
 #####################
 ### IMAGE EDITORS ###
 #####################
-IMAGE_EDITOR_CATEGORIES="Graphics;2DGraphics;"
+IMAGE_EDITOR_CATEGORIES="Graphics;2DGraphics"
 
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gimp.desktop"; do
-    set_launcher_entries "${LAUNCHER}" \
-        Name "GIMP" \
-        Categories "GTK;${IMAGE_EDITOR_CATEGORIES};RasterGraphics;" \
-        StartupWMClass "Gimp-2.10"
-done
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gimp.desktop" \
+    Name "GIMP" \
+    Categories "GTK;${IMAGE_EDITOR_CATEGORIES};RasterGraphics;" \
+    StartupWMClass "Gimp-2.10"
 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/inkscape.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/org.inkscape.Inkscape.desktop"; do
@@ -722,11 +709,9 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Maps.desktop" Categories 
 #################
 ### MINECRAFT ###
 #################
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/minecraft-launcher.desktop"; do
-    set_launcher_entries "${LAUNCHER}" \
-        Name "Minecraft" \
-        StartupWMClass "Minecraft 1.17.1"
-done
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/minecraft-launcher.desktop" \
+    Name "Minecraft" \
+    StartupWMClass "Minecraft 1.17.1"
 
 ################
 ### MONOGAME ###
@@ -741,18 +726,16 @@ done
 ####################
 ### MUSIC PLAYER ###
 ####################
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/lxmusic.desktop"; do
-    set_launcher_entries "${LAUNCHER}" \
-        Name "Music" \
-        Name[ro] "Muzică" \
-        MimeType "application/x-ogg;application/ogg;audio/x-vorbis+ogg;audio/vorbis;audio/x-vorbis;audio/x-scpls;audio/x-mp3;audio/x-mpeg;audio/mpeg;audio/x-mpegurl;audio/x-flac;audio/mp4;x-scheme-handler/itms;x-scheme-handler/itmss;"
-done
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/lxmusic.desktop" \
+    Name "Music" \
+    Name[ro] "Muzică" \
+    MimeType "application/x-ogg;application/ogg;audio/x-vorbis+ogg;audio/vorbis;audio/x-vorbis;audio/x-scpls;audio/x-mp3;audio/x-mpeg;audio/mpeg;audio/x-mpegurl;audio/x-flac;audio/mp4;x-scheme-handler/itms;x-scheme-handler/itmss;"
 
 #################
 ### NOTE APPS ###
 #################
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/google-keep.desktop" \
-                "$${LOCAL_LAUNCHERS_PATH}/chrome-hmjkmjkepdijhoojdojkdfohbdgmmhki-Default.desktop"; do
+                "${LOCAL_LAUNCHERS_PATH}/chrome-hmjkmjkepdijhoojdojkdfohbdgmmhki-Default.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Keep" \
         Name[ro] "Keep" \
@@ -813,14 +796,13 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/org.gnome.seahorse.Application.de
 ####################
 ### PHOTO ALBUMS ###
 ####################
-for LAUNCHER in "$(find_launcher_by_name \"Google Photos\")"; do
-    set_launcher_entries "${LAUNCHER}" \
-        Name "Photos" \
-        Name[ro] "Fotografii" \
-        Categories "Network;Utility;Photography;"
-done
+set_launcher_entries "$(find_launcher_by_name \"Google Photos\")" \
+    Name "Photos" \
+    Name[ro] "Fotografii" \
+    Categories "Network;Utility;Photography;"
 
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Photos.desktop" Icon "multimedia-photo-manager"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Photos.desktop" \
+    Icon "multimedia-photo-manager"
 
 ############
 ### PLEX ###
@@ -840,11 +822,9 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/plexmediaplayer.desktop" StartupWMC
 ###############
 ### POSTMAN ###
 ###############
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/postman.desktop"; do
-    set_launcher_entries "${LAUNCHER}" \
-        Icon "postman" \
-        Categories "Development;"
-done
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/postman.desktop" \
+    Icon "postman" \
+    Categories "Development;"
 
 ##############
 ### PYTHON ###
@@ -874,11 +854,11 @@ done
 ### SETTINGS APPS ###
 #####################
 SETTINGS_APP_CATEGORIES="System;" #"Settings;"
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gnome-control-center.desktop"; do
-    set_launcher_entries "${LAUNCHER}" \
-        Name "Settings" \
-        Name[ro] "Setări"
-done
+
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gnome-control-center.desktop" \
+    Name "Settings" \
+    Name[ro] "Setări" \
+    Categories "GNOME;GTK;${SETTINGS_APP_CATEGORIES}"
 
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/ca.desrt.dconf-editor.desktop" \
     Name "Configurator" \
@@ -886,9 +866,8 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/ca.desrt.dconf-editor.desktop" \
     Icon "dconf-editor" \
     Categories "GNOME;GTK;${SETTINGS_APP_CATEGORIES}"
 
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gnome-control-center.desktop" Categories "GNOME;GTK;${SETTINGS_APP_CATEGORIES}"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/openrgb.desktop" Categories "Qt;System;"
-
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/openrgb.desktop" \
+    Categories "Qt;${SETTINGS_APP_CATEGORIES}"
 
 #############
 ### STEAM ###
@@ -983,14 +962,14 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/transmission-gtk.desktop" Categorie
 ########################
 ### TRANSLATION APPS ###
 ########################
-MAPS_APP_CATEGORIES="Utility;"
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/com.github.gi_lom.dialect.desktop"; do
-    set_launcher_entries "${LAUNCHER}" \
-        Name "Translate" \
-        Name[ro] "Traduceri"
-done
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/com.github.gi_lom.dialect.desktop" Categories "GNOME;GTK;${MAPS_APP_CATEGORIES}"
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/com.github.gi_lom.dialect.desktop" \
+    Name "Translate" \
+    Name[ro] "Traduceri" \
+    Categories "GNOME;GTK;Utility;"
 
+############
+### WINE ###
+############
 rm -rf "${HOME_REAL}/.local/share/applications/wine-*"
 rm -rf "${HOME_REAL}/.local/share/applications/wine"
 rm -rf "${HOME_REAL}/.config/menus/applications-merged/user-chrome-apps.menu"
