@@ -8,6 +8,8 @@ if [ -f ${PUBRING_FILE_PATH} ] &&
    [ -f ${GITHUB_KEY_ID_FILE_PATH} ]; then
     GITHUB_GPG_KEY_ID=$(cat ${GITHUB_KEY_ID_FILE_PATH})
 
+    echo "Found GitHub GPG Key: ${GITHUB_GPG_KEY_ID}"
+
     if [ ! -z "${GITHUB_GPG_KEY_ID}" ]; then
         git config --global user.signingkey ${GITHUB_GPG_KEY_ID}
         git config --global commit.gpgsign true
