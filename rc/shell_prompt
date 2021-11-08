@@ -19,7 +19,8 @@ function get_git_prompt {
     if [ "${BRANCH_NAME}" = "HEAD" ]; then
         BRANCH_NAME_STYLE="01" # Bold
         BRANCH_NAME_COLOUR="41" # Red background
-    elif [ "${BRANCH_NAME}" = "master" ]; then
+    elif [[ "${BRANCH_NAME}" == "main" ]] \
+      || [[ "${BRANCH_NAME}" == "master" ]]; then
         BRANCH_NAME_STYLE="01" # Bold
         BRANCH_NAME_COLOUR="93" # Light Yellow
     fi
