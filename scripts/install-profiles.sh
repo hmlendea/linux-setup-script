@@ -5,8 +5,9 @@ source "scripts/common/common.sh"
 
 SYSTEM_PROFILES_DIRECTORY_PATH="${ROOT_ETC}/profile.d"
 
-for PROFILE_FILE_NAME in $(ls "profiles"); do
-    PROFILE_SOURCE_FILE_PATH="${PWD}/profiles/${PROFILE_FILE_NAME}"
+for PROFILE_FILE_RELATIVE_PATH in "profiles"/*; do
+    PROFILE_FILE_NAME=$(basename "${PROFILE_FILE_RELATIVE_PATH}")
+    PROFILE_SOURCE_FILE_PATH="${PWD}/${PROFILE_FILE_NAME}"
     PROFILE_TARGET_FILE_PATH="${SYSTEM_PROFILES_DIRECTORY_PATH}/${PROFILE_FILE_NAME}"
     echo " > Installing profile '${PROFILE_FILE_NAME}'"
 
