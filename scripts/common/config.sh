@@ -41,7 +41,7 @@ function set_config_value() {
 }
 
 function set_firefox_config_string() {
-    set_firefox_config "${1}" "${2}" "\"${@:3}\""
+    set_firefox_config "${1}" "${2}" "\"${*:3}\""
 }
 
 function set_firefox_config() {
