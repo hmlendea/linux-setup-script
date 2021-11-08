@@ -8,12 +8,6 @@
     fileMode = false
     askpass = 
     fscache = true
-[color]
-    ui = auto
-    diff = auto
-    status = auto
-    branch = auto
-    interactive = true
 [merge]
     conflictstyle = diff3
 [credential]
@@ -29,6 +23,16 @@
     autosquash = true
 [init]
     defaultBranch = master
+[color]
+    ui = auto
+    diff = auto
+    status = auto
+    branch = auto
+    interactive = true
+[color "status"]
+    added = green
+    changed = yellow
+    untracked = cyan
 [help]
     format = html
 [http]

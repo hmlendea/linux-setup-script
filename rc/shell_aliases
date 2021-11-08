@@ -9,8 +9,19 @@ ROOT_PROC="${ROOT_PATH}/proc"
 ROOT_USR="${ROOT_PATH}/usr"
 ROOT_USR_BIN="${ROOT_USR}/bin"
 
-alias sh=${SHELL}
+alias sh="${SHELL}"
 alias sudo='sudo '
+alias lsmnt='lsblk -l | tail -n +2 | awk '\''length($7) { print $1" => "$7 }'\'''
+alias grep='grep -a --color --text'
+alias pcregrep='pcregrep -a --color --text'
+alias uptime='uptime -p && printf "since " && uptime -s'
+
+# Directory navigation
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias ......='cd ../../../../..'
 alias cd..='cd ..'
 alias cd...='cd ../..'
 alias cd....='cd ../../..'
@@ -19,10 +30,6 @@ alias cd......='cd ../../../../..'
 alias cd="OLDPWD2=\${OLDPWD} && cd"
 alias cd-="cd -"
 alias cd--="__destDir=\${OLDPWD2} && cd \${__destDir}"
-alias lsmnt='lsblk -l | tail -n +2 | awk '\''length($7) { print $1" => "$7 }'\'''
-alias grep='grep -a --color --text'
-alias pcregrep='pcregrep -a --color --text'
-alias uptime='uptime -p && printf "since " && uptime -s'
 
 IS_SSH=false
 if [ -n "${SSH_CLIENT}" ] || [ -n "${SSH_TTY}" ]; then
