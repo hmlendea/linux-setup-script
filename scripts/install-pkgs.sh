@@ -352,6 +352,7 @@ if ${HAS_GUI}; then
     install-pkg paper-icon-theme
 
     # Fonts
+    install-pkg ttf-ms-win10
     install-pkg noto-fonts
     install-pkg noto-fonts-emoji
     install-pkg ttf-droid

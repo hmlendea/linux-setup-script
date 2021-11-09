@@ -40,7 +40,8 @@ function add_repository {
     fi
 }
 
-add_repository "hmlendea" "https://github.com/hmlendea/PKGBUILDs/releases/latest/download/" "" "Never"
+add_repository "hmlendea" 'https://github.com/hmlendea/PKGBUILDs/releases/latest/download/' "" "Never"
+add_repository "dx37essentials" 'https://dx37.gitlab.io/$repo/$arch' "" "PackageOptional" # Fot things like ttf-ms-win10
 
 if [ "${ARCH_FAMILY}" == "x86" ]; then
     add_repository "multilib" "" "${ROOT_ETC}/pacman.d/mirrorlist"
