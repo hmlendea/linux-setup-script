@@ -73,70 +73,70 @@ function set_launcher_entry() {
         chmod +x "${FILE}"
     fi
 
-    local KEY_ESC=$(echo "${KEY}" | sed -e 's/[]\/$*.^|[]/\\&/g')
-    local VAL_ESC=$(echo "${VAL}" | sed -e 's/[]\/$*.^|[]/\\&/g')
+    local KEY_ID=$(echo "${KEY}" | sed -e 's/^\([^\[]*\).*/\1/g' -e 's/\s//g')
+    local KEY_LANGUAGE=$(echo "${KEY}" | sed -e 's/^'"${KEY_ID}"'//g' -e 's/\s//g' -e 's/^.\(.*\).$/\1/g')
 
-    local HAS_MULTIPLE_SECTIONS=false
-    local LAST_SECTION_LINE=$(wc -l "${FILE}" | awk '{print $1}')
+    if [ "${KEY_ID}" != "FullName" ]; then
+        local KEY_ESC=$(echo "${KEY}" | sed -e 's/[]\/$*.^|[]/\\&/g')
+        local VAL_ESC=$(echo "${VAL}" | sed -e 's/[]\/$*.^|[]/\\&/g')
 
-    local FILE_CONTENTS=$(cat "${FILE}")
+        local HAS_MULTIPLE_SECTIONS=false
+        local LAST_SECTION_LINE=$(wc -l "${FILE}" | awk '{print $1}')
 
-    if [ $(grep -c "^\[.*\]$" <<< "${FILE_CONTENTS}") -gt 1 ]; then
-        HAS_MULTIPLE_SECTIONS=true
-        LAST_SECTION_LINE=$(grep -n "^\[.*\]$" "${FILE}" | sed '2q;d' | awk -F: '{print $1}')
-        FILE_CONTENTS=$(echo "${FILE_CONTENTS}" | head -n "${LAST_SECTION_LINE}")
-    fi
+        local FILE_CONTENTS=$(cat "${FILE}")
 
-    if [[ $(grep -c "^${KEY_ESC}=${VAL}$" <<< "${FILE_CONTENTS}") == 0 ]] || \
-       [[ $(grep -c "^${KEY_ESC}=$" <<< "${FILE_CONTENTS}") == 1 ]]; then
-        if [ $(grep -c "^${KEY_ESC}=.*$" <<< "${FILE_CONTENTS}") -gt 0 ]; then
-            if [ -z "${VAL}" ]; then
-                sed -i '1,'"${LAST_SECTION_LINE}"' {/^'"${KEY_ESC}"'=.*$/d}' "${FILE}"
-            else
-                sed -i '1,'"${LAST_SECTION_LINE}"' s|^'"${KEY_ESC}"'=.*$|'"${KEY_ESC}"'='"${VAL}"'|g' "${FILE}"
-            fi
-        elif [ -n "${VAL}" ]; then
-            if ${HAS_MULTIPLE_SECTIONS}; then
-                sed -i "${LAST_SECTION_LINE} i ${KEY_ESC}=${VAL_ESC}" "${FILE}"
-            else
-                printf "${KEY}=${VAL}\n" >> "${FILE}"
-            fi
+        if [ $(grep -c "^\[.*\]$" <<< "${FILE_CONTENTS}") -gt 1 ]; then
+            HAS_MULTIPLE_SECTIONS=true
+            LAST_SECTION_LINE=$(grep -n "^\[.*\]$" "${FILE}" | sed '2q;d' | awk -F: '{print $1}')
+            FILE_CONTENTS=$(echo "${FILE_CONTENTS}" | head -n "${LAST_SECTION_LINE}")
         fi
 
-        echo "${FILE} >>> ${KEY}=${VAL}"
+        if [[ $(grep -c "^${KEY_ESC}=${VAL}$" <<< "${FILE_CONTENTS}") == 0 ]] || \
+        [[ $(grep -c "^${KEY_ESC}=$" <<< "${FILE_CONTENTS}") == 1 ]]; then
+            if [ $(grep -c "^${KEY_ESC}=.*$" <<< "${FILE_CONTENTS}") -gt 0 ]; then
+                if [ -z "${VAL}" ]; then
+                    sed -i '1,'"${LAST_SECTION_LINE}"' {/^'"${KEY_ESC}"'=.*$/d}' "${FILE}"
+                else
+                    sed -i '1,'"${LAST_SECTION_LINE}"' s|^'"${KEY_ESC}"'=.*$|'"${KEY_ESC}"'='"${VAL}"'|g' "${FILE}"
+                fi
+            elif [ -n "${VAL}" ]; then
+                if ${HAS_MULTIPLE_SECTIONS}; then
+                    sed -i "${LAST_SECTION_LINE} i ${KEY_ESC}=${VAL_ESC}" "${FILE}"
+                else
+                    printf "${KEY}=${VAL}\n" >> "${FILE}"
+                fi
+            fi
+
+            echo "${FILE} >>> ${KEY}=${VAL}"
+        fi
     fi
 
-    KEY_ID=$(echo "${KEY}" | sed 's/^\([^\[]*\).*/\1/g')
-    KEY_LANGUAGE=$(echo "${KEY}" | sed 's/^[^\[]*\[\([a-zA-Z_]*\)]/\1/g')
+    if [[ "${KEY_ID}" == "Name" ]]; then
+        set_launcher_entry_for_language "${FILE}" "${KEY_LANGUAGE}" "Name" "${VAL}"
+        set_launcher_entry_for_language "${FILE}" "${KEY_LANGUAGE}" "GenericName" "${VAL}"
+    elif [[ "${KEY_ID}" == "FullName" ]]; then
+        set_launcher_entry_for_language "${FILE}" "${KEY_LANGUAGE}" "X-GNOME-${KEY_ID}" "${VAL}"
+        set_launcher_entry_for_language "${FILE}" "${KEY_LANGUAGE}" "X-MATE-${KEY_ID}" "${VAL}"
+    elif [[ "${KEY_ID}" == "Comment" ]] \
+      || [[ "${KEY_ID}" == "Icon" ]] \
+      || [[ "${KEY_ID}" == "Keywords" ]]; then
+        set_launcher_entry_for_language "${FILE}" "${KEY_LANGUAGE}" "${KEY_ID}" "${VAL}"
+    fi
+}
 
-    if [[ "${KEY_LANGUAGE}" == "en" ]]; then
-        if [[ "${KEY_ID}" == "Name" ]]; then
-            set_launcher_entry_english "${FILE}" "Name" "${VAL}"
-            set_launcher_entry_english "${FILE}" "GenericName" "${VAL}"
-        elif [[ "${KEY_ID}" == "FullName" ]]; then
-            set_launcher_entry_english "${FILE}" "X-GNOME-FullName" "${VAL}"
-            set_launcher_entry_english "${FILE}" "X-MATE-FullName" "${VAL}"
-        fi
+function set_launcher_entry_for_language() {
+    local FILE="${1}"
+    local LANGUAGE="${2}"
+    local KEY="${3}"
+    local VALUE="${4}"
+
+    if [ -z "${KEY_LANGUAGE}" ] \
+    || [[ "${KEY_LANGUAGE}" == "en" ]]; then
+        set_launcher_entry_english "${FILE}" "${KEY}" "${VAL}"
     elif [[ "${KEY_LANGUAGE}" == "es" ]]; then
-        if [[ "${KEY_ID}" == "Name" ]]; then
-            set_launcher_entry_spanish "${FILE}" "Name" "${VAL}"
-            set_launcher_entry_spanish "${FILE}" "GenericName" "${VAL}"
-        elif [[ "${KEY_ID}" == "FullName" ]]; then
-            set_launcher_entry_spanish "${FILE}" "X-GNOME-FullName" "${VAL}"
-            set_launcher_entry_spanish "${FILE}" "X-MATE-FullName" "${VAL}"
-        else
-            set_launcher_entry_spanish "${FILE}" "${KEY_ID}" "${VAL}"
-        fi
+        set_launcher_entry_spanish "${FILE}" "${KEY}" "${VAL}"
     elif [[ "${KEY_LANGUAGE}" == "ro" ]]; then
-        if [[ "${KEY_ID}" == "Name" ]]; then
-            set_launcher_entry_romanian "${FILE}" "Name" "${VAL}"
-            set_launcher_entry_romanian "${FILE}" "GenericName" "${VAL}"
-        elif [[ "${KEY_ID}" == "FullName" ]]; then
-            set_launcher_entry_romanian "${FILE}" "X-GNOME-FullName" "${VAL}"
-            set_launcher_entry_romanian "${FILE}" "X-MATE-FullName" "${VAL}"
-        else
-            set_launcher_entry_romanian "${FILE}" "${KEY_ID}" "${VAL}"
-        fi
+        set_launcher_entry_romanian "${FILE}" "${KEY}" "${VAL}"
     fi
 }
 
@@ -1090,8 +1090,8 @@ function getSteamAppIconPath() {
 
     local APP_ICON_PATH="${ICON_THEME_PATH}/${APPS_DIR_NAME}/steam_icon_${APP_ID}.svg"
 
-    if [ -f "${MAIN_APP_ICON_PATH}" ]; then
-        echo "${MAIN_APP_ICON_PATH}"
+    if [ -f "${APP_ICON_PATH}" ]; then
+        echo "${APP_ICON_PATH}"
     else
         for ICON_THEME_CANDIDATE in "${ROOT_USR_SHARE}/icons/"* ; do
             if [ -d "${ICON_THEME_CANDIDATE_PATH}/48/apps" ]; then
@@ -1169,7 +1169,8 @@ if [ -f "${ROOT_USR_BIN}/steam" ]; then
 
             for APP_ID in ${APP_IDS}; do
                 APP_ICON_PATH=$(getSteamAppIconPath "${APP_ID}")
-                APP_NAME=$(grep -h "\"name\"" "${STEAM_LIBRARY_PATH}/appmanifest_${APP_ID}.acf" | sed 's/\"name\"//' | grep -o "\".*\"" | sed 's/\"//g')
+                APP_NAME_ORIGINAL=$(grep -h "\"name\"" "${STEAM_LIBRARY_PATH}/appmanifest_${APP_ID}.acf" | sed 's/\"name\"//' | grep -o "\".*\"" | sed 's/\"//g')
+                APP_NAME="${APP_NAME_ORIGINAL}"
 
                 if [ $(grep -c "^${APP_ID}=" "${STEAM_NAMES_FILE}") -ne 0 ]; then
                     APP_NAME=$(grep "^${APP_ID}=" "${STEAM_NAMES_FILE}" | awk -F= '{print $2}')
@@ -1196,7 +1197,7 @@ if [ -f "${ROOT_USR_BIN}/steam" ]; then
                     create_launcher "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop"
                     set_launcher_entries "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" \
                         Name "${APP_NAME}" \
-                        FullName "${APP_NAME}" \
+                        FullName "${APP_NAME_ORIGINAL}" \
                         Comment "Play ${APP_NAME} on Steam" \
                         Comment[es] "Juega ${APP_NAME} en Steam" \
                         Comment[ro] "Joacă ${APP_NAME} pe Steam" \
