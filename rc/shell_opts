@@ -1,3 +1,5 @@
 #!/bin/bash
 
-shopt -s autocd
+shopt -s histappend     # Append to the Bash history, don't overwrite it
+shopt -s autocd         # Change directory when a path is entered as a command
+shopt -s checkwinsize   # Check window size after each command. Avoids occasional prompt overlap
