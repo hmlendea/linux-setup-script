@@ -155,6 +155,32 @@ if ${HAS_GUI}; then
     install-pkg xorg-server
     #install-pkg xf86-video-vesa
 
+    # Graphics drivers
+    if [[ "${GPU_FAMILY}" == "Nvidia" ]]; then
+        NVIDIA_DRIVER="nvidia"
+
+        [[ "${GPU_MODEL}" == "GeForce 610M" ]] && NVIDIA_DRIVER="nvidia-390xx"
+
+        install-pkg "${NVIDIA_DRIVER}"
+
+        if ${HAS_OPTIMUS_SUPPORT}; then
+            install-pkg bumblebee
+            install-dep bbswitch
+            install-dep primus
+
+            install-pkg optiprime
+
+            install-pkg mesa
+            install-pkg xf86-video-intel
+
+            install-pkg "${NVIDIA_DRIVER}-dkms"
+            install-pkg "${NVIDIA_DRIVER}-settings"
+            install-dep "lib32-${NVIDIA_DRIVER}-utils"
+
+            install-dep lib32-virtualgl
+        fi
+    fi
+
     # Desktop Environment & Base applications
     if ${POWERFUL_PC}; then
         install-pkg gnome-shell

@@ -158,7 +158,7 @@ fi
 [ "${ARCH}" == "armv8l" ]   && ARCH_FAMILY="arm"
 
 # System characteristics
-if $(does-bin-exist "lscpu" ); then
+if does-bin-exist "lscpu"; then
     CPU_MODEL=$(lscpu | \
         grep "^Model name:" | \
         awk -F: '{print $2}')
@@ -179,12 +179,18 @@ CPU_MODEL=$(echo "${CPU_MODEL}" | \
         sed 's/^[ \t]*//g' | \
         sed 's/[ \t]*$//g')
 
+if does-bin-exist "lspci"; then
+    lspci | grep "VGA" | grep -q "NVIDIA" && GPU_FAMILY="Nvidia"
+    GPU_MODEL=$(lspci | grep VGA | sed 's/^[^\[]*\[\([a-zA-Z0-9 ]*\)].*/\1/g')
+fi
+
 CHASSIS_TYPE="Desktop"
 POWERFUL_PC=false
 GAMING_PC=false
 HAS_GUI=false
 IS_EFI=0
 HAS_SU_PRIVILEGES=true
+HAS_OPTIMUS_SUPPORT=false
 
 if [ -d "${ROOT_SYS}/module/battery" ] \
 && [ -d "${ROOT_PROC}/acpi/button/lid" ]; then
@@ -235,6 +241,12 @@ else
 fi
 
 [ "${UID}" == 0 ] && HAS_SU_PRIVILEGES=true
+
+if [[ "${GPU_FAMILY}" == "Nvidia" ]]; then
+    if [[ "${GPU_MODEL}" == "GeForce 610M" ]]; then
+        HAS_OPTIMUS_SUPPORT=true
+    fi
+fi
 
 # Username and home directory
 USER_REAL=${SUDO_USER}
