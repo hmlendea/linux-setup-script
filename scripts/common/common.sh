@@ -28,17 +28,17 @@ fi
 
 OS=$(uname -s)
 
-if [ "${DISTRO}" == "arch" ] \
-|| [ "${DISTRO}" == "ARCH" ]; then
+if [[ "${DISTRO}" == "arch" ]] \
+|| [[ "${DISTRO}" == "ARCH" ]]; then
     DISTRO="Arch Linux"
     DISTRO_FAMILY="Arch"
-elif [ "${DISTRO}" == "lineageos" ] || [ $(uname -a | grep -c "Android") -ge 1 ]; then
+elif [[ "${DISTRO}" == "lineageos" ]] || [ $(uname -a | grep -c "Android") -ge 1 ]; then
     DISTRO="LineageOS"
     DISTRO_FAMILY="Android"
     OS="Android"
 fi
 
-if [ "${OS}" == "CYGWIN_NT-10.0" ]; then
+if [[ "${OS}" == "CYGWIN_NT-10.0" ]]; then
     DISTRO="Cygwin"
     DISTRO_FAMILY="Windows"
     OS="Windows"
@@ -73,7 +73,7 @@ function does-bin-exist() {
 }
 
 function run-as-su() {
-    if [ "${UID}" == 0 ]; then
+    if [[ "${UID}" == 0 ]]; then
         $*
     elif ${HAS_SU_PRIVILEGES}; then
         sudo $*
@@ -117,7 +117,7 @@ function does-file-need-updating() {
         local SOURCE_FILE_CHECKSUM=$(get-file-checksum "${SOURCE_FILE_PATH}")
         local TARGET_FILE_CHECKSUM=$(get-file-checksum "${TARGET_FILE_PATH}")
 
-        if [ "${SOURCE_FILE_CHECKSUM}" == "${TARGET_FILE_CHECKSUM}" ]; then
+        if [[ "${SOURCE_FILE_CHECKSUM}" == "${TARGET_FILE_CHECKSUM}" ]]; then
             FILES_ARE_SAME=true
         fi
     fi
@@ -202,26 +202,26 @@ HAS_OPTIMUS_SUPPORT=false
 if [ -d "${ROOT_SYS}/module/battery" ] \
 && [ -d "${ROOT_PROC}/acpi/button/lid" ]; then
     CHASSIS_TYPE="Laptop"
-elif [ "${DISTRO_FAMILY}" == "Android" ]; then
+elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
     CHASSIS_TYPE="Phone"
 elif [ $(uname -r | grep "raspberry" -c) -ge 1 ]; then
     CHASSIS_TYPE="SBC"
 fi
 
-if [ "${CHASSIS_TYPE}" == "Phone" ]; then
+if [[ "${CHASSIS_TYPE}" == "Phone" ]]; then
     POWERFUL_PC=false
     GAMING_PC=false
     IS_EFI=false
     HAS_SU_PRIVILEGES=false
 else
-    if [ "${ARCH_FAMILY}" == "x86" ]; then
+    if [[ "${ARCH_FAMILY}" == "x86" ]]; then
         if [ -n "${CPU_MODEL}" ] && [ $(echo ${CPU_MODEL} | grep -c "Atom") -le 1 ]; then
             POWERFUL_PC=true
         fi
     fi
 
     if ${POWERFUL_PC}; then
-        if [ "${CPU_MODEL}" == "Ryzen 7 5800X" ]; then
+        if [[ "${CPU_MODEL}" == "Ryzen 7 5800X" ]]; then
             GAMING_PC=true
         else
             GAMING_PC=false
@@ -237,8 +237,8 @@ if [ -f "${ROOT_ETC}/systemd/system/display-manager.service" ] || \
     HAS_GUI=true
 fi
 
-if $(does-bin-exist "sudo"); then
-    if [ "${DISTRO_FAMILY}" == "Android" ]; then
+if does-bin-exist "sudo"; then
+    if [[ "${DISTRO_FAMILY}" == "Android" ]]; then
         [ -f "/sbin/su" ] && HAS_SU_PRIVILEGES=true
     else
         HAS_SU_PRIVILEGES=true

@@ -43,13 +43,13 @@ function update-system() {
 
     echo "Updating the system..."
 
-    if [ "${DISTRO_FAMILY}" == "Arch" ]; then
-        if $(does-bin-exist "paru"); then
+    if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
+        if does-bin-exist "paru"; then
             paru -Syu --noconfirm --needed --noredownload --norebuild --sudoloop
         else
             run-as-su pacman -Syu
         fi
-    elif [ "${DISTRO_FAMILY}" == "Android" ]; then
+    elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
         yes | pkg update
         yes | pkg upgrade
     fi
@@ -82,7 +82,7 @@ if [ "${OS}" != "Windows" ]; then
 
 fi
 
-if [ "${OS}" == "Linux" ]; then
+if [[ "${OS}" == "Linux" ]]; then
     execute-script "update-extensions.sh"
 
     if ${HAS_GUI}; then
@@ -99,11 +99,11 @@ execute-script "config-system.sh" # Run after update-rcs.sh
 [ "${DISTRO_FAMILY}" == "Arch" ] && execute-script-superuser "set-system-locale-timedate.sh"
 [ "${DISTRO_FAMILY}" != "Android" ] && execute-script-superuser "install-profiles.sh"
 
-$(does-bin-exist "systemctl") && execute-script-superuser "enable-services.sh"
-$(does-bin-exist "grub-mkconfig") && execute-script-superuser "update-grub.sh" # Run after config-system.sh
+does-bin-exist "systemctl" && execute-script-superuser "enable-services.sh"
+does-bin-exist "grub-mkconfig" && execute-script-superuser "update-grub.sh" # Run after config-system.sh
 
 # Update the resources
-if [ "${OS}" == "Linux" ]; then
+if [[ "${OS}" == "Linux" ]]; then
     execute-script "update-resources.sh"
     execute-script-superuser "update-resources.sh"
 fi
@@ -114,7 +114,7 @@ execute-script "git/setup-gpg-key.sh"
 [ "${OS}" == "Linux" ] && execute-script-superuser "assign-users-and-groups.sh"
 
 # Clean journals older than 1 week
-if ${HAS_SU_PRIVILEGES} && $(does-bin-exist "journalctl"); then
+if ${HAS_SU_PRIVILEGES} && does-bin-exist "journalctl"; then
     run-as-su journalctl -q --vacuum-time=7d
 fi
 

@@ -76,19 +76,19 @@ function set_launcher_entry() {
     local KEY_ESC=$(echo "${KEY}" | sed -e 's/[]\/$*.^|[]/\\&/g')
     local VAL_ESC=$(echo "${VAL}" | sed -e 's/[]\/$*.^|[]/\\&/g')
 
-    local HAS_MULTIPLE_SECTIONS=0
+    local HAS_MULTIPLE_SECTIONS=false
     local LAST_SECTION_LINE=$(wc -l "${FILE}" | awk '{print $1}')
 
     local FILE_CONTENTS=$(cat "${FILE}")
 
     if [ $(grep -c "^\[.*\]$" <<< "${FILE_CONTENTS}") -gt 1 ]; then
-        HAS_MULTIPLE_SECTIONS=1
+        HAS_MULTIPLE_SECTIONS=true
         LAST_SECTION_LINE=$(grep -n "^\[.*\]$" "${FILE}" | sed '2q;d' | awk -F: '{print $1}')
         FILE_CONTENTS=$(echo "${FILE_CONTENTS}" | head -n "${LAST_SECTION_LINE}")
     fi
 
-    if [ $(grep -c "^${KEY_ESC}=${VAL}$" <<< "${FILE_CONTENTS}") == 0 ] || \
-       [ $(grep -c "^${KEY_ESC}=$" <<< "${FILE_CONTENTS}") == 1 ]; then
+    if [[ $(grep -c "^${KEY_ESC}=${VAL}$" <<< "${FILE_CONTENTS}") == 0 ]] || \
+       [[ $(grep -c "^${KEY_ESC}=$" <<< "${FILE_CONTENTS}") == 1 ]]; then
         if [ $(grep -c "^${KEY_ESC}=.*$" <<< "${FILE_CONTENTS}") -gt 0 ]; then
             if [ -z "${VAL}" ]; then
                 sed -i '1,'"${LAST_SECTION_LINE}"' {/^'"${KEY_ESC}"'=.*$/d}' "${FILE}"
@@ -96,7 +96,7 @@ function set_launcher_entry() {
                 sed -i '1,'"${LAST_SECTION_LINE}"' s|^'"${KEY_ESC}"'=.*$|'"${KEY_ESC}"'='"${VAL}"'|g' "${FILE}"
             fi
         elif [ -n "${VAL}" ]; then
-            if [ ${HAS_MULTIPLE_SECTIONS} == 1 ]; then
+            if ${HAS_MULTIPLE_SECTIONS}; then
                 sed -i "${LAST_SECTION_LINE} i ${KEY_ESC}=${VAL_ESC}" "${FILE}"
             else
                 printf "${KEY}=${VAL}\n" >> "${FILE}"
@@ -192,7 +192,7 @@ function create_launcher() {
 
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/amidst.desktop" \
     StartupWMClass "amidst-Amidst"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/cups.desktop" NoDisplay "true"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/cups.desktop" NoDisplay true
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/GameConqueror.desktop" Categories "Utility;"
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gnubg.desktop" \
     Name "Backgammon" \
@@ -200,13 +200,13 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gnubg.desktop" \
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gparted.desktop" \
     Name "Partition Editor" \
     Name[ro] "Editor de Partiții"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gtk-lshw.desktop" NoDisplay "true"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gtk-lshw.desktop" NoDisplay true
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/hardinfo.desktop" \
     Categories "System;Monitor;" \
     Icon "hardinfo" \
     Name "Hardware Information" \
     Name[ro] "Informații Hardware"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/lstopo.desktop" NoDisplay "true"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/lstopo.desktop" NoDisplay true
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/lxhotkey-gtk.desktop" Name[ro] "Scurtături de tastatură"
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/lxappearance.desktop" \
     Name "Look and Feel" \
@@ -217,8 +217,8 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/lxsession-edit.desktop" \
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/lxsession-default-apps.desktop" \
     Name "Default Applications" \
     Name[ro] "Aplicații Implicite"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-color-select.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-search-tool.desktop" NoDisplay "true"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-color-select.desktop" NoDisplay true
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-search-tool.desktop" NoDisplay true
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/nfs2se.desktop" \
     Name "Need for Speed 2" \
     Icon "nfs2se" \
@@ -226,8 +226,8 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/nfs2se.desktop" \
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/nm-connection-editor.desktop" \
     Name "Network Connections" \
     Name[ro] "Conexiuni de Rețea" \
-    NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/openarena-server.desktop" NoDisplay "true"
+    NoDisplay true
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/openarena-server.desktop" NoDisplay true
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/org.freedesktop.Piper.desktop" \
     Name "Mouse Settings" \
     Icon "gnome-settings-mouse" \
@@ -235,7 +235,7 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/org.freedesktop.Piper.desktop" \
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Contacts.desktop" Categories "GNOME;GTK;Utility;ContactManagement;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.DiskUtility.desktop" Categories "GNOME;GTK;System;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Epiphany.desktop" Name "Epiphany"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.font-viewer.desktop" NoDisplay "true"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.font-viewer.desktop" NoDisplay true
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.gnome-2048.desktop" Icon "2048"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.SoundRecorder.desktop" Categories "GNOME;GTK;Utility;Audio;"
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/org.gnome.tweaks.desktop" \
@@ -257,13 +257,13 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/simple-scan.desktop" \
     Name "Scanner" \
     Name[ro] "Scanner"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/simplescreenrecorder.desktop" Name "Screen Recorder"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/stoken-gui-small.desktop" NoDisplay "true"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/stoken-gui.desktop" NoDisplay "true"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/stoken-gui-small.desktop" NoDisplay true
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/stoken-gui.desktop" NoDisplay true
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/system-config-printer.desktop" Name[ro] "Configurare Imprimantă"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/virtualbox.desktop" Name "VirtualBox"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/vlc.desktop" Name "VLC"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/wireshark-gtk.desktop" Name "Wireshark"
-set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-app-list.desktop" NoDisplay "true"
+set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-app-list.desktop" NoDisplay true
 set_launcher_entry "$(find_launcher_by_name Netflix)" Categories "AudioVideo;Video;Player;"
 
 ########################
@@ -276,7 +276,7 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/engrampa.desktop" \
         Name "Archives" \
         Name[ro] "Arhive"
 done
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/7zFM.desktop" NoDisplay "true"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/7zFM.desktop" NoDisplay true
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FileRoller.desktop" StartupWMClass "File-Roller"
 
 #############
@@ -285,7 +285,7 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FileRoller.desktop" Start
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/avahi-discover.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/bssh.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/bvnc.desktop"; do
-    set_launcher_entry "${LAUNCHER}.desktop" NoDisplay "true"
+    set_launcher_entry "${LAUNCHER}.desktop" NoDisplay true
 done
 
 ##########################
@@ -427,7 +427,7 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/cmake.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/CMake.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Icon "cmake" \
-        NoDisplay "true"
+        NoDisplay true
 done
 
 ################################
@@ -466,12 +466,12 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/codeblocks.desktop" \
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/android-studio.desktop" \
     StartupWMClass "jetbrains-studio"
 
-if [ "${ARCH_FAMILY}" == "x86" ]; then
+if [[ "${ARCH_FAMILY}" == "x86" ]]; then
     set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" StartupWMClass "code"
-    set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss-url-handler.desktop" NoDisplay "true"
+    set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss-url-handler.desktop" NoDisplay true
     set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code.desktop" StartupWMClass "code-oss"
     set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/visual-studio-code.desktop" StartupWMClass "Code"
-elif [ "${ARCH_FAMILY}" == "arm" ]; then
+elif [[ "${ARCH_FAMILY}" == "arm" ]]; then
     set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" StartupWMClass "Code - OSS (headmelted)"
 fi
 
@@ -533,7 +533,7 @@ done
 for ELECTRON_VERSION in "" {1..16}; do
     LAUNCHER="${GLOBAL_LAUNCHERS_PATH}/electron${ELECTRON_VERSION}.desktop"
     set_launcher_entries "${LAUNCHER}" \
-        NoDisplay "true"
+        NoDisplay true
 done
 
 #################
@@ -663,7 +663,7 @@ for JAVA_VERSION in {8..24}; do
                     "${GLOBAL_LAUNCHERS_PATH}/sun_javaws-jre${JAVA_VERSION}.desktop"; do
         set_launcher_entries "${LAUNCHER}" \
             Icon "java" \
-            NoDisplay "true"
+            NoDisplay true
     done
 done
 
@@ -718,7 +718,7 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/minecraft-launcher.desktop" \
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/Monogame\ Pipeline.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/MonogamePipeline.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        NoDisplay "true" \
+        NoDisplay true \
         StartupWMClass "Pipeline"
 done
 
@@ -832,7 +832,7 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/ipython.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/ipython2.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Categories "Development;" \
-        NoDisplay "true" \
+        NoDisplay true \
         Icon "ipython"
 done
 
@@ -926,7 +926,7 @@ done
 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/xterm.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/uxterm.desktop"; do
-    set_launcher_entry "${LAUNCHER}" NoDisplay "true"
+    set_launcher_entry "${LAUNCHER}" NoDisplay true
 done
 
 ####################
@@ -1012,7 +1012,7 @@ if [ -f "${ROOT_USR_BIN}/winetricks" ]; then
         Icon "winetricks" \
         Categories "Wine;Emulator;" \
         StartupWMClass "winetricks" \
-        NoDisplay "true"
+        NoDisplay true
 fi
 
 if [ -f "${ROOT_USR_BIN}/java" ] || [ -L "${ROOT_USR_BIN}/java" ]; then
@@ -1024,8 +1024,8 @@ if [ -f "${ROOT_USR_BIN}/java" ] || [ -L "${ROOT_USR_BIN}/java" ]; then
         Name "Java" \
         Icon "java" \
         Exec "java -jar %U" \
-        Terminal "true" \
-        NoDisplay "true"
+        Terminal true \
+        NoDisplay true
 fi
 
 if [ -f "${ROOT_USR_BIN}/mono" ]; then
@@ -1037,8 +1037,8 @@ if [ -f "${ROOT_USR_BIN}/mono" ]; then
         Name "Mono" \
         Icon "mono" \
         Exec "mono %U" \
-        Terminal "true" \
-        NoDisplay "true"
+        Terminal true \
+        NoDisplay true
 fi
 
 if [ -f "${ROOT_USR_BIN}/steam" ]; then
@@ -1054,7 +1054,7 @@ if [ -f "${ROOT_USR_BIN}/steam" ]; then
         Icon "steam" \
         Categories "Game;Steam;" \
         StartupWMClass "streaming_client" \
-        NoDisplay "true"
+        NoDisplay true
 fi
 
 # CREATE STEAM ICONS
@@ -1152,15 +1152,15 @@ if [ -f "${ROOT_USR_BIN}/steam" ]; then
                     APP_NAME=$(grep "^${APP_ID}=" "${STEAM_NAMES_FILE}" | awk -F= '{print $2}')
                 fi
 
-                DO_CREATE_LAUNCHER="true"
+                DO_CREATE_LAUNCHER=true
 
                 if [[ "${APP_NAME}" == "Steamworks Common Redistributables" ]] || \
                    [[ "${APP_NAME}" =~ ^Proton\ [0-9]+\.[0-9]+$ ]] || \
                    [[ "${APP_NAME}" == "Steam Linux Runtime"* ]]; then
-                    DO_CREATE_LAUNCHER="false"
+                    DO_CREATE_LAUNCHER=false
                 fi
 
-                if [ "${DO_CREATE_LAUNCHER}" == "true" ]; then
+                if ${DO_CREATE_LAUNCHER}; then
                     APP_WMCLASS=""
 
                     if [ $(grep -c "^${APP_ID}=" "${STEAM_WMCLASSES_FILE}") -ne 0 ]; then

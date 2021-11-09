@@ -14,7 +14,7 @@ function update-grub-rc {
     local SOURCE_RC_PATH="${SOURCE_GRUB_RC_DIR}/${RC_FILE}"
     local TARGET_RC_PATH="${TARGET_GRUB_RC_DIR}/${RC_FILE}"
 
-    if [ -d "${OS_ROOT_DIR}" ] || [ "${OS_ROOT_DIR}" == "/" ]; then
+    if [[ -d "${OS_ROOT_DIR}" ]] || [[ "${OS_ROOT_DIR}" == "/" ]]; then
         update-file-if-needed "${SOURCE_RC_PATH}" "${TARGET_RC_PATH}"
     elif [ -f "${TARGET_RC_PATH}" ]; then
         rm "${TARGET_RC_PATH}"

@@ -14,14 +14,14 @@ install-pkg man
 install-pkg most
 install-pkg wget
 
-if [ "${DISTRO_FAMILY}" == "Arch" ]; then
+if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
     install-pkg bash-completion
     install-pkg usbutils
     install-pkg lshw
 
     install-pkg man-pages
     install-pkg sudo
-elif [ "${DISTROY_FAMILY}" == "Android" ]; then
+elif [[ "${DISTROY_FAMILY}" == "Android" ]]; then
     install-pkg manpages
 
     [ -f "/sbin/su" ] && install-pkg tsu
@@ -36,7 +36,7 @@ install-pkg make
 install-pkg fakeroot
 install-pkg patch
 
-if [ "${DISTRO_FAMILY}" == "Arch" ]; then
+if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
     install-pkg gcc
     install-pkg pkgconf
 fi
@@ -66,10 +66,10 @@ install-pkg net-tools
 install-pkg openssh
 install-pkg wol
 
-if [ "${DISTRO_FAMILY}" == "Arch" ]; then
+if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
     install-pkg wireless_tools
     install-pkg wpa_supplicant
-elif [ "${DISTRO_FAMILY}" == "Android" ]; then
+elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
     install-pkg wireless-tools
 fi
 
@@ -124,7 +124,7 @@ install-pkg nano-syntax-highlighting
 install-pkg lm_sensors
 
 if ${HAS_GUI}; then
-    if [ "${ARCH_FAMILY}" == "x86" ]; then
+    if [[ "${ARCH_FAMILY}" == "x86" ]]; then
         install-pkg grub
         install-dep os-prober
         install-pkg update-grub
@@ -135,7 +135,7 @@ if ${HAS_GUI}; then
     install-pkg rsync
 
     # System management
-    [ "${ARCH_FAMILY}" == "x86" ] && install-pkg thermald
+    [[ "${ARCH_FAMILY}" == "x86" ]] && install-pkg thermald
 
     # Runtimes
     install-pkg python
@@ -143,10 +143,10 @@ if ${HAS_GUI}; then
     install-pkg mono
     install-pkg jre-openjdk-headless
 
-    if [ "${ARCH_FAMILY}" == "x86" ]; then
+    if [[ "${ARCH_FAMILY}" == "x86" ]]; then
         install-pkg dotnet-runtime
         install-pkg aspnet-runtime
-    elif [ "${ARCH_FAMILY}" == "arm" ]; then
+    elif [[ "${ARCH_FAMILY}" == "arm" ]]; then
         install-pkg dotnet-runtime-bin
         install-pkg aspnet-runtime-bin
     fi
@@ -342,7 +342,7 @@ if ${HAS_GUI}; then
     install-pkg telegram-desktop
 
     # Multimedia
-    [ "${ARCH_FAMILY}" == "x86" ] && install-pkg spotify
+    [[ "${ARCH_FAMILY}" == "x86" ]] && install-pkg spotify
     if ${POWERFUL_PC}; then
         install-pkg rhythmbox
         install-pkg totem
@@ -373,17 +373,17 @@ if ${HAS_GUI}; then
 #    install-pkg dotnet-sdk-3.1
     #install-pkg jdk
 
-    if [ "${ARCH_FAMILY}" == "x86" ]; then
+    if [[ "${ARCH_FAMILY}" == "x86" ]]; then
         install-pkg electron
         install-pkg chromedriver
     fi
 
-    [ "${ARCH_FAMILY}" == "x86" ] && install-pkg visual-studio-code-bin
-    [ "${ARCH_FAMILY}" == "arm" ] && install-pkg code-headmelted-bin
+    [[ "${ARCH_FAMILY}" == "x86" ]] && install-pkg visual-studio-code-bin
+    [[ "${ARCH_FAMILY}" == "arm" ]] && install-pkg code-headmelted-bin
 
     # Tools
-    [ "${ARCH_FAMILY}" == "x86" ] && install-pkg simplenote-electron-bin
-    [ "${ARCH_FAMILY}" == "arm" ] && install-pkg simplenote-electron-arm-bin
+    [[ "${ARCH_FAMILY}" == "x86" ]] && install-pkg simplenote-electron-bin
+    [[ "${ARCH_FAMILY}" == "arm" ]] && install-pkg simplenote-electron-arm-bin
 
     # Filesystem / Partitioning
     install-pkg gparted
@@ -398,7 +398,7 @@ if ${HAS_GUI}; then
     install-pkg start-wmclass
 fi
 
-if [ "${CHASSIS_TYPE}" == "Laptop" ]; then
+if [[ "${CHASSIS_TYPE}" == "Laptop" ]]; then
     install-pkg acpi
 fi
 
