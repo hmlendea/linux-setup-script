@@ -89,8 +89,12 @@ install-pkg openssl-1.0 # Required to run ASP .NET Core apps
 # Package manager
 install-pkg-aur-manually package-query
 
-[ "${ARCH}" == "armv7l" ] && install-pkg-aur-manually yay-bin \
-                          || install-pkg-aur-manually paru-bin
+if [[ "${ARCH}" != "armv7l" ]]; then
+    install-pkg-aur-manually paru-bin
+else
+    # Special case, since we don't want to build paru from source (it takes a LOOONG time)
+    install-pkg-aur-manually yay-bin
+fi
 
 install-pkg pacman-contrib
 install-pkg pacutils
@@ -185,17 +189,21 @@ if ${HAS_GUI}; then
     # Audio drivers
     install-pkg sennheiser-gsp670-pulseaudio-profile
 
-    ${POWERFUL_PC} && install-pkg gnome-bluetooth \
-                   || install-pkg blueman
+    # Bluetooth Manager
+    ${POWERFUL_PC} && install-pkg gnome-bluetooth
+    ${POWERFUL_PC} || install-pkg blueman
 
-    ${POWERFUL_PC} && install-pkg gnome-system-monitor \
-                   || install-pkg lxtask
+    # System Monitor / Task Manager
+    ${POWERFUL_PC} && install-pkg gnome-system-monitor
+    ${POWERFUL_PC} || install-pkg lxtask
 
-    ${POWERFUL_PC} && install-pkg gnome-terminal \
-                   || install-pkg lxterminal
+    # Terminal
+    ${POWERFUL_PC} && install-pkg gnome-terminal
+    ${POWERFUL_PC} || install-pkg lxterminal
 
-    ${POWERFUL_PC} && install-pkg gnome-calculator \
-                   || install-pkg mate-calc
+    # Calculator
+    ${POWERFUL_PC} && install-pkg gnome-calculator
+    ${POWERFUL_PC} || install-pkg mate-calc
 
     install-pkg gnome-disk-utility
 
@@ -222,11 +230,13 @@ if ${HAS_GUI}; then
 
     install-pkg dconf-editor
 
-    ${POWERFUL_PC} && install-pkg gedit \
-                   || install-pkg pluma
+    # Text Editor
+    ${POWERFUL_PC} && install-pkg gedit
+    ${POWERFUL_PC} || install-pkg pluma
 
-    ${POWERFUL_PC} && install-pkg evince \
-                   || install-pkg epdfview
+    # Document Viewer
+    ${POWERFUL_PC} && install-pkg evince
+    ${POWERFUL_PC} || install-pkg epdfview
 
     if ${POWERFUL_PC}; then
         install-pkg baobab
@@ -235,8 +245,9 @@ if ${HAS_GUI}; then
         install-pkg mate-utils
     fi
 
-    ${POWERFUL_PC} && install-pkg eog \
-                   || install-pkg gpicview
+    # Image Viewer
+    ${POWERFUL_PC} && install-pkg eog
+    ${POWERFUL_PC} || install-pkg gpicview
 
     if ${POWERFUL_PC}; then
         install-dep gnome-menus
@@ -291,12 +302,13 @@ if ${HAS_GUI}; then
     install-pkg ttf-hannom # Vietnamese
     install-pkg ttf-ubraille # Braille
 
-    # Internet
+    # Internet Browser
     install-pkg firefox
     install-pkg chrome-gnome-shell # Also used for Firefox
 
-    ${POWERFUL_PC} && install-pkg fragments \
-                   || install-pkg transmission-gtk
+    # Torrent Downloader
+    ${POWERFUL_PC} && install-pkg fragments
+    ${POWERFUL_PC} || install-pkg transmission-gtk
 
     # Communication
     install-pkg whatsapp-nativefier
