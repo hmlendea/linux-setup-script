@@ -183,9 +183,10 @@ install-pkg exfat-utils
 install-pkg xfsprogs
 
 # Archives
-install-pkg unace
+install-pkg unp # A script for unpacking a wide variety of archive formats
 install-pkg p7zip
 install-pkg lrzip
+install-dep unace
 
 install-pkg realtime-privileges
 
