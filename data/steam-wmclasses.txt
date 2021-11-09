@@ -121,8 +121,8 @@
 383870=fw.x86_64
 394360=hoi4
 427520=factorio
-431815=Hidden Folks.x86_64
 435150=supporttool.exe
+435400=Hidden Folks.x86_64
 464920=surviving mars
 470260=event0.exe
 476240=knights.exe
@@ -133,6 +133,7 @@
 644390=steam_app_644390
 678800=steam_app_678800
 680360=Regions of Ruin.x86_64
+718850=steam_app_718850
 728880=Overcooked2.x86_64
 729040=steam_app_729040
 736260=Chowdren
