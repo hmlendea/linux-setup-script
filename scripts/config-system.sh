@@ -6,10 +6,6 @@ function get_openbox_font_weight() {
     [[ "${*}" == "Bold" ]] && echo "Bold" || echo "Normal"
 }
 
-### BLUETOOTH
-# Xbox One Controller
-#echo "options bluetooth disable_ertm=1" | tee --append /etc/modprobe.d/xbox_bt.conf
-
 if [[ "${ARCH}" == "x86_64" ]] \
 && does-bin-exist "lspci" \
 && [[ "$(lspci | grep VGA | grep -c NVIDIA)" == "1" ]]; then
@@ -139,7 +135,7 @@ elif [ "${SCREEN_RESOLUTION_V}" -lt 1080 ]; then
     TERMINAL_SIZE_ROWS=24
 fi
 
-if [ ! ${IS_SERVER} ]; then
+if (! ${IS_SERVER}); then
     if [[ "${ICON_THEME}" == *"Papirus"* ]]; then
         CURRENT_PAPIRUS_FOLDER_COLOUR=$(papirus-folders -l -t "${ICON_THEME}" | grep ">" | sed 's/ *> *//g')
 
