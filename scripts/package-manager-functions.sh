@@ -4,13 +4,13 @@ source "scripts/common/common/sh"
 function is-package-installed() {
 	PKG="${1}"
 
-    if [ "${DISTRO_FAMILY}" == "Arch" ]; then
+    if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
     	if (pacman -Q "${PKG}" > /dev/null); then
 	    	echo 0 # True
 	    else
 		    echo 1 # False
 	    fi
-    elif [ "${DISTRO_FAMILY}" == "Android" ]; then
+    elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
         if (pkg list-installed | grep "^${PKG}/" > /dev/null); then
 	    	echo 0 # True
         else
@@ -20,13 +20,14 @@ function is-package-installed() {
 }
 
 function call-package-manager() {
-	ARGS="${@:1:$#-1}"
-    PKG="${@: -1}"
+	local ARGS="${@:1:$#-1}"
+    local PKG="${@: -1}"
 
-	if [ $(is-package-installed "${PKG}") -eq 0 ]; then
+	if (! is-package-installed "${PKG}"); then
 		echo " >>> Installing package '${PKG}'"
+
         if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-            ARCH_COMMON_ARGS="${PM_ARGS} --noconfirm --needed"
+            local ARCH_COMMON_ARGS="${PM_ARGS} --noconfirm --needed"
 
     		if [ -f "${ROOT_USR_BIN}/paru" ]; then
                 LANG=C LC_TIME="" paru ${ARGS} "${PKG}" ${ARCH_COMMON_ARGS} --noprovides --noredownload --norebuild --sudoloop
@@ -46,7 +47,7 @@ function call-package-manager() {
 }
 
 function install-pkg() {
-	PKG="${1}"
+	local PKG="${1}"
 
     if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
     	call-package-manager -S --asexplicit "${PKG}"
@@ -56,7 +57,7 @@ function install-pkg() {
 }
 
 function install-dep() {
-	PKG="${1}"
+	local PKG="${1}"
 
     if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
     	call-package-manager -S --asexplicit "${PKG}"
@@ -66,8 +67,8 @@ function install-dep() {
 }
 
 function download-file {
-	URL="${1}"
-	FILE="${2}"
+	local URL="${1}"
+	local FILE="${2}"
 
 	[ ! -f "${FILE}" ] && wget "${URL}" -O "${FILE}"
 }
@@ -76,7 +77,7 @@ function install-pkg-aur-manually() {
 	local PKG="${1}"
     local PKG_SNAPSHOT_URL="https://aur.archlinux.org/cgit/aur.git/snapshot/${PKG}.tar.gz"
 
-	if [ $(is-package-installed "${PKG}") -eq 0 ]; then
+	if (! is-package-installed "${PKG}"); then
         wget "${PKG_SNAPSHOT_URL}"
 	    tar xvf "${PKG}.tar.gz"
 
