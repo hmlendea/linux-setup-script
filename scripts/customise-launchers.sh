@@ -106,55 +106,36 @@ function set_launcher_entry() {
         echo "${FILE} >>> ${KEY}=${VAL}"
     fi
 
-    if [ "${KEY_ESC}" = "Comment" ]; then
-        set_launcher_entry_english "${FILE}" "Comment" "${VAL}"
-    elif [ "${KEY_ESC}" = "Name" ]; then
-        set_launcher_entry_english "${FILE}" "Name" "${VAL}"
-        set_launcher_entry_english "${FILE}" "GenericName" "${VAL}"
-        set_launcher_entry_english "${FILE}" "X-GNOME-FullName" "${VAL}"
-        set_launcher_entry_english "${FILE}" "X-MATE-FullName" "${VAL}"
-    elif [ "${KEY_ESC}" = "Keywords" ]; then
-        set_launcher_entry_english "${FILE}" "Keywords" "${VAL}"
-    elif [ "${KEY_ESC}" = "X-GNOME-FullName" ]; then
-        set_launcher_entry_english "${FILE}" "X-GNOME-FullName" "${VAL}"
-    elif [ "${KEY_ESC}" = "X-MATE-FullName" ]; then
-        set_launcher_entry_english "${FILE}" "X-MATE-FullName" "${VAL}"
-    elif [[ "${KEY_ESC}" == "Icon" ]]; then
-        set_launcher_entry_english "${FILE}" "Icon" "${VAL}"
-    fi
+    KEY_ID=$(echo "${KEY}" | sed 's/^\([^\[]*\).*/\1/g')
+    KEY_LANGUAGE=$(echo "${KEY}" | sed 's/^[^\[]*\[\([a-zA-Z_]*\)]/\1/g')
 
-    if [ "${KEY_ESC}" = "Comment\[ro\]" ]; then
-        set_launcher_entry_romanian "${FILE}" "Comment" "${VAL}"
-    elif [ "${KEY_ESC}" = "Name\[ro\]" ]; then
-        set_launcher_entry_romanian "${FILE}" "Name" "${VAL}"
-        set_launcher_entry_romanian "${FILE}" "GenericName" "${VAL}"
-        set_launcher_entry_romanian "${FILE}" "X-GNOME-FullName" "${VAL}"
-        set_launcher_entry_romanian "${FILE}" "X-MATE-FullName" "${VAL}"
-    elif [ "${KEY_ESC}" = "Keywords\[ro\]" ]; then
-        set_launcher_entry_romanian "${FILE}" "Keywords" "${VAL}"
-    elif [ "${KEY_ESC}" = "X-GNOME-FullName\[ro\]" ]; then
-        set_launcher_entry_romanian "${FILE}" "X-GNOME-FullName" "${VAL}"
-    elif [ "${KEY_ESC}" = "X-MATE-FullName\[ro\]" ]; then
-        set_launcher_entry_romanian "${FILE}" "X-MATE-FullName" "${VAL}"
-    elif [ "${KEY_ESC}" = "Icon\[ro\]" ]; then
-        set_launcher_entry_romanian "${FILE}" "Icon" "${VAL}"
-    fi
-
-    if [ "${KEY_ESC}" = "Comment\[es\]" ]; then
-        set_launcher_entry_spanish "${FILE}" "Comment" "${VAL}"
-    elif [ "${KEY_ESC}" = "Name\[es\]" ]; then
-        set_launcher_entry_spanish "${FILE}" "Name" "${VAL}"
-        set_launcher_entry_spanish "${FILE}" "GenericName" "${VAL}"
-        set_launcher_entry_spanish "${FILE}" "X-GNOME-FullName" "${VAL}"
-        set_launcher_entry_spanish "${FILE}" "X-MATE-FullName" "${VAL}"
-    elif [ "${KEY_ESC}" = "Keywords\[es\]" ]; then
-        set_launcher_entry_spanish "${FILE}" "Keywords" "${VAL}"
-    elif [ "${KEY_ESC}" = "X-GNOME-FullName\[es\]" ]; then
-        set_launcher_entry_spanish "${FILE}" "X-GNOME-FullName" "${VAL}"
-    elif [ "${KEY_ESC}" = "X-MATE-FullName\[es\]" ]; then
-        set_launcher_entry_spanish "${FILE}" "X-MATE-FullName" "${VAL}"
-    elif [ "${KEY_ESC}" = "Icon\[ro\]" ]; then
-        set_launcher_entry_spanish "${FILE}" "Icon" "${VAL}"
+    if [[ "${KEY_LANGUAGE}" == "en" ]]; then
+        if [[ "${KEY_ID}" == "Name" ]]; then
+            set_launcher_entry_english "${FILE}" "Name" "${VAL}"
+            set_launcher_entry_english "${FILE}" "GenericName" "${VAL}"
+            set_launcher_entry_english "${FILE}" "X-GNOME-FullName" "${VAL}"
+            set_launcher_entry_english "${FILE}" "X-MATE-FullName" "${VAL}"
+        else
+            set_launcher_entry_english "${FILE}" "${KEY_ID}" "${VAL}"
+        fi
+    elif [[ "${KEY_LANGUAGE}" == "es" ]]; then
+        if [[ "${KEY_ID}" == "Name" ]]; then
+            set_launcher_entry_spanish "${FILE}" "Name" "${VAL}"
+            set_launcher_entry_spanish "${FILE}" "GenericName" "${VAL}"
+            set_launcher_entry_spanish "${FILE}" "X-GNOME-FullName" "${VAL}"
+            set_launcher_entry_spanish "${FILE}" "X-MATE-FullName" "${VAL}"
+        else
+            set_launcher_entry_spanish "${FILE}" "${KEY_ID}" "${VAL}"
+        fi
+    elif [[ "${KEY_LANGUAGE}" == "ro" ]]; then
+        if [[ "${KEY_ID}" == "Name" ]]; then
+            set_launcher_entry_romanian "${FILE}" "Name" "${VAL}"
+            set_launcher_entry_romanian "${FILE}" "GenericName" "${VAL}"
+            set_launcher_entry_romanian "${FILE}" "X-GNOME-FullName" "${VAL}"
+            set_launcher_entry_romanian "${FILE}" "X-MATE-FullName" "${VAL}"
+        else
+            set_launcher_entry_romanian "${FILE}" "${KEY_ID}" "${VAL}"
+        fi
     fi
 }
 
