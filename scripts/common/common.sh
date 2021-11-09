@@ -11,6 +11,7 @@ REPO_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 REPO_DIR=$(realpath "${REPO_DIR}/../..")
 
 REPO_DATA_DIR="${REPO_DIR}/data"
+REPO_RES_DIR="${REPO_DIR}/resources"
 REPO_RC_DIR="${REPO_DIR}/rc"
 REPO_SCRIPTS_DIR="${REPO_DIR}/scripts"
 

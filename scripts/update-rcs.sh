@@ -26,20 +26,6 @@ if does-bin-exist "firefox"; then
     if [ -f "${FIREFOX_PROFILES_INI_FILE}" ]; then
         FIREFOX_PROFILE_ID=$(grep "^Path=" "${FIREFOX_PROFILES_INI_FILE}" | awk -F= '{print $2}' | head -n 1)
 
-        update-file-if-needed "${REPO_RC_DIR}/firefox-userChrome.css" "${FIREFOX_PROFILES_DIR}/${FIREFOX_PROFILE_ID}/chrome/userChrome.css"
         update-file-if-needed "${REPO_RC_DIR}/firefox-policies.json" "/usr/lib/firefox/distribution/policies.json"
     fi
-fi
-
-if does-bin-exist "neofetch"; then
-    NEOFETCH_CONFIG_DIR="${HOME_REAL}/.config/neofetch"
-    NEOFETCH_ASCII_LOGO_FILE=""
-
-    if [ "${DISTRO}" == "Arch Linux" ]; then
-        NEOFETCH_ASCII_LOGO_FILE="${REPO_RC_DIR}/neofetch-arch-ascii"
-    elif [ "${DISTRO}" == "LineageOS" ]; then
-        NEOFETCH_ASCII_LOGO_FILE="${REPO_RC_DIR}/neofetch-lineageos-ascii"
-    fi
-
-    [ -f "${NEOFETCH_ASCII_LOGO_FILE}" ] && update-file-if-needed "${NEOFETCH_ASCII_LOGO_FILE}" "${NEOFETCH_CONFIG_DIR}/neofetch-distro-ascii"
 fi
