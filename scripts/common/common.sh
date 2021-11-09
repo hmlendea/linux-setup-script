@@ -179,9 +179,16 @@ CPU_MODEL=$(echo "${CPU_MODEL}" | \
         sed 's/^[ \t]*//g' | \
         sed 's/[ \t]*$//g')
 
+echo "${CPU_MODEL}" | grep -q "AMD" && CPU_FAMILY="AMD"
+echo "${CPU_MODEL}" | grep -q "Intel" && CPU_FAMILY="Intel"
+
+CPU_MODEL=$(echo "${CPU_MODEL}" | sed 's/\(AMD\|Intel\) //g')
+CPU_NAME=$(echo "${CPU_FAMILY} ${CPU_MODEL}" | sed 's/^\s*//g')
+
 if does-bin-exist "lspci"; then
     lspci | grep "VGA" | grep -q "NVIDIA" && GPU_FAMILY="Nvidia"
     GPU_MODEL=$(lspci | grep VGA | sed 's/^[^\[]*\[\([a-zA-Z0-9 ]*\)].*/\1/g')
+    GPU_NAME=$(echo "${GPU_FAMILY} ${GPU_MODEL}" | sed 's/^\s*//g')
 fi
 
 CHASSIS_TYPE="Desktop"
@@ -214,10 +221,10 @@ else
     fi
 
     if ${POWERFUL_PC}; then
-        if [ "${CPU_MODEL}" == "Intel Core i7-3610QM" ]; then
-            GAMING_PC=false
-        elif [ -n "${CPU_MODE}" ]; then
+        if [ "${CPU_MODEL}" == "Ryzen 7 5800X" ]; then
             GAMING_PC=true
+        else
+            GAMING_PC=false
         fi
     fi
 
