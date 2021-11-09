@@ -9,10 +9,10 @@ function does_group_exist() {
     local GROUP_NAME="${1}"
 
     if [ $(grep -c "^${GROUP_NAME}" "${GROUPS_FILE}") -ge 1 ]; then
-        return 0
+        return 0 # True
     fi
 
-    return 1
+    return 1 # False
 }
 
 function is_user_in_group() {
@@ -20,18 +20,18 @@ function is_user_in_group() {
     local USER_NAME="${2}"
 
     if getent group "${GROUP_NAME}" | grep -q "\b${USER_NAME}\b"; then
-        return 0
+        return 0 # True
     fi
 
-    return 1
+    return 1 # False
 }
 
 function add_user_to_group() {
     local GROUP_NAME="${1}"
     local USER_NAME="${2}"
 
-    if $(does_group_exist "${GROUP_NAME}"); then
-        if ! $(is_user_in_group "${GROUP_NAME}" "${USER_NAME}"); then
+    if does_group_exist "${GROUP_NAME}"; then
+        if (! is_user_in_group "${GROUP_NAME}" "${USER_NAME}"); then
             usermod -a -G "${GROUP_NAME}" "${USER_NAME}"
         fi
     fi

@@ -10,7 +10,7 @@ APACHE_CONFIG_DIR="/etc/httpd/conf"
 APACHE_CONFIG_FILE="${APACHE_CONFIG_DIR}/httpd.conf"
 MYSQL_CONFIG_FILE="/etc/my.cnf"
 
-source "${SCRIPT_DIR_PATH}/package-manager-functions.sh"
+source "${SCRIPT_DIR_PATH}/common/package-manager-functions.sh"
 
 install-pkg nextcloud
 install-dep php-apache

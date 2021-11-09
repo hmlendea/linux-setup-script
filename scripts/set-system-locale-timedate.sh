@@ -14,7 +14,7 @@ echo "en_US.UTF-8 UTF-8" >> "${LOCALE_GEN_FILE_PATH}"
 echo "ro_RO.UTF-8 UTF-8" >> "${LOCALE_GEN_FILE_PATH}"
 
 for LOCALE in $(awk '{print $1}' "${LOCALE_GEN_FILE_PATH}" | sed -e 's/\([^\.]*\)\.\(.*\)/\1.\L\2/' | sed 's/-//'); do
-    if [ ! $(locale -a | grep "$LOCALE") ]; then
+    if [ ! $(locale -a | grep "${LOCALE}") ]; then
         echo "Generating the localisations..."
         run-as-su locale-gen
         break
@@ -22,18 +22,22 @@ for LOCALE in $(awk '{print $1}' "${LOCALE_GEN_FILE_PATH}" | sed -e 's/\([^\.]*\
 done
 
 echo "Setting up the console font and keymap..."
-echo "FONT=eurlatgr" > "${VCONSOLE_CONF_FILE_PATH}"
-echo "KEYMAP=ro-std" >> "${VCONSOLE_CONF_FILE_PATH}"
+{
+    echo "FONT=eurlatgr"
+    echo "KEYMAP=ro-std"
+} > "${VCONSOLE_CONF_FILE_PATH}"
 
 echo "Setting up the language..."
-echo "LANG=en_GB.UTF-8" > "${LOCALE_CONF_FILE_PATH}"
-echo "LC_CTYPE=en_US.UTF-8" >> "${LOCALE_CONF_FILE_PATH}"
-echo "LC_ADDRESS=ro_RO.UTF-8" >> "${LOCALE_CONF_FILE_PATH}"
-echo "LC_MEASUREMENT=ro_RO.UTF-8" >> "${LOCALE_CONF_FILE_PATH}"
-echo "LC_MONETARY=ro_RO.UTF-8" >> "${LOCALE_CONF_FILE_PATH}"
-echo "LC_NAME=ro_RO.UTF-8" >> "${LOCALE_CONF_FILE_PATH}"
-echo "LC_NUMERIC=ro_RO.UTF-8" >> "${LOCALE_CONF_FILE_PATH}"
-echo "LC_TIME=ro_RO.UTF-8" >> "${LOCALE_CONF_FILE_PATH}"
+{
+    echo "LANG=en_GB.UTF-8"
+    echo "LC_CTYPE=en_US.UTF-8"
+    echo "LC_ADDRESS=ro_RO.UTF-8"
+    echo "LC_MEASUREMENT=ro_RO.UTF-8"
+    echo "LC_MONETARY=ro_RO.UTF-8"
+    echo "LC_NAME=ro_RO.UTF-8"
+    echo "LC_NUMERIC=ro_RO.UTF-8"
+    echo "LC_TIME=ro_RO.UTF-8"
+} > "${LOCALE_CONF_FILE_PATH}"
 
 if [ ! -f "${LOCALTIME_FILE_PATH}" ]; then
     echo "Setting up the local time..."

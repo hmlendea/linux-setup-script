@@ -8,49 +8,35 @@ GRUB_CFG_PATH="${ROOT_BOOT}/grub/grub.cfg"
 [ ! -f "${ROOT_USR_BIN}/grub-reboot" ] && exit 1
 
 function update-grub-rc {
-    OS_ROOT_DIR="${1}"
-    RC_FILE="${2}"
+    local OS_ROOT_DIR="${1}"
+    local RC_FILE="${2}"
 
-    SOURCE_RC_PATH="${SOURCE_GRUB_RC_DIR}/${RC_FILE}"
-    TARGET_RC_PATH="${TARGET_GRUB_RC_DIR}/${RC_FILE}"
+    local SOURCE_RC_PATH="${SOURCE_GRUB_RC_DIR}/${RC_FILE}"
+    local TARGET_RC_PATH="${TARGET_GRUB_RC_DIR}/${RC_FILE}"
 
     if [ -d "${OS_ROOT_DIR}" ] || [ "${OS_ROOT_DIR}" == "/" ]; then
-        DO_COPY=false
-
-        if [ -f "${TARGET_RC_PATH}" ]; then
-            SOURCE_RC_CHECKSUM=$(sha256sum "${SOURCE_RC_PATH}")
-            TARGET_RC_CHECKSUM=$(sha256sum "${TARGET_RC_PATH}")
-
-            if [ "${SOURCE_RC_CHECKSUM}" != "${TARGET_RC_CHECKSUM}" ]; then
-                DO_COPY=true
-            fi
-        else
-            DO_COPY=true
-        fi
-
-        if ${DO_COPY}; then
-            cp "${SOURCE_RC_PATH}" "${TARGET_RC_PATH}"
-        fi
+        update-file-if-needed "${SOURCE_RC_PATH}" "${TARGET_RC_PATH}"
     elif [ -f "${TARGET_RC_PATH}" ]; then
         rm "${TARGET_RC_PATH}"
     fi
 }
 
 function rename-menuentry {
-    OLD_NAME=${1}
-    NEW_NAME=${2}
+    local OLD_NAME="${1}"
+    local NEW_NAME="${2}"
 
-    sed -i 's/^menuentry ['\''\"]'"${OLD_NAME}"'[^'\''\"]*['\''\"]/menuentry '\'"${NEW_NAME}"\''/g' ${GRUB_CFG_PATH}
+    sed -i 's/^menuentry ['\''\"]'"${OLD_NAME}"'[^'\''\"]*['\''\"]/menuentry '\'"${NEW_NAME}"\''/g' "${GRUB_CFG_PATH}"
 }
 
 function remove_advanced_options {
-    local STARTING_LINE=$(cat "${GRUB_CFG_PATH}" | grep -n "Advanced options for" | awk -F: '{print $1}' | head -n 1)
-    local END_LINE=$(cat "${GRUB_CFG_PATH}" | grep -n "### END /etc/grub.d/10_linux" | awk -F: '{print $1}' | head -n 1)
-    local EOF_LINE=$(wc -l "${GRUB_CFG_PATH}" | awk '{print $1}')
+    local STARTING_LINE=-1
+    local END_LINE=-1
 
+    STARTING_LINE=$(grep -n "Advanced options for" "${GRUB_CFG_PATH}" | awk -F: '{print $1}' | head -n 1)
+    END_LINE=$(grep -n "### END /etc/grub.d/10_linux" "${GRUB_CFG_PATH}" | awk -F: '{print $1}' | head -n 1)
     END_LINE=$((END_LINE-1))
 
-    sed -i ${STARTING_LINE},${END_LINE}d "${GRUB_CFG_PATH}"
+    sed -i "${STARTING_LINE}","${END_LINE}"d "${GRUB_CFG_PATH}"
 }
 
 update-grub-rc "/android" "29_android"
