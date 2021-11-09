@@ -1,29 +1,6 @@
-//
-// Complete set of Romanian keyboards as described in the new Romanian standard
-// SR 13392:2004 adopted in December 2004 by ASRO, "Asociatia de Standardizare 
-// din Romania".
-// 
-// The default mapping is the Programmers layout (also known as RO_US) because
-// of the lack of Romanian hardware keyboards. The primary standard layout is
-// implemented as the "std" variant.
-//
-// Diacritics with cedillas, as in ISO-8859-2, are no longer supported. This
-// error has been corrected in ISO-889-16 through using commabelow accents.
-// Pre-Vista MS compatible layout ("winkeys" variant) generates commabelow
-// accents too now.
-// 
-// Created by Cristian Gafton, <gafton@redhat.com> (C) 2000
-// Modified by Marius Andreiana, <mandreiana@yahoo.com> (C) 2001
-// Completed by Dumitru Moldovan, <dumol@gnome.org> (C) 2001, 2004-2008, 2020
-
-
+// This is a modified version of the original romanian keyboard file
 default partial alphanumeric_keys
 xkb_symbols "basic" {
-// This RO_US/Programmers layout, although the secondary layout in the 
-// Romanian standard, has always been the "de facto" standard in the 
-// Linux/Unix world. It is implemented here as the default layout and it's
-// fully compatible with an US keyboard (Euro on AltGr+5 does not count).
-
     include "us"
 
     name[Group1]="Romanian";
