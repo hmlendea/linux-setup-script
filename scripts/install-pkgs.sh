@@ -161,7 +161,6 @@ if ${HAS_GUI}; then
 
         [[ "${GPU_MODEL}" == "GeForce 610M" ]] && NVIDIA_DRIVER="nvidia-390xx"
 
-        install-pkg "${NVIDIA_DRIVER}"
 
         if ${HAS_OPTIMUS_SUPPORT}; then
             install-pkg bumblebee
@@ -178,6 +177,8 @@ if ${HAS_GUI}; then
             install-dep "lib32-${NVIDIA_DRIVER}-utils"
 
             install-dep lib32-virtualgl
+        else
+            install-pkg "${NVIDIA_DRIVER}"
         fi
     fi
 
