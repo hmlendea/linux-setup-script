@@ -3,14 +3,14 @@ source "scripts/common/common.sh"
 source "scripts/common/config.sh"
 
 function get_openbox_font_weight() {
-    [ "${*}" == "Bold" ] && echo "Bold" || echo "Normal"
+    [[ "${*}" == "Bold" ]] && echo "Bold" || echo "Normal"
 }
 
 ### BLUETOOTH
 # Xbox One Controller
 #echo "options bluetooth disable_ertm=1" | tee --append /etc/modprobe.d/xbox_bt.conf
 
-if [ "${ARCH}" == "x86_64" ] \
+if [[ "${ARCH}" == "x86_64" ]] \
 && does-bin-exist "lspci" \
 && [[ "$(lspci | grep VGA | grep -c NVIDIA)" == "1" ]]; then
     USING_NVIDIA_GPU=true
@@ -47,7 +47,7 @@ ICON_THEME="Papirus-Dark"
 ICON_THEME_FOLDER_COLOUR="grey"
 CURSOR_THEME="Vimix-white-cursors"
 
-if [ "${GTK_THEME_VARIANT}" == "dark" ]; then
+if [[ "${GTK_THEME_VARIANT}" == "dark" ]]; then
     GTK_THEME_IS_DARK=true
     GTK_THEME_IS_DARK_BINARY=1
 else
@@ -169,7 +169,7 @@ if [ -f "${ROOT_ETC}/default/grub" ]; then
 fi
 
 if does-bin-exist "gnome-shell"; then
-    if [ "${ARCH}" == "aarch64" ]; then
+    if [[ "${ARCH}" == "aarch64" ]]; then
         set_gsetting "org.gnome.settings-daemon.plugins.remote-display" active false
         set_gsetting "org.gnome.desktop.interface" enable-animations false
     fi
@@ -182,20 +182,20 @@ if does-bin-exist "gnome-shell"; then
     set_gsetting "org.gnome.desktop.interface" toolbar-style 'icons'
 
     set_gsetting "org.gnome.desktop.privacy" old-files-age "uint32 14"
-    set_gsetting "org.gnome.desktop.privacy" remove-old-temp-files "true"
-    set_gsetting "org.gnome.desktop.privacy" remove-old-trash-files "true"
+    set_gsetting "org.gnome.desktop.privacy" remove-old-temp-files true
+    set_gsetting "org.gnome.desktop.privacy" remove-old-trash-files true
 
     set_gsetting "org.gnome.desktop.peripherals.touchpad" click-method "default"
-    set_gsetting "org.gnome.desktop.peripherals.touchpad" tap-to-click "true"
+    set_gsetting "org.gnome.desktop.peripherals.touchpad" tap-to-click true
 
-    set_gsetting "org.gnome.desktop.interface" clock-show-date "true"
+    set_gsetting "org.gnome.desktop.interface" clock-show-date true
     set_gsetting "org.gnome.desktop.interface" cursor-theme "${CURSOR_THEME}"
     set_gsetting "org.gnome.desktop.interface" document-font-name "${DOCUMENT_FONT}"
     set_gsetting "org.gnome.desktop.interface" font-name "${INTERFACE_FONT}"
     set_gsetting "org.gnome.desktop.interface" gtk-theme "${GTK_THEME}"
     set_gsetting "org.gnome.desktop.interface" icon-theme "${ICON_THEME}"
     set_gsetting "org.gnome.desktop.interface" monospace-font-name "${MONOSPACE_FONT}"
-    set_gsetting "org.gnome.desktop.interface" show-battery-percentage "true"
+    set_gsetting "org.gnome.desktop.interface" show-battery-percentage true
 
     set_gsetting "org.gnome.desktop.peripherals.touchpad" disable-while-typing false
 
@@ -318,7 +318,7 @@ fi
 ### Audio ###
 #############
 if does-bin-exist "gnome-shell"; then
-    set_gsetting org.gnome.desktop.sound allow-volume-above-100-percent "true"
+    set_gsetting org.gnome.desktop.sound allow-volume-above-100-percent true
     set_gsetting org.gnome.settings-daemon.plugins.media-keys volume-step 3
 fi
 if does-bin-exist "openal-info"; then
@@ -465,35 +465,35 @@ if does-bin-exist "firefox"; then
     FIREFOX_PROFILES_INI_FILE="${HOME_REAL}/.mozilla/firefox/profiles.ini"
     FIREFOX_PROFILE_ID=$(grep "^Path=" "${FIREFOX_PROFILES_INI_FILE}" | awk -F= '{print $2}' | head -n 1)
 
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "beacon.enabled" "false"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "beacon.enabled" false
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.anchor_color" "#00BCD4"
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.newtabpage.activity-stream.feeds.section.highlights" "false"
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.newtabpage.activity-stream.feeds.snippets" "false"
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.newtabpage.activity-stream.feeds.topsites" "false"
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.safebrowsing.downloads.remote.enabled" "false"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.newtabpage.activity-stream.feeds.section.highlights" false
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.newtabpage.activity-stream.feeds.snippets" false
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.newtabpage.activity-stream.feeds.topsites" false
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.safebrowsing.downloads.remote.enabled" false
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.search.region" "RO"
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.send_pings" "false"
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.tabs.delayHidingAudioPlayingIconMS" "0"
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.tabs.insertAfterCurrent" "false"
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.tabs.tabMinWidth" "0"
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.tabs.warnOnClose" "false"
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.translation.detectLanguage" "true"
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.underline_anchors" "false"
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.uidensity" "1"
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.autoFill" "false"
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.speculativeConnect.enabled" "false"
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "dom.event.clipboardevents.enabled" "true" # Fix for Google's office suite
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "extensions.screenshots.disabled" "true"
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "findbar.highlightAll" "true"
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "full-screen-api.warning.timeout" "0"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.send_pings" false
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.tabs.delayHidingAudioPlayingIconMS" 0
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.tabs.insertAfterCurrent" false
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.tabs.tabMinWidth" 0
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.tabs.warnOnClose" false
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.translation.detectLanguage" true
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.underline_anchors" false
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.uidensity" 1
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.autoFill" false
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.speculativeConnect.enabled" false
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "dom.event.clipboardevents.enabled" true # Fix for Google's office suite
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "extensions.screenshots.disabled" true
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "findbar.highlightAll" true
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "full-screen-api.warning.timeout" 0
     set_firefox_config "${FIREFOX_PROFILE_ID}" "identity.fxaccounts.account.device.name" "${HOSTNAME}"
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "media.autoplay.enabled" "false"
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "media.navigator.enabled" "false"
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "network.IDN_show_punycode" "true"
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "privacy.trackingprotection.enabled" "true"
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "security.insecure_connection_text.enabled" "true"
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "security.sandbox.content.level" "0" # iHD fix
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "toolkit.tabbox.switchByScrolling" "true"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "media.autoplay.enabled" false
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "media.navigator.enabled" false
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "network.IDN_show_punycode" true
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "privacy.trackingprotection.enabled" true
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "security.insecure_connection_text.enabled" true
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "security.sandbox.content.level" 0 # iHD fix
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "toolkit.tabbox.switchByScrolling" true
 
     # Appearance
     set_firefox_config "${FIREFOX_PROFILE_ID}" "devtools.theme" ${GTK_THEME_VARIANT}
@@ -501,10 +501,10 @@ if does-bin-exist "firefox"; then
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.tabs.drawInTitlebar" true
     set_firefox_config "${FIREFOX_PROFILE_ID}" "ui.systemUsesDarkTheme" ${GTK_THEME_IS_DARK}
 
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "widget.disable-native-theme-for-content" "true"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "widget.disable-native-theme-for-content" true
 
     # Useless features
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "extensions.pocket.enabled" "false"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "extensions.pocket.enabled" false
 
     # Telemetry
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.newtabpage.activity-stream.telemetry" "false"
@@ -888,7 +888,7 @@ fi
 if does-bin-exist "totem"; then
     TOTEM_SCHEMA="org.gnome.totem"
 
-    set_gsetting "${TOTEM_SCHEMA}" autoload-subtitles "true"
+    set_gsetting "${TOTEM_SCHEMA}" autoload-subtitles true
     set_gsetting "${TOTEM_SCHEMA}" subtitle-font "${SUBTITLES_FONT}"
 fi
 

@@ -24,9 +24,9 @@ if does-bin-exist "neofetch"; then
     NEOFETCH_CONFIG_DIR="${HOME_REAL}/.config/neofetch"
     NEOFETCH_ASCII_LOGO_FILE=""
 
-    if [ "${DISTRO}" == "Arch Linux" ]; then
+    if [[ "${DISTRO}" == "Arch Linux" ]]; then
         NEOFETCH_ASCII_LOGO_FILE="${REPO_RES_DIR}/neofetch-arch-ascii"
-    elif [ "${DISTRO}" == "LineageOS" ]; then
+    elif [[ "${DISTRO}" == "LineageOS" ]]; then
         NEOFETCH_ASCII_LOGO_FILE="${REPO_RES_DIR}/neofetch-lineageos-ascii"
     fi
 

@@ -4,7 +4,7 @@ source "scripts/common/common.sh"
 function set_config_value() {
     local SEPARATOR="="
 
-    if [ "${1}" == "--separator" ]; then
+    if [[ "${1}" == "--separator" ]]; then
         shift
         SEPARATOR="${1}"
         shift
@@ -24,7 +24,7 @@ function set_config_value() {
     local FILE_CONTENT=$(cat "${FILE_PATH}")
 
     # If the value is not already set
-    if [ $(grep -c "^${KEY}${SEPARATOR}${VALUE}$" <<< "$FILE_CONTENT") == 0 ]; then
+    if [[ $(grep -c "^${KEY}${SEPARATOR}${VALUE}$" <<< "$FILE_CONTENT") == 0 ]]; then
         # If the config key already exists (with a different value)
         if [ $(grep -c "^${KEY}${SEPARATOR}.*$" <<< "$FILE_CONTENT") -gt 0 ]; then
             if [ -w "${FILE_PATH}" ]; then
@@ -60,8 +60,8 @@ function set_firefox_config() {
     FILE_CONTENT=$(cat "${FILE}")
 
     # If the value is not already set
-    if [ $(grep -c "^user_pref(\"${KEY}\", *${VALUE});$" <<< "${FILE_CONTENT}") == 0 ] && \
-       [ $(grep -c "^user_pref(\"${KEY}\", *\"${VALUE}\");$" <<< "${FILE_CONTENT}") == 0 ]; then
+    if [[ $(grep -c "^user_pref(\"${KEY}\", *${VALUE});$" <<< "${FILE_CONTENT}") == 0 ]] && \
+       [[ $(grep -c "^user_pref(\"${KEY}\", *\"${VALUE}\");$" <<< "${FILE_CONTENT}") == 0 ]]; then
         # If the config key already exists (with a different value)
         if [ $(grep -c "^user_pref(\"${KEY}.*$" <<< "${FILE_CONTENT}") -gt 0 ]; then
             sed -i '/^user_pref('"\"${KEY}"'/d' "${FILE}"
@@ -76,7 +76,7 @@ function set_firefox_config() {
 function set_json_value() {
     local FILE_PATH="${1}"
 
-    ( ! $(does-bin-exist "jq")) && return
+    ( ! does-bin-exist "jq") && return
     [ ! -f "${FILE_PATH}" ] && return
 
     local PROPERTY="${2}"
@@ -111,7 +111,7 @@ function set_xml_node() {
     NODE_RAW="${2}"
     VALUE_RAW="${@:3}"
 
-    (! $(does-bin-exist "xmlstarlet")) && return
+    (! does-bin-exist "xmlstarlet") && return
     [ ! -f "${FILE}" ] && return
 
     NAMESPACE=$(cat "${FILE}" | grep "xmlns=" | sed 's/.*xmlns=\"\([^\"]*\)\".*/\1/g')
@@ -140,7 +140,7 @@ function set_modprobe_option() {
     FILE_CONTENT=$(cat "${FILE}")
 
     # If the option is not already set
-    if [ $(grep -c "^options ${MODULE} ${KEY}=${VALUE}$" <<< "${FILE_CONTENT}") == 0 ]; then
+    if [[ $(grep -c "^options ${MODULE} ${KEY}=${VALUE}$" <<< "${FILE_CONTENT}") == 0 ]]; then
         # If the option key already exists (with a different value)
         if [ $(grep -c "^options ${MODULE} ${KEY}=.*$" <<< "${FILE_CONTENT}") -gt 0 ]; then
             sed -i 's|^options '"${MODULE} ${KEY}"'=.*$|options '"${MODULE} ${KEY}"'='"${VALUE}"'|g' "${FILE}"
@@ -166,7 +166,7 @@ function set_gsetting() {
     PROPERTY="${2}"
     VALUE="${@:3}"
 
-    (! $(does-bin-exist "gsettings")) && return
+    (! does-bin-exist "gsettings") && return
 
     CURRENT_VALUE=$(get_gsetting "${SCHEMA}" "${PROPERTY}")
 
