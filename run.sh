@@ -105,7 +105,6 @@ $(does-bin-exist "grub-mkconfig") && execute-script-superuser "update-grub.sh" #
 if [ "${OS}" == "Linux" ]; then
     execute-script "update-resources.sh"
     execute-script-superuser "update-resources.sh"
-    execute-script "update-symlinks.sh"
 fi
 
 execute-script "git/setup-gpg-key.sh"
