@@ -39,33 +39,24 @@ if [ -z "${USER}" ]; then
     fi
 fi
 
-# Others
-export OLDPWD=$(pwd)
-export OLDPWD2=${OLDPWD}
-
 [ -f "${ROOT_USR_BIN}/nano" ]    && export EDITOR=nano       # Make nano the default editor
 [ -f "${ROOT_USR_BIN}/optirun" ] && export VGL_READBACK=pbo  # Better optirun performance
-
-if [ -f "${ROOT_USR_BIN}/paru" ]; then
-    PACKAGE_MANAGER="paru"
-elif [ -f "${ROOT_USR_BIN}/yay" ]; then
-    PACKAGE_MANAGER="yay"
-elif [ -f "${ROOT_USR_BIN}/yaourt" ]; then
-    PACKAGE_MANAGER="yaourt"
-else
-    PACKAGE_MANAGER="pacman"
-fi
 
 if [ -f "${ROOT_USR_BIN}/dotnet" ]; then
     export DOTNET_CLI_TELEMETRY_OPTOUT=1        # Disable .NET Core telemetry
     export DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1  # Disable .NET Core first time message
-
-    [ -d "${ROOT_OPT}/dotnet/" ]       &&   export DOTNET_ROOT="${ROOT_OPT}/dotnet/"        # .NET Root
-    [ -d "${ROOT_USR_SHARE}/dotnet/" ] &&   export DOTNET_ROOT="${ROOT_USR_SHARE}/dotnet/"  # .NET Root
-
-    # MS Build and Mono coexistance
-    [ ! -z "${DOTNET_ROOT}" ]   &&  export MSBuildSDKsPath=$(printf "%s\n" ${DOTNET_ROOT}/sdk/*  | tail -1)"/Sdks/"
-
-    DOTNET_TOOLS_DIR="${HOME}/.dotnet/tools"
-    [ -d "${DOTNET_TOOLS_DIR}" ] && export PATH="$PATH:${DOTNET_TOOLS_DIR}"
 fi
+
+if [ -f "${ROOT_USR_BIN}/paru" ]; then
+    export PACKAGE_MANAGER="paru"
+elif [ -f "${ROOT_USR_BIN}/yay" ]; then
+    export PACKAGE_MANAGER="yay"
+elif [ -f "${ROOT_USR_BIN}/yaourt" ]; then
+    export PACKAGE_MANAGER="yaourt"
+else
+    export PACKAGE_MANAGER="pacman"
+fi
+
+# Others
+export OLDPWD=$(pwd)
+export OLDPWD2=${OLDPWD}
