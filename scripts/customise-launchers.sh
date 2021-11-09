@@ -389,54 +389,53 @@ set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-nfjdjopfnbnkmfldmeffmhgodmlhd
 ##############
 ### CITRIX ###
 ##############
-
 if [ -d "${ROOT_OPT}/Citrix" ]; then
-    if [ ! -f "${GLOBAL_LAUNCHERS_PATH}wfsplash.desktop" ]; then
-        create_launcher "${GLOBAL_LAUNCHERS_PATH}/wfsplash.desktop"
-    fi
+    [ ! -f "${GLOBAL_LAUNCHERS_PATH}wfsplash.desktop" ] && create_launcher "${GLOBAL_LAUNCHERS_PATH}/wfsplash.desktop"
+
+    for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/configmgr.desktop" \
+                    "${GLOBAL_LAUNCHERS_PATH}/conncentre.desktop" \
+                    "${GLOBAL_LAUNCHERS_PATH}/wfcmgr.desktop" \
+                    "${GLOBAL_LAUNCHERS_PATH}/wfsplash.desktop" \
+                    "${GLOBAL_LAUNCHERS_PATH}/wfica.desktop"; do
+        set_launcher_entries "${LAUNCHER}" \
+            Icon "citrix-receiver" \
+            NoDisplay true
+    done
+
+    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/configmgr.desktop" \
+        Name "Citrix Receiver Preferences" \
+        Name[ro] "Configurare Receptor Citrix" \
+        StartupWMClass "Configmgr"
+    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/conncentre.desktop" \
+        Name "Citrix Connection Centre" \
+        Name[ro] "Centrul de conexiuni Citrix" \
+        StartupWMClass "Conncenter"
+    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/wfcmgr.desktop" \
+        Name "Citrix Receiver Self Service" \
+        Name[ro] "Asistență Receptor Citrix" \
+        StartupWMClass "Wfcmgr"
+    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/wfsplash.desktop" \
+        Name "Citrix Splash" \
+        Categories "Application;Network;X-Red-Hat-Base;X-SuSE-Core-Internet;" \
+        StartupWMClass "Wfica_Splash" # InitPanel_popup
+    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/wfica.desktop" \
+        Name "Citrix Receiver" \
+        Name[ro] "Receptor Citrix" \
+        StartupWMClass "Wfica"
 fi
-
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/configmgr.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/conncentre.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/wfcmgr.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/wfsplash.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/wfica.desktop"; do
-    set_launcher_entries "${LAUNCHER}" \
-        Icon "citrix-receiver" \
-        NoDisplay true
-done
-
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/configmgr.desktop" \
-    Name "Citrix Receiver Preferences" \
-    Name[ro] "Configurare Receptor Citrix" \
-    StartupWMClass "Configmgr"
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/conncentre.desktop" \
-    Name "Citrix Connection Centre" \
-    Name[ro] "Centrul de conexiuni Citrix" \
-    StartupWMClass "Conncenter"
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/wfcmgr.desktop" \
-    Name "Citrix Receiver Self Service" \
-    Name[ro] "Asistență Receptor Citrix" \
-    StartupWMClass "Wfcmgr"
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/wfsplash.desktop" \
-    Name "Citrix Splash" \
-    Categories "Application;Network;X-Red-Hat-Base;X-SuSE-Core-Internet;" \
-    StartupWMClass "Wfica_Splash" # InitPanel_popup
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/wfica.desktop" \
-    Name "Citrix Receiver" \
-    Name[ro] "Receptor Citrix" \
-    StartupWMClass "Wfica"
 
 #############
 ### CMAKE ###
 #############
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/cmake.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/cmake-gui.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/CMake.desktop"; do
-    set_launcher_entries "${LAUNCHER}" \
-        Icon "cmake" \
-        NoDisplay true
-done
+if does-bin-exist "cmake"; then
+    for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/cmake.desktop" \
+                    "${GLOBAL_LAUNCHERS_PATH}/cmake-gui.desktop" \
+                    "${GLOBAL_LAUNCHERS_PATH}/CMake.desktop"; do
+        set_launcher_entries "${LAUNCHER}" \
+            Icon "cmake" \
+            NoDisplay true
+    done
+fi
 
 ################################
 ### DEVELOPMENT ENVIRONMENTS ###
@@ -530,19 +529,21 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/atril.desktop" \
     set_launcher_entry "${LAUNCHER}" Categories "GTK;${DOCUMENT_VIEWER_CATEGORIES}"
 done
 
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/evince.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Evince.desktop"; do
-    set_launcher_entry "${LAUNCHER}" Categories "GNOME;GTK;${DOCUMENT_VIEWER_CATEGORIES}"
-done
+if does-bin-exist "evince"; then
+    for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/evince.desktop" \
+                    "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Evince.desktop"; do
+        set_launcher_entry "${LAUNCHER}" Categories "GNOME;GTK;${DOCUMENT_VIEWER_CATEGORIES}"
+    done
+fi
 
 ################
 ### ELECTRON ###
 ################
-for ELECTRON_VERSION in "" {1..16}; do
-    LAUNCHER="${GLOBAL_LAUNCHERS_PATH}/electron${ELECTRON_VERSION}.desktop"
-    set_launcher_entries "${LAUNCHER}" \
-        NoDisplay true
-done
+if does-bin-exist "electron"; then
+    for ELECTRON_VERSION in "" {10..16}; do
+        set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/electron${ELECTRON_VERSION}.desktop" NoDisplay true
+    done
+fi
 
 #################
 ### EMULATORS ###
@@ -597,12 +598,14 @@ done
 set_launcher_entry "${GLOBAL_LAUNCHER_PATH}/io.elementary.files.desktop" Categories "Pantheon;GTK;${FILE_MANAGER_CATEGORIES}"
 set_launcher_entry "${GLOBAL_LAUNCHER_PATH}/org.gnome.Nautilus.desktop" Categories "GNOME;GTK;${FILE_MANAGER_CATEGORIES}"
 
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/Thunar-bulk-rename.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/thunar-bulk-rename.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/thunar-settings.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/thunar-volman-settings.desktop"; do
-    set_launcher_entry "${LAUNCHER}" NoDisplay true
-done
+if does-bin-exist "thunar"; then
+    for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/Thunar-bulk-rename.desktop" \
+                    "${GLOBAL_LAUNCHERS_PATH}/thunar-bulk-rename.desktop" \
+                    "${GLOBAL_LAUNCHERS_PATH}/thunar-settings.desktop" \
+                    "${GLOBAL_LAUNCHERS_PATH}/thunar-volman-settings.desktop"; do
+        set_launcher_entry "${LAUNCHER}" NoDisplay true
+    done
+fi
 
 #####################
 ### IMAGE EDITORS ###
@@ -614,12 +617,14 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gimp.desktop" \
     Categories "GTK;${IMAGE_EDITOR_CATEGORIES};RasterGraphics;" \
     StartupWMClass "Gimp-2.10"
 
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/inkscape.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/org.inkscape.Inkscape.desktop"; do
-    set_launcher_entries "${LAUNCHER}" \
-        Name "Inkscape" \
-        Categories "GTK;${IMAGE_EDITOR_CATEGORIES};VectorGraphics;"
-done
+if does-bin-exist "inkscape"; then
+    for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/inkscape.desktop" \
+                    "${GLOBAL_LAUNCHERS_PATH}/org.inkscape.Inkscape.desktop"; do
+        set_launcher_entries "${LAUNCHER}" \
+            Name "Inkscape" \
+            Categories "GTK;${IMAGE_EDITOR_CATEGORIES};VectorGraphics;"
+    done
+fi
 
 #####################
 ### IMAGE VIEWERS ###
@@ -657,23 +662,34 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/tor-browser-en.desktop" \
     Categories ${INTERNET_BROWSER_CATEGORIES} \
     StartupWMClass "Tor Browser"
 
-#################
-### JRE & JDK ###
-#################
-for JAVA_VERSION in {8..24}; do
-    for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/jconsole-jdk${JAVA_VERSION}.desktop" \
-                    "${GLOBAL_LAUNCHERS_PATH}/jmc-jdk${JAVA_VERSION}.desktop" \
-                    "${GLOBAL_LAUNCHERS_PATH}/jvisualvm-jdk${JAVA_VERSION}.desktop" \
-                    "${GLOBAL_LAUNCHERS_PATH}/policytool-jdk${JAVA_VERSION}.desktop" \
-                    "${GLOBAL_LAUNCHERS_PATH}/policytool-jre${JAVA_VERSION}.desktop" \
-                    "${GLOBAL_LAUNCHERS_PATH}/sun_java-jdk${JAVA_VERSION}.desktop" \
-                    "${GLOBAL_LAUNCHERS_PATH}/sun_java-jre${JAVA_VERSION}.desktop" \
-                    "${GLOBAL_LAUNCHERS_PATH}/sun_javaws-jre${JAVA_VERSION}.desktop"; do
-        set_launcher_entries "${LAUNCHER}" \
-            Icon "java" \
-            NoDisplay true
+########################
+### JAVA - JRE & JDK ###
+########################
+if does-bin-exist "java"; then
+    [ ! -f "${GLOBAL_LAUNCHERS_PATH}/run-java.desktop" ] && create_launcher "${GLOBAL_LAUNCHERS_PATH}/run-java.desktop"
+
+    for JAVA_VERSION in {8..24}; do
+        for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/jconsole-jdk${JAVA_VERSION}.desktop" \
+                        "${GLOBAL_LAUNCHERS_PATH}/jmc-jdk${JAVA_VERSION}.desktop" \
+                        "${GLOBAL_LAUNCHERS_PATH}/jvisualvm-jdk${JAVA_VERSION}.desktop" \
+                        "${GLOBAL_LAUNCHERS_PATH}/policytool-jdk${JAVA_VERSION}.desktop" \
+                        "${GLOBAL_LAUNCHERS_PATH}/policytool-jre${JAVA_VERSION}.desktop" \
+                        "${GLOBAL_LAUNCHERS_PATH}/sun_java-jdk${JAVA_VERSION}.desktop" \
+                        "${GLOBAL_LAUNCHERS_PATH}/sun_java-jre${JAVA_VERSION}.desktop" \
+                        "${GLOBAL_LAUNCHERS_PATH}/sun_javaws-jre${JAVA_VERSION}.desktop"; do
+            set_launcher_entries "${LAUNCHER}" \
+                Icon "java" \
+                NoDisplay true
+        done
     done
-done
+
+    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/run-java.desktop" \
+        Name "Java" \
+        Icon "java" \
+        Exec "java -jar %U" \
+        Terminal true \
+        NoDisplay true
+fi
 
 ###################
 ### LOG VIEWERS ###
@@ -755,43 +771,45 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-keep.desktop" StartupWMClass
 ##############
 ### NVIDIA ###
 ##############
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/nvidia-settings.desktop" \
-    Name "Nvidia Settings" \
-    Name[ro] "Setări Nvidia" \
-    Icon "nvidia-settings" \
-    Categories "System;"
+if [[ "${GPU_FAMILY}" == "Nvidia" ]]; then
+    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/nvidia-settings.desktop" \
+        Name "Nvidia Settings" \
+        Name[ro] "Setări Nvidia" \
+        Icon "nvidia-settings" \
+        Categories "System;"
 
-if [ -f "${ROOT_USR_BIN}/optirun" ]; then
-    set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/nvidia-settings.desktop" Exec "optirun -b none nvidia-settings -c :8"
+    does-bin-exist "optirun" && set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/nvidia-settings.desktop" Exec "optirun -b none nvidia-settings -c :8"
 fi
 
 ###################
 ### Office Apps ###
 ###################
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-base.desktop" \
-    Name "Base" \
-    Name[ro] "Baze" \
-    NoDisplay true
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-calc.desktop" \
-    Name "Calc" \
-    Name[ro] "Calcul" \
-    NoDisplay true
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-draw.desktop" \
-    Name "Draw" \
-    Name[ro] "Schițe" \
-    NoDisplay true
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-impress.desktop" \
-    Name "Impress" \
-    Name[ro] "Prezentări" \
-    NoDisplay true
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-math.desktop" \
-    Name "Math" \
-    Name[ro] "Mate" \
-    NoDisplay true
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-writer.desktop" \
-    Name "Writer" \
-    Name[ro] "Scriitor" \
-    NoDisplay true
+if does-bin-exist "libreoffice"; then
+    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-base.desktop" \
+        Name "Base" \
+        Name[ro] "Baze" \
+        NoDisplay true
+    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-calc.desktop" \
+        Name "Calc" \
+        Name[ro] "Calcul" \
+        NoDisplay true
+    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-draw.desktop" \
+        Name "Draw" \
+        Name[ro] "Schițe" \
+        NoDisplay true
+    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-impress.desktop" \
+        Name "Impress" \
+        Name[ro] "Prezentări" \
+        NoDisplay true
+    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-math.desktop" \
+        Name "Math" \
+        Name[ro] "Mate" \
+        NoDisplay true
+    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-writer.desktop" \
+        Name "Writer" \
+        Name[ro] "Scriitor" \
+        NoDisplay true
+fi
 
 #########################
 ### PASSWORD MANAGERS ###
@@ -879,22 +897,35 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/openrgb.desktop" \
 #############
 ### STEAM ###
 #############
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/steam-native.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/steam-runtime.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/valve-URI-steamvr.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/valve-URI-vrmonitor"; do
-    set_launcher_entry "${LAUNCHER}" NoDisplay true
-done
+if does-bin-exist "steam"; then
+    [ ! -f "${GLOBAL_LAUNCHERS_PATH}/steam-streaming-client.desktop" ] && create_launcher "${GLOBAL_LAUNCHERS_PATH}/steam-streaming-client.desktop"
 
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/steam.desktop" \
-    Name "Steam" \
-    Name[ro] "Steam" \
-    Categories "Game;Steam;" \
-    Exec "steam-start"
+    for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/steam-native.desktop" \
+                    "${GLOBAL_LAUNCHERS_PATH}/steam-runtime.desktop" \
+                    "${GLOBAL_LAUNCHERS_PATH}/valve-URI-steamvr.desktop" \
+                    "${GLOBAL_LAUNCHERS_PATH}/valve-URI-vrmonitor"; do
+        set_launcher_entry "${LAUNCHER}" NoDisplay true
+    done
 
-set_launcher_entries "${LOCAL_LAUNCHERS_PATH}/valve-vrmonitor.desktop" \
-    Name "SteamVR Monitor" \
-    NoDisplay true
+    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/steam.desktop" \
+        Name "Steam" \
+        Name[ro] "Steam" \
+        Categories "Game;Steam;" \
+        Exec "steam-start"
+
+    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/steam-streaming-client.desktop" \
+        Name "Streaming Client" \
+        Comment "Steam Streaming Client" \
+        Exec "steam" \
+        Icon "steam" \
+        Categories "Game;Steam;" \
+        StartupWMClass "streaming_client" \
+        NoDisplay true
+
+    set_launcher_entries "${LOCAL_LAUNCHERS_PATH}/valve-vrmonitor.desktop" \
+        Name "SteamVR Monitor" \
+        NoDisplay true
+fi
 
 #####################
 ### TASK MANAGERS ###
@@ -911,15 +942,17 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/lxtask.desktop" Name[ro] "Manager d
 ###################
 ### TEAM VIEWER ###
 ###################
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/com.teamviewer.TeamViewer.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/teamviewer.desktop"; do
-    set_launcher_entries "${LAUNCHER}" \
-        Name "TeamViewer" \
-        Name[ro] "TeamViewer" \
-        Icon "teamviewer" \
-        Categories "Network;RemoteAccess;FileTransfer;" \
-        StartupWMClass "TeamViewer"
-done
+if does-bin-exist teamviewer; then
+    for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/com.teamviewer.TeamViewer.desktop" \
+                    "${GLOBAL_LAUNCHERS_PATH}/teamviewer.desktop"; do
+        set_launcher_entries "${LAUNCHER}" \
+            Name "TeamViewer" \
+            Name[ro] "TeamViewer" \
+            Icon "teamviewer" \
+            Categories "Network;RemoteAccess;FileTransfer;" \
+            StartupWMClass "TeamViewer"
+    done
+fi
 
 #################
 ### TERMINALS ###
@@ -977,9 +1010,26 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/com.github.gi_lom.dialect.desktop
 ############
 ### WINE ###
 ############
-rm -rf "${HOME_REAL}/.local/share/applications/wine-*"
-rm -rf "${HOME_REAL}/.local/share/applications/wine"
-rm -rf "${HOME_REAL}/.config/menus/applications-merged/user-chrome-apps.menu"
+if does-bin-exist "wine"; then
+    [ ! -f "${GLOBAL_LAUNCHERS_PATH}/winecfg.desktop" ] && create_launcher "${GLOBAL_LAUNCHERS_PATH}/winecfg.desktop"
+    [ ! -f "${GLOBAL_LAUNCHERS_PATH}/winetricks.desktop" ] && create_launcher "${GLOBAL_LAUNCHERS_PATH}/winetricks.desktop"
+
+    rm -rf "${HOME_REAL}/.local/share/applications/wine-*"
+    rm -rf "${HOME_REAL}/.local/share/applications/wine"
+    rm -rf "${HOME_REAL}/.config/menus/applications-merged/user-chrome-apps.menu"
+
+    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/winecfg.desktop" \
+        Name "Wine Configuration" \
+        Categories "Wine;Emulator;System;Settings;" \
+        StartupWMClass "winecfg.exe"
+
+    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/winetricks.desktop" \
+        Name "Winetricks" \
+        Icon "winetricks" \
+        Categories "Wine;Emulator;" \
+        StartupWMClass "winetricks" \
+        NoDisplay true
+fi
 
 # CREATE ICONS
 
@@ -999,43 +1049,6 @@ if [ -d "${ROOT_USR_SHARE}/gnome-shell/extensions/gsconnect@andyholmes.github.io
         NoDisplay true
 fi
 
-if [ -f "${ROOT_USR_BIN}/wine" ]; then
-    if [ ! -f "winecfg.desktop" ]; then
-        create_launcher "${GLOBAL_LAUNCHERS_PATH}/winecfg.desktop"
-
-        set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/winecfg.desktop" \
-            Name "Wine Configuration" \
-            Categories "Wine;Emulator;System;Settings;" \
-            StartupWMClass "winecfg.exe"
-    fi
-fi
-
-if [ -f "${ROOT_USR_BIN}/winetricks" ]; then
-    NEWLAUNCHER="${GLOBAL_LAUNCHERS_PATH}/winetricks.desktop"
-
-    [ ! -f "winetricks.desktop" ] && create_launcher "${NEWLAUNCHER}"
-
-    set_launcher_entries "${NEWLAUNCHER}" \
-        Name "Winetricks" \
-        Icon "winetricks" \
-        Categories "Wine;Emulator;" \
-        StartupWMClass "winetricks" \
-        NoDisplay true
-fi
-
-if [ -f "${ROOT_USR_BIN}/java" ] || [ -L "${ROOT_USR_BIN}/java" ]; then
-    NEWLAUNCHER="${GLOBAL_LAUNCHERS_PATH}/run-java.desktop"
-
-    [ ! -f "${NEWLAUNCHER}" ] && create_launcher "${NEWLAUNCHER}"
-
-    set_launcher_entries "${NEWLAUNCHER}" \
-        Name "Java" \
-        Icon "java" \
-        Exec "java -jar %U" \
-        Terminal true \
-        NoDisplay true
-fi
-
 if [ -f "${ROOT_USR_BIN}/mono" ]; then
     NEWLAUNCHER="${GLOBAL_LAUNCHERS_PATH}/run-mono.desktop"
 
@@ -1046,22 +1059,6 @@ if [ -f "${ROOT_USR_BIN}/mono" ]; then
         Icon "mono" \
         Exec "mono %U" \
         Terminal true \
-        NoDisplay true
-fi
-
-if [ -f "${ROOT_USR_BIN}/steam" ]; then
-    LAUNCHER_FILE_NAME="steam-streaming-client.desktop"
-    LAUNCHER_FILE_PATH="${GLOBAL_LAUNCHERS_PATH}/${LAUNCHER_FILE_NAME}"
-
-    [ ! -f "steam-streaming-client.desktop" ] && create_launcher "${LAUNCHER_FILE_PATH}"
-
-    set_launcher_entries "${LAUNCHER_FILE_PATH}" \
-        Name "Streaming Client" \
-        Comment "Steam Streaming Client" \
-        Exec "steam" \
-        Icon "steam" \
-        Categories "Game;Steam;" \
-        StartupWMClass "streaming_client" \
         NoDisplay true
 fi
 
