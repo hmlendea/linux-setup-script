@@ -3,6 +3,7 @@ source "scripts/common/common.sh"
 
 update-file-if-needed "${REPO_RC_DIR}/inputrc" "${HOME}/.inputrc"
 update-file-if-needed "${REPO_RC_DIR}/shell_aliases" "${HOME}/.shell_aliases"
+update-file-if-needed "${REPO_RC_DIR}/shell_opts" "${HOME}/.shell_opts"
 update-file-if-needed "${REPO_RC_DIR}/shell_prompt" "${HOME}/.shell_prompt"
 update-file-if-needed "${REPO_RC_DIR}/shell_vars" "${HOME}/.shell_vars"
 
