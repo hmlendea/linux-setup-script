@@ -9,7 +9,7 @@ copy_res() {
     TARGET_FILE="${3}"
     TARGET_DIR=$(dirname "${TARGET_FILE}")
 
-    if [ ! -f "${ROOT_USR_BIN}/lxpanel" ]; then
+    if (! does-bin-exist "${APPLICATION}"); then
         if [ -f "${TARGET_FILE}" ]; then
             echo "Removing \"${TARGET_FILE}\""
             rm "${TARGET_FILE}"
