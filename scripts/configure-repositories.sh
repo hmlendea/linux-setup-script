@@ -2,40 +2,33 @@
 source "scripts/common/common.sh"
 
 PACMAN_CONF_FILE_PATH="${ROOT_ETC}/pacman.conf"
-
-[ "${ARCH}" == "x86_64" ]   && ARCH_FAMILY="x86"
-[ "${ARCH}" == "aarch64" ]  && ARCH_FAMILY="arm"
-[ "${ARCH}" == "armv7l" ]   && ARCH_FAMILY="arm"
-
-function append_to_conf {
-    printf "$@" >> ${PACMAN_CONF_FILE_PATH}
-}
-
 DATABASES_NEED_UPDATING=false
 
 function add_repository {
-    NAME=${1}
-    SERVER=${2}
-    INCLUDE=${3}
-    SIGLEVEL=${4}
-    KEY=${5}
+    NAME="${1}"
+    SERVER="${2}"
+    INCLUDE="${3}"
+    SIGLEVEL="${4}"
+    KEY="${5}"
 
     [ ! -f "${PACMAN_CONF_FILE_PATH}" ] && return
 
-    if [ ! $(grep "^\[${NAME}\]" ${PACMAN_CONF_FILE_PATH}) ]; then
+    if [ ! $(grep "^\[${NAME}\]" "${PACMAN_CONF_FILE_PATH}") ]; then
         echo "Adding the \"${NAME}\" repository to \"${PACMAN_CONF_FILE_PATH}\"..." >&2
 
         DATABASES_NEED_UPDATING=true
 
-        append_to_conf "\n[${NAME}]\n"
-        [ ! -z "${SERVER}" ]    && append_to_conf "Server = ${SERVER}\n"
-        [ ! -z "${INCLUDE}" ]   && append_to_conf "Include = ${INCLUDE}\n"
-        [ ! -z "${SIGLEVEL}" ]  && append_to_conf "SigLevel = ${SIGLEVEL}\n"
+        file-append-line "${PACMAN_CONF_FILE_PATH}" ""
+        file-append-line "${PACMAN_CONF_FILE_PATH}" "[${NAME}]"
 
-        if [ ! -z "${KEY}" ]; then
-            pacman-key --recv-keys ${KEY}
-            pacman-key --finger ${KEY}
-            pacman-key --lsign ${KEY}
+        [ -n "${SERVER}" ]    && append_to_conf "Server = ${SERVER}\n"
+        [ -n "${INCLUDE}" ]   && append_to_conf "Include = ${INCLUDE}\n"
+        [ -n "${SIGLEVEL}" ]  && append_to_conf "SigLevel = ${SIGLEVEL}\n"
+
+        if [ -n "${KEY}" ]; then
+            pacman-key --recv-keys "${KEY}"
+            pacman-key --finger "${KEY}"
+            pacman-key --lsign "${KEY}"
         fi
     fi
 }
@@ -48,8 +41,8 @@ if [ "${ARCH_FAMILY}" == "x86" ]; then
     add_repository "valveaur" "http://repo.steampowered.com/arch/valveaur/" "" "" "8DC2CE3A3D245E64"
 fi
 
-if [ "${DISTRO_FAMILY}" == "Arch" ] && ${DATABASES_NEED_UPDATING}; then
+if [[ "${DISTRO_FAMILY}" == "Arch" ]] && ${DATABASES_NEED_UPDATING}; then
     pacman -Syy
 fi
 
-$(does-bin-exist "pkgfile") && pkgfile -u
+does-bin-exist "pkgfile" && pkgfile -u

@@ -94,7 +94,7 @@ function file-append-line() {
     LINE="${@:2}"
 
     if [ -w "${FILE_PATH}" ]; then
-        printf "${LINE}\n" >> "${FILE_PATH}" 2>/dev/null
+        echo "${LINE}" >> "${FILE_PATH}" 2>/dev/null
     else
         echo "${LINE}" | run-as-su tee -a "${FILE_PATH}" >/dev/null
     fi
