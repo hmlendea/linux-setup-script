@@ -50,3 +50,5 @@ fi
 if [ "${DISTRO_FAMILY}" == "Arch" ] && ${DATABASES_NEED_UPDATING}; then
     pacman -Syy
 fi
+
+$(does-bin-exist "pkgfile") && pkgfile -u
