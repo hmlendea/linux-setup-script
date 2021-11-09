@@ -113,15 +113,15 @@ function set_launcher_entry() {
         if [[ "${KEY_ID}" == "Name" ]]; then
             set_launcher_entry_english "${FILE}" "Name" "${VAL}"
             set_launcher_entry_english "${FILE}" "GenericName" "${VAL}"
+        elif [[ "${KEY_ID}" == "FullName" ]]; then
             set_launcher_entry_english "${FILE}" "X-GNOME-FullName" "${VAL}"
             set_launcher_entry_english "${FILE}" "X-MATE-FullName" "${VAL}"
-        else
-            set_launcher_entry_english "${FILE}" "${KEY_ID}" "${VAL}"
         fi
     elif [[ "${KEY_LANGUAGE}" == "es" ]]; then
         if [[ "${KEY_ID}" == "Name" ]]; then
             set_launcher_entry_spanish "${FILE}" "Name" "${VAL}"
             set_launcher_entry_spanish "${FILE}" "GenericName" "${VAL}"
+        elif [[ "${KEY_ID}" == "FullName" ]]; then
             set_launcher_entry_spanish "${FILE}" "X-GNOME-FullName" "${VAL}"
             set_launcher_entry_spanish "${FILE}" "X-MATE-FullName" "${VAL}"
         else
@@ -131,6 +131,7 @@ function set_launcher_entry() {
         if [[ "${KEY_ID}" == "Name" ]]; then
             set_launcher_entry_romanian "${FILE}" "Name" "${VAL}"
             set_launcher_entry_romanian "${FILE}" "GenericName" "${VAL}"
+        elif [[ "${KEY_ID}" == "FullName" ]]; then
             set_launcher_entry_romanian "${FILE}" "X-GNOME-FullName" "${VAL}"
             set_launcher_entry_romanian "${FILE}" "X-MATE-FullName" "${VAL}"
         else
@@ -1195,6 +1196,7 @@ if [ -f "${ROOT_USR_BIN}/steam" ]; then
                     create_launcher "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop"
                     set_launcher_entries "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" \
                         Name "${APP_NAME}" \
+                        FullName "${APP_NAME}" \
                         Comment "Play ${APP_NAME} on Steam" \
                         Comment[es] "Juega ${APP_NAME} en Steam" \
                         Comment[ro] "Joacă ${APP_NAME} pe Steam" \
@@ -1205,6 +1207,7 @@ if [ -f "${ROOT_USR_BIN}/steam" ]; then
                         Icon "${APP_ICON_PATH}" \
                         Categories "Game;Steam;" \
                         StartupWMClass "${APP_WMCLASS}" \
+                        PrefersNonDefaultGPU true \
                         NoDisplay false
                 fi
             done
