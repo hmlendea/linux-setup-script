@@ -14,6 +14,7 @@ shopt -s histappend # Append to the Bash history, don't overwrite it
 loadSource ~/.shell_vars
 loadSource ~/.shell_aliases
 loadSource ~/.shell_prompt
+loadSource ~/.shell_opts
 
 loadSource "/usr/share/blesh/ble.sh"
 loadSource "/usr/share/doc/pkgfile/command-not-found.bash"
