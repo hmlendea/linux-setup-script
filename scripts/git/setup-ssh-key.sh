@@ -52,5 +52,5 @@ else
 fi
 
 echo "Once ready, press Enter to test the connection..."
-read
-ssh -T git@github.com
+read -r
+ssh -T "git@github.com"
