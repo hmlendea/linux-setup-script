@@ -139,16 +139,23 @@ function set_launcher_entry() {
     elif [ "${KEY_ESC}" = "Icon\[ro\]" ]; then
         set_launcher_entry_romanian "${FILE}" "Icon" "${VAL}"
     fi
-}
 
-function set_launcher_entry_romanian() {
-    local FILE="${1}"
-    local KEY="${2}"
-    local VAL="${@:3}"
-
-    set_launcher_entries "${FILE}" \
-        "${KEY}[ro_RO]" "${VAL}" \
-        "${KEY}[ro_MD]" "${VAL}"
+    if [ "${KEY_ESC}" = "Comment\[es\]" ]; then
+        set_launcher_entry_spanish "${FILE}" "Comment" "${VAL}"
+    elif [ "${KEY_ESC}" = "Name\[es\]" ]; then
+        set_launcher_entry_spanish "${FILE}" "Name" "${VAL}"
+        set_launcher_entry_spanish "${FILE}" "GenericName" "${VAL}"
+        set_launcher_entry_spanish "${FILE}" "X-GNOME-FullName" "${VAL}"
+        set_launcher_entry_spanish "${FILE}" "X-MATE-FullName" "${VAL}"
+    elif [ "${KEY_ESC}" = "Keywords\[es\]" ]; then
+        set_launcher_entry_spanish "${FILE}" "Keywords" "${VAL}"
+    elif [ "${KEY_ESC}" = "X-GNOME-FullName\[es\]" ]; then
+        set_launcher_entry_spanish "${FILE}" "X-GNOME-FullName" "${VAL}"
+    elif [ "${KEY_ESC}" = "X-MATE-FullName\[es\]" ]; then
+        set_launcher_entry_spanish "${FILE}" "X-MATE-FullName" "${VAL}"
+    elif [ "${KEY_ESC}" = "Icon\[ro\]" ]; then
+        set_launcher_entry_spanish "${FILE}" "Icon" "${VAL}"
+    fi
 }
 
 function set_launcher_entry_english() {
@@ -163,6 +170,26 @@ function set_launcher_entry_english() {
         "${KEY}[en_NZ]" "${VAL}" \
         "${KEY}[en_US]" "${VAL}" \
         "${KEY}[en_ZA]" "${VAL}"
+}
+function set_launcher_entry_romanian() {
+    local FILE="${1}"
+    local KEY="${2}"
+    local VAL="${@:3}"
+
+    set_launcher_entries "${FILE}" \
+        "${KEY}[ro_RO]" "${VAL}" \
+        "${KEY}[ro_MD]" "${VAL}"
+}
+function set_launcher_entry_spanish() {
+    local FILE="${1}"
+    local KEY="${2}"
+    local VAL="${@:3}"
+
+    set_launcher_entries "${FILE}" \
+        "${KEY}[es_AR]" "${VAL}" \
+        "${KEY}[es_CL]" "${VAL}" \
+        "${KEY}[es_ES]" "${VAL}" \
+        "${KEY}[es_MX]" "${VAL}"
 }
 
 function create_launcher() {
@@ -1174,8 +1201,10 @@ if [ -f "${ROOT_USR_BIN}/steam" ]; then
                     set_launcher_entries "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" \
                         Name "${APP_NAME}" \
                         Comment "Play ${APP_NAME} on Steam" \
+                        Comment[es] "Juega ${APP_NAME} en Steam" \
                         Comment[ro] "Joacă ${APP_NAME} pe Steam" \
                         Keywords "Game;Steam;${APP_ID};" \
+                        Keywords[es] "Juego;Steam;${APP_ID};" \
                         Keywords[ro] "Joc;Steam;${APP_ID};" \
                         Exec "steam steam:\/\/rungameid\/${APP_ID}" \
                         Icon "${APP_ICON_PATH}" \
