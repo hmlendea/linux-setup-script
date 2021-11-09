@@ -31,7 +31,7 @@
     interactive = true
 [color "status"]
     added = green
-    changed = yellow
+    changed = red
     untracked = cyan
 [help]
     format = html
