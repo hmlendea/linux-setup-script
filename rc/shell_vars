@@ -39,6 +39,10 @@ if [ -z "${USER}" ]; then
     fi
 fi
 
+# Others
+export OLDPWD=$(pwd)
+export OLDPWD2=${OLDPWD}
+
 [ -f "${ROOT_USR_BIN}/nano" ]    && export EDITOR=nano       # Make nano the default editor
 [ -f "${ROOT_USR_BIN}/optirun" ] && export VGL_READBACK=pbo  # Better optirun performance
 
