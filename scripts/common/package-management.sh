@@ -1,20 +1,20 @@
 #!/bin/bash
-source "scripts/common/common/sh"
+source "scripts/common/common.sh"
 
 function is-package-installed() {
 	PKG="${1}"
 
     if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
     	if (pacman -Q "${PKG}" > /dev/null); then
-	    	echo 0 # True
+	    	return 0 # True
 	    else
-		    echo 1 # False
+		    return 1 # False
 	    fi
     elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
         if (pkg list-installed | grep "^${PKG}/" > /dev/null); then
-	    	echo 0 # True
+	    	return 0 # True
         else
-		    echo 1 # False
+		    return 1 # False
         fi
     fi
 }
