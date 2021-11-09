@@ -202,9 +202,6 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/amidst.desktop" \
     StartupWMClass "amidst-Amidst"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/cups.desktop" NoDisplay true
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/GameConqueror.desktop" Categories "Utility;"
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gnubg.desktop" \
-    Name "Backgammon" \
-    Name[ro] "Table"
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gparted.desktop" \
     Name "Partition Editor" \
     Name[ro] "Editor de Partiții"
@@ -227,33 +224,19 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/lxsession-default-apps.desktop" \
     Name[ro] "Aplicații Implicite"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-color-select.desktop" NoDisplay true
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-search-tool.desktop" NoDisplay true
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/nfs2se.desktop" \
-    Name "Need for Speed 2" \
-    Icon "nfs2se" \
-    StartupWMClass "nfs2se"
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/nm-connection-editor.desktop" \
     Name "Network Connections" \
     Name[ro] "Conexiuni de Rețea" \
     NoDisplay true
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/openarena-server.desktop" NoDisplay true
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/org.freedesktop.Piper.desktop" \
-    Name "Mouse Settings" \
-    Icon "gnome-settings-mouse" \
-    Categories "GNOME;GTK;System;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Contacts.desktop" Categories "GNOME;GTK;Utility;ContactManagement;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.DiskUtility.desktop" Categories "GNOME;GTK;System;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Epiphany.desktop" Name "Epiphany"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.font-viewer.desktop" NoDisplay true
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.gnome-2048.desktop" Icon "2048"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.SoundRecorder.desktop" Categories "GNOME;GTK;Utility;Audio;"
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/org.gnome.tweaks.desktop" \
     Icon "utilities-tweak-tool" \
     Categories "GNOME;GTK;System;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Weather.Application.desktop" Categories "GNOME;GTK;Utility;Navigation;"
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/pavucontrol.desktop" \
-    Categories "GTK;System;Audio;Mixer;" \
-    Name "Audio Settings" \
-    Name[ro] "Setări Audio"
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/pcmanfm-desktop-pref.desktop" \
     Name "Desktop Customiser" \
     Name[ro] "Personalizare Desktop"
@@ -269,10 +252,8 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/stoken-gui-small.desktop" NoDisplay
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/stoken-gui.desktop" NoDisplay true
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/system-config-printer.desktop" Name[ro] "Configurare Imprimantă"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/virtualbox.desktop" Name "VirtualBox"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/vlc.desktop" Name "VLC"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/wireshark-gtk.desktop" Name "Wireshark"
 set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-app-list.desktop" NoDisplay true
-set_launcher_entry "$(find_launcher_by_name Netflix)" Categories "AudioVideo;Video;Player;"
 
 ########################
 ### ARCHIVE MANAGERS ###
@@ -607,6 +588,26 @@ if does-bin-exist "thunar"; then
     done
 fi
 
+#############
+### Games ###
+#############
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gnubg.desktop" \
+    Name "Backgammon" \
+    Name[ro] "Table"
+
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/minecraft-launcher.desktop" \
+    Name "Minecraft" \
+    StartupWMClass "Minecraft 1.17.1"
+
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/nfs2se.desktop" \
+    Name "Need for Speed 2" \
+    Icon "nfs2se" \
+    StartupWMClass "nfs2se"
+
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.gnome-2048.desktop" Icon "2048"
+
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/openarena-server.desktop" NoDisplay true
+
 #####################
 ### IMAGE EDITORS ###
 #####################
@@ -729,13 +730,6 @@ done
 set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default.desktop" Categories "ChromeApp;${MAPS_APP_CATEGORIES}"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Maps.desktop" Categories "GNOME;GTK;${MAPS_APP_CATEGORIES}"
 
-#################
-### MINECRAFT ###
-#################
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/minecraft-launcher.desktop" \
-    Name "Minecraft" \
-    StartupWMClass "Minecraft 1.17.1"
-
 ################
 ### MONOGAME ###
 ################
@@ -829,9 +823,17 @@ set_launcher_entries "$(find_launcher_by_name \"Google Photos\")" \
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Photos.desktop" \
     Icon "multimedia-photo-manager"
 
-############
-### PLEX ###
-############
+#####################
+### Video Players ###
+#####################
+
+### System Video Players
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/vlc.desktop" Name "VLC"
+
+### Netflix
+set_launcher_entry "$(find_launcher_by_name Netflix)" Categories "AudioVideo;Video;Player;"
+
+### Plex
 for LAUNCHER in "${LOCAL_LAUNCHERS_PATH}/chrome-aghlkjcflkcaanjmefomlcfgflfdhkkg-Default.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/plexmediaplayer.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
@@ -880,17 +882,32 @@ done
 #####################
 SETTINGS_APP_CATEGORIES="System;" #"Settings;"
 
+### System Settings
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gnome-control-center.desktop" \
     Name "Settings" \
     Name[ro] "Setări" \
     Categories "GNOME;GTK;${SETTINGS_APP_CATEGORIES}"
 
+### Configuration Settings
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/ca.desrt.dconf-editor.desktop" \
     Name "Configurator" \
     Name[ro] "Configurator" \
     Icon "dconf-editor" \
     Categories "GNOME;GTK;${SETTINGS_APP_CATEGORIES}"
 
+### Audio Settings
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/pavucontrol.desktop" \
+    Categories "GTK;System;Audio;Mixer;" \
+    Name "Audio Settings" \
+    Name[ro] "Setări Audio"
+
+### Mouse Settings
+set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/org.freedesktop.Piper.desktop" \
+    Name "Mouse Settings" \
+    Icon "gnome-settings-mouse" \
+    Categories "GNOME;GTK;System;"
+
+### RGB Settings
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/openrgb.desktop" \
     Categories "Qt;${SETTINGS_APP_CATEGORIES}"
 
