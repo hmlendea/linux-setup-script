@@ -121,6 +121,7 @@
 383870=fw.x86_64
 394360=hoi4
 427520=factorio
+431815=Hidden Folks.x86_64
 435150=supporttool.exe
 464920=surviving mars
 470260=event0.exe
