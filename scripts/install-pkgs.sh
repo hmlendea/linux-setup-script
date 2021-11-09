@@ -172,6 +172,7 @@ install-pkg-aur-manually package-query
 
 install-pkg pacman-contrib
 install-pkg pacutils
+install-pkg pkgfile
 install-pkg yaourt-auto-sync
 
 # Partition editors
