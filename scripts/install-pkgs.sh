@@ -1,6 +1,6 @@
 #!/bin/bash
 source "scripts/common/common.sh"
-source "scripts/common/package-manager-functions.sh"
+source "scripts/common/package-management.sh"
 
 TEMP_DIR_PATH=".temp-sysinstall"
 mkdir -p "${TEMP_DIR_PATH}"

@@ -1,10 +1,5 @@
 #!/bin/bash
-
-SCRIPT_PATH="$(realpath ${0})"
-SCRIPT_DIR_PATH="$(dirname ${SCRIPT_PATH})"
-cd "${SCRIPT_DIR_PATH}"
-
-source "${SCRIPT_DIR_PATH}/common/package-manager-functions.sh"
+source "scripts/common/package-management.sh"
 
 install-pkg pi-hole-server
 install-pkg php-sqlite
