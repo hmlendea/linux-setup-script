@@ -31,7 +31,7 @@ export LESS_TERMCAP_us=$'\e[1;4;033m'
 
 # User
 if [ -z "${USER}" ]; then
-    if [ ! -z "${USERNAME}" ]; then
+    if [ -n "${USERNAME}" ]; then
         export USER="${USERNAME}"
     else
         export USER="$(whoami)"
