@@ -1,5 +1,6 @@
 #!/bin/bash
 source "scripts/common/common.sh"
+source "scripts/common/package-management.sh"
 
 [[ "${DISTRO_FAMILY}" != "Arch" ]] && exit
 
@@ -11,4 +12,8 @@ if [ "${UNUSED_DEPS_COUNT}" -gt 0 ]; then
     echo "${UNUSED_DEPS}"
 
     run-as-su pacman --noconfirm -Rns "${UNUSED_DEPS}"
+fi
+
+if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
+    uninstall-pkg "yaourt-auto-sync"
 fi
