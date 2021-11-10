@@ -20,23 +20,18 @@ function is-package-installed() {
 }
 
 function call-package-manager() {
-	local ARGS="${@:1:$#-1}"
-    local PKG="${@: -1}"
-
     if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-        local ARCH_COMMON_ARGS="--noconfirm" # --needed"
-
         if [ -f "${ROOT_USR_BIN}/paru" ]; then
-            LANG=C LC_TIME="" paru ${ARGS} "${PKG}" ${ARCH_COMMON_ARGS} --noprovides --noredownload --norebuild --sudoloop
+            LANG=C LC_TIME="" paru ${*} --noconfirm --noprovides --noredownload --norebuild --sudoloop
 		elif [ -f "${ROOT_USR_BIN}/yay" ]; then
-            LANG=C LC_TIME="" yay ${ARGS} "${PKG}" ${ARCH_COMMON_ARGS}
+            LANG=C LC_TIME="" yay ${*} --noconfirm
     	elif [ -f "${ROOT_USR_BIN}/yaourt" ]; then
-            LANG=C LC_TIME="" yaourt ${ARGS} "${PKG}" ${ARCH_COMMON_ARGS}
+            LANG=C LC_TIME="" yaourt ${*} --noconfirm
 		else
-		    LANG=C LC_TIME="" run-as-su pacman ${ARGS} "${PKG}" ${ARCH_COMMON_ARGS}
+		    LANG=C LC_TIME="" run-as-su pacman ${*} --noconfirm
 		fi
     elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
-        yes | pkg ${ARGS} "${PKG}"
+        yes | pkg ${*}
     fi
 }
 
