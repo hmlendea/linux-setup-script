@@ -143,7 +143,7 @@ function update-file-if-needed() {
             mkdir -p "${TARGET_DIR}"
         fi
 
-        echo "Copying \"${SOURCE_FILE_PATH}\" → \"${TARGET_FILE_PATH}\"..."
+        echo -e "Copying \e[0;33m${SOURCE_FILE_PATH}\e[0m → \e[0;33m${TARGET_FILE_PATH}\e[0m..."
         if [ -w "${TARGET_DIR}" ]; then
             cp "${SOURCE_FILE_PATH}" "${TARGET_FILE_PATH}"
         else
