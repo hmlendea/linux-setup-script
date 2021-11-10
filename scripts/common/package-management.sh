@@ -11,7 +11,7 @@ function is-package-installed() {
 		    return 1 # False
 	    fi
     elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
-        if (pkg list-installed | grep "^${PKG}/" > /dev/null); then
+        if (apt-cache policy "${PKG}" | grep -q "^\s*Installed:"); then
 	    	return 0 # True
         else
 		    return 1 # False
