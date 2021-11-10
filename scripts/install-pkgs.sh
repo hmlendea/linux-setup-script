@@ -99,7 +99,7 @@ fi
 install-pkg pacman-contrib
 install-pkg pacutils
 install-pkg pkgfile
-install-pkg yaourt-auto-sync
+install-pkg repo-synchroniser
 
 # Partition editors
 install-pkg parted

@@ -60,9 +60,21 @@ function install-dep() {
 	local PKG="${1}"
 
     if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-    	call-package-manager -S --asexplicit "${PKG}"
+        call-package-manager -S --asexplicit "${PKG}"
     elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
         call-package-manager install "${PKG}" # TODO: See if there is a way to mark them as dep
+    fi
+}
+
+function uninstall-pkg() {
+	local PKG="${1}"
+
+    is-package-installed "${PKG}" || return
+
+    if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
+        call-package-manager -Rns "${PKG}"
+    elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
+        call-package-manager remove "${PKG}"
     fi
 }
 
