@@ -23,32 +23,29 @@ function call-package-manager() {
 	local ARGS="${@:1:$#-1}"
     local PKG="${@: -1}"
 
-	if (! is-package-installed "${PKG}"); then
-		echo " >>> Installing package '${PKG}'"
+    if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
+        local ARCH_COMMON_ARGS="--noconfirm" # --needed"
 
-        if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-            local ARCH_COMMON_ARGS="${PM_ARGS} --noconfirm --needed"
-
-    		if [ -f "${ROOT_USR_BIN}/paru" ]; then
-                LANG=C LC_TIME="" paru ${ARGS} "${PKG}" ${ARCH_COMMON_ARGS} --noprovides --noredownload --norebuild --sudoloop
-		    elif [ -f "${ROOT_USR_BIN}/yay" ]; then
-                LANG=C LC_TIME="" yay ${ARGS} "${PKG}" ${ARCH_COMMON_ARGS}
-    		elif [ -f "${ROOT_USR_BIN}/yaourt" ]; then
-                LANG=C LC_TIME="" yaourt ${ARGS} "${PKG}" ${ARCH_COMMON_ARGS}
-		    else
-			    LANG=C LC_TIME="" run-as-su pacman ${ARGS} "${PKG}" ${ARCH_COMMON_ARGS}
-		    fi
-        elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
-            yes | pkg ${ARGS} "${PKG}"
-        fi
-#	else
-#		echo " >>> Skipping package '$PKG' (already installed)"
-	fi
+        if [ -f "${ROOT_USR_BIN}/paru" ]; then
+            LANG=C LC_TIME="" paru ${ARGS} "${PKG}" ${ARCH_COMMON_ARGS} --noprovides --noredownload --norebuild --sudoloop
+		elif [ -f "${ROOT_USR_BIN}/yay" ]; then
+            LANG=C LC_TIME="" yay ${ARGS} "${PKG}" ${ARCH_COMMON_ARGS}
+    	elif [ -f "${ROOT_USR_BIN}/yaourt" ]; then
+            LANG=C LC_TIME="" yaourt ${ARGS} "${PKG}" ${ARCH_COMMON_ARGS}
+		else
+		    LANG=C LC_TIME="" run-as-su pacman ${ARGS} "${PKG}" ${ARCH_COMMON_ARGS}
+		fi
+    elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
+        yes | pkg ${ARGS} "${PKG}"
+    fi
 }
 
 function install-pkg() {
 	local PKG="${1}"
 
+    is-package-installed "${PKG}" && return
+
+    echo " >>> Installing package '${PKG}'"
     if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
     	call-package-manager -S --asexplicit "${PKG}"
     elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
@@ -59,6 +56,9 @@ function install-pkg() {
 function install-dep() {
 	local PKG="${1}"
 
+    is-package-installed "${PKG}" && return
+
+    echo " >>> Installing dependency '${PKG}'"
     if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
         call-package-manager -S --asexplicit "${PKG}"
     elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
@@ -71,6 +71,7 @@ function uninstall-pkg() {
 
     is-package-installed "${PKG}" || return
 
+    echo " >>> Uninstalling package '${PKG}'"
     if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
         call-package-manager -Rns "${PKG}"
     elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
