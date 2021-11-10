@@ -15,5 +15,6 @@ if [ "${UNUSED_DEPS_COUNT}" -gt 0 ]; then
 fi
 
 if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-    uninstall-pkg "yaourt-auto-sync"
+    uninstall-pkg "ttf-ms-fonts"        # Replaced by ttf-ms-win10
+    uninstall-pkg "yaourt-auto-sync"    # Replaced by repo-synchroniser
 fi
