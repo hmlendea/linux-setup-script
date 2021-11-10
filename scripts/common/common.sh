@@ -101,6 +101,13 @@ function file-append-line() {
     fi
 }
 
+function download-file {
+    local URL="${1}"
+    local FILE="${2}"
+
+    [ ! -f "${FILE}" ] && wget "${URL}" -O "${FILE}"
+}
+
 function get-file-checksum() {
     [ ! -f "${@}" ] && return
     sha512sum "${@}" | awk '{print $1}'
