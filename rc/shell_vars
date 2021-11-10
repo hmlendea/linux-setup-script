@@ -14,6 +14,8 @@ ROOT_USR_SHARE="${ROOT_USR}/share"
 ### Environment variables
 #export TERM=linux
 export LD_LIBRARY_PATH="${LD_LIBRARY_PATH-}:/usr/lib32"
+export SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS=0 # Fix for loosing focus in Steam BPM after exiting a game
+export SSL_CERT_DIR="/etc/ssl/certs"
 
 # Shell
 export SHELL="${ROOT_BIN}/bash"
