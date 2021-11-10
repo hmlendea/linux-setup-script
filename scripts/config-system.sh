@@ -135,7 +135,7 @@ elif [ "${SCREEN_RESOLUTION_V}" -lt 1080 ]; then
     TERMINAL_SIZE_ROWS=24
 fi
 
-if (! ${IS_SERVER}); then
+if ${HAS_GUI}; then
     if [[ "${ICON_THEME}" == *"Papirus"* ]]; then
         CURRENT_PAPIRUS_FOLDER_COLOUR=$(papirus-folders -l -t "${ICON_THEME}" | grep ">" | sed 's/ *> *//g')
 
