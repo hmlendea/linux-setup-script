@@ -78,13 +78,6 @@ function uninstall-pkg() {
     fi
 }
 
-function download-file {
-	local URL="${1}"
-	local FILE="${2}"
-
-	[ ! -f "${FILE}" ] && wget "${URL}" -O "${FILE}"
-}
-
 function install-pkg-aur-manually() {
 	local PKG="${1}"
     local PKG_SNAPSHOT_URL="https://aur.archlinux.org/cgit/aur.git/snapshot/${PKG}.tar.gz"
