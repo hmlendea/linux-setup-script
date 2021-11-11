@@ -162,6 +162,14 @@ if [ -f "${ROOT_ETC}/default/grub" ]; then
     set_config_value "${GRUB_CONFIG_FILE}" "GRUB_DISABLE_RECOVERY" true
     set_config_value "${GRUB_CONFIG_FILE}" "GRUB_TIMEOUT" 1
     set_config_value "${GRUB_CONFIG_FILE}" "GRUB_THEME" "${ROOT_USR}/share/grub/themes/Vimix/theme.txt"
+
+    # Set GRUB resolution to the highest supported one
+    if [ "${GPU_MODEL}" == "GeForce GTX 1650" ]; then
+        if [ "${SCREEN_RESOLUTION_H}" -ge 1280 ] \
+        && [ "${SCREEN_RESOLUTION_V}" -ge 1024 ]; then
+            set_config_value "${GRUB_CONFIG_FILE}" "GRUB_GFXMODE" "1280x1024x32"
+        fi
+    fi
 fi
 
 if does-bin-exist "gnome-shell"; then
