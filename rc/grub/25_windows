@@ -1,0 +1,12 @@
+#!/bin/sh
+exec tail -n +3 $0
+
+menuentry "Windows" --class windows {
+    insmod part_gpt
+    insmod ntfs
+    insmod chain
+
+    set root=(hd0,gpt3)
+    chainloader /EFI/Microsoft/Boot/bootmgfw.efi
+    boot
+}
