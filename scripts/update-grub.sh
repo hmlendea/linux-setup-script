@@ -17,7 +17,7 @@ function update-grub-rc {
     if [[ -d "${OS_ROOT_DIR}" ]] || [[ "${OS_ROOT_DIR}" == "/" ]]; then
         update-file-if-needed "${SOURCE_RC_PATH}" "${TARGET_RC_PATH}"
     elif [ -f "${TARGET_RC_PATH}" ]; then
-        rm "${TARGET_RC_PATH}"
+        remove "${TARGET_RC_PATH}"
     fi
 }
 
@@ -25,7 +25,10 @@ function rename-menuentry {
     local OLD_NAME="${1}"
     local NEW_NAME="${2}"
 
-    sed -i 's/^menuentry ['\''\"]'"${OLD_NAME}"'[^'\''\"]*['\''\"]/menuentry '\'"${NEW_NAME}"\''/g' "${GRUB_CFG_PATH}"
+    local QUOTE_PATTERN="[\'\"]"
+    local NON_QUOTE_PATTERN="[^\'\"]"
+
+    run-as-su sed -i 's/^menuentry ['\''\"]'"${OLD_NAME}"'[^'\''\"]*['\''\"]/menuentry '\'"${NEW_NAME}"\''/g' "${GRUB_CFG_PATH}"
 }
 
 function remove_advanced_options {
@@ -36,7 +39,7 @@ function remove_advanced_options {
     END_LINE=$(grep -n "### END /etc/grub.d/10_linux" "${GRUB_CFG_PATH}" | awk -F: '{print $1}' | head -n 1)
     END_LINE=$((END_LINE-1))
 
-    sed -i "${STARTING_LINE}","${END_LINE}"d "${GRUB_CFG_PATH}"
+    run-as-su sed -i "${STARTING_LINE}","${END_LINE}"d "${GRUB_CFG_PATH}"
 }
 
 update-grub-rc "/android" "29_android"
@@ -46,9 +49,9 @@ update-grub-rc "/primeos" "29_primeos"
 update-grub-rc "/" "99_power"
 
 if [ -f "${ROOT_USR_BIN}/update-grub" ]; then
-    update-grub
+    run-as-su update-grub
 else
-    grub-mkconfig -o /boot/grub/grub.cfg
+    run-as-su grub-mkconfig -o "${GRUB_CFG_PATH}"
 fi
 
 #rename-menuentry "Arch Linux" "Linux"

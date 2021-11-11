@@ -74,9 +74,9 @@ function does-bin-exist() {
 
 function run-as-su() {
     if [[ "${UID}" == 0 ]]; then
-        $*
+        "${@}"
     elif ${HAS_SU_PRIVILEGES}; then
-        sudo $*
+        sudo "${@}"
     else
         echo "Failed to run '${*}': Missing SU privileges!"
     fi
