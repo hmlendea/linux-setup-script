@@ -161,7 +161,10 @@ if [ -f "${ROOT_ETC}/default/grub" ]; then
 
     set_config_value "${GRUB_CONFIG_FILE}" "GRUB_DISABLE_RECOVERY" true
     set_config_value "${GRUB_CONFIG_FILE}" "GRUB_TIMEOUT" 1
-    set_config_value "${GRUB_CONFIG_FILE}" "GRUB_THEME" "${ROOT_USR}/share/grub/themes/Vimix/theme.txt"
+
+    if [ -f "${ROOT_USR}/share/grub/themes/Nuci/theme.txt" ]; then
+        set_config_value "${GRUB_CONFIG_FILE}" "GRUB_THEME" "${ROOT_USR}/share/grub/themes/Nuci/theme.txt"
+    fi
 
     # Set GRUB resolution to the highest supported one
     if [ "${GPU_MODEL}" == "GeForce GTX 1650" ]; then
