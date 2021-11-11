@@ -15,6 +15,7 @@ if [ "${UNUSED_DEPS_COUNT}" -gt 0 ]; then
 fi
 
 if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
+    uninstall-pkg "grub2-theme-vimix"   # Replaced by grub2-theme-nuci
     uninstall-pkg "ttf-ms-fonts"        # Replaced by ttf-ms-win10
     uninstall-pkg "yaourt-auto-sync"    # Replaced by repo-synchroniser
 fi
