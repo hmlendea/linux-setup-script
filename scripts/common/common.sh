@@ -202,8 +202,8 @@ CHASSIS_TYPE="Desktop"
 POWERFUL_PC=false
 GAMING_PC=false
 HAS_GUI=false
-IS_EFI=0
 HAS_SU_PRIVILEGES=true
+HAS_EFI_SUPPORT=false
 HAS_OPTIMUS_SUPPORT=false
 
 if [ -d "${ROOT_SYS}/module/battery" ] \
@@ -218,8 +218,9 @@ fi
 if [[ "${CHASSIS_TYPE}" == "Phone" ]]; then
     POWERFUL_PC=false
     GAMING_PC=false
-    IS_EFI=false
     HAS_SU_PRIVILEGES=false
+    HAS_OPTIMUS_SUPPORT=false
+    HAS_EFI_SUPPORT=false
 else
     if [[ "${ARCH_FAMILY}" == "x86" ]]; then
         if [ -n "${CPU_MODEL}" ] && [ $(echo ${CPU_MODEL} | grep -c "Atom") -le 1 ]; then
@@ -235,7 +236,7 @@ else
         fi
     fi
 
-    [ -d "${ROOT_SYS}/firmware/efi/efivars" ] && IS_EFI=1
+    [ -d "${ROOT_SYS}/firmware/efi/efivars" ] && HAS_EFI_SUPPORT=true
 fi
 
 if [ -f "${ROOT_ETC}/systemd/system/display-manager.service" ] || \
@@ -260,6 +261,8 @@ if [[ "${GPU_FAMILY}" == "Nvidia" ]]; then
     if [[ "${GPU_MODEL}" == "GeForce 610M" ]]; then
         HAS_OPTIMUS_SUPPORT=true
     fi
+else
+    HAS_OPTIMUS_SUPPORT=false
 fi
 
 # Username and home directory
