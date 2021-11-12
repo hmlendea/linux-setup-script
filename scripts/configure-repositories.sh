@@ -33,12 +33,10 @@ function add_repository {
     fi
 }
 
-add_repository "hmlendea" 'https://github.com/hmlendea/PKGBUILDs/releases/latest/download/' "" "Never"
-add_repository "dx37essentials" 'https://dx37.gitlab.io/$repo/$arch' "" "PackageOptional" # Fot things like ttf-ms-win10
-
 if [[ "${ARCH_FAMILY}" == "x86" ]]; then
     add_repository "multilib" "" "${ROOT_ETC}/pacman.d/mirrorlist"
     add_repository "valveaur" "http://repo.steampowered.com/arch/valveaur/" "" "" "8DC2CE3A3D245E64"
+    add_repository "dx37essentials" 'https://dx37.gitlab.io/$repo/$arch' "" "PackageOptional" # For things like ttf-ms-win10
 fi
 
 if [[ "${DISTRO_FAMILY}" == "Arch" ]] && ${DATABASES_NEED_UPDATING}; then
