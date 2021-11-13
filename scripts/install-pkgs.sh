@@ -61,7 +61,6 @@ install-pkg neofetch
 ##################
 ### Networking ###
 ##################
-install-pkg dnsutils
 install-pkg net-tools
 install-pkg openssh
 install-pkg wol
