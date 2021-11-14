@@ -25,12 +25,12 @@ if does-bin-exist "neofetch"; then
     NEOFETCH_ASCII_LOGO_FILE=""
 
     if [[ "${DISTRO}" == "Arch Linux" ]]; then
-        NEOFETCH_ASCII_LOGO_FILE="${REPO_RES_DIR}/neofetch-arch-ascii"
+        NEOFETCH_ASCII_LOGO_FILE="${REPO_RES_DIR}/neofetch/ascii-arch"
     elif [[ "${DISTRO}" == "LineageOS" ]]; then
-        NEOFETCH_ASCII_LOGO_FILE="${REPO_RES_DIR}/neofetch-lineageos-ascii"
+        NEOFETCH_ASCII_LOGO_FILE="${REPO_RES_DIR}/neofetch/ascii-lineageos"
     fi
 
-    [ -f "${NEOFETCH_ASCII_LOGO_FILE}" ] && update-file-if-needed "${NEOFETCH_ASCII_LOGO_FILE}" "${NEOFETCH_CONFIG_DIR}/neofetch-distro-ascii"
+    [ -f "${NEOFETCH_ASCII_LOGO_FILE}" ] && update-file-if-needed "${NEOFETCH_ASCII_LOGO_FILE}" "${NEOFETCH_CONFIG_DIR}/ascii"
 fi
 
 # PCManFM's context menu
