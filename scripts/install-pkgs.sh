@@ -122,14 +122,18 @@ install-pkg nano-syntax-highlighting
 # Monitoring
 install-pkg lm_sensors
 
-if ${HAS_GUI}; then
-    if [[ "${ARCH_FAMILY}" == "x86" ]]; then
-        install-pkg grub
-        install-dep os-prober
-        install-pkg update-grub
-        install-dep linux-headers
-    fi
+# Boot loader
+if [[ "${ARCH_FAMILY}" == "x86" ]]; then
+    install-pkg grub
+    install-dep os-prober
+    install-pkg update-grub
+    install-dep linux-headers
 
+    # Customisations
+    install-pkg grub2-theme-nuci
+fi
+
+if ${HAS_GUI}; then
     install-pkg dkms
     install-pkg rsync
 
@@ -304,7 +308,6 @@ if ${HAS_GUI}; then
     install-pkg vimix-cursors
     install-pkg papirus-icon-theme
     install-pkg papirus-folders
-    install-pkg grub-theme-nuci
 
     # Themes - Fallbacks
     install-pkg numix-circle-icon-theme-git
@@ -324,7 +327,7 @@ if ${HAS_GUI}; then
     install-pkg ttf-amiri # Classical Arabic in Naskh style
     install-pkg ttf-ancient-fonts # Aegean, Egyptian, Cuneiform, Anatolian, Maya, Analecta
     install-pkg ttf-baekmuk # Korean
-    install-pkg ttf-freefont
+    install-pkg gnu-free-fonts
     install-pkg ttf-hannom # Vietnamese
     install-pkg ttf-ubraille # Braille
 
