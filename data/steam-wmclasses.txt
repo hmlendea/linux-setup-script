@@ -27,6 +27,7 @@
 47780=steam_app_47780
 48000=limbo
 49520=Borderlands2
+50130=steam_app_50130
 50300=specops.i386
 57300=Amnesia.bin.x86_64
 65980=CivBE
