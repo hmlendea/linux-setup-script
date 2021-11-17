@@ -79,9 +79,7 @@ function uninstall-pkg() {
 }
 
 function uninstall-pkgs() {
-	local PKGS=${@}
-
-    for PKG in ${PKGS[@]}; do
+    for PKG in ${*// /\n}; do
         is-package-installed "${PKG}" || return
 
         echo " >>> Uninstalling package: ${PKG}"
