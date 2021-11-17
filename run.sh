@@ -78,7 +78,7 @@ if [ "${OS}" != "Windows" ]; then
     # Manage packages and extensions
     execute-script "install-pkgs.sh"
     update-system
-    [ "${DISTRO_FAMILY}" != "Android" ] && execute-script "uninstall-pkgs.sh"
+    [ "${DISTRO_FAMILY}" != "Android" ] && execute-script-superuser "uninstall-pkgs.sh"
 
 fi
 

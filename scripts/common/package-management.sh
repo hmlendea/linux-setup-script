@@ -21,15 +21,19 @@ function is-package-installed() {
 
 function call-package-manager() {
     if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-        if [ -f "${ROOT_USR_BIN}/paru" ]; then
-            LANG=C LC_TIME="" paru ${*} --noconfirm --noprovides --noredownload --norebuild --sudoloop
-		elif [ -f "${ROOT_USR_BIN}/yay" ]; then
-            LANG=C LC_TIME="" yay ${*} --noconfirm
-    	elif [ -f "${ROOT_USR_BIN}/yaourt" ]; then
-            LANG=C LC_TIME="" yaourt ${*} --noconfirm
-		else
-		    LANG=C LC_TIME="" run-as-su pacman ${*} --noconfirm
-		fi
+        if [[ "${UID}" != "0" ]]; then
+            if [ -f "${ROOT_USR_BIN}/paru" ]; then
+                LANG=C LC_TIME="" paru ${*} --noconfirm --noprovides --noredownload --norebuild --sudoloop
+		    elif [ -f "${ROOT_USR_BIN}/yay" ]; then
+                LANG=C LC_TIME="" yay ${*} --noconfirm
+        	elif [ -f "${ROOT_USR_BIN}/yaourt" ]; then
+                LANG=C LC_TIME="" yaourt ${*} --noconfirm
+		    else
+		        LANG=C LC_TIME="" run-as-su pacman ${*} --noconfirm
+		    fi
+        else
+            LANG=C LC_TIME="" pacman ${*} --noconfirm
+        fi
     elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
         yes | pkg ${*}
     fi
@@ -40,7 +44,7 @@ function install-pkg() {
 
     is-package-installed "${PKG}" && return
 
-    echo " >>> Installing package '${PKG}'"
+    echo " >>> Installing package: ${PKG}"
     if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
     	call-package-manager -S --asexplicit "${PKG}"
     elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
@@ -53,7 +57,7 @@ function install-dep() {
 
     is-package-installed "${PKG}" && return
 
-    echo " >>> Installing dependency '${PKG}'"
+    echo " >>> Installing dependency: ${PKG}"
     if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
         call-package-manager -S --asexplicit "${PKG}"
     elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
@@ -66,12 +70,27 @@ function uninstall-pkg() {
 
     is-package-installed "${PKG}" || return
 
-    echo " >>> Uninstalling package '${PKG}'"
+    echo " >>> Uninstalling package: ${PKG}"
     if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
         call-package-manager -Rns "${PKG}"
     elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
         call-package-manager remove "${PKG}"
     fi
+}
+
+function uninstall-pkgs() {
+	local PKGS=${@}
+
+    for PKG in ${PKGS[@]}; do
+        is-package-installed "${PKG}" || return
+
+        echo " >>> Uninstalling package: ${PKG}"
+        if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
+            call-package-manager -Rns "${PKG}"
+        elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
+            call-package-manager remove "${PKG}"
+        fi
+    done
 }
 
 function install-pkg-aur-manually() {
