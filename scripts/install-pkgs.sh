@@ -236,6 +236,7 @@ if ${HAS_GUI}; then
     ${POWERFUL_PC} || install-pkg mate-calc
 
     install-pkg gnome-disk-utility
+    install-pkg gnome-network-displays
 
     if ${POWERFUL_PC}; then
         install-pkg gnome-calendar
@@ -314,6 +315,7 @@ if ${HAS_GUI}; then
     install-pkg paper-icon-theme
 
     # Fonts
+    install-pkg gnu-free-fonts
     install-pkg ttf-ms-win10
     install-pkg noto-fonts
     install-pkg noto-fonts-emoji
@@ -327,7 +329,6 @@ if ${HAS_GUI}; then
     install-pkg ttf-amiri # Classical Arabic in Naskh style
     install-pkg ttf-ancient-fonts # Aegean, Egyptian, Cuneiform, Anatolian, Maya, Analecta
     install-pkg ttf-baekmuk # Korean
-    install-pkg gnu-free-fonts
     install-pkg ttf-hannom # Vietnamese
     install-pkg ttf-ubraille # Braille
 
