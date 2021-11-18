@@ -260,7 +260,12 @@ if [ -f "${GTK3_CONFIG_FILE}" ]; then
 fi
 
 if [ -f "${GTK4_CONFIG_FILE}" ]; then
-    set_config_value "${GTK3_CONFIG_FILE}" gtk-application-prefer-dark-theme ${GTK_THEME_IS_DARK_BINARY}
+    set_config_value "${GTK4_CONFIG_FILE}" gtk-application-prefer-dark-theme ${GTK_THEME_IS_DARK_BINARY}
+    set_config_value "${GTK4_CONFIG_FILE}" gtk-theme-name "${GTK_THEME}"
+    set_config_value "${GTK4_CONFIG_FILE}" gtk-icon-theme-name "${ICON_THEME}"
+    set_config_value "${GTK4_CONFIG_FILE}" gtk-cursor-theme-name "${CURSOR_THEME}"
+    set_config_value "${GTK4_CONFIG_FILE}" gtk-button-images 0
+    set_config_value "${GTK4_CONFIG_FILE}" gtk-menu-images 0
 fi
 
 if [ -f "${HOME_REAL}/.config/lxsession/LXDE/desktop.conf" ]; then
