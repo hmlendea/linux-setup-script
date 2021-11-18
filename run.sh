@@ -76,10 +76,9 @@ execute-script-superuser "configure-repositories.sh"
 # Package management
 if [ "${OS}" != "Windows" ]; then
     # Manage packages and extensions
-    execute-script "install-pkgs.sh"
+    execute-script "uninstall-pkgs.sh"
     update-system
-    [ "${DISTRO_FAMILY}" != "Android" ] && execute-script-superuser "uninstall-pkgs.sh"
-
+    execute-script "install-pkgs.sh"
 fi
 
 if [[ "${OS}" == "Linux" ]]; then
