@@ -36,7 +36,7 @@ function set_config_value() {
             file-append-line "${FILE_PATH}" "${KEY}${SEPARATOR}${VALUE}"
         fi
 
-        echo "${FILE_PATH} >>> ${KEY} ${SEPARATOR} ${VALUE}"
+        echo "${FILE_PATH} >>> ${KEY}${SEPARATOR}${VALUE}"
     fi
 }
 
@@ -95,7 +95,7 @@ function set_json_value() {
     # If the value is not already set
     if [ "${VALUE}" != "${CURRENT_VALUE}" ]; then
         jq "${PROPERTY}"'='"${VALUE}" <<< ${FILE_CONTENT} > "${FILE_PATH}"
-        echo "${FILE_PATH} >>> ${PROPERTY} = ${VALUE}"
+        echo "${FILE_PATH} >>> ${PROPERTY}=${VALUE}"
     fi
 }
 

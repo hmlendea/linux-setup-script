@@ -599,6 +599,15 @@ if [ -f "${TERRARIA_CONFIG_FILE}" ]; then
     set_json_value "${TERRARIA_CONFIG_FILE}" ".QuickLaunch" true
 fi
 
+###########
+### GPG ###
+###########
+if does-bin-exist "gpg"; then
+    GNUPG_DIRMNGR_CONFIG="${HOME}/.gnupg/dirmngr.conf"
+
+    set_config_value --separator " " "${GNUPG_DIRMNGR_CONFIG}" keyserver "pgpkeys.mit.edu"
+fi
+
 #################
 ### GSConnect ###
 #################
