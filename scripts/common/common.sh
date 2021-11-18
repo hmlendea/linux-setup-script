@@ -2,12 +2,12 @@
 
 # Get local path
 SOURCE="${BASH_SOURCE[0]}"
-while [ -h "$SOURCE" ]; do
-  REPO_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
-  SOURCE="$(readlink "$SOURCE")"
-  [[ $SOURCE != /* ]] && SOURCE="$EXEDIR/$SOURCE"
+while [ -h "${SOURCE}" ]; do
+  REPO_DIR="$( cd -P "$( dirname "${SOURCE}" )" && pwd )"
+  SOURCE="$(readlink ${SOURCE})"
+  [[ "${SOURCE}" != /* ]] && SOURCE="${EXEDIR}/${SOURCE}"
 done
-REPO_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+REPO_DIR="$( cd -P "$( dirname "${SOURCE}" )" && pwd )"
 REPO_DIR=$(realpath "${REPO_DIR}/../..")
 
 REPO_DATA_DIR="${REPO_DIR}/data"
@@ -28,17 +28,17 @@ fi
 
 OS=$(uname -s)
 
-if [[ "${DISTRO}" == "arch" ]] \
-|| [[ "${DISTRO}" == "ARCH" ]]; then
+if [ "${DISTRO}" = "arch" ] \
+|| [ "${DISTRO}" = "ARCH" ]; then
     DISTRO="Arch Linux"
     DISTRO_FAMILY="Arch"
-elif [[ "${DISTRO}" == "lineageos" ]] || [ $(uname -a | grep -c "Android") -ge 1 ]; then
+elif [ "${DISTRO}" = "lineageos" ] || [ $(uname -a | grep -c "Android") -ge 1 ]; then
     DISTRO="LineageOS"
     DISTRO_FAMILY="Android"
     OS="Android"
 fi
 
-if [[ "${OS}" == "CYGWIN_NT-10.0" ]]; then
+if [ "${OS}" = "CYGWIN_NT-10.0" ]; then
     DISTRO="Cygwin"
     DISTRO_FAMILY="Windows"
     OS="Windows"
@@ -46,7 +46,7 @@ fi
 
 # Root partition mount point
 ROOT_PATH=""
-[ "${DISTRO_FAMILY}" == "Android" ] && ROOT_PATH="/data/data/com.termux/files/usr"
+[ "${DISTRO_FAMILY}" = "Android" ] && ROOT_PATH="/data/data/com.termux/files/usr"
 
 ROOT_BIN="${ROOT_PATH}/bin"
 ROOT_BOOT="${ROOT_PATH}/boot"
@@ -61,7 +61,7 @@ ROOT_USR_LIB="${ROOT_USR}/lib"
 ROOT_USR_SHARE="${ROOT_USR}/share"
 
 # Functions
-function does-bin-exist() {
+does-bin-exist () {
     BINARY_NAME="${@}"
 
     if [ -f "${ROOT_BIN}/${BINARY_NAME}" ] \
@@ -72,8 +72,8 @@ function does-bin-exist() {
     return 1 # False
 }
 
-function run-as-su() {
-    if [[ "${UID}" == 0 ]]; then
+run-as-su() {
+    if [ "${UID}" -eq 0 ]; then
         "${@}"
     elif ${HAS_SU_PRIVILEGES}; then
         sudo "${@}"
@@ -82,7 +82,7 @@ function run-as-su() {
     fi
 }
 
-function remove() {
+remove() {
     if [ -w "${FILE}" ]; then
         rm $*
     else
@@ -90,7 +90,7 @@ function remove() {
     fi
 }
 
-function file-append-line() {
+file-append-line() {
     FILE_PATH="${1}"
     LINE="${@:2}"
 
@@ -124,7 +124,7 @@ function does-file-need-updating() {
         local SOURCE_FILE_CHECKSUM=$(get-file-checksum "${SOURCE_FILE_PATH}")
         local TARGET_FILE_CHECKSUM=$(get-file-checksum "${TARGET_FILE_PATH}")
 
-        if [[ "${SOURCE_FILE_CHECKSUM}" == "${TARGET_FILE_CHECKSUM}" ]]; then
+        if [ "${SOURCE_FILE_CHECKSUM}" = "${TARGET_FILE_CHECKSUM}" ]; then
             FILES_ARE_SAME=true
         fi
     fi
@@ -159,10 +159,10 @@ if [ -z "${ARCH}" ] && $(does-bin "uname"); then
     ARCH=$(lscpu | grep "Architecture" | awk -F: '{print $2}' | sed 's/  //g' | sed 's/^ *//g')
 fi
 
-[ "${ARCH}" == "x86_64" ]   && ARCH_FAMILY="x86"
-[ "${ARCH}" == "aarch64" ]  && ARCH_FAMILY="arm"
-[ "${ARCH}" == "armv7l" ]   && ARCH_FAMILY="arm"
-[ "${ARCH}" == "armv8l" ]   && ARCH_FAMILY="arm"
+[ "${ARCH}" = "x86_64" ]   && ARCH_FAMILY="x86"
+[ "${ARCH}" = "aarch64" ]  && ARCH_FAMILY="arm"
+[ "${ARCH}" = "armv7l" ]   && ARCH_FAMILY="arm"
+[ "${ARCH}" = "armv8l" ]   && ARCH_FAMILY="arm"
 
 # System characteristics
 if does-bin-exist "lscpu"; then
@@ -209,27 +209,27 @@ HAS_OPTIMUS_SUPPORT=false
 if [ -d "${ROOT_SYS}/module/battery" ] \
 && [ -d "${ROOT_PROC}/acpi/button/lid" ]; then
     CHASSIS_TYPE="Laptop"
-elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
+elif [ "${DISTRO_FAMILY}" = "Android" ]; then
     CHASSIS_TYPE="Phone"
 elif [ $(uname -r | grep "raspberry" -c) -ge 1 ]; then
     CHASSIS_TYPE="SBC"
 fi
 
-if [[ "${CHASSIS_TYPE}" == "Phone" ]]; then
+if [ "${CHASSIS_TYPE}" = "Phone" ]; then
     POWERFUL_PC=false
     GAMING_PC=false
     HAS_SU_PRIVILEGES=false
     HAS_OPTIMUS_SUPPORT=false
     HAS_EFI_SUPPORT=false
 else
-    if [[ "${ARCH_FAMILY}" == "x86" ]]; then
+    if [ "${ARCH_FAMILY}" = "x86" ]; then
         if [ -n "${CPU_MODEL}" ] && [ $(echo ${CPU_MODEL} | grep -c "Atom") -le 1 ]; then
             POWERFUL_PC=true
         fi
     fi
 
     if ${POWERFUL_PC}; then
-        if [[ "${CPU_MODEL}" == "Ryzen 7 5800X" ]]; then
+        if [ "${CPU_MODEL}" = "Ryzen 7 5800X" ]; then
             GAMING_PC=true
         else
             GAMING_PC=false
@@ -239,14 +239,18 @@ else
     [ -d "${ROOT_SYS}/firmware/efi/efivars" ] && HAS_EFI_SUPPORT=true
 fi
 
-if [ -f "${ROOT_ETC}/systemd/system/display-manager.service" ] || \
-   [[ "${HOSTNAME}" = *PC ]] || \
-   [[ "${HOSTNAME}" = *Top ]]; then
+if [ -f "${ROOT_ETC}/systemd/system/display-manager.service" ]; then
     HAS_GUI=true
+else
+    case ${HOSTNAME} in
+        *"PC")  HAS_GUI=true ;;
+        *"Top") HAS_GUI=true ;;
+        *)      HAS_GUI=false ;;
+    esac
 fi
 
 if does-bin-exist "sudo"; then
-    if [[ "${DISTRO_FAMILY}" == "Android" ]]; then
+    if [ "${DISTRO_FAMILY}" = "Android" ]; then
         [ -f "/sbin/su" ] && HAS_SU_PRIVILEGES=true
     else
         HAS_SU_PRIVILEGES=true
@@ -255,10 +259,10 @@ else
     HAS_SU_PRIVILEGES=false
 fi
 
-[ "${UID}" == 0 ] && HAS_SU_PRIVILEGES=true
+[ "${UID}" -eq 0 ] && HAS_SU_PRIVILEGES=true
 
-if [[ "${GPU_FAMILY}" == "Nvidia" ]]; then
-    if [[ "${GPU_MODEL}" == "GeForce 610M" ]]; then
+if [ "${GPU_FAMILY}" = "Nvidia" ]; then
+    if [ "${GPU_MODEL}" = "GeForce 610M" ]; then
         HAS_OPTIMUS_SUPPORT=true
     fi
 else
@@ -267,10 +271,10 @@ fi
 
 # Username and home directory
 USER_REAL=${SUDO_USER}
-[ ! -n "${USER_REAL}" ] && USER_REAL=${USER}
+[ -z "${USER_REAL}" ] && USER_REAL=${USER}
 
 HOME_REAL=$(grep "${USER_REAL}" "${ROOT_PATH}/etc/passwd" 2>/dev/null | cut -f6 -d":")
-[ "${USER_REAL}" == "root" ] && HOME_REAL="${ROOT_PATH}/root"
+[ "${USER_REAL}" = "root" ] && HOME_REAL="${ROOT_PATH}/root"
 
 if [ ! -d "${HOME_REAL}" ]; then
     if [ -d "/data/data/com.termux/files/home" ]; then

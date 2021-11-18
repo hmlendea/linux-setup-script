@@ -22,7 +22,7 @@ function find_launcher_by_name() {
     fi
 
     find "${GLOBAL_LAUNCHERS_PATH}" -type f -iname "*.desktop" -print0 | while IFS= read -r -d $'\0' LAUNCHER; do
-        if grep -q "^Name="${NAME_ENTRY_VALUE}"$" "${LAUNCHER}"; then
+        if grep -q '^Name='"${NAME_ENTRY_VALUE}"'' "${LAUNCHER}"; then
             echo "${LAUNCHER}"
             return
         fi
@@ -59,7 +59,7 @@ function set_launcher_entries() {
 function set_launcher_entry() {
     local FILE="${1}"
     local KEY="${2}"
-    local VAL="${@:3}"
+    local VAL="${*:3}"
 
     if [ "$#" != "3" ]; then
         echo "ERROR: Invalid arguments (count: $#) for set_launcher_entry: ${*}" >&2
@@ -77,13 +77,18 @@ function set_launcher_entry() {
     local KEY_LANGUAGE=$(echo "${KEY}" | sed -e 's/^'"${KEY_ID}"'//g' -e 's/\s//g' -e 's/^.\(.*\).$/\1/g')
 
     if [ "${KEY_ID}" != "FullName" ]; then
-        local KEY_ESC=$(echo "${KEY}" | sed -e 's/[]\/$*.^|[]/\\&/g')
-        local VAL_ESC=$(echo "${VAL}" | sed -e 's/[]\/$*.^|[]/\\&/g')
+        local KEY_ESC="${KEY}"
+        local VAL_ESC="${VAL}"
 
+        local FILE_CONTENTS=""
         local HAS_MULTIPLE_SECTIONS=false
-        local LAST_SECTION_LINE=$(wc -l "${FILE}" | awk '{print $1}')
+        local LAST_SECTION_LINE=-1
 
-        local FILE_CONTENTS=$(cat "${FILE}")
+        KEY_ESC=$(echo "${KEY}" | sed -e 's/[]\/$*.^|[]/\\&/g')
+        VAL_ESC=$(echo "${VAL}" | sed -e 's/[]\/$*.^|[]/\\&/g')
+
+        FILE_CONTENTS=$(cat "${FILE}")
+        LAST_SECTION_LINE=$(wc -l "${FILE}" | awk '{print $1}')
 
         if [ $(grep -c "^\[.*\]$" <<< "${FILE_CONTENTS}") -gt 1 ]; then
             HAS_MULTIPLE_SECTIONS=true
@@ -143,7 +148,7 @@ function set_launcher_entry_for_language() {
 function set_launcher_entry_english() {
     local FILE="${1}"
     local KEY="${2}"
-    local VAL="${@:3}"
+    local VAL="${*:3}"
 
     set_launcher_entries "${FILE}" \
         "${KEY}[en_AU]" "${VAL}" \
@@ -156,7 +161,7 @@ function set_launcher_entry_english() {
 function set_launcher_entry_romanian() {
     local FILE="${1}"
     local KEY="${2}"
-    local VAL="${@:3}"
+    local VAL="${*:3}"
 
     set_launcher_entries "${FILE}" \
         "${KEY}[ro_RO]" "${VAL}" \
@@ -165,7 +170,7 @@ function set_launcher_entry_romanian() {
 function set_launcher_entry_spanish() {
     local FILE="${1}"
     local KEY="${2}"
-    local VAL="${@:3}"
+    local VAL="${*:3}"
 
     set_launcher_entries "${FILE}" \
         "${KEY}[es_AR]" "${VAL}" \
@@ -1193,7 +1198,7 @@ if [ -f "${ROOT_USR_BIN}/steam" ]; then
                     if [ $(grep -c "^${APP_ID}=" "${STEAM_WMCLASSES_FILE}") -ne 0 ]; then
                         APP_WMCLASS=$(grep "^${APP_ID}=" "${STEAM_WMCLASSES_FILE}" | awk -F= '{print $2}')
                     else
-                        APP_WMCLASS=$(echo "${APP_NAME}" | sed 's/\ //g')
+                        APP_WMCLASS="steam_app_${APP_ID}"
                         echo "CANNOT GET WMCLASS FOR STEAMAPP ${APP_ID} - ${APP_NAME}"
                     fi
 
