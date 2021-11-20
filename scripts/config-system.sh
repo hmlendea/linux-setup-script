@@ -477,8 +477,12 @@ if does-bin-exist "firefox"; then
     FIREFOX_PROFILES_INI_FILE="${HOME_REAL}/.mozilla/firefox/profiles.ini"
     FIREFOX_PROFILE_ID=$(grep "^Path=" "${FIREFOX_PROFILES_INI_FILE}" | awk -F= '{print $2}' | head -n 1)
 
+    # First time prompts
+    set_firefox_config "${FIREFOX_PROFILE_ID}" browser.aboutConfig.showWarning false
+    set_firefox_config "${FIREFOX_PROFILE_ID}" devtools.everOpened true
+    set_firefox_config "${FIREFOX_PROFILE_ID}" extensions.fxmonitor.firstAlertShown true
+
     set_firefox_config "${FIREFOX_PROFILE_ID}" "beacon.enabled" false
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.anchor_color" "#00BCD4"
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.newtabpage.activity-stream.feeds.section.highlights" false
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.newtabpage.activity-stream.feeds.snippets" false
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.newtabpage.activity-stream.feeds.topsites" false
@@ -490,7 +494,6 @@ if does-bin-exist "firefox"; then
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.tabs.tabMinWidth" 0
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.tabs.warnOnClose" false
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.translation.detectLanguage" true
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.underline_anchors" false
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.uidensity" 1
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.autoFill" false
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.speculativeConnect.enabled" false
@@ -511,9 +514,13 @@ if does-bin-exist "firefox"; then
     set_firefox_config "${FIREFOX_PROFILE_ID}" "devtools.theme" ${GTK_THEME_VARIANT}
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.in-content.dark-mode" ${GTK_THEME_IS_DARK}
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.tabs.drawInTitlebar" true
+    set_firefox_config "${FIREFOX_PROFILE_ID}" browser.uidensity 1 # Compact mode
     set_firefox_config "${FIREFOX_PROFILE_ID}" "ui.systemUsesDarkTheme" ${GTK_THEME_IS_DARK}
-
     set_firefox_config "${FIREFOX_PROFILE_ID}" "widget.disable-native-theme-for-content" true
+
+    # Appearance - Links
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.anchor_color" "#00BCD4"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.underline_anchors" false
 
     # Useless features
     set_firefox_config "${FIREFOX_PROFILE_ID}" "extensions.pocket.enabled" false
@@ -532,6 +539,9 @@ if does-bin-exist "firefox"; then
     set_firefox_config "${FIREFOX_PROFILE_ID}" "toolkit.telemetry.shutdownPingSender.enabled" "false"
     set_firefox_config "${FIREFOX_PROFILE_ID}" "toolkit.telemetry.unified" "false"
     set_firefox_config "${FIREFOX_PROFILE_ID}" "toolkit.telemetry.updatePing.enabled" "false"
+
+    # Telemetry - Data reporting
+    set_firefox_config "${FIREFOX_PROFILE_ID}" datareporting.healthreport.uploadEnabled false
 
     # DNS Prefetching
     set_firefox_config "${FIREFOX_PROFILE_ID}" "network.dns.disablePrefetch" true
