@@ -72,7 +72,7 @@ does-bin-exist () {
     return 1 # False
 }
 
-run-as-su() {
+function run-as-su() {
     if [ "${UID}" -eq 0 ]; then
         "${@}"
     elif ${HAS_SU_PRIVILEGES}; then
@@ -82,17 +82,29 @@ run-as-su() {
     fi
 }
 
-remove() {
+function remove() {
+    local FILE="${*}"
+
     if [ -w "${FILE}" ]; then
-        rm $*
+        rm "${FILE}"
     else
-        run-as-su rm $*
+        run-as-su rm "${FILE}"
     fi
 }
 
-file-append-line() {
-    FILE_PATH="${1}"
-    LINE="${@:2}"
+function read-file() {
+    local FILE_PATH="${*}"
+
+    if [ -r "${FILE_PATH}" ]; then
+        cat "${FILE_PATH}"
+    else
+        run-as-su cat "${FILE_PATH}"
+    fi
+}
+
+function file-append-line() {
+    local FILE_PATH="${1}"
+    local LINE="${@:2}"
 
     if [ -w "${FILE_PATH}" ]; then
         echo "${LINE}" >> "${FILE_PATH}" 2>/dev/null
