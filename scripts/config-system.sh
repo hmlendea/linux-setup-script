@@ -775,6 +775,15 @@ if does-bin-exist "gnome-screenshot"; then
     set_gsetting "org.gnome.gnome-screenshot" last-save-directory "${HOME}/Pictures"
 fi
 
+############
+### Sudo ###
+############
+if does-bin-exist "sudo"; then
+    SUDO_CONFIG_FILE="/etc/sudoers"
+
+    set_config_value "${SUDO_CONFIG_FILE}" "Defaults timestamp_timeout" 15
+fi
+
 ################
 ### Terminal ###
 ################

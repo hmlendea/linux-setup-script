@@ -10,7 +10,7 @@ ROOT_USR="${ROOT_PATH}/usr"
 ROOT_USR_BIN="${ROOT_USR}/bin"
 
 alias sh="${SHELL}"
-alias sudo='sudo '
+alias sudo='sudo ' # Enables the simultaneous use of sudo and other aliases
 alias lsmnt='lsblk -l | tail -n +2 | awk '\''length($7) { print $1" => "$7 }'\'''
 alias grep='grep -a --color --text'
 alias pcregrep='pcregrep -a --color --text'

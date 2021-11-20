@@ -20,8 +20,10 @@ function set_config_value() {
     fi
 
     #local VALUE=$(echo "${VALUE_RAW}" | sed -e 's/[]\/$*.^|[]/\\&/g')
-    local VALUE=$VALUE_RAW
-    local FILE_CONTENT=$(cat "${FILE_PATH}")
+    local VALUE="${VALUE_RAW}"
+    local FILE_CONTENT=""
+
+    FILE_CONTENT=$(read-file "${FILE_PATH}")
 
     # If the value is not already set
     if [[ $(grep -c "^${KEY}${SEPARATOR}${VALUE}$" <<< "$FILE_CONTENT") == 0 ]]; then
