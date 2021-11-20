@@ -610,6 +610,11 @@ fi
 if does-bin-exist "gpg"; then
     GNUPG_DIRMNGR_CONFIG="${HOME}/.gnupg/dirmngr.conf"
 
+    if [ ! -d "${HOME}/.gnupg" ]; then
+        mkdir "${HOME}/.gnupg"
+        touch "${GNUPG_DIRMNGR_CONFIG}"
+    fi
+
     set_config_value --separator " " "${GNUPG_DIRMNGR_CONFIG}" keyserver "pgpkeys.mit.edu"
 fi
 
