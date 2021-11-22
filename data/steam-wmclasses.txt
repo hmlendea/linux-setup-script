@@ -35,6 +35,7 @@
 70300=vvvvvv.x86_64
 91310=DeadIslandGame
 98200=FrozenSynapse
+99910=steam_app_99910
 105600=Terraria.bin.x86_64
 107100=Bastion.bin.x86_64
 108600=Project Zomboid
@@ -125,9 +126,11 @@
 435150=supporttool.exe
 435400=Hidden Folks.x86_64
 464920=surviving mars
+469820=steam_app_469820
 470260=event0.exe
 476240=knights.exe
 496300=Kingdom.x86_64
+552110=steam_app_552110
 570940=darksoulsremastered.exe
 588430=falloutshelter.exe
 620980=beat\ saber.exe
