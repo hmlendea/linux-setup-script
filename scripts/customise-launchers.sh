@@ -96,8 +96,8 @@ function set_launcher_entry() {
             FILE_CONTENTS=$(echo "${FILE_CONTENTS}" | head -n "${LAST_SECTION_LINE}")
         fi
 
-        if [[ $(grep -c "^${KEY_ESC}=${VAL}$" <<< "${FILE_CONTENTS}") == 0 ]] || \
-        [[ $(grep -c "^${KEY_ESC}=$" <<< "${FILE_CONTENTS}") == 1 ]]; then
+        if [[ $(grep -c "^${KEY_ESC}=${VAL_ESC}$" <<< "${FILE_CONTENTS}") == 0 ]] \
+        || [[ $(grep -c "^${KEY_ESC}=$" <<< "${FILE_CONTENTS}") == 1 ]]; then
             if [ $(grep -c "^${KEY_ESC}=.*$" <<< "${FILE_CONTENTS}") -gt 0 ]; then
                 if [ -z "${VAL}" ]; then
                     sed -i '1,'"${LAST_SECTION_LINE}"' {/^'"${KEY_ESC}"'=.*$/d}' "${FILE}"
@@ -606,7 +606,7 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gnubg.desktop" \
 
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/minecraft-launcher.desktop" \
     Name "Minecraft" \
-    StartupWMClass "Minecraft 1.17.1"
+    StartupWMClass "Minecraft* 1.17.1"
 
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/nfs2se.desktop" \
     Name "Need for Speed 2" \
