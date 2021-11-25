@@ -96,7 +96,7 @@ function set_launcher_entry() {
             FILE_CONTENTS=$(echo "${FILE_CONTENTS}" | head -n "${LAST_SECTION_LINE}")
         fi
 
-        if [[ $(grep -c "^${KEY_ESC}=${VAL_ESC}$" <<< "${FILE_CONTENTS}") == 0 ]] \
+        if [[ $(grep -c "^${KEY_ESC}=\(${VAL}\|${VAL_ESC}\)$" <<< "${FILE_CONTENTS}") == 0 ]] \
         || [[ $(grep -c "^${KEY_ESC}=$" <<< "${FILE_CONTENTS}") == 1 ]]; then
             if [ $(grep -c "^${KEY_ESC}=.*$" <<< "${FILE_CONTENTS}") -gt 0 ]; then
                 if [ -z "${VAL}" ]; then
