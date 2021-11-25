@@ -378,7 +378,7 @@ if ${HAS_GUI}; then
 
     if [[ "${ARCH_FAMILY}" == "x86" ]]; then
         install-pkg electron
-        install-pkg chromedriver
+        ! is-package-installed "chromium" && install-pkg chromedriver
     fi
 
     [[ "${ARCH_FAMILY}" == "x86" ]] && install-pkg visual-studio-code-bin
