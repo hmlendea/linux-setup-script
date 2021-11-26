@@ -581,9 +581,18 @@ MC_LAUNCHER_SETTINGS_FILE="${MC_DIR}/launcher_settings.json"
 if [ -f "${MC_OPTIONS_FILE}" ]; then
     DEVICE_ID=$(shuf -i1000000000000000000-9999999999999999999 -n1)
 
-    set_config_value --separator ":" "${MC_OPTIONS_FILE}" true
-    set_config_value --separator ":" "${MC_OPTIONS_FILE}" darkMojangStudiosBackground ${GTK_THEME_IS_DARK}
-    set_config_value --separator ":" "${MC_OPTIONS_FILE}" pauseOnLostFocus false
+    set_config_value --separator ":" "${MC_OPTIONS_FILE}" lang "en_gb"
+
+    # Appearance
+    set_config_value --separator ":" "${MC_OPTIONS_FILE}" darkMojangStudiosBackground "${GTK_THEME_IS_DARK}"
+
+    # Input
+    set_config_value --separator ":" "${MC_OPTIONS_FILE}" pauseOnLostFocus true
+    set_config_value --separator ":" "${MC_OPTIONS_FILE}" rawMouseInput true
+
+    # First time experiences
+    set_config_value --separator ":" "${MC_OPTIONS_FILE}" skipMultiplayerWarning true
+    set_config_value --separator ":" "${MC_OPTIONS_FILE}" joinedFirstServer true
 
     set_json_value "${MC_LAUNCHER_PROFILES_FILE}" '.settings.crashAssistance' false
     set_json_value "${MC_LAUNCHER_SETTINGS_FILE}" '.deviceId' "${DEVICE_ID}"
