@@ -82,6 +82,9 @@ if [ "${OS}" != "Windows" ]; then
 fi
 
 if [[ "${OS}" == "Linux" ]]; then
+    execute-script "clean-files.sh"
+    execute-script-superuser "clean-files.sh"
+
     execute-script "update-extensions.sh"
 
     if ${HAS_GUI}; then
