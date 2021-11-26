@@ -16,6 +16,7 @@ function removeDirectoryForMissingBin() {
     done
 }
 
+removeDirectoryForMissingBin "alsi" "${HOME_CONFIG}/alsi"
 removeDirectoryForMissingBin "audacity" "${HOME}/.audacity-data"
 removeDirectoryForMissingBin "autokey-shell" "${HOME_LOCAL_SHARE}/autokey"
 removeDirectoryForMissingBin "avidemux" "${HOME}/.avidemux6"
@@ -32,6 +33,8 @@ removeDirectoryForMissingBin "google-chrome" \
     "${HOME_CONFIG}/google-chrome"
 removeDirectoryForMissingBin "libreoffice" "${HOME_CONFIG}/libreoffice"
 removeDirectoryForMissingBin "lollypop" "${HOME_LOCAL_SHARE}/lollypop"
+removeDirectoryForMissingBin "pip" "${HOME_CACHE}/pip"
+removeDirectoryForMissingBin "transmission-daemon" "${HOME_CONFIG}/transmission-daemon"
 removeDirectoryForMissingBin "vlc" "${HOME_CONFIG}/vlc"
 removeDirectoryForMissingBin "whatsapp-nativefier" "${HOME_CONFIG}/whatsapp-nativefier-d40211"
 removeDirectoryForMissingBin "whatsdesk" "${HOME}/.whatsdesk"
