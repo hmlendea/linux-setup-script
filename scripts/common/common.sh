@@ -61,8 +61,8 @@ ROOT_USR_LIB="${ROOT_USR}/lib"
 ROOT_USR_SHARE="${ROOT_USR}/share"
 
 # Functions
-does-bin-exist () {
-    BINARY_NAME="${@}"
+function does-bin-exist () {
+    local BINARY_NAME="${@}"
 
     if [ -f "${ROOT_BIN}/${BINARY_NAME}" ] \
     || [ -f "${ROOT_USR_BIN}/${BINARY_NAME}" ]; then
@@ -83,12 +83,23 @@ function run-as-su() {
 }
 
 function remove() {
-    local FILE="${*}"
+    local PATH_TO_REMOVE="${*}"
 
-    if [ -w "${FILE}" ]; then
-        rm "${FILE}"
+    [ ! -e "${PATH_TO_REMOVE}" ] && return
+
+    echo -e "Removing \e[0;33m${PATH_TO_REMOVE}\e[0m ..."
+    if [ -w "${PATH_TO_REMOVE}" ]; then
+        if [ -f "${PATH_TO_REMOVE}" ]; then
+            rm "${PATH_TO_REMOVE}"
+        else
+            rm -r "${PATH_TO_REMOVE}"
+        fi
     else
-        run-as-su rm "${FILE}"
+        if [ -f "${PATH_TO_REMOVE}" ]; then
+            run-as-su rm "${PATH_TO_REMOVE}"
+        else
+            run-as-su rm -r "${PATH_TO_REMOVE}"
+        fi
     fi
 }
 
