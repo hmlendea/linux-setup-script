@@ -142,6 +142,7 @@ function does-file-need-updating() {
     local FILES_ARE_SAME=false
 
     [ ! -f "${SOURCE_FILE_PATH}" ] && return 1 # False
+    [ ! -f "${TARGET_FILE_PATH}" ] && return 0 # True
 
     if [ -f "${TARGET_FILE_PATH}" ]; then
         local SOURCE_FILE_CHECKSUM=$(get-file-checksum "${SOURCE_FILE_PATH}")
@@ -152,7 +153,11 @@ function does-file-need-updating() {
         fi
     fi
 
-    ${FILES_ARE_SAME} && return 1 || return 0
+    if ${FILES_ARE_SAME}; then
+        return 1 # False
+    else
+        return 0 # True
+    fi
 }
 
 function update-file-if-needed() {

@@ -479,6 +479,7 @@ if does-bin-exist "firefox"; then
 
     # First time prompts
     set_firefox_config "${FIREFOX_PROFILE_ID}" browser.aboutConfig.showWarning false
+    set_firefox_config "${FIREFOX_PROFILE_ID}" browser.urlbar.quicksuggest.onboardingDialogChoice "settings"
     set_firefox_config "${FIREFOX_PROFILE_ID}" devtools.everOpened true
     set_firefox_config "${FIREFOX_PROFILE_ID}" extensions.fxmonitor.firstAlertShown true
 
@@ -515,6 +516,7 @@ if does-bin-exist "firefox"; then
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.in-content.dark-mode" ${GTK_THEME_IS_DARK}
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.tabs.drawInTitlebar" true
     set_firefox_config "${FIREFOX_PROFILE_ID}" browser.uidensity 1 # Compact mode
+    set_firefox_config "${FIREFOX_PROFILE_ID}" toolkit.legacyUserProfileCustomizations.stylesheets true
     set_firefox_config "${FIREFOX_PROFILE_ID}" "ui.systemUsesDarkTheme" ${GTK_THEME_IS_DARK}
     set_firefox_config "${FIREFOX_PROFILE_ID}" "widget.disable-native-theme-for-content" true
 
