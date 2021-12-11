@@ -194,8 +194,6 @@ if ${HAS_GUI}; then
         install-pkg gnome-tweaks
         install-pkg gnome-backgrounds
         install-pkg gnome-font-viewer
-
-        install-pkg dialect
     else
         install-pkg mutter # openbox
         install-pkg lxde-common
