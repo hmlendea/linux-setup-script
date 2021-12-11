@@ -639,7 +639,7 @@ if does-bin-exist "gpg"; then
         touch "${GNUPG_DIRMNGR_CONFIG}"
     fi
 
-    set_config_value --separator " " "${GNUPG_DIRMNGR_CONFIG}" keyserver "pgpkeys.mit.edu"
+    set_config_value --separator " " "${GNUPG_DIRMNGR_CONFIG}" keyserver "hkp://keyserver.ubuntu.com"
 fi
 
 #################
