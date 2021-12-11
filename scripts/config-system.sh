@@ -527,6 +527,9 @@ if does-bin-exist "firefox"; then
     # Useless features
     set_firefox_config "${FIREFOX_PROFILE_ID}" "extensions.pocket.enabled" false
 
+    # Privacy
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "privacy.firstparty.isolate" true
+
     # Telemetry
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.newtabpage.activity-stream.telemetry" "false"
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.newtabpage.activity-stream.feeds.telemetry" "false"
