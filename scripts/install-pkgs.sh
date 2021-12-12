@@ -68,8 +68,6 @@ install-pkg wol
 if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
     install-pkg wireless_tools
     install-pkg wpa_supplicant
-elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
-    install-pkg wireless-tools
 fi
 
 ################
