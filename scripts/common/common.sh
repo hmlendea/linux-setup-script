@@ -187,6 +187,7 @@ if [ -z "${ARCH}" ] && $(does-bin "uname"); then
     ARCH=$(lscpu | grep "Architecture" | awk -F: '{print $2}' | sed 's/  //g' | sed 's/^ *//g')
 fi
 
+[ "${ARCH}" = "i686" ]     && ARCH_FAMILY="x86"
 [ "${ARCH}" = "x86_64" ]   && ARCH_FAMILY="x86"
 [ "${ARCH}" = "aarch64" ]  && ARCH_FAMILY="arm"
 [ "${ARCH}" = "armv7l" ]   && ARCH_FAMILY="arm"
