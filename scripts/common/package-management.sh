@@ -5,7 +5,7 @@ function is-package-installed() {
 	PKG="${1}"
 
     if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-    	if (pacman -Q | grep -q "${PKG}" > /dev/null); then
+    	if (pacman -Q | grep -q "^${PKG}\s" > /dev/null); then
 	    	return 0 # True
 	    else
 		    return 1 # False
