@@ -21,6 +21,8 @@ if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
 
     install-pkg man-pages
     install-pkg sudo
+
+    install-pkg bat
 elif [[ "${DISTROY_FAMILY}" == "Android" ]]; then
     install-pkg manpages
 
