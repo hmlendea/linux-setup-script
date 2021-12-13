@@ -37,6 +37,8 @@ export LESS_TERMCAP_so=$'\e[01;97m' # White
 export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[1;4;033m'
 
+[ -f "${ROOT_USR_BIN}/bat" ] && export BAT_THEME="Visual Studio Dark+"
+
 # User
 if [ -z "${USER}" ]; then
     if [ -n "${USERNAME}" ]; then
