@@ -314,7 +314,7 @@ if ${HAS_GUI}; then
 
     # Fonts
     install-pkg gnu-free-fonts
-    install-pkg ttf-ms-win10
+    [ "${ARCH_FAMILY}" == "x86" ] && install-pkg ttf-ms-win10
     install-pkg noto-fonts
     install-pkg noto-fonts-emoji
     install-pkg ttf-droid
