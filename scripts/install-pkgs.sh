@@ -332,7 +332,7 @@ if ${HAS_GUI}; then
 
     # Internet Browser
     install-pkg firefox
-    install-pkg chrome-gnome-shell # Also used for Firefox
+    does-bin-exist "gnome-shell" && install-pkg chrome-gnome-shell # Also used for Firefox
 
     # Torrent Downloader
     ${POWERFUL_PC} && install-pkg fragments
