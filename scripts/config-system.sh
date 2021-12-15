@@ -425,7 +425,7 @@ fi
 if does-bin-exist "plank"; then
     PLANK_SCHEMA="net.launchpad.plank.docks.dock1"
 
-    set_gsetting "${PLANK_SCHEMA}" theme "Gtk+"
+    set_gsetting "${PLANK_SCHEMA}" theme "Transparent"
     set_gsetting "${PLANK_SCHEMA}" hide-mode "window-dodge"
 fi
 
