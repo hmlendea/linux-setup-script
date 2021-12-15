@@ -176,7 +176,7 @@ if [ -f "${ROOT_ETC}/default/grub" ]; then
 fi
 
 if does-bin-exist "gnome-shell"; then
-    if [[ "${ARCH}" == "aarch64" ]]; then
+    if ( ! ${POWERFUL_PC} ); then
         set_gsetting "org.gnome.settings-daemon.plugins.remote-display" active false
         set_gsetting "org.gnome.desktop.interface" enable-animations false
     fi
@@ -275,6 +275,8 @@ if [ -f "${HOME_REAL}/.config/lxsession/LXDE/desktop.conf" ]; then
 
     if does-bin-exist "openbox"; then
         LXDE_WM="openbox-lxde"
+    elif does-bin-exist "xfwm4"; then
+        LXDE_WM="mutter"
     elif does-bin-exist "mutter"; then
         LXDE_WM="mutter"
     fi
@@ -287,25 +289,6 @@ if [ -f "${HOME_REAL}/.config/lxsession/LXDE/desktop.conf" ]; then
     set_config_value "${LXSESSION_CONFIG_FILE}" iGtk/ButtonImages 0
     set_config_value "${LXSESSION_CONFIG_FILE}" iGtk/MenuImages 0
     set_config_value "${LXSESSION_CONFIG_FILE}" iGtk/ToolbarStyle 0
-fi
-
-if does-bin-exist "openbox" && does-bin-exist "lxsession"; then
-    OPENBOX_LXDE_RC="${HOME_REAL}/.config/openbox/lxde-rc.xml"
-
-    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/name" "${GTK2_THEME}"
-    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/titleLayout" "LIMC"
-    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='ActiveWindow']/name" "${TITLEBAR_FONT_NAME}"
-    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='ActiveWindow']/size" "${TITLEBAR_FONT_SIZE}"
-    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='ActiveWindow']/weight" "$(get_openbox_font_weight ${TITLEBAR_FONT_STYLE})"
-    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='InactiveWindow']/name" "${TITLEBAR_FONT_NAME}"
-    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='InactiveWindow']/size" "${TITLEBAR_FONT_SIZE}"
-    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='InactiveWindow']/weight" "$(get_openbox_font_weight ${TITLEBAR_FONT_STYLE})"
-    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='MenuHeader']/name" "${MENUHEADER_FONT_NAME}"
-    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='MenuHeader']/size" "${MENUHEADER_FONT_SIZE}"
-    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='MenuHeader']/weight" "$(get_openbox_font_weight ${MENUHEADER_FONT_STYLE})"
-    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='MenuItem']/name" "${MENU_FONT_NAME}"
-    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='MenuItem']/size" "${MENU_FONT_SIZE}"
-    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='MenuItem']/weight" "$(get_openbox_font_weight ${MENU_FONT_STYLE})"
 fi
 
 ###################
@@ -459,6 +442,7 @@ if does-bin-exist "pcmanfm"; then
     set_config_value "${PCMANFM_CONFIG_FILE}" always_show_tabs 0
     set_config_value "${PCMANFM_CONFIG_FILE}" max_tab_chars 48
     set_config_value "${PCMANFM_CONFIG_FILE}" pathbar_mode_buttons 1
+    set_config_value "${PCMANFM_CONFIG_FILE}" show_statusbar 0
     set_config_value "${PCMANFM_CONFIG_FILE}" toolbar "navigation;"
 fi
 if [ -f "${HOME_REAL}/.config/pcmanfm/LXDE/desktop-items-0.conf" ]; then
@@ -976,4 +960,31 @@ if does-bin-exist "mutter"; then
     set_gsetting "org.gnome.desktop.wm.preferences" button-layout "close,maximize,minimize:"
     set_gsetting "org.gnome.desktop.wm.preferences" theme "${GTK3_THEME}"
     set_gsetting "org.gnome.desktop.wm.preferences" titlebar-font "${TITLEBAR_FONT}"
+fi
+
+if does-bin-exist "openbox" && does-bin-exist "lxsession"; then
+    OPENBOX_LXDE_RC="${HOME_REAL}/.config/openbox/lxde-rc.xml"
+
+    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/name" "${GTK2_THEME}"
+    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/titleLayout" "LIMC"
+    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='ActiveWindow']/name" "${TITLEBAR_FONT_NAME}"
+    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='ActiveWindow']/size" "${TITLEBAR_FONT_SIZE}"
+    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='ActiveWindow']/weight" "$(get_openbox_font_weight ${TITLEBAR_FONT_STYLE})"
+    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='InactiveWindow']/name" "${TITLEBAR_FONT_NAME}"
+    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='InactiveWindow']/size" "${TITLEBAR_FONT_SIZE}"
+    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='InactiveWindow']/weight" "$(get_openbox_font_weight ${TITLEBAR_FONT_STYLE})"
+    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='MenuHeader']/name" "${MENUHEADER_FONT_NAME}"
+    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='MenuHeader']/size" "${MENUHEADER_FONT_SIZE}"
+    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='MenuHeader']/weight" "$(get_openbox_font_weight ${MENUHEADER_FONT_STYLE})"
+    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='MenuItem']/name" "${MENU_FONT_NAME}"
+    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='MenuItem']/size" "${MENU_FONT_SIZE}"
+    set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='MenuItem']/weight" "$(get_openbox_font_weight ${MENU_FONT_STYLE})"
+fi
+
+if does-bin-exist "xfwm4"; then
+    XFWM4_CONFIG_FILE="${HOME_REAL}/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml"
+
+    set_xml_node "${XFWM4_CONFIG_FILE}" "//channel/property[@name='general']/property[@name='button-layout']/@value" "CMH|"
+    set_xml_node "${XFWM4_CONFIG_FILE}" "//channel/property[@name='general']/property[@name='theme']/@value" "${GTK2_THEME}"
+    set_xml_node "${XFWM4_CONFIG_FILE}" "//channel/property[@name='general']/property[@name='title_font']/@value" "${TITLEBAR_FONT}"
 fi
