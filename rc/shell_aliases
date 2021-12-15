@@ -41,11 +41,12 @@ if [ ! -f "/bin/busybox" ]; then
 fi
 
 ${IS_SSH} && alias poweroff="echo Surely you don\'t mean to do that on the remote machine! && echo If you do, use \'command poweroff\' instead."
+LS_ARGS="--color=auto -h -Q --group-directories-first --format=horizontal"
 
 if ${IS_SSH} || [[ -f "/bin/busybox" ]] || [[ ${COREUTILS_VERSION} -lt 9 ]]; then
-    alias ls='ls --color=auto -h -Q'
+    alias ls="ls ${LS_ARGS}"
 else
-    alias ls='ls --color=auto -h -Q --hyperlink=always'
+    alias ls="ls ${LS_ARGS} --hyperlink=always"
 fi
 
 [ ! -f "${ROOT_USR_BIN}/sl" ] && alias sl=ls
