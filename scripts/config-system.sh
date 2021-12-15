@@ -444,6 +444,7 @@ if does-bin-exist "pcmanfm"; then
     set_config_value "${PCMANFM_CONFIG_FILE}" pathbar_mode_buttons 1
     set_config_value "${PCMANFM_CONFIG_FILE}" show_statusbar 0
     set_config_value "${PCMANFM_CONFIG_FILE}" toolbar "navigation;"
+    set_config_value "${PCMANFM_CONFIG_FILE}" side_pane_mode "hidden;places"
 fi
 if [ -f "${HOME_REAL}/.config/pcmanfm/LXDE/desktop-items-0.conf" ]; then
     PCMANFM_DESKTOP_CONFIG_FILE="${HOME_REAL}/.config/pcmanfm/LXDE/desktop-items-0.conf"
