@@ -159,6 +159,11 @@ toolbarbutton.bookmark-item[label="GitHub"] {
     background: url("icons/github.png") no-repeat center/20px;
 }
 
+toolbarbutton.bookmark-item[label="GMail"] > image { visibility: hidden;}
+toolbarbutton.bookmark-item[label="GMail"] {
+    background: url("icons/gmail.png") no-repeat center/20px;
+}
+
 toolbarbutton.bookmark-item[label="Home Assistant"],
 toolbarbutton.bookmark-item[label="HomeAssistant"] > image { visibility: hidden; }
 toolbarbutton.bookmark-item[label="Home Assistant"],
