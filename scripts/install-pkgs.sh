@@ -10,7 +10,6 @@ cd "${TEMP_DIR_PATH}"
 ### Basics ###
 ##############
 install-pkg coreutils
-install-pkg man
 install-pkg most
 install-pkg wget
 
