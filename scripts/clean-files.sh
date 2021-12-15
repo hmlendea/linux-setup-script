@@ -46,6 +46,8 @@ removeDirectoryForMissingBin "lollypop" "${HOME_LOCAL_SHARE}/lollypop"
 removeDirectoryForMissingBin "notion-app" "${HOME_CONFIG}/Notion"
 removeDirectoryForMissingBin "onlyoffice-desktopeditors" "${HOME_CONFIG}/onlyoffice"
 removeDirectoryForMissingBin "pavucontrol" "${HOME_CONFIG}/pavucontrol.ini"
+removeDirectoryForMissingBin "pcmanfm" "${HOME_CONFIG}/pcmanfm"
+removeDirectoryForMissingBin "pcmanfm-qt" "${HOME_CONFIG}/pcmanfm-qt"
 removeDirectoryForMissingBin "pip" "${HOME_CACHE}/pip"
 removeDirectoryForMissingBin "spotify" \
     "${HOME_CACHE}/spotify" \
