@@ -20,6 +20,7 @@ removeDirectoryForMissingBin "alsi" "${HOME_CONFIG}/alsi"
 removeDirectoryForMissingBin "audacity" "${HOME}/.audacity-data"
 removeDirectoryForMissingBin "autokey-shell" "${HOME_LOCAL_SHARE}/autokey"
 removeDirectoryForMissingBin "avidemux" "${HOME}/.avidemux6"
+removeDirectoryForMissingBin "bleachbit" "${HOME_CACHE}/bleachbit"
 removeDirectoryForMissingBin "brave" \
     "${HOME_CACHE}/BraveSoftware" \
     "${HOME_CONFIG}/BraveSoftware"
@@ -29,10 +30,10 @@ removeDirectoryForMissingBin "chromium" \
     "${HOME_CACHE}/chromium" \
     "${HOME_CONFIG}/chromium"
 removeDirectoryForMissingBin "dockx" "${HOME_LOCAL_SHARE}/dockbarx"
-removeDirectoryForMissingBin "evolution" \
-    "${HOME_CACHE}/evolution" \
-    "${HOME_CONFIG}/evolution" \
-    "${HOME_LOCAL_SHARE}/evolution"
+#removeDirectoryForMissingBin "evolution" \
+#    "${HOME_CACHE}/evolution" \
+#    "${HOME_CONFIG}/evolution" \
+#    "${HOME_LOCAL_SHARE}/evolution"
 removeDirectoryForMissingBin "gkraken" "${HOME_CONFIG}/gkraken"
 removeDirectoryForMissingBin "gnome-photos" "${HOME_CACHE}/gnome-photos"
 removeDirectoryForMissingBin "gnome-software" "${HOME_CACHE}/gnome-software"
@@ -43,12 +44,14 @@ removeDirectoryForMissingBin "google-chrome" \
 removeDirectoryForMissingBin "kupfer" "${HOME_CONFIG}/kupfer"
 removeDirectoryForMissingBin "libreoffice" "${HOME_CONFIG}/libreoffice"
 removeDirectoryForMissingBin "lollypop" "${HOME_LOCAL_SHARE}/lollypop"
+removeDirectoryForMissingBin "lsd" "${HOME_CONFIG}/lsd"
 removeDirectoryForMissingBin "notion-app" "${HOME_CONFIG}/Notion"
 removeDirectoryForMissingBin "onlyoffice-desktopeditors" "${HOME_CONFIG}/onlyoffice"
 removeDirectoryForMissingBin "pavucontrol" "${HOME_CONFIG}/pavucontrol.ini"
 removeDirectoryForMissingBin "pcmanfm" "${HOME_CONFIG}/pcmanfm"
 removeDirectoryForMissingBin "pcmanfm-qt" "${HOME_CONFIG}/pcmanfm-qt"
 removeDirectoryForMissingBin "pip" "${HOME_CACHE}/pip"
+removeDirectoryForMissingBin "plexmediaplayer" "${HOME_CONFIG}/plex.tv"
 removeDirectoryForMissingBin "spotify" \
     "${HOME_CACHE}/spotify" \
     "${HOME_CONFIG}/spotify"
