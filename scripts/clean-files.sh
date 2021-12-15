@@ -24,9 +24,11 @@ removeDirectoryForMissingBin "brave" \
     "${HOME_CACHE}/BraveSoftware" \
     "${HOME_CONFIG}/BraveSoftware"
 removeDirectoryForMissingBin "brz" "${HOME_CACHE}/breezy"
+removeDirectoryForMissingBin "cairo-dock" "${HOME_CONFIG}/cairo-dock"
 removeDirectoryForMissingBin "chromium" \
     "${HOME_CACHE}/chromium" \
     "${HOME_CONFIG}/chromium"
+removeDirectoryForMissingBin "dockx" "${HOME_LOCAL_SHARE}/dockbarx"
 removeDirectoryForMissingBin "evolution" \
     "${HOME_CACHE}/evolution" \
     "${HOME_CONFIG}/evolution" \
@@ -38,15 +40,19 @@ removeDirectoryForMissingBin "gnubg" "${HOME}/.gnubg"
 removeDirectoryForMissingBin "google-chrome" \
     "${HOME_CACHE}/google-chrome" \
     "${HOME_CONFIG}/google-chrome"
+removeDirectoryForMissingBin "kupfer" "${HOME_CONFIG}/kupfer"
 removeDirectoryForMissingBin "libreoffice" "${HOME_CONFIG}/libreoffice"
 removeDirectoryForMissingBin "lollypop" "${HOME_LOCAL_SHARE}/lollypop"
 removeDirectoryForMissingBin "notion-app" "${HOME_CONFIG}/Notion"
 removeDirectoryForMissingBin "onlyoffice-desktopeditors" "${HOME_CONFIG}/onlyoffice"
+removeDirectoryForMissingBin "pavucontrol" "${HOME_CONFIG}/pavucontrol.ini"
 removeDirectoryForMissingBin "pip" "${HOME_CACHE}/pip"
 removeDirectoryForMissingBin "spotify" \
     "${HOME_CACHE}/spotify" \
     "${HOME_CONFIG}/spotify"
+removeDirectoryForMissingBin "thunar" "${HOME_CONFIG}/Thunar"
 removeDirectoryForMissingBin "transmission-daemon" "${HOME_CONFIG}/transmission-daemon"
+removeDirectoryForMissingBin "ulauncher" "${HOME_LOCAL_SHARE}/ulauncher"
 removeDirectoryForMissingBin "vlc" "${HOME_CONFIG}/vlc"
 removeDirectoryForMissingBin "whatsapp-nativefier" "${HOME_CONFIG}/whatsapp-nativefier-d40211"
 removeDirectoryForMissingBin "whatsdesk" "${HOME}/.whatsdesk"
