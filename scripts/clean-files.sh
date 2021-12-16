@@ -10,7 +10,7 @@ function removeDirectoryForMissingBin() {
 
     for DIRECTORY in "${@}"; do
         if (! does-bin-exist "${BINARY}") \
-        && [ -d "${DIRECTORY}" ]; then
+        && [ -e "${DIRECTORY}" ]; then
             remove "${DIRECTORY}"
         fi
     done
