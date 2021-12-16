@@ -21,6 +21,7 @@ removeDirectoryForMissingBin "audacity" "${HOME}/.audacity-data"
 removeDirectoryForMissingBin "autokey-shell" "${HOME_LOCAL_SHARE}/autokey"
 removeDirectoryForMissingBin "avidemux" "${HOME}/.avidemux6"
 removeDirectoryForMissingBin "bleachbit" "${HOME_CACHE}/bleachbit"
+removeDirectoryForMissingBin "blesh" "${HOME}/.blerc"
 removeDirectoryForMissingBin "brave" \
     "${HOME_CACHE}/BraveSoftware" \
     "${HOME_CONFIG}/BraveSoftware"
@@ -35,6 +36,7 @@ removeDirectoryForMissingBin "dockx" "${HOME_LOCAL_SHARE}/dockbarx"
 #    "${HOME_CONFIG}/evolution" \
 #    "${HOME_LOCAL_SHARE}/evolution"
 removeDirectoryForMissingBin "gkraken" "${HOME_CONFIG}/gkraken"
+removeDirectoryForMissingBin "gksu" "${HOME}/.gksu.lock"
 removeDirectoryForMissingBin "gnome-photos" "${HOME_CACHE}/gnome-photos"
 removeDirectoryForMissingBin "gnome-software" "${HOME_CACHE}/gnome-software"
 removeDirectoryForMissingBin "gnubg" "${HOME}/.gnubg"
@@ -45,6 +47,11 @@ removeDirectoryForMissingBin "kupfer" "${HOME_CONFIG}/kupfer"
 removeDirectoryForMissingBin "libreoffice" "${HOME_CONFIG}/libreoffice"
 removeDirectoryForMissingBin "lollypop" "${HOME_LOCAL_SHARE}/lollypop"
 removeDirectoryForMissingBin "lsd" "${HOME_CONFIG}/lsd"
+removeDirectoryForMissingBin "mcaselector" \
+    "${HOME}/.mcaselector" \
+    "${HOME_CACHE}/mcaselector"
+removeDirectoryForMissingBin "mcedit" "${HOME}/.mcedit"
+removeDirectoryForMissingBin "minetest" "${HOME_CACHE}/minetest"
 removeDirectoryForMissingBin "notion-app" "${HOME_CONFIG}/Notion"
 removeDirectoryForMissingBin "onlyoffice-desktopeditors" "${HOME_CONFIG}/onlyoffice"
 removeDirectoryForMissingBin "pavucontrol" "${HOME_CONFIG}/pavucontrol.ini"
@@ -58,7 +65,12 @@ removeDirectoryForMissingBin "spotify" \
 removeDirectoryForMissingBin "thunar" "${HOME_CONFIG}/Thunar"
 removeDirectoryForMissingBin "transmission-daemon" "${HOME_CONFIG}/transmission-daemon"
 removeDirectoryForMissingBin "ulauncher" "${HOME_LOCAL_SHARE}/ulauncher"
-removeDirectoryForMissingBin "vlc" "${HOME_CONFIG}/vlc"
+removeDirectoryForMissingBin "vlc" \
+    "${HOME_CACHE}/vlc" \
+    "${HOME_CONFIG}/vlc"
 removeDirectoryForMissingBin "whatsapp-nativefier" "${HOME_CONFIG}/whatsapp-nativefier-d40211"
 removeDirectoryForMissingBin "whatsdesk" "${HOME}/.whatsdesk"
 removeDirectoryForMissingBin "wike" "${HOME_CACHE}/wike"
+removeDirectoryForMissingBin "yarn" \
+    "${HOME}/.yarn" \
+    "${HOME}/.yarnrc"
