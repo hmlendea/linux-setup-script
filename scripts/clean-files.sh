@@ -74,3 +74,4 @@ removeDirectoryForMissingBin "wike" "${HOME_CACHE}/wike"
 removeDirectoryForMissingBin "yarn" \
     "${HOME}/.yarn" \
     "${HOME}/.yarnrc"
+removeDirectoryForMissingBin "youtube-dl" "${HOME_CACHE}/youtube-dl"
