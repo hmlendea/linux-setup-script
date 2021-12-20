@@ -221,7 +221,7 @@ echo "${CPU_MODEL}" | grep -q "Intel" && CPU_FAMILY="Intel"
 CPU_MODEL=$(echo "${CPU_MODEL}" | sed 's/\(AMD\|Intel\) //g')
 CPU_NAME=$(echo "${CPU_FAMILY} ${CPU_MODEL}" | sed 's/^\s*//g')
 
-if does-bin-exist "lspci"; then
+if does-bin-exist "lspci" && [ -e "${ROOT_PROC}/bus/pci" ]; then
     lspci | grep "VGA" | grep -q "NVIDIA" && GPU_FAMILY="Nvidia"
     GPU_MODEL=$(lspci | grep VGA | tail -n 1 | sed 's/^[^\[]*\[\([a-zA-Z0-9 ]*\)].*/\1/g')
     GPU_NAME=$(echo "${GPU_FAMILY} ${GPU_MODEL}" | sed 's/^\s*//g')
