@@ -144,7 +144,8 @@ function set_custom_prompt {
         hostColour="94" # HomeAssistant = Light Blue
     elif [[ ${HOSTNAME} = *Craft ]]; then
         hostColour="92" # Game Server = Light Green
-    elif [[ ${HOSTNAME} = *Pi ]]; then
+    elif [[ ${HOSTNAME} = *Pi ]] \
+      || [[ ${HOSTNAME} = *Berry* ]]; then
         hostColour="95" # RaspberryPi = Light Magenta
     elif [[ ${HOSTNAME} = RetroPie ]]; then
         hostColour="96" # RetroPie = Light Cyan
