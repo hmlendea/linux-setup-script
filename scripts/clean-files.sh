@@ -1,16 +1,21 @@
 #!/bin/bash
 source "scripts/common/common.sh"
 
-HOME_CACHE="${HOME}/.cache"
-HOME_CONFIG="${HOME}/.config"
-HOME_LOCAL_SHARE="${HOME}/.local/share"
-
 function removeDirectoryForMissingBin() {
     local BINARY="${1}" && shift
 
     for DIRECTORY in "${@}"; do
-        if (! does-bin-exist "${BINARY}") \
-        && [ -e "${DIRECTORY}" ]; then
+        if ! does-bin-exist "${BINARY}"; then
+            remove "${DIRECTORY}"
+        fi
+    done
+}
+
+function removeDirectoryForMissingGnomeShellExtension() {
+    local EXTENSION="${1}" && shift
+
+    for DIRECTORY in "${@}"; do
+        if ! does-gnome-shell-extension-exist "${EXTENSION}"; then
             remove "${DIRECTORY}"
         fi
     done
@@ -35,6 +40,7 @@ removeDirectoryForMissingBin "dockx" "${HOME_LOCAL_SHARE}/dockbarx"
 #    "${HOME_CACHE}/evolution" \
 #    "${HOME_CONFIG}/evolution" \
 #    "${HOME_LOCAL_SHARE}/evolution"
+removeDirectoryForMissingBin "/opt/geforcenow-electron/geforcenow-electron" "${HOME_CONFIG}/GeForce NOW"
 removeDirectoryForMissingBin "gkraken" "${HOME_CONFIG}/gkraken"
 removeDirectoryForMissingBin "gksu" "${HOME}/.gksu.lock"
 removeDirectoryForMissingBin "gnome-photos" "${HOME_CACHE}/gnome-photos"
@@ -53,7 +59,9 @@ removeDirectoryForMissingBin "mcaselector" \
 removeDirectoryForMissingBin "mcedit" "${HOME}/.mcedit"
 removeDirectoryForMissingBin "minetest" "${HOME_CACHE}/minetest"
 removeDirectoryForMissingBin "notion-app" "${HOME_CONFIG}/Notion"
-removeDirectoryForMissingBin "onlyoffice-desktopeditors" "${HOME_CONFIG}/onlyoffice"
+removeDirectoryForMissingBin "onlyoffice-desktopeditors" \
+    "${HOME_CONFIG}/onlyoffice" \
+    "${HOME_LOCAL_SHARE}/onlyoffice"
 removeDirectoryForMissingBin "pavucontrol" "${HOME_CONFIG}/pavucontrol.ini"
 removeDirectoryForMissingBin "pcmanfm" "${HOME_CONFIG}/pcmanfm"
 removeDirectoryForMissingBin "pcmanfm-qt" "${HOME_CONFIG}/pcmanfm-qt"
@@ -75,3 +83,5 @@ removeDirectoryForMissingBin "yarn" \
     "${HOME}/.yarn" \
     "${HOME}/.yarnrc"
 removeDirectoryForMissingBin "youtube-dl" "${HOME_CACHE}/youtube-dl"
+
+removeDirectoryForMissingGnomeShellExtension "tiling-assistant" "${HOME_CONFIG}/tiling-assistant"
