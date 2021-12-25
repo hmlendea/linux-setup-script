@@ -28,12 +28,16 @@ function rename-menuentry {
     local QUOTE_PATTERN="[\'\"]"
     local NON_QUOTE_PATTERN="[^\'\"]"
 
+    ! grep -q "^menuentry [\'\"]${OLD_NAME}[^\'\"]*[\'\"]" "${GRUB_CFG_PATH}" && continue
+
     run-as-su sed -i 's/^menuentry ['\''\"]'"${OLD_NAME}"'[^'\''\"]*['\''\"]/menuentry '\'"${NEW_NAME}"\''/g' "${GRUB_CFG_PATH}"
 }
 
 function remove_advanced_options {
     local STARTING_LINE=-1
     local END_LINE=-1
+
+    ! grep -q "Advanced options for" "${GRUB_CFG_PATH}" && return
 
     STARTING_LINE=$(grep -n "Advanced options for" "${GRUB_CFG_PATH}" | awk -F: '{print $1}' | head -n 1)
     END_LINE=$(grep -n "### END /etc/grub.d/10_linux" "${GRUB_CFG_PATH}" | awk -F: '{print $1}' | head -n 1)
