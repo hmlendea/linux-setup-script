@@ -60,12 +60,30 @@ ROOT_USR_BIN="${ROOT_USR}/bin"
 ROOT_USR_LIB="${ROOT_USR}/lib"
 ROOT_USR_SHARE="${ROOT_USR}/share"
 
+HOME_CACHE="${HOME}/.cache"
+HOME_CONFIG="${HOME}/.config"
+HOME_LOCAL="${HOME}/.local"
+HOME_LOCAL_BIN="${HOME_LOCAL}/bin"
+HOME_LOCAL_SHARE="${HOME_LOCAL}/share"
+
 # Functions
 function does-bin-exist () {
-    local BINARY_NAME="${@}"
+    local BINARY_NAME="${*}"
 
     if [ -f "${ROOT_BIN}/${BINARY_NAME}" ] \
-    || [ -f "${ROOT_USR_BIN}/${BINARY_NAME}" ]; then
+    || [ -f "${ROOT_USR_BIN}/${BINARY_NAME}" ] \
+    || [ -f "${HOME_LOCAL_BIN}/${BINARY_NAME}" ] \
+    || [ -f "${BINARY_NAME}" ]; then
+        return 0 # True
+    fi
+
+    return 1 # False
+}
+
+function does-gnome-shell-extension-exist () {
+    local EXTENSION_NAME="${*}"
+
+    if [ -d "${ROOT_USR_SHARE}/gnome-shell/extensions/${EXTENSION_NAME}@"* ]; then
         return 0 # True
     fi
 
@@ -85,7 +103,15 @@ function run-as-su() {
 function remove() {
     local PATH_TO_REMOVE="${*}"
 
-    [ ! -e "${PATH_TO_REMOVE}" ] && return
+    PATH_TO_REMOVE=$(echo "${PATH_TO_REMOVE}" | sed \
+                        -e 's/^\s*//g' \
+                        -e 's/\s*$//g')
+
+    if [ ! -e "${PATH_TO_REMOVE}" ] \
+    || [ -z "${PATH_TO_REMOVE}" ] \
+    || [ "${PATH_TO_REMOVE}" == "/" ]; then
+        return
+    fi
 
     echo -e "Removing \e[0;33m${PATH_TO_REMOVE}\e[0m ..."
     if [ -w "${PATH_TO_REMOVE}" ]; then
