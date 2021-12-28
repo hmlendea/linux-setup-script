@@ -28,7 +28,7 @@ function rename-menuentry {
     local QUOTE_PATTERN="[\'\"]"
     local NON_QUOTE_PATTERN="[^\'\"]"
 
-    ! grep -q "^menuentry [\'\"]${OLD_NAME}[^\'\"]*[\'\"]" "${GRUB_CFG_PATH}" && continue
+    ! grep -q "^menuentry [\'\"]${OLD_NAME}[^\'\"]*[\'\"]" "${GRUB_CFG_PATH}" && return
 
     run-as-su sed -i 's/^menuentry ['\''\"]'"${OLD_NAME}"'[^'\''\"]*['\''\"]/menuentry '\'"${NEW_NAME}"\''/g' "${GRUB_CFG_PATH}"
 }
