@@ -63,8 +63,15 @@ install-pkg neofetch
 ### Networking ###
 ##################
 install-pkg net-tools
-install-pkg openssh
-install-pkg wol
+
+if [[ "${DISTRO_FAMILY}" == "Arch" ]] \
+|| [[ "${DISTRO_FAMILY}" == "Android" ]]; then
+    install-pkg openssh
+    install-pkg wol
+elif [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
+    install-pkg openssh-server
+    install-pkg wakeonlan
+fi
 
 if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
     install-pkg wireless_tools
@@ -76,7 +83,13 @@ fi
 ################
 install-pkg cabextract
 install-pkg unzip
-install-pkg unrar
+
+if [[ "${DISTRO_FAMILY}" == "Arch" ]] \
+|| [[ "${DISTRO_FAMILY}" == "Android" ]]; then
+    install-pkg unrar
+elif [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
+    install-pkg unrar-free
+fi
 
 if [ "${DISTRO_FAMILY}" != "Arch" ]; then
     exit

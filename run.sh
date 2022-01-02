@@ -52,6 +52,9 @@ function update-system() {
     elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
         yes | pkg update
         yes | pkg upgrade
+    elif [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
+        yes | run-as-su apt update
+        yes | run-as-su apt upgrade
     fi
 }
 

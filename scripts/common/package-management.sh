@@ -10,10 +10,12 @@ function is-package-installed() {
 	    else
 		    return 1 # False
 	    fi
-    elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
-        if (apt-cache policy "${PKG}" | grep -q "^\s*Installed:"); then
+    elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
+      || [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
+        if (apt-cache policy "${PKG}" | grep -q "^\s*Installed:\s*[0-9]"); then
 	    	return 0 # True
         else
+            echo $PKG
 		    return 1 # False
         fi
     fi
@@ -36,6 +38,8 @@ function call-package-manager() {
         fi
     elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
         yes | pkg ${*}
+    elif [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
+        yes | run-as-su apt ${*}
     fi
 }
 
@@ -47,7 +51,8 @@ function install-pkg() {
     echo " >>> Installing package: ${PKG}"
     if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
     	call-package-manager -S --asexplicit "${PKG}"
-    elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
+    elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
+      || [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
         call-package-manager install "${PKG}"
     fi
 }
@@ -60,7 +65,8 @@ function install-dep() {
     echo " >>> Installing dependency: ${PKG}"
     if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
         call-package-manager -S --asexplicit "${PKG}"
-    elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
+    elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
+      || [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
         call-package-manager install "${PKG}" # TODO: See if there is a way to mark them as dep
     fi
 }
@@ -73,7 +79,8 @@ function uninstall-pkg() {
     echo " >>> Uninstalling package: ${PKG}"
     if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
         call-package-manager -Rns "${PKG}"
-    elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
+    elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
+      || [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
         call-package-manager remove "${PKG}"
     fi
 }
@@ -85,7 +92,8 @@ function uninstall-pkgs() {
         echo " >>> Uninstalling package: ${PKG}"
         if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
             call-package-manager -Rns "${PKG}"
-        elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
+        elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
+          || [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
             call-package-manager remove "${PKG}"
         fi
     done
