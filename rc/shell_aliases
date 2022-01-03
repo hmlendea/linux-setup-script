@@ -5,6 +5,7 @@
 ROOT_PATH=""
 [ -d "/data/data/com.termux" ] && ROOT_PATH="/data/data/com.termux/files"
 
+ROOT_ETC="${ROOT_PATH}/etc"
 ROOT_PROC="${ROOT_PATH}/proc"
 ROOT_USR="${ROOT_PATH}/usr"
 ROOT_USR_BIN="${ROOT_USR}/bin"
