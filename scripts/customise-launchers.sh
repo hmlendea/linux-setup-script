@@ -283,7 +283,7 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FileRoller.desktop" Start
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/avahi-discover.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/bssh.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/bvnc.desktop"; do
-    set_launcher_entry "${LAUNCHER}.desktop" NoDisplay true
+    set_launcher_entry "${LAUNCHER}" NoDisplay true
 done
 
 ##########################
@@ -854,8 +854,8 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Photos.desktop" \
 ### Video Players ###
 #####################
 
-### System Video Players
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/vlc.desktop" Name "VLC"
+### MPV
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mpv.desktop" NoDisplay true
 
 ### Netflix
 set_launcher_entry "$(find_launcher_by_name Netflix)" Categories "AudioVideo;Video;Player;"
@@ -867,11 +867,13 @@ for LAUNCHER in "${LOCAL_LAUNCHERS_PATH}/chrome-aghlkjcflkcaanjmefomlcfgflfdhkkg
         Name "Plex" \
         Name[ro] "Plex" \
         Icon "plexhometheater" \
-        Categories "AudioVideo;Audio;Video;Player;" 
+        Categories "AudioVideo;Audio;Video;Player;"
 done
-
 set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-aghlkjcflkcaanjmefomlcfgflfdhkkg-Default.desktop" StartupWMClass "crx_aghlkjcflkcaanjmefomlcfgflfdhkkg"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/plexmediaplayer.desktop" StartupWMClass "plexmediaplayer"
+
+### VLC
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/vlc.desktop" Name "VLC"
 
 ###############
 ### POSTMAN ###
