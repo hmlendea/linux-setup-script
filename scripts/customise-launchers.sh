@@ -382,7 +382,11 @@ set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-nfjdjopfnbnkmfldmeffmhgodmlhd
 if [ -d "${ROOT_OPT}/Citrix" ]; then
     [ ! -f "${GLOBAL_LAUNCHERS_PATH}wfsplash.desktop" ] && create_launcher "${GLOBAL_LAUNCHERS_PATH}/wfsplash.desktop"
 
-    for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/configmgr.desktop" \
+    for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/citrix-wfica.desktop" \
+                    "${GLOBAL_LAUNCHERS_PATH}/citrix-configmgr.desktop" \
+                    "${GLOBAL_LAUNCHERS_PATH}/citrix-conncenter.desktop" \
+                    "${GLOBAL_LAUNCHERS_PATH}/citrix-workspace.desktop" \
+                    "${GLOBAL_LAUNCHERS_PATH}/configmgr.desktop" \
                     "${GLOBAL_LAUNCHERS_PATH}/conncentre.desktop" \
                     "${GLOBAL_LAUNCHERS_PATH}/wfcmgr.desktop" \
                     "${GLOBAL_LAUNCHERS_PATH}/wfsplash.desktop" \
@@ -392,26 +396,40 @@ if [ -d "${ROOT_OPT}/Citrix" ]; then
             NoDisplay true
     done
 
-    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/configmgr.desktop" \
-        Name "Citrix Receiver Preferences" \
-        Name[ro] "Configurare Receptor Citrix" \
-        StartupWMClass "Configmgr"
-    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/conncentre.desktop" \
-        Name "Citrix Connection Centre" \
-        Name[ro] "Centrul de conexiuni Citrix" \
-        StartupWMClass "Conncenter"
+    for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/citrix-configmgr.desktop" \
+                    "${GLOBAL_LAUNCHERS_PATH}/configmgr.desktop"; do
+        set_launcher_entries "${LAUNCHER}" \
+            Name "Citrix Receiver Preferences" \
+            Name[ro] "Configurare Receptor Citrix" \
+            StartupWMClass "Configmgr"
+    done
+
+    for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/citrix-conncenter.desktop" \
+                    "${GLOBAL_LAUNCHERS_PATH}/conncentre.desktop"; do
+        set_launcher_entries "${LAUNCHER}" \
+            Name "Citrix Connection Centre" \
+            Name[ro] "Centrul de conexiuni Citrix" \
+            StartupWMClass "Conncenter"
+    done
+
     set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/wfcmgr.desktop" \
         Name "Citrix Receiver Self Service" \
         Name[ro] "Asistență Receptor Citrix" \
         StartupWMClass "Wfcmgr"
+
     set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/wfsplash.desktop" \
         Name "Citrix Splash" \
         Categories "Application;Network;X-Red-Hat-Base;X-SuSE-Core-Internet;" \
         StartupWMClass "Wfica_Splash" # InitPanel_popup
-    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/wfica.desktop" \
-        Name "Citrix Receiver" \
-        Name[ro] "Receptor Citrix" \
-        StartupWMClass "Wfica"
+
+    for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/citrix-wfica.desktop" \
+                    "${GLOBAL_LAUNCHERS_PATH}/wfica.desktop"; do
+        set_launcher_entries "${LAUNCHER}" \
+            Name "Citrix Receiver" \
+            Name[ro] "Receptor Citrix" \
+            StartupWMClass "Wfica"
+    done
+
 fi
 
 #############
