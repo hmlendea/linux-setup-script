@@ -37,3 +37,8 @@ bind ^g gotoline all
 bind ^f whereis all
 bind ^h replace all
 bind ^q cancel yesno
+
+### Remove original nano bindings
+unbind ^w all
+unbind ^u all
+unbind ^k all
