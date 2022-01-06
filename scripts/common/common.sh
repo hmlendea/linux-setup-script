@@ -17,6 +17,8 @@ REPO_SCRIPTS_DIR="${REPO_DIR}/scripts"
 
 REPO_KEYBOARD_LAYOUTS_DIR="${REPO_RC_DIR}/keyboard-layouts"
 
+LOCAL_INSTALL_TEMP_DIR="${REPO_DIR}/.temp-sysinstall"
+
 # Distribution
 KERNEL_VERSION=$(uname -r)
 

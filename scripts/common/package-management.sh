@@ -102,6 +102,10 @@ function uninstall-pkgs() {
 function install-pkg-aur-manually() {
 	local PKG="${1}"
     local PKG_SNAPSHOT_URL="https://aur.archlinux.org/cgit/aur.git/snapshot/${PKG}.tar.gz"
+    local OLD_PWD="$(pwd)"
+
+    [ ! -d "${LOCAL_INSTALL_TEMP_DIR}" ] && mkdir -p "${LOCAL_INSTALL_TEMP_DIR}"
+    cd "${LOCAL_INSTALL_TEMP_DIR}"
 
 	if (! is-package-installed "${PKG}"); then
         wget "${PKG_SNAPSHOT_URL}"
@@ -111,4 +115,6 @@ function install-pkg-aur-manually() {
 	    makepkg -sri --noconfirm
 	    cd ..
     fi
+
+    cd "${OLD_PWD}"
 }
