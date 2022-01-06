@@ -2,10 +2,6 @@
 source "scripts/common/common.sh"
 source "scripts/common/package-management.sh"
 
-TEMP_DIR_PATH=".temp-sysinstall"
-mkdir -p "${TEMP_DIR_PATH}"
-cd "${TEMP_DIR_PATH}"
-
 ##############
 ### Basics ###
 ##############
@@ -414,7 +410,3 @@ fi
 if [[ "${CHASSIS_TYPE}" == "Laptop" ]]; then
     install-pkg acpi
 fi
-
-########### END
-cd ~
-rm -rf "${TEMP_DIR_PATH}"
