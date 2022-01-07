@@ -53,12 +53,13 @@ fi
 [ ! -f "${ROOT_USR_BIN}/sl" ] && alias sl=ls
 
 [ -f "${ROOT_USR_BIN}/bat" ]        && alias cat='bat -pp'
+[ -f "${ROOT_USR_BIN}/extract" ]    && alias extract='unp'
 [ -f "${ROOT_USR_BIN}/open" ]       && alias open='xdg-open'
 [ -f "${ROOT_USR_BIN}/shellcheck" ] && alias shellcheck='shellcheck -e SC2035,SC2164'
 [ -f "${ROOT_USR_BIN}/systemctl" ]  && alias systemctl='systemctl --no-pager -l -n25'
+[ -f "${ROOT_USR_BIN}/wget" ]       && alias wget-persistent='wget -c --retry-connrefused --waitretry=1 --read-timeout=10 --timeout=5 -t 0'
 [ -f "${ROOT_USR_BIN}/xterm" ]      && alias xterm='xterm -rv'
 [ -f "${ROOT_USR_BIN}/xprop" ]      && alias xprop-wmclass='xprop | grep "WM_CLASS"'
-[ -f "${ROOT_USR_BIN}/wget" ]       && alias wget-persistent='wget -c --retry-connrefused --waitretry=1 --read-timeout=10 --timeout=5 -t 0'
 [ -f "${ROOT_PROC}/acpi/bbswitch" ] && alias bbswitch-status="awk '{print $2}' /proc/acpi/bbswitch"
 
 [ -f "${ROOT_USR_BIN}/alsi" ]        && [ ! -f "${ROOT_USR_BIN}/neofetch" ]   && alias neofetch='alsi'
