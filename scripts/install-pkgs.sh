@@ -298,16 +298,25 @@ if ${HAS_GUI}; then
         install-dep gvfs-google
     fi
 
+    # GNOME Shell Extensions
     if ${POWERFUL_PC}; then
+        # Base
         install-pkg gnome-shell-extensions
         install-pkg gnome-shell-extension-installer
+
+        # Enhancements
         install-pkg gnome-shell-extension-dash-to-dock
         install-pkg gnome-shell-extension-sound-output-device-chooser
-        install-pkg gnome-shell-extension-gsconnect
-        install-pkg gnome-shell-extension-hide-activities-git
         install-pkg gnome-shell-extension-multi-monitors-add-on-git
-        install-pkg gnome-shell-extension-openweather-git
         install-pkg gnome-shell-extension-wintile
+
+        # New features
+        install-pkg gnome-shell-extension-gsconnect
+        install-pkg gnome-shell-extension-openweather-git
+
+        # Appearance
+        install-pkg gnome-shell-extension-blur-my-shell
+        install-pkg gnome-shell-extension-hide-activities-git
     fi
 
     # Themes
