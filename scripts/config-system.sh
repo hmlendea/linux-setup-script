@@ -217,11 +217,17 @@ if does-bin-exist "gnome-shell"; then
     set_gsetting "org.gnome.shell.overrides" attach-modal-dialogs false
 fi
 
-if [ -d "${ROOT_USR}/share/gnome-shell/extensions/user-theme@gnome-shell-extensions.gcampax.github.com/" ]; then
+if does-gnome-shell-extension-exist "blur-my-shell"; then
+    BMS_SCHEMA="org.gnome.shell.extensions.blur-my-shell"
+
+    set_gsetting "${BMS_SCHEMA}" blur-panel false # Let it be handled by the theme itself
+fi
+
+if does-gnome-shell-extension-exist "user-theme"; then
     set_gsetting "org.gnome.shell.extensions.user-theme" name "${GTK_THEME}"
 fi
 
-if [ -d "${ROOT_USR}/share/gnome-shell/extensions/multi-monitors-add-on@spin83" ]; then
+if does-gnome-shell-extension-exist "multi-monitors-add-on"; then
     set_gsetting "org.gnome.shell.extensions.multi-monitors-add-on" show-indicator false
 fi
 
@@ -390,8 +396,11 @@ fi
 #############
 ### DOCKS ###
 #############
-if [ -d "${ROOT_USR}/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com/" ]; then
+if does-gnome-shell-extension-exist "dash-to-dock"; then
     DTD_SCHEMA="org.gnome.shell.extensions.dash-to-dock"
+
+    # Temp-fix for messed-up background
+    set_gsetting "${DTD_SCHEMA}" apply-custom-theme true
 
     set_gsetting "${DTD_SCHEMA}" background-opacity 0.0
     set_gsetting "${DTD_SCHEMA}" click-action minimize
@@ -406,6 +415,12 @@ if [ -d "${ROOT_USR}/share/gnome-shell/extensions/dash-to-dock@micxgx.gmail.com/
     set_gsetting "${DTD_SCHEMA}" show-show-apps-button false
     set_gsetting "${DTD_SCHEMA}" show-trash false
     set_gsetting "${DTD_SCHEMA}" transparency-mode FIXED
+
+    if does-gnome-shell-extension-exist "blur-my-shell"; then
+        BMS_SCHEMA="org.gnome.shell.extensions.blur-my-shell"
+
+        set_gsetting "${BMS_SCHEMA}" blur-dash false # Breaks the dock if true
+    fi
 fi
 if does-bin-exist "plank"; then
     PLANK_SCHEMA="net.launchpad.plank.docks.dock1"
