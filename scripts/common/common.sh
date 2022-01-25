@@ -88,7 +88,8 @@ function does-bin-exist () {
 function does-gnome-shell-extension-exist () {
     local EXTENSION_NAME="${*}"
 
-    if [ -d "${ROOT_USR_SHARE}/gnome-shell/extensions/${EXTENSION_NAME}@"* ]; then
+    if [ -d "${ROOT_USR_SHARE}/gnome-shell/extensions/${EXTENSION_NAME}@"* ] || \
+       [ -d "~/.local/share/gnome-shell/extensions/${EXTENSION_NAME}@"* ]; then
         return 0 # True
     fi
 
