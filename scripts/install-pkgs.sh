@@ -358,6 +358,7 @@ if ${HAS_GUI}; then
     # Communication
     install-pkg whatsapp-nativefier
     install-pkg telegram-desktop
+    install-pkg signal-desktop
 
     # Multimedia
     [[ "${ARCH_FAMILY}" == "x86" ]] && install-pkg spotify
