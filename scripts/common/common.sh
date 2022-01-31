@@ -85,13 +85,18 @@ function does-bin-exist () {
     return 1 # False
 }
 
-function does-gnome-shell-extension-exist () {
+function does-gnome-shell-extension-exist() {
     local EXTENSION_NAME="${*}"
-    local EXTENSION_PATH_GLOBAL=$(find "${ROOT_USR_SHARE}/gnome-shell/extensions" -type d -name "${EXTENSION_NAME}@*")
-    local EXTENSION_PATH_GLOBAL=$(find "${HOME_LOCAL_SHARE}/gnome-shell/extensions" -type d -name "${EXTENSION_NAME}@*")
 
-    if [ -z "${EXTENSION_PATH_GLOBAL}" ] || [ -z "${EXTENSION_PATH_LOCAL}" ]; then
-        return 0 # True
+    local GLOBAL_EXTENSIONS_DIR="${ROOT_USR_SHARE}/gnome-shell/extensions"
+    local LOCAL_EXTENSIONS_DIR="${HOME_LOCAL_SHARE}/gnome-shell/extensions"
+
+    if [ -d "${GLOBAL_EXTENSIONS_DIR}" ]; then
+        local EXTENSION_PATH=$(find "${GLOBAL_EXTENSIONS_DIR}" -type d -name "${EXTENSION_NAME}@*")
+        [ -z "${EXTENSION_PATH}" ] && return 0 # True
+    elif [ -d "${LOCAL_EXTENSIONS_DIR}" ]; then
+        local EXTENSION_PATH=$(find "${LOCAL_EXTENSIONS_DIR}" -type d -name "${EXTENSION_NAME}@*")
+        [ -z "${EXTENSION_PATH}" ] && return 0 # True
     fi
 
     return 1 # False
