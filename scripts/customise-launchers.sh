@@ -640,10 +640,22 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/openarena-server.desktop" NoDisplay
 #####################
 IMAGE_EDITOR_CATEGORIES="Graphics;2DGraphics"
 
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gimp.desktop" \
-    Name "GIMP" \
-    Categories "GTK;${IMAGE_EDITOR_CATEGORIES};RasterGraphics;" \
-    StartupWMClass "Gimp-2.10"
+if does-bin-exist "gimp"; then
+    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gimp.desktop" \
+        Name "GIMP" \
+        Categories "GTK;${IMAGE_EDITOR_CATEGORIES};RasterGraphics;" \
+        StartupWMClass "Gimp-2.10"
+
+    [ ! -f "${GLOBAL_LAUNCHERS_PATH}/gmic-qt.desktop" ] && create_launcher "${GLOBAL_LAUNCHERS_PATH}/gmic-qt.desktop"
+
+    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gmic-qt.desktop" \
+        Exec "gmic_qt" \
+        Name "GMIC QT for GIMP" \
+        Name[ro] "GMIC QT pentru GIMP" \
+        Icon "gimp" \
+        StartupWMClass "gmic_qt" \
+        NoDisplay true
+fi
 
 if does-bin-exist "inkscape"; then
     for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/inkscape.desktop" \
