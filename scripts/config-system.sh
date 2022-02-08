@@ -681,6 +681,7 @@ if does-bin-exist "code"; then
     set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.autoClosingBrackets"]' false
     set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.find.autoFindInSelection"]' "never"
     set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.find.seedSearchStringFromSelection"]' "selection"
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.foldingMaximumRegions"]' 65000
     set_json_value "${VSCODE_CONFIG_FILE}" '.["explorer.confirmDragAndDrop"]' false
     set_json_value "${VSCODE_CONFIG_FILE}" '.["explorer.confirmDelete"]' false
     set_json_value "${VSCODE_CONFIG_FILE}" '.["git.autofetch"]' true
