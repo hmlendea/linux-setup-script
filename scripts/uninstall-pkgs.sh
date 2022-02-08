@@ -15,8 +15,10 @@ fi
 
 # Uninstall the packages
 if [ "${DISTRO_FAMILY}" = "Arch" ]; then
+    uninstall-pkg "alsi"                    # Replaced by fastfetch-git
     uninstall-pkg "dialect"                 # Depends on outdated libs
     uninstall-pkg "grub2-theme-vimix"       # Replaced by grub2-theme-nuci
+    uninstall-pkg "neofetch"                # Replaced by fastfetch-git
     uninstall-pkg "paper-icon-theme-git"    # Replaced by paper-icon-theme
     uninstall-pkg "ttf-ms-fonts"            # Replaced by ttf-ms-win10
     uninstall-pkg "yaourt-auto-sync"        # Replaced by repo-synchroniser
