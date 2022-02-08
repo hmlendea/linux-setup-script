@@ -53,7 +53,11 @@ install-pkg xmlstarlet  # XML parser
 ##################
 ### Monitoring ###
 ##################
-install-pkg neofetch
+if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
+    install-pkg fastfetch-git
+else
+    install-pkg neofetch
+fi
 
 ##################
 ### Networking ###
