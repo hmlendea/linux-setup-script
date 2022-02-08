@@ -31,5 +31,5 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     run-as-su paccache -rk1  # Remove all cached versions of all packages, except the latest one
 
     does-bin-exist "paru" && yes | paru -Scc
-    does-bin-exist "yay" && yes | paru -Scc
+    does-bin-exist "yay" && yes | yay -Scc
 fi
