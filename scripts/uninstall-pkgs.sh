@@ -27,4 +27,7 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     echo "Cleaning the package cache..."
     run-as-su paccache -ruk0 # Remove all uninstall packages from the cache
     run-as-su paccache -rk1  # Remove all cached versions of all packages, except the latest one
+
+    does-bin-exist "paru" && yes | paru -Scc
+    does-bin-exist "yay" && yes | paru -Scc
 fi
