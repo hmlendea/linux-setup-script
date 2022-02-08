@@ -62,8 +62,12 @@ fi
 [ -f "${ROOT_USR_BIN}/xprop" ]      && alias xprop-wmclass='xprop | grep "WM_CLASS"'
 [ -f "${ROOT_PROC}/acpi/bbswitch" ] && alias bbswitch-status="awk '{print $2}' /proc/acpi/bbswitch"
 
-[ -f "${ROOT_USR_BIN}/alsi" ]        && [ ! -f "${ROOT_USR_BIN}/neofetch" ]   && alias neofetch='alsi'
-[ -f "${ROOT_USR_BIN}/neofetch" ]    && [ ! -f "${ROOT_USR_BIN}/alsi" ]       && alias alsi='neofetch'
+[ -f "${ROOT_USR_BIN}/alsi" ]        && [ ! -f "${ROOT_USR_BIN}/neofetch" ]     && alias neofetch='alsi'
+[ -f "${ROOT_USR_BIN}/alsi" ]        && [ ! -f "${ROOT_USR_BIN}/fastfetch" ]    && alias fastfetch='alsi'
+[ -f "${ROOT_USR_BIN}/fastfetch" ]   && [ ! -f "${ROOT_USR_BIN}/alsi" ]         && alias alsi='fastfetch'
+[ -f "${ROOT_USR_BIN}/fastfetch" ]   && [ ! -f "${ROOT_USR_BIN}/neofetch" ]     && alias neofetch='fastfetch'
+[ -f "${ROOT_USR_BIN}/neofetch" ]    && [ ! -f "${ROOT_USR_BIN}/alsi" ]         && alias alsi='neofetch'
+[ -f "${ROOT_USR_BIN}/neofetch" ]    && [ ! -f "${ROOT_USR_BIN}/fastfetch" ]    && alias fastfetch='neofetch'
 
 if [ -f "${ROOT_USR_BIN}/git" ]; then
     alias git="git --no-pager"
