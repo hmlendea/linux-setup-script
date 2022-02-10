@@ -186,16 +186,31 @@ function get_gpu_model() {
     local GPU_MODEL=""
 
     if does-bin-exist "lspci" && [ -e "${ROOT_PROC}/bus/pci" ]; then
-        lspci | grep VGA | tail -n 1 | sed \
+        GPU_MODEL=$(lspci | grep VGA | tail -n 1 | sed \
             -e 's/^[^\[]*\[\([a-zA-Z0-9 ]*\)].*/\1/g' \
             -e 's/^00:0[0-9].[0-9] VGA compatible controller: //g' \
             -e 's/\(AMD\|Intel\|NVIDIA\)//g' \
             -e 's/Corporation//g' \
             -e 's/(rev [0-9][0-9])//g' \
-            -e 's/^\s*//g' -e 's/\s*$//g'
-    elif [ -z "${GPU_MODEL}" ] && [ "${ARCH_FAMILY}" == "arm" ]; then
-        get_cpu_model
+            -e 's/^\s*//g' -e 's/\s*$//g')
     fi
+
+    if [ -z "${GPU_MODEL}" ]; then
+        local DEVICE_MODEL=$(cat -A "${ROOT_PROC}/device-tree/model")
+
+        if echo "${DEVICE_MODEL}" | grep -q "Raspberry Pi 3"; then
+            GPU_MODEL="Videocore 4"
+        elif echo "${DEVICE_MODEL}" | grep -q "Raspberry Pi 4"; then
+            GPU_MODEL="Videocore VI"
+        fi
+    fi
+
+    if [ -z "${GPU_MODEL}" ] \
+    && [[ "${ARCH_FAMILY}" == "arm" ]]; then
+        GPU_MODEL="$(get_cpu_model)"
+    fi
+
+    echo "${GPU_MODEL}"
 }
 
 function get_gpu() {
