@@ -194,20 +194,23 @@ function set_modprobe_option() {
 }
 
 function get_gsetting() {
-    SCHEMA="${1}"
-    PROPERTY="${2}"
-
+    (! ${HAS_GUI}) && return
     (! $(does-bin-exist "gsettings")) && return
+
+    local SCHEMA="${1}"
+    local PROPERTY="${2}"
 
     echo $(gsettings get "${SCHEMA}" "${PROPERTY}" | sed "s/^'\(.*\)'$/\1/g")
 }
 
 function set_gsetting() {
-    SCHEMA="${1}"
-    PROPERTY="${2}"
-    VALUE="${@:3}"
-
+    (! ${HAS_GUI}) && return
     (! does-bin-exist "gsettings") && return
+
+    local SCHEMA="${1}"
+    local PROPERTY="${2}"
+    local VALUE="${@:3}"
+    local CURRENT_VALUE=""
 
     CURRENT_VALUE=$(get_gsetting "${SCHEMA}" "${PROPERTY}")
 
