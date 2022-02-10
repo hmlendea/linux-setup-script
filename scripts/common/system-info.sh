@@ -242,17 +242,35 @@ function get_dmi_string() {
 function get_chassis_type() {
     local DMI_CHASSIS_TYPE="$(get_dmi_string chassis-type)"
 
-    if [ "${DMI_CHASSIS_TYPE}" = "Notebook" ] \
-    || ([ -d "${ROOT_SYS}/module/battery" ] && [ -d "${ROOT_PROC}/acpi/button/lid" ]); then
+    if [ "${DMI_CHASSIS_TYPE}" = "Notebook" ]; then
         echo "Laptop"
-    elif [ "${DISTRO_FAMILY}" = "Android" ]; then
+        return
+    fi
+
+    if [ -d "${ROOT_SYS}/module/battery" ] \
+    && [ -d "${ROOT_PROC}/acpi/button/lid" ]; then
+        echo "Laptop"
+        return
+    fi
+
+    if [ "${DISTRO_FAMILY}" = "Android" ]; then
         echo "Phone"
-    elif does-bin-exist "uname" \
+        return
+    fi
+
+    if does-bin-exist "uname" \
     && uname -r | grep -q "raspberry\|rpi"; then
         echo "SBC"
-    else
-        echo "Desktop"
+        return
     fi
+
+    if [ -f "${ROOT_PROC}/device-tree/model" ] \
+    && grep -aq "Raspberry" "${ROOT_PROC}/device-tree/model"; then
+        echo "SBC"
+        return
+    fi
+
+    echo "Desktop"
 }
 
 function gpu_has_optimus_support() {
