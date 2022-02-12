@@ -33,6 +33,8 @@ function add_repository {
     fi
 }
 
+add_repository "hmlendea" 'https://github.com/hmlendea/PKGBUILDs/releases/latest/download/' "" "Never"
+
 if [[ "${ARCH_FAMILY}" == "x86" ]]; then
     add_repository "multilib" "" "${ROOT_ETC}/pacman.d/mirrorlist"
     add_repository "valveaur" "http://repo.steampowered.com/arch/valveaur/" "" "" "8DC2CE3A3D245E64"
