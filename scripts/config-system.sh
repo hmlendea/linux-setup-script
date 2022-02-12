@@ -331,11 +331,19 @@ if does-bin-exist "pulseaudio"; then
     set_config_value "${ROOT_ETC}/pulse/daemon.conf" resample-method speex-float-10
 fi
 
+#if does-gnome-shell-extension-exist "sound-output-device-chooser"; then
+#    SODC_SCHEMA="org.gnome.shell.extensions.sound-output-device-chooser"
+#
+#    set_gsetting "${SODC_SCHEMA}" hide-on-single-device true
+#    set_gsetting "${SODC_SCHEMA}" show-profiles false
+#fi
+
 ###################
 ### CALCULATORS ###
 ###################
 if does-bin-exist "gnome-calculator"; then
     GNOME_CALCULATOR_SCHEMA="org.gnome.calculator"
+
     set_gsetting "${GNOME_CALCULATOR_SCHEMA}" show-thousands true
     set_gsetting "${GNOME_CALCULATOR_SCHEMA}" source-currency 'EUR'
     set_gsetting "${GNOME_CALCULATOR_SCHEMA}" target-currency 'RON'

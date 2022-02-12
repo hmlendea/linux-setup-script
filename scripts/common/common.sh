@@ -261,7 +261,11 @@ CPU_NAME=$(echo "${CPU_FAMILY} ${CPU_MODEL}" | sed 's/^\s*//g')
 
 if does-bin-exist "lspci" && [ -e "${ROOT_PROC}/bus/pci" ]; then
     lspci | grep "VGA" | grep -q "NVIDIA" && GPU_FAMILY="Nvidia"
-    GPU_MODEL=$(lspci | grep VGA | tail -n 1 | sed 's/^[^\[]*\[\([a-zA-Z0-9 ]*\)].*/\1/g')
+    GPU_MODEL=$(lspci | grep VGA | tail -n 1 | \
+                sed 's/^[^\[]*\[\([a-zA-Z0-9 ]*\)].*/\1/g' | \
+                sed 's/^00:0[0-9].[0-9] VGA compatible controller: //g' | \
+                sed 's/Corporation //g' | \
+                sed 's/ (rev [0-9][0-9])//g')
     GPU_NAME=$(echo "${GPU_FAMILY} ${GPU_MODEL}" | sed 's/^\s*//g')
 fi
 
