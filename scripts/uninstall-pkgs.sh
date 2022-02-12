@@ -33,3 +33,8 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     does-bin-exist "paru" && yes | paru -Scc
     does-bin-exist "yay" && yes | yay -Scc
 fi
+
+if [ "${GPU_FAMILY}" != "Intel" ]; then
+    uninstall-pkg "amdvlk"
+    uninstall-pkg "lib32-amdvlk"
+fi
