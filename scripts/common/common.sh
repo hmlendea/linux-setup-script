@@ -93,10 +93,10 @@ function does-gnome-shell-extension-exist() {
 
     if [ -d "${GLOBAL_EXTENSIONS_DIR}" ]; then
         local EXTENSION_PATH=$(find "${GLOBAL_EXTENSIONS_DIR}" -type d -name "${EXTENSION_NAME}@*")
-        [ -z "${EXTENSION_PATH}" ] && return 0 # True
+        [ -n "${EXTENSION_PATH}" ] && return 0 # True
     elif [ -d "${LOCAL_EXTENSIONS_DIR}" ]; then
         local EXTENSION_PATH=$(find "${LOCAL_EXTENSIONS_DIR}" -type d -name "${EXTENSION_NAME}@*")
-        [ -z "${EXTENSION_PATH}" ] && return 0 # True
+        [ -n "${EXTENSION_PATH}" ] && return 0 # True
     fi
 
     return 1 # False
