@@ -27,8 +27,8 @@ function enable-service {
     if [ -f "${ROOT_USR_BIN}/systemctl" ]; then
         (! does-systemd-service-exist "${SERVICE_NAME}") && return
 
-        systemctl enable "${SERVICE_NAME}"
-        systemctl start "${SERVICE_NAME}"
+        run-as-su systemctl enable "${SERVICE_NAME}"
+        run-as-su systemctl start "${SERVICE_NAME}"
     fi
 }
 
@@ -36,7 +36,7 @@ function enable-service {
 [ -f "${ROOT_USR_BIN}/thermald" ]                                   && enable-service "thermald.service"
 [ -f "${ROOT_USR_BIN}/networkctl" ]                                 && enable-service "NetworkManager.service"
 [ -f "${ROOT_USR_BIN}/ntpd" ]                                       && enable-service "ntpd.service"
-[ -f "${ROOT_USR_LIB}/systemd/system/systemd-timesyncd.service" ]   && enable-service "systemd-timesyncd.service"
 [ -f "${ROOT_USR_BIN}/repo-synchroniser" ]                          && enable-service "repo-synchroniser.timer"
+[ -f "${ROOT_USR_LIB}/bluetooth/bluetoothd" ]                       && enable-service "bluetooth.service"
+[ -f "${ROOT_USR_LIB}/systemd/system/systemd-timesyncd.service" ]   && enable-service "systemd-timesyncd.service"
 [ -f "${ROOT_LIB}/systemd/system/sshd.service" ]                    && enable-service "sshd.service"
-[ -f "${ROOT_USR_BIN}/blueman" ]                                    && enable-service "bluetooth.service"
