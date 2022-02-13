@@ -364,6 +364,7 @@ if ${HAS_GUI}; then
     install-pkg whatsapp-nativefier
     install-pkg telegram-desktop
     install-pkg signal-desktop
+    install-pkg electronmail-bin
 
     # Multimedia
     [[ "${ARCH_FAMILY}" == "x86" ]] && install-pkg spotify
