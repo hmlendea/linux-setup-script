@@ -240,23 +240,23 @@ if ${HAS_GUI}; then
     ENVIRONMENT_VARS_FILE="${ROOT_ETC}/environment"
     set_config_value "${ENVIRONMENT_VARS_FILE}" QT_QPA_PLATFORMTHEME "gtk3"
 
-    GTK2_CONFIG_FILE="${HOME_REAL}/.gtkrc-2.0"
-    GTK2_FILECHOOSER_CONFIG_FILE="${HOME_REAL}/.config/gtk-2.0/filechooser.ini"
-    GTK3_CONFIG_FILE="${HOME_REAL}/.config/gtk-3.0/settings.ini"
-    GTK4_CONFIG_FILE="${HOME_REAL}/.config/gtk-4.0/settings.ini"
+    if [ -d "${ROOT_USR_LIB}/gtk-2.0" ]; then
+        GTK2_CONFIG_FILE="${HOME_REAL}/.gtkrc-2.0"
+        GTK2_FILECHOOSER_CONFIG_FILE="${HOME_REAL}/.config/gtk-2.0/filechooser.ini"
 
-    set_config_value "${GTK2_CONFIG_FILE}" gtk-theme-name "${GTK2_THEME}"
-    set_config_value "${GTK2_CONFIG_FILE}" gtk-icon-theme-name "${ICON_THEME}"
-    set_config_value "${GTK2_CONFIG_FILE}" gtk-cursor-theme-name "${CURSOR_THEME}"
-    set_config_value "${GTK2_CONFIG_FILE}" gtk-button-images 0
-    set_config_value "${GTK2_CONFIG_FILE}" gtk-menu-images 0
-    set_config_value "${GTK2_CONFIG_FILE}" gtk-toolbar-style GTK_TOOLBAR_ICONS
+        set_config_value "${GTK2_CONFIG_FILE}" gtk-theme-name "${GTK2_THEME}"
+        set_config_value "${GTK2_CONFIG_FILE}" gtk-icon-theme-name "${ICON_THEME}"
+        set_config_value "${GTK2_CONFIG_FILE}" gtk-cursor-theme-name "${CURSOR_THEME}"
+        set_config_value "${GTK2_CONFIG_FILE}" gtk-button-images 0
+        set_config_value "${GTK2_CONFIG_FILE}" gtk-menu-images 0
+        set_config_value "${GTK2_CONFIG_FILE}" gtk-toolbar-style GTK_TOOLBAR_ICONS
 
-    if [ -f "${GTK2_FILECHOOSER_CONFIG_FILE}" ]; then
-        set_config_value "${GTK2_FILECHOOSER_CONFIG_FILE}" StartupMode=cwd
+        set_config_value "${GTK2_FILECHOOSER_CONFIG_FILE}" StartupMode cwd
     fi
 
-    if [ -f "${GTK3_CONFIG_FILE}" ]; then
+    if [ -d "${ROOT_USR_LIB}/gtk-3.0" ]; then
+        GTK3_CONFIG_FILE="${HOME_REAL}/.config/gtk-3.0/settings.ini"
+
         set_config_value "${GTK3_CONFIG_FILE}" gtk-application-prefer-dark-theme ${GTK_THEME_IS_DARK_BINARY}
         set_config_value "${GTK3_CONFIG_FILE}" gtk-theme-name "${GTK_THEME}"
         set_config_value "${GTK3_CONFIG_FILE}" gtk-icon-theme-name "${ICON_THEME}"
@@ -266,7 +266,9 @@ if ${HAS_GUI}; then
         set_config_value "${GTK3_CONFIG_FILE}" gtk-toolbar-style GTK_TOOLBAR_ICONS
     fi
 
-    if [ -f "${GTK4_CONFIG_FILE}" ]; then
+    if [ -d "${ROOT_USR_LIB}/gtk-4.0" ]; then
+        GTK4_CONFIG_FILE="${HOME_REAL}/.config/gtk-4.0/settings.ini"
+
         set_config_value "${GTK4_CONFIG_FILE}" gtk-application-prefer-dark-theme ${GTK_THEME_IS_DARK_BINARY}
         set_config_value "${GTK4_CONFIG_FILE}" gtk-theme-name "${GTK_THEME}"
         set_config_value "${GTK4_CONFIG_FILE}" gtk-icon-theme-name "${ICON_THEME}"
