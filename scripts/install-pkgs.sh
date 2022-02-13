@@ -312,7 +312,6 @@ if ${HAS_GUI}; then
         install-pkg gnome-shell-extension-dash-to-dock
         install-pkg gnome-shell-extension-sound-output-device-chooser
         install-pkg gnome-shell-extension-multi-monitors-add-on-git
-        install-pkg gnome-shell-extension-windowisready_remover
         install-pkg gnome-shell-extension-wintile
 
         # New features
@@ -321,6 +320,10 @@ if ${HAS_GUI}; then
 
         # Appearance
         install-pkg gnome-shell-extension-blur-my-shell
+
+        # Remove annoyances
+        install-pkg gnome-shell-extension-windowisready_remover
+        install-pkg gnome-shell-extension-no-overview
         install-pkg gnome-shell-extension-hide-activities-git
     fi
 
