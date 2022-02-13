@@ -1,6 +1,18 @@
 #!/bin/bash
 source "scripts/common/common.sh"
 
+function create-file-if-not-exists() {
+    local FILE_PATH="${*}"
+
+    [ -z "${FILE_PATH}" ] && return
+    [ -f "${FILE_PATH}" ] && return
+
+    local DIRECTORY_PATH="$(dirname ${FILE_PATH})"
+
+    mkdir -p "${DIRECTORY_PATH}"
+    touch "${FILE_PATH}"
+}
+
 function set_config_value() {
     local SEPARATOR="="
 
@@ -14,10 +26,7 @@ function set_config_value() {
     local KEY="${2}"
     local VALUE_RAW="${@:3}"
 
-    if [ ! -f "${FILE_PATH}" ]; then
-        # TODO: Handle directory creation
-        touch "${FILE_PATH}"
-    fi
+    create-file-if-not-exists "${FILE_PATH}"
 
     #local VALUE=$(echo "${VALUE_RAW}" | sed -e 's/[]\/$*.^|[]/\\&/g')
     local VALUE="${VALUE_RAW}"
@@ -53,10 +62,7 @@ function set_firefox_config() {
 
     FILE="${HOME_REAL}/.mozilla/firefox/${PROFILE}/prefs.js"
 
-    if [ ! -f "${FILE}" ]; then
-        # TODO: Handle directory creation
-        touch "${FILE}"
-    fi
+    create-file-if-not-exists "${FILE_PATH}"
 
     VALUE=$(echo "${VALUE_RAW}" | sed -e 's/[]\/$*.^|[]/\\&/g')
     FILE_CONTENT=$(cat "${FILE}")
