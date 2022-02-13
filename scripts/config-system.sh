@@ -159,8 +159,17 @@ fi
 if [ -f "${ROOT_ETC}/default/grub" ]; then
     GRUB_CONFIG_FILE="${ROOT_ETC}/default/grub"
 
+    GRUB_TIMEOUT=1
+    GRUB_BOOT_ENTRIES_COUNT=$(grep "^menuentry" "/boot/grub/grub.cfg" | sed \
+        -e '/UEFI Firmware Setting/d' \
+        -e '/Reboot/d' \
+        -e '/Power off/d' |
+        wc -l)
+
+    [ ${GRUB_BOOT_ENTRIES_COUNT} -eq 1 ] && GRUB_TIMEOUT=0
+
     set_config_value "${GRUB_CONFIG_FILE}" "GRUB_DISABLE_RECOVERY" true
-    set_config_value "${GRUB_CONFIG_FILE}" "GRUB_TIMEOUT" 1
+    set_config_value "${GRUB_CONFIG_FILE}" "GRUB_TIMEOUT" "${GRUB_TIMEOUT}"
 
     if [ -f "${ROOT_USR}/share/grub/themes/Nuci/theme.txt" ]; then
         set_config_value "${GRUB_CONFIG_FILE}" "GRUB_THEME" "${ROOT_USR}/share/grub/themes/Nuci/theme.txt"
@@ -938,7 +947,7 @@ if does-bin-exist "fragments"; then
     FRAGMENTS_SCHEMA="de.haeckerfelix.Fragments"
 
     set_gsetting "${FRAGMENTS_SCHEMA}" download-folder "${HOME}/Downloads"
-    set_gsetting "${FRAGMENTS_SCHEMA}" enable-dark-theme ${GTK_THEME_IS_DARK}
+    set_gsetting "${FRAGMENTS_SCHEMA}" dark-mode ${GTK_THEME_IS_DARK}
     set_gsetting "${FRAGMENTS_SCHEMA}" encryption-mode 1
     set_gsetting "${FRAGMENTS_SCHEMA}" max-downloads 5
 fi
