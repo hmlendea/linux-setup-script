@@ -98,6 +98,7 @@ fi
 # Update the RCs
 execute-script "update-rcs.sh"
 [ "${OS}" == "Linux" ] && execute-script-superuser "update-rcs.sh"
+[ "${OD}" == "Linux" ] && ${HAS_GUI} && execute-script "update-hidden-files.sh"
 
 # Configure and customise the system
 execute-script "config-system.sh" # Run after update-rcs.sh
