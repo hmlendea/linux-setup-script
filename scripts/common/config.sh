@@ -184,3 +184,177 @@ function set_gsetting() {
         gsettings set "${SCHEMA}" "${PROPERTY}" "${VALUE}"
     fi
 }
+
+function set_launcher_entries() {
+    local FILE="${1}"
+    shift
+
+    if [ "$(( $# % 2))" -ne 0 ]; then
+        echo "ERROR: Invalid arguments (count: $#) for set_launcher_entries: ${*}" >&2
+        exit 1
+    fi
+
+    local PAIRS_COUNT=$(($# / 2))
+
+    if [ ! -f "${FILE}" ]; then
+        return
+    fi
+
+    for I in $(seq 1 ${PAIRS_COUNT}); do
+        local KEY="${1}" && shift
+        local VAL="${1}" && shift
+
+        if [ -n "${KEY}" ] && [ -n "${VAL}" ]; then
+            set_launcher_entry "${FILE}" "${KEY}" "${VAL}"
+        fi
+    done
+}
+
+function set_launcher_entry() {
+    local FILE="${1}"
+    local KEY="${2}"
+    local VAL="${*:3}"
+
+    if [ "$#" != "3" ]; then
+        echo "ERROR: Invalid arguments (count: $#) for set_launcher_entry: ${*}" >&2
+    fi
+
+    if [ ! -f "${FILE}" ]; then
+        return
+    fi
+
+    if [ ! -x "${FILE}" ]; then
+        chmod +x "${FILE}"
+    fi
+
+    local KEY_ID=$(echo "${KEY}" | sed -e 's/^\([^\[]*\).*/\1/g' -e 's/\s//g')
+    local KEY_LANGUAGE=$(echo "${KEY}" | sed -e 's/^'"${KEY_ID}"'//g' -e 's/\s//g' -e 's/^.\(.*\).$/\1/g')
+
+    if [ "${KEY_ID}" != "FullName" ]; then
+        local KEY_ESC="${KEY}"
+        local VAL_ESC="${VAL}"
+
+        local FILE_CONTENTS=""
+        local HAS_MULTIPLE_SECTIONS=false
+        local LAST_SECTION_LINE=-1
+
+        KEY_ESC=$(echo "${KEY}" | sed -e 's/[]\/$*.^|[]/\\&/g')
+        VAL_ESC=$(echo "${VAL}" | sed -e 's/[]\/$*.^|[]/\\&/g')
+
+        FILE_CONTENTS=$(cat "${FILE}")
+        LAST_SECTION_LINE=$(wc -l "${FILE}" | awk '{print $1}')
+
+        if [ $(grep -c "^\[.*\]$" <<< "${FILE_CONTENTS}") -gt 1 ]; then
+            HAS_MULTIPLE_SECTIONS=true
+            LAST_SECTION_LINE=$(grep -n "^\[.*\]$" "${FILE}" | sed '2q;d' | awk -F: '{print $1}')
+            FILE_CONTENTS=$(echo "${FILE_CONTENTS}" | head -n "${LAST_SECTION_LINE}")
+        fi
+
+        if [[ $(grep -c "^${KEY_ESC}=\(${VAL}\|${VAL_ESC}\)$" <<< "${FILE_CONTENTS}") == 0 ]] \
+        || [[ $(grep -c "^${KEY_ESC}=$" <<< "${FILE_CONTENTS}") == 1 ]]; then
+            if [ $(grep -c "^${KEY_ESC}=.*$" <<< "${FILE_CONTENTS}") -gt 0 ]; then
+                if [ -z "${VAL}" ]; then
+                    sed -i '1,'"${LAST_SECTION_LINE}"' {/^'"${KEY_ESC}"'=.*$/d}' "${FILE}"
+                else
+                    sed -i '1,'"${LAST_SECTION_LINE}"' s|^'"${KEY_ESC}"'=.*$|'"${KEY_ESC}"'='"${VAL}"'|g' "${FILE}"
+                fi
+            elif [ -n "${VAL}" ]; then
+                if ${HAS_MULTIPLE_SECTIONS}; then
+                    sed -i "${LAST_SECTION_LINE} i ${KEY_ESC}=${VAL_ESC}" "${FILE}"
+                else
+                    printf "${KEY}=${VAL}\n" >> "${FILE}"
+                fi
+            fi
+
+            echo "${FILE} >>> ${KEY}=${VAL}"
+        fi
+    fi
+
+    if [[ "${KEY_ID}" == "Name" ]]; then
+        set_launcher_entry_for_language "${FILE}" "${KEY_LANGUAGE}" "Name" "${VAL}"
+        set_launcher_entry_for_language "${FILE}" "${KEY_LANGUAGE}" "GenericName" "${VAL}"
+    elif [[ "${KEY_ID}" == "FullName" ]]; then
+        set_launcher_entry_for_language "${FILE}" "${KEY_LANGUAGE}" "X-GNOME-${KEY_ID}" "${VAL}"
+        set_launcher_entry_for_language "${FILE}" "${KEY_LANGUAGE}" "X-MATE-${KEY_ID}" "${VAL}"
+    elif [[ "${KEY_ID}" == "Comment" ]] \
+      || [[ "${KEY_ID}" == "Icon" ]] \
+      || [[ "${KEY_ID}" == "Keywords" ]]; then
+        set_launcher_entry_for_language "${FILE}" "${KEY_LANGUAGE}" "${KEY_ID}" "${VAL}"
+    fi
+}
+
+function set_launcher_entry_for_language() {
+    local FILE="${1}"
+    local LANGUAGE="${2}"
+    local KEY="${3}"
+    local VALUE="${4}"
+
+    if [ -z "${KEY_LANGUAGE}" ] \
+    || [[ "${KEY_LANGUAGE}" == "en" ]]; then
+        set_launcher_entry_english "${FILE}" "${KEY}" "${VAL}"
+    elif [[ "${KEY_LANGUAGE}" == "es" ]]; then
+        set_launcher_entry_spanish "${FILE}" "${KEY}" "${VAL}"
+    elif [[ "${KEY_LANGUAGE}" == "ro" ]]; then
+        set_launcher_entry_romanian "${FILE}" "${KEY}" "${VAL}"
+    fi
+}
+
+function set_launcher_entry_english() {
+    local FILE="${1}"
+    local KEY="${2}"
+    local VAL="${*:3}"
+
+    set_launcher_entries "${FILE}" \
+        "${KEY}[en_AU]" "${VAL}" \
+        "${KEY}[en_CA]" "${VAL}" \
+        "${KEY}[en_GB]" "${VAL}" \
+        "${KEY}[en_NZ]" "${VAL}" \
+        "${KEY}[en_US]" "${VAL}" \
+        "${KEY}[en_ZA]" "${VAL}"
+}
+
+function set_launcher_entry_romanian() {
+    local FILE="${1}"
+    local KEY="${2}"
+    local VAL="${*:3}"
+
+    set_launcher_entries "${FILE}" \
+        "${KEY}[ro_RO]" "${VAL}" \
+        "${KEY}[ro_MD]" "${VAL}"
+}
+function set_launcher_entry_spanish() {
+    local FILE="${1}"
+    local KEY="${2}"
+    local VAL="${*:3}"
+
+    set_launcher_entries "${FILE}" \
+        "${KEY}[es_AR]" "${VAL}" \
+        "${KEY}[es_CL]" "${VAL}" \
+        "${KEY}[es_ES]" "${VAL}" \
+        "${KEY}[es_MX]" "${VAL}"
+}
+
+function create_launcher() {
+    local FILE_PATH="$*"
+    local NAME=$(basename "${FILE_PATH}" | cut -f 1 -d '.')
+
+    if [ ! -f "${FILE_PATH}" ]; then
+        {
+            echo "[Desktop Entry]"
+            echo "Version=1.0"
+            echo "NoDisplay=false"
+            echo "Encoding=UTF-8"
+            echo "Type=Application"
+            echo "Terminal=false"
+            echo "Exec=${NAME}"
+            echo "StartupWMClass=${NAME}"
+            echo "Name=${NAME}"
+            echo "Comment=${NAME}"
+            echo "Keywords=${NAME}"
+            echo "Icon=${NAME}"
+        } > "${FILE_PATH}"
+
+        chmod +x "${FILE_PATH}"
+        echo "Created file '${FILE_PATH}'"
+    fi
+}
