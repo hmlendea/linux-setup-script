@@ -232,7 +232,11 @@ fi
 [ "${ARCH}" = "armv8l" ]   && ARCH_FAMILY="arm"
 
 # System characteristics
-if does-bin-exist "lscpu"; then
+if [ -f "${ROOT_PROC}/cpuinfo" ] && grep -q "^Hardware\s*:" "${ROOT_PROC}/cpuinfo"; then
+    CPU_MODEL=$(cat "${ROOT_PROC}/cpuinfo" | \
+        grep "^Hardware" | \
+        awk -F: '{print $2}')
+elif does-bin-exist "lscpu"; then
     CPU_MODEL=$(lscpu | \
         grep "^Model name:" | \
         awk -F: '{print $2}')
@@ -254,6 +258,7 @@ CPU_MODEL=$(echo "${CPU_MODEL}" | \
         sed 's/[ \t]*$//g')
 
 echo "${CPU_MODEL}" | grep -q "AMD" && CPU_FAMILY="AMD"
+echo "${CPU_MODEL}" | grep -q "^BCM" && CPU_FAMILY="Broadcom"
 echo "${CPU_MODEL}" | grep -q "Intel" && CPU_FAMILY="Intel"
 
 CPU_MODEL=$(echo "${CPU_MODEL}" | sed 's/\(AMD\|Intel\) //g')
@@ -271,7 +276,10 @@ if does-bin-exist "lspci" && [ -e "${ROOT_PROC}/bus/pci" ]; then
                 sed 's/ (rev [0-9][0-9])//g')
 fi
 
-[ -z "${GPU_MODEL}" ] && [ "${ARCH_FAMILY}" == "arm" ] && GPU_MODEL="${CPU_MODEL}"
+if [ -z "${GPU_MODEL}" ] && [ "${ARCH_FAMILY}" == "arm" ]; then
+    GPU_MODEL="${CPU_MODEL}"
+    GPU_FAMILY="${CPU_FAMILY}"
+fi
 
 GPU_NAME=$(echo "${GPU_FAMILY} ${GPU_MODEL}" | sed 's/^\s*//g')
 
