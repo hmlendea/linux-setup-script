@@ -98,15 +98,21 @@ fi
 # Update the RCs
 execute-script "update-rcs.sh"
 [ "${OS}" == "Linux" ] && execute-script-superuser "update-rcs.sh"
-[ "${OD}" == "Linux" ] && ${HAS_GUI} && execute-script "update-hidden-files.sh"
 
 # Configure and customise the system
 execute-script "config-system.sh" # Run after update-rcs.sh
 [ "${DISTRO_FAMILY}" == "Arch" ] && execute-script-superuser "set-system-locale-timedate.sh"
 [ "${DISTRO_FAMILY}" != "Android" ] && execute-script-superuser "install-profiles.sh"
 
-does-bin-exist "systemctl" && execute-script-superuser "enable-services.sh"
-does-bin-exist "grub-mkconfig" && execute-script-superuser "update-grub.sh" # Run after config-system.sh
+if [ "${OS}" == "Linux" ]; then
+    does-bin-exist "systemctl" && execute-script-superuser "enable-services.sh"
+    does-bin-exist "grub-mkconfig" && execute-script-superuser "update-grub.sh" # Run after config-system.sh
+
+    if ${HAS_GUI}; then
+        execute-script "update-hidden-files.sh"
+        execute-script "configure-autostart-apps.sh"
+    fi
+fi
 
 # Update the resources
 if [[ "${OS}" == "Linux" ]]; then
