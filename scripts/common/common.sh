@@ -269,8 +269,11 @@ if does-bin-exist "lspci" && [ -e "${ROOT_PROC}/bus/pci" ]; then
                 sed 's/^00:0[0-9].[0-9] VGA compatible controller: //g' | \
                 sed 's/Corporation //g' | \
                 sed 's/ (rev [0-9][0-9])//g')
-    GPU_NAME=$(echo "${GPU_FAMILY} ${GPU_MODEL}" | sed 's/^\s*//g')
 fi
+
+[ -z "${GPU_MODEL}" ] && [ "${ARCH_FAMILY}" == "arm" ] && GPU_MODEL="${CPU_MODEL}"
+
+GPU_NAME=$(echo "${GPU_FAMILY} ${GPU_MODEL}" | sed 's/^\s*//g')
 
 CHASSIS_TYPE="Desktop"
 POWERFUL_PC=false
