@@ -47,7 +47,9 @@ if [ ! -f "${LOCALTIME_FILE_PATH}" ]; then
 fi
 
 # Update the X11 keyboard layout definitions
-if [ -d "${KEYBOARD_LAYOUTS_PATH}" ]; then
-    echo "Updating the keyboard layouts..."
-    update-file-if-needed "${REPO_KEYBOARD_LAYOUTS_DIR}/ro" "${KEYBOARD_LAYOUTS_PATH}/ro"
+if ${HAS_GUI}; then
+    if [ -d "${KEYBOARD_LAYOUTS_PATH}" ]; then
+        echo "Updating the keyboard layouts..."
+        update-file-if-needed "${REPO_KEYBOARD_LAYOUTS_DIR}/ro" "${KEYBOARD_LAYOUTS_PATH}/ro"
+    fi
 fi
