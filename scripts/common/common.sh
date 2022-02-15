@@ -272,8 +272,10 @@ if does-bin-exist "lspci" && [ -e "${ROOT_PROC}/bus/pci" ]; then
     GPU_MODEL=$(lspci | grep VGA | tail -n 1 | \
                 sed 's/^[^\[]*\[\([a-zA-Z0-9 ]*\)].*/\1/g' | \
                 sed 's/^00:0[0-9].[0-9] VGA compatible controller: //g' | \
-                sed 's/Corporation //g' | \
-                sed 's/ (rev [0-9][0-9])//g')
+                sed 's/\(AMD\|Intel\|NVIDIA\)//g' | \
+                sed 's/Corporation//g' | \
+                sed 's/(rev [0-9][0-9])//g' | \
+                sed -e 's/^\s*//g' -e 's/\s*$//g')
 fi
 
 if [ -z "${GPU_MODEL}" ] && [ "${ARCH_FAMILY}" == "arm" ]; then
