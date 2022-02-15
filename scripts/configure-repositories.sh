@@ -5,11 +5,11 @@ PACMAN_CONF_FILE_PATH="${ROOT_ETC}/pacman.conf"
 DATABASES_NEED_UPDATING=false
 
 function add_repository {
-    NAME="${1}"
-    SERVER="${2}"
-    INCLUDE="${3}"
-    SIGLEVEL="${4}"
-    KEY="${5}"
+    local NAME="${1}"
+    local SERVER="${2}"
+    local INCLUDE="${3}"
+    local SIGLEVEL="${4}"
+    local KEY="${5}"
 
     [ ! -f "${PACMAN_CONF_FILE_PATH}" ] && return
 
@@ -34,6 +34,18 @@ function add_repository {
 }
 
 add_repository "hmlendea" 'https://github.com/hmlendea/PKGBUILDs/releases/latest/download/' "" "Never"
+
+if [[ "${ARCH}" == "aarch64" ]]; then
+    add_repository "hmlendea-aarch64" 'https://github.com/hmlendea/PKGBUILDs/releases/latest/download/' "" "Never"
+fi
+
+if [[ "${ARCH}" == "armv7h" ]]; then
+    add_repository "hmlendea-armv7h" 'https://github.com/hmlendea/PKGBUILDs/releases/latest/download/' "" "Never"
+fi
+
+if [[ "${ARCH}" == "x86_64" ]]; then
+    add_repository "hmlendea-x86_64" 'https://github.com/hmlendea/PKGBUILDs/releases/latest/download/' "" "Never"
+fi
 
 if [[ "${ARCH_FAMILY}" == "x86" ]]; then
     add_repository "multilib" "" "${ROOT_ETC}/pacman.d/mirrorlist"
