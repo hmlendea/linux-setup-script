@@ -676,8 +676,16 @@ fi
 ############
 ### IDEs ###
 ############
-if does-bin-exist "code"; then
-    VSCODE_CONFIG_FILE="${HOME}/.config/Code/User/settings.json"
+if does-bin-exist "code" || does-bin-exist "code-oss" || does-bin-exist "codium"; then
+    # The order is important, some might be present simultaoneously for a single package
+    does-bin-exist "code" && VSCODE_CONFIG_FILE="${HOME}/.config/Code/User/settings.json"
+    does-bin-exist "code-oss" && VSCODE_CONFIG_FILE="${HOME}/.config/Code - OSS/User/settings.json"
+    does-bin-exist "codium" && VSCODE_CONFIG_FILE="${HOME}/.config/VSCodium/User/settings.json"
+
+    if [ ! -f "${VSCODE_CONFIG_FILE}" ]; then
+        create-file-if-not-exists "${VSCODE_CONFIG_FILE}"
+        printf "{}" > "${VSCODE_CONFIG_FILE}"
+    fi
 
     # Appearance
     set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.codeLens"]' false

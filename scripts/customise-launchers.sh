@@ -280,6 +280,7 @@ fi
 DEVELOPMENT_ENVIRONMENT_CATEGORIES="Development;IDE;"
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/code.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/codium.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/visual-studio-code.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Code" \

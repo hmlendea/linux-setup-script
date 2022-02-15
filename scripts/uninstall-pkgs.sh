@@ -22,6 +22,11 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall-pkg "paper-icon-theme-git"    # Replaced by paper-icon-theme
     uninstall-pkg "ttf-ms-fonts"            # Replaced by ttf-ms-win10
     uninstall-pkg "yaourt-auto-sync"        # Replaced by repo-synchroniser
+
+    if is-package-installed "visual-studio-code-bin"; then
+        uninstall-pkg "code"
+        uninstall-pkg "vscodium-bin"
+    fi
 fi
 
 # Clean the package cache
