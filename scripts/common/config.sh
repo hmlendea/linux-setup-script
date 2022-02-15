@@ -1,6 +1,8 @@
 #!/bin/bash
 source "scripts/common/common.sh"
 
+NUMBER_REGEX_PATTERN='^[0-9][0-9.]*$'
+
 function create-file-if-not-exists() {
     local FILE_PATH="${*}"
 
@@ -56,16 +58,23 @@ function set_firefox_config_string() {
 }
 
 function set_firefox_config() {
-    PROFILE="${1}"
-    KEY="${2}"
-    VALUE_RAW="${@:3}"
-
-    FILE="${HOME_REAL}/.mozilla/firefox/${PROFILE}/prefs.js"
+    local PROFILE="${1}"
+    local KEY="${2}"
+    local VALUE_RAW="${@:3}"
+    local FILE="${HOME_REAL}/.mozilla/firefox/${PROFILE}/prefs.js"
 
     create-file-if-not-exists "${FILE_PATH}"
 
+    local VALUE=$(echo "${VALUE_RAW}" | sed -e 's/^\s*//g' -e 's/\s*$//g')
+
+    if ! [[ ${VALUE} =~ ${NUMBER_REGEX_PATTERN} ]]; then
+        if [ "${VALUE}" != "true" ] && [ "${VALUE}" != "false" ]; then
+            VALUE="\"${VALUE}\""
+        fi
+    fi
+
+    local FILE_CONTENT=$(cat "${FILE}")
     VALUE=$(echo "${VALUE_RAW}" | sed -e 's/[]\/$*.^|[]/\\&/g')
-    FILE_CONTENT=$(cat "${FILE}")
 
     # If the value is not already set
     if [[ $(grep -c "^user_pref(\"${KEY}\", *${VALUE});$" <<< "${FILE_CONTENT}") == 0 ]] && \
@@ -75,9 +84,9 @@ function set_firefox_config() {
             sed -i '/^user_pref('"\"${KEY}"'/d' "${FILE}"
         fi
 
-        file-append-line "${FILE}" "user_pref(\"${KEY}\", ${VALUE});"
+        file-append-line "${FILE}" "user_pref(\"${KEY}\", ${VALUE_RAW});"
 
-        echo "${FILE} >>> ${KEY} = ${VALUE}"
+        echo "${FILE} >>> ${KEY} = ${VALUE_RAW}"
     fi
 }
 
