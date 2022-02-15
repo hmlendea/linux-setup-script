@@ -126,7 +126,7 @@ TERMINAL_SIZE_COLS=128
 TERMINAL_SIZE_ROWS=32
 TERMINAL_SCROLLBACK_SIZE=15000
 TERMINAL_BOLD_TEXT_IS_BRIGHT=false
-
+TERMINAL_CURSOR_SHAPE="ibeam"
 
 if [ "${SCREEN_RESOLUTION_V}" -lt 1440 ]; then
     TERMINAL_SIZE_COLS=100
@@ -688,39 +688,63 @@ if does-bin-exist "code" || does-bin-exist "code-oss" || does-bin-exist "codium"
     fi
 
     # Appearance
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.codeLens"]' false
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.fontFamily"]' "${MONOSPACE_FONT_NAME} ${MONOSPACE_FONT_STYLE}"
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.fontSize"]' $((MONOSPACE_FONT_SIZE+3))
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.roundedSelection"]' true
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.minimap.maxColumn"]' 100
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.minimap.renderCharacters"]' false
     set_json_value "${VSCODE_CONFIG_FILE}" '.["peacock.affectActivityBar"]' false
     set_json_value "${VSCODE_CONFIG_FILE}" '.["peacock.affectTabActiveBorder"]' true
     set_json_value "${VSCODE_CONFIG_FILE}" '.["peacock.showColorInStatusBar"]' false
     set_json_value "${VSCODE_CONFIG_FILE}" '.["update.mode"]' "none"
     set_json_value "${VSCODE_CONFIG_FILE}" '.["window.autoDetectColorScheme"]' true
     set_json_value "${VSCODE_CONFIG_FILE}" '.["window.menuBarVisibility"]' "toggle"
+    #set_json_value "${VSCODE_CONFIG_FILE}" '.["window.title"]' '${dirty}${activeEditorShort}${separator}${rootName}${separator}VS Code'
     set_json_value "${VSCODE_CONFIG_FILE}" '.["workbench.colorTheme"]' "Default Dark+"
     set_json_value "${VSCODE_CONFIG_FILE}" '.["workbench.iconTheme"]' "seti"
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.drawBoldTextInBrightColors"]' ${TERMINAL_BOLD_TEXT_IS_BRIGHT}
+
+    # Editor appearance
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.codeLens"]' false
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.fontFamily"]' "${MONOSPACE_FONT_NAME} ${MONOSPACE_FONT_STYLE}"
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.fontSize"]' $((MONOSPACE_FONT_SIZE+3))
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.roundedSelection"]' true
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.minimap.maxColumn"]' 100
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.minimap.renderCharacters"]' false
 
     # Editor behaviour
     set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.autoClosingBrackets"]' false
     set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.find.autoFindInSelection"]' "never"
     set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.find.seedSearchStringFromSelection"]' "selection"
     set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.foldingMaximumRegions"]' 65000
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["workbench.largeFileOptimizations"]' false
     set_json_value "${VSCODE_CONFIG_FILE}" '.["explorer.confirmDragAndDrop"]' false
     set_json_value "${VSCODE_CONFIG_FILE}" '.["explorer.confirmDelete"]' false
     set_json_value "${VSCODE_CONFIG_FILE}" '.["git.autofetch"]' true
     set_json_value "${VSCODE_CONFIG_FILE}" '.["git.autofetchPeriod"]' 300
     set_json_value "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.scrollback"]' ${TERMINAL_SCROLLBACK_SIZE}
 
+    # Disable unwanted features
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["workbench.startupEditor"]' false
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["security.workspace.trust.enabled"]' false
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.enablePersistentSessions"]' false
+
     # C#
     set_json_value "${VSCODE_CONFIG_FILE}" '.["omnisharp.enableDecompilationSupport"]' true
+
+    # Terminal
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.allowChords"]' false
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.drawBoldTextInBrightColors"]' ${TERMINAL_BOLD_TEXT_IS_BRIGHT}
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.fontFamily"]' "${MONOSPACE_FONT_NAME} ${MONOSPACE_FONT_STYLE}"
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.fontSize"]' $((MONOSPACE_FONT_SIZE+3))
+
+    if [ "${TERMINAL_CURSOR_SHAPE}" == "ibeam" ]; then
+        set_json_value "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.cursorStyle"]' "line"
+    else
+        set_json_value "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.cursorStyle"]' "${TERMINAL_CURSOR_SHAPE}"
+    fi
+
+    # Git
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["git.autoStash"]' true
 
     # Telemetry
     set_json_value "${VSCODE_CONFIG_FILE}" '.["telemetry.enableCrashReporter"]' false
     set_json_value "${VSCODE_CONFIG_FILE}" '.["telemetry.enableTelemetry"]' false
+    set_json_value "${VSCODE_CONFIG_FILE}" '.["telemetry.telemetryLevel"]' "off"
 fi
 
 ################
@@ -858,7 +882,7 @@ if does-bin-exist "gnome-terminal"; then
 
     # Others
     set_gsetting "${GNOME_TERMINAL_PROFILE_SCHEMA}" audible-bell false
-    set_gsetting "${GNOME_TERMINAL_PROFILE_SCHEMA}" cursor-shape "ibeam"
+    set_gsetting "${GNOME_TERMINAL_PROFILE_SCHEMA}" cursor-shape ${TERMINAL_CURSOR_SHAPE}
     set_gsetting "${GNOME_TERMINAL_PROFILE_SCHEMA}" scrollback-lines ${TERMINAL_SCROLLBACK_SIZE}
     set_gsetting "${GNOME_TERMINAL_PROFILE_SCHEMA}" visible-name "NuciTerm"
 fi
