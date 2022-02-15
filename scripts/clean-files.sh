@@ -35,6 +35,15 @@ removeDirectoryForMissingBin "cairo-dock" "${HOME_CONFIG}/cairo-dock"
 removeDirectoryForMissingBin "chromium" \
     "${HOME_CACHE}/chromium" \
     "${HOME_CONFIG}/chromium"
+removeDirectoryForMissingBin "code" \
+    "${HOME_CONFIG}/Code" \
+    "${HOME}/.vscode"
+removeDirectoryForMissingBin "code-oss" \
+    "${HOME_CONFIG}/Code - OSS" \
+    "${HOME_CONFIG}/code-oss" \
+    "${HOME}/.vscode-oss"
+removeDirectoryForMissingBin "codium" "${HOME_CONFIG}/VSCodium"
+(! does-bin-exist "code-oss") && (! does-bin-exist "codium") && remove "${HOME}/.vscode-oss"
 removeDirectoryForMissingBin "dockx" "${HOME_LOCAL_SHARE}/dockbarx"
 #removeDirectoryForMissingBin "evolution" \
 #    "${HOME_CACHE}/evolution" \
