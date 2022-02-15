@@ -171,7 +171,9 @@ if ${HAS_GUI}; then
     #install-pkg xf86-video-vesa
 
     # Graphics drivers
-    if [[ "${GPU_FAMILY}" == "Nvidia" ]]; then
+    if [[ "${GPU_FAMILY}" == "Intel" ]]; then
+        install-pkg intel-media-driver
+    elif [[ "${GPU_FAMILY}" == "Nvidia" ]]; then
         NVIDIA_DRIVER="nvidia"
 
         [[ "${GPU_MODEL}" == "GeForce 610M" ]] && NVIDIA_DRIVER="nvidia-390xx"
@@ -195,6 +197,8 @@ if ${HAS_GUI}; then
         else
             install-pkg "${NVIDIA_DRIVER}"
         fi
+
+        install-pkg libva-vdpau-driver
     fi
 
     # Desktop Environment & Base applications
