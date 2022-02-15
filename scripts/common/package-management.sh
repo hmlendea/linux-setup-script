@@ -1,26 +1,6 @@
 #!/bin/bash
 source "scripts/common/common.sh"
 
-function is-package-installed() {
-	PKG="${1}"
-
-    if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-    	if (pacman -Q | grep -q "^${PKG}\s" > /dev/null); then
-	    	return 0 # True
-	    else
-		    return 1 # False
-	    fi
-    elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
-      || [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
-        if (apt-cache policy "${PKG}" | grep -q "^\s*Installed:\s*[0-9]"); then
-	    	return 0 # True
-        else
-            echo $PKG
-		    return 1 # False
-        fi
-    fi
-}
-
 function call-package-manager() {
     if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
         if [[ "${UID}" != "0" ]]; then
@@ -40,6 +20,47 @@ function call-package-manager() {
         yes | pkg ${*}
     elif [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
         yes | run-as-su apt ${*}
+    fi
+}
+
+function call-vscode() {
+    if does-bin-exist "codium"; then
+        codium ${*}
+    elif does-bin-exist "code-oss"; then
+        code-oss ${*}
+    elif does-bin-exist "code"; then
+        code ${*}
+    fi
+}
+
+function is-package-installed() {
+	local PKG="${1}"
+
+    if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
+    	if (pacman -Q | grep -q "^${PKG}\s" > /dev/null); then
+	    	return 0 # True
+	    else
+		    return 1 # False
+	    fi
+    elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
+      || [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
+        if (apt-cache policy "${PKG}" | grep -q "^\s*Installed:\s*[0-9]"); then
+	    	return 0 # True
+        else
+            echo $PKG
+		    return 1 # False
+        fi
+    fi
+}
+
+function is-vscode-extension-installed() {
+    local EXTENSION="${1}"
+    local INSTALLED_EXTENSIONS=$(call-vscode --list-extensions)
+
+    if echo "${INSTALLED_EXTENSIONS}" | grep -q "${EXTENSION}"; then
+        return 0 # True
+    else
+        return 1 # False
     fi
 }
 
@@ -69,6 +90,15 @@ function install-dep() {
       || [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
         call-package-manager install "${PKG}" # TODO: See if there is a way to mark them as dep
     fi
+}
+
+function install-vscode-extension() {
+    local EXTENSION="${*}"
+
+    is-vscode-extension-installed "${EXTENSION}" && return
+
+    echo " >>> Installing VS Code extension: ${EXTENSION}"
+    call-vscode --install-extension "${EXTENSION}"
 }
 
 function uninstall-pkg() {
