@@ -8,6 +8,7 @@ if does-bin-exist "firefox"; then
     if [ -f "${FIREFOX_PROFILES_INI_FILE}" ]; then
         FIREFOX_PROFILE_ID=$(grep "^Path=" "${FIREFOX_PROFILES_INI_FILE}" | awk -F= '{print $2}' | head -n 1)
 
+        update-file-if-needed "${REPO_RES_DIR}/firefox/containers.json" "${FIREFOX_PROFILES_DIR}/${FIREFOX_PROFILE_ID}/containers.json"
         update-file-if-needed "${REPO_RES_DIR}/firefox/userChrome.css" "${FIREFOX_PROFILES_DIR}/${FIREFOX_PROFILE_ID}/chrome/userChrome.css"
 
         for ICON_FILE in "${REPO_RES_DIR}/firefox/icons/"*.png; do
