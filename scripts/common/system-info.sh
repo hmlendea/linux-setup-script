@@ -6,6 +6,8 @@ function get_screen_width() {
         xrandr | grep -w connected | grep primary | sed 's/^.*primary \([0-9][0-9]*\)x.*/\1/g'
     elif does-bin-exist "xdpyinfo"; then
         xdpyinfo | grep "dimensions" | sed 's/^[^0-9]*\([0-9]\+\)x[0-9]\+ pixels.*/\1/g'
+    else
+        echo 0
     fi
 }
 
@@ -14,6 +16,8 @@ function get_screen_width_millimetres() {
         xrandr | grep -w connected | grep primary | sed 's/.* \([0-9]\+\)mm x [0-9]\+mm.*/\1/g'
     elif does-bin-exist "xdpyinfo"; then
         xdpyinfo | grep "dimensions" | sed 's/^.* pixels (\([0-9]\+\)x[0-9]\+ mil.*/\1/g'
+    else
+        echo 0
     fi
 }
 
@@ -27,6 +31,8 @@ function get_screen_height() {
         xrandr | grep -w connected | grep primary | sed 's/^.*primary [0-9]\+x\([0-9]\+\).*/\1/g'
     elif does-bin-exist "xdpyinfo"; then
         xdpyinfo | grep "dimensions" | sed 's/^[^0-9]*[0-9]\+x\([0-9]\+\) pixels.*/\1/g'
+    else
+        echo 0
     fi
 }
 
@@ -35,16 +41,25 @@ function get_screen_height_millimetres() {
         xrandr | grep -w connected | grep primary | sed 's/.* [0-9]\+mm x \([0-9]\+\)mm.*/\1/g'
     elif does-bin-exist "xdpyinfo"; then
         xdpyinfo | grep "dimensions" | sed 's/^.* pixels ([0-9]\+x\([0-9]\+\) mil.*/\1/g'
+    else
+        echo 0
     fi
 }
 
 function get_screen_dpi() {
-    if (! does-bin-exist "xrandr"); then
-        does-bin-exist "xdpyinfo" && xdpyinfo | grep "resolution" | sed 's/^[^0-9]*\([0-9]*\)x[0-9]*.*/\1/g'
+    local RESOLUTION_H=$(get_screen_width)
+
+    if [ "${RESOLUTION_H}" -eq 0 ] \
+    || [ -z "${RESOLUTION_H}" ]; then
+        if does-bin-exist "xdpyinfo"; then
+            xdpyinfo | grep "resolution" | sed 's/^[^0-9]*\([0-9]*\)x[0-9]*.*/\1/g'
+        else
+            echo 0
+        fi
+
         return
     fi
 
-    local RESOLUTION_H=$(get_screen_width)
     local RESOLUTION_H_INCHES=$(get_screen_width_inches)
     local DPI=$(echo "${RESOLUTION_H}/${RESOLUTION_H_INCHES}" | bc -l)
 
@@ -53,7 +68,7 @@ function get_screen_dpi() {
 
 function get_arch() {
     local ARCH=""
-    
+
     if does-bin-exist "uname"; then
         ARCH=$(uname -m)
     fi
@@ -74,7 +89,7 @@ function get_arch() {
 
 function get_arch_family() {
     local ARCH=""
-    
+
     if [ -n "${1}" ]; then
         ARCH="${1}"
     else
