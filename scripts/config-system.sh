@@ -22,6 +22,7 @@ GTK_THEME="ZorinGrey-Dark"
 GTK_THEME_VARIANT="dark"
 GTK2_THEME="${GTK_THEME}"
 GTK3_THEME="${GTK_THEME}"
+GTK4_THEME="Adwaita-Dark" # Until the Zorin theme supports GTK4
 ICON_THEME="Papirus-Dark"
 ICON_THEME_FOLDER_COLOUR="grey"
 CURSOR_THEME="Vimix-white-cursors"
@@ -251,7 +252,7 @@ if ${HAS_GUI}; then
         GTK3_CONFIG_FILE="${HOME_REAL}/.config/gtk-3.0/settings.ini"
 
         set_config_value "${GTK3_CONFIG_FILE}" gtk-application-prefer-dark-theme ${GTK_THEME_IS_DARK_BINARY}
-        set_config_value "${GTK3_CONFIG_FILE}" gtk-theme-name "${GTK_THEME}"
+        set_config_value "${GTK3_CONFIG_FILE}" gtk-theme-name "${GTK3_THEME}"
         set_config_value "${GTK3_CONFIG_FILE}" gtk-icon-theme-name "${ICON_THEME}"
         set_config_value "${GTK3_CONFIG_FILE}" gtk-cursor-theme-name "${CURSOR_THEME}"
         set_config_value "${GTK3_CONFIG_FILE}" gtk-button-images 0
@@ -263,7 +264,7 @@ if ${HAS_GUI}; then
         GTK4_CONFIG_FILE="${HOME_REAL}/.config/gtk-4.0/settings.ini"
 
         set_config_value "${GTK4_CONFIG_FILE}" gtk-application-prefer-dark-theme ${GTK_THEME_IS_DARK_BINARY}
-        set_config_value "${GTK4_CONFIG_FILE}" gtk-theme-name "${GTK_THEME}"
+        set_config_value "${GTK4_CONFIG_FILE}" gtk-theme-name "${GTK4_THEME}"
         set_config_value "${GTK4_CONFIG_FILE}" gtk-icon-theme-name "${ICON_THEME}"
         set_config_value "${GTK4_CONFIG_FILE}" gtk-cursor-theme-name "${CURSOR_THEME}"
         set_config_value "${GTK4_CONFIG_FILE}" gtk-button-images 0
