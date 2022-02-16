@@ -571,7 +571,7 @@ if does-bin-exist "firefox"; then
 
     # Privacy
     set_firefox_config "${FIREFOX_PROFILE_ID}" "privacy.firstparty.isolate" true
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "privacy.resistFingerprinting" true
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "privacy.resistFingerprinting" false # If true: starts in a small window, cannot detect system dark theme
     #set_firefox_config "${FIREFOX_PROFILE_ID}" "privacy.trackingprotection.fingerprinting.enabled" true
 
     # Telemetry
