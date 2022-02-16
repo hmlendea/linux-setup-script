@@ -13,6 +13,9 @@ SCREEN_DPI=$(get_screen_dpi)
 USING_NVIDIA_GPU=false; [ "$(get_gpu_family)" == "Nvidia" ] && USING_NVIDIA_GPU=true
 IS_SERVER=false; [ -z "${SCREEN_RESOLUTION_H}" ] && IS_SERVER=true
 
+DNS_CACHE_TTL=20 # Minutes
+DNS_CACHE_SIZE=10000 # Entries
+
 [ "${SCREEN_RESOLUTION_V}" -le 2160 ] && ZOOM_LEVEL=1.15
 [ "${SCREEN_RESOLUTION_V}" -le 1440 ] && ZOOM_LEVEL=1.10
 [ "${SCREEN_RESOLUTION_V}" -le 1080 ] && ZOOM_LEVEL=1.00
@@ -309,8 +312,9 @@ fi
 if does-bin-exist "pihole-FTL"; then
     PIHOLE_DNSMASQ_CONFIG_PATH="/etc/dnsmasq.d/01-pihole.conf"
 
-    set_config_value "${PIHOLE_DNSMASQ_CONFIG_PATH}" "local-ttl" 3600 # 60 minutes
-    set_config_value "${PIHOLE_DNSMASQ_CONFIG_PATH}" "min-cache-ttl" 900 # 15 minutes
+    set_config_value "${PIHOLE_DNSMASQ_CONFIG_PATH}" "cache-size" $((DNS_CACHE_SIZE))
+    set_config_value "${PIHOLE_DNSMASQ_CONFIG_PATH}" "local-ttl" $((DNS_CACHE_TTL*60*3))
+    set_config_value "${PIHOLE_DNSMASQ_CONFIG_PATH}" "min-cache-ttl" $((DNS_CACHE_TTL*60))
 fi
 
 ########################
@@ -573,6 +577,11 @@ if does-bin-exist "firefox"; then
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.suggest.calculator" true
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.suggest.quicksuggest" true
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.suggest.quicksuggest.sponsored" false
+
+    # Performance
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "network.dnsCacheEntries" $((DNS_CACHE_SIZE/10))
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "network.dnsCacheExpiration" $((DNS_CACHE_TTL*60))
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "network.dnsCacheExpirationGracePeriod" $((DNS_CACHE_TTL*60))
 
     # Security
     set_firefox_config "${FIREFOX_PROFILE_ID}" "dom.security.https_first" true
