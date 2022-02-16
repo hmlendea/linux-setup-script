@@ -21,12 +21,13 @@ function configure-autostart-for-app() {
 
 configure-autostart-for-app "/opt/ElectronMail/electron-mail" \
     Name "Mail" \
-    Icon "electron-mail" \
     Exec "/opt/ElectronMail/electron-mail --js-flags=\"--max-old-space-size=6144\" %U"
+
+configure-autostart-for-app "discord" \
+    Exec "/usr/bin/discord --start-minimized"
 
 configure-autostart-for-app "signal-desktop" \
     Name "Signal" \
-    Icon "signal-desktop" \
     Exec "signal-desktop --start-in-tray --no-sandbox -- %u"
 
 configure-autostart-for-app "telegram-desktop" \
