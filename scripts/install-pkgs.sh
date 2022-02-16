@@ -15,6 +15,7 @@ if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
     install-pkg usbutils
     install-pkg lshw
 
+    install-pkg man-db
     install-pkg man-pages
     install-pkg sudo
 
