@@ -19,6 +19,8 @@ REPO_KEYBOARD_LAYOUTS_DIR="${REPO_RC_DIR}/keyboard-layouts"
 
 LOCAL_INSTALL_TEMP_DIR="${REPO_DIR}/.temp-sysinstall"
 
+source "${REPO_DIR}/scripts/common/system-info.sh"
+
 # Distribution
 KERNEL_VERSION=$(uname -r)
 
@@ -219,94 +221,23 @@ function update-file-if-needed() {
 }
 
 # Architecture
-ARCH=$(uname -m)
-
-if [ -z "${ARCH}" ] && $(does-bin "uname"); then
-    ARCH=$(lscpu | grep "Architecture" | awk -F: '{print $2}' | sed 's/  //g' | sed 's/^ *//g')
-fi
-
-[ "${ARCH}" = "i686" ]     && ARCH_FAMILY="x86"
-[ "${ARCH}" = "x86_64" ]   && ARCH_FAMILY="x86"
-[ "${ARCH}" = "aarch64" ]  && ARCH_FAMILY="arm"
-[ "${ARCH}" = "armv7l" ]   && ARCH_FAMILY="arm"
-[ "${ARCH}" = "armv8l" ]   && ARCH_FAMILY="arm"
+ARCH="$(get_arch)"
+ARCH_FAMILY="$(get_arch_family ${ARCH})"
 
 # System characteristics
-if [ -f "${ROOT_PROC}/cpuinfo" ] && grep -q "^Hardware\s*:" "${ROOT_PROC}/cpuinfo"; then
-    CPU_MODEL=$(cat "${ROOT_PROC}/cpuinfo" | \
-        grep "^Hardware" | \
-        awk -F: '{print $2}')
-elif does-bin-exist "lscpu"; then
-    CPU_MODEL=$(lscpu | \
-        grep "^Model name:" | \
-        awk -F: '{print $2}')
-elif [ -f "${ROOT_PROC}/cpuinfo" ]; then
-    CPU_MODEL=$(cat "${ROOT_PROC}/cpuinfo" | \
-        grep "^model name" | \
-        awk -F: '{print $2}')
-fi
+CPU_MODEL="$(get_cpu_model)"
 
-CPU_MODEL=$(echo "${CPU_MODEL}" | \
-        head -n 1 | \
-        sed 's/^\s*\(.*\)\s*$/\1/g' | \
-        sed 's/(TM)//g' | \
-        sed 's/(R)//g' | \
-        sed 's/ [48][ -][Cc]ore//g' | \
-        sed 's/ \(CPU\|Processor\)//g' | \
-        sed 's/@ .*//g' | \
-        sed 's/^[ \t]*//g' | \
-        sed 's/[ \t]*$//g')
-
-echo "${CPU_MODEL}" | grep -q "AMD" && CPU_FAMILY="AMD"
-echo "${CPU_MODEL}" | grep -q "^BCM" && CPU_FAMILY="Broadcom"
-echo "${CPU_MODEL}" | grep -q "Intel" && CPU_FAMILY="Intel"
-
-CPU_MODEL=$(echo "${CPU_MODEL}" | sed 's/\(AMD\|Intel\) //g')
-CPU_NAME=$(echo "${CPU_FAMILY} ${CPU_MODEL}" | sed 's/^\s*//g')
-
-if does-bin-exist "lspci" && [ -e "${ROOT_PROC}/bus/pci" ]; then
-    lspci | grep "VGA" | grep -q "AMD"    && GPU_FAMILY="AMD"
-    lspci | grep "VGA" | grep -q "Intel"    && GPU_FAMILY="Intel"
-    lspci | grep "VGA" | grep -q "NVIDIA"   && GPU_FAMILY="Nvidia"
-
-    GPU_MODEL=$(lspci | grep VGA | tail -n 1 | \
-                sed 's/^[^\[]*\[\([a-zA-Z0-9 ]*\)].*/\1/g' | \
-                sed 's/^00:0[0-9].[0-9] VGA compatible controller: //g' | \
-                sed 's/\(AMD\|Intel\|NVIDIA\)//g' | \
-                sed 's/Corporation//g' | \
-                sed 's/(rev [0-9][0-9])//g' | \
-                sed -e 's/^\s*//g' -e 's/\s*$//g')
-fi
-
-if [ -z "${GPU_MODEL}" ] && [ "${ARCH_FAMILY}" == "arm" ]; then
-    GPU_MODEL="${CPU_MODEL}"
-    GPU_FAMILY="${CPU_FAMILY}"
-fi
-
-GPU_NAME=$(echo "${GPU_FAMILY} ${GPU_MODEL}" | sed 's/^\s*//g')
-
-CHASSIS_TYPE="Desktop"
+CHASSIS_TYPE="$(get_chassis_type)"
 POWERFUL_PC=false
 GAMING_PC=false
 HAS_GUI=false
 HAS_SU_PRIVILEGES=true
 HAS_EFI_SUPPORT=false
-HAS_OPTIMUS_SUPPORT=false
-
-if [ -d "${ROOT_SYS}/module/battery" ] \
-&& [ -d "${ROOT_PROC}/acpi/button/lid" ]; then
-    CHASSIS_TYPE="Laptop"
-elif [ "${DISTRO_FAMILY}" = "Android" ]; then
-    CHASSIS_TYPE="Phone"
-elif [ $(uname -r | grep "raspberry" -c) -ge 1 ]; then
-    CHASSIS_TYPE="SBC"
-fi
 
 if [ "${CHASSIS_TYPE}" = "Phone" ]; then
     POWERFUL_PC=false
     GAMING_PC=false
     HAS_SU_PRIVILEGES=false
-    HAS_OPTIMUS_SUPPORT=false
     HAS_EFI_SUPPORT=false
 else
     if [ "${ARCH_FAMILY}" = "x86" ]; then
@@ -347,14 +278,6 @@ else
 fi
 
 [ "${UID}" -eq 0 ] && HAS_SU_PRIVILEGES=true
-
-if [ "${GPU_FAMILY}" = "Nvidia" ]; then
-    if [ "${GPU_MODEL}" = "GeForce 610M" ]; then
-        HAS_OPTIMUS_SUPPORT=true
-    fi
-else
-    HAS_OPTIMUS_SUPPORT=false
-fi
 
 # Username and home directory
 USER_REAL=${SUDO_USER}

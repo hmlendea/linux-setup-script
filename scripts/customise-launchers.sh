@@ -634,7 +634,7 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-keep.desktop" StartupWMClass
 ##############
 ### NVIDIA ###
 ##############
-if [[ "${GPU_FAMILY}" == "Nvidia" ]]; then
+if does-bin-exist "nvidia-settings"; then
     set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/nvidia-settings.desktop" \
         Name "Nvidia Settings" \
         Name[ro] "Setări Nvidia" \

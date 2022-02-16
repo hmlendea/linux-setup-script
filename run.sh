@@ -12,6 +12,7 @@ cd "$EXEDIR"
 export USER="$(whoami)"
 
 source "${EXEDIR}/scripts/common/common.sh"
+source "${EXEDIR}/scripts/common/system-info.sh"
 
 if ${HAS_SU_PRIVILEGES}; then
     echo "I need SU privileges!"
@@ -60,14 +61,15 @@ function update-system() {
 
 echo "OS:           ${OS}"
 echo "Distro:       ${DISTRO} (${DISTRO_FAMILY})"
-echo "Architecture: ${ARCH} (${ARCH_FAMILY})"
-echo "CPU:          ${CPU_NAME}"
-echo "GPU:          ${GPU_NAME}"
-echo "Chassis:      ${CHASSIS_TYPE}"
+echo "Architecture: $(get_arch) ($(get_arch_family))"
+echo "CPU:          $(get_cpu)"
+echo "GPU:          $(get_gpu)"
+echo "Chassis:      $(get_chassis_type)"
 echo "GUI:          ${HAS_GUI}"
 echo "EFI support:  ${HAS_EFI_SUPPORT}"
 echo "Powerful PC:  ${POWERFUL_PC}"
 echo "Gaming PC:    ${GAMING_PC}"
+echo "Screen DPI:   $(get_screen_dpi)"
 echo ""
 
 # Remove the MOTD
