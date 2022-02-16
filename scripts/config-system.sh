@@ -987,11 +987,15 @@ fi
 ###########################
 if does-bin-exist "fragments"; then
     FRAGMENTS_SCHEMA="de.haeckerfelix.Fragments"
+    FRAGMENTS_SETTINGS_FILE="${HOME_CONFIG}/fragments/settings.json"
 
-    set_gsetting "${FRAGMENTS_SCHEMA}" download-folder "${HOME}/Downloads"
     set_gsetting "${FRAGMENTS_SCHEMA}" dark-mode ${GTK_THEME_IS_DARK}
-    set_gsetting "${FRAGMENTS_SCHEMA}" encryption-mode 1
-    set_gsetting "${FRAGMENTS_SCHEMA}" max-downloads 5
+
+    set_json_value "${FRAGMENTS_SETTINGS_FILE}" '.["encryption"]' 1
+    set_json_value "${FRAGMENTS_SETTINGS_FILE}" '.["download-dir"]' "${HOME}/Downloads"
+    set_json_value "${FRAGMENTS_SETTINGS_FILE}" '.["incomplete-dir"]' "${HOME}/Downloads/.incomplete_fragments"
+    set_json_value "${FRAGMENTS_SETTINGS_FILE}" '.["incomplete-dir-enabled"]' true
+    set_json_value "${FRAGMENTS_SETTINGS_FILE}" '.["download-queue-size"]' 5
 fi
 
 ########################

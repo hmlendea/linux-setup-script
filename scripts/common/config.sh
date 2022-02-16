@@ -15,6 +15,18 @@ function create-file-if-not-exists() {
     touch "${FILE_PATH}"
 }
 
+function is_value_string() {
+    local VALUE="${*}"
+
+    if ! [[ ${VALUE} =~ ${NUMBER_REGEX_PATTERN} ]]; then
+        if [ "${VALUE}" != "true" ] && [ "${VALUE}" != "false" ]; then
+            return 0 # True
+        fi
+    fi
+
+    return 1 # False
+}
+
 function set_config_value() {
     local SEPARATOR="="
 
@@ -67,11 +79,7 @@ function set_firefox_config() {
 
     local VALUE=$(echo "${VALUE_RAW}" | sed -e 's/^\s*//g' -e 's/\s*$//g')
 
-    if ! [[ ${VALUE} =~ ${NUMBER_REGEX_PATTERN} ]]; then
-        if [ "${VALUE}" != "true" ] && [ "${VALUE}" != "false" ]; then
-            VALUE="\"${VALUE}\""
-        fi
-    fi
+    is_value_string "${VALUE}" && VALUE="\"${VALUE}\""
 
     local FILE_CONTENT=$(cat "${FILE}")
     VALUE=$(echo "${VALUE_RAW}" | sed -e 's/[]\/$*.^|[]/\\&/g')
@@ -97,20 +105,20 @@ function set_json_value() {
     [ ! -f "${FILE_PATH}" ] && return
 
     local PROPERTY="${2}"
-    local VALUE=$(echo "${@:3}" | sed -e 's/[]\/$*.^|[]/\\&/g')
+    local VALUE_RAW="${@:3}"
+    local VALUE=$(echo "${VALUE_RAW}" | sed -e 's/[]\/$*.^|[]/\\&/g')
 
     local FILE_CONTENT=$(cat "${FILE_PATH}" | grep -v "^[ \t]*//" | tr -d '\n' | sed 's/,[ \t]*}/ }/g')
     local CURRENT_VALUE=$(jq "${PROPERTY}" <<< ${FILE_CONTENT})
 
     VALUE=$(echo "${VALUE}" | sed 's/\\\././g') # dirty fix
 
-    if [ "${VALUE}" != "false" ] && [ "${VALUE}" != "true" ] && \
-       ! [[ ${VALUE} =~ ^[0-9]+([.][0-9]+)?$ ]]; then
-        VALUE="\"${VALUE}\""
-    fi
+    is_value_string "${VALUE}" && VALUE="\"${VALUE}\""
 
     # If the value is not already set
-    if [ "${VALUE}" != "${CURRENT_VALUE}" ]; then
+    if [ "${VALUE}" != "${CURRENT_VALUE}" ] \
+    && [ "${VALUE_RAW}" != "${CURRENT_VALUE}" ] \
+    && [ "\"${VALUE_RAW}\"" != "${CURRENT_VALUE}" ]; then
         jq "${PROPERTY}"'='"${VALUE}" <<< ${FILE_CONTENT} > "${FILE_PATH}"
         echo "${FILE_PATH} >>> ${PROPERTY}=${VALUE}"
     fi
