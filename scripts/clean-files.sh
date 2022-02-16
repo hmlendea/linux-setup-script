@@ -61,7 +61,9 @@ removeDirectoryForMissingBin "dockx" "${HOME_LOCAL_SHARE}/dockbarx"
 removeDirectoryForMissingBin "/opt/geforcenow-electron/geforcenow-electron" "${HOME_CONFIG}/GeForce NOW"
 removeDirectoryForMissingBin "gkraken" "${HOME_CONFIG}/gkraken"
 removeDirectoryForMissingBin "gksu" "${HOME}/.gksu.lock"
-removeDirectoryForMissingBin "gnome-photos" "${HOME_CACHE}/gnome-photos"
+removeDirectoryForMissingBin "gnome-photos" \
+    "${HOME_CACHE}/gnome-photos" \
+    "${HOME_LOCAL_SHARE}/gnome-photos"
 removeDirectoryForMissingBin "gnome-software" "${HOME_CACHE}/gnome-software"
 removeDirectoryForMissingBin "gnubg" "${HOME}/.gnubg"
 removeDirectoryForMissingBin "google-chrome" \
@@ -116,6 +118,7 @@ removeDirectoryForMissingBin "yarn" \
     "${HOME}/.yarnrc"
 removeDirectoryForMissingBin "yay" "${HOME_CACHE}/yay"
 removeDirectoryForMissingBin "youtube-dl" "${HOME_CACHE}/youtube-dl"
+removeDirectoryForMissingBin "zsh" "${HOME}/.zshrc"
 
 removeDirectoryForMissingGnomeShellExtension "tiling-assistant" "${HOME_CONFIG}/tiling-assistant"
 
