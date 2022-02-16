@@ -17,9 +17,11 @@ fi
 IS_SERVER=false
 SCREEN_RESOLUTION_H=0
 SCREEN_RESOLUTION_V=0
+SCREEN_DPI=96
 
 if does-bin-exist "xdpyinfo"; then
     SCREEN_RESOLUTION=$(xdpyinfo | grep "dimensions" | sed 's/^[^0-9]*\([0-9]*x[0-9]*\) pixels.*/\1/g')
+    SCREEN_DPI=$(xdpyinfo | grep "resolution" | sed 's/^[^0-9]*\([0-9]*\)x[0-9]*.*/\1/g')
 
     if [ -n "${SCREEN_RESOLUTION}" ]; then
         IS_SERVER=false
@@ -56,8 +58,9 @@ GTK_THEME_BG_COLOUR="#202020"
 # FONT FACES
 INTERFACE_FONT_NAME="Sans"
 INTERFACE_FONT_STYLE="Regular"
-INTERFACE_FONT_SIZE=11
-[ "${SCREEN_RESOLUTION_V}" -lt 1440 ] && INTERFACE_FONT_SIZE=10
+INTERFACE_FONT_SIZE=10
+#[ "${SCREEN_RESOLUTION_V}" -lt 1440 ] && INTERFACE_FONT_SIZE=12
+[ "${SCREEN_DPI}" -ge 96 ] && INTERFACE_FONT_SIZE=12
 
 DOCUMENT_FONT_NAME=${INTERFACE_FONT_NAME}
 DOCUMENT_FONT_STYLE=${INTERFACE_FONT_STYLE}
@@ -571,7 +574,7 @@ if does-bin-exist "firefox"; then
 
     # Privacy
     set_firefox_config "${FIREFOX_PROFILE_ID}" "privacy.firstparty.isolate" true
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "privacy.resistFingerprinting" false # If true: starts in a small window, cannot detect system dark theme
+    #set_firefox_config "${FIREFOX_PROFILE_ID}" "privacy.resistFingerprinting" true # If true: starts in a small window, cannot detect system dark theme
     #set_firefox_config "${FIREFOX_PROFILE_ID}" "privacy.trackingprotection.fingerprinting.enabled" true
 
     # Telemetry
