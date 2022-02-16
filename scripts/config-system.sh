@@ -14,14 +14,33 @@ else
     USING_NVIDIA_GPU=false
 fi
 
+
+function get_screen_dpi() {
+    if (! does-bin-exist "xdpyinfo"); then
+        echo "96"
+        return
+    fi
+
+    if (! does-bin-exist "xrandr"); then
+        xdpyinfo | grep "resolution" | sed 's/^[^0-9]*\([0-9]*\)x[0-9]*.*/\1/g'
+        return
+    fi
+
+    local RESOLUTION_H=$(xdpyinfo | grep "dimensions" | sed 's/^[^0-9]*\([0-9]*\)x[0-9]* pixels.*/\1/g')
+    local RESOLUTION_MM_H=$(xrandr | grep -w connected | sed 's/.* \([0-9][0-9]*\)mm x [0-9][0-9]*mm.*/\1/g')
+    local RESOLUTION_IN_H=$(echo "${RESOLUTION_MM_H}/10/2.54" | bc -l)
+    local DPI=$(echo "${RESOLUTION_H}/${RESOLUTION_IN_H}" | bc -l)
+
+    echo "${DPI}" | awk '{print int($1+0.5)}' # Round to nearest
+}
+
 IS_SERVER=false
 SCREEN_RESOLUTION_H=0
 SCREEN_RESOLUTION_V=0
-SCREEN_DPI=96
+SCREEN_DPI=$(get_screen_dpi)
 
 if does-bin-exist "xdpyinfo"; then
     SCREEN_RESOLUTION=$(xdpyinfo | grep "dimensions" | sed 's/^[^0-9]*\([0-9]*x[0-9]*\) pixels.*/\1/g')
-    SCREEN_DPI=$(xdpyinfo | grep "resolution" | sed 's/^[^0-9]*\([0-9]*\)x[0-9]*.*/\1/g')
 
     if [ -n "${SCREEN_RESOLUTION}" ]; then
         IS_SERVER=false
@@ -58,9 +77,9 @@ GTK_THEME_BG_COLOUR="#202020"
 # FONT FACES
 INTERFACE_FONT_NAME="Sans"
 INTERFACE_FONT_STYLE="Regular"
-INTERFACE_FONT_SIZE=10
-#[ "${SCREEN_RESOLUTION_V}" -lt 1440 ] && INTERFACE_FONT_SIZE=12
-[ "${SCREEN_DPI}" -ge 96 ] && INTERFACE_FONT_SIZE=12
+INTERFACE_FONT_SIZE=11
+#[ "${SCREEN_RESOLUTION_V}" -lt 1440 ] && INTERFACE_FONT_SIZE=10
+[ "${SCREEN_DPI}" -le 102 ] && INTERFACE_FONT_SIZE=10
 
 DOCUMENT_FONT_NAME=${INTERFACE_FONT_NAME}
 DOCUMENT_FONT_STYLE=${INTERFACE_FONT_STYLE}
@@ -989,10 +1008,10 @@ fi
 ### TORRENT DOWNLOADERS ###
 ###########################
 if does-bin-exist "fragments"; then
-    FRAGMENTS_SCHEMA="de.haeckerfelix.Fragments"
+    #FRAGMENTS_SCHEMA="de.haeckerfelix.Fragments"
     FRAGMENTS_SETTINGS_FILE="${HOME_CONFIG}/fragments/settings.json"
 
-    set_gsetting "${FRAGMENTS_SCHEMA}" dark-mode ${GTK_THEME_IS_DARK}
+    #set_gsetting "${FRAGMENTS_SCHEMA}" dark-mode ${GTK_THEME_IS_DARK}
 
     set_json_value "${FRAGMENTS_SETTINGS_FILE}" '.["encryption"]' 1
     set_json_value "${FRAGMENTS_SETTINGS_FILE}" '.["download-dir"]' "${HOME}/Downloads"
