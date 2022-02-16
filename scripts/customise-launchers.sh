@@ -1,6 +1,7 @@
 #!/bin/bash
 source "scripts/common/common.sh"
 source "scripts/common/config.sh"
+source "scripts/common/system-info.sh"
 
 [ "${OS}" != "Linux" ] && exit
 (! ${HAS_GUI}) && exit
@@ -176,6 +177,11 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/teams.desktop" \
         Icon "teams" \
         Categories "${CHAT_APP_CATEGORIES}"
 done
+
+if [ "$(get_gpu_family)" = "Intel" ]; then
+    set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/teams.desktop" Exec "/usr/bin/teams --disable-gpu --no-sandbox"
+    set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/teams-insiders.desktop" Exec "/usr/bin/teams-insiders --disable-gpu --no-sandbox"
+fi
 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/meowgram.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/telegramdesktop.desktop"; do
