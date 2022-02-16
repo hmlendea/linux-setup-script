@@ -11,3 +11,4 @@ function update-hidden-files-config-if-needed() {
 }
 
 update-hidden-files-config-if-needed "home" "${HOME}"
+update-hidden-files-config-if-needed "home-documents" "${HOME}/Documents"
