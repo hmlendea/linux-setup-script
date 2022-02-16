@@ -19,11 +19,11 @@ if does-bin-exist "firefox"; then
 fi
 
 if does-bin-exist "lxpanel"; then
-    update-file-if-needed "lxpanel/applications.png"                "${HOME}/.config/lxpanel/LXDE/panels/applications.png"
-    update-file-if-needed "lxpanel/applications_ro.png"             "${HOME}/.config/lxpanel/LXDE/panels/applications_ro.png"
-    update-file-if-needed "lxpanel/power.png"                       "${HOME}/.config/lxpanel/LXDE/panels/power.png"
-    update-file-if-needed "lxpanel/lxde-logout-gnomified.desktop"   "${HOME}/.local/share/applications/lxde-logout-gnomified.desktop"
-    update-file-if-needed "plank/autostart.desktop"                 "${HOME}/.config/autostart/plank.desktop"
+    update-file-if-needed "${REPO_RES_DIR}/lxpanel/applications.png"                "${HOME}/.config/lxpanel/LXDE/panels/applications.png"
+    update-file-if-needed "${REPO_RES_DIR}/lxpanel/applications_ro.png"             "${HOME}/.config/lxpanel/LXDE/panels/applications_ro.png"
+    update-file-if-needed "${REPO_RES_DIR}/lxpanel/power.png"                       "${HOME}/.config/lxpanel/LXDE/panels/power.png"
+    update-file-if-needed "${REPO_RES_DIR}/lxpanel/lxde-logout-gnomified.desktop"   "${HOME}/.local/share/applications/lxde-logout-gnomified.desktop"
+    update-file-if-needed "${REPO_RES_DIR}/plank/autostart.desktop"                 "${HOME}/.config/autostart/plank.desktop"
 fi
 
 if does-bin-exist "neofetch"; then
@@ -41,6 +41,19 @@ fi
 
 # PCManFM's context menu
 if does-bin-exist "pcmanfm"; then
-    does-bin-exist "code-oss"   && update-file-if-needed "pcmanfm/open-in-code.desktop"     "${HOME}/.local/share/file-manager/actions/open-in-code.desktop"
-    does-bin-exist "lxterminal" && update-file-if-needed "pcmanfm/open-in-terminal.desktop" "${HOME}/.local/share/file-manager/actions/open-in-terminal.desktop"
+    does-bin-exist "code-oss"   && update-file-if-needed "${REPO_RES_DIR}/pcmanfm/open-in-code.desktop"     "${HOME}/.local/share/file-manager/actions/open-in-code.desktop"
+    does-bin-exist "lxterminal" && update-file-if-needed "${REPO_RES_DIR}/pcmanfm/open-in-terminal.desktop" "${HOME}/.local/share/file-manager/actions/open-in-terminal.desktop"
+fi
+
+# Templates
+if ${HAS_GUI}; then
+    update-file-if-needed "${REPO_RES_DIR}/templates/file" "${HOME}/Templates/Blank file"
+
+    if does-bin-exist "libreoffice"; then
+        update-file-if-needed "${REPO_RES_DIR}/templates/doc" "${HOME}/Templates/Microsoft Document.doc"
+        update-file-if-needed "${REPO_RES_DIR}/templates/odt" "${HOME}/Templates/Document.odt"
+    else
+        remove "${HOME}/Templates/Microsoft Document.doc"
+        remove "${HOME}/Templates/Document.odt"
+    fi
 fi
