@@ -1,6 +1,7 @@
 #!/bin/bash
 source "scripts/common/common.sh"
 source "scripts/common/package-management.sh"
+source "scripts/common/system-info.sh"
 
 ##############
 ### Basics ###
@@ -173,15 +174,15 @@ if ${HAS_GUI}; then
     #install-pkg xf86-video-vesa
 
     # Graphics drivers
+    GPU_FAMILY="$(get_gpu_family)"
     if [[ "${GPU_FAMILY}" == "Intel" ]]; then
         install-pkg intel-media-driver
     elif [[ "${GPU_FAMILY}" == "Nvidia" ]]; then
         NVIDIA_DRIVER="nvidia"
 
-        [[ "${GPU_MODEL}" == "GeForce 610M" ]] && NVIDIA_DRIVER="nvidia-390xx"
+        [[ "$(get_gpu_model)" == "GeForce 610M" ]] && NVIDIA_DRIVER="nvidia-390xx"
 
-
-        if ${HAS_OPTIMUS_SUPPORT}; then
+        if gpu_has_optimus_support; then
             install-pkg bumblebee
             install-dep bbswitch
             install-dep primus

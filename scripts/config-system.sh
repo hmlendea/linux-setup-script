@@ -1,49 +1,17 @@
 #!/bin/bash
 source "scripts/common/common.sh"
 source "scripts/common/config.sh"
+source "scripts/common/system-info.sh"
 
 function get_openbox_font_weight() {
     [[ "${*}" == "Bold" ]] && echo "Bold" || echo "Normal"
 }
 
-if [[ "${ARCH}" == "x86_64" ]] \
-&& does-bin-exist "lspci" \
-&& [[ "$(lspci | grep VGA | grep -c NVIDIA)" == "1" ]]; then
-    USING_NVIDIA_GPU=true
-else
-    USING_NVIDIA_GPU=false
-fi
-
-function get_screen_dpi() {
-    if (! does-bin-exist "xrandr"); then
-        does-bin-exist "xdpyinfo" && xdpyinfo | grep "resolution" | sed 's/^[^0-9]*\([0-9]*\)x[0-9]*.*/\1/g'
-        return
-    fi
-
-    local RESOLUTION_H=$(xrandr | grep -w connected | grep primary | sed 's/^.*primary \([0-9][0-9]*\)x.*/\1/g')
-    local RESOLUTION_MM_H=$(xrandr | grep -w connected | grep primary | sed 's/.* \([0-9][0-9]*\)mm x [0-9][0-9]*mm.*/\1/g')
-    local RESOLUTION_IN_H=$(echo "${RESOLUTION_MM_H}/10/2.54" | bc -l)
-    local DPI=$(echo "${RESOLUTION_H}/${RESOLUTION_IN_H}" | bc -l)
-
-    echo "${DPI}" | awk '{print int($1+0.5)}' # Round to nearest
-}
-
-IS_SERVER=false
-SCREEN_RESOLUTION_H=0
-SCREEN_RESOLUTION_V=0
+SCREEN_RESOLUTION_H=$(get_screen_width)
+SCREEN_RESOLUTION_V=$(get_screen_height)
 SCREEN_DPI=$(get_screen_dpi)
-
-if does-bin-exist "xdpyinfo"; then
-    SCREEN_RESOLUTION=$(xdpyinfo | grep "dimensions" | sed 's/^[^0-9]*\([0-9]*x[0-9]*\) pixels.*/\1/g')
-
-    if [ -n "${SCREEN_RESOLUTION}" ]; then
-        IS_SERVER=false
-        SCREEN_RESOLUTION_H="$(echo ${SCREEN_RESOLUTION} | awk -F "x" '{print $1}')"
-        SCREEN_RESOLUTION_V="$(echo ${SCREEN_RESOLUTION} | awk -F "x" '{print $2}')"
-    else
-        IS_SERVER=true
-    fi
-fi
+USING_NVIDIA_GPU=false; [ "$(get_gpu_family)" == "Nvidia" ] && USING_NVIDIA_GPU=true
+IS_SERVER=false; [ -z "${SCREEN_RESOLUTION_H}" ] && IS_SERVER=true
 
 [ "${SCREEN_RESOLUTION_V}" -le 2160 ] && ZOOM_LEVEL=1.15
 [ "${SCREEN_RESOLUTION_V}" -le 1440 ] && ZOOM_LEVEL=1.10
@@ -192,7 +160,7 @@ if [ -f "${ROOT_ETC}/default/grub" ]; then
     fi
 
     # Set GRUB resolution to the highest supported one
-    if [ "${GPU_MODEL}" == "GeForce GTX 1650" ]; then
+    if [ "$(get_gpu_model)" == "GeForce GTX 1650" ]; then
         if [ "${SCREEN_RESOLUTION_H}" -ge 1280 ] \
         && [ "${SCREEN_RESOLUTION_V}" -ge 1024 ]; then
             set_config_value "${GRUB_CONFIG_FILE}" "GRUB_GFXMODE" "1280x1024x32"
