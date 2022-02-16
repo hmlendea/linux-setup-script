@@ -353,7 +353,8 @@ function set_launcher_entry_spanish() {
 
 function create_launcher() {
     local FILE_PATH="$*"
-    local NAME=$(basename "${FILE_PATH}" | cut -f 1 -d '.')
+    local FILE_LABEL=$(basename "${FILE_PATH}" | cut -f 1 -d '.')
+    local NAME=$(echo "${FILE_LABEL}" | sed -e 's/-/ /g' -e 's/^./\U&/g' -e 's/\s./\U&/g')
 
     if [ ! -f "${FILE_PATH}" ]; then
         {
