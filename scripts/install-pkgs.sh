@@ -38,6 +38,8 @@ if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
     install-pkg pkgconf
 fi
 
+install-pkg bc # Mathematical calculations, e.g. echo "2+2-1" | bc
+
 ###################
 ### Development ###
 ###################
