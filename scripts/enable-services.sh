@@ -14,29 +14,42 @@ function does-systemd-service-exist-at-location {
 function does-systemd-service-exist {
     local SERVICE_NAME="${*}"
 
-    does-systemd-service-exist-at-location "${SERVICE_NAME}" "/etc/systemd/system" && return 0
-    does-systemd-service-exist-at-location "${SERVICE_NAME}" "/lib/systemd/system" && return 0
-    does-systemd-service-exist-at-location "${SERVICE_NAME}" "/usr/lib/systemd/system" && return 0
+    does-systemd-service-exist-at-location "${SERVICE_NAME}" "${ROOT_ETC}/systemd/system" && return 0
+    does-systemd-service-exist-at-location "${SERVICE_NAME}" "${ROOT_LIB}/systemd/system" && return 0
+    does-systemd-service-exist-at-location "${SERVICE_NAME}" "${ROOT_USR_LIB}/systemd/system" && return 0
 
     return 1 # False
 }
 
 function enable-service {
+    [ ! -f "${ROOT_USR_BIN}/systemctl" ] && return
+
     local SERVICE_NAME="${*}"
 
-    if [ -f "${ROOT_USR_BIN}/systemctl" ]; then
-        (! does-systemd-service-exist "${SERVICE_NAME}") && return
+    (! does-systemd-service-exist "${SERVICE_NAME}") && return
 
-        run-as-su systemctl enable "${SERVICE_NAME}"
-        run-as-su systemctl start "${SERVICE_NAME}"
-    fi
+    run-as-su systemctl enable "${SERVICE_NAME}"
+    run-as-su systemctl start "${SERVICE_NAME}"
 }
 
-[ -f "${ROOT_USR_BIN}/cupsd" ]                                      && enable-service "cups.service"
-[ -f "${ROOT_USR_BIN}/thermald" ]                                   && enable-service "thermald.service"
-[ -f "${ROOT_USR_BIN}/networkctl" ]                                 && enable-service "NetworkManager.service"
-[ -f "${ROOT_USR_BIN}/ntpd" ]                                       && enable-service "ntpd.service"
-[ -f "${ROOT_USR_BIN}/repo-synchroniser" ]                          && enable-service "repo-synchroniser.timer"
-[ -f "${ROOT_USR_LIB}/bluetooth/bluetoothd" ]                       && enable-service "bluetooth.service"
-[ -f "${ROOT_USR_LIB}/systemd/system/systemd-timesyncd.service" ]   && enable-service "systemd-timesyncd.service"
-[ -f "${ROOT_LIB}/systemd/system/sshd.service" ]                    && enable-service "sshd.service"
+function disable-service {
+    [ ! -f "${ROOT_USR_BIN}/systemctl" ] && return
+
+    local SERVICE_NAME="${*}"
+
+    (! does-systemd-service-exist "${SERVICE_NAME}") && return
+
+    run-as-su systemctl disable "${SERVICE_NAME}"
+    run-as-su systemctl stop "${SERVICE_NAME}"
+}
+
+enable-service "bluetooth"
+enable-service "cups"
+enable-service "docker"
+enable-service "NetworkManager"
+enable-service "ntpd"
+enable-service "repo-synchroniser.timer"
+enable-service "systemd-timesyncd"
+enable-service "thermald"
+
+[[ ${HOSTNAME} = *Pi ]] && enable-service "sshd"
