@@ -14,20 +14,14 @@ else
     USING_NVIDIA_GPU=false
 fi
 
-
 function get_screen_dpi() {
-    if (! does-bin-exist "xdpyinfo"); then
-        echo "96"
-        return
-    fi
-
     if (! does-bin-exist "xrandr"); then
-        xdpyinfo | grep "resolution" | sed 's/^[^0-9]*\([0-9]*\)x[0-9]*.*/\1/g'
+        does-bin-exist "xdpyinfo" && xdpyinfo | grep "resolution" | sed 's/^[^0-9]*\([0-9]*\)x[0-9]*.*/\1/g'
         return
     fi
 
-    local RESOLUTION_H=$(xdpyinfo | grep "dimensions" | sed 's/^[^0-9]*\([0-9]*\)x[0-9]* pixels.*/\1/g')
-    local RESOLUTION_MM_H=$(xrandr | grep -w connected | sed 's/.* \([0-9][0-9]*\)mm x [0-9][0-9]*mm.*/\1/g')
+    local RESOLUTION_H=$(xrandr | grep -w connected | grep primary | sed 's/^.*primary \([0-9][0-9]*\)x.*/\1/g')
+    local RESOLUTION_MM_H=$(xrandr | grep -w connected | grep primary | sed 's/.* \([0-9][0-9]*\)mm x [0-9][0-9]*mm.*/\1/g')
     local RESOLUTION_IN_H=$(echo "${RESOLUTION_MM_H}/10/2.54" | bc -l)
     local DPI=$(echo "${RESOLUTION_H}/${RESOLUTION_IN_H}" | bc -l)
 
@@ -77,9 +71,9 @@ GTK_THEME_BG_COLOUR="#202020"
 # FONT FACES
 INTERFACE_FONT_NAME="Sans"
 INTERFACE_FONT_STYLE="Regular"
-INTERFACE_FONT_SIZE=11
-#[ "${SCREEN_RESOLUTION_V}" -lt 1440 ] && INTERFACE_FONT_SIZE=10
-[ "${SCREEN_DPI}" -le 102 ] && INTERFACE_FONT_SIZE=10
+INTERFACE_FONT_SIZE=10
+[ "${SCREEN_DPI}" -ge 102 ] && INTERFACE_FONT_SIZE=10
+[ "${SCREEN_DPI}" -ge 109 ] && INTERFACE_FONT_SIZE=11
 
 DOCUMENT_FONT_NAME=${INTERFACE_FONT_NAME}
 DOCUMENT_FONT_STYLE=${INTERFACE_FONT_STYLE}
