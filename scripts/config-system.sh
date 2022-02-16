@@ -17,6 +17,12 @@ IS_SERVER=false; [ -z "${SCREEN_RESOLUTION_H}" ] && IS_SERVER=true
 [ "${SCREEN_RESOLUTION_V}" -le 1440 ] && ZOOM_LEVEL=1.10
 [ "${SCREEN_RESOLUTION_V}" -le 1080 ] && ZOOM_LEVEL=1.00
 
+# Languages
+OS_LANGUAGE=$(grep "^LANG=" "${ROOT_ETC}/locale.conf" | sed 's/^[^=]*=\([^.]*\).*/\1/g')
+[ -z "${OS_LANGUAGE}" ] && OS_LANGUAGE="en_GB"
+APPS_LANGUAGE="ro_RO"
+GAMES_LANGUAGE="en_GB"
+
 # THEMES
 GTK_THEME="ZorinGrey-Dark"
 GTK_THEME_VARIANT="dark"
@@ -28,11 +34,11 @@ ICON_THEME_FOLDER_COLOUR="grey"
 CURSOR_THEME="Vimix-white-cursors"
 
 if [[ "${GTK_THEME_VARIANT}" == "dark" ]]; then
-    GTK_THEME_IS_DARK=true
-    GTK_THEME_IS_DARK_BINARY=1
+    DESKTOP_THEME_IS_DARK=true
+    DESKTOP_THEME_IS_DARK_BINARY=1
 else
-    GTK_THEME_IS_DARK=false
-    GTK_THEME_IS_DARK_BINARY=0
+    DESKTOP_THEME_IS_DARK=false
+    DESKTOP_THEME_IS_DARK_BINARY=0
 fi
 
 GTK_THEME_BG_COLOUR="#202020"
@@ -251,7 +257,7 @@ if ${HAS_GUI}; then
     if [ -d "${ROOT_USR_LIB}/gtk-3.0" ]; then
         GTK3_CONFIG_FILE="${HOME_REAL}/.config/gtk-3.0/settings.ini"
 
-        set_config_value "${GTK3_CONFIG_FILE}" gtk-application-prefer-dark-theme ${GTK_THEME_IS_DARK_BINARY}
+        set_config_value "${GTK3_CONFIG_FILE}" gtk-application-prefer-dark-theme ${DESKTOP_THEME_IS_DARK_BINARY}
         set_config_value "${GTK3_CONFIG_FILE}" gtk-theme-name "${GTK3_THEME}"
         set_config_value "${GTK3_CONFIG_FILE}" gtk-icon-theme-name "${ICON_THEME}"
         set_config_value "${GTK3_CONFIG_FILE}" gtk-cursor-theme-name "${CURSOR_THEME}"
@@ -263,7 +269,7 @@ if ${HAS_GUI}; then
     if [ -d "${ROOT_USR_LIB}/gtk-4.0" ]; then
         GTK4_CONFIG_FILE="${HOME_REAL}/.config/gtk-4.0/settings.ini"
 
-        set_config_value "${GTK4_CONFIG_FILE}" gtk-application-prefer-dark-theme ${GTK_THEME_IS_DARK_BINARY}
+        set_config_value "${GTK4_CONFIG_FILE}" gtk-application-prefer-dark-theme ${DESKTOP_THEME_IS_DARK_BINARY}
         set_config_value "${GTK4_CONFIG_FILE}" gtk-theme-name "${GTK4_THEME}"
         set_config_value "${GTK4_CONFIG_FILE}" gtk-icon-theme-name "${ICON_THEME}"
         set_config_value "${GTK4_CONFIG_FILE}" gtk-cursor-theme-name "${CURSOR_THEME}"
@@ -353,6 +359,30 @@ fi
 #################
 if does-bin-exist "discord"; then
     set_json_value "${HOME_REAL}/.config/discord/settings.json" '.BACKGROUND_COLOR' ${GTK_THEME_BG_COLOUR}
+fi
+if does-bin-exist "teams" || does-bin-exist "teams-insiders"; then
+    TEAMS_DESKTOP_CONFIG_FILE="${HOME_CONFIG}/Microsoft/Microsoft Teams/desktop-config.json"
+
+    does-bin-exist "teams-insiders" && TEAMS_DESKTOP_CONFIG_FILE="${HOME_CONFIG}/Microsoft/Microsoft Teams - Insiders/desktop-config.json"
+
+    # Fixes
+    set_json_value "${TEAMS_DESKTOP_CONFIG_FILE}" '.appPreferenceSettings.disableGpu' true
+
+    # Appearance
+    set_json_value "${TEAMS_DESKTOP_CONFIG_FILE}" '.currentWebLanguage' "$(echo ${APPS_LANGUAGE,,} | sed 's/_/-/g')"
+
+    if ${DESKTOP_THEME_IS_DARK}; then
+        set_json_value "${TEAMS_DESKTOP_CONFIG_FILE}" '.theme' "darkV2"
+    else
+        set_json_value "${TEAMS_DESKTOP_CONFIG_FILE}" '.theme' "defaultV2"
+    fi
+
+    # Window state
+    set_json_value "${TEAMS_DESKTOP_CONFIG_FILE}" '.surfaceHubWindowState.isMaximized' true
+    set_json_value "${TEAMS_DESKTOP_CONFIG_FILE}" '.surfaceHubWindowState.isFullScreen' false
+    set_json_value "${TEAMS_DESKTOP_CONFIG_FILE}" '.windowState.isMaximized' true
+    set_json_value "${TEAMS_DESKTOP_CONFIG_FILE}" '.windowState.isFullScreen' false
+
 fi
 if does-bin-exist "telegram-desktop"; then
     set_config_value "${ENVIRONMENT_VARS_FILE}" TDESKTOP_I_KNOW_ABOUT_GTK_INCOMPATIBILITY "1"
@@ -517,13 +547,13 @@ if does-bin-exist "firefox"; then
 
     # Appearance
     set_firefox_config "${FIREFOX_PROFILE_ID}" "devtools.theme" ${GTK_THEME_VARIANT}
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.gtk.alt-theme.dark" ${GTK_THEME_IS_DARK}
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.in-content.dark-mode" ${GTK_THEME_IS_DARK}
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.gtk.alt-theme.dark" ${DESKTOP_THEME_IS_DARK}
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.in-content.dark-mode" ${DESKTOP_THEME_IS_DARK}
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.tabs.drawInTitlebar" true
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.uidensity" 1 # Compact mode
     set_firefox_config "${FIREFOX_PROFILE_ID}" "toolkit.legacyUserProfileCustomizations.stylesheets" true
     set_firefox_config "${FIREFOX_PROFILE_ID}" "widget.non-native-theme.enabled" false
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "widget.content.allow-gtk-dark-theme" ${GTK_THEME_IS_DARK}
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "widget.content.allow-gtk-dark-theme" ${DESKTOP_THEME_IS_DARK}
 
     # Appearance - Links
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.anchor_color" "#00BCD4"
@@ -602,10 +632,10 @@ MC_LAUNCHER_SETTINGS_FILE="${MC_DIR}/launcher_settings.json"
 if [ -f "${MC_OPTIONS_FILE}" ]; then
     DEVICE_ID=$(shuf -i1000000000000000000-9999999999999999999 -n1)
 
-    set_config_value --separator ":" "${MC_OPTIONS_FILE}" lang "en_gb"
+    set_config_value --separator ":" "${MC_OPTIONS_FILE}" lang "${GAMES_LANGUAGE,,}"
 
     # Appearance
-    set_config_value --separator ":" "${MC_OPTIONS_FILE}" darkMojangStudiosBackground "${GTK_THEME_IS_DARK}"
+    set_config_value --separator ":" "${MC_OPTIONS_FILE}" darkMojangStudiosBackground "${DESKTOP_THEME_IS_DARK}"
 
     # Input
     set_config_value --separator ":" "${MC_OPTIONS_FILE}" pauseOnLostFocus true
@@ -617,7 +647,7 @@ if [ -f "${MC_OPTIONS_FILE}" ]; then
 
     set_json_value "${MC_LAUNCHER_PROFILES_FILE}" '.settings.crashAssistance' false
     set_json_value "${MC_LAUNCHER_SETTINGS_FILE}" '.deviceId' "${DEVICE_ID}"
-    set_json_value "${MC_LAUNCHER_SETTINGS_FILE}" '.locale' "en-GB"
+    set_json_value "${MC_LAUNCHER_SETTINGS_FILE}" '.locale' "${GAMES_LANGUAGE/_/-}"
 fi
 
 PDX_LAUNCHER_DATA_DIR="${HOME}/.local/share/Paradox Interactive/launcher-v2"
@@ -748,11 +778,11 @@ fi
 if does-bin-exist "inkscape"; then
     INKSCAPE_PREFERENCES_FILE="${HOME}/.config/inkscape/preferences.xml"
 
-    set_xml_node "${INKSCAPE_PREFERENCES_FILE}" "//group[@id='theme']/@defaultPreferDarkTheme" "${GTK_THEME_IS_DARK_BINARY}"
+    set_xml_node "${INKSCAPE_PREFERENCES_FILE}" "//group[@id='theme']/@defaultPreferDarkTheme" "${DESKTOP_THEME_IS_DARK_BINARY}"
     set_xml_node "${INKSCAPE_PREFERENCES_FILE}" "//group[@id='theme']/@defaultGtkTheme" "${GTK_THEME}"
     set_xml_node "${INKSCAPE_PREFERENCES_FILE}" "//group[@id='theme']/@defaultIconTheme" "${ICON_THEME}"
-    set_xml_node "${INKSCAPE_PREFERENCES_FILE}" "//group[@id='theme']/@darkTheme" "${GTK_THEME_IS_DARK_BINARY}"
-    set_xml_node "${INKSCAPE_PREFERENCES_FILE}" "//group[@id='theme']/@preferDarkTheme" "${GTK_THEME_IS_DARK_BINARY}"
+    set_xml_node "${INKSCAPE_PREFERENCES_FILE}" "//group[@id='theme']/@darkTheme" "${DESKTOP_THEME_IS_DARK_BINARY}"
+    set_xml_node "${INKSCAPE_PREFERENCES_FILE}" "//group[@id='theme']/@preferDarkTheme" "${DESKTOP_THEME_IS_DARK_BINARY}"
 fi
 
 ########################
@@ -974,7 +1004,7 @@ if does-bin-exist "fragments"; then
     #FRAGMENTS_SCHEMA="de.haeckerfelix.Fragments"
     FRAGMENTS_SETTINGS_FILE="${HOME_CONFIG}/fragments/settings.json"
 
-    #set_gsetting "${FRAGMENTS_SCHEMA}" dark-mode ${GTK_THEME_IS_DARK}
+    #set_gsetting "${FRAGMENTS_SCHEMA}" dark-mode ${DESKTOP_THEME_IS_DARK}
 
     set_json_value "${FRAGMENTS_SETTINGS_FILE}" '.["encryption"]' 1
     set_json_value "${FRAGMENTS_SETTINGS_FILE}" '.["download-dir"]' "${HOME}/Downloads"
@@ -989,7 +1019,7 @@ fi
 if does-bin-exist "dialect"; then
     DIALECT_SCHEMA="com.github.gi_lom.dialect"
 
-    set_gsetting "${DIALECT_SCHEMA}" dark-mode ${GTK_THEME_IS_DARK}
+    set_gsetting "${DIALECT_SCHEMA}" dark-mode ${DESKTOP_THEME_IS_DARK}
     set_gsetting "${DIALECT_SCHEMA}" show-pronunciation true
     set_gsetting "${DIALECT_SCHEMA}" translate-accel 1
 fi

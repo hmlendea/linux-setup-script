@@ -79,6 +79,12 @@ removeDirectoryForMissingBin "plexmediaplayer" "${HOME_CONFIG}/plex.tv"
 removeDirectoryForMissingBin "spotify" \
     "${HOME_CACHE}/spotify" \
     "${HOME_CONFIG}/spotify"
+removeDirectoryForMissingBin "teams" \
+    "${HOME_CONFIG}/Microsoft Teams - Preview" \
+    "${HOME_CONFIG}/Microsoft/Microsoft Teams"
+removeDirectoryForMissingBin "teams-insiders" \
+    "${HOME_CONFIG}/Microsoft Teams - Insiders" \
+    "${HOME_CONFIG}/Microsoft/Microsoft Teams - Insiders"
 removeDirectoryForMissingBin "thunar" "${HOME_CONFIG}/Thunar"
 removeDirectoryForMissingBin "transmission-daemon" "${HOME_CONFIG}/transmission-daemon"
 removeDirectoryForMissingBin "ulauncher" "${HOME_LOCAL_SHARE}/ulauncher"
