@@ -82,7 +82,7 @@ function set_firefox_config() {
     is_value_string "${VALUE}" && VALUE="\"${VALUE}\""
 
     local FILE_CONTENT=$(cat "${FILE}")
-    VALUE=$(echo "${VALUE_RAW}" | sed -e 's/[]\/$*.^|[]/\\&/g')
+    VALUE=$(echo "${VALUE}" | sed -e 's/[]\/$*.^|[]/\\&/g')
 
     # If the value is not already set
     if [[ $(grep -c "^user_pref(\"${KEY}\", *${VALUE});$" <<< "${FILE_CONTENT}") == 0 ]] && \
@@ -92,7 +92,7 @@ function set_firefox_config() {
             sed -i '/^user_pref('"\"${KEY}"'/d' "${FILE}"
         fi
 
-        file-append-line "${FILE}" "user_pref(\"${KEY}\", ${VALUE_RAW});"
+        file-append-line "${FILE}" "user_pref(\"${KEY}\", ${VALUE});"
 
         echo "${FILE} >>> ${KEY} = ${VALUE_RAW}"
     fi
