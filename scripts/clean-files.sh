@@ -58,6 +58,8 @@ removeDirectoryForMissingBin "dockx" "${HOME_LOCAL_SHARE}/dockbarx"
 #    "${HOME_CACHE}/evolution" \
 #    "${HOME_CONFIG}/evolution" \
 #    "${HOME_LOCAL_SHARE}/evolution"
+removeDirectoryForMissingBin "etcher" "${HOME_CONFIG}/balena-etcher-electron"
+removeDirectoryForMissingBin "fma-config-tool" "${HOME_CONFIG}/filemanager-actions"
 removeDirectoryForMissingBin "/opt/geforcenow-electron/geforcenow-electron" "${HOME_CONFIG}/GeForce NOW"
 removeDirectoryForMissingBin "gkraken" "${HOME_CONFIG}/gkraken"
 removeDirectoryForMissingBin "gksu" "${HOME}/.gksu.lock"
@@ -70,6 +72,7 @@ removeDirectoryForMissingBin "google-chrome" \
     "${HOME_CACHE}/google-chrome" \
     "${HOME_CONFIG}/google-chrome"
 removeDirectoryForMissingBin "hashcat" "${HOME_CONFIG}/hashcat"
+removeDirectoryForMissingBin "inkscape" "${HOME_CONFIG}/inkscape"
 removeDirectoryForMissingBin "kupfer" "${HOME_CONFIG}/kupfer"
 removeDirectoryForMissingBin "libreoffice" "${HOME_CONFIG}/libreoffice"
 removeDirectoryForMissingBin "lollypop" "${HOME_LOCAL_SHARE}/lollypop"
@@ -80,6 +83,7 @@ removeDirectoryForMissingBin "mcaselector" \
 removeDirectoryForMissingBin "mcedit" "${HOME}/.mcedit"
 removeDirectoryForMissingBin "minetest" "${HOME_CACHE}/minetest"
 removeDirectoryForMissingBin "mpv" "${HOME_CONFIG}/mpv"
+removeDirectoryForMissingBin "neofetch" "${HOME_CONFIG}/neofetch"
 removeDirectoryForMissingBin "notion-app" "${HOME_CONFIG}/Notion"
 removeDirectoryForMissingBin "onlyoffice-desktopeditors" \
     "${HOME_CONFIG}/onlyoffice" \
