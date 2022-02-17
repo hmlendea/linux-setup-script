@@ -282,6 +282,25 @@ if ${HAS_GUI}; then
     fi
 fi
 
+if does-bin-exist "makepkg"; then
+    MAKEPKG_CONFIG_FILE="${ROOT_ETC}/makepkg.conf"
+
+    set_config_value "${MAKEPKG_CONFIG_FILE}" "COMPRESSXZ" "(xz -c -z --threads=0 -)"
+    set_config_value "${MAKEPKG_CONFIG_FILE}" "COMPRESSZST" "(zstd -c -z -q --threads=0 -)"
+
+    if does-bin-exist "pbzip2"; then
+        set_config_value "${MAKEPKG_CONFIG_FILE}" "COMPRESSBZ2" "(pbzip2 -c -f)"
+    else
+        set_config_value "${MAKEPKG_CONFIG_FILE}" "COMPRESSBZ2" "(bzip2 -c -f)"
+    fi
+
+    if does-bin-exist "pigz"; then
+        set_config_value "${MAKEPKG_CONFIG_FILE}" "COMPRESSGZ" "(pigz -c -f -n)"
+    else
+        set_config_value "${MAKEPKG_CONFIG_FILE}" "COMPRESSGZ" "(gzip -c -f -n)"
+    fi
+fi
+
 if [ -f "${HOME_REAL}/.config/lxsession/LXDE/desktop.conf" ]; then
     LXSESSION_CONFIG_FILE="${HOME_REAL}/.config/lxsession/LXDE/desktop.conf"
 

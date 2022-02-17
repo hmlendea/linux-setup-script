@@ -40,6 +40,12 @@ if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
     install-pkg pkgconf
 fi
 
+# Extra devel for parallelising the build processes
+if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
+    install-pkg pbzip2  # Drop-in replacement for bzip2, with multithreading
+    install-pkg pigz    # Drop-in replacement for gzip, with multithreading
+fi
+
 install-pkg bc # Mathematical calculations, e.g. echo "2+2-1" | bc
 
 ###################
