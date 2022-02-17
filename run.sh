@@ -104,7 +104,7 @@ execute-script "update-rcs.sh"
 # Configure and customise the system
 execute-script "config-system.sh" # Run after update-rcs.sh
 [ "${DISTRO_FAMILY}" == "Arch" ] && execute-script-superuser "set-system-locale-timedate.sh"
-[ "${DISTRO_FAMILY}" != "Android" ] && execute-script-superuser "install-profiles.sh"
+[ "${DISTRO_FAMILY}" != "Android" ] && execute-script-superuser "update-profiles.sh"
 
 if [ "${OS}" == "Linux" ]; then
     does-bin-exist "systemctl" && execute-script-superuser "enable-services.sh"
