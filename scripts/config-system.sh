@@ -575,11 +575,12 @@ if does-bin-exist "firefox"; then
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.tabs.drawInTitlebar" true
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.uidensity" 1 # Compact mode
     set_firefox_config "${FIREFOX_PROFILE_ID}" "toolkit.legacyUserProfileCustomizations.stylesheets" true
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "widget.non-native-theme.enabled" false
+    #set_firefox_config "${FIREFOX_PROFILE_ID}" "widget.non-native-theme.enabled" false # If true then some page elements (e.g. drop-down arrows in Bitwarden) look very ugly and out of place
     set_firefox_config "${FIREFOX_PROFILE_ID}" "widget.content.allow-gtk-dark-theme" ${DESKTOP_THEME_IS_DARK}
 
     # Appearance - Links
-    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.anchor_color" "#00BCD4"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.anchor_color" "${TERMINAL_CYAN_D}" # "#00BCD4"
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.anchor_color.dark" "${TERMINAL_PURPLE_D}"
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.underline_anchors" false
 
     # Useless features
@@ -642,8 +643,8 @@ if does-bin-exist "firefox"; then
     set_firefox_config "${FIREFOX_PROFILE_ID}" toolkit.telemetry.unified false
     set_firefox_config "${FIREFOX_PROFILE_ID}" toolkit.telemetry.updatePing.enabled false
 
-    #set_firefox_config "${FIREFOX_PROFILE_ID}" browser.newtabpage.activity-stream.telemetry.structuredIngestion.endpoint" "http://localhost"
-    #set_firefox_config "${FIREFOX_PROFILE_ID}" toolkit.telemetry.server" "http://localhost"
+    #set_firefox_config "${FIREFOX_PROFILE_ID}" browser.newtabpage.activity-stream.telemetry.structuredIngestion.endpoint "http://localhost"
+    #set_firefox_config "${FIREFOX_PROFILE_ID}" toolkit.telemetry.server "http://localhost"
 
     # Identity
     set_firefox_config "${FIREFOX_PROFILE_ID}" "identity.fxaccounts.account.device.name" "${HOSTNAME}"
