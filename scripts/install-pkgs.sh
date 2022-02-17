@@ -416,10 +416,12 @@ if ${HAS_GUI}; then
 
     [[ "${ARCH_FAMILY}" == "x86" ]] && install-pkg visual-studio-code-bin
     [[ "${ARCH_FAMILY}" == "arm" ]] && install-pkg code-headmelted-bin
+    install-vscode-extension "abcdef.monogame-pipeline-vscode"
     install-vscode-extension "dakara.transformer"
     install-vscode-extension "johnpapa.vscode-peacock"
     install-vscode-extension "mechatroner.rainbow-csv"
     install-vscode-extension "ms-dotnettools.csharp"
+    install-vscode-extension "nico-castell.linux-desktop-file"
 
     # Tools
     [[ "${ARCH_FAMILY}" == "x86" ]] && install-pkg simplenote-electron-bin
