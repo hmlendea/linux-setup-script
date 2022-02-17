@@ -178,10 +178,10 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/teams.desktop" \
         Categories "${CHAT_APP_CATEGORIES}"
 done
 
-if [ "$(get_gpu_family)" = "Intel" ]; then
+#if [ "$(get_gpu_family)" = "Intel" ]; then
     set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/teams.desktop" Exec "/usr/bin/teams --disable-gpu --no-sandbox"
     set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/teams-insiders.desktop" Exec "/usr/bin/teams-insiders --disable-gpu --no-sandbox"
-fi
+#fi
 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/meowgram.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/telegramdesktop.desktop"; do
