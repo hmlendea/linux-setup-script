@@ -67,10 +67,12 @@ removeDirectoryForMissingBin "gnome-photos" \
     "${HOME_CACHE}/gnome-photos" \
     "${HOME_LOCAL_SHARE}/gnome-photos"
 removeDirectoryForMissingBin "gnome-software" "${HOME_CACHE}/gnome-software"
+removeDirectoryForMissingBin "gnome-sound-recorder" "${HOME_LOCAL_SHARE}/org.gnome.SoundRecorder"
 removeDirectoryForMissingBin "gnubg" "${HOME}/.gnubg"
 removeDirectoryForMissingBin "google-chrome" \
     "${HOME_CACHE}/google-chrome" \
     "${HOME_CONFIG}/google-chrome"
+removeDirectoryForMissingBin "hardinfo" "${HOME_CONFIG}/hardinfo"
 removeDirectoryForMissingBin "hashcat" "${HOME_CONFIG}/hashcat"
 removeDirectoryForMissingBin "inkscape" "${HOME_CONFIG}/inkscape"
 removeDirectoryForMissingBin "kupfer" "${HOME_CONFIG}/kupfer"
@@ -94,6 +96,8 @@ removeDirectoryForMissingBin "pcmanfm" "${HOME_CONFIG}/pcmanfm"
 removeDirectoryForMissingBin "pcmanfm-qt" "${HOME_CONFIG}/pcmanfm-qt"
 removeDirectoryForMissingBin "pip" "${HOME_CACHE}/pip"
 removeDirectoryForMissingBin "plexmediaplayer" "${HOME_CONFIG}/plex.tv"
+removeDirectoryForMissingBin "simplescreenrecorder" "${HOME}/.ssr"
+removeDirectoryForMissingBin "snapcraft" "${HOME_CACHE}/snapcraft"
 removeDirectoryForMissingBin "spotify" \
     "${HOME_CACHE}/spotify" \
     "${HOME_CONFIG}/spotify"
@@ -103,11 +107,14 @@ removeDirectoryForMissingBin "teams" \
 removeDirectoryForMissingBin "teams-insiders" \
     "${HOME_CONFIG}/Microsoft Teams - Insiders" \
     "${HOME_CONFIG}/Microsoft/Microsoft Teams - Insiders"
-removeDirectoryForMissingBin "teamviewer" "${HOME_LOCAL_SHARE}/teamviewer15"
+removeDirectoryForMissingBin "teamviewer" \
+    "${HOME_CONFIG}/teamviewer" \
+    "${HOME_LOCAL_SHARE}/teamviewer15"
 removeDirectoryForMissingBin "thunar" "${HOME_CONFIG}/Thunar"
 removeDirectoryForMissingBin "transmission-daemon" "${HOME_CONFIG}/transmission-daemon"
 removeDirectoryForMissingBin "ulauncher" "${HOME_LOCAL_SHARE}/ulauncher"
 removeDirectoryForMissingBin "vim" \
+    "${HOME}/.viminfo" \
     "${HOME}/.vimrc" \
     "${HOME_CACHE}/vim"
 removeDirectoryForMissingBin "vlc" \
@@ -116,6 +123,7 @@ removeDirectoryForMissingBin "vlc" \
 removeDirectoryForMissingBin "whatsapp-nativefier" "${HOME_CONFIG}/whatsapp-nativefier-d40211"
 removeDirectoryForMissingBin "whatsdesk" "${HOME}/.whatsdesk"
 removeDirectoryForMissingBin "wike" "${HOME_CACHE}/wike"
+removeDirectoryForMissingBin "wine" "${HOME_CACHE}/wine"
 removeDirectoryForMissingBin "winetricks" "${HOME_CACHE}/winetricks"
 removeDirectoryForMissingBin "yarn" \
     "${HOME}/.yarn" \
@@ -127,4 +135,5 @@ removeDirectoryForMissingBin "zsh" "${HOME}/.zshrc"
 removeDirectoryForMissingGnomeShellExtension "tiling-assistant" "${HOME_CONFIG}/tiling-assistant"
 
 # Logs
+remove "${HOME}/.config/logs"
 remove "${HOME}/.minecraft/logs"
