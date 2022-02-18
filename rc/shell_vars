@@ -15,6 +15,7 @@ ROOT_USR_SHARE="${ROOT_USR}/share"
 #export TERM=linux
 export LD_LIBRARY_PATH="${LD_LIBRARY_PATH-}:/usr/lib32"
 export SSL_CERT_DIR="/etc/ssl/certs"
+export PATH="${PATH}:/${HOME}/.local/bin"
 
 # Gaming
 if [ -f "/usr/bin/steam" ]; then

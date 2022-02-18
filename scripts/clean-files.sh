@@ -59,6 +59,7 @@ removeDirectoryForMissingBin "dockx" "${HOME_LOCAL_SHARE}/dockbarx"
 #    "${HOME_CONFIG}/evolution" \
 #    "${HOME_LOCAL_SHARE}/evolution"
 removeDirectoryForMissingBin "etcher" "${HOME_CONFIG}/balena-etcher-electron"
+removeDirectoryForMissingBin "fltk-config" "${HOME}/.fltk"
 removeDirectoryForMissingBin "fma-config-tool" "${HOME_CONFIG}/filemanager-actions"
 removeDirectoryForMissingBin "/opt/geforcenow-electron/geforcenow-electron" "${HOME_CONFIG}/GeForce NOW"
 removeDirectoryForMissingBin "gkraken" "${HOME_CONFIG}/gkraken"
@@ -72,9 +73,11 @@ removeDirectoryForMissingBin "gnubg" "${HOME}/.gnubg"
 removeDirectoryForMissingBin "google-chrome" \
     "${HOME_CACHE}/google-chrome" \
     "${HOME_CONFIG}/google-chrome"
+removeDirectoryForMissingBin "gradle" "${HOME}.gradle"
 removeDirectoryForMissingBin "hardinfo" "${HOME_CONFIG}/hardinfo"
 removeDirectoryForMissingBin "hashcat" "${HOME_CONFIG}/hashcat"
 removeDirectoryForMissingBin "inkscape" "${HOME_CONFIG}/inkscape"
+removeDirectoryForMissingBin "java" "${HOME}/.java"
 removeDirectoryForMissingBin "kupfer" "${HOME_CONFIG}/kupfer"
 removeDirectoryForMissingBin "libreoffice" "${HOME_CONFIG}/libreoffice"
 removeDirectoryForMissingBin "lollypop" "${HOME_LOCAL_SHARE}/lollypop"
@@ -84,9 +87,11 @@ removeDirectoryForMissingBin "mcaselector" \
     "${HOME_CACHE}/mcaselector"
 removeDirectoryForMissingBin "mcedit" "${HOME}/.mcedit"
 removeDirectoryForMissingBin "minetest" "${HOME_CACHE}/minetest"
+removeDirectoryForMissingBin "mono" "${HOME}/.mono"
 removeDirectoryForMissingBin "mpv" "${HOME_CONFIG}/mpv"
 removeDirectoryForMissingBin "neofetch" "${HOME_CONFIG}/neofetch"
 removeDirectoryForMissingBin "notion-app" "${HOME_CONFIG}/Notion"
+removeDirectoryForMissingBin "nvidia-settings" "${HOME}/.nvidia-settings-rc"
 removeDirectoryForMissingBin "onlyoffice-desktopeditors" \
     "${HOME_CONFIG}/onlyoffice" \
     "${HOME_LOCAL_SHARE}/onlyoffice"
