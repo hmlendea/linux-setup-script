@@ -276,8 +276,6 @@ if ${HAS_GUI}; then
         install-pkg folder-color-nautilus
         install-pkg gnome-dds-thumbnailer
         install-pkg file-roller
-
-        install-pkg code-nautilus-git
     else
         install-pkg pcmanfm
         install-pkg xarchiver
@@ -422,12 +420,16 @@ if ${HAS_GUI}; then
 
     [[ "${ARCH_FAMILY}" == "x86" ]] && install-pkg visual-studio-code-bin
     [[ "${ARCH_FAMILY}" == "arm" ]] && install-pkg code-headmelted-bin
-    install-vscode-extension "abcdef.monogame-pipeline-vscode"
     install-vscode-extension "dakara.transformer"
     install-vscode-extension "johnpapa.vscode-peacock"
     install-vscode-extension "mechatroner.rainbow-csv"
+    install-vscode-extension "mgcb-vscode.mgcb-vscode"
     install-vscode-extension "ms-dotnettools.csharp"
     install-vscode-extension "nico-castell.linux-desktop-file"
+
+    if does-bin-exist "code" || does-bin-exist "code-oss" || does-bin-exist "codium"; then
+        does-bin-exist "nautilus" && install-pkg code-nautilus-git
+    fi
 
     # Tools
     [[ "${ARCH_FAMILY}" == "x86" ]] && install-pkg simplenote-electron-bin
