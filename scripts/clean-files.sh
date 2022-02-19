@@ -1,7 +1,7 @@
 #!/bin/bash
 source "scripts/common/common.sh"
 
-function removeDirectoryForMissingBin() {
+function removeForMissingBin() {
     local BINARY="${1}" && shift
 
     for DIRECTORY in "${@}"; do
@@ -11,7 +11,7 @@ function removeDirectoryForMissingBin() {
     done
 }
 
-function removeDirectoryForMissingGnomeShellExtension() {
+function removeForMissingGnomeShellExtension() {
     local EXTENSION="${1}" && shift
 
     for DIRECTORY in "${@}"; do
@@ -21,123 +21,128 @@ function removeDirectoryForMissingGnomeShellExtension() {
     done
 }
 
-removeDirectoryForMissingBin "aircrack-ng" "${HOME}/.aircrack"
-removeDirectoryForMissingBin "alsi" "${HOME_CONFIG}/alsi"
-removeDirectoryForMissingBin "audacity" "${HOME}/.audacity-data"
-removeDirectoryForMissingBin "autokey-shell" \
+removeForMissingBin "aircrack-ng" "${HOME}/.aircrack"
+removeForMissingBin "alsi" "${HOME_CONFIG}/alsi"
+removeForMissingBin "audacity" "${HOME}/.audacity-data"
+removeForMissingBin "autokey-shell" \
     "${HOME_CONFIG}/autokey" \
     "${HOME_LOCAL_SHARE}/autokey"
-removeDirectoryForMissingBin "avidemux" "${HOME}/.avidemux6"
-removeDirectoryForMissingBin "bleachbit" \
+removeForMissingBin "avidemux" "${HOME}/.avidemux6"
+removeForMissingBin "bleachbit" \
     "${HOME_CACHE}/bleachbit" \
     "${HOME_CONFIG}/bleachbit"
-removeDirectoryForMissingBin "blesh" "${HOME}/.blerc"
-removeDirectoryForMissingBin "brave" \
+removeForMissingBin "blesh" "${HOME}/.blerc"
+removeForMissingBin "brave" \
     "${HOME_CACHE}/BraveSoftware" \
     "${HOME_CONFIG}/BraveSoftware"
-removeDirectoryForMissingBin "brz" "${HOME_CACHE}/breezy"
-removeDirectoryForMissingBin "cairo-dock" "${HOME_CONFIG}/cairo-dock"
-removeDirectoryForMissingBin "chiaki" \
+removeForMissingBin "brz" "${HOME_CACHE}/breezy"
+removeForMissingBin "cairo-dock" "${HOME_CONFIG}/cairo-dock"
+removeForMissingBin "chiaki" \
     "${HOME_CONFIG}/Chiaki" \
     "${HOME_LOCAL_SHARE}/Chiaki"
-removeDirectoryForMissingBin "chromium" \
+removeForMissingBin "chromium" \
     "${HOME_CACHE}/chromium" \
     "${HOME_CONFIG}/chromium"
-removeDirectoryForMissingBin "code" \
+removeForMissingBin "code" \
     "${HOME_CONFIG}/Code" \
     "${HOME}/.vscode"
-removeDirectoryForMissingBin "code-oss" \
+removeForMissingBin "code-oss" \
     "${HOME_CONFIG}/Code - OSS" \
     "${HOME_CONFIG}/code-oss" \
     "${HOME}/.vscode-oss"
-removeDirectoryForMissingBin "codium" "${HOME_CONFIG}/VSCodium"
+removeForMissingBin "codium" "${HOME_CONFIG}/VSCodium"
 (! does-bin-exist "code-oss") && (! does-bin-exist "codium") && remove "${HOME}/.vscode-oss"
-removeDirectoryForMissingBin "discord" "${HOME_CONFIG}/discord"
-removeDirectoryForMissingBin "dockx" "${HOME_LOCAL_SHARE}/dockbarx"
-#removeDirectoryForMissingBin "evolution" \
+removeForMissingBin "discord" "${HOME_CONFIG}/discord"
+removeForMissingBin "dockx" "${HOME_LOCAL_SHARE}/dockbarx"
+#removeForMissingBin "evolution" \
 #    "${HOME_CACHE}/evolution" \
 #    "${HOME_CONFIG}/evolution" \
 #    "${HOME_LOCAL_SHARE}/evolution"
-removeDirectoryForMissingBin "etcher" "${HOME_CONFIG}/balena-etcher-electron"
-removeDirectoryForMissingBin "fltk-config" "${HOME}/.fltk"
-removeDirectoryForMissingBin "fma-config-tool" "${HOME_CONFIG}/filemanager-actions"
-removeDirectoryForMissingBin "/opt/geforcenow-electron/geforcenow-electron" "${HOME_CONFIG}/GeForce NOW"
-removeDirectoryForMissingBin "gkraken" "${HOME_CONFIG}/gkraken"
-removeDirectoryForMissingBin "gksu" "${HOME}/.gksu.lock"
-removeDirectoryForMissingBin "gnome-photos" \
+removeForMissingBin "etcher" "${HOME_CONFIG}/balena-etcher-electron"
+removeForMissingBin "fltk-config" "${HOME}/.fltk"
+removeForMissingBin "fma-config-tool" "${HOME_CONFIG}/filemanager-actions"
+removeForMissingBin "/opt/geforcenow-electron/geforcenow-electron" "${HOME_CONFIG}/GeForce NOW"
+removeForMissingBin "gkraken" "${HOME_CONFIG}/gkraken"
+removeForMissingBin "gksu" "${HOME}/.gksu.lock"
+removeForMissingBin "gnome-photos" \
     "${HOME_CACHE}/gnome-photos" \
     "${HOME_LOCAL_SHARE}/gnome-photos"
-removeDirectoryForMissingBin "gnome-software" "${HOME_CACHE}/gnome-software"
-removeDirectoryForMissingBin "gnome-sound-recorder" "${HOME_LOCAL_SHARE}/org.gnome.SoundRecorder"
-removeDirectoryForMissingBin "gnubg" "${HOME}/.gnubg"
-removeDirectoryForMissingBin "google-chrome" \
+removeForMissingBin "gnome-software" "${HOME_CACHE}/gnome-software"
+removeForMissingBin "gnome-sound-recorder" "${HOME_LOCAL_SHARE}/org.gnome.SoundRecorder"
+removeForMissingBin "gnubg" "${HOME}/.gnubg"
+removeForMissingBin "google-chrome" \
     "${HOME_CACHE}/google-chrome" \
     "${HOME_CONFIG}/google-chrome"
-removeDirectoryForMissingBin "gradle" "${HOME}.gradle"
-removeDirectoryForMissingBin "hardinfo" "${HOME_CONFIG}/hardinfo"
-removeDirectoryForMissingBin "hashcat" "${HOME_CONFIG}/hashcat"
-removeDirectoryForMissingBin "inkscape" "${HOME_CONFIG}/inkscape"
-removeDirectoryForMissingBin "java" "${HOME}/.java"
-removeDirectoryForMissingBin "kupfer" "${HOME_CONFIG}/kupfer"
-removeDirectoryForMissingBin "libreoffice" "${HOME_CONFIG}/libreoffice"
-removeDirectoryForMissingBin "lollypop" "${HOME_LOCAL_SHARE}/lollypop"
-removeDirectoryForMissingBin "lsd" "${HOME_CONFIG}/lsd"
-removeDirectoryForMissingBin "mcaselector" \
+removeForMissingBin "gradle" "${HOME}.gradle"
+removeForMissingBin "hardinfo" "${HOME_CONFIG}/hardinfo"
+removeForMissingBin "hashcat" "${HOME_CONFIG}/hashcat"
+removeForMissingBin "inkscape" "${HOME_CONFIG}/inkscape"
+removeForMissingBin "java" "${HOME}/.java"
+removeForMissingBin "kupfer" "${HOME_CONFIG}/kupfer"
+removeForMissingBin "libreoffice" "${HOME_CONFIG}/libreoffice"
+removeForMissingBin "lollypop" "${HOME_LOCAL_SHARE}/lollypop"
+removeForMissingBin "lsd" "${HOME_CONFIG}/lsd"
+removeForMissingBin "mcaselector" \
     "${HOME}/.mcaselector" \
     "${HOME_CACHE}/mcaselector"
-removeDirectoryForMissingBin "mcedit" "${HOME}/.mcedit"
-removeDirectoryForMissingBin "minetest" "${HOME_CACHE}/minetest"
-removeDirectoryForMissingBin "mono" "${HOME}/.mono"
-removeDirectoryForMissingBin "mpv" "${HOME_CONFIG}/mpv"
-removeDirectoryForMissingBin "neofetch" "${HOME_CONFIG}/neofetch"
-removeDirectoryForMissingBin "notion-app" "${HOME_CONFIG}/Notion"
-removeDirectoryForMissingBin "nvidia-settings" "${HOME}/.nvidia-settings-rc"
-removeDirectoryForMissingBin "onlyoffice-desktopeditors" \
+removeForMissingBin "mcedit" "${HOME}/.mcedit"
+removeForMissingBin "minetest" "${HOME_CACHE}/minetest"
+removeForMissingBin "mono" "${HOME}/.mono"
+removeForMissingBin "mpv" "${HOME_CONFIG}/mpv"
+removeForMissingBin "neofetch" "${HOME_CONFIG}/neofetch"
+removeForMissingBin "notion-app" "${HOME_CONFIG}/Notion"
+removeForMissingBin "nvidia-settings" "${HOME}/.nvidia-settings-rc"
+removeForMissingBin "onlyoffice-desktopeditors" \
     "${HOME_CONFIG}/onlyoffice" \
     "${HOME_LOCAL_SHARE}/onlyoffice"
-removeDirectoryForMissingBin "openshot-qt" "${HOME}/.openshot_qt"
-removeDirectoryForMissingBin "pavucontrol" "${HOME_CONFIG}/pavucontrol.ini"
-removeDirectoryForMissingBin "pcmanfm" "${HOME_CONFIG}/pcmanfm"
-removeDirectoryForMissingBin "pcmanfm-qt" "${HOME_CONFIG}/pcmanfm-qt"
-removeDirectoryForMissingBin "pip" "${HOME_CACHE}/pip"
-removeDirectoryForMissingBin "plexmediaplayer" "${HOME_CONFIG}/plex.tv"
-removeDirectoryForMissingBin "simplescreenrecorder" "${HOME}/.ssr"
-removeDirectoryForMissingBin "snapcraft" "${HOME_CACHE}/snapcraft"
-removeDirectoryForMissingBin "spotify" \
+removeForMissingBin "openshot-qt" "${HOME}/.openshot_qt"
+removeForMissingBin "pavucontrol" "${HOME_CONFIG}/pavucontrol.ini"
+removeForMissingBin "pcmanfm" "${HOME_CONFIG}/pcmanfm"
+removeForMissingBin "pcmanfm-qt" "${HOME_CONFIG}/pcmanfm-qt"
+removeForMissingBin "pip" "${HOME_CACHE}/pip"
+removeForMissingBin "plexmediaplayer" "${HOME_CONFIG}/plex.tv"
+removeForMissingBin "simplescreenrecorder" "${HOME}/.ssr"
+removeForMissingBin "snapcraft" "${HOME_CACHE}/snapcraft"
+removeForMissingBin "spotify" \
     "${HOME_CACHE}/spotify" \
     "${HOME_CONFIG}/spotify"
-removeDirectoryForMissingBin "teams" \
+removeForMissingBin "teams" \
     "${HOME_CONFIG}/Microsoft Teams - Preview" \
     "${HOME_CONFIG}/Microsoft/Microsoft Teams"
-removeDirectoryForMissingBin "teams-insiders" \
+removeForMissingBin "teams-insiders" \
     "${HOME_CONFIG}/Microsoft Teams - Insiders" \
     "${HOME_CONFIG}/Microsoft/Microsoft Teams - Insiders"
-removeDirectoryForMissingBin "teamviewer" \
+removeForMissingBin "teamviewer" \
     "${HOME_CONFIG}/teamviewer" \
     "${HOME_LOCAL_SHARE}/teamviewer15"
-removeDirectoryForMissingBin "thunar" "${HOME_CONFIG}/Thunar"
-removeDirectoryForMissingBin "transmission-daemon" "${HOME_CONFIG}/transmission-daemon"
-removeDirectoryForMissingBin "ulauncher" "${HOME_LOCAL_SHARE}/ulauncher"
-removeDirectoryForMissingBin "vim" \
+removeForMissingBin "thunar" "${HOME_CONFIG}/Thunar"
+removeForMissingBin "transmission-daemon" "${HOME_CONFIG}/transmission-daemon"
+removeForMissingBin "ulauncher" "${HOME_LOCAL_SHARE}/ulauncher"
+removeForMissingBin "vim" \
     "${HOME}/.viminfo" \
     "${HOME}/.vimrc" \
     "${HOME_CACHE}/vim"
-removeDirectoryForMissingBin "vlc" \
+removeForMissingBin "vlc" \
     "${HOME_CACHE}/vlc" \
     "${HOME_CONFIG}/vlc"
-removeDirectoryForMissingBin "whatsapp-nativefier" "${HOME_CONFIG}/whatsapp-nativefier-d40211"
-removeDirectoryForMissingBin "whatsdesk" "${HOME}/.whatsdesk"
-removeDirectoryForMissingBin "wike" "${HOME_CACHE}/wike"
-removeDirectoryForMissingBin "wine" "${HOME_CACHE}/wine"
-removeDirectoryForMissingBin "winetricks" "${HOME_CACHE}/winetricks"
-removeDirectoryForMissingBin "yarn" \
+removeForMissingBin "whatsapp-nativefier" "${HOME_CONFIG}/whatsapp-nativefier-d40211"
+removeForMissingBin "whatsdesk" "${HOME}/.whatsdesk"
+removeForMissingBin "wike" "${HOME_CACHE}/wike"
+removeForMissingBin "wine" "${HOME_CACHE}/wine"
+removeForMissingBin "winetricks" "${HOME_CACHE}/winetricks"
+removeForMissingBin "yarn" \
     "${HOME}/.yarn" \
     "${HOME}/.yarnrc"
-removeDirectoryForMissingBin "yay" "${HOME_CACHE}/yay"
-removeDirectoryForMissingBin "youtube-dl" "${HOME_CACHE}/youtube-dl"
-removeDirectoryForMissingBin "zsh" "${HOME}/.zshrc"
+removeForMissingBin "yay" "${HOME_CACHE}/yay"
+removeForMissingBin "youtube-dl" "${HOME_CACHE}/youtube-dl"
+removeForMissingBin "zsh" "${HOME}/.zshrc"
 
-removeDirectoryForMissingGnomeShellExtension "tiling-assistant" "${HOME_CONFIG}/tiling-assistant"
+removeForMissingGnomeShellExtension "tiling-assistant" "${HOME_CONFIG}/tiling-assistant"
+
+# Unnecessary files
+while IFS='' read -r -d '' TORRENT_FILE; do
+  remove "${TORRENT_FILE}"
+done < <(find "${HOME}/Downloads" -maxdepth 1 -type f -name "*.torrent" -print0)
 
 # Logs
 remove "${HOME}/.config/logs"
