@@ -10,6 +10,7 @@
 4000=hl2_linux
 8870=bioshock.i386
 8930=Civ5XP
+8980=steam_app_8980
 10500=game.i386
 13600=pop.exe
 15100=assassinscreed_dx10.exe
