@@ -48,6 +48,8 @@ if [[ "${CHASSIS_TYPE}" != "Laptop" ]]; then
     uninstall-pkg "acpi"
     uninstall-pkg "tlp"
 
+    uninstall-pkg "powertop"
+
     if ( ! get_dmi_string "system-sku-number" | grep -q "ThinkPad" ); then
         uninstall-pkg acpi_call
         uninstall-pkg tp_smapi
