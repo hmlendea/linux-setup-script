@@ -33,7 +33,7 @@ configure-autostart-for-app "signal-desktop" \
 configure-autostart-for-app "telegram-desktop" \
     Name "Telegram" \
     Icon "telegram" \
-    Exec "/usr/bin/telegram-desktop -workdir ${HOME_LOCAL_SHARE}/TelegramDesktop/ -autostart"
+    Exec "/usr/bin/telegram-desktop -workdir ${HOME_LOCAL_SHARE}/TelegramDesktop/ -startintray -autostart"
 
 configure-autostart-for-app "whatsapp-nativefier" \
     Name "WhatsApp" \

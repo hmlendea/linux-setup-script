@@ -115,6 +115,7 @@ removeForMissingBin "teams-insiders" \
 removeForMissingBin "teamviewer" \
     "${HOME_CONFIG}/teamviewer" \
     "${HOME_LOCAL_SHARE}/teamviewer15"
+removeForMissingBin "telegram-desktop" "${HOME_LOCAL_SHARE}/TelegramDesktop"
 removeForMissingBin "thunar" "${HOME_CONFIG}/Thunar"
 removeForMissingBin "transmission-daemon" "${HOME_CONFIG}/transmission-daemon"
 removeForMissingBin "ulauncher" "${HOME_LOCAL_SHARE}/ulauncher"
