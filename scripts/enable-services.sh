@@ -26,7 +26,7 @@ function enable_service {
 
     local SERVICE_NAME="${*}"
 
-    (! does_systemd_service-exist "${SERVICE_NAME}") && return
+    (! does_systemd_service_exist "${SERVICE_NAME}") && return
 
     run-as-su systemctl enable "${SERVICE_NAME}"
     run-as-su systemctl start "${SERVICE_NAME}"
