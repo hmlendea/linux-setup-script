@@ -69,6 +69,8 @@ else
     install-pkg neofetch
 fi
 
+install-pkg dmidecode
+
 ##################
 ### Networking ###
 ##################

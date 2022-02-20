@@ -228,14 +228,21 @@ function get_audio_driver() {
     get_driver "snd"
 }
 
+function get_dmi_string() {
+    local KEY="${*}"
+    does-bin-exist "dmidecode" && run-as-su dmidecode -s "${KEY}" 2> /dev/null
+}
+
 function get_chassis_type() {
-    if [ -d "${ROOT_SYS}/module/battery" ] \
-    && [ -d "${ROOT_PROC}/acpi/button/lid" ]; then
+    local DMI_CHASSIS_TYPE="$(get_dmi_string chassis-type)"
+
+    if [ "${DMI_CHASSIS_TYPE}" = "Notebook" ] \
+    || ([ -d "${ROOT_SYS}/module/battery" ] && [ -d "${ROOT_PROC}/acpi/button/lid" ]); then
         echo "Laptop"
     elif [ "${DISTRO_FAMILY}" = "Android" ]; then
         echo "Phone"
-    elif does-bin-exist "uname" && \
-         [ $(uname -r | grep "raspberry" -c) -ge 1 ]; then
+    elif does-bin-exist "uname" \
+    && uname -r | grep -q "raspberry\|rpi"; then
         echo "SBC"
     else
         echo "Desktop"
