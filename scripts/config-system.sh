@@ -147,14 +147,24 @@ if does-bin-exist "mkinitcpio"; then
 fi
 
 if [ -d "${ROOT_ETC}/modprobe.d" ]; then
+    set_gsetting org.gtk.Settings.FileChooser startup-mode 'cwd'
+
     if ${USING_NVIDIA_GPU}; then
         set_modprobe_option nvidia-drm modset 1
     fi
 
     set_modprobe_option bluetooth disable_ertm 1    # Xbox One Controller Pairing
     set_modprobe_option btusb enable_autosuspend n  # Xbox One Controller Connecting, possibly other devices as well
+    set_modprobe_option usbcore autosuspend 1
 
-    set_modprobe_option $(get_audio_driver) power_save 1
+    AUDIO_DRIVER="$(get_audio_driver)"
+
+    if [ "${AUDIO_DRIVER}" = "snd_hda_intel" ]; then
+        set_modprobe_option "${AUDIO_DRIVER}" power_save_controller Y
+        set_modprobe_option "${AUDIO_DRIVER}" power_save 1
+    elif [ "$(get_audio_driver)" = "snd_ac97_codec" ]; then
+        set_modprobe_option "${AUDIO_DRIVER}" power_save 1
+    fi
 
     if [ "$(get_wifi_driver)" = "iwlwifi" ]; then
         set_modprobe_option iwlwifi power_save 1
@@ -166,7 +176,14 @@ if [ -d "${ROOT_ETC}/modprobe.d" ]; then
         [ "${IWL_MODULE}" = "iwlmvm" ] && set_modprobe_option iwlmvm power_scheme 3
     fi
 
-    set_gsetting org.gtk.Settings.FileChooser startup-mode 'cwd'
+    ### Disable unused features
+
+    # Disable PCMCIA
+    set_modprobe_option blacklist pcmcia
+    set_modprobe_option blacklist yenta_socket
+
+    # Disable USB 1.1
+    set_modprobe_option blacklist uhci_hcd
 fi
 
 if [ -d "${ROOT_ETC}/sysctl.d" ]; then
@@ -175,11 +192,12 @@ if [ -d "${ROOT_ETC}/sysctl.d" ]; then
     [ ! -f "${SYSCTL_CONFIG_FILE}" ] && run-as-su touch "${SYSCTL_CONFIG_FILE}"
 
     set_config_value "${SYSCTL_CONFIG_FILE}" "kernel.nmi_watchdog" "0" # Disable NMI interrupts that can consume a lot of power
-    set_config_value "${SYSCTL_CONFIG_FILE}" "vm.dirty_writeback_centisecs" "6000" # Increase the vitual memory dirty writeback time to aggregate disk I/O together and save power
 
     if [ "$(get_chassis_type)" = "Laptop" ]; then
+        set_config_value "${SYSCTL_CONFIG_FILE}" "vm.dirty_writeback_centisecs" "12000" # 2 minutes. Increase the vitual memory dirty writeback time to aggregate disk I/O together and save power
         set_config_value "${SYSCTL_CONFIG_FILE}" "vm.laptop_mode" 5
     else
+        set_config_value "${SYSCTL_CONFIG_FILE}" "vm.dirty_writeback_centisecs" "500" # Default value
         set_config_value "${SYSCTL_CONFIG_FILE}" "vm.laptop_mode" 0
     fi
 fi
@@ -198,6 +216,13 @@ if [ -f "${ROOT_ETC}/default/grub" ]; then
 
     BOOT_FLAGS_DEFAULT="loglevel=3 quiet" # Defaults
     BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} random.trust_cpu=on" # Trust the CPU's random number generator ratherthan software. Better boot time
+
+    if [ "$(get_chassis_type)" = "Laptop" ] && \
+       lspci -k | grep -q "i915"; then
+        BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} i915.i915_enable_rc6=1"   # Allow the GPU to enter a low power state when it is idling
+        BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} i915.i915_enable_fbc=1"   # Enable framebuffer compression to consume less memory
+        BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} i915.lvds_downclock=1"    # Downclock the LVDS refresh rate
+    fi
 
     set_config_value "${GRUB_CONFIG_FILE}" "GRUB_CMDLINE_LINUX_DEFAULT" "\"${BOOT_FLAGS_DEFAULT}\""
 
