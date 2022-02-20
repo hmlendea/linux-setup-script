@@ -16,9 +16,10 @@ IS_SERVER=false; [ -z "${SCREEN_RESOLUTION_H}" ] && IS_SERVER=true
 DNS_CACHE_TTL=20 # Minutes
 DNS_CACHE_SIZE=10000 # Entries
 
-[ "${SCREEN_RESOLUTION_V}" -le 2160 ] && ZOOM_LEVEL=1.15
-[ "${SCREEN_RESOLUTION_V}" -le 1440 ] && ZOOM_LEVEL=1.10
-[ "${SCREEN_RESOLUTION_V}" -le 1080 ] && ZOOM_LEVEL=1.00
+[ "${SCREEN_RESOLUTION_V}" -le 2160 ]   && ZOOM_LEVEL=1.15
+[ "${SCREEN_RESOLUTION_V}" -le 1440 ]   && ZOOM_LEVEL=1.10
+[ "${SCREEN_RESOLUTION_V}" -le 1080 ]   && ZOOM_LEVEL=1.00
+[ "${SCREEN_RESOLUTION_V}" -eq 0 ]      && ZOOM_LEVEL=1.00
 
 # Languages
 OS_LANGUAGE=$(grep "^LANG=" "${ROOT_ETC}/locale.conf" | sed 's/^[^=]*=\([^.]*\).*/\1/g')
