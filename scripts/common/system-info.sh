@@ -200,6 +200,19 @@ function get_gpu() {
     echo "$(get_gpu_family) $(get_gpu_model)" | sed 's/^\s*//g'
 }
 
+function get_driver() {
+    local COMPONENT="${*}"
+    lspci -k | grep "${COMPONENT}" | grep "Kernel driver" | awk -F":" '{print $2}' | sed -e 's/^\s*//g' -e 's/\s*$//g'
+}
+
+function get_wifi_driver() {
+    get_driver "wifi"
+}
+
+function get_audio_driver() {
+    get_driver "snd"
+}
+
 function get_chassis_type() {
     if [ -d "${ROOT_SYS}/module/battery" ] \
     && [ -d "${ROOT_PROC}/acpi/button/lid" ]; then

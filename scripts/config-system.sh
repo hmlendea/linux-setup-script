@@ -140,6 +140,12 @@ if ${HAS_GUI}; then
     fi
 fi
 
+if does-bin-exist "mkinitcpio"; then
+    MKINITCPIO_CONFIG_FILE="${ROOT_ETC}/mkinitcpio.conf"
+
+    set_config_value "${MKINITCPIO_CONFIG_FILE}" "COMPRESSION" "\"lz4\""
+fi
+
 if [ -d "${ROOT_ETC}/modprobe.d" ]; then
     if ${USING_NVIDIA_GPU}; then
         set_modprobe_option nvidia-drm modset 1
@@ -148,7 +154,34 @@ if [ -d "${ROOT_ETC}/modprobe.d" ]; then
     set_modprobe_option bluetooth disable_ertm 1    # Xbox One Controller Pairing
     set_modprobe_option btusb enable_autosuspend n  # Xbox One Controller Connecting, possibly other devices as well
 
+    set_modprobe_option $(get_audio_driver) power_save 1
+
+    if [ "$(get_wifi_driver)" = "iwlwifi" ]; then
+        set_modprobe_option iwlwifi power_save 1
+        set_modprobe_option iwlwifi uapsd_disable 0
+
+        IWL_MODULE=$(lsmod | grep '^iwl.vm' | awk '{print $1}')
+
+        [ "${IWL_MODULE}" = "iwldvm" ] && set_modprobe_option iwlmvm force_cam 0
+        [ "${IWL_MODULE}" = "iwlmvm" ] && set_modprobe_option iwlmvm power_scheme 3
+    fi
+
     set_gsetting org.gtk.Settings.FileChooser startup-mode 'cwd'
+fi
+
+if [ -d "${ROOT_ETC}/sysctl.d" ]; then
+    SYSCTL_CONFIG_FILE="${ROOT_ETC}/sysctl.d/00-system.conf"
+
+    [ ! -f "${SYSCTL_CONFIG_FILE}" ] && run-as-su touch "${SYSCTL_CONFIG_FILE}"
+
+    set_config_value "${SYSCTL_CONFIG_FILE}" "kernel.nmi_watchdog" "0" # Disable NMI interrupts that can consume a lot of power
+    set_config_value "${SYSCTL_CONFIG_FILE}" "vm.dirty_writeback_centisecs" "6000" # Increase the vitual memory dirty writeback time to aggregate disk I/O together and save power
+
+    if [ "$(get_chassis_type)" = "Laptop" ]; then
+        set_config_value "${SYSCTL_CONFIG_FILE}" "vm.laptop_mode" 5
+    else
+        set_config_value "${SYSCTL_CONFIG_FILE}" "vm.laptop_mode" 0
+    fi
 fi
 
 if [ -f "${ROOT_ETC}/default/grub" ]; then
@@ -162,6 +195,11 @@ if [ -f "${ROOT_ETC}/default/grub" ]; then
         wc -l)
 
     [ ${GRUB_BOOT_ENTRIES_COUNT} -eq 1 ] && GRUB_TIMEOUT=0
+
+    BOOT_FLAGS_DEFAULT="loglevel=3 quiet" # Defaults
+    BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} random.trust_cpu=on" # Trust the CPU's random number generator ratherthan software. Better boot time
+
+    set_config_value "${GRUB_CONFIG_FILE}" "GRUB_CMDLINE_LINUX_DEFAULT" "\"${BOOT_FLAGS_DEFAULT}\""
 
     set_config_value "${GRUB_CONFIG_FILE}" "GRUB_DISABLE_RECOVERY" true
     set_config_value "${GRUB_CONFIG_FILE}" "GRUB_TIMEOUT" "${GRUB_TIMEOUT}"
@@ -355,6 +393,7 @@ if does-bin-exist "openal-info"; then
 fi
 if does-bin-exist "pulseaudio"; then
     set_config_value "${ROOT_ETC}/pulse/daemon.conf" resample-method speex-float-10
+    set_config_value --separator " " "${ROOT_ETC}/pulse/default.pa" load-module module-suspend-on-idle
 fi
 
 #if does-gnome-shell-extension-exist "sound-output-device-chooser"; then
