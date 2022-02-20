@@ -140,9 +140,11 @@ removeForMissingBin "zsh" "${HOME}/.zshrc"
 removeForMissingGnomeShellExtension "tiling-assistant" "${HOME_CONFIG}/tiling-assistant"
 
 # Unnecessary files
-while IFS='' read -r -d '' TORRENT_FILE; do
-  remove "${TORRENT_FILE}"
-done < <(find "${HOME}/Downloads" -maxdepth 1 -type f -name "*.torrent" -print0)
+if [ -d "${HOME}/Downloads" ]; then
+    while IFS='' read -r -d '' TORRENT_FILE; do
+        remove "${TORRENT_FILE}"
+    done < <(find "${HOME}/Downloads" -maxdepth 1 -type f -name "*.torrent" -print0)
+fi
 
 # Logs
 remove "${HOME}/.config/logs"
