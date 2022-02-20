@@ -85,7 +85,8 @@ fi
 
 if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
     install-pkg wireless_tools
-    install-pkg wpa_supplicant
+    install-pkg iw
+    install-pkg iwd
 fi
 
 ################
