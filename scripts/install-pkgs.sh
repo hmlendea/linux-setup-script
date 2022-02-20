@@ -72,6 +72,7 @@ fi
 ##################
 ### Networking ###
 ##################
+install-pkg ethtool
 install-pkg net-tools
 
 if [[ "${DISTRO_FAMILY}" == "Arch" ]] \
@@ -451,4 +452,5 @@ fi
 
 if [[ "${CHASSIS_TYPE}" == "Laptop" ]]; then
     install-pkg acpi
+    install-pkg tlp
 fi

@@ -43,3 +43,8 @@ if [ "$(get_gpu_family)" != "AMD" ]; then
     uninstall-pkg "amdvlk"
     uninstall-pkg "lib32-amdvlk"
 fi
+
+if [[ "${CHASSIS_TYPE}" != "Laptop" ]; then
+    uninstall-pkg "acpi"
+    uninstall-pkg "tlp"
+fi
