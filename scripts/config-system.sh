@@ -196,7 +196,8 @@ if [ -d "${ROOT_ETC}/sysctl.d" ]; then
 
     [ ! -f "${SYSCTL_CONFIG_FILE}" ] && run-as-su touch "${SYSCTL_CONFIG_FILE}"
 
-    set_config_value "${SYSCTL_CONFIG_FILE}" "kernel.nmi_watchdog" "0" # Disable NMI interrupts that can consume a lot of power
+    set_config_value "${SYSCTL_CONFIG_FILE}" "net.ipv6.conf.all.disable_ipv6" 1 # Disable IPv6
+    set_config_value "${SYSCTL_CONFIG_FILE}" "kernel.nmi_watchdog" 0            # Disable NMI interrupts that can consume a lot of power
 
     if [ "${CHASSIS_TYPE}" = "Laptop" ]; then
         set_config_value "${SYSCTL_CONFIG_FILE}" "vm.dirty_writeback_centisecs" "12000" # 2 minutes. Increase the vitual memory dirty writeback time to aggregate disk I/O together and save power
