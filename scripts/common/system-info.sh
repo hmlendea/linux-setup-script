@@ -141,20 +141,22 @@ function get_cpu_model() {
 }
 
 function get_cpu_family() {
-    local CPU_MODEL_LINE=""
+    local CPU_LINE=""
     local CPU_FAMILY=""
 
-    if [ -f "${ROOT_PROC}/cpuinfo" ] && grep -q "^Hardware\s*:" "${ROOT_PROC}/cpuinfo"; then
-        CPU_MODEL_LINE=$(cat "${ROOT_PROC}/cpuinfo" | grep "^Hardware")
+    if does-bin-exist "dmidecode" && [ -n "$(get_dmi_string processor-manufacturer)" ]; then
+        CPU_LINE=$(get_dmi_string processor-manufacturer)
+    elif [ -f "${ROOT_PROC}/cpuinfo" ] && grep -q "^Hardware\s*:" "${ROOT_PROC}/cpuinfo"; then
+        CPU_LINE=$(cat "${ROOT_PROC}/cpuinfo" | grep "^Hardware")
     elif does-bin-exist "lscpu"; then
-        CPU_MODEL_LINE=$(lscpu | grep "^Model name:")
+        CPU_LINE=$(lscpu | grep "^Model name:")
     elif [ -f "${ROOT_PROC}/cpuinfo" ]; then
-        CPU_MODEL_LINE=$(cat "${ROOT_PROC}/cpuinfo" | grep "^model name" | head -n 1)
+        CPU_LINE=$(cat "${ROOT_PROC}/cpuinfo" | grep "^model name" | head -n 1)
     fi
 
-    echo "${CPU_MODEL_LINE}" | grep -q "AMD" && CPU_FAMILY="AMD"
-    echo "${CPU_MODEL_LINE}" | grep -q "BCM\|Broadcom" && CPU_FAMILY="Broadcom"
-    echo "${CPU_MODEL_LINE}" | grep -q "Intel" && CPU_FAMILY="Intel"
+    echo "${CPU_LINE}" | grep -q "AMD" && CPU_FAMILY="AMD"
+    echo "${CPU_LINE}" | grep -q "BCM\|Broadcom" && CPU_FAMILY="Broadcom"
+    echo "${CPU_LINE}" | grep -q "Intel" && CPU_FAMILY="Intel"
 
     echo "${CPU_FAMILY}"
 }
