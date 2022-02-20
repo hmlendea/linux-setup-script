@@ -7,6 +7,7 @@ function get_openbox_font_weight() {
     [[ "${*}" == "Bold" ]] && echo "Bold" || echo "Normal"
 }
 
+CHASSIS_TYPE="$(get_chassis_type)"
 SCREEN_RESOLUTION_H=$(get_screen_width)
 SCREEN_RESOLUTION_V=$(get_screen_height)
 SCREEN_DPI=$(get_screen_dpi)
@@ -155,7 +156,11 @@ if [ -d "${ROOT_ETC}/modprobe.d" ]; then
 
     set_modprobe_option bluetooth disable_ertm 1    # Xbox One Controller Pairing
     set_modprobe_option btusb enable_autosuspend n  # Xbox One Controller Connecting, possibly other devices as well
-    set_modprobe_option usbcore autosuspend 1
+
+
+    if [ "${CHASSIS_TYPE}" == "Laptop" ]; then
+        set_modprobe_option usbcore autosuspend 1
+    fi
 
     AUDIO_DRIVER="$(get_audio_driver)"
 
@@ -193,7 +198,7 @@ if [ -d "${ROOT_ETC}/sysctl.d" ]; then
 
     set_config_value "${SYSCTL_CONFIG_FILE}" "kernel.nmi_watchdog" "0" # Disable NMI interrupts that can consume a lot of power
 
-    if [ "$(get_chassis_type)" = "Laptop" ]; then
+    if [ "${CHASSIS_TYPE}" = "Laptop" ]; then
         set_config_value "${SYSCTL_CONFIG_FILE}" "vm.dirty_writeback_centisecs" "12000" # 2 minutes. Increase the vitual memory dirty writeback time to aggregate disk I/O together and save power
         set_config_value "${SYSCTL_CONFIG_FILE}" "vm.laptop_mode" 5
     else
@@ -217,8 +222,7 @@ if [ -f "${ROOT_ETC}/default/grub" ]; then
     BOOT_FLAGS_DEFAULT="loglevel=3 quiet" # Defaults
     BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} random.trust_cpu=on" # Trust the CPU's random number generator ratherthan software. Better boot time
 
-    if [ "$(get_chassis_type)" = "Laptop" ] && \
-       lspci -k | grep -q "i915"; then
+    if [ "${CHASSIS_TYPE}" = "Laptop" ] && is_driver_loaded "i915"; then
         BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} i915.i915_enable_rc6=1"   # Allow the GPU to enter a low power state when it is idling
         BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} i915.i915_enable_fbc=1"   # Enable framebuffer compression to consume less memory
         BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} i915.lvds_downclock=1"    # Downclock the LVDS refresh rate
