@@ -455,4 +455,9 @@ fi
 if [[ "${CHASSIS_TYPE}" == "Laptop" ]]; then
     install-pkg acpi
     install-pkg tlp
+
+    if get_dmi_string "system-sku-number" | grep -q "ThinkPad"; then
+        install-pkg acpi_call
+        install-pkg tp_smapi
+    fi
 fi

@@ -960,6 +960,18 @@ if does-bin-exist "gnome-shell"; then
     set_gsetting "${GNOME_POWER_SCHEMA}" sleep-inactive-battery-timeout 900
 fi
 
+if does-bin-exist "tlp"; then
+    TLP_CONFIG_FILE="${ROOT_ETC}/tlp.conf"
+
+    RUNTIME_PM_DRIVER_DENYLIST=""
+
+    gpu_has_optimus_support && RUNTIME_PM_DRIVER_DENYLIST="${RUNTIME_PM_DRIVER_DENYLIST} nouveau nvidia"
+
+    RUNTIME_PM_DRIVER_DENYLIST="$(echo ${RUNTIME_PM_DRIVER_DENYLIST} | sed 's/^\s*//g')"
+
+    set_config_value "${TLP_CONFIG_FILE}" "RUNTIME_PM_DRIVER_DENYLIST" "\"${RUNTIME_PM_DRIVER_DENYLIST}\""
+fi
+
 ###################
 ### Screenshots ###
 ###################

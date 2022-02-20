@@ -44,7 +44,12 @@ if [ "$(get_gpu_family)" != "AMD" ]; then
     uninstall-pkg "lib32-amdvlk"
 fi
 
-if [[ "${CHASSIS_TYPE}" != "Laptop" ]; then
+if [[ "${CHASSIS_TYPE}" != "Laptop" ]]; then
     uninstall-pkg "acpi"
     uninstall-pkg "tlp"
+
+    if ( ! get_dmi_string "system-sku-number" | grep -q "ThinkPad" ); then
+        uninstall-pkg acpi_call
+        uninstall-pkg tp_smapi
+    fi
 fi
