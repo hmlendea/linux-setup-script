@@ -103,13 +103,13 @@ execute-script "update-rcs.sh"
 [ "${OS}" == "Linux" ] && execute-script-superuser "update-rcs.sh"
 
 # Configure and customise the system
-execute-script "config-system.sh" # Run after update-rcs.sh
+execute-script "configure-system.sh" # Run after update-rcs.sh
 [ "${DISTRO_FAMILY}" == "Arch" ] && execute-script-superuser "set-system-locale-timedate.sh"
 [ "${DISTRO_FAMILY}" != "Android" ] && execute-script-superuser "update-profiles.sh"
 
 if [ "${OS}" == "Linux" ]; then
     does-bin-exist "systemctl" && execute-script-superuser "enable-services.sh"
-    does-bin-exist "grub-mkconfig" && execute-script-superuser "update-grub.sh" # Run after config-system.sh
+    does-bin-exist "grub-mkconfig" && execute-script-superuser "update-grub.sh" # Run after configure-system.sh
 
     if ${HAS_GUI}; then
         execute-script "update-hidden-files.sh"
