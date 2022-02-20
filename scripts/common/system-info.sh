@@ -202,7 +202,22 @@ function get_gpu() {
 
 function get_driver() {
     local COMPONENT="${*}"
-    lspci -k | grep "${COMPONENT}" | grep "Kernel driver" | awk -F":" '{print $2}' | sed -e 's/^\s*//g' -e 's/\s*$//g'
+
+    does-bin-exist "lspci" && lspci -k 2> /dev/null | \
+        grep "${COMPONENT}" | \
+        grep "Kernel driver" | \
+        awk -F":" '{print $2}' | \
+        sed -e 's/^\s*//g' -e 's/\s*$//g'
+}
+
+function is_driver_loaded() {
+    local DRIVER="${*}"
+
+    if [ -n "$(get_driver ${DRIVER})" ]; then
+        return 0 # True
+    else
+        return 1 # False
+    fi
 }
 
 function get_wifi_driver() {
