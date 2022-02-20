@@ -205,11 +205,15 @@ function get_gpu() {
 function get_driver() {
     local COMPONENT="${*}"
 
-    does-bin-exist "lspci" && lspci -k 2> /dev/null | \
+    DRIVER=$(does-bin-exist "lspci" && lspci -k 2> /dev/null | \
         grep "${COMPONENT}" | \
         grep "Kernel driver" | \
         awk -F":" '{print $2}' | \
-        sed -e 's/^\s*//g' -e 's/\s*$//g'
+        sed -e 's/^\s*//g' -e 's/\s*$//g')
+
+    [ -z "${DRIVER}" ] && DRIVER="unknown"
+
+    echo "${DRIVER}"
 }
 
 function is_driver_loaded() {
