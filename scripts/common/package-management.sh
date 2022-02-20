@@ -47,7 +47,6 @@ function is-package-installed() {
         if (apt-cache policy "${PKG}" | grep -q "^\s*Installed:\s*[0-9]"); then
 	    	return 0 # True
         else
-            echo $PKG
 		    return 1 # False
         fi
     fi
