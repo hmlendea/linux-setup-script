@@ -59,6 +59,7 @@ install-pkg automake
 ###############
 install-pkg jq          # JSON parser
 install-pkg xmlstarlet  # XML parser
+install-pkg dmidecode   # Read device manufacturer information
 
 ##################
 ### Monitoring ###
@@ -69,7 +70,20 @@ else
     install-pkg neofetch
 fi
 
-install-pkg dmidecode
+########################
+### Power Management ###
+########################
+if [[ "${CHASSIS_TYPE}" == "Laptop" ]]; then
+    install-pkg acpi
+    install-pkg tlp
+
+    install-pkg powertop
+
+    if get_dmi_string "system-sku-number" | grep -q "ThinkPad"; then
+        install-pkg acpi_call
+        install-pkg tp_smapi
+    fi
+fi
 
 ##################
 ### Networking ###
@@ -450,14 +464,4 @@ if ${HAS_GUI}; then
     install-pkg xorg-xdpyinfo
     install-pkg xorg-xkill
     install-pkg start-wmclass
-fi
-
-if [[ "${CHASSIS_TYPE}" == "Laptop" ]]; then
-    install-pkg acpi
-    install-pkg tlp
-
-    if get_dmi_string "system-sku-number" | grep -q "ThinkPad"; then
-        install-pkg acpi_call
-        install-pkg tp_smapi
-    fi
 fi
