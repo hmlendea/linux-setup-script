@@ -225,7 +225,7 @@ if [ -f "${ROOT_ETC}/default/grub" ]; then
 
     if [ "${CHASSIS_TYPE}" = "Laptop" ] && is_driver_loaded "i915"; then
         BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} i915.i915_enable_rc6=1"   # Allow the GPU to enter a low power state when it is idling
-        BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} i915.i915_enable_fbc=1"   # Enable framebuffer compression to consume less memory
+        #BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} i915.i915_enable_fbc=1"   # Enable framebuffer compression to consume less memory
         #BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} i915.lvds_downclock=1"    # !CAN CAUSE TEARING! Downclocks the LVDS refresh rate
     fi
 
