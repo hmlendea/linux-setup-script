@@ -119,15 +119,16 @@ function set_json_value() {
     if [ "${VALUE}" != "${CURRENT_VALUE}" ] \
     && [ "${VALUE_RAW}" != "${CURRENT_VALUE}" ] \
     && [ "\"${VALUE_RAW}\"" != "${CURRENT_VALUE}" ]; then
-        jq "${PROPERTY}"'='"${VALUE}" <<< ${FILE_CONTENT} > "${FILE_PATH}"
-        echo "${FILE_PATH} >>> ${PROPERTY}=${VALUE}"
-    fi
-}
+        if [ -w "${FILE_PATH}" ]; then
+            jq "${PROPERTY}"'='"${VALUE}" <<< ${FILE_CONTENT} > "${FILE_PATH}"
+        elif ${HAS_SU_PRIVILEGES}; then
+            jq "${PROPERTY}"'='"${VALUE}" <<< ${FILE_CONTENT} | run-as-su tee "${FILE_PATH}" > /dev/null
+        else
+            echo "Cannot set ${PROPERTY}=${VALUE} in ${FILE_PATH}"
+            return
+        fi
 
-function set_json_value_root() {
-    if ${HAS_SU_PRIVILEGES}; then
-        local FUNCTION_DECLARATIONS="$(declare -f set_json_value); $(declare -f does-bin-exist)"
-        sudo bash -c "${FUNCTION_DECLARATIONS}; set_json_value \"${1}\" '${2}' \"${3}\""
+        echo "${FILE_PATH} >>> ${PROPERTY}=${VALUE}"
     fi
 }
 
