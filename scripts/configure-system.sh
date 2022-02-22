@@ -657,6 +657,7 @@ if does-bin-exist "firefox"; then
     #set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.newtabpage.activity-stream.feeds.section.highlights" false
     #set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.newtabpage.activity-stream.feeds.snippets" false
     set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.newtabpage.activity-stream.feeds.topsites" false
+    set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.newtabpage.activity-stream.feeds.section.topstories" false
     set_firefox_config "${FIREFOX_PROFILE_ID}" "extensions.pocket.enabled" false
 
     # URL bar
