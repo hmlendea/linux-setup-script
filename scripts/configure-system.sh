@@ -492,9 +492,9 @@ if does-bin-exist "whatsapp-nativefier"; then
     #WAPP_PREFERENCES_FILE="${HOME}/.config/whatsapp-nativefier-d40211/Preferences"
 
     #sudo bash -c "$(declare -f set_json_value); set_json_value \"${WAPP_CONFIG_FILE}\" '.tray' \"start-in-tray\""
-    set_json_value "${WAPP_CONFIG_FILE}" '.tray' "start-in-tray"
+    #set_json_value "${WAPP_CONFIG_FILE}" '.tray' "start-in-tray"
 
-    set_json_value "${WAPP_CONFIG_FILE}" '.zoom' "${ZOOM_LEVEL}"
+    #set_json_value "${WAPP_CONFIG_FILE}" '.zoom' "${ZOOM_LEVEL}"
     #set_json_value "${WAPP_PREFERENCES_FILE}" '.partition.per_host_zoom_levels[]."web.whatsapp.com"' "${ZOOM_LEVEL}"
 fi
 
