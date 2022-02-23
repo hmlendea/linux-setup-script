@@ -224,6 +224,7 @@ function get_driver() {
         grep "${COMPONENT}" | \
         grep "Kernel driver" | \
         awk -F":" '{print $2}' | \
+        tail -n 1 | \
         sed -e 's/^\s*//g' -e 's/\s*$//g')
 
     [ -z "${DRIVER}" ] && DRIVER="unknown"
