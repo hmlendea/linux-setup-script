@@ -112,17 +112,36 @@ function get_arch_family() {
 function get_cpu_model() {
     local CPU_MODEL=""
 
-    if [ -f "${ROOT_PROC}/cpuinfo" ] && grep -q "^Hardware\s*:" "${ROOT_PROC}/cpuinfo"; then
+# && grep -q "^Hardware\s*:" "${ROOT_PROC}/cpuinfo"; then
+
+
+    if [ -f "${ROOT_PROC}/cpuinfo" ]; then
         CPU_MODEL=$(cat "${ROOT_PROC}/cpuinfo" | \
-            grep "^Hardware" | \
+            grep "^Hardware\s*:" | \
             awk -F: '{print $2}')
-    elif does-bin-exist "lscpu"; then
-        CPU_MODEL=$(lscpu | \
-            grep "^Model name:" | \
-            awk -F: '{print $2}')
-    elif [ -f "${ROOT_PROC}/cpuinfo" ]; then
+    fi
+
+    if [ -z "${CPU_MODEL}" ] \
+    && [ -f "${ROOT_PROC}/cpuinfo" ]; then
         CPU_MODEL=$(cat "${ROOT_PROC}/cpuinfo" | \
             grep "^model name" | \
+            awk -F: '{print $2}')
+    fi
+
+    if [ -z "${CPU_MODEL}" ] \
+    && does-bin-exist "lspci"; then
+        if lspci | grep -q "\sPCI bridge:.*BCM[0-9]\+\s"; then
+            CPU_MODEL=$(lspci | \
+                grep "\sPCI bridge:" | \
+                head -n 1 | \
+                sed 's/.*\(BCM[0-9]\+\).*/\1/g')
+        fi
+    fi
+
+    if [ -z "${CPU_MODEL}" ] \
+    && does-bin-exist "lscpu"; then
+        CPU_MODEL=$(lscpu | \
+            grep "^Model name:" | \
             awk -F: '{print $2}')
     fi
 
@@ -140,25 +159,51 @@ function get_cpu_model() {
     echo "${CPU_MODEL}"  | sed 's/\(AMD\|Broadcom\|Intel\) //g'
 }
 
+function get_cpu_vendor_from_line() {
+    local CPU_LINE="${*}"
+    local CPU_VENDOR=""
+
+    echo "${CPU_LINE}" | grep -q "Advanced Micro Devices\|AMD" && CPU_VENDOR="AMD"
+    echo "${CPU_LINE}" | grep -q "BCM\|Broadcom" && CPU_VENDOR="Broadcom"
+    echo "${CPU_LINE}" | grep -q "Intel" && CPU_VENDOR="Intel"
+
+    echo "${CPU_VENDOR}"
+}
+
 function get_cpu_family() {
     local CPU_LINE=""
-    local CPU_FAMILY=""
+    local CPU_VENDOR=""
 
-    if does-bin-exist "dmidecode" && [ -n "$(get_dmi_string processor-manufacturer)" ]; then
+    if does-bin-exist "dmidecode"; then
         CPU_LINE=$(get_dmi_string processor-manufacturer)
-    elif [ -f "${ROOT_PROC}/cpuinfo" ] && grep -q "^Hardware\s*:" "${ROOT_PROC}/cpuinfo"; then
-        CPU_LINE=$(cat "${ROOT_PROC}/cpuinfo" | grep "^Hardware")
-    elif does-bin-exist "lscpu"; then
-        CPU_LINE=$(lscpu | grep "^Model name:")
-    elif [ -f "${ROOT_PROC}/cpuinfo" ]; then
-        CPU_LINE=$(cat "${ROOT_PROC}/cpuinfo" | grep "^model name" | head -n 1)
+        CPU_VENDOR="$(get_cpu_vendor_from_line ${CPU_LINE})"
     fi
 
-    echo "${CPU_LINE}" | grep -q "AMD" && CPU_FAMILY="AMD"
-    echo "${CPU_LINE}" | grep -q "BCM\|Broadcom" && CPU_FAMILY="Broadcom"
-    echo "${CPU_LINE}" | grep -q "Intel" && CPU_FAMILY="Intel"
+    if [ -z "${CPU_VENDOR}" ] \
+    && [ -f "${ROOT_PROC}/cpuinfo" ]; then
+        CPU_LINE=$(cat "${ROOT_PROC}/cpuinfo" | grep "^Hardware\s*:")
+        CPU_VENDOR="$(get_cpu_vendor_from_line ${CPU_LINE})"
+    fi
 
-    echo "${CPU_FAMILY}"
+    if [ -z "${CPU_VENDOR}" ] \
+    && [ -f "${ROOT_PROC}/cpuinfo" ]; then
+        CPU_LINE=$(cat "${ROOT_PROC}/cpuinfo" | grep "^model name" | head -n 1)
+        CPU_VENDOR="$(get_cpu_vendor_from_line ${CPU_LINE})"
+    fi
+
+    if [ -z "${CPU_VENDOR}" ] \
+    && does-bin-exist "lspci"; then
+        CPU_LINE=$(lspci | grep "\sPCI bridge:" | head -n 1)
+        CPU_VENDOR="$(get_cpu_vendor_from_line ${CPU_LINE})"
+    fi
+
+    if [ -z "${CPU_VENDOR}" ] \
+    && does-bin-exist "lscpu"; then
+        CPU_LINE=$(lscpu | grep "^Model name:")
+        CPU_VENDOR="$(get_cpu_vendor_from_line ${CPU_LINE})"
+    fi
+
+    echo "${CPU_VENDOR}"
 }
 
 function get_cpu() {
