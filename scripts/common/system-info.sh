@@ -199,9 +199,9 @@ function get_gpu_model() {
         local DEVICE_MODEL=$(cat -A "${ROOT_PROC}/device-tree/model")
 
         if echo "${DEVICE_MODEL}" | grep -q "Raspberry Pi 3"; then
-            GPU_MODEL="Videocore 4"
+            GPU_MODEL="VideoCore IV"
         elif echo "${DEVICE_MODEL}" | grep -q "Raspberry Pi 4"; then
-            GPU_MODEL="Videocore VI"
+            GPU_MODEL="VideoCore VI"
         fi
     fi
 
