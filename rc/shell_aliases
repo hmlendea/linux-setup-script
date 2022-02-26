@@ -112,10 +112,12 @@ if [ -f "${ROOT_USR_BIN}/tmux" ]; then
 fi
 
 if [ ! -f "${ROOT_USR_BIN}/hostname" ]; then
-    if [ -f "${ROOT_USR_BIN}/hostnamectl" ]; then
-        alias hostname='hostnamectl hostname'
-    else
+    if [ -n "${HOSTNAME}" ]; then
+        alias hostname='echo ${HOSTNAME}'
+    elif [ -f "${ROOT_ETC}/hostname" ]; then
         alias hostname="cat ${ROOT_ETC}/hostname"
+    elif [ -f "${ROOT_USR_BIN}/hostnamectl" ]; then
+        alias hostname='hostnamectl hostname'
     fi
 fi
 
