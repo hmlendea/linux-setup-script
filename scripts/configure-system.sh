@@ -157,7 +157,6 @@ if [ -d "${ROOT_ETC}/modprobe.d" ]; then
     set_modprobe_option bluetooth disable_ertm 1    # Xbox One Controller Pairing
     set_modprobe_option btusb enable_autosuspend n  # Xbox One Controller Connecting, possibly other devices as well
 
-
     if [ "${CHASSIS_TYPE}" == "Laptop" ]; then
         set_modprobe_option usbcore autosuspend 1
     fi
