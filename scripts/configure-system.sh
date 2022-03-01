@@ -422,7 +422,10 @@ if does-bin-exist "openal-info"; then
 fi
 if does-bin-exist "pulseaudio"; then
     set_config_value "${ROOT_ETC}/pulse/daemon.conf" resample-method speex-float-10
-    set_config_value --separator " " "${ROOT_ETC}/pulse/default.pa" load-module module-suspend-on-idle
+    set_pulseaudio_module_option "module-suspend-on-idle"
+    set_pulseaudio_module_option "module-udev-detect" "tsched" 0
+    #set_config_value --separator " " "${ROOT_ETC}/pulse/default.pa" load-module module-suspend-on-idle
+    #set_config_value --separator " " "${ROOT_ETC}/pulse/default.pa" "load-module module-udev-detect" "tsched=0"
 fi
 
 #if does-gnome-shell-extension-exist "sound-output-device-chooser"; then

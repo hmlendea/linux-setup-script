@@ -178,7 +178,38 @@ function set_modprobe_option() {
         if [[ $(grep -c "^${ACTION} ${MODULE} ${KEY}=${VALUE}$" <<< "${FILE_CONTENT}") == 0 ]]; then
             # If the option key already exists (with a different value)
             if [ $(grep -c "^${ACTION} ${MODULE} ${KEY}=.*$" <<< "${FILE_CONTENT}") -gt 0 ]; then
-                sed -i 's|^${ACTION} '"${MODULE} ${KEY}"'=.*$|${ACTION} '"${MODULE} ${KEY}"'='"${VALUE}"'|g' "${FILE}"
+                sed -i 's|^'"${ACTION} ${MODULE} ${KEY}"'=.*$|'"${ACTION} ${MODULE} ${KEY}"'='"${VALUE}"'|g' "${FILE}"
+            else
+                file-append-line "${FILE}" "${ACTION} ${MODULE} ${KEY}=${VALUE}"
+            fi
+
+            echo "${FILE} >>> ${ACTION} ${MODULE} ${KEY}=${VALUE}"
+        fi
+    else
+        if ! grep -q "^${ACTION} ${MODULE}$" <<< "${FILE_CONTENT}"; then
+            file-append-line "${FILE}" "${ACTION} ${MODULE}"
+            echo "${FILE} >>> ${ACTION} ${MODULE}"
+        fi
+    fi
+}
+
+function set_pulseaudio_module_option() {
+    FILE="${ROOT_ETC}/pulse/default.pa"
+    ACTION="load-module"
+    MODULE="${1}"
+    KEY="${2}"
+    VALUE="${3}"
+
+    FILE_CONTENT=$(cat "${FILE}")
+
+    # If the option is not already set
+    if [ -n "${KEY}" ]; then
+        if [[ $(grep -c "^${ACTION} ${MODULE} ${KEY}=${VALUE}$" <<< "${FILE_CONTENT}") == 0 ]]; then
+            # If the option key already exists (with a different value)
+            if [ $(grep -c "^${ACTION} ${MODULE} ${KEY}=.*$" <<< "${FILE_CONTENT}") -gt 0 ]; then
+                run-as-su sed -i 's|^'"${ACTION} ${MODULE} ${KEY}"'=.*$|'"${ACTION} ${MODULE} ${KEY}"'='"${VALUE}"'|g' "${FILE}"
+            elif [ $(grep -c "^${ACTION} ${MODULE}$" <<< "${FILE_CONTENT}") -gt 0 ]; then
+                run-as-su sed -i 's|^'"${ACTION} ${MODULE}"'$|'"${ACTION} ${MODULE} ${KEY}"'='"${VALUE}"'|g' "${FILE}"
             else
                 file-append-line "${FILE}" "${ACTION} ${MODULE} ${KEY}=${VALUE}"
             fi
