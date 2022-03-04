@@ -175,3 +175,7 @@ fi
 # Logs
 remove "${HOME}/.config/logs"
 remove "${HOME}/.minecraft/logs"
+
+# Unwanted application launchers
+remove "${HOME_REAL}/.local/share/applications/wine"
+remove "${HOME_REAL}/.config/menus/applications-merged/user-chrome-apps.menu"
