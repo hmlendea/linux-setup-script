@@ -223,8 +223,8 @@ if [ -f "${ROOT_ETC}/default/grub" ]; then
     BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} random.trust_cpu=on" # Trust the CPU's random number generator ratherthan software. Better boot time
 
     if [ "${CHASSIS_TYPE}" = "Laptop" ] && is_driver_loaded "i915"; then
-        BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} i915.i915_enable_rc6=1"   # Allow the GPU to enter a low power state when it is idling
-        #BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} i915.i915_enable_fbc=1"   # Enable framebuffer compression to consume less memory
+        #BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} i915.i915_enable_rc6=1"   # Can cause some tearing. Allow the GPU to enter a low power state when it is idling
+        #BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} i915.i915_enable_fbc=1"   # Can cause serious tearing !!! Enable framebuffer compression to consume less memory
         #BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} i915.lvds_downclock=1"    # !CAN CAUSE TEARING! Downclocks the LVDS refresh rate
     fi
 
@@ -503,9 +503,9 @@ fi
 ##############
 ### Citrix ###
 ##############
-if [ -d "${ROOT_OPT}/Citrix" ]; then
-    set_config_value "${HOME_REAL}/.ICAClient/wfclient.ini" SSLCiphers "ALL" # TODO: Make sure it's put under [WFClient]
-fi
+#if [ -d "${ROOT_OPT}/Citrix" ]; then
+#    set_config_value "${HOME_REAL}/.ICAClient/wfclient.ini" SSLCiphers "ALL" # TODO: Make sure it's put under [WFClient]
+#fi
 
 #############################
 ### CONFIGURATION EDITORS ###
