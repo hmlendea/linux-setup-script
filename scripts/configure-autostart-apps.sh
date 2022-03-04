@@ -24,7 +24,8 @@ configure-autostart-for-app "/opt/ElectronMail/electron-mail" \
     Exec "/opt/ElectronMail/electron-mail --js-flags=\"--max-old-space-size=6144\" %U"
 
 configure-autostart-for-app "discord" \
-    Exec "/usr/bin/discord --start-minimized"
+    Exec "/usr/bin/discord --start-minimized" \
+    Icon "discord"
 
 configure-autostart-for-app "signal-desktop" \
     Name "Signal" \
