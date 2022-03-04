@@ -908,10 +908,6 @@ if does-bin-exist "wine"; then
     [ ! -f "${GLOBAL_LAUNCHERS_PATH}/winecfg.desktop" ] && create_launcher "${GLOBAL_LAUNCHERS_PATH}/winecfg.desktop"
     [ ! -f "${GLOBAL_LAUNCHERS_PATH}/winetricks.desktop" ] && create_launcher "${GLOBAL_LAUNCHERS_PATH}/winetricks.desktop"
 
-    rm -rf "${HOME_REAL}/.local/share/applications/wine-*"
-    rm -rf "${HOME_REAL}/.local/share/applications/wine"
-    rm -rf "${HOME_REAL}/.config/menus/applications-merged/user-chrome-apps.menu"
-
     set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/winecfg.desktop" \
         Name "Wine Configuration" \
         Categories "Wine;Emulator;System;Settings;" \
