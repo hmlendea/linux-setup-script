@@ -63,6 +63,16 @@ function is-vscode-extension-installed() {
     fi
 }
 
+function is_steam_app_installed() {
+    local STEAM_APP_ID="${1}"
+
+    if [ -f "${HOME_LOCAL_SHARE}/Steam/steamapps/appmanifest_${STEAM_APP_ID}.acf" ]; then
+        return 0 # True
+    else
+        return 1 # False
+    fi
+}
+
 function install-pkg() {
 	local PKG="${1}"
 

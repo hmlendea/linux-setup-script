@@ -1,5 +1,6 @@
 #!/bin/bash
 source "scripts/common/common.sh"
+source "scripts/common/package-management.sh"
 
 function removeForMissingBin() {
     local BINARY="${1}" && shift
@@ -14,11 +15,21 @@ function removeForMissingBin() {
 function removeForMissingGnomeShellExtension() {
     local EXTENSION="${1}" && shift
 
-    for DIRECTORY in "${@}"; do
-        if ! does-gnome-shell-extension-exist "${EXTENSION}"; then
+    if ! does-gnome-shell-extension-exist "${EXTENSION}"; then
+        for DIRECTORY in "${@}"; do
             remove "${DIRECTORY}"
-        fi
-    done
+        done
+    fi
+}
+
+function removeForMissingSteamApp() {
+    local STEAM_APP_ID="${1}" && shift
+
+    if ! is_steam_app_installed "${STEAM_APP_ID}"; then
+        for DIRECTORY in "${@}"; do
+            remove "${DIRECTORY}"
+        done
+    fi
 }
 
 removeForMissingBin "aircrack-ng" "${HOME}/.aircrack"
@@ -82,6 +93,9 @@ removeForMissingBin "kupfer" "${HOME_CONFIG}/kupfer"
 removeForMissingBin "libreoffice" "${HOME_CONFIG}/libreoffice"
 removeForMissingBin "lollypop" "${HOME_LOCAL_SHARE}/lollypop"
 removeForMissingBin "lsd" "${HOME_CONFIG}/lsd"
+removeForMissingBin "lutris" \
+    "${HOME_CONFIG}/lutris" \
+    "${HOME_LOCAL_SHARE}/lutris"
 removeForMissingBin "mcaselector" \
     "${HOME}/.mcaselector" \
     "${HOME_CACHE}/mcaselector"
@@ -134,11 +148,22 @@ removeForMissingBin "winetricks" "${HOME_CACHE}/winetricks"
 removeForMissingBin "yarn" \
     "${HOME}/.yarn" \
     "${HOME}/.yarnrc"
-removeForMissingBin "yay" "${HOME_CACHE}/yay"
+removeForMissingBin "yay" \
+    "${HOME_CACHE}/yay" \
+    "${HOME_CONFIG}/yay"
 removeForMissingBin "youtube-dl" "${HOME_CACHE}/youtube-dl"
 removeForMissingBin "zsh" "${HOME}/.zshrc"
 
+# GNOME Extensions
 removeForMissingGnomeShellExtension "tiling-assistant" "${HOME_CONFIG}/tiling-assistant"
+
+# Steam apps
+removeForMissingSteamApp "105600" "${HOME_LOCAL_SHARE}/Terraria"
+removeForMissingSteamApp "322330" \
+    "${HOME}/.klei/DoNotStarveTogether" \
+    "${HOME}/.klei/DoNotStarveTogetherBetaBranch"
+removeForMissingSteamApp "476240" "${HOME_CONFIG}/unity3d/Arzola's/KNIGHTS"
+removeForMissingSteamApp "736260" "${HOME_LOCAL_SHARE}/Baba_Is_You"
 
 # Unnecessary files
 if [ -d "${HOME}/Downloads" ]; then
