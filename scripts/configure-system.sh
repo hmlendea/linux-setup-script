@@ -222,11 +222,11 @@ if [ -f "${ROOT_ETC}/default/grub" ]; then
     BOOT_FLAGS_DEFAULT="loglevel=3 quiet" # Defaults
     BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} random.trust_cpu=on" # Trust the CPU's random number generator ratherthan software. Better boot time
 
-    if [ "${CHASSIS_TYPE}" = "Laptop" ] && is_driver_loaded "i915"; then
+    #if [ "${CHASSIS_TYPE}" = "Laptop" ] && is_driver_loaded "i915"; then
         #BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} i915.i915_enable_rc6=1"   # Can cause some tearing. Allow the GPU to enter a low power state when it is idling
         #BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} i915.i915_enable_fbc=1"   # Can cause serious tearing !!! Enable framebuffer compression to consume less memory
         #BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} i915.lvds_downclock=1"    # !CAN CAUSE TEARING! Downclocks the LVDS refresh rate
-    fi
+    #fi
 
     set_config_value "${GRUB_CONFIG_FILE}" "GRUB_CMDLINE_LINUX_DEFAULT" "\"${BOOT_FLAGS_DEFAULT}\""
 
