@@ -240,7 +240,8 @@ function get_gpu_model() {
             -e 's/^\s*//g' -e 's/\s*$//g')
     fi
 
-    if [ -z "${GPU_MODEL}" ]; then
+    if [ -z "${GPU_MODEL}" ] \
+    && [ -f "${ROOT_PROC}/device-tree/model" ]; then
         local DEVICE_MODEL=$(cat -A "${ROOT_PROC}/device-tree/model")
 
         if echo "${DEVICE_MODEL}" | grep -q "Raspberry Pi 3"; then
