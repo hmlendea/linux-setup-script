@@ -23,7 +23,8 @@ DNS_CACHE_SIZE=10000 # Entries
 [ "${SCREEN_RESOLUTION_V}" -eq 0 ]      && ZOOM_LEVEL=1.00
 
 # Languages
-OS_LANGUAGE=$(grep "^LANG=" "${ROOT_ETC}/locale.conf" | sed 's/^[^=]*=\([^.]*\).*/\1/g')
+OS_LANGUAGE=""
+[ -f "${ROOT_ETC}/locale.conf" ] && OS_LANGUAGE=$(grep "^LANG=" "${ROOT_ETC}/locale.conf" | sed 's/^[^=]*=\([^.]*\).*/\1/g')
 [ -z "${OS_LANGUAGE}" ] && OS_LANGUAGE="en_GB"
 APPS_LANGUAGE="ro_RO"
 GAMES_LANGUAGE="en_GB"

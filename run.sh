@@ -104,7 +104,7 @@ execute-script "update-rcs.sh"
 
 # Configure and customise the system
 execute-script "configure-system.sh" # Run after update-rcs.sh
-[ "${DISTRO_FAMILY}" == "Arch" ] && execute-script-superuser "set-system-locale-timedate.sh"
+execute-script-superuser "set-system-locale-timedate.sh"
 [ "${DISTRO_FAMILY}" != "Android" ] && execute-script-superuser "update-profiles.sh"
 
 if [ "${OS}" == "Linux" ]; then
