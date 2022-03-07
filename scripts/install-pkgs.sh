@@ -59,7 +59,10 @@ install-pkg automake
 ###############
 install-pkg jq          # JSON parser
 install-pkg xmlstarlet  # XML parser
-install-pkg dmidecode   # Read device manufacturer information
+
+if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
+    install-pkg dmidecode   # Read device manufacturer information
+fi
 
 ##################
 ### Monitoring ###
@@ -88,7 +91,6 @@ fi
 ##################
 ### Networking ###
 ##################
-install-pkg ethtool
 install-pkg net-tools
 
 if [[ "${DISTRO_FAMILY}" == "Arch" ]] \
@@ -101,6 +103,7 @@ elif [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
 fi
 
 if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
+    install-pkg ethtool
     install-pkg wireless_tools
     install-pkg iw
     install-pkg iwd
