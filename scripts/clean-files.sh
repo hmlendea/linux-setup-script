@@ -72,6 +72,7 @@ removeForMissingBin "dockx" "${HOME_LOCAL_SHARE}/dockbarx"
 removeForMissingBin "etcher" "${HOME_CONFIG}/balena-etcher-electron"
 removeForMissingBin "fltk-config" "${HOME}/.fltk"
 removeForMissingBin "fma-config-tool" "${HOME_CONFIG}/filemanager-actions"
+removeForMissingBin "fragments" "${HOME_LOCAL_SHARE}/fragments"
 removeForMissingBin "/opt/geforcenow-electron/geforcenow-electron" "${HOME_CONFIG}/GeForce NOW"
 removeForMissingBin "gkraken" "${HOME_CONFIG}/gkraken"
 removeForMissingBin "gksu" "${HOME}/.gksu.lock"
@@ -87,7 +88,9 @@ removeForMissingBin "google-chrome" \
 removeForMissingBin "gradle" "${HOME}.gradle"
 removeForMissingBin "hardinfo" "${HOME_CONFIG}/hardinfo"
 removeForMissingBin "hashcat" "${HOME_CONFIG}/hashcat"
-removeForMissingBin "inkscape" "${HOME_CONFIG}/inkscape"
+removeForMissingBin "inkscape" \
+    "${HOME_CACHE}/inkscape" \
+    "${HOME_CONFIG}/inkscape"
 removeForMissingBin "java" "${HOME}/.java"
 removeForMissingBin "kupfer" "${HOME_CONFIG}/kupfer"
 removeForMissingBin "libreoffice" "${HOME_CONFIG}/libreoffice"
@@ -115,6 +118,9 @@ removeForMissingBin "pcmanfm" "${HOME_CONFIG}/pcmanfm"
 removeForMissingBin "pcmanfm-qt" "${HOME_CONFIG}/pcmanfm-qt"
 removeForMissingBin "pip" "${HOME_CACHE}/pip"
 removeForMissingBin "plexmediaplayer" "${HOME_CONFIG}/plex.tv"
+removeForMissingBin "rhythmbox" \
+    "${HOME_CACHE}/rhythmbox" \
+    "${HOME_LOCAL_SHARE}/rhythmbox"
 removeForMissingBin "simplescreenrecorder" "${HOME}/.ssr"
 removeForMissingBin "snapcraft" "${HOME_CACHE}/snapcraft"
 removeForMissingBin "spotify" \
@@ -131,6 +137,10 @@ removeForMissingBin "teamviewer" \
     "${HOME_LOCAL_SHARE}/teamviewer15"
 removeForMissingBin "telegram-desktop" "${HOME_LOCAL_SHARE}/TelegramDesktop"
 removeForMissingBin "thunar" "${HOME_CONFIG}/Thunar"
+removeForMissingBin "totem" \
+    "${HOME_CACHE}/totem" \
+    "${HOME_CONFIG}/totem" \
+    "${HOME_LOCAL_SHARE}/totem"
 removeForMissingBin "transmission-daemon" "${HOME_CONFIG}/transmission-daemon"
 removeForMissingBin "ulauncher" "${HOME_LOCAL_SHARE}/ulauncher"
 removeForMissingBin "vim" \
@@ -175,6 +185,8 @@ fi
 # Logs
 remove "${HOME}/.config/logs"
 remove "${HOME}/.minecraft/logs"
+remove "${HOME_LOCAL_SHARE}/xorg/Xorg.0.log"
+remove "${HOME_LOCAL_SHARE}/xorg/Xorg.0.log.old"
 
 # Unwanted application launchers
 remove "${HOME_REAL}/.local/share/applications/wine"
