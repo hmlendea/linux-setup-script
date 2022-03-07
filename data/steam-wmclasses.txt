@@ -141,7 +141,7 @@
 718850=steam_app_718850
 728880=Overcooked2.x86_64
 729040=steam_app_729040
-736260=Chowdren
+736260=Baba Is You
 804850=pax nova.exe
 813780=steam_app_813780
 857980=void bastards.exe
