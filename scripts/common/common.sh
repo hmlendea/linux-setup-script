@@ -143,6 +143,17 @@ function remove() {
     fi
 }
 
+function create_symlink() {
+    local SOURCE="${1}"
+    local TARGET="${2}"
+
+    [ ! -e "${SOURCE}" ] && return
+    [ -e "${TARGET}" ] && return
+
+    echo -e "Linking \e[0;33m${SOURCE}\e[0m → \e[0;33m${TARGET}\e[0m..."
+    ln -s "${SOURCE}" "${TARGET}"
+}
+
 function read-file() {
     local FILE_PATH="${*}"
 

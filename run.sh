@@ -110,12 +110,8 @@ execute-script-superuser "set-system-locale-timedate.sh"
 if [ "${OS}" == "Linux" ]; then
     does-bin-exist "systemctl" && execute-script-superuser "enable-services.sh"
     does-bin-exist "grub-mkconfig" && execute-script-superuser "update-grub.sh" # Run after configure-system.sh
-
-    if ${HAS_GUI}; then
-        execute-script "update-hidden-files.sh"
-        execute-script "configure-autostart-apps.sh"
-    fi
 fi
+execute-script "configure-directories.sh"
 
 # Update the resources
 if [[ "${OS}" == "Linux" ]]; then
