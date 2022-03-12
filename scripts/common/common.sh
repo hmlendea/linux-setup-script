@@ -119,32 +119,32 @@ function run-as-su() {
 }
 
 function remove() {
-    local PATH_TO_REMOVE="${*}"
+    for PATH_TO_REMOVE in "${*}"; do
+        PATH_TO_REMOVE=$(echo "${PATH_TO_REMOVE}" | sed \
+                            -e 's/^\s*//g' \
+                            -e 's/\s*$//g')
 
-    PATH_TO_REMOVE=$(echo "${PATH_TO_REMOVE}" | sed \
-                        -e 's/^\s*//g' \
-                        -e 's/\s*$//g')
-
-    if [ ! -e "${PATH_TO_REMOVE}" ] \
-    || [ -z "${PATH_TO_REMOVE}" ] \
-    || [ "${PATH_TO_REMOVE}" == "/" ]; then
-        return
-    fi
-
-    echo -e "Removing \e[0;33m${PATH_TO_REMOVE}\e[0m ..."
-    if [ -w "${PATH_TO_REMOVE}" ]; then
-        if [ -f "${PATH_TO_REMOVE}" ]; then
-            rm "${PATH_TO_REMOVE}"
-        else
-            rm -r "${PATH_TO_REMOVE}"
+        if [ ! -e "${PATH_TO_REMOVE}" ] \
+        || [ -z "${PATH_TO_REMOVE}" ] \
+        || [ "${PATH_TO_REMOVE}" == "/" ]; then
+            return
         fi
-    else
-        if [ -f "${PATH_TO_REMOVE}" ]; then
-            run-as-su rm "${PATH_TO_REMOVE}"
+
+        echo -e "Removing \e[0;33m${PATH_TO_REMOVE}\e[0m ..."
+        if [ -w "${PATH_TO_REMOVE}" ]; then
+            if [ -f "${PATH_TO_REMOVE}" ]; then
+                rm "${PATH_TO_REMOVE}"
+            else
+                rm -r "${PATH_TO_REMOVE}"
+            fi
         else
-            run-as-su rm -r "${PATH_TO_REMOVE}"
+            if [ -f "${PATH_TO_REMOVE}" ]; then
+                run-as-su rm "${PATH_TO_REMOVE}"
+            else
+                run-as-su rm -r "${PATH_TO_REMOVE}"
+            fi
         fi
-    fi
+    done
 }
 
 function create_symlink() {
