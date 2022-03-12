@@ -12,6 +12,7 @@ cd "$EXEDIR"
 export USER="$(whoami)"
 
 source "${EXEDIR}/scripts/common/common.sh"
+source "${EXEDIR}/scripts/common/package-management.sh"
 source "${EXEDIR}/scripts/common/system-info.sh"
 
 if ${HAS_SU_PRIVILEGES}; then
@@ -57,6 +58,8 @@ function update-system() {
         yes | run-as-su apt update
         yes | run-as-su apt upgrade
     fi
+
+    call_flatpak update
 }
 
 echo "OS:           ${OS}"
