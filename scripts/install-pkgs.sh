@@ -426,6 +426,7 @@ if ${HAS_GUI}; then
             #install-dep steam-native-runtime
             install-pkg proton-ge-custom-bin
             install-pkg luxtorpeda-git
+
         fi
     fi
 
@@ -453,8 +454,7 @@ if ${HAS_GUI}; then
     fi
 
     # Tools
-    [[ "${ARCH_FAMILY}" == "x86" ]] && install-pkg simplenote-electron-bin
-    [[ "${ARCH_FAMILY}" == "arm" ]] && install-pkg simplenote-electron-arm-bin
+    install_flatpak com.simplenote.Simplenote
 
     # Filesystem / Partitioning
     install-pkg gparted
