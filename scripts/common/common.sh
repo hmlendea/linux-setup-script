@@ -77,7 +77,7 @@ HOME_LOCAL_SHARE="${HOME_LOCAL}/share"
 
 # Functions
 function does-bin-exist () {
-    for BINARY_NAME in "${*}"; do
+    for BINARY_NAME in "${@}"; do
         if [ -f "${ROOT_BIN}/${BINARY_NAME}" ] \
         || [ -f "${ROOT_USR_BIN}/${BINARY_NAME}" ] \
         || [ -f "${ROOT_VAR_LIB}/flatpak/exports/bin/${BINARY_NAME}" ] \
@@ -119,7 +119,7 @@ function run-as-su() {
 }
 
 function remove() {
-    for PATH_TO_REMOVE in "${*}"; do
+    for PATH_TO_REMOVE in "${@}"; do
         PATH_TO_REMOVE=$(echo "${PATH_TO_REMOVE}" | sed \
                             -e 's/^\s*//g' \
                             -e 's/\s*$//g')
