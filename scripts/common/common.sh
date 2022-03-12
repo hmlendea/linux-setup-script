@@ -66,6 +66,8 @@ ROOT_USR="${ROOT_PATH}/usr"
 ROOT_USR_BIN="${ROOT_USR}/bin"
 ROOT_USR_LIB="${ROOT_USR}/lib"
 ROOT_USR_SHARE="${ROOT_USR}/share"
+ROOT_VAR="${ROOT}/var"
+ROOT_VAR_LIB="${ROOT_VAR}/lib"
 
 HOME_CACHE="${HOME}/.cache"
 HOME_CONFIG="${HOME}/.config"
@@ -75,14 +77,16 @@ HOME_LOCAL_SHARE="${HOME_LOCAL}/share"
 
 # Functions
 function does-bin-exist () {
-    local BINARY_NAME="${*}"
-
-    if [ -f "${ROOT_BIN}/${BINARY_NAME}" ] \
-    || [ -f "${ROOT_USR_BIN}/${BINARY_NAME}" ] \
-    || [ -f "${HOME_LOCAL_BIN}/${BINARY_NAME}" ] \
-    || [ -f "${BINARY_NAME}" ]; then
-        return 0 # True
-    fi
+    for BINARY_NAME in "${*}"; do
+        if [ -f "${ROOT_BIN}/${BINARY_NAME}" ] \
+        || [ -f "${ROOT_USR_BIN}/${BINARY_NAME}" ] \
+        || [ -f "${ROOT_VAR_LIB}/flatpak/exports/bin/${BINARY_NAME}" ] \
+        || [ -f "${HOME_LOCAL_BIN}/${BINARY_NAME}" ] \
+        || [ -f "${HOME_LOCAL_SHARE}/flatpak/exports/bin/${BINARY_NAME}" ] \
+        || [ -f "${BINARY_NAME}" ]; then
+            return 0 # True
+        fi
+    done
 
     return 1 # False
 }

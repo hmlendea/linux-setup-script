@@ -23,6 +23,10 @@ function call-package-manager() {
     fi
 }
 
+function call_flatpak() {
+    flatpak ${*} --assumeyes
+}
+
 function call-vscode() {
     if does-bin-exist "codium"; then
         codium ${*}
@@ -49,6 +53,16 @@ function is-package-installed() {
         else
 		    return 1 # False
         fi
+    fi
+}
+
+function is_flatpak_installed() {
+    local PKG="${1}"
+
+    if (flatpak list | grep -q "${PKG}" > /dev/null); then
+        return 0 # True
+    else
+        return 1 # False
     fi
 }
 
@@ -101,6 +115,15 @@ function install-dep() {
     fi
 }
 
+function install_flatpak() {
+    local PKG="${1}"
+
+    is_flatpak_installed "${PKG}" && return
+
+    echo " >>> Installing flatpak: ${PKG}"
+    call_flatpak install flathub "${PKG}"
+}
+
 function install-vscode-extension() {
     local EXTENSION="${*}"
 
@@ -136,6 +159,15 @@ function uninstall-pkgs() {
             call-package-manager remove "${PKG}"
         fi
     done
+}
+
+function uninstall_flatpak() {
+    local PKG="${1}"
+
+    is_flatpak_installed "${PKG}" && return
+
+    echo " >>> Uninstalling flatpak: ${PKG}"
+    call_flatpak uninstall "${PKG}"
 }
 
 function install-pkg-aur-manually() {
