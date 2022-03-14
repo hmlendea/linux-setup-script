@@ -143,6 +143,7 @@ source "scripts/common/package-management.sh"
     "${HOME}/.klei/DoNotStarveTogether" \
     "${HOME}/.klei/DoNotStarveTogetherBetaBranch"
 ! is_steam_app_installed "476240" && remove "${HOME_CONFIG}/unity3d/Arzola's/KNIGHTS"
+! is_steam_app_installed "729040" && remove "${HOME_LOCAL_SHARE}/Steam/steamapps/common/BorderlandsGOTYEnhanced"
 ! is_steam_app_installed "736260" && remove "${HOME_LOCAL_SHARE}/Baba_Is_You"
 
 # Unnecessary files
