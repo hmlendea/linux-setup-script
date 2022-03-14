@@ -134,8 +134,10 @@
 552110=steam_app_552110
 570940=darksoulsremastered.exe
 588430=falloutshelter.exe
+618140=steam_app_618140
 620980=beat\ saber.exe
 644390=steam_app_644390
+652980=steam_app_652980
 678800=steam_app_678800
 680360=Regions of Ruin.x86_64
 718850=steam_app_718850
