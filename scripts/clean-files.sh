@@ -96,7 +96,7 @@ source "scripts/common/package-management.sh"
 ! does-bin-exist "spotify" && remove \
     "${HOME_CACHE}/spotify" \
     "${HOME_CONFIG}/spotify"
-! does-bin-exist "teams" && remove \
+! does-bin-exist "teams" "com.microsoft.Teams" && remove \
     "${HOME_CONFIG}/Microsoft Teams - Preview" \
     "${HOME_CONFIG}/Microsoft/Microsoft Teams"
 ! does-bin-exist "teams-insiders" && remove \

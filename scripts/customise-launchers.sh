@@ -171,7 +171,8 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/discord.desktop" \
     Categories "${CHAT_APP_CATEGORIES}"
 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/teams.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/teams-insiders.desktop"; do
+                "${GLOBAL_LAUNCHERS_PATH}/teams-insiders.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/com.microsoft.Teams.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Teams" \
         Name[ro] "Teams" \
