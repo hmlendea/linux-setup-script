@@ -398,7 +398,7 @@ if ${HAS_GUI}; then
 
     # Communication
     install-pkg whatsapp-nativefier
-    install-pkg telegram-desktop
+    install_flatpak org.telegram.desktop
     install-pkg signal-desktop
     install-pkg electronmail-bin
 

@@ -22,6 +22,7 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall-pkg "paper-icon-theme-git"        # Replaced by paper-icon-theme
     uninstall-pkg "simplenote-electron-bin"     # Replaced by flatpak: com.simplenote.Simplenote
     uninstall-pkg "simplenote-electron-arm-bin" # Replaced by flatpak: com.simplenote.Simplenote
+    uninstall-pkg "telegram-desktop"            # Replaced by flatpak: com.telegram.desktop
     uninstall-pkg "ttf-ms-fonts"                # Replaced by ttf-ms-win10
     uninstall-pkg "yaourt-auto-sync"            # Replaced by repo-synchroniser
 
