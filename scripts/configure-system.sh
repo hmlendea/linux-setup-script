@@ -463,7 +463,7 @@ fi
 if does-bin-exist "discord"; then
     set_json_value "${HOME_REAL}/.config/discord/settings.json" '.BACKGROUND_COLOR' ${GTK_THEME_BG_COLOUR}
 fi
-if does-bin-exist "teams" || does-bin-exist "teams-insiders"; then
+if does-bin-exist "teams" "teams-insiders" "com.microsoft.Teams"; then
     TEAMS_DESKTOP_CONFIG_FILE="${HOME_CONFIG}/Microsoft/Microsoft Teams/desktop-config.json"
 
     does-bin-exist "teams-insiders" && TEAMS_DESKTOP_CONFIG_FILE="${HOME_CONFIG}/Microsoft/Microsoft Teams - Insiders/desktop-config.json"
@@ -487,7 +487,7 @@ if does-bin-exist "teams" || does-bin-exist "teams-insiders"; then
     set_json_value "${TEAMS_DESKTOP_CONFIG_FILE}" '.windowState.isFullScreen' false
 
 fi
-if does-bin-exist "telegram-desktop"; then
+if does-bin-exist "telegram-desktop" "com.telegram.desktop"; then
     set_config_value "${ENVIRONMENT_VARS_FILE}" TDESKTOP_I_KNOW_ABOUT_GTK_INCOMPATIBILITY "1"
 fi
 if does-bin-exist "whatsapp-for-linux"; then
@@ -811,7 +811,7 @@ fi
 ############
 ### IDEs ###
 ############
-if does-bin-exist "code" || does-bin-exist "code-oss" || does-bin-exist "codium"; then
+if does-bin-exist "code" "code-oss" "codium"; then
     # The order is important, some might be present simultaoneously for a single package
     does-bin-exist "code" && VSCODE_CONFIG_FILE="${HOME}/.config/Code/User/settings.json"
     does-bin-exist "code-oss" && VSCODE_CONFIG_FILE="${HOME}/.config/Code - OSS/User/settings.json"
