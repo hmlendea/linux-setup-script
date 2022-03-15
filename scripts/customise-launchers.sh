@@ -525,6 +525,7 @@ done
 INTERNET_BROWSER_CATEGORIES="Network;WebBrowser;"
 
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/firefox-developer.desktop" Categories ${INTERNET_BROWSER_CATEGORIES}
+set_launcher_entries "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.mozilla.firefox.desktop" StartupWMClass "firefox"
 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/google-chrome-unstable.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/google-chrome.desktop"; do

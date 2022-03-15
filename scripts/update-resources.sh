@@ -1,8 +1,12 @@
 #!/bin/bash
 source "scripts/common/common.sh"
 
-if does-bin-exist "firefox"; then
-    FIREFOX_PROFILES_DIR="${HOME_REAL}/.mozilla/firefox"
+if does-bin-exist "firefox" "org.mozilla.firefox"; then
+    MOZILLA_USERDATA_DIR="${HOME_REAL}/.mozilla/firefox"
+
+    [ -d "${HOME_VAR}/app/org.mozilla.firefox" ] && MOZILLA_USERDATA_DIR="${HOME_VAR}/app/org.mozilla.firefox/.mozilla"
+
+    FIREFOX_PROFILES_DIR="${MOZILLA_USERDATA_DIR}/firefox"
     FIREFOX_PROFILES_INI_FILE="${FIREFOX_PROFILES_DIR}/profiles.ini"
 
     if [ -f "${FIREFOX_PROFILES_INI_FILE}" ]; then

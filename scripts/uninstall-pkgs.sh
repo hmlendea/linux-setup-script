@@ -19,6 +19,8 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall-pkg "dialect"                             # Depends on outdated libs
     uninstall-pkg "discord"                             # Replaced by flatpak: com.discordapp.Discord
     uninstall-pkg "electronmail-bin"                    # Replaced by flatpak: com.github.vladimiry.ElectronMail
+    uninstall-pkg "chrome-gnome-shell"                  # Does not work with flatpak browsers
+    uninstall-pkg "firefox"                             # Replaced by flatpak: org.mozilla.firefox
     uninstall-pkg "fragments"                           # Replaced by flatpak: de.haeckerfelix.Fragments
     uninstall-pkg "gnome-shell-extension-dash-to-dock"  # Replaced by plank
     uninstall-pkg "grub2-theme-vimix"                   # Replaced by grub2-theme-nuci
