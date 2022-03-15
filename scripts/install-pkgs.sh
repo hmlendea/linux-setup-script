@@ -352,6 +352,7 @@ if ${HAS_GUI}; then
 
     # Themes
     install-pkg zorin-desktop-themes
+    install_flatpak zorinos org.gtk.Gtk3theme.ZorinGrey-Dark
     install-pkg vimix-cursors
     install-pkg papirus-icon-theme
     install-pkg papirus-folders
