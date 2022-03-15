@@ -74,6 +74,7 @@ HOME_CONFIG="${HOME}/.config"
 HOME_LOCAL="${HOME}/.local"
 HOME_LOCAL_BIN="${HOME_LOCAL}/bin"
 HOME_LOCAL_SHARE="${HOME_LOCAL}/share"
+HOME_VAR="${HOME}/.var"
 
 # Functions
 function does-bin-exist () {

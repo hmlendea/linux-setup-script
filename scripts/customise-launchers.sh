@@ -7,6 +7,7 @@ source "scripts/common/system-info.sh"
 (! ${HAS_GUI}) && exit
 
 GLOBAL_LAUNCHERS_PATH="${ROOT_USR_SHARE}/applications"
+GLOBAL_FLATPAK_LAUNCHERS_PATH="${ROOT_VAR_LIB}/flatpak/exports/share/applications"
 LOCAL_LAUNCHERS_PATH="${HOME_REAL}/.local/share/applications"
 
 ICON_THEME=$(sudo -u "${USER_REAL}" -H gsettings get org.gnome.desktop.interface icon-theme | tr -d "'")
@@ -184,7 +185,8 @@ done
 #fi
 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/meowgram.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/telegramdesktop.desktop"; do
+                "${GLOBAL_LAUNCHERS_PATH}/telegramdesktop.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.telegram.desktop.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Telegram" \
         Name[ro] "Telegram"
