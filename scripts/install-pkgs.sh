@@ -172,6 +172,8 @@ if [[ "${ARCH_FAMILY}" == "x86" ]]; then
     install-pkg update-grub
     install-dep linux-headers
 
+    install-pkg plymouth-git
+
     # Customisations
     install-pkg grub2-theme-nuci
 fi
@@ -377,8 +379,8 @@ if ${HAS_GUI}; then
     install-pkg ttf-ubraille # Braille
 
     # Internet Browser
-    install-pkg firefox
-    does-bin-exist "gnome-shell" && install-pkg chrome-gnome-shell # Also used for Firefox
+    install_flatpak org.mozilla.firefox
+    #does-bin-exist "gnome-shell" && install-pkg chrome-gnome-shell # Also used for Firefox
 
     # Torrent Downloader
     if ${POWERFUL_PC}; then

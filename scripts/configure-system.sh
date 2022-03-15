@@ -573,7 +573,7 @@ if does-bin-exist "plank"; then
         set_gsetting "${PLANK_SCHEMA}" theme "Transparent"
     fi
 fi
-if does-gnome-shell-extension-exist "gnome-shell-extension-dash-to-plank"; then
+if does-gnome-shell-extension-exist "dash-to-plank"; then
     GSE_D2P_SCHEMA="org.gnome.shell.extensions.dash-to-plank"
 
     set_gsetting "${GSE_D2P_SCHEMA}" show-apps-icon false
@@ -626,8 +626,11 @@ fi
 ###############
 ### FIREFOX ###
 ###############
-if does-bin-exist "firefox"; then
-    FIREFOX_PROFILES_INI_FILE="${HOME_REAL}/.mozilla/firefox/profiles.ini"
+if does-bin-exist "firefox" "org.mozilla.firefox"; then
+    MOZILLA_USERDATA_DIR="${HOME_REAL}/.mozilla"
+    [ -d "${HOME_VAR}/app/org.mozilla.firefox" ] && MOZILLA_USERDATA_DIR="${HOME_VAR}/app/org.mozilla.firefox/.mozilla"
+
+    FIREFOX_PROFILES_INI_FILE="${MOZILLA_USERDATA_DIR}/firefox/profiles.ini"
     FIREFOX_PROFILE_ID=$(grep "^Path=" "${FIREFOX_PROFILES_INI_FILE}" | awk -F= '{print $2}' | head -n 1)
 
     # First time prompts
