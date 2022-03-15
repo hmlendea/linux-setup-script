@@ -116,12 +116,18 @@ function install-dep() {
 }
 
 function install_flatpak() {
-    local PKG="${1}"
+    local PACKAGE="${1}"
+    local REMOTE="flathub"
 
-    is_flatpak_installed "${PKG}" && return
+    if [ $# -eq 2 ]; then
+        local REMOTE="${1}"
+        local PACKAGE="${2}"
+    fi
 
-    echo " >>> Installing flatpak: ${PKG}"
-    call_flatpak install flathub "${PKG}"
+    is_flatpak_installed "${PACKAGE}" && return
+
+    echo " >>> Installing flatpak: ${PACKAGE} (${REMOTE})"
+    call_flatpak install "${REMOTE}" "${PACKAGE}"
 }
 
 function install-vscode-extension() {
