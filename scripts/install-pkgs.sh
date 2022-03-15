@@ -401,7 +401,7 @@ if ${HAS_GUI}; then
     # Communication
     install-pkg whatsapp-nativefier
     install_flatpak org.telegram.desktop
-    install-pkg signal-desktop
+    install_flatpak org.signal.Signal
     install_flatpak com.github.vladimiry.ElectronMail
 
     # Multimedia

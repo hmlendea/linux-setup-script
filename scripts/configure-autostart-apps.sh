@@ -19,33 +19,44 @@ function configure-autostart-for-app() {
     fi
 }
 
-configure-autostart-for-app "/opt/ElectronMail/electron-mail" \
-    Name "Mail" \
-    Exec "/opt/ElectronMail/electron-mail --js-flags=\"--max-old-space-size=6144\" %U"
-
+# Discord
 configure-autostart-for-app "discord" \
     Exec "/usr/bin/discord --start-minimized" \
     Icon "discord"
 
-configure-autostart-for-app "signal-desktop" \
-    Name "Signal" \
-    Exec "signal-desktop --start-in-tray --no-sandbox -- %u"
+# ElectronMail
+configure-autostart-for-app "/opt/ElectronMail/electron-mail" \
+    Name "Mail" \
+    Exec "/opt/ElectronMail/electron-mail --js-flags=\"--max-old-space-size=6144\" %U"
+configure-autostart-for-app "com.github.vladimiry.ElectronMail" \
+    Name "Mail" \
+    Exec "/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=/app/bin/electron-mail --file-forwarding com.github.vladimiry.ElectronMail --js-flags=--max-old-space-size=12288 %U"
 
-configure-autostart-for-app "telegram-desktop" \
-    Name "Telegram" \
-    Icon "telegram" \
-    Exec "/usr/bin/telegram-desktop -workdir ${HOME_LOCAL_SHARE}/TelegramDesktop/ -startintray -autostart"
-
-configure-autostart-for-app "org.telegram.desktop" \
-    Name "Telegram" \
-    Icon "telegram" \
-    Exec "flatpak run --command=telegram-desktop org.telegram.desktop -workdir ${HOME_VAR}/app/org.telegram.desktop/data/TelegramDesktop/ -startintray -autostart"
-
+# Plank
 configure-autostart-for-app "plank" \
     Name "Plank" \
     Icon "plank" \
     Exec "plank"
 
+# Signal
+configure-autostart-for-app "signal-desktop" \
+    Name "Signal" \
+    Exec "signal-desktop --start-in-tray --no-sandbox -- %u"
+configure-autostart-for-app "org.signal.Signal" \
+    Name "Signal" \
+    Exec "/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=signal-desktop --file-forwarding org.signal.Signal --start-in-tray --no-sandbox -- %u"
+
+# Telegram
+configure-autostart-for-app "telegram-desktop" \
+    Name "Telegram" \
+    Icon "telegram" \
+    Exec "/usr/bin/telegram-desktop -workdir ${HOME_LOCAL_SHARE}/TelegramDesktop/ -startintray -autostart"
+configure-autostart-for-app "org.telegram.desktop" \
+    Name "Telegram" \
+    Icon "telegram" \
+    Exec "flatpak run --command=telegram-desktop org.telegram.desktop -workdir ${HOME_VAR}/app/org.telegram.desktop/data/TelegramDesktop/ -startintray -autostart"
+
+# WhatsApp
 configure-autostart-for-app "whatsapp-nativefier" \
     Name "WhatsApp" \
     Icon "whatsapp" \
