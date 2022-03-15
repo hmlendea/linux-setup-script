@@ -204,7 +204,7 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/whatsapp-for-linux.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier-dark.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/whatsie.desktop" \
-                "$(find_launcher_by_name WhatsApp)"; do
+                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/io.github.mimbrero.WhatsAppDesktop.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "WhatsApp" \
         Name[ro] "WhatsApp" \
@@ -499,9 +499,9 @@ if does-bin-exist "gimp"; then
         NoDisplay true
 fi
 
-if does-bin-exist "inkscape"; then
-    for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/inkscape.desktop" \
-                    "${GLOBAL_LAUNCHERS_PATH}/org.inkscape.Inkscape.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/inkscape.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/org.inkscape.Inkscape.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.inkscape.Inkscape.desktop"; do
         set_launcher_entries "${LAUNCHER}" \
             Name "Inkscape" \
             Categories "GTK;${IMAGE_EDITOR_CATEGORIES};VectorGraphics;"
