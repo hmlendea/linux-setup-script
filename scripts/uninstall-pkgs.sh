@@ -19,7 +19,9 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall-pkg "dialect"                             # Depends on outdated libs
     uninstall-pkg "discord"                             # Replaced by flatpak: com.discordapp.Discord
     uninstall-pkg "electronmail-bin"                    # Replaced by flatpak: com.github.vladimiry.ElectronMail
+    uninstall-pkg "evince"                              # Replaced by flatpak: org.gnome.Evince
     uninstall-pkg "chrome-gnome-shell"                  # Does not work with flatpak browsers
+    uninstall-pkg "eog"                                 # Replaced by flatpak: org.gnome.eog
     uninstall-pkg "firefox"                             # Replaced by flatpak: org.mozilla.firefox
     uninstall-pkg "fragments"                           # Replaced by flatpak: de.haeckerfelix.Fragments
     uninstall-pkg "gnome-calendar"                      # Replaced by flatpak: org.gnome.Calendar
@@ -29,6 +31,7 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall-pkg "gnome-weather"                       # Replaced by flatpak: org.gnome.Weather
     uninstall-pkg "gnome-shell-extension-dash-to-dock"  # Replaced by plank
     uninstall-pkg "grub2-theme-vimix"                   # Replaced by grub2-theme-nuci
+    uninstall-pkg "inkscape"                            # Replaced by flatpak: org.inkscape.Inkscape
     uninstall-pkg "neofetch"                            # Replaced by fastfetch-git
     uninstall-pkg "paper-icon-theme-git"                # Replaced by paper-icon-theme
     uninstall-pkg "postman-bin"                         # Replaced by flatpak: com.getpostman.Postman
