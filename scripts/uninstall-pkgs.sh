@@ -22,6 +22,11 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall-pkg "chrome-gnome-shell"                  # Does not work with flatpak browsers
     uninstall-pkg "firefox"                             # Replaced by flatpak: org.mozilla.firefox
     uninstall-pkg "fragments"                           # Replaced by flatpak: de.haeckerfelix.Fragments
+    uninstall-pkg "gnome-calendar"                      # Replaced by flatpak: org.gnome.Calendar
+    uninstall-pkg "gnome-contacts"                      # Replaced by flatpak: org.gnome.Contacts
+    uninstall-pkg "gnome-clock"                         # Replaced by flatpak: org.gnome.Clocks
+    uninstall-pkg "gnome-maps"                          # Replaced by flatpak: org.gnome.Maps
+    uninstall-pkg "gnome-weather"                       # Replaced by flatpak: org.gnome.Weather
     uninstall-pkg "gnome-shell-extension-dash-to-dock"  # Replaced by plank
     uninstall-pkg "grub2-theme-vimix"                   # Replaced by grub2-theme-nuci
     uninstall-pkg "neofetch"                            # Replaced by fastfetch-git

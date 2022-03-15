@@ -526,7 +526,7 @@ fi
 ################
 ### Contacts ###
 ################
-if does-bin-exist "gnome-contacts"; then
+if does-bin-exist "gnome-contacts" "org.gnome.Contacts"; then
     set_gsetting "org.gnome.Contacts" did-initial-setup true
     set_gsetting "org.gnome.Contacts" sort-on-surname true
 fi
