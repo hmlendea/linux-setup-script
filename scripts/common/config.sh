@@ -329,7 +329,7 @@ function set_launcher_entry() {
                 if ${HAS_MULTIPLE_SECTIONS}; then
                     run-as-su sed -i "${LAST_SECTION_LINE} i ${KEY_ESC}=${VAL_ESC}" "${FILE}"
                 else
-                    printf "${KEY}=${VAL}\n" >> "${FILE}"
+                    file-append-line "${FILE}" "${KEY}=${VAL}"
                 fi
             fi
 

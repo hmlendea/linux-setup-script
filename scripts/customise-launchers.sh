@@ -586,7 +586,8 @@ done
 ####################
 MAIL_APP_CATEGORIES="Network;Email;"
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/electron-mail.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Evolution.desktop"; do
+                "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Evolution.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/com.github.vladimiry.ElectronMail.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Mail" \
         Name[ro] "Mail" \

@@ -400,7 +400,7 @@ if ${HAS_GUI}; then
     install-pkg whatsapp-nativefier
     install_flatpak org.telegram.desktop
     install-pkg signal-desktop
-    install-pkg electronmail-bin
+    install_flatpak com.github.vladimiry.ElectronMail
 
     # Multimedia
     [[ "${ARCH_FAMILY}" == "x86" ]] && install-pkg spotify
