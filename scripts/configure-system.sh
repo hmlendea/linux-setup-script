@@ -460,11 +460,12 @@ fi
 #################
 ### CHAT APPS ###
 #################
-if does-bin-exist "discord"; then
-    set_json_value "${HOME_REAL}/.config/discord/settings.json" '.BACKGROUND_COLOR' ${GTK_THEME_BG_COLOUR}
-fi
 if does-bin-exist "teams" "teams-insiders" "com.microsoft.Teams"; then
-    TEAMS_DESKTOP_CONFIG_FILE="${HOME_CONFIG}/Microsoft/Microsoft Teams/desktop-config.json"
+    if [ -d "${HOME_VAR}/app/de.haeckerfelix.Fragments" ]; then
+        TEAMS_DESKTOP_CONFIG_FILE="${HOME_VAR}/app/com.microsoft.Teams/config/Microsoft/Microsoft Teams/desktop-config.json"
+    else
+        TEAMS_DESKTOP_CONFIG_FILE="${HOME_CONFIG}/Microsoft/Microsoft Teams/desktop-config.json"
+    fi
 
     does-bin-exist "teams-insiders" && TEAMS_DESKTOP_CONFIG_FILE="${HOME_CONFIG}/Microsoft/Microsoft Teams - Insiders/desktop-config.json"
 
@@ -565,7 +566,12 @@ if does-bin-exist "plank"; then
     set_gsetting "${PLANK_SCHEMA}" auto-pinning false
     set_gsetting "${PLANK_SCHEMA}" hide-mode "window-dodge"
     set_gsetting "${PLANK_SCHEMA}" pressure-reveal true
-    set_gsetting "${PLANK_SCHEMA}" theme "Transparent"
+
+    if [ -d "${HOME_LOCAL_SHARE}/plank/themes/Hori" ]; then
+        set_gsetting "${PLANK_SCHEMA}" theme "Hori"
+    else
+        set_gsetting "${PLANK_SCHEMA}" theme "Transparent"
+    fi
 fi
 if does-gnome-shell-extension-exist "gnome-shell-extension-dash-to-plank"; then
     GSE_D2P_SCHEMA="org.gnome.shell.extensions.dash-to-plank"
