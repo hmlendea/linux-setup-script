@@ -23,7 +23,10 @@ if does-bin-exist "lxpanel"; then
     update-file-if-needed "${REPO_RES_DIR}/lxpanel/applications_ro.png"             "${HOME}/.config/lxpanel/LXDE/panels/applications_ro.png"
     update-file-if-needed "${REPO_RES_DIR}/lxpanel/power.png"                       "${HOME}/.config/lxpanel/LXDE/panels/power.png"
     update-file-if-needed "${REPO_RES_DIR}/lxpanel/lxde-logout-gnomified.desktop"   "${HOME}/.local/share/applications/lxde-logout-gnomified.desktop"
-    update-file-if-needed "${REPO_RES_DIR}/plank/autostart.desktop"                 "${HOME}/.config/autostart/plank.desktop"
+fi
+
+if does-bin-exist "plank"; then
+    update-file-if-needed "${REPO_RES_DIR}/plank/dock.theme"                        "${HOME}/.local/share/plank/themes/Hori/dock.theme"
 fi
 
 if does-bin-exist "neofetch"; then
