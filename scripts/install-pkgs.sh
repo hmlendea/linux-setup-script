@@ -424,11 +424,16 @@ if ${HAS_GUI}; then
 
         # Gaming
         if ${GAMING_PC}; then
+            # Launchers
             install-pkg steam
+
+            # Runtimes
             #install-dep steam-native-runtime
             install-pkg proton-ge-custom-bin
             install-pkg luxtorpeda-git
 
+            # Communication
+            install_flatpak com.discordapp.Discord
         fi
     fi
 

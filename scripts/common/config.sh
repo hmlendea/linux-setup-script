@@ -291,7 +291,7 @@ function set_launcher_entry() {
     fi
 
     if [ ! -x "${FILE}" ]; then
-        chmod +x "${FILE}"
+        run-as-su chmod +x "${FILE}"
     fi
 
     local KEY_ID=$(echo "${KEY}" | sed -e 's/^\([^\[]*\).*/\1/g' -e 's/\s//g')

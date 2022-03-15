@@ -23,6 +23,10 @@ function configure-autostart-for-app() {
 configure-autostart-for-app "discord" \
     Exec "/usr/bin/discord --start-minimized" \
     Icon "discord"
+configure-autostart-for-app "com.discordapp.Discord" \
+    Name "Discord" \
+    Exec "/usr/bin/flatpak run --branch=stable --command=discord com.discordapp.Discord --start-minimized" \
+    Icon "discord"
 
 # ElectronMail
 configure-autostart-for-app "/opt/ElectronMail/electron-mail" \
@@ -30,11 +34,10 @@ configure-autostart-for-app "/opt/ElectronMail/electron-mail" \
     Exec "/opt/ElectronMail/electron-mail --js-flags=\"--max-old-space-size=6144\" %U"
 configure-autostart-for-app "com.github.vladimiry.ElectronMail" \
     Name "Mail" \
-    Exec "/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=/app/bin/electron-mail --file-forwarding com.github.vladimiry.ElectronMail --js-flags=--max-old-space-size=12288 %U"
+    Exec "/usr/bin/flatpak run --branch=stable --command=/app/bin/electron-mail --file-forwarding com.github.vladimiry.ElectronMail --js-flags=--max-old-space-size=12288 %U"
 
 # Plank
 configure-autostart-for-app "plank" \
-    Name "Plank" \
     Icon "plank" \
     Exec "plank"
 
@@ -44,7 +47,7 @@ configure-autostart-for-app "signal-desktop" \
     Exec "signal-desktop --start-in-tray --no-sandbox -- %u"
 configure-autostart-for-app "org.signal.Signal" \
     Name "Signal" \
-    Exec "/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=signal-desktop --file-forwarding org.signal.Signal --start-in-tray --no-sandbox -- %u"
+    Exec "/usr/bin/flatpak run --branch=stable --command=signal-desktop --file-forwarding org.signal.Signal --start-in-tray --no-sandbox -- %u"
 
 # Telegram
 configure-autostart-for-app "telegram-desktop" \
