@@ -374,7 +374,8 @@ DOCUMENT_VIEWER_CATEGORIES="Office;Viewer;"
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/atril.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/epdfview.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/evince.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Evince.desktop"; do
+                "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Evince.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.gnome.Evince.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Documents" \
         Name[ro] "Documente"
@@ -519,7 +520,8 @@ done
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gpicview.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/eog.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/eom.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/org.gnome.eog.desktop"; do
+                "${GLOBAL_LAUNCHERS_PATH}/org.gnome.eog.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.gnome.eog.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Images" \
         Name[ro] "Imagini"

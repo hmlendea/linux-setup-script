@@ -297,8 +297,11 @@ if ${HAS_GUI}; then
     ${POWERFUL_PC} || install-pkg pluma
 
     # Document Viewer
-    ${POWERFUL_PC} && install-pkg evince
-    ${POWERFUL_PC} || install-pkg epdfview
+    if ${POWERFUL_PC}; then
+        install_flatpak org.gnome.Evince
+    else
+        install-pkg epdfview
+    fi
 
     if ${POWERFUL_PC}; then
         install-pkg baobab
@@ -308,8 +311,11 @@ if ${HAS_GUI}; then
     fi
 
     # Image Viewer
-    ${POWERFUL_PC} && install-pkg eog
-    ${POWERFUL_PC} || install-pkg gpicview
+    if ${POWERFUL_PC}; then
+        install_flatpak org.gnome.eog
+    else
+        install-pkg gpicview
+    fi
 
     if ${POWERFUL_PC}; then
         install-dep gnome-menus
@@ -409,7 +415,7 @@ if ${HAS_GUI}; then
         install-pkg gimp
         install-pkg gimp-extras
         install-pkg gimp-plugin-pixel-art-scalers
-        install-pkg inkscape
+        install_flatpak org.inkscape.Inkscape
 
         # Gaming
         if ${IS_GAMING_DEVICE}; then
