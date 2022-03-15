@@ -560,10 +560,18 @@ if does-gnome-shell-extension-exist "dash-to-dock"; then
     fi
 fi
 if does-bin-exist "plank"; then
-    PLANK_SCHEMA="net.launchpad.plank.docks.dock1"
+    PLANK_SCHEMA="net.launchpad.plank.dock.settings:/net/launchpad/plank/docks/dock1/"
 
-    set_gsetting "${PLANK_SCHEMA}" theme "Transparent"
+    set_gsetting "${PLANK_SCHEMA}" auto-pinning false
     set_gsetting "${PLANK_SCHEMA}" hide-mode "window-dodge"
+    set_gsetting "${PLANK_SCHEMA}" pressure-reveal true
+    set_gsetting "${PLANK_SCHEMA}" theme "Transparent"
+fi
+if does-gnome-shell-extension-exist "gnome-shell-extension-dash-to-plank"; then
+    GSE_D2P_SCHEMA="org.gnome.shell.extensions.dash-to-plank"
+
+    set_gsetting "${GSE_D2P_SCHEMA}" show-apps-icon false
+    set_gsetting "${GSE_D2P_SCHEMA}" initialized true
 fi
 
 ########################
