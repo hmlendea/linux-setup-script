@@ -335,6 +335,8 @@ if ${HAS_GUI}; then
         install-dep gvfs-google
     fi
 
+    install-pkg plank
+
     # GNOME Shell Extensions
     if ${POWERFUL_PC}; then
         # Base
@@ -342,7 +344,7 @@ if ${HAS_GUI}; then
         install-pkg gnome-shell-extension-installer
 
         # Enhancements
-        install-pkg gnome-shell-extension-dash-to-dock
+        install-pkg gnome-shell-extension-dash-to-plank
         install-pkg gnome-shell-extension-sound-output-device-chooser
         install-pkg gnome-shell-extension-multi-monitors-add-on-git
         install-pkg gnome-shell-extension-wintile

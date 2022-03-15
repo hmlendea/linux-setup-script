@@ -15,17 +15,18 @@ fi
 
 # Uninstall the packages
 if [ "${DISTRO_FAMILY}" = "Arch" ]; then
-    uninstall-pkg "alsi"                        # Replaced by fastfetch-git
-    uninstall-pkg "dialect"                     # Depends on outdated libs
-    uninstall-pkg "electronmail-bin"            # Replaced by flatpak: com.github.vladimiry.ElectronMail
-    uninstall-pkg "grub2-theme-vimix"           # Replaced by grub2-theme-nuci
-    uninstall-pkg "neofetch"                    # Replaced by fastfetch-git
-    uninstall-pkg "paper-icon-theme-git"        # Replaced by paper-icon-theme
-    uninstall-pkg "simplenote-electron-bin"     # Replaced by flatpak: com.simplenote.Simplenote
-    uninstall-pkg "simplenote-electron-arm-bin" # Replaced by flatpak: com.simplenote.Simplenote
-    uninstall-pkg "telegram-desktop"            # Replaced by flatpak: com.telegram.desktop
-    uninstall-pkg "ttf-ms-fonts"                # Replaced by ttf-ms-win10
-    uninstall-pkg "yaourt-auto-sync"            # Replaced by repo-synchroniser
+    uninstall-pkg "alsi"                                # Replaced by fastfetch-git
+    uninstall-pkg "dialect"                             # Depends on outdated libs
+    uninstall-pkg "electronmail-bin"                    # Replaced by flatpak: com.github.vladimiry.ElectronMail
+    uninstall-pkg "gnome-shell-extension-dash-to-dock"  # Replaced by plank
+    uninstall-pkg "grub2-theme-vimix"                   # Replaced by grub2-theme-nuci
+    uninstall-pkg "neofetch"                            # Replaced by fastfetch-git
+    uninstall-pkg "paper-icon-theme-git"                # Replaced by paper-icon-theme
+    uninstall-pkg "simplenote-electron-bin"             # Replaced by flatpak: com.simplenote.Simplenote
+    uninstall-pkg "simplenote-electron-arm-bin"         # Replaced by flatpak: com.simplenote.Simplenote
+    uninstall-pkg "telegram-desktop"                    # Replaced by flatpak: com.telegram.desktop
+    uninstall-pkg "ttf-ms-fonts"                        # Replaced by ttf-ms-win10
+    uninstall-pkg "yaourt-auto-sync"                    # Replaced by repo-synchroniser
 
     if is-package-installed "visual-studio-code-bin"; then
         uninstall-pkg "code"

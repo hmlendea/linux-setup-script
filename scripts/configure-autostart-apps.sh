@@ -41,6 +41,11 @@ configure-autostart-for-app "org.telegram.desktop" \
     Icon "telegram" \
     Exec "flatpak run --command=telegram-desktop org.telegram.desktop -workdir ${HOME_VAR}/app/org.telegram.desktop/data/TelegramDesktop/ -startintray -autostart"
 
+configure-autostart-for-app "plank" \
+    Name "Plank" \
+    Icon "plank" \
+    Exec "plank"
+
 configure-autostart-for-app "whatsapp-nativefier" \
     Name "WhatsApp" \
     Icon "whatsapp" \
