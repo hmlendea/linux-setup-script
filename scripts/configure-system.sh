@@ -564,6 +564,7 @@ if does-bin-exist "plank"; then
     PLANK_SCHEMA="net.launchpad.plank.dock.settings:/net/launchpad/plank/docks/dock1/"
 
     set_gsetting "${PLANK_SCHEMA}" auto-pinning false
+    set_gsetting "${PLANK_SCHEMA}" hide-delay 200
     set_gsetting "${PLANK_SCHEMA}" hide-mode "window-dodge"
     set_gsetting "${PLANK_SCHEMA}" pressure-reveal true
 
