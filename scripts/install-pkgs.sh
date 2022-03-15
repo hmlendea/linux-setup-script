@@ -183,20 +183,6 @@ if ${HAS_GUI}; then
     # System management
     [[ "${ARCH_FAMILY}" == "x86" ]] && install-pkg thermald
 
-    # Runtimes
-    install-pkg python
-    install-pkg python2
-    install-pkg mono
-    install-pkg jre-openjdk-headless
-
-    if [[ "${ARCH_FAMILY}" == "x86" ]]; then
-        install-pkg dotnet-runtime
-        install-pkg aspnet-runtime
-    elif [[ "${ARCH_FAMILY}" == "arm" ]]; then
-        install-pkg dotnet-runtime-bin
-        install-pkg aspnet-runtime-bin
-    fi
-
     # Display Server, Drivers, FileSystems, etc
     install-pkg xorg-server
     #install-pkg xf86-video-vesa
@@ -423,7 +409,7 @@ if ${HAS_GUI}; then
         install-pkg inkscape
 
         # Gaming
-        if ${GAMING_PC}; then
+        if ${IS_GAMING_DEVICE}; then
             # Launchers
             install-pkg steam
 
@@ -437,27 +423,43 @@ if ${HAS_GUI}; then
         fi
     fi
 
-    # Development
-    install-pkg dotnet-sdk
-#    install-pkg dotnet-sdk-3.1
-    #install-pkg jdk
+    if ${IS_DEVELOPMENT_DEVICE}; then
+        # Runtimes
+        install-pkg python
+        install-pkg python2
+        install-pkg mono
+        install-pkg jre-openjdk-headless
 
-    if [[ "${ARCH_FAMILY}" == "x86" ]]; then
-        install-pkg electron
-        ! is-package-installed "chromium" && install-pkg chromedriver
-    fi
+        if [[ "${ARCH_FAMILY}" == "x86" ]]; then
+            install-pkg dotnet-runtime
+            install-pkg aspnet-runtime
+        elif [[ "${ARCH_FAMILY}" == "arm" ]]; then
+            install-pkg dotnet-runtime-bin
+            install-pkg aspnet-runtime-bin
+        fi
 
-    [[ "${ARCH_FAMILY}" == "x86" ]] && install-pkg visual-studio-code-bin
-    [[ "${ARCH_FAMILY}" == "arm" ]] && install-pkg code-headmelted-bin
-    install-vscode-extension "dakara.transformer"
-    install-vscode-extension "johnpapa.vscode-peacock"
-    install-vscode-extension "mechatroner.rainbow-csv"
-    install-vscode-extension "mgcb-vscode.mgcb-vscode"
-    install-vscode-extension "ms-dotnettools.csharp"
-    install-vscode-extension "nico-castell.linux-desktop-file"
+        # Development
+        install-pkg dotnet-sdk
+        #install-pkg dotnet-sdk-3.1
+        #install-pkg jdk
 
-    if does-bin-exist "code" || does-bin-exist "code-oss" || does-bin-exist "codium"; then
-        does-bin-exist "nautilus" && install-pkg code-nautilus-git
+        if [[ "${ARCH_FAMILY}" == "x86" ]]; then
+            install-pkg electron
+            ! is-package-installed "chromium" && install-pkg chromedriver
+        fi
+
+        [[ "${ARCH_FAMILY}" == "x86" ]] && install-pkg visual-studio-code-bin
+        [[ "${ARCH_FAMILY}" == "arm" ]] && install-pkg code-headmelted-bin
+        install-vscode-extension "dakara.transformer"
+        install-vscode-extension "johnpapa.vscode-peacock"
+        install-vscode-extension "mechatroner.rainbow-csv"
+        install-vscode-extension "mgcb-vscode.mgcb-vscode"
+        install-vscode-extension "ms-dotnettools.csharp"
+        install-vscode-extension "nico-castell.linux-desktop-file"
+
+        if does-bin-exist "code" || does-bin-exist "code-oss" || does-bin-exist "codium"; then
+            does-bin-exist "nautilus" && install-pkg code-nautilus-git
+        fi
     fi
 
     # Tools

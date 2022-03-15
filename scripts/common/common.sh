@@ -245,14 +245,18 @@ CPU_MODEL="$(get_cpu_model)"
 
 CHASSIS_TYPE="$(get_chassis_type)"
 POWERFUL_PC=false
-GAMING_PC=false
-HAS_GUI=false
+IS_DEVELOPMENT_DEVICE=false
+IS_GENERAL_PURPOSE_DEVICE=true
+IS_GAMING_DEVICE=false
+HAS_GUI=true
 HAS_SU_PRIVILEGES=true
 HAS_EFI_SUPPORT=false
 
 if [ "${CHASSIS_TYPE}" = "Phone" ]; then
     POWERFUL_PC=false
-    GAMING_PC=false
+    IS_GENERAL_PURPOSE_DEVICE=true
+    IS_GAMING_DEVICE=false
+    HAS_GUI=true
     HAS_SU_PRIVILEGES=false
     HAS_EFI_SUPPORT=false
 else
@@ -264,9 +268,10 @@ else
 
     if ${POWERFUL_PC}; then
         if [ "${CPU_MODEL}" = "Ryzen 7 5800X" ]; then
-            GAMING_PC=true
+            IS_GAMING_DEVICE=true
+            HAS_GUI=true
         else
-            GAMING_PC=false
+            IS_GAMING_DEVICE=false
         fi
     fi
 
@@ -275,12 +280,25 @@ fi
 
 if [ -f "${ROOT_ETC}/systemd/system/display-manager.service" ]; then
     HAS_GUI=true
-else
+elif ! ${HAS_GUI}; then
     case ${HOSTNAME} in
         *"PC")  HAS_GUI=true ;;
         *"Top") HAS_GUI=true ;;
         *)      HAS_GUI=false ;;
     esac
+fi
+
+if ${HAS_GUI}; then
+    if does-bin-exist "code" "code-oss" "codium" "com.visualstudio.code" \
+    || does-bin-exist "dotnet"; then
+        IS_DEVELOPMENT_DEVICE=true
+    fi
+
+    if does-bin-exist "steam" "com.valvesoftware.Steam"; then
+        IS_GAMING_DEVICE=true
+    fi
+else
+    IS_GENERAL_PURPOSE_DEVICE=false
 fi
 
 if does-bin-exist "sudo"; then
