@@ -33,7 +33,7 @@ source "scripts/common/package-management.sh"
     "${HOME}/.vscode-oss"
 ! does-bin-exist "codium" && remove "${HOME_CONFIG}/VSCodium"
 ! does-bin-exist "code-oss" "codium" && remove "${HOME}/.vscode-oss"
-! does-bin-exist "discord" && remove "${HOME_CONFIG}/discord"
+! does-bin-exist "discord" "com.discordapp.Discord" && remove "${HOME_CONFIG}/discord"
 ! does-bin-exist "dockx" && remove "${HOME_LOCAL_SHARE}/dockbarx"
 #! does-bin-exist "evolution" && remove \
 #    "${HOME_CACHE}/evolution" \

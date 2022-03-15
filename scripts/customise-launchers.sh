@@ -166,9 +166,12 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Cheese.desktop" \
 #################
 CHAT_APP_CATEGORIES="Network;Chat;InstantMessaging;Communication;"
 
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/discord.desktop" \
-    Icon "discord" \
-    Categories "${CHAT_APP_CATEGORIES}"
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/discord.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/com.discordapp.Discord.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Icon "discord" \
+        Categories "${CHAT_APP_CATEGORIES}"
+done
 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/teams.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/teams-insiders.desktop" \
