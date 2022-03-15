@@ -19,6 +19,7 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall-pkg "dialect"                             # Depends on outdated libs
     uninstall-pkg "discord"                             # Replaced by flatpak: com.discordapp.Discord
     uninstall-pkg "electronmail-bin"                    # Replaced by flatpak: com.github.vladimiry.ElectronMail
+    uninstall-pkg "fragments"                           # Replaced by flatpak: de.haeckerfelix.Fragments
     uninstall-pkg "gnome-shell-extension-dash-to-dock"  # Replaced by plank
     uninstall-pkg "grub2-theme-vimix"                   # Replaced by grub2-theme-nuci
     uninstall-pkg "neofetch"                            # Replaced by fastfetch-git
@@ -26,6 +27,7 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall-pkg "signal-desktop"                      # Replaced by flatpak: org.signal.Signal
     uninstall-pkg "simplenote-electron-bin"             # Replaced by flatpak: com.simplenote.Simplenote
     uninstall-pkg "simplenote-electron-arm-bin"         # Replaced by flatpak: com.simplenote.Simplenote
+    uninstall-pkg "spotify"                             # Replaced by flatpak: com.spotify.Client
     uninstall-pkg "telegram-desktop"                    # Replaced by flatpak: com.telegram.desktop
     uninstall-pkg "ttf-ms-fonts"                        # Replaced by ttf-ms-win10
     uninstall-pkg "yaourt-auto-sync"                    # Replaced by repo-synchroniser

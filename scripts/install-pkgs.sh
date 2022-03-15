@@ -395,8 +395,11 @@ if ${HAS_GUI}; then
     does-bin-exist "gnome-shell" && install-pkg chrome-gnome-shell # Also used for Firefox
 
     # Torrent Downloader
-    ${POWERFUL_PC} && install-pkg fragments
-    ${POWERFUL_PC} || install-pkg transmission-gtk
+    if ${POWERFUL_PC}; then
+        install_flatpak de.haeckerfelix.Fragments
+    else
+        install-pkg transmission-gtk
+    fi
 
     # Communication
     install-pkg whatsapp-nativefier
@@ -405,15 +408,12 @@ if ${HAS_GUI}; then
     install_flatpak com.github.vladimiry.ElectronMail
 
     # Multimedia
-    [[ "${ARCH_FAMILY}" == "x86" ]] && install-pkg spotify
-    if ${POWERFUL_PC}; then
-        install-pkg rhythmbox
-        install-pkg totem
-        install-pkg spotify
+    install-pkg rhythmbox
+    install-pkg totem
+    install_flatpak com.spotify.Client
 
-        install-dep gst-plugins-ugly
-        install-dep gst-libav
-    fi
+    install-dep gst-plugins-ugly
+    install-dep gst-libav
 
     if ${POWERFUL_PC}; then
         # Graphics

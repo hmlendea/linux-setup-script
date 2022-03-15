@@ -1131,9 +1131,14 @@ fi
 ###########################
 ### TORRENT DOWNLOADERS ###
 ###########################
-if does-bin-exist "fragments"; then
+if does-bin-exist "fragments" "de.haeckerfelix.Fragments"; then
     #FRAGMENTS_SCHEMA="de.haeckerfelix.Fragments"
-    FRAGMENTS_SETTINGS_FILE="${HOME_CONFIG}/fragments/settings.json"
+
+    if [ -d "${HOME_VAR}/app/de.haeckerfelix.Fragments" ]; then
+        FRAGMENTS_SETTINGS_FILE="${HOME_VAR}/app/de.haeckerfelix.Fragments/config/fragments/settings.json"
+    else
+        FRAGMENTS_SETTINGS_FILE="${HOME_CONFIG}/fragments/settings.json"
+    fi
 
     #set_gsetting "${FRAGMENTS_SCHEMA}" dark-mode ${DESKTOP_THEME_IS_DARK}
 
