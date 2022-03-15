@@ -33,6 +33,19 @@ function add_repository {
     fi
 }
 
+function add_flatpak_remote() {
+    local REMOTE_NAME="${1}"
+    local REMOTE_URL="${2}"
+
+    if ! flatpak remotes | grep -q "^${REMOTE_NAME}\s"; then
+        cp "${REPO_DATA_DIR}/flatpak/keys/${REMOTE_NAME}" "${ROOT_VAR_LIB}/flatpak/repo/${REMOTE_NAME}.trustedkeys.gpg"
+        flatpak remote-add --if-not-exists "${REMOTE_NAME}" "${REMOTE_URL}"
+    fi
+}
+
+add_flatpak_remote "zorinos" "https://flatpak.zorinos.com/repo/"
+exit
+
 add_repository "hmlendea" 'https://github.com/hmlendea/PKGBUILDs/releases/latest/download/' "" "Never"
 
 if [[ "${ARCH}" == "aarch64" ]]; then
