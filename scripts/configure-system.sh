@@ -900,8 +900,12 @@ fi
 ################
 ### INKSCAPE ###
 ################
-if does-bin-exist "inkscape"; then
-    INKSCAPE_PREFERENCES_FILE="${HOME}/.config/inkscape/preferences.xml"
+if does-bin-exist "inkscape" "org.inkscape.Inkscape"; then
+    if [ -d "${HOME_VAR}/app/de.haeckerfelix.Fragments" ]; then
+        INKSCAPE_PREFERENCES_FILE="${HOME_VAR}/app/org.inkscape.Inkscape/config/inkscape/preferences.xml"
+    else
+        INKSCAPE_PREFERENCES_FILE="${HOME}/.config/inkscape/preferences.xml"
+    fi
 
     set_xml_node "${INKSCAPE_PREFERENCES_FILE}" "//group[@id='theme']/@defaultPreferDarkTheme" "${DESKTOP_THEME_IS_DARK_BINARY}"
     set_xml_node "${INKSCAPE_PREFERENCES_FILE}" "//group[@id='theme']/@defaultGtkTheme" "${GTK_THEME}"

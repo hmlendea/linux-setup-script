@@ -402,10 +402,10 @@ if ${HAS_GUI}; then
     fi
 
     # Communication
-    install-pkg whatsapp-nativefier
+    install_flatpak com.github.vladimiry.ElectronMail
     install_flatpak org.telegram.desktop
     install_flatpak org.signal.Signal
-    install_flatpak com.github.vladimiry.ElectronMail
+    install-pkg whatsapp-nativefier
 
     # Multimedia
     install-pkg rhythmbox
