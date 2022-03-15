@@ -460,6 +460,8 @@ if ${HAS_GUI}; then
         if does-bin-exist "code" || does-bin-exist "code-oss" || does-bin-exist "codium"; then
             does-bin-exist "nautilus" && install-pkg code-nautilus-git
         fi
+
+        install_flatpak com.getpostman.Postman
     fi
 
     # Tools

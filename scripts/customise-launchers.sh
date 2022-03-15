@@ -733,9 +733,12 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/vlc.desktop" Name "VLC"
 ###############
 ### POSTMAN ###
 ###############
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/postman.desktop" \
-    Icon "postman" \
-    Categories "Development;"
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/postman.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/com.getpostman.Postman.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Icon "postman" \
+        Categories "Development;"
+done
 
 ##############
 ### PYTHON ###
