@@ -22,6 +22,7 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall-pkg "grub2-theme-vimix"                   # Replaced by grub2-theme-nuci
     uninstall-pkg "neofetch"                            # Replaced by fastfetch-git
     uninstall-pkg "paper-icon-theme-git"                # Replaced by paper-icon-theme
+    uninstall-pkg "signal-desktop"                      # Replaced by flatpak: org.signal.Signal
     uninstall-pkg "simplenote-electron-bin"             # Replaced by flatpak: com.simplenote.Simplenote
     uninstall-pkg "simplenote-electron-arm-bin"         # Replaced by flatpak: com.simplenote.Simplenote
     uninstall-pkg "telegram-desktop"                    # Replaced by flatpak: com.telegram.desktop
