@@ -62,19 +62,25 @@ function update-system() {
     call_flatpak update
 }
 
-echo "OS:           ${OS}"
-echo "Distro:       ${DISTRO} (${DISTRO_FAMILY})"
-echo "Architecture: $(get_arch) ($(get_arch_family))"
-echo "CPU:          $(get_cpu)"
-echo "GPU:          $(get_gpu)"
-echo "Audio driver: $(get_audio_driver)"
-echo "Chassis:      $(get_chassis_type)"
-echo "GUI:          ${HAS_GUI}"
-echo "EFI support:  ${HAS_EFI_SUPPORT}"
-echo "Powerful PC:  ${POWERFUL_PC}"
-echo "Gaming PC:    ${GAMING_PC}"
-echo "Screen DPI:   $(get_screen_dpi)"
+echo "OS:               ${OS}"
+echo "Distro:           ${DISTRO} (${DISTRO_FAMILY})"
+echo "Architecture:     $(get_arch) ($(get_arch_family))"
+echo "CPU:              $(get_cpu)"
+echo "GPU:              $(get_gpu)"
+echo "Audio driver:     $(get_audio_driver)"
+echo "Chassis:          $(get_chassis_type)"
+echo "GUI:              ${HAS_GUI}"
+echo "EFI support:      ${HAS_EFI_SUPPORT}"
+echo "Screen DPI:       $(get_screen_dpi)"
 echo ""
+
+if ${HAS_GUI}; then
+    echo "Is development device:        ${IS_DEVELOPMENT_DEVICE}"
+    echo "Is gaming device:             ${IS_GAMING_DEVICE}"
+    echo "Is general purpose device:    ${IS_GENERAL_PURPOSE_DEVICE}"
+    echo "Is powerful device:           ${POWERFUL_PC}"
+    echo ""
+fi
 
 # Remove the MOTD
 [ -f "${ROOT_ETC}/motd" ] && remove "${ROOT_ETC}/motd"
