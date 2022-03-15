@@ -271,12 +271,12 @@ if ${HAS_GUI}; then
     install-pkg gnome-disk-utility
     install-pkg gnome-network-displays
 
-    if ${POWERFUL_PC}; then
-        install-pkg gnome-calendar
-        install-pkg gnome-clocks
-        install-pkg gnome-contacts
-        install-pkg gnome-maps
-        install-pkg gnome-weather
+    if ${IS_GENERAL_PURPOSE_DEVICE}; then
+        install_flatpak org.gnome.Calendar
+        install_flatpak org.gnome.Clocks
+        install_flatpak org.gnome.Contacts
+        install_flatpak org.gnome.Maps
+        install_flatpak org.gnome.Weather
     fi
 
     # File management

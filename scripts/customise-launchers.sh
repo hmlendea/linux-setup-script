@@ -65,7 +65,6 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/nm-connection-editor.desktop" \
     Name "Network Connections" \
     Name[ro] "Conexiuni de Rețea" \
     NoDisplay true
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Contacts.desktop" Categories "GNOME;GTK;Utility;ContactManagement;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.DiskUtility.desktop" Categories "GNOME;GTK;System;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Epiphany.desktop" Name "Epiphany"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.font-viewer.desktop" NoDisplay true
@@ -76,7 +75,6 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.SoundRecorder.desktop" Ca
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/org.gnome.tweaks.desktop" \
     Icon "utilities-tweak-tool" \
     Categories "GNOME;GTK;System;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Weather.Application.desktop" Categories "GNOME;GTK;Utility;Navigation;"
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/pcmanfm-desktop-pref.desktop" \
     Name "Desktop Customiser" \
     Name[ro] "Personalizare Desktop"
@@ -285,6 +283,14 @@ if does-bin-exist "cmake"; then
             NoDisplay true
     done
 fi
+
+################
+### Contacts ###
+################
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Contacts.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.gnome.Contacts.desktop"; do
+    set_launcher_entries "${LAUNCHER}" Categories "GNOME;GTK;Utility;ContactManagement;"
+done
 
 ################################
 ### DEVELOPMENT ENVIRONMENTS ###
@@ -603,14 +609,19 @@ done
 ############
 MAPS_APP_CATEGORIES="Utility;Navigation;"
 for LAUNCHER in "${LOCAL_LAUNCHERS_PATH}/chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Maps.desktop"; do
+                "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Maps.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.gnome.Maps.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Maps" \
         Name[ro] "Hărți" \
         NoDisplay "false"
 done
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Maps.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.gnome.Maps.desktop"; do
+    set_launcher_entries "${LAUNCHER}" Categories "GNOME;GTK;${MAPS_APP_CATEGORIES}"
+done
+
 set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default.desktop" Categories "ChromeApp;${MAPS_APP_CATEGORIES}"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Maps.desktop" Categories "GNOME;GTK;${MAPS_APP_CATEGORIES}"
 
 ################
 ### MONOGAME ###
@@ -704,31 +715,6 @@ set_launcher_entries "$(find_launcher_by_name \"Google Photos\")" \
 
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Photos.desktop" \
     Icon "multimedia-photo-manager"
-
-#####################
-### Video Players ###
-#####################
-
-### MPV
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mpv.desktop" NoDisplay true
-
-### Netflix
-set_launcher_entry "$(find_launcher_by_name Netflix)" Categories "AudioVideo;Video;Player;"
-
-### Plex
-for LAUNCHER in "${LOCAL_LAUNCHERS_PATH}/chrome-aghlkjcflkcaanjmefomlcfgflfdhkkg-Default.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/plexmediaplayer.desktop"; do
-    set_launcher_entries "${LAUNCHER}" \
-        Name "Plex" \
-        Name[ro] "Plex" \
-        Icon "plexhometheater" \
-        Categories "AudioVideo;Audio;Video;Player;"
-done
-set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-aghlkjcflkcaanjmefomlcfgflfdhkkg-Default.desktop" StartupWMClass "crx_aghlkjcflkcaanjmefomlcfgflfdhkkg"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/plexmediaplayer.desktop" StartupWMClass "plexmediaplayer"
-
-### VLC
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/vlc.desktop" Name "VLC"
 
 ###############
 ### POSTMAN ###
@@ -910,6 +896,39 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/com.github.gi_lom.dialect.desktop
     Name "Translate" \
     Name[ro] "Traduceri" \
     Categories "GNOME;GTK;Utility;"
+
+#####################
+### Video Players ###
+#####################
+
+### MPV
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mpv.desktop" NoDisplay true
+
+### Netflix
+set_launcher_entry "$(find_launcher_by_name Netflix)" Categories "AudioVideo;Video;Player;"
+
+### Plex
+for LAUNCHER in "${LOCAL_LAUNCHERS_PATH}/chrome-aghlkjcflkcaanjmefomlcfgflfdhkkg-Default.desktop" \
+                "${GLOBAL_LAUNCHERS_PATH}/plexmediaplayer.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Plex" \
+        Name[ro] "Plex" \
+        Icon "plexhometheater" \
+        Categories "AudioVideo;Audio;Video;Player;"
+done
+set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-aghlkjcflkcaanjmefomlcfgflfdhkkg-Default.desktop" StartupWMClass "crx_aghlkjcflkcaanjmefomlcfgflfdhkkg"
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/plexmediaplayer.desktop" StartupWMClass "plexmediaplayer"
+
+### VLC
+set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/vlc.desktop" Name "VLC"
+
+###############
+### Weather ###
+###############
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Weather.Application.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.gnome.Weather.desktop"; do
+    set_launcher_entries "${LAUNCHER}" Categories "GNOME;GTK;Utility;Navigation;"
+done
 
 ############
 ### WINE ###
