@@ -89,6 +89,7 @@ source "scripts/common/package-management.sh"
 ! does-bin-exist "pcmanfm-qt" && remove "${HOME_CONFIG}/pcmanfm-qt"
 ! does-bin-exist "pip" && remove "${HOME_CACHE}/pip"
 ! does-bin-exist "plexmediaplayer" && remove "${HOME_CONFIG}/plex.tv"
+! does-bin-exist "postman" && remove "${HOME_CONFIG}/Postman"
 ! does-bin-exist "rhythmbox" && remove \
     "${HOME_CACHE}/rhythmbox" \
     "${HOME_LOCAL_SHARE}/rhythmbox"
