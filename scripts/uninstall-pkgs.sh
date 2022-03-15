@@ -17,6 +17,7 @@ fi
 if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall-pkg "alsi"                        # Replaced by fastfetch-git
     uninstall-pkg "dialect"                     # Depends on outdated libs
+    uninstall-pkg "electronmail-bin"            # Replaced by flatpak: com.github.vladimiry.ElectronMail
     uninstall-pkg "grub2-theme-vimix"           # Replaced by grub2-theme-nuci
     uninstall-pkg "neofetch"                    # Replaced by fastfetch-git
     uninstall-pkg "paper-icon-theme-git"        # Replaced by paper-icon-theme

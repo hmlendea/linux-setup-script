@@ -39,6 +39,7 @@ source "scripts/common/package-management.sh"
 #    "${HOME_CACHE}/evolution" \
 #    "${HOME_CONFIG}/evolution" \
 #    "${HOME_LOCAL_SHARE}/evolution"
+! does-bin-exist "electronmail-bin" && remove "${HOME_CONFIG}/electron-mail"
 ! does-bin-exist "etcher" && remove "${HOME_CONFIG}/balena-etcher-electron"
 ! does-bin-exist "fltk-config" && remove "${HOME}/.fltk"
 ! does-bin-exist "fma-config-tool" && remove "${HOME_CONFIG}/filemanager-actions"
