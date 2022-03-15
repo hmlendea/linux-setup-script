@@ -105,6 +105,12 @@ fi
 execute-script "update-rcs.sh"
 [ "${OS}" == "Linux" ] && execute-script-superuser "update-rcs.sh"
 
+# Update the resources
+if [[ "${OS}" == "Linux" ]]; then
+    execute-script "update-resources.sh"
+    execute-script-superuser "update-resources.sh"
+fi
+
 # Configure and customise the system
 execute-script "configure-system.sh" # Run after update-rcs.sh
 execute-script-superuser "set-system-locale-timedate.sh"
@@ -115,12 +121,6 @@ if [ "${OS}" == "Linux" ]; then
     does-bin-exist "grub-mkconfig" && execute-script-superuser "update-grub.sh" # Run after configure-system.sh
 fi
 execute-script "configure-directories.sh"
-
-# Update the resources
-if [[ "${OS}" == "Linux" ]]; then
-    execute-script "update-resources.sh"
-    execute-script-superuser "update-resources.sh"
-fi
 
 execute-script "git/setup-gpg-key.sh"
 
