@@ -502,11 +502,10 @@ fi
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/inkscape.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/org.inkscape.Inkscape.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.inkscape.Inkscape.desktop"; do
-        set_launcher_entries "${LAUNCHER}" \
-            Name "Inkscape" \
-            Categories "GTK;${IMAGE_EDITOR_CATEGORIES};VectorGraphics;"
-    done
-fi
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Inkscape" \
+        Categories "GTK;${IMAGE_EDITOR_CATEGORIES};VectorGraphics;"
+done
 
 #####################
 ### IMAGE VIEWERS ###
