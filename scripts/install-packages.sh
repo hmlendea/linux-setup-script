@@ -425,7 +425,7 @@ if ${HAS_GUI}; then
         # Gaming
         if ${IS_GAMING_DEVICE}; then
             # Launchers
-            install-pkg steam
+            install_flatpak com.valvesoftware.Steam
 
             # Runtimes
             #install-dep steam-native-runtime
