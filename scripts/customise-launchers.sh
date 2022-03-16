@@ -95,12 +95,17 @@ set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-app-list.desktop" NoDisplay t
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/engrampa.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FileRoller.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/xarchiver.desktop"; do
+                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.gnome.FileRoller.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Archives" \
         Name[ro] "Arhive"
 done
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FileRoller.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.gnome.FileRoller.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        StartupWMClass "File-Roller"
+done
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/7zFM.desktop" NoDisplay true
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FileRoller.desktop" StartupWMClass "File-Roller"
 
 #############
 ### AVAHI ###

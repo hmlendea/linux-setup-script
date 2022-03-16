@@ -23,6 +23,7 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_package "evince"                              # Replaced by flatpak: org.gnome.Evince
     uninstall_package "chrome-gnome-shell"                  # Does not work with flatpak browsers
     uninstall_package "eog"                                 # Replaced by flatpak: org.gnome.eog
+    uninstall_package "file-roller"                         # Replaced by flatpak: org.gnome.FileRoller
     uninstall_package "firefox"                             # Replaced by flatpak: org.mozilla.firefox
     uninstall_package "fragments"                           # Replaced by flatpak: de.haeckerfelix.Fragments
     uninstall_package "gedit"                               # Replaced by flatpak: org.gnome.gedit
@@ -47,6 +48,7 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_package "spotify"                             # Replaced by flatpak: com.spotify.Client
     uninstall_package "telegram-desktop"                    # Replaced by flatpak: com.telegram.desktop
     uninstall_package "totem"                               # Replaced by flatpak: org.gnome.Totem
+    uninstall_package "transmission-gtk"                    # Replaced by flatpak: com.transmissionbt.Transmission
     uninstall_package "ttf-ms-fonts"                        # Replaced by ttf-ms-win10
     uninstall_package "yaourt-auto-sync"                    # Replaced by repo-synchroniser
 
