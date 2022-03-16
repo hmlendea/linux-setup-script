@@ -172,8 +172,6 @@ if [[ "${ARCH_FAMILY}" == "x86" ]]; then
     install-pkg update-grub
     install-dep linux-headers
 
-    install-pkg plymouth-git
-
     # Customisations
     install-pkg grub2-theme-nuci
 fi
@@ -239,7 +237,6 @@ if ${HAS_GUI}; then
         install-pkg lxsession
         install-pkg lxappearance
         install-pkg lxappearance-obconf
-        install-pkg plank
     fi
 
     install-pkg gnome-keyring
@@ -289,7 +286,7 @@ if ${HAS_GUI}; then
         install-pkg nautilus
         install-pkg folder-color-nautilus
         install-pkg gnome-dds-thumbnailer
-        install-pkg file-roller
+        install_flatpak org.gnome.FileRoller
     else
         install-pkg pcmanfm
         install-pkg xarchiver
@@ -401,7 +398,7 @@ if ${HAS_GUI}; then
     if ${POWERFUL_PC}; then
         install_flatpak de.haeckerfelix.Fragments
     else
-        install-pkg transmission-gtk
+        install_flatpak com.transmissionbt.Transmission
     fi
 
     # Communication
@@ -474,7 +471,7 @@ if ${HAS_GUI}; then
         install-vscode-extension "ms-dotnettools.csharp"
         install-vscode-extension "nico-castell.linux-desktop-file"
 
-        if does-bin-exist "code" || does-bin-exist "code-oss" || does-bin-exist "codium"; then
+        if does-bin-exist "code" "code-oss" "codium"; then
             does-bin-exist "nautilus" && install-pkg code-nautilus-git
         fi
 

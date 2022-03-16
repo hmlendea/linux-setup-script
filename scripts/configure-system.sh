@@ -414,8 +414,10 @@ fi
 ########################
 ### ARCHIVE MANAGERS ###
 ########################
-if does-bin-exist "file-roller"; then
+if does-bin-exist "file-roller" "org.gnome.FileRoller"; then
     set_gsetting "org.gnome.FileRoller.General" compression-level "maximum"
+    set_gsetting "org.gnome.FileRoller.General" sort-method "name"
+    set_gsetting "org.gnome.FileRoller.General" sort-type "ascending"
 fi
 
 #############
