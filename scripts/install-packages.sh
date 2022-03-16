@@ -143,11 +143,15 @@ install-pkg repo-synchroniser
 
 # Partition editors
 install-pkg parted
+if ${HAS_GUI} && ${IS_GENERAL_PURPOSE_DEVICE}; then
+    install-pkg gparted
+    install-dep gpart
+    install-dep mtools
+fi
 
 # Filesystems
 install-pkg ntfs-3g
 install-pkg exfat-utils
-install-pkg xfsprogs
 
 # Archives
 install-pkg unp # A script for unpacking a wide variety of archive formats
@@ -475,14 +479,6 @@ if ${HAS_GUI}; then
 
     # Tools
     install_flatpak com.simplenote.Simplenote
-
-    # Filesystem / Partitioning
-    install-pkg gparted
-    install-dep nilfs-utils
-    install-dep gpart
-    install-dep mtools
-    install-dep udftools
-    install-dep f2fs-tools
 
     install-pkg xorg-xdpyinfo
     install-pkg xorg-xkill
