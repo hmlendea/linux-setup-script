@@ -139,21 +139,7 @@ function install-vscode-extension() {
     call-vscode --install-extension "${EXTENSION}"
 }
 
-function uninstall-pkg() {
-	local PKG="${1}"
-
-    is-package-installed "${PKG}" || return
-
-    echo " >>> Uninstalling package: ${PKG}"
-    if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-        call-package-manager -Rns "${PKG}"
-    elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
-      || [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
-        call-package-manager remove "${PKG}"
-    fi
-}
-
-function uninstall-pkgs() {
+function uninstall_package() {
     for PKG in ${*// /\n}; do
         is-package-installed "${PKG}" || return
 

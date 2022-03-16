@@ -91,16 +91,15 @@ execute-script-superuser "configure-repositories.sh"
 # Package management
 if [ "${OS}" != "Windows" ]; then
     # Manage packages and extensions
-    execute-script "uninstall-pkgs.sh"
-    update-system
-    execute-script "install-pkgs.sh"
+    execute-script "uninstall-packages.sh"
+    execute-script "update-packages.sh"
+    execute-script "install-packages.sh"
+    execute-script "clean-packages.sh"
 fi
 
 if [[ "${OS}" == "Linux" ]]; then
     execute-script "clean-files.sh"
     execute-script-superuser "clean-files.sh"
-
-    execute-script "update-extensions.sh"
 
     if ${HAS_GUI}; then
         execute-script-superuser "customise-launchers.sh"
