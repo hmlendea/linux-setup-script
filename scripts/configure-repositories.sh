@@ -44,7 +44,6 @@ function add_flatpak_remote() {
 }
 
 add_flatpak_remote "zorinos" "https://flatpak.zorinos.com/repo/"
-exit
 
 add_repository "hmlendea" 'https://github.com/hmlendea/PKGBUILDs/releases/latest/download/' "" "Never"
 
@@ -66,7 +65,7 @@ if [[ "${ARCH_FAMILY}" == "x86" ]]; then
     add_repository "dx37essentials" 'https://dx37.gitlab.io/$repo/$arch' "" "PackageOptional" # For things like ttf-ms-win10
 fi
 
-if [[ "${DISTRO_FAMILY}" == "Arch" ]] && ${DATABASES_NEED_UPDATING}; then
+if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then # && ${DATABASES_NEED_UPDATING}; then
     pacman -Syy
 fi
 
