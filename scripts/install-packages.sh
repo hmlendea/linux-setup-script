@@ -126,8 +126,6 @@ if [ "${DISTRO_FAMILY}" != "Arch" ]; then
     exit
 fi
 
-install-pkg openssl-1.0 # Required to run ASP .NET Core apps
-
 # Package manager
 install-pkg-aur-manually package-query
 
@@ -285,7 +283,6 @@ if ${HAS_GUI}; then
     if ${POWERFUL_PC}; then
         install-pkg nautilus
         install-pkg folder-color-nautilus
-        install-pkg gnome-dds-thumbnailer
         install_flatpak org.gnome.FileRoller
     else
         install-pkg pcmanfm
@@ -446,16 +443,14 @@ if ${HAS_GUI}; then
 
         if [[ "${ARCH_FAMILY}" == "x86" ]]; then
             install-pkg dotnet-runtime
-            install-pkg aspnet-runtime
+#            install-pkg aspnet-runtime
         elif [[ "${ARCH_FAMILY}" == "arm" ]]; then
             install-pkg dotnet-runtime-bin
-            install-pkg aspnet-runtime-bin
+#            install-pkg aspnet-runtime-bin
         fi
 
         # Development
         install-pkg dotnet-sdk
-        #install-pkg dotnet-sdk-3.1
-        #install-pkg jdk
 
         if [[ "${ARCH_FAMILY}" == "x86" ]]; then
             install-pkg electron
