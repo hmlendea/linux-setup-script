@@ -810,9 +810,7 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/openrgb.desktop" \
 #############
 ### STEAM ###
 #############
-if does-bin-exist "steam"; then
-    [ ! -f "${GLOBAL_LAUNCHERS_PATH}/steam-streaming-client.desktop" ] && create_launcher "${GLOBAL_LAUNCHERS_PATH}/steam-streaming-client.desktop"
-
+if does-bin-exist "steam" "com.valvesoftware.Steam"; then
     for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/steam-native.desktop" \
                     "${GLOBAL_LAUNCHERS_PATH}/steam-runtime.desktop" \
                     "${GLOBAL_LAUNCHERS_PATH}/valve-URI-steamvr.desktop" \
@@ -823,11 +821,15 @@ if does-bin-exist "steam"; then
     set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/steam.desktop" \
         Name "Steam" \
         Name[ro] "Steam" \
-        Categories "Game;Steam;" \
-        Exec "steam-start"
+        Categories "Game;Steam;"
 
+    if does-bin-exist "steam-start"; then
+        set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/steam.desktop" Exec "steam-start"
+    fi
+
+    [ ! -f "${GLOBAL_LAUNCHERS_PATH}/steam-streaming-client.desktop" ] && create_launcher "${GLOBAL_LAUNCHERS_PATH}/steam-streaming-client.desktop"
     set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/steam-streaming-client.desktop" \
-        Name "Streaming Client" \
+        Name "Steam Remote Play" \
         Comment "Steam Streaming Client" \
         Exec "steam" \
         Icon "steam" \
