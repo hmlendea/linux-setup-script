@@ -948,8 +948,11 @@ fi
 ############
 ### MAPS ###
 ############
-if does-bin-exist "gnome-maps"; then
-    set_gsetting org.gnome.Maps night-mode true
+if does-bin-exist "gnome-maps" "org.gnome.Maps"; then
+    set_gsetting "org.gnome.Maps" last-viewed-location "[46.763207396601977, 23.605413436889648]"
+    set_gsetting "org.gnome.Maps" night-mode true
+    set_gsetting "org.gnome.Maps" window-maximized true
+    set_gsetting "org.gnome.Maps" zoom-level 14
 fi
 
 ################
@@ -1181,7 +1184,14 @@ if does-bin-exist "totem"; then
     TOTEM_SCHEMA="org.gnome.totem"
 
     set_gsetting "${TOTEM_SCHEMA}" autoload-subtitles true
+    set_gsetting "${TOTEM_SCHEMA}" repeat false
     set_gsetting "${TOTEM_SCHEMA}" subtitle-font "${SUBTITLES_FONT}"
+fi
+if does-bin-exist "org.gnome.Totem"; then
+    set_gsetting_flatpak "org.gnome.Totem" autoload-subtitles true
+    set_gsetting_flatpak "org.gnome.Totem" repeat false
+    set_gsetting_flatpak "org.gnome.Totem" subtitle-encoding "UTF-8"
+    set_gsetting_flatpak "org.gnome.Totem" subtitle-font "${SUBTITLES_FONT}"
 fi
 
 ##############################

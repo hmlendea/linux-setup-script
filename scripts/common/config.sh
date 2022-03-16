@@ -2,6 +2,7 @@
 source "scripts/common/common.sh"
 
 NUMBER_REGEX_PATTERN='^[0-9][0-9.]*$'
+ARRAY_REGEX_PATTERN='^\[[0-9]+(\.[0-9]+)*(,\s*[0-9]+(\.[0-9]+)*)*]$'
 
 function create-file-if-not-exists() {
     local FILE_PATH="${*}"
@@ -17,6 +18,9 @@ function create-file-if-not-exists() {
 
 function is_value_string() {
     local VALUE="${*}"
+
+    [[ ${VALUE} =~ ${ARRAY_REGEX_PATTERN} ]] && return 1 # False
+
 
     if ! [[ ${VALUE} =~ ${NUMBER_REGEX_PATTERN} ]]; then
         if [ "${VALUE}" != "true" ] && [ "${VALUE}" != "false" ]; then
@@ -243,6 +247,11 @@ function set_gsetting() {
     local VALUE="${@:3}"
     local CURRENT_VALUE=""
 
+    if [ -d "${HOME_VAR}/app/${SCHEMA}" ]; then
+        set_gsetting_flatpak "${SCHEMA}" "${PROPERTY}" "${VALUE}"
+        return
+    fi
+
     CURRENT_VALUE=$(get_gsetting "${SCHEMA}" "${PROPERTY}")
 
     if [ "${CURRENT_VALUE}" != "${VALUE}" ] && \
@@ -250,6 +259,20 @@ function set_gsetting() {
         echo "GSettings >>> ${SCHEMA}.${PROPERTY}=${VALUE}"
         gsettings set "${SCHEMA}" "${PROPERTY}" "${VALUE}"
     fi
+}
+
+function set_gsetting_flatpak() {
+    (! ${HAS_GUI}) && return
+
+    local APP="${1}"
+    local PROPERTY="${2}"
+    local VALUE="${3}"
+
+    is_value_string "${VALUE}" && VALUE="'${VALUE}'"
+
+    local KEYFILE_PATH="${HOME_VAR}/app/${APP}/config/glib-2.0/settings/keyfile"
+
+    set_config_value "${KEYFILE_PATH}" "${PROPERTY}" "${VALUE}"
 }
 
 function set_launcher_entries() {
