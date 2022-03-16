@@ -16,6 +16,7 @@ fi
 # Uninstall the packages
 if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall-pkg "alsi"                                # Replaced by fastfetch-git
+    uninstall-pkg "baobab"                              # Replaced by flatpak: org.gnome.baobab
     uninstall-pkg "dialect"                             # Depends on outdated libs
     uninstall-pkg "discord"                             # Replaced by flatpak: com.discordapp.Discord
     uninstall-pkg "electronmail-bin"                    # Replaced by flatpak: com.github.vladimiry.ElectronMail
@@ -24,10 +25,14 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall-pkg "eog"                                 # Replaced by flatpak: org.gnome.eog
     uninstall-pkg "firefox"                             # Replaced by flatpak: org.mozilla.firefox
     uninstall-pkg "fragments"                           # Replaced by flatpak: de.haeckerfelix.Fragments
+    uninstall-pkg "gedit"                               # Replaced by flatpak: org.gnome.gedit
+    uninstall-pkg "gnome-calculator"                    # Replaced by flatpak: org.gnome.Calculator
     uninstall-pkg "gnome-calendar"                      # Replaced by flatpak: org.gnome.Calendar
     uninstall-pkg "gnome-contacts"                      # Replaced by flatpak: org.gnome.Contacts
     uninstall-pkg "gnome-clock"                         # Replaced by flatpak: org.gnome.Clocks
+    uninstall-pkg "gnome-font-viewer"                   # Replaced by flatpak: org.gnome.font-viewer
     uninstall-pkg "gnome-maps"                          # Replaced by flatpak: org.gnome.Maps
+    uninstall-pkg "gnome-network-displays"              # Replaced by flatpak: org.gnome.NetworkDisplays
     uninstall-pkg "gnome-weather"                       # Replaced by flatpak: org.gnome.Weather
     uninstall-pkg "gnome-shell-extension-dash-to-dock"  # Replaced by plank
     uninstall-pkg "grub2-theme-vimix"                   # Replaced by grub2-theme-nuci
@@ -35,11 +40,13 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall-pkg "neofetch"                            # Replaced by fastfetch-git
     uninstall-pkg "paper-icon-theme-git"                # Replaced by paper-icon-theme
     uninstall-pkg "postman-bin"                         # Replaced by flatpak: com.getpostman.Postman
+    uninstall-pkg "rhythmbox"                           # Replaced by flatpak: org.gnome.Rhythmbox3
     uninstall-pkg "signal-desktop"                      # Replaced by flatpak: org.signal.Signal
     uninstall-pkg "simplenote-electron-bin"             # Replaced by flatpak: com.simplenote.Simplenote
     uninstall-pkg "simplenote-electron-arm-bin"         # Replaced by flatpak: com.simplenote.Simplenote
     uninstall-pkg "spotify"                             # Replaced by flatpak: com.spotify.Client
     uninstall-pkg "telegram-desktop"                    # Replaced by flatpak: com.telegram.desktop
+    uninstall-pkg "totem"                               # Replaced by flatpak: org.gnome.Totem
     uninstall-pkg "ttf-ms-fonts"                        # Replaced by ttf-ms-win10
     uninstall-pkg "yaourt-auto-sync"                    # Replaced by repo-synchroniser
 

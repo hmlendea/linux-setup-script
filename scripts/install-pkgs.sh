@@ -179,6 +179,8 @@ if [[ "${ARCH_FAMILY}" == "x86" ]]; then
 fi
 
 if ${HAS_GUI}; then
+    install-pkg flatpak
+
     install-pkg dkms
     install-pkg rsync
 
@@ -228,7 +230,7 @@ if ${HAS_GUI}; then
         install-dep gnome-control-center
         install-pkg gnome-tweaks
         install-pkg gnome-backgrounds
-        install-pkg gnome-font-viewer
+        install_flatpak org.gnome.font-viewer
     else
         install-pkg mutter # openbox
         install-pkg lxde-common
@@ -264,18 +266,21 @@ if ${HAS_GUI}; then
     ${POWERFUL_PC} && install-pkg gnome-terminal
     ${POWERFUL_PC} || install-pkg lxterminal
 
-    # Calculator
-    ${POWERFUL_PC} && install-pkg gnome-calculator
-    ${POWERFUL_PC} || install-pkg mate-calc
-
     install-pkg gnome-disk-utility
-    install-pkg gnome-network-displays
 
     if ${IS_GENERAL_PURPOSE_DEVICE}; then
+        # Calculator
+        if ${POWERFUL_PC}; then
+            install_flatpak org.gnome.Calculator
+        else
+            install-pkg mate-calc
+        fi
+
         install_flatpak org.gnome.Calendar
-        install_flatpak org.gnome.Clocks
+        install_flatpak org.gnome.clocks
         install_flatpak org.gnome.Contacts
         install_flatpak org.gnome.Maps
+        install_flatpak org.gnome.NetworkDisplays
         install_flatpak org.gnome.Weather
     fi
 
@@ -293,8 +298,11 @@ if ${HAS_GUI}; then
     install-pkg dconf-editor
 
     # Text Editor
-    ${POWERFUL_PC} && install-pkg gedit
-    ${POWERFUL_PC} || install-pkg pluma
+    if ${POWERFUL_PC}; then
+        install_flatpak org.gnome.gedit
+    else
+        install-pkg pluma
+    fi
 
     # Document Viewer
     if ${POWERFUL_PC}; then
@@ -304,7 +312,7 @@ if ${HAS_GUI}; then
     fi
 
     if ${POWERFUL_PC}; then
-        install-pkg baobab
+        install_flatpak org.gnome.baobab
         install-pkg gnome-screenshot
     else
         install-pkg mate-utils
@@ -403,8 +411,8 @@ if ${HAS_GUI}; then
     install-pkg whatsapp-nativefier
 
     # Multimedia
-    install-pkg rhythmbox
-    install-pkg totem
+    install_flatpak org.gnome.Rhythmbox3
+    install_flatpak org.gnome.Totem
     install_flatpak com.spotify.Client
 
     install-dep gst-plugins-ugly

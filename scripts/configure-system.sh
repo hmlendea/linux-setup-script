@@ -444,11 +444,13 @@ fi
 #fi
 
 ###################
-### CALCULATORS ###
+### Calculators ###
 ###################
-if does-bin-exist "gnome-calculator"; then
+if does-bin-exist "gnome-calculator" "org.gnome.Calculator"; then
     GNOME_CALCULATOR_SCHEMA="org.gnome.calculator"
 
+    set_gsetting "${GNOME_CALCULATOR_SCHEMA}" base 10
+    set_gsetting "${GNOME_CALCULATOR_SCHEMA}" button-mode "basic"
     set_gsetting "${GNOME_CALCULATOR_SCHEMA}" show-thousands true
     set_gsetting "${GNOME_CALCULATOR_SCHEMA}" source-currency 'EUR'
     set_gsetting "${GNOME_CALCULATOR_SCHEMA}" target-currency 'RON'
@@ -461,11 +463,10 @@ fi
 ### CHAT APPS ###
 #################
 if does-bin-exist "teams" "teams-insiders" "com.microsoft.Teams"; then
-    if [ -d "${HOME_VAR}/app/de.haeckerfelix.Fragments" ]; then
-        TEAMS_DESKTOP_CONFIG_FILE="${HOME_VAR}/app/com.microsoft.Teams/config/Microsoft/Microsoft Teams/desktop-config.json"
-    else
-        TEAMS_DESKTOP_CONFIG_FILE="${HOME_CONFIG}/Microsoft/Microsoft Teams/desktop-config.json"
-    fi
+    TEAMS_CONFIG_DIR="${HOME_CONFIG}/Microsoft/Microsoft Teams"
+    [ -d "${HOME_VAR}/app/de.haeckerfelix.Fragments" ] && TEAMS_CONFIG_DIR="${HOME_VAR}/app/com.microsoft.Teams/config/Microsoft/Microsoft Teams"
+
+    TEAMS_DESKTOP_CONFIG_FILE="${TEAMS_CONFIG_DIR}/desktop-config.json"
 
     does-bin-exist "teams-insiders" && TEAMS_DESKTOP_CONFIG_FILE="${HOME_CONFIG}/Microsoft/Microsoft Teams - Insiders/desktop-config.json"
 
@@ -582,7 +583,7 @@ if does-gnome-shell-extension-exist "dash-to-plank"; then
 fi
 
 ########################
-### DOCUMENT VIEWERS ###
+### Document Viewers ###
 ########################
 if does-bin-exist "epdfview"; then
     EPDFVIEW_CONFIG_FILE="${HOME_REAL}/.config/epdfview/main.conf"
@@ -905,11 +906,10 @@ fi
 ### INKSCAPE ###
 ################
 if does-bin-exist "inkscape" "org.inkscape.Inkscape"; then
-    if [ -d "${HOME_VAR}/app/de.haeckerfelix.Fragments" ]; then
-        INKSCAPE_PREFERENCES_FILE="${HOME_VAR}/app/org.inkscape.Inkscape/config/inkscape/preferences.xml"
-    else
-        INKSCAPE_PREFERENCES_FILE="${HOME}/.config/inkscape/preferences.xml"
-    fi
+    INKSCAPE_CONFIG_DIR="${HOME_CONFIG}/inkscape"
+    [ -d "${HOME_VAR}/app/org.inkscape.Inkscape" ] && INKSCAPE_CONFIG_DIR="${HOME_VAR}/app/org.inkscape.Inkscape/config/inkscape"
+
+    INKSCAPE_PREFERENCES_FILE="${INKSCAPE_CONFIG_DIR}/preferences.xml"
 
     set_xml_node "${INKSCAPE_PREFERENCES_FILE}" "//group[@id='theme']/@defaultPreferDarkTheme" "${DESKTOP_THEME_IS_DARK_BINARY}"
     set_xml_node "${INKSCAPE_PREFERENCES_FILE}" "//group[@id='theme']/@defaultGtkTheme" "${GTK_THEME}"
@@ -1102,7 +1102,7 @@ fi
 ####################
 ### TEXT EDITORS ###
 ####################
-if does-bin-exist "gedit"; then
+if does-bin-exist "gedit" "org.gnome.gedit"; then
     GEDIT_EDITOR_SCHEMA="org.gnome.gedit.preferences.editor"
 
     if [ "${TEXT_EDITOR_FONT}" != "${MONOSPACE_FONT}" ]; then
@@ -1149,15 +1149,13 @@ fi
 ### TORRENT DOWNLOADERS ###
 ###########################
 if does-bin-exist "fragments" "de.haeckerfelix.Fragments"; then
-    #FRAGMENTS_SCHEMA="de.haeckerfelix.Fragments"
+    FRAGMENTS_SCHEMA="de.haeckerfelix.Fragments"
+    FRAGMENTS_CONFIG_DIR="${HOME_CONFIG}/fragments"
+    [ -d "${HOME_VAR}/app/de.haeckerfelix.Fragments" ] && FRAGMENTS_CONFIG_DIR="${HOME_VAR}/app/de.haeckerfelix.Fragments/config/fragments"
 
-    if [ -d "${HOME_VAR}/app/de.haeckerfelix.Fragments" ]; then
-        FRAGMENTS_SETTINGS_FILE="${HOME_VAR}/app/de.haeckerfelix.Fragments/config/fragments/settings.json"
-    else
-        FRAGMENTS_SETTINGS_FILE="${HOME_CONFIG}/fragments/settings.json"
-    fi
+    FRAGMENTS_SETTINGS_FILE="${FRAGMENTS_CONFIG_DIR}/settings.json"
 
-    #set_gsetting "${FRAGMENTS_SCHEMA}" dark-mode ${DESKTOP_THEME_IS_DARK}
+    set_gsetting "${FRAGMENTS_SCHEMA}" dark-mode ${DESKTOP_THEME_IS_DARK}
 
     set_json_value "${FRAGMENTS_SETTINGS_FILE}" '.["encryption"]' 1
     set_json_value "${FRAGMENTS_SETTINGS_FILE}" '.["download-dir"]' "${HOME}/Downloads"
@@ -1180,18 +1178,13 @@ fi
 #####################
 ### VIDEO PLAYERS ###
 #####################
-if does-bin-exist "totem"; then
+if does-bin-exist "totem" "org.gnome.Totem"; then
     TOTEM_SCHEMA="org.gnome.totem"
 
     set_gsetting "${TOTEM_SCHEMA}" autoload-subtitles true
     set_gsetting "${TOTEM_SCHEMA}" repeat false
+    set_gsetting "${TOTEM_SCHEMA}" subtitle-encoding "UTF-8"
     set_gsetting "${TOTEM_SCHEMA}" subtitle-font "${SUBTITLES_FONT}"
-fi
-if does-bin-exist "org.gnome.Totem"; then
-    set_gsetting_flatpak "org.gnome.Totem" autoload-subtitles true
-    set_gsetting_flatpak "org.gnome.Totem" repeat false
-    set_gsetting_flatpak "org.gnome.Totem" subtitle-encoding "UTF-8"
-    set_gsetting_flatpak "org.gnome.Totem" subtitle-font "${SUBTITLES_FONT}"
 fi
 
 ##############################
