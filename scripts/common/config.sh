@@ -2,6 +2,7 @@
 source "scripts/common/common.sh"
 
 NUMBER_REGEX_PATTERN='^[0-9][0-9.]*$'
+NUMBER_UINT_REGEX_PATTERN='^uint[0-9]+ [0-9]+$'
 ARRAY_REGEX_PATTERN='^\[[0-9]+(\.[0-9]+)*(,\s*[0-9]+(\.[0-9]+)*)*]$'
 
 function create-file-if-not-exists() {
@@ -22,7 +23,8 @@ function is_value_string() {
     [[ ${VALUE} =~ ${ARRAY_REGEX_PATTERN} ]] && return 1 # False
 
 
-    if ! [[ ${VALUE} =~ ${NUMBER_REGEX_PATTERN} ]]; then
+    if ! [[ ${VALUE} =~ ${NUMBER_REGEX_PATTERN} ]] \
+    && ! [[ ${VALUE} =~ ${NUMBER_UINT_REGEX_PATTERN} ]]; then
         if [ "${VALUE}" != "true" ] && [ "${VALUE}" != "false" ]; then
             return 0 # True
         fi
@@ -247,9 +249,25 @@ function set_gsetting() {
     local VALUE="${@:3}"
     local CURRENT_VALUE=""
 
+
     if [ -d "${HOME_VAR}/app/${SCHEMA}" ]; then
         set_gsetting_flatpak "${SCHEMA}" "${PROPERTY}" "${VALUE}"
         return
+    else
+        local SCHEMA_ROOT=$(echo "${SCHEMA}" | awk -F"." '{print $1"."$2"."$3}')
+
+        if [ -d "${HOME_VAR}/app/${SCHEMA_ROOT}" ]; then
+            set_gsetting_flatpak "${SCHEMA_ROOT}" "${PROPERTY}" "${VALUE}"
+            return
+        fi
+
+        local APP_NAME=$(ls "${HOME_VAR}/app" | grep -i "^${SCHEMA_ROOT}$" | head -n 1)
+
+        if [ -n "${APP_NAME}" ] \
+        && [ -d "${HOME_VAR}/app/${APP_NAME}" ]; then
+            set_gsetting_flatpak "${APP_NAME}" "${PROPERTY}" "${VALUE}"
+            return
+        fi
     fi
 
     CURRENT_VALUE=$(get_gsetting "${SCHEMA}" "${PROPERTY}")

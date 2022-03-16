@@ -67,10 +67,6 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/nm-connection-editor.desktop" \
     NoDisplay true
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.DiskUtility.desktop" Categories "GNOME;GTK;System;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Epiphany.desktop" Name "Epiphany"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.font-viewer.desktop" NoDisplay true
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/org.gnome.NetworkDisplays.desktop" \
-    Name "Network Displays" \
-    Name[ro] "Monitoare în Rețea"
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.SoundRecorder.desktop" Categories "GNOME;GTK;Utility;Audio;"
 set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/org.gnome.tweaks.desktop" \
     Icon "utilities-tweak-tool" \
@@ -131,7 +127,7 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/balena-etcher-electron.desktop" \
     Categories "Filesystem;X-GNOME-Utilities;"
 
 ###################
-### CALCULATORS ###
+### Calculators ###
 ###################
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/galculator.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/mate-calc.desktop"; do
@@ -145,11 +141,14 @@ done
 ################
 CALENDAR_CATEGORIES="Office;Calendar;Utility;Core;"
 
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Calendar.desktop" \
-    Name "Calendar" \
-    Name[ro] "Calendar" \
-    Icon "calendar" \
-    Categories "GNOME;GTK;${CALENDAR_CATEGORIES}"
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Calendar.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.gnome.Calendar.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Calendar" \
+        Name[ro] "Calendar" \
+        Icon "calendar" \
+        Categories "GNOME;GTK;${CALENDAR_CATEGORIES}"
+done
 
 ##############
 ### CAMERA ###
@@ -350,7 +349,8 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/mate-dictionary.desktop" \
 ############################
 for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/baobab.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/mate-disk-usage-analyzer.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/org.gnome.baobab.desktop"; do
+                "${GLOBAL_LAUNCHERS_PATH}/org.gnome.baobab.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.gnome.baobab.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Disk Usage" \
         Name[ro] "Utilizarea Discului" \
@@ -463,6 +463,14 @@ if does-bin-exist "thunar"; then
         set_launcher_entry "${LAUNCHER}" NoDisplay true
     done
 fi
+
+#####################
+### Font Managers ###
+#####################
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/org.gnome.font-viewer.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.gnome.font-viewer.desktop"; do
+    set_launcher_entry "${LAUNCHER}" NoDisplay true
+done
 
 #############
 ### Games ###
@@ -782,6 +790,14 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/org.freedesktop.Piper.desktop" \
     Icon "gnome-settings-mouse" \
     Categories "GNOME;GTK;System;"
 
+### Network Displays
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/org.gnome.NetworkDisplays.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.gnome.NetworkDisplays.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Network Displays" \
+        Name[ro] "Monitoare în Rețea"
+done
+
 ### RGB Settings
 set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/openrgb.desktop" \
     Categories "Qt;${SETTINGS_APP_CATEGORIES}"
@@ -871,7 +887,8 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gedit.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/org.gnome.gedit.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/org.pantheon.scratch.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/medit.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/pluma.desktop"; do
+                "${GLOBAL_LAUNCHERS_PATH}/pluma.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.gnome.gedit.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Text Editor" \
         Name[ro] "Editor Text" \
