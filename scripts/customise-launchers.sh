@@ -18,7 +18,7 @@ function find_launcher_by_name() {
 
     if [ -d "${LOCAL_LAUNCHERS_PATH}" ]; then
         find "${LOCAL_LAUNCHERS_PATH}" -type f -iname "*.desktop" -print0 | while IFS= read -r -d $'\0' LAUNCHER; do
-            if grep -q "^Name="${NAME_ENTRY_VALUE}"$" "${LAUNCHER}"; then
+            if grep -q '^Name='"${NAME_ENTRY_VALUE}"'$' "${LAUNCHER}"; then
                 echo "${LAUNCHER}"
                 return 0
             fi
@@ -1021,9 +1021,10 @@ function getSteamAppIconPath() {
         echo "${APP_ICON_PATH}"
     else
         for ICON_THEME_CANDIDATE in "${ROOT_USR_SHARE}/icons/"* ; do
-            if [ -d "${ICON_THEME_CANDIDATE_PATH}/48/apps" ]; then
+
+            if [ -d "${ICON_THEME_CANDIDATE}/48/apps" ]; then
                 APPS_DIR_NAME="48/apps"
-            elif [ -d "${ICON_THEME_CANDIDATE_PATH}/48x48/apps" ]; then
+            elif [ -d "${ICON_THEME_CANDIDATE}/48x48/apps" ]; then
                 APPS_DIR_NAME="48x48/apps"
             else
                 continue
@@ -1044,8 +1045,10 @@ function getSteamAppIconPath() {
     fi
 }
 
-if [ -f "${ROOT_USR_BIN}/steam" ]; then
+if does-bin-exist "steam" "com.valvesoftware.Steam"; then
     STEAM_PATH="${HOME_REAL}/.local/share/Steam"
+    does-bin-exist "com.valvesoftware.Steam" && STEAM_PATH="${HOME_VAR}/app/com.valvesoftware.Steam/data/Steam"
+
     STEAM_LAUNCHERS_PATH="${LOCAL_LAUNCHERS_PATH}/Steam"
     STEAM_ICON_THEME_PATH="${HOME_REAL}/.local/share/icons/steam"
     STEAM_LIBRARY_PATHS="${STEAM_PATH}/steamapps"
@@ -1099,7 +1102,7 @@ if [ -f "${ROOT_USR_BIN}/steam" ]; then
                 APP_NAME_ORIGINAL=$(grep -h "\"name\"" "${STEAM_LIBRARY_PATH}/appmanifest_${APP_ID}.acf" | sed 's/\"name\"//' | grep -o "\".*\"" | sed 's/\"//g')
                 APP_NAME="${APP_NAME_ORIGINAL}"
 
-                if [ $(grep -c "^${APP_ID}=" "${STEAM_NAMES_FILE}") -ne 0 ]; then
+                if grep -q "^${APP_ID}=" "${STEAM_NAMES_FILE}"; then
                     APP_NAME=$(grep "^${APP_ID}=" "${STEAM_NAMES_FILE}" | awk -F= '{print $2}')
                 fi
 
@@ -1107,6 +1110,7 @@ if [ -f "${ROOT_USR_BIN}/steam" ]; then
 
                 if [[ "${APP_NAME}" == "Steamworks Common Redistributables" ]] || \
                    [[ "${APP_NAME}" =~ ^Proton\ [0-9]+\.[0-9]+$ ]] || \
+                   [[ "${APP_NAME}" =~ ^Proton\ Experimental ]] || \
                    [[ "${APP_NAME}" == "Steam Linux Runtime"* ]]; then
                     DO_CREATE_LAUNCHER=false
                 fi
@@ -1114,24 +1118,46 @@ if [ -f "${ROOT_USR_BIN}/steam" ]; then
                 if ${DO_CREATE_LAUNCHER}; then
                     APP_WMCLASS=""
 
-                    if [ $(grep -c "^${APP_ID}=" "${STEAM_WMCLASSES_FILE}") -ne 0 ]; then
+                    if grep -q "^${APP_ID}=" "${STEAM_WMCLASSES_FILE}"; then
                         APP_WMCLASS=$(grep "^${APP_ID}=" "${STEAM_WMCLASSES_FILE}" | awk -F= '{print $2}')
                     else
                         APP_WMCLASS="steam_app_${APP_ID}"
                         echo "CANNOT GET WMCLASS FOR STEAMAPP ${APP_ID} - ${APP_NAME}"
                     fi
 
+                    STEAM_EXECUTABLE="steam"
+
+                    if does-bin-exist "com.valvesoftware.Steam"; then
+                        STEAM_EXECUTABLE="/usr/bin/flatpak run com.valvesoftware.Steam"
+                    fi
+
+                    APP_KEYWORDS="${APP_ID}"
+
+                    for APP_NAME_WORD in $(echo "${APP_NAME}"); do
+                        APP_NAME_WORD=$(echo "${APP_NAME_WORD}" | sed \
+                            -e 's/'\''s//g' \
+                            -e 's/[\[\]]//g' \
+                            -e 's/[\&\:\;\.\,\_\-]//g' \
+                            -e 's/['"\'"']//g' \
+                            -e 's/^[0-9]\+$//g' \
+                            -e 's/^[IVX]\+$//g' \
+                            -e 's/^\([Aa]nd\|[Aa]t\|[Ff]or\|[Ii][ns]\|[Oo][fn]\|[Tt]he\|[Tt]o\)$//g')
+                        [ -n "${APP_NAME_WORD}" ] && APP_KEYWORDS="${APP_KEYWORDS};${APP_NAME_WORD}"
+                    done
+
                     create_launcher "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop"
                     set_launcher_entries "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" \
                         Name "${APP_NAME}" \
                         FullName "${APP_NAME_ORIGINAL}" \
                         Comment "Play ${APP_NAME} on Steam" \
+                        Comment[de] "Spiele ${APP_NAME} bei Steam" \
                         Comment[es] "Juega ${APP_NAME} en Steam" \
                         Comment[ro] "Joacă ${APP_NAME} pe Steam" \
-                        Keywords "Game;Steam;${APP_ID};" \
-                        Keywords[es] "Juego;Steam;${APP_ID};" \
-                        Keywords[ro] "Joc;Steam;${APP_ID};" \
-                        Exec "steam steam:\/\/rungameid\/${APP_ID}" \
+                        Keywords "Game;Steam;${APP_KEYWORDS};" \
+                        Keywords[de] "Spiel;Steam;${APP_KEYWORDS};" \
+                        Keywords[es] "Juego;Steam;${APP_KEYWORDS};" \
+                        Keywords[ro] "Joc;Steam;${APP_KEYWORDS};" \
+                        Exec "${STEAM_EXECUTABLE} steam:\/\/rungameid\/${APP_ID}" \
                         Icon "${APP_ICON_PATH}" \
                         Categories "Game;Steam;" \
                         StartupWMClass "${APP_WMCLASS}" \
@@ -1154,5 +1180,5 @@ for ICON_THEME in ${ICON_THEMES}; do
     fi
 done
 
-update-desktop-database
+run-as-su update-desktop-database
 update-desktop-database "${LOCAL_LAUNCHERS_PATH}"
