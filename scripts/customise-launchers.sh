@@ -1130,7 +1130,7 @@ if does-bin-exist "steam" "com.valvesoftware.Steam"; then
 
                     if does-bin-exist "com.valvesoftware.Steam"; then
                         STEAM_EXECUTABLE="flatpak run com.valvesoftware.Steam"
-                    elif does-bin-exist "steam-start"
+                    elif does-bin-exist "steam-start"; then
                         STEAM_EXECUTABLE="steam-start"
                     fi
 
