@@ -1,5 +1,6 @@
 #!/bin/bash
-source "scripts/common/common.sh"
+source "scripts/common/filesystem.sh"
+source "${REPO_DIR}/scripts/common/common.sh"
 
 SYSTEM_PROFILES_DIR="${ROOT_ETC}/profile.d"
 

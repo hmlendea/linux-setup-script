@@ -1,7 +1,9 @@
 #!/bin/bash
-source "scripts/common/common.sh"
-source "scripts/common/config.sh"
-source "scripts/common/system-info.sh"
+source "scripts/common/filesystem.sh"
+source "${REPO_DIR}/scripts/common/common.sh"
+source "${REPO_DIR}/scripts/common/config.sh"
+source "${REPO_DIR}/scripts/common/package-management.sh"
+source "${REPO_DIR}/scripts/common/system-info.sh"
 
 function get_openbox_font_weight() {
     [[ "${*}" == "Bold" ]] && echo "Bold" || echo "Normal"
@@ -296,17 +298,17 @@ if does-bin-exist "gnome-shell"; then
     set_gsetting "org.gnome.shell.overrides" attach-modal-dialogs false
 fi
 
-if does-gnome-shell-extension-exist "blur-my-shell"; then
+if is_gnome_shell_extension_installed "blur-my-shell"; then
     BMS_SCHEMA="org.gnome.shell.extensions.blur-my-shell"
 
     set_gsetting "${BMS_SCHEMA}" blur-panel false # Let it be handled by the theme itself
 fi
 
-if does-gnome-shell-extension-exist "user-theme"; then
+if is_gnome_shell_extension_installed "user-theme"; then
     set_gsetting "org.gnome.shell.extensions.user-theme" name "${GTK_THEME}"
 fi
 
-if does-gnome-shell-extension-exist "multi-monitors-add-on"; then
+if is_gnome_shell_extension_installed "multi-monitors-add-on"; then
     set_gsetting "org.gnome.shell.extensions.multi-monitors-add-on" show-indicator false
 fi
 
@@ -445,7 +447,7 @@ if does-bin-exist "pulseaudio"; then
     #set_config_value --separator " " "${ROOT_ETC}/pulse/default.pa" "load-module module-udev-detect" "tsched=0"
 fi
 
-#if does-gnome-shell-extension-exist "sound-output-device-chooser"; then
+#if is_gnome_shell_extension_installed "sound-output-device-chooser"; then
 #    SODC_SCHEMA="org.gnome.shell.extensions.sound-output-device-chooser"
 #
 #    set_gsetting "${SODC_SCHEMA}" hide-on-single-device true
@@ -544,7 +546,7 @@ fi
 #############
 ### DOCKS ###
 #############
-if does-gnome-shell-extension-exist "dash-to-dock"; then
+if is_gnome_shell_extension_installed "dash-to-dock"; then
     DTD_SCHEMA="org.gnome.shell.extensions.dash-to-dock"
 
     # Temp-fix for messed-up background
@@ -564,7 +566,7 @@ if does-gnome-shell-extension-exist "dash-to-dock"; then
     set_gsetting "${DTD_SCHEMA}" show-trash false
     set_gsetting "${DTD_SCHEMA}" transparency-mode FIXED
 
-    if does-gnome-shell-extension-exist "blur-my-shell"; then
+    if is_gnome_shell_extension_installed "blur-my-shell"; then
         BMS_SCHEMA="org.gnome.shell.extensions.blur-my-shell"
 
         set_gsetting "${BMS_SCHEMA}" blur-dash false # Breaks the dock if true
@@ -584,7 +586,7 @@ if does-bin-exist "plank"; then
         set_gsetting "${PLANK_SCHEMA}" theme "Transparent"
     fi
 fi
-if does-gnome-shell-extension-exist "dash-to-plank"; then
+if is_gnome_shell_extension_installed "dash-to-plank"; then
     GSE_D2P_SCHEMA="org.gnome.shell.extensions.dash-to-plank"
 
     set_gsetting "${GSE_D2P_SCHEMA}" show-apps-icon false

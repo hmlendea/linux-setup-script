@@ -1,6 +1,7 @@
 #!/bin/bash
 source "scripts/common/common.sh"
 source "scripts/common/package-management.sh"
+source "scripts/common/system-info.sh"
 
 # Remove unused dependencies
 if [ "${DISTRO_FAMILY}" = "Arch" ]; then

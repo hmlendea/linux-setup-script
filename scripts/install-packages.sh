@@ -1,7 +1,8 @@
 #!/bin/bash
-source "scripts/common/common.sh"
-source "scripts/common/package-management.sh"
-source "scripts/common/system-info.sh"
+source "scripts/common/filesystem.sh"
+source "${REPO_DIR}/scripts/common/common.sh"
+source "${REPO_DIR}/scripts/common/package-management.sh"
+source "${REPO_DIR}/scripts/common/system-info.sh"
 
 ##############
 ### Basics ###

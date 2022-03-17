@@ -1,5 +1,6 @@
 #!/bin/bash
-[[ "${BASH_SOURCE[0]}" == "${0}" ]] && source "scripts/common/common.sh"
+source "scripts/common/filesystem.sh"
+source "${REPO_DIR}/scripts/common/common.sh"
 
 function get_screen_width() {
     if does-bin-exist "xrandr"; then
@@ -347,3 +348,111 @@ function gpu_has_optimus_support() {
 
     return 1 # False
 }
+
+# Distribution
+KERNEL_VERSION=$(uname -r)
+
+if [ -f "/etc/os-release" ]; then
+    DISTRO=$(grep "^ID" "/etc/os-release" | tail -n 1 | awk -F'=' '{print $2}')
+else
+    DISTRO=$(echo "${KERNEL_VERSION}" | sed -e 's/^[^-]*-//g' -e 's/^[0-9][0-9]*-//g' -e 's/raspberrypi-//g' -e 's/-[0-9]*$//g' -e 's/-[a-z0-9]*$//g')
+fi
+
+OS=$(uname -s)
+
+if [ "${DISTRO}" = "arch" ] \
+|| [ "${DISTRO}" = "ARCH" ]; then
+    DISTRO="Arch Linux"
+    DISTRO_FAMILY="Arch"
+elif [ "${DISTRO}" = "debian" ]; then
+    DISTRO="Debian"
+    DISTRO_FAMILY="Debian"
+elif [ "${DISTRO}" = "lineageos" ] || [ $(uname -a | grep -c "Android") -ge 1 ]; then
+    DISTRO="LineageOS"
+    DISTRO_FAMILY="Android"
+    OS="Android"
+fi
+
+if [ "${OS}" = "CYGWIN_NT-10.0" ]; then
+    DISTRO="Cygwin"
+    DISTRO_FAMILY="Windows"
+    OS="Windows"
+fi
+
+# Architecture
+ARCH="$(get_arch)"
+ARCH_FAMILY="$(get_arch_family ${ARCH})"
+
+# System characteristics
+CPU_MODEL="$(get_cpu_model)"
+
+CHASSIS_TYPE="$(get_chassis_type)"
+POWERFUL_PC=false
+IS_DEVELOPMENT_DEVICE=false
+IS_GENERAL_PURPOSE_DEVICE=true
+IS_GAMING_DEVICE=false
+HAS_GUI=true
+HAS_SU_PRIVILEGES=true
+HAS_EFI_SUPPORT=false
+
+if [ "${CHASSIS_TYPE}" = "Phone" ]; then
+    POWERFUL_PC=false
+    IS_GENERAL_PURPOSE_DEVICE=true
+    IS_GAMING_DEVICE=false
+    HAS_GUI=true
+    HAS_SU_PRIVILEGES=false
+    HAS_EFI_SUPPORT=false
+else
+    if [ "${ARCH_FAMILY}" = "x86" ]; then
+        if [ -n "${CPU_MODEL}" ] && [ $(echo ${CPU_MODEL} | grep -c "Atom") -le 1 ]; then
+            POWERFUL_PC=true
+        fi
+    fi
+
+    if ${POWERFUL_PC}; then
+        if [ "${CPU_MODEL}" = "Ryzen 7 5800X" ]; then
+            IS_GAMING_DEVICE=true
+            HAS_GUI=true
+        else
+            IS_GAMING_DEVICE=false
+        fi
+    fi
+
+    [ -d "${ROOT_SYS}/firmware/efi/efivars" ] && HAS_EFI_SUPPORT=true
+fi
+
+if [ -f "${ROOT_ETC}/systemd/system/display-manager.service" ]; then
+    HAS_GUI=true
+else
+    case ${HOSTNAME} in
+        *"PC")  HAS_GUI=true ;;
+        *"Pi")  HAS_GUI=false ;;
+        *"Top") HAS_GUI=true ;;
+        *)      HAS_GUI=false ;;
+    esac
+fi
+
+if ${HAS_GUI}; then
+    if does-bin-exist "code" "code-oss" "codium" "com.visualstudio.code" \
+    || does-bin-exist "dotnet"; then
+        IS_DEVELOPMENT_DEVICE=true
+    fi
+
+    if does-bin-exist "steam" "com.valvesoftware.Steam"; then
+        IS_GAMING_DEVICE=true
+    fi
+else
+    IS_GENERAL_PURPOSE_DEVICE=false
+fi
+
+if does-bin-exist "sudo"; then
+    if [ "${DISTRO_FAMILY}" = "Android" ]; then
+        [ -f "/sbin/su" ] && HAS_SU_PRIVILEGES=true
+    else
+        HAS_SU_PRIVILEGES=true
+    fi
+else
+    HAS_SU_PRIVILEGES=false
+fi
+
+[ "${UID}" -eq 0 ] && HAS_SU_PRIVILEGES=true

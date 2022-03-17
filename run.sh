@@ -11,9 +11,10 @@ cd "$EXEDIR"
 # Make sure the USER envar is set (on Android it is not)
 export USER="$(whoami)"
 
-source "${EXEDIR}/scripts/common/common.sh"
-source "${EXEDIR}/scripts/common/package-management.sh"
-source "${EXEDIR}/scripts/common/system-info.sh"
+source "${EXEDIR}/scripts/common/filesystem.sh"
+source "${REPO_DIR}/scripts/common/common.sh"
+source "${REPO_DIR}/scripts/common/package-management.sh"
+source "${REPO_DIR}/scripts/common/system-info.sh"
 
 if ${HAS_SU_PRIVILEGES}; then
     echo "I need SU privileges!"

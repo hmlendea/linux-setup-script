@@ -1,6 +1,7 @@
 #!/bin/bash
-source "scripts/common/common.sh"
-source "scripts/common/package-management.sh"
+source "scripts/common/filesystem.sh"
+source "${REPO_DIR}/scripts/common/common.sh"
+source "${REPO_DIR}/scripts/common/package-management.sh"
 
 ! does-bin-exist "aircrack-ng" && remove "${HOME}/.aircrack"
 ! does-bin-exist "alsi" && remove "${HOME_CONFIG}/alsi"
@@ -137,7 +138,7 @@ source "scripts/common/package-management.sh"
 ! does-bin-exist "zsh" && remove "${HOME}/.zshrc"
 
 # GNOME Extensions
-! does-gnome-shell-extension-exist "tiling-assistant" && remove "${HOME_CONFIG}/tiling-assistant"
+! is_gnome_shell_extension_installed "tiling-assistant" && remove "${HOME_CONFIG}/tiling-assistant"
 
 # Steam apps
 ! is_steam_app_installed "105600" && remove "${HOME_LOCAL_SHARE}/Terraria"

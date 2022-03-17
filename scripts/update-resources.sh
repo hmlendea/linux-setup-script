@@ -1,5 +1,6 @@
 #!/bin/bash
-source "scripts/common/common.sh"
+source "scripts/common/filesystem.sh"
+source "${REPO_DIR}/scripts/common/common.sh"
 
 if does-bin-exist "firefox" "org.mozilla.firefox"; then
     MOZILLA_USERDATA_DIR="${HOME_REAL}/.mozilla/firefox"
