@@ -279,7 +279,7 @@ fi
 #############
 ### CMAKE ###
 #############
-if does-bin-exist "cmake"; then
+if does_bin_exist "cmake"; then
     for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/cmake.desktop" \
                     "${GLOBAL_LAUNCHERS_PATH}/cmake-gui.desktop" \
                     "${GLOBAL_LAUNCHERS_PATH}/CMake.desktop"; do
@@ -392,7 +392,7 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/atril.desktop" \
     set_launcher_entry "${LAUNCHER}" Categories "GTK;${DOCUMENT_VIEWER_CATEGORIES}"
 done
 
-if does-bin-exist "evince"; then
+if does_bin_exist "evince"; then
     for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/evince.desktop" \
                     "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Evince.desktop"; do
         set_launcher_entry "${LAUNCHER}" Categories "GNOME;GTK;${DOCUMENT_VIEWER_CATEGORIES}"
@@ -402,7 +402,7 @@ fi
 ################
 ### ELECTRON ###
 ################
-if does-bin-exist "electron"; then
+if does_bin_exist "electron"; then
     for ELECTRON_VERSION in "" {10..16}; do
         set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/electron${ELECTRON_VERSION}.desktop" NoDisplay true
     done
@@ -461,7 +461,7 @@ done
 set_launcher_entry "${GLOBAL_LAUNCHER_PATH}/io.elementary.files.desktop" Categories "Pantheon;GTK;${FILE_MANAGER_CATEGORIES}"
 set_launcher_entry "${GLOBAL_LAUNCHER_PATH}/org.gnome.Nautilus.desktop" Categories "GNOME;GTK;${FILE_MANAGER_CATEGORIES}"
 
-if does-bin-exist "thunar"; then
+if does_bin_exist "thunar"; then
     for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/Thunar-bulk-rename.desktop" \
                     "${GLOBAL_LAUNCHERS_PATH}/thunar-bulk-rename.desktop" \
                     "${GLOBAL_LAUNCHERS_PATH}/thunar-settings.desktop" \
@@ -503,7 +503,7 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/openarena-server.desktop" NoDisplay
 #####################
 IMAGE_EDITOR_CATEGORIES="Graphics;2DGraphics"
 
-if does-bin-exist "gimp"; then
+if does_bin_exist "gimp"; then
     set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gimp.desktop" \
         Name "GIMP" \
         Categories "GTK;${IMAGE_EDITOR_CATEGORIES};RasterGraphics;" \
@@ -569,7 +569,7 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/tor-browser-en.desktop" \
 ########################
 ### JAVA - JRE & JDK ###
 ########################
-if does-bin-exist "java"; then
+if does_bin_exist "java"; then
     [ ! -f "${GLOBAL_LAUNCHERS_PATH}/run-java.desktop" ] && create_launcher "${GLOBAL_LAUNCHERS_PATH}/run-java.desktop"
 
     for JAVA_VERSION in {8..24}; do
@@ -674,20 +674,20 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-keep.desktop" StartupWMClass
 ##############
 ### NVIDIA ###
 ##############
-if does-bin-exist "nvidia-settings"; then
+if does_bin_exist "nvidia-settings"; then
     set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/nvidia-settings.desktop" \
         Name "Nvidia Settings" \
         Name[ro] "Setări Nvidia" \
         Icon "nvidia-settings" \
         Categories "System;"
 
-    does-bin-exist "optirun" && set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/nvidia-settings.desktop" Exec "optirun -b none nvidia-settings -c :8"
+    does_bin_exist "optirun" && set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/nvidia-settings.desktop" Exec "optirun -b none nvidia-settings -c :8"
 fi
 
 ###################
 ### Office Apps ###
 ###################
-if does-bin-exist "libreoffice"; then
+if does_bin_exist "libreoffice"; then
     set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-base.desktop" \
         Name "Base" \
         Name[ro] "Baze" \
@@ -814,7 +814,7 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/openrgb.desktop" \
 #############
 ### STEAM ###
 #############
-if does-bin-exist "steam" "com.valvesoftware.Steam"; then
+if does_bin_exist "steam" "com.valvesoftware.Steam"; then
     remove "${GLOBAL_LAUNCHERS_PATH}/steam-native.desktop"
 
     for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/steam-runtime.desktop" \
@@ -828,7 +828,7 @@ if does-bin-exist "steam" "com.valvesoftware.Steam"; then
         Name[ro] "Steam" \
         Categories "Game;Steam;"
 
-    if does-bin-exist "steam-start"; then
+    if does_bin_exist "steam-start"; then
         set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/steam.desktop" Exec "steam-start"
     fi
 
@@ -862,7 +862,7 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/lxtask.desktop" Name[ro] "Manager d
 ###################
 ### TEAM VIEWER ###
 ###################
-if does-bin-exist teamviewer; then
+if does_bin_exist teamviewer; then
     for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/com.teamviewer.TeamViewer.desktop" \
                     "${GLOBAL_LAUNCHERS_PATH}/teamviewer.desktop"; do
         set_launcher_entries "${LAUNCHER}" \
@@ -965,7 +965,7 @@ done
 ############
 ### WINE ###
 ############
-if does-bin-exist "wine"; then
+if does_bin_exist "wine"; then
     [ ! -f "${GLOBAL_LAUNCHERS_PATH}/winecfg.desktop" ] && create_launcher "${GLOBAL_LAUNCHERS_PATH}/winecfg.desktop"
     [ ! -f "${GLOBAL_LAUNCHERS_PATH}/winetricks.desktop" ] && create_launcher "${GLOBAL_LAUNCHERS_PATH}/winetricks.desktop"
 
@@ -1051,9 +1051,9 @@ function getSteamAppIconPath() {
     fi
 }
 
-if does-bin-exist "steam" "com.valvesoftware.Steam"; then
+if does_bin_exist "steam" "com.valvesoftware.Steam"; then
     STEAM_PATH="${HOME_REAL}/.local/share/Steam"
-    does-bin-exist "com.valvesoftware.Steam" && STEAM_PATH="${HOME_VAR}/app/com.valvesoftware.Steam/data/Steam"
+    does_bin_exist "com.valvesoftware.Steam" && STEAM_PATH="${HOME_VAR}/app/com.valvesoftware.Steam/data/Steam"
 
     STEAM_LAUNCHERS_PATH="${LOCAL_LAUNCHERS_PATH}/Steam"
     STEAM_ICON_THEME_PATH="${HOME_REAL}/.local/share/icons/steam"
@@ -1088,7 +1088,7 @@ if does-bin-exist "steam" "com.valvesoftware.Steam"; then
         done
 
         set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" NoDisplay "${IS_APP_MISSING}"
-        update-file-if-needed "${STEAM_PATH}/appcache/librarycache/${APP_ID}_icon.jpg" "${STEAM_ICON_THEME_PATH}/48x48/apps/steam_icon_${APP_ID}.jpg"
+        update_file_if_distinct "${STEAM_PATH}/appcache/librarycache/${APP_ID}_icon.jpg" "${STEAM_ICON_THEME_PATH}/48x48/apps/steam_icon_${APP_ID}.jpg"
     done
 
     for STEAM_LIBRARY_PATH in ${STEAM_LIBRARY_PATHS}; do
@@ -1133,9 +1133,9 @@ if does-bin-exist "steam" "com.valvesoftware.Steam"; then
 
                     STEAM_EXECUTABLE="steam"
 
-                    if does-bin-exist "com.valvesoftware.Steam"; then
+                    if does_bin_exist "com.valvesoftware.Steam"; then
                         STEAM_EXECUTABLE="flatpak run com.valvesoftware.Steam"
-                    elif does-bin-exist "steam-start"; then
+                    elif does_bin_exist "steam-start"; then
                         STEAM_EXECUTABLE="steam-start"
                     fi
 
@@ -1188,5 +1188,5 @@ for ICON_THEME in ${ICON_THEMES}; do
     fi
 done
 
-run-as-su update-desktop-database
+run_as_su update-desktop-database
 update-desktop-database "${LOCAL_LAUNCHERS_PATH}"

@@ -8,18 +8,6 @@ NUMBER_REGEX_PATTERN='^[0-9][0-9.]*$'
 NUMBER_UINT_REGEX_PATTERN='^uint[0-9]+ [0-9]+$'
 ARRAY_REGEX_PATTERN='^\[[0-9]+(\.[0-9]+)*(,\s*[0-9]+(\.[0-9]+)*)*]$'
 
-function create-file-if-not-exists() {
-    local FILE_PATH="${*}"
-
-    [ -z "${FILE_PATH}" ] && return
-    [ -f "${FILE_PATH}" ] && return
-
-    local DIRECTORY_PATH="$(dirname ${FILE_PATH})"
-
-    mkdir -p "${DIRECTORY_PATH}"
-    touch "${FILE_PATH}"
-}
-
 function is_value_string() {
     local VALUE="${*}"
 
@@ -49,13 +37,13 @@ function set_config_value() {
     local KEY="${2}"
     local VALUE_RAW="${@:3}"
 
-    create-file-if-not-exists "${FILE_PATH}"
+    create_file "${FILE_PATH}"
 
     #local VALUE=$(echo "${VALUE_RAW}" | sed -e 's/[]\/$*.^|[]/\\&/g')
     local VALUE="${VALUE_RAW}"
     local FILE_CONTENT=""
 
-    FILE_CONTENT=$(read-file "${FILE_PATH}")
+    FILE_CONTENT=$(read_file "${FILE_PATH}")
 
     # If the value is not already set
     if [[ $(grep -c "^${KEY}${SEPARATOR}${VALUE}$" <<< "$FILE_CONTENT") == 0 ]]; then
@@ -67,15 +55,11 @@ function set_config_value() {
                 sudo sed -i 's|^'"${KEY}${SEPARATOR}"'.*$|'"${KEY}${SEPARATOR}${VALUE}"'|g' "${FILE_PATH}"
             fi
         else
-            file-append-line "${FILE_PATH}" "${KEY}${SEPARATOR}${VALUE}"
+            append_line "${FILE_PATH}" "${KEY}${SEPARATOR}${VALUE}"
         fi
 
         echo "${FILE_PATH} >>> ${KEY}${SEPARATOR}${VALUE}"
     fi
-}
-
-function set_firefox_config_string() {
-    set_firefox_config "${1}" "${2}" "\"${*:3}\""
 }
 
 function set_firefox_config() {
@@ -84,7 +68,7 @@ function set_firefox_config() {
     local VALUE_RAW="${@:3}"
     local FILE="${HOME_REAL}/.mozilla/firefox/${PROFILE}/prefs.js"
 
-    create-file-if-not-exists "${FILE_PATH}"
+    create_file "${FILE_PATH}"
 
     local VALUE=$(echo "${VALUE_RAW}" | sed -e 's/^\s*//g' -e 's/\s*$//g')
 
@@ -101,16 +85,16 @@ function set_firefox_config() {
             sed -i '/^user_pref('"\"${KEY}"'/d' "${FILE}"
         fi
 
-        file-append-line "${FILE}" "user_pref(\"${KEY}\", ${VALUE});"
+        append_line "${FILE}" "user_pref(\"${KEY}\", ${VALUE});"
 
         echo "${FILE} >>> ${KEY} = ${VALUE_RAW}"
     fi
 }
 
-function set_json_value() {
+function set_json_property() {
     local FILE_PATH="${1}"
 
-    ( ! does-bin-exist "jq") && return
+    ( ! does_bin_exist "jq") && return
     [ ! -f "${FILE_PATH}" ] && return
 
     local PROPERTY="${2}"
@@ -131,7 +115,7 @@ function set_json_value() {
         if [ -w "${FILE_PATH}" ]; then
             jq "${PROPERTY}"'='"${VALUE}" <<< ${FILE_CONTENT} > "${FILE_PATH}"
         elif ${HAS_SU_PRIVILEGES}; then
-            jq "${PROPERTY}"'='"${VALUE}" <<< ${FILE_CONTENT} | run-as-su tee "${FILE_PATH}" > /dev/null
+            jq "${PROPERTY}"'='"${VALUE}" <<< ${FILE_CONTENT} | run_as_su tee "${FILE_PATH}" > /dev/null
         else
             echo "Cannot set ${PROPERTY}=${VALUE} in ${FILE_PATH}"
             return
@@ -146,7 +130,7 @@ function set_xml_node() {
     NODE_RAW="${2}"
     VALUE_RAW="${@:3}"
 
-    (! does-bin-exist "xmlstarlet") && return
+    (! does_bin_exist "xmlstarlet") && return
     [ ! -f "${FILE}" ] && return
 
     NAMESPACE=$(cat "${FILE}" | grep "xmlns=" | sed 's/.*xmlns=\"\([^\"]*\)\".*/\1/g')
@@ -189,14 +173,14 @@ function set_modprobe_option() {
             if [ $(grep -c "^${ACTION} ${MODULE} ${KEY}=.*$" <<< "${FILE_CONTENT}") -gt 0 ]; then
                 sed -i 's|^'"${ACTION} ${MODULE} ${KEY}"'=.*$|'"${ACTION} ${MODULE} ${KEY}"'='"${VALUE}"'|g' "${FILE}"
             else
-                file-append-line "${FILE}" "${ACTION} ${MODULE} ${KEY}=${VALUE}"
+                append_line "${FILE}" "${ACTION} ${MODULE} ${KEY}=${VALUE}"
             fi
 
             echo "${FILE} >>> ${ACTION} ${MODULE} ${KEY}=${VALUE}"
         fi
     else
         if ! grep -q "^${ACTION} ${MODULE}$" <<< "${FILE_CONTENT}"; then
-            file-append-line "${FILE}" "${ACTION} ${MODULE}"
+            append_line "${FILE}" "${ACTION} ${MODULE}"
             echo "${FILE} >>> ${ACTION} ${MODULE}"
         fi
     fi
@@ -216,18 +200,18 @@ function set_pulseaudio_module_option() {
         if [[ $(grep -c "^${ACTION} ${MODULE} ${KEY}=${VALUE}$" <<< "${FILE_CONTENT}") == 0 ]]; then
             # If the option key already exists (with a different value)
             if [ $(grep -c "^${ACTION} ${MODULE} ${KEY}=.*$" <<< "${FILE_CONTENT}") -gt 0 ]; then
-                run-as-su sed -i 's|^'"${ACTION} ${MODULE} ${KEY}"'=.*$|'"${ACTION} ${MODULE} ${KEY}"'='"${VALUE}"'|g' "${FILE}"
+                run_as_su sed -i 's|^'"${ACTION} ${MODULE} ${KEY}"'=.*$|'"${ACTION} ${MODULE} ${KEY}"'='"${VALUE}"'|g' "${FILE}"
             elif [ $(grep -c "^${ACTION} ${MODULE}$" <<< "${FILE_CONTENT}") -gt 0 ]; then
-                run-as-su sed -i 's|^'"${ACTION} ${MODULE}"'$|'"${ACTION} ${MODULE} ${KEY}"'='"${VALUE}"'|g' "${FILE}"
+                run_as_su sed -i 's|^'"${ACTION} ${MODULE}"'$|'"${ACTION} ${MODULE} ${KEY}"'='"${VALUE}"'|g' "${FILE}"
             else
-                file-append-line "${FILE}" "${ACTION} ${MODULE} ${KEY}=${VALUE}"
+                append_line "${FILE}" "${ACTION} ${MODULE} ${KEY}=${VALUE}"
             fi
 
             echo "${FILE} >>> ${ACTION} ${MODULE} ${KEY}=${VALUE}"
         fi
     else
         if ! grep -q "^${ACTION} ${MODULE}$" <<< "${FILE_CONTENT}"; then
-            file-append-line "${FILE}" "${ACTION} ${MODULE}"
+            append_line "${FILE}" "${ACTION} ${MODULE}"
             echo "${FILE} >>> ${ACTION} ${MODULE}"
         fi
     fi
@@ -235,7 +219,7 @@ function set_pulseaudio_module_option() {
 
 function get_gsetting() {
     (! ${HAS_GUI}) && return
-    (! $(does-bin-exist "gsettings")) && return
+    (! $(does_bin_exist "gsettings")) && return
 
     local SCHEMA="${1}"
     local PROPERTY="${2}"
@@ -245,7 +229,7 @@ function get_gsetting() {
 
 function set_gsetting() {
     (! ${HAS_GUI}) && return
-    (! does-bin-exist "gsettings") && return
+    (! does_bin_exist "gsettings") && return
 
     local SCHEMA="${1}"
     local PROPERTY="${2}"
@@ -337,7 +321,7 @@ function set_launcher_entry() {
     fi
 
     if [ ! -x "${FILE}" ]; then
-        run-as-su chmod +x "${FILE}"
+        run_as_su chmod +x "${FILE}"
     fi
 
     local KEY_ID=$(echo "${KEY}" | sed -e 's/^\([^\[]*\).*/\1/g' -e 's/\s//g')
@@ -367,15 +351,15 @@ function set_launcher_entry() {
         || [[ $(grep -c "^${KEY_ESC}=$" <<< "${FILE_CONTENTS}") == 1 ]]; then
             if [ $(grep -c "^${KEY_ESC}=.*$" <<< "${FILE_CONTENTS}") -gt 0 ]; then
                 if [ -z "${VAL}" ]; then
-                    run-as-su sed -i '1,'"${LAST_SECTION_LINE}"' {/^'"${KEY_ESC}"'=.*$/d}' "${FILE_PATH_RAW}"
+                    run_as_su sed -i '1,'"${LAST_SECTION_LINE}"' {/^'"${KEY_ESC}"'=.*$/d}' "${FILE_PATH_RAW}"
                 else
-                    run-as-su sed -i '1,'"${LAST_SECTION_LINE}"' s|^'"${KEY_ESC}"'=.*$|'"${KEY_ESC}"'='"${VAL}"'|g' "${FILE_PATH_RAW}"
+                    run_as_su sed -i '1,'"${LAST_SECTION_LINE}"' s|^'"${KEY_ESC}"'=.*$|'"${KEY_ESC}"'='"${VAL}"'|g' "${FILE_PATH_RAW}"
                 fi
             elif [ -n "${VAL}" ]; then
                 if ${HAS_MULTIPLE_SECTIONS}; then
-                    run-as-su sed -i "${LAST_SECTION_LINE} i ${KEY_ESC}=${VAL_ESC}" "${FILE_PATH_RAW}"
+                    run_as_su sed -i "${LAST_SECTION_LINE} i ${KEY_ESC}=${VAL_ESC}" "${FILE_PATH_RAW}"
                 else
-                    file-append-line "${FILE}" "${KEY}=${VAL}"
+                    append_line "${FILE}" "${KEY}=${VAL}"
                 fi
             fi
 
@@ -448,9 +432,11 @@ function set_launcher_entry_spanish() {
 }
 
 function create_launcher() {
-    local FILE_PATH="$*"
+    local FILE_PATH="${*}"
     local FILE_LABEL=$(basename "${FILE_PATH}" | cut -f 1 -d '.')
     local NAME=$(echo "${FILE_LABEL}" | sed -e 's/-/ /g' -e 's/^./\U&/g' -e 's/\s./\U&/g')
+
+    create_file "${FILE_PATH}"
 
     if [ ! -f "${FILE_PATH}" ]; then
         {
@@ -469,6 +455,6 @@ function create_launcher() {
         } > "${FILE_PATH}"
 
         chmod +x "${FILE_PATH}"
-        echo "Created file '${FILE_PATH}'"
+        echo "Created launcher '${FILE_PATH}'"
     fi
 }

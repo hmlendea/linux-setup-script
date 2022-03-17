@@ -19,12 +19,12 @@ function add_repository {
 
         DATABASES_NEED_UPDATING=true
 
-        file-append-line "${PACMAN_CONF_FILE_PATH}" ""
-        file-append-line "${PACMAN_CONF_FILE_PATH}" "[${NAME}]"
+        append_line "${PACMAN_CONF_FILE_PATH}" ""
+        append_line "${PACMAN_CONF_FILE_PATH}" "[${NAME}]"
 
-        [ -n "${SERVER}" ]    && file-append-line "${PACMAN_CONF_FILE_PATH}" "Server = ${SERVER}"
-        [ -n "${INCLUDE}" ]   && file-append-line "${PACMAN_CONF_FILE_PATH}" "Include = ${INCLUDE}"
-        [ -n "${SIGLEVEL}" ]  && file-append-line "${PACMAN_CONF_FILE_PATH}" "SigLevel = ${SIGLEVEL}"
+        [ -n "${SERVER}" ]    && append_line "${PACMAN_CONF_FILE_PATH}" "Server = ${SERVER}"
+        [ -n "${INCLUDE}" ]   && append_line "${PACMAN_CONF_FILE_PATH}" "Include = ${INCLUDE}"
+        [ -n "${SIGLEVEL}" ]  && append_line "${PACMAN_CONF_FILE_PATH}" "SigLevel = ${SIGLEVEL}"
 
         if [ -n "${KEY}" ]; then
             pacman-key --recv-keys "${KEY}"
@@ -44,7 +44,7 @@ function add_flatpak_remote() {
     fi
 }
 
-if does-bin-exist "flatpak"; then
+if does_bin_exist "flatpak"; then
     add_flatpak_remote "zorinos" "https://flatpak.zorinos.com/repo/"
 fi
 
@@ -72,5 +72,5 @@ if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
     fi
 
     pacman -Syy
-    does-bin-exist "pkgfile" && pkgfile -u
+    does_bin_exist "pkgfile" && pkgfile -u
 fi

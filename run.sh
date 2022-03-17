@@ -18,7 +18,7 @@ source "${REPO_DIR}/scripts/common/system-info.sh"
 
 if ${HAS_SU_PRIVILEGES}; then
     echo "I need SU privileges!"
-    run-as-su printf "Thank you!\n\n"
+    run_as_su printf "Thank you!\n\n"
 fi
 
 function execute-script() {
@@ -38,7 +38,7 @@ function execute-script-superuser() {
     SCRIPT_PATH="${EXEDIR}/scripts/${SCRIPT_NAME}"
 
     echo -e "Executing as \e[1;91mroot\e[0;39m: '${SCRIPT_NAME}'..."
-    run-as-su "${ROOT_BIN}/bash" "${SCRIPT_PATH}"
+    run_as_su "${ROOT_BIN}/bash" "${SCRIPT_PATH}"
 }
 
 function update-system() {
@@ -47,17 +47,17 @@ function update-system() {
     echo "Updating the system..."
 
     if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-        if does-bin-exist "paru"; then
+        if does_bin_exist "paru"; then
             paru -Syu --noconfirm --needed --noredownload --norebuild --sudoloop
         else
-            run-as-su pacman -Syu
+            run_as_su pacman -Syu
         fi
     elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
         yes | pkg update
         yes | pkg upgrade
     elif [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
-        yes | run-as-su apt update
-        yes | run-as-su apt upgrade
+        yes | run_as_su apt update
+        yes | run_as_su apt upgrade
     fi
 
     call_flatpak update
@@ -125,8 +125,8 @@ execute-script-superuser "set-system-locale-timedate.sh"
 [ "${DISTRO_FAMILY}" != "Android" ] && execute-script-superuser "update-profiles.sh"
 
 if [ "${OS}" == "Linux" ]; then
-    does-bin-exist "systemctl" && execute-script-superuser "enable-services.sh"
-    does-bin-exist "grub-mkconfig" && execute-script-superuser "update-grub.sh" # Run after configure-system.sh
+    does_bin_exist "systemctl" && execute-script-superuser "enable-services.sh"
+    does_bin_exist "grub-mkconfig" && execute-script-superuser "update-grub.sh" # Run after configure-system.sh
 fi
 execute-script "configure-directories.sh"
 
@@ -136,8 +136,8 @@ execute-script "git/setup-gpg-key.sh"
 [ "${OS}" == "Linux" ] && execute-script-superuser "assign-users-and-groups.sh"
 
 # Clean journals older than 1 week
-if ${HAS_SU_PRIVILEGES} && does-bin-exist "journalctl"; then
-    run-as-su journalctl -q --vacuum-time=7d
+if ${HAS_SU_PRIVILEGES} && does_bin_exist "journalctl"; then
+    run_as_su journalctl -q --vacuum-time=7d
 fi
 
 source ~/.bashrc

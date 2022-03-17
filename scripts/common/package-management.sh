@@ -4,7 +4,7 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     source "${REPO_DIR}/scripts/common/common.sh"
 fi
 
-function call-package-manager() {
+function call_package_manager() {
     if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
         if [[ "${UID}" != "0" ]]; then
             if [ -f "${ROOT_USR_BIN}/paru" ]; then
@@ -14,7 +14,7 @@ function call-package-manager() {
         	elif [ -f "${ROOT_USR_BIN}/yaourt" ]; then
                 LANG=C LC_TIME="" yaourt ${*} --noconfirm
 		    else
-		        LANG=C LC_TIME="" run-as-su pacman ${*} --noconfirm
+		        LANG=C LC_TIME="" run_as_su pacman ${*} --noconfirm
 		    fi
         else
             LANG=C LC_TIME="" pacman ${*} --noconfirm
@@ -22,7 +22,7 @@ function call-package-manager() {
     elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
         yes | pkg ${*}
     elif [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
-        yes | run-as-su apt ${*}
+        yes | run_as_su apt ${*}
     fi
 }
 
@@ -30,17 +30,17 @@ function call_flatpak() {
     flatpak ${*} --assumeyes
 }
 
-function call-vscode() {
-    if does-bin-exist "codium"; then
+function call_vscode() {
+    if does_bin_exist "codium"; then
         codium ${*}
-    elif does-bin-exist "code-oss"; then
+    elif does_bin_exist "code-oss"; then
         code-oss ${*}
-    elif does-bin-exist "code"; then
+    elif does_bin_exist "code"; then
         code ${*}
     fi
 }
 
-function is-package-installed() {
+function is_native_package_installed() {
 	local PKG="${1}"
 
     if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
@@ -69,9 +69,9 @@ function is_flatpak_installed() {
     fi
 }
 
-function is-vscode-extension-installed() {
+function is_vscode_extension_installed() {
     local EXTENSION="${1}"
-    local INSTALLED_EXTENSIONS=$(call-vscode --list-extensions)
+    local INSTALLED_EXTENSIONS=$(call_vscode --list-extensions)
 
     if echo "${INSTALLED_EXTENSIONS}" | grep -q "${EXTENSION}"; then
         return 0 # True
@@ -108,31 +108,31 @@ function is_steam_app_installed() {
     fi
 }
 
-function install-pkg() {
+function install_native_package() {
 	local PKG="${1}"
 
-    is-package-installed "${PKG}" && return
+    is_native_package_installed "${PKG}" && return
 
     echo " >>> Installing package: ${PKG}"
     if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-    	call-package-manager -S --asexplicit "${PKG}"
+    	call_package_manager -S --asexplicit "${PKG}"
     elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
       || [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
-        call-package-manager install "${PKG}"
+        call_package_manager install "${PKG}"
     fi
 }
 
-function install-dep() {
+function install_native_package_dependency() {
 	local PKG="${1}"
 
-    is-package-installed "${PKG}" && return
+    is_native_package_installed "${PKG}" && return
 
     echo " >>> Installing dependency: ${PKG}"
     if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-        call-package-manager -S --asexplicit "${PKG}"
+        call_package_manager -S --asexplicit "${PKG}"
     elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
       || [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
-        call-package-manager install "${PKG}" # TODO: See if there is a way to mark them as dep
+        call_package_manager install "${PKG}" # TODO: See if there is a way to mark them as dep
     fi
 }
 
@@ -151,25 +151,25 @@ function install_flatpak() {
     call_flatpak install "${REMOTE}" "${PACKAGE}"
 }
 
-function install-vscode-extension() {
+function install_vscode_package() {
     local EXTENSION="${*}"
 
-    is-vscode-extension-installed "${EXTENSION}" && return
+    is_vscode_extension_installed "${EXTENSION}" && return
 
     echo " >>> Installing VS Code extension: ${EXTENSION}"
-    call-vscode --install-extension "${EXTENSION}"
+    call_vscode --install-extension "${EXTENSION}"
 }
 
-function uninstall_package() {
+function uninstall_native_package() {
     for PKG in ${*// /\n}; do
-        is-package-installed "${PKG}" || return
+        is_native_package_installed "${PKG}" || return
 
         echo " >>> Uninstalling package: ${PKG}"
         if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-            call-package-manager -Rns "${PKG}"
+            call_package_manager -Rns "${PKG}"
         elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
           || [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
-            call-package-manager remove "${PKG}"
+            call_package_manager remove "${PKG}"
         fi
     done
 }
@@ -183,7 +183,7 @@ function uninstall_flatpak() {
     call_flatpak uninstall "${PKG}"
 }
 
-function install-pkg-aur-manually() {
+function install_aur_package_manually() {
 	local PKG="${1}"
     local PKG_SNAPSHOT_URL="https://aur.archlinux.org/cgit/aur.git/snapshot/${PKG}.tar.gz"
     local OLD_PWD="$(pwd)"
@@ -191,7 +191,7 @@ function install-pkg-aur-manually() {
     [ ! -d "${LOCAL_INSTALL_TEMP_DIR}" ] && mkdir -p "${LOCAL_INSTALL_TEMP_DIR}"
     cd "${LOCAL_INSTALL_TEMP_DIR}"
 
-	if (! is-package-installed "${PKG}"); then
+	if (! is_native_package_installed "${PKG}"); then
         wget "${PKG_SNAPSHOT_URL}"
 	    tar xvf "${PKG}.tar.gz"
 

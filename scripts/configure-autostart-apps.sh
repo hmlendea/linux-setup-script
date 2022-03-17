@@ -13,7 +13,7 @@ function configure-autostart-for-app() {
     local LAUNCHER_LABEL=$(basename "${BINARY_NAME}")
     local LAUNCHER_PATH="${AUTOSTART_DIR}/${LAUNCHER_LABEL}.desktop"
 
-    if does-bin-exist "${BINARY_NAME}"; then
+    if does_bin_exist "${BINARY_NAME}"; then
         [ ! -f "${LAUNCHER_PATH}" ] && create_launcher "${LAUNCHER_PATH}"
 
         set_launcher_entries "${LAUNCHER_PATH}" "$@"

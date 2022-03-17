@@ -9,8 +9,8 @@ function update-profile-for-bin() {
     local PROFILE_NAME="${2}"
     local PROFILE_PATH="${SYSTEM_PROFILES_DIR}/${PROFILE_NAME}.sh"
 
-    if does-bin-exist "${REQUIRED_BINARY}"; then
-        update-file-if-needed "profiles/${PROFILE_NAME}.sh" "${PROFILE_PATH}"
+    if does_bin_exist "${REQUIRED_BINARY}"; then
+        update_file_if_distinct "profiles/${PROFILE_NAME}.sh" "${PROFILE_PATH}"
     else
         remove "${PROFILE_PATH}"
     fi

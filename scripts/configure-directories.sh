@@ -5,7 +5,7 @@ function update-hidden-files-config-if-needed() {
     local CONFIG_FILE_NAME="${1}"
     local DESTINATION_DIR="${2}"
 
-    update-file-if-needed "${REPO_RC_DIR}/hidden-files/${CONFIG_FILE_NAME}" "${DESTINATION_DIR}/.hidden"
+    update_file_if_distinct "${REPO_RC_DIR}/hidden-files/${CONFIG_FILE_NAME}" "${DESTINATION_DIR}/.hidden"
 }
 
 if ${HAS_GUI} && [[ "${OS}" == "Linux" ]]; then

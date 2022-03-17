@@ -7,120 +7,120 @@ source "${REPO_DIR}/scripts/common/system-info.sh"
 ##############
 ### Basics ###
 ##############
-install-pkg coreutils
-install-pkg most
-install-pkg wget
+install_native_package coreutils
+install_native_package most
+install_native_package wget
 
 if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-    install-pkg bash-completion
-    install-pkg usbutils
-    install-pkg lshw
+    install_native_package bash-completion
+    install_native_package usbutils
+    install_native_package lshw
 
-    install-pkg man-db
-    install-pkg man-pages
-    install-pkg sudo
+    install_native_package man-db
+    install_native_package man-pages
+    install_native_package sudo
 
-    install-pkg bat
+    install_native_package bat
 elif [[ "${DISTROY_FAMILY}" == "Android" ]]; then
-    install-pkg manpages
+    install_native_package manpages
 
-    [ -f "/sbin/su" ] && install-pkg tsu
+    [ -f "/sbin/su" ] && install_native_package tsu
 fi
 
 ##################
 ### base-devel ###
 ##################
-install-pkg autoconf
-install-pkg binutils
-install-pkg make
-install-pkg fakeroot
-install-pkg patch
+install_native_package autoconf
+install_native_package binutils
+install_native_package make
+install_native_package fakeroot
+install_native_package patch
 
 if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-    install-pkg gcc
-    install-pkg pkgconf
+    install_native_package gcc
+    install_native_package pkgconf
 fi
 
 # Extra devel for parallelising the build processes
 if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-    install-pkg pbzip2  # Drop-in replacement for bzip2, with multithreading
-    install-pkg pigz    # Drop-in replacement for gzip, with multithreading
+    install_native_package pbzip2  # Drop-in replacement for bzip2, with multithreading
+    install_native_package pigz    # Drop-in replacement for gzip, with multithreading
 fi
 
-install-pkg bc # Mathematical calculations, e.g. echo "2+2-1" | bc
+install_native_package bc # Mathematical calculations, e.g. echo "2+2-1" | bc
 
 ###################
 ### Development ###
 ###################
-install-pkg git
-install-pkg automake
+install_native_package git
+install_native_package automake
 
 ###############
 ### Parsers ###
 ###############
-install-pkg jq          # JSON parser
-install-pkg xmlstarlet  # XML parser
+install_native_package jq          # JSON parser
+install_native_package xmlstarlet  # XML parser
 
 if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-    install-pkg dmidecode   # Read device manufacturer information
+    install_native_package dmidecode   # Read device manufacturer information
 fi
 
 ##################
 ### Monitoring ###
 ##################
 if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-    install-pkg fastfetch-git
+    install_native_package fastfetch-git
 else
-    install-pkg neofetch
+    install_native_package neofetch
 fi
 
 ########################
 ### Power Management ###
 ########################
 if [[ "${CHASSIS_TYPE}" == "Laptop" ]]; then
-    install-pkg acpi
-    install-pkg tlp
+    install_native_package acpi
+    install_native_package tlp
 
-    install-pkg powertop
+    install_native_package powertop
 
     if get_dmi_string "system-sku-number" | grep -q "ThinkPad"; then
-        install-pkg acpi_call
-        install-pkg tp_smapi
+        install_native_package acpi_call
+        install_native_package tp_smapi
     fi
 fi
 
 ##################
 ### Networking ###
 ##################
-install-pkg net-tools
+install_native_package net-tools
 
 if [[ "${DISTRO_FAMILY}" == "Arch" ]] \
 || [[ "${DISTRO_FAMILY}" == "Android" ]]; then
-    install-pkg openssh
-    install-pkg wol
+    install_native_package openssh
+    install_native_package wol
 elif [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
-    install-pkg openssh-server
-    install-pkg wakeonlan
+    install_native_package openssh-server
+    install_native_package wakeonlan
 fi
 
 if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-    install-pkg ethtool
-    install-pkg wireless_tools
-    install-pkg iw
-    install-pkg iwd
+    install_native_package ethtool
+    install_native_package wireless_tools
+    install_native_package iw
+    install_native_package iwd
 fi
 
 ################
 ### Archives ###
 ################
-install-pkg cabextract
-install-pkg unzip
+install_native_package cabextract
+install_native_package unzip
 
 if [[ "${DISTRO_FAMILY}" == "Arch" ]] \
 || [[ "${DISTRO_FAMILY}" == "Android" ]]; then
-    install-pkg unrar
+    install_native_package unrar
 elif [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
-    install-pkg unrar-free
+    install_native_package unrar-free
 fi
 
 if [ "${DISTRO_FAMILY}" != "Arch" ]; then
@@ -128,152 +128,152 @@ if [ "${DISTRO_FAMILY}" != "Arch" ]; then
 fi
 
 # Package manager
-install-pkg-aur-manually package-query
+install_aur_package_manually package-query
 
 if [[ "${ARCH}" != "armv7l" ]]; then
-    install-pkg-aur-manually paru-bin
+    install_aur_package_manually paru-bin
 else
     # Special case, since we don't want to build paru from source (it takes a LOOONG time)
-    install-pkg-aur-manually yay-bin
+    install_aur_package_manually yay-bin
 fi
 
-install-pkg pacman-contrib
-install-pkg pacutils
-install-pkg pkgfile
-install-pkg repo-synchroniser
+install_native_package pacman-contrib
+install_native_package pacutils
+install_native_package pkgfile
+install_native_package repo-synchroniser
 
 # Partition editors
-install-pkg parted
+install_native_package parted
 if ${HAS_GUI} && ${IS_GENERAL_PURPOSE_DEVICE}; then
-    install-pkg gparted
-    install-dep gpart
-    install-dep mtools
+    install_native_package gparted
+    install_native_package_dependency gpart
+    install_native_package_dependency mtools
 fi
 
 # Filesystems
-install-pkg ntfs-3g
-install-pkg exfat-utils
+install_native_package ntfs-3g
+install_native_package exfat-utils
 
 # Archives
-install-pkg unp # A script for unpacking a wide variety of archive formats
-install-pkg p7zip
-install-pkg lrzip
-install-dep unace
+install_native_package unp # A script for unpacking a wide variety of archive formats
+install_native_package p7zip
+install_native_package lrzip
+install_native_package_dependency unace
 
-install-pkg realtime-privileges
+install_native_package realtime-privileges
 
 # CLI
-install-pkg nano-syntax-highlighting
+install_native_package nano-syntax-highlighting
 
 # Monitoring
-install-pkg lm_sensors
+install_native_package lm_sensors
 
 # Boot loader
 if [[ "${ARCH_FAMILY}" == "x86" ]]; then
-    install-pkg grub
-    install-dep os-prober
-    install-pkg update-grub
-    install-dep linux-headers
+    install_native_package grub
+    install_native_package_dependency os-prober
+    install_native_package update-grub
+    install_native_package_dependency linux-headers
 
     # Customisations
-    install-pkg grub2-theme-nuci
+    install_native_package grub2-theme-nuci
 fi
 
 if ${HAS_GUI}; then
-    install-pkg flatpak
+    install_native_package flatpak
 
-    install-pkg dkms
-    install-pkg rsync
+    install_native_package dkms
+    install_native_package rsync
 
     # System management
-    [[ "${ARCH_FAMILY}" == "x86" ]] && install-pkg thermald
+    [[ "${ARCH_FAMILY}" == "x86" ]] && install_native_package thermald
 
     # Display Server, Drivers, FileSystems, etc
-    install-pkg xorg-server
-    #install-pkg xf86-video-vesa
+    install_native_package xorg-server
+    #install_native_package xf86-video-vesa
 
     # Graphics drivers
     GPU_FAMILY="$(get_gpu_family)"
     if [[ "${GPU_FAMILY}" == "Intel" ]]; then
-        install-pkg intel-media-driver
+        install_native_package intel-media-driver
     elif [[ "${GPU_FAMILY}" == "Nvidia" ]]; then
         NVIDIA_DRIVER="nvidia"
 
         [[ "$(get_gpu_model)" == "GeForce 610M" ]] && NVIDIA_DRIVER="nvidia-390xx"
 
         if gpu_has_optimus_support; then
-            install-pkg bumblebee
-            install-dep bbswitch
-            install-dep primus
+            install_native_package bumblebee
+            install_native_package_dependency bbswitch
+            install_native_package_dependency primus
 
-            install-pkg optiprime
+            install_native_package optiprime
 
-            install-pkg mesa
-            install-pkg xf86-video-intel
+            install_native_package mesa
+            install_native_package xf86-video-intel
 
-            install-pkg "${NVIDIA_DRIVER}-dkms"
-            install-pkg "${NVIDIA_DRIVER}-settings"
-            install-dep "lib32-${NVIDIA_DRIVER}-utils"
+            install_native_package "${NVIDIA_DRIVER}-dkms"
+            install_native_package "${NVIDIA_DRIVER}-settings"
+            install_native_package_dependency "lib32-${NVIDIA_DRIVER}-utils"
 
-            install-dep lib32-virtualgl
+            install_native_package_dependency lib32-virtualgl
         else
-            install-pkg "${NVIDIA_DRIVER}"
+            install_native_package "${NVIDIA_DRIVER}"
         fi
 
-        install-pkg libva-vdpau-driver
+        install_native_package libva-vdpau-driver
     fi
 
     # Desktop Environment & Base applications
     if ${POWERFUL_PC}; then
-        install-pkg gnome-shell
-        install-pkg gdm
-        install-pkg xdg-user-dirs-gtk
-        install-dep gnome-control-center
-        install-pkg gnome-tweaks
-        install-pkg gnome-backgrounds
+        install_native_package gnome-shell
+        install_native_package gdm
+        install_native_package xdg-user-dirs-gtk
+        install_native_package_dependency gnome-control-center
+        install_native_package gnome-tweaks
+        install_native_package gnome-backgrounds
         install_flatpak org.gnome.font-viewer
     else
-        install-pkg mutter # openbox
-        install-pkg lxde-common
-        install-pkg lxdm
-        install-pkg lxpanel
-        install-pkg lxsession
-        install-pkg lxappearance
-        install-pkg lxappearance-obconf
+        install_native_package mutter # openbox
+        install_native_package lxde-common
+        install_native_package lxdm
+        install_native_package lxpanel
+        install_native_package lxsession
+        install_native_package lxappearance
+        install_native_package lxappearance-obconf
     fi
 
-    install-pkg gnome-keyring
+    install_native_package gnome-keyring
     install_flatpak org.gnome.seahorse.Application
 
-    install-pkg networkmanager
-    install-pkg networkmanager-openvpn
-    ! ${POWERFUL_PC} && install-pkg network-manager-applet
+    install_native_package networkmanager
+    install_native_package networkmanager-openvpn
+    ! ${POWERFUL_PC} && install_native_package network-manager-applet
 
-    install-dep dnsmasq
+    install_native_package_dependency dnsmasq
 
     # Audio drivers
-    install-pkg sennheiser-gsp670-pulseaudio-profile
+    install_native_package sennheiser-gsp670-pulseaudio-profile
 
     # Bluetooth Manager
-    ${POWERFUL_PC} && install-pkg gnome-bluetooth
-    ${POWERFUL_PC} || install-pkg blueman
+    ${POWERFUL_PC} && install_native_package gnome-bluetooth
+    ${POWERFUL_PC} || install_native_package blueman
 
     # System Monitor / Task Manager
-    ${POWERFUL_PC} && install-pkg gnome-system-monitor
-    ${POWERFUL_PC} || install-pkg lxtask
+    ${POWERFUL_PC} && install_native_package gnome-system-monitor
+    ${POWERFUL_PC} || install_native_package lxtask
 
     # Terminal
-    ${POWERFUL_PC} && install-pkg gnome-terminal
-    ${POWERFUL_PC} || install-pkg lxterminal
+    ${POWERFUL_PC} && install_native_package gnome-terminal
+    ${POWERFUL_PC} || install_native_package lxterminal
 
-    install-pkg gnome-disk-utility
+    install_native_package gnome-disk-utility
 
     if ${IS_GENERAL_PURPOSE_DEVICE}; then
         # Calculator
         if ${POWERFUL_PC}; then
             install_flatpak org.gnome.Calculator
         else
-            install-pkg mate-calc
+            install_native_package mate-calc
         fi
 
         install_flatpak org.gnome.Calendar
@@ -286,115 +286,115 @@ if ${HAS_GUI}; then
 
     # File management
     if ${POWERFUL_PC}; then
-        install-pkg nautilus
-        install-pkg folder-color-nautilus
+        install_native_package nautilus
+        install_native_package folder-color-nautilus
         install_flatpak org.gnome.FileRoller
     else
-        install-pkg pcmanfm
-        install-pkg xarchiver
+        install_native_package pcmanfm
+        install_native_package xarchiver
     fi
 
-    install-pkg dconf-editor
+    install_native_package dconf-editor
 
     # Text Editor
     if ${POWERFUL_PC}; then
         install_flatpak org.gnome.gedit
     else
-        install-pkg pluma
+        install_native_package pluma
     fi
 
     # Document Viewer
     if ${POWERFUL_PC}; then
         install_flatpak org.gnome.Evince
     else
-        install-pkg epdfview
+        install_native_package epdfview
     fi
 
     if ${POWERFUL_PC}; then
         install_flatpak org.gnome.baobab
-        install-pkg gnome-screenshot
+        install_native_package gnome-screenshot
     else
-        install-pkg mate-utils
+        install_native_package mate-utils
     fi
 
     # Image Viewer
     if ${POWERFUL_PC}; then
         install_flatpak org.gnome.eog
     else
-        install-pkg gpicview
+        install_native_package gpicview
     fi
 
     if ${POWERFUL_PC}; then
-        install-dep gnome-menus
+        install_native_package_dependency gnome-menus
 
-        install-dep gvfs-afc
-        install-dep gvfs-smb
-        install-dep gvfs-gphoto2
-        install-dep gvfs-mtp
-        install-dep gvfs-goa
-        install-dep gvfs-nfs
-        install-dep gvfs-google
+        install_native_package_dependency gvfs-afc
+        install_native_package_dependency gvfs-smb
+        install_native_package_dependency gvfs-gphoto2
+        install_native_package_dependency gvfs-mtp
+        install_native_package_dependency gvfs-goa
+        install_native_package_dependency gvfs-nfs
+        install_native_package_dependency gvfs-google
     fi
 
-    install-pkg plank
+    install_native_package plank
 
     # GNOME Shell Extensions
     if ${POWERFUL_PC}; then
         # Base
-        install-pkg gnome-shell-extensions
-        install-pkg gnome-shell-extension-installer
+        install_native_package gnome-shell-extensions
+        install_native_package gnome-shell-extension-installer
 
         # Enhancements
-        install-pkg gnome-shell-extension-dash-to-plank
-        install-pkg gnome-shell-extension-sound-output-device-chooser
-        install-pkg gnome-shell-extension-multi-monitors-add-on-git
-        install-pkg gnome-shell-extension-wintile
+        install_native_package gnome-shell-extension-dash-to-plank
+        install_native_package gnome-shell-extension-sound-output-device-chooser
+        install_native_package gnome-shell-extension-multi-monitors-add-on-git
+        install_native_package gnome-shell-extension-wintile
 
         # New features
-        install-pkg gnome-shell-extension-gsconnect
-        install-pkg gnome-shell-extension-openweather-git
+        install_native_package gnome-shell-extension-gsconnect
+        install_native_package gnome-shell-extension-openweather-git
 
         # Appearance
-        install-pkg gnome-shell-extension-blur-my-shell
+        install_native_package gnome-shell-extension-blur-my-shell
 
         # Remove annoyances
-        install-pkg gnome-shell-extension-windowisready_remover
-        install-pkg gnome-shell-extension-no-overview
-        install-pkg gnome-shell-extension-hide-activities-git
+        install_native_package gnome-shell-extension-windowisready_remover
+        install_native_package gnome-shell-extension-no-overview
+        install_native_package gnome-shell-extension-hide-activities-git
     fi
 
     # Themes
-    install-pkg zorin-desktop-themes
+    install_native_package zorin-desktop-themes
     install_flatpak zorinos org.gtk.Gtk3theme.ZorinGrey-Dark
-    install-pkg vimix-cursors
-    install-pkg papirus-icon-theme
-    install-pkg papirus-folders
+    install_native_package vimix-cursors
+    install_native_package papirus-icon-theme
+    install_native_package papirus-folders
 
     # Themes - Fallbacks
-    install-pkg numix-circle-icon-theme-git
-    install-pkg paper-icon-theme
+    install_native_package numix-circle-icon-theme-git
+    install_native_package paper-icon-theme
 
     # Fonts
-    install-pkg gnu-free-fonts
-    [ "${ARCH_FAMILY}" == "x86" ] && install-pkg ttf-ms-win10
-    install-pkg noto-fonts
-    install-pkg noto-fonts-emoji
-    install-pkg ttf-droid
-    install-dep ttf-croscore
-    install-dep ttf-liberation
-    install-pkg hori-fonts
+    install_native_package gnu-free-fonts
+    [ "${ARCH_FAMILY}" == "x86" ] && install_native_package ttf-ms-win10
+    install_native_package noto-fonts
+    install_native_package noto-fonts-emoji
+    install_native_package ttf-droid
+    install_native_package_dependency ttf-croscore
+    install_native_package_dependency ttf-liberation
+    install_native_package hori-fonts
 
     # Fonts - International
-    install-pkg noto-fonts-cjk # Chinese, Japanese, Korean
-    install-pkg ttf-amiri # Classical Arabic in Naskh style
-    install-pkg ttf-ancient-fonts # Aegean, Egyptian, Cuneiform, Anatolian, Maya, Analecta
-    install-pkg ttf-baekmuk # Korean
-    install-pkg ttf-hannom # Vietnamese
-    install-pkg ttf-ubraille # Braille
+    install_native_package noto-fonts-cjk # Chinese, Japanese, Korean
+    install_native_package ttf-amiri # Classical Arabic in Naskh style
+    install_native_package ttf-ancient-fonts # Aegean, Egyptian, Cuneiform, Anatolian, Maya, Analecta
+    install_native_package ttf-baekmuk # Korean
+    install_native_package ttf-hannom # Vietnamese
+    install_native_package ttf-ubraille # Braille
 
     # Internet Browser
     install_flatpak org.mozilla.firefox
-    #does-bin-exist "gnome-shell" && install-pkg chrome-gnome-shell # Also used for Firefox
+    #does_bin_exist "gnome-shell" && install_native_package chrome-gnome-shell # Also used for Firefox
 
     # Torrent Downloader
     if ${POWERFUL_PC}; then
@@ -407,33 +407,33 @@ if ${HAS_GUI}; then
     install_flatpak com.github.vladimiry.ElectronMail
     install_flatpak org.telegram.desktop
     install_flatpak org.signal.Signal
-    install-pkg whatsapp-nativefier
+    install_native_package whatsapp-nativefier
 
     # Multimedia
     install_flatpak org.gnome.Rhythmbox3
     install_flatpak org.gnome.Totem
     install_flatpak com.spotify.Client
 
-    install-dep gst-plugins-ugly
-    install-dep gst-libav
+    install_native_package_dependency gst-plugins-ugly
+    install_native_package_dependency gst-libav
 
     if ${POWERFUL_PC}; then
         # Graphics
-        install-pkg gimp
-        install-pkg gimp-extras
-        install-pkg gimp-plugin-pixel-art-scalers
+        install_native_package gimp
+        install_native_package gimp-extras
+        install_native_package gimp-plugin-pixel-art-scalers
         install_flatpak org.inkscape.Inkscape
 
         # Gaming
         if ${IS_GAMING_DEVICE}; then
             # Launchers
-            install-pkg steam # No flatpak yet because the games will share the same icon in GNOME (e.g. alt-tabbing), concerns about steam-start, per-game desktop launchers, udev rules for controllers
-            install-pkg steam-start
+            install_native_package steam # No flatpak yet because the games will share the same icon in GNOME (e.g. alt-tabbing), concerns about steam-start, per-game desktop launchers, udev rules for controllers
+            install_native_package steam-start
 
             # Runtimes
-            install-dep steam-native-runtime
-            install-pkg proton-ge-custom-bin
-            install-pkg luxtorpeda-git
+            install_native_package_dependency steam-native-runtime
+            install_native_package proton-ge-custom-bin
+            install_native_package luxtorpeda-git
 
             # Communication
             install_flatpak com.discordapp.Discord
@@ -442,38 +442,38 @@ if ${HAS_GUI}; then
 
     if ${IS_DEVELOPMENT_DEVICE}; then
         # Runtimes
-        install-pkg python
-        install-pkg python2
-        install-pkg mono
-        install-pkg jre-openjdk-headless
+        install_native_package python
+        install_native_package python2
+        install_native_package mono
+        install_native_package jre-openjdk-headless
 
         if [[ "${ARCH_FAMILY}" == "x86" ]]; then
-            install-pkg dotnet-runtime
-#            install-pkg aspnet-runtime
+            install_native_package dotnet-runtime
+#            install_native_package aspnet-runtime
         elif [[ "${ARCH_FAMILY}" == "arm" ]]; then
-            install-pkg dotnet-runtime-bin
-#            install-pkg aspnet-runtime-bin
+            install_native_package dotnet-runtime-bin
+#            install_native_package aspnet-runtime-bin
         fi
 
         # Development
-        install-pkg dotnet-sdk
+        install_native_package dotnet-sdk
 
         if [[ "${ARCH_FAMILY}" == "x86" ]]; then
-            install-pkg electron
-            ! is-package-installed "chromium" && install-pkg chromedriver
+            install_native_package electron
+            ! is_native_package_installed "chromium" && install_native_package chromedriver
         fi
 
-        [[ "${ARCH_FAMILY}" == "x86" ]] && install-pkg visual-studio-code-bin
-        [[ "${ARCH_FAMILY}" == "arm" ]] && install-pkg code-headmelted-bin
-        install-vscode-extension "dakara.transformer"
-        install-vscode-extension "johnpapa.vscode-peacock"
-        install-vscode-extension "mechatroner.rainbow-csv"
-        install-vscode-extension "mgcb-vscode.mgcb-vscode"
-        install-vscode-extension "ms-dotnettools.csharp"
-        install-vscode-extension "nico-castell.linux-desktop-file"
+        [[ "${ARCH_FAMILY}" == "x86" ]] && install_native_package visual-studio-code-bin
+        [[ "${ARCH_FAMILY}" == "arm" ]] && install_native_package code-headmelted-bin
+        install_vscode_package "dakara.transformer"
+        install_vscode_package "johnpapa.vscode-peacock"
+        install_vscode_package "mechatroner.rainbow-csv"
+        install_vscode_package "mgcb-vscode.mgcb-vscode"
+        install_vscode_package "ms-dotnettools.csharp"
+        install_vscode_package "nico-castell.linux-desktop-file"
 
-        if does-bin-exist "code" "code-oss" "codium"; then
-            does-bin-exist "nautilus" && install-pkg code-nautilus-git
+        if does_bin_exist "code" "code-oss" "codium"; then
+            does_bin_exist "nautilus" && install_native_package code-nautilus-git
         fi
 
         install_flatpak com.getpostman.Postman
@@ -482,7 +482,7 @@ if ${HAS_GUI}; then
     # Tools
     install_flatpak com.simplenote.Simplenote
 
-    install-pkg xorg-xdpyinfo
-    install-pkg xorg-xkill
-    install-pkg start-wmclass
+    install_native_package xorg-xdpyinfo
+    install_native_package xorg-xkill
+    install_native_package start-wmclass
 fi
