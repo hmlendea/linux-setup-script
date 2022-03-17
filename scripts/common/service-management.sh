@@ -1,4 +1,8 @@
 #!/bin/bash
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    source "scripts/common/filesystem.sh"
+    source "${REPO_DIR}/scripts/common/common.sh"
+fi
 
 function does_systemd_service_exist_at_location {
     local SERVICE_NAME="${1}"

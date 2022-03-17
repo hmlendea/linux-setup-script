@@ -1,5 +1,8 @@
 #!/bin/bash
-source "scripts/common/common.sh"
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    source "scripts/common/filesystem.sh"
+    source "${REPO_DIR}/scripts/common/common.sh"
+fi
 
 NUMBER_REGEX_PATTERN='^[0-9][0-9.]*$'
 NUMBER_UINT_REGEX_PATTERN='^uint[0-9]+ [0-9]+$'

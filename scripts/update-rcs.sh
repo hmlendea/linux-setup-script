@@ -1,5 +1,6 @@
 #!/bin/bash
-source "scripts/common/common.sh"
+source "scripts/common/filesystem.sh"
+source "${REPO_DIR}/scripts/common/common.sh"
 
 update-file-if-needed "${REPO_RC_DIR}/inputrc" "${HOME}/.inputrc"
 update-file-if-needed "${REPO_RC_DIR}/shell_aliases" "${HOME}/.shell_aliases"

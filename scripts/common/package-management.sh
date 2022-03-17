@@ -1,5 +1,8 @@
 #!/bin/bash
-source "scripts/common/common.sh"
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    source "scripts/common/filesystem.sh"
+    source "${REPO_DIR}/scripts/common/common.sh"
+fi
 
 function call-package-manager() {
     if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
@@ -76,6 +79,24 @@ function is-vscode-extension-installed() {
         return 1 # False
     fi
 }
+
+function is_gnome_shell_extension_installed() {
+    local EXTENSION_NAME="${*}"
+
+    local GLOBAL_EXTENSIONS_DIR="${ROOT_USR_SHARE}/gnome-shell/extensions"
+    local LOCAL_EXTENSIONS_DIR="${HOME_LOCAL_SHARE}/gnome-shell/extensions"
+
+    if [ -d "${GLOBAL_EXTENSIONS_DIR}" ]; then
+        local EXTENSION_PATH=$(find "${GLOBAL_EXTENSIONS_DIR}" -type d -name "${EXTENSION_NAME}@*")
+        [ -n "${EXTENSION_PATH}" ] && return 0 # True
+    elif [ -d "${LOCAL_EXTENSIONS_DIR}" ]; then
+        local EXTENSION_PATH=$(find "${LOCAL_EXTENSIONS_DIR}" -type d -name "${EXTENSION_NAME}@*")
+        [ -n "${EXTENSION_PATH}" ] && return 0 # True
+    fi
+
+    return 1 # False
+}
+
 
 function is_steam_app_installed() {
     local STEAM_APP_ID="${1}"
