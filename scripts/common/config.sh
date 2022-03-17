@@ -24,6 +24,28 @@ function is_value_string() {
     return 1 # False
 }
 
+function get_config_value() {
+    local SEPARATOR="="
+
+    if [[ "${1}" == "--separator" ]]; then
+        shift
+        SEPARATOR="${1}"
+        shift
+    fi
+
+    local FILE_CONTENT=""
+    local FILE_PATH="${1}"
+    local KEY="${2}"
+
+    [ ! -f "${FILE_PATH}" ] && return
+
+    FILE_CONTENT=$(read_file "${FILE_PATH}")
+
+    grep "^${KEY}\s*${SEPARATOR}" <<< "${FILE_CONTENT}" | sed \
+        -e 's/^[^'"${SEPARATOR}"']*'"${SEPARATOR}"'//g' \
+        -e 's/^\s*//g' -e 's/\s*$//g'
+}
+
 function set_config_value() {
     local SEPARATOR="="
 
@@ -45,21 +67,32 @@ function set_config_value() {
 
     FILE_CONTENT=$(read_file "${FILE_PATH}")
 
-    # If the value is not already set
-    if [[ $(grep -c "^${KEY}${SEPARATOR}${VALUE}$" <<< "$FILE_CONTENT") == 0 ]]; then
-        # If the config key already exists (with a different value)
-        if [ $(grep -c "^${KEY}${SEPARATOR}.*$" <<< "$FILE_CONTENT") -gt 0 ]; then
-            if [ -w "${FILE_PATH}" ]; then
-                sed -i 's|^'"${KEY}${SEPARATOR}"'.*$|'"${KEY}${SEPARATOR}${VALUE}"'|g' "${FILE_PATH}"
-            else
-                sudo sed -i 's|^'"${KEY}${SEPARATOR}"'.*$|'"${KEY}${SEPARATOR}${VALUE}"'|g' "${FILE_PATH}"
-            fi
-        else
-            append_line "${FILE_PATH}" "${KEY}${SEPARATOR}${VALUE}"
-        fi
+    CURRENT_VALUE=$(get_config_value --separator "${SEPARATOR}" "${FILE_PATH}" "${KEY}")
 
-        echo "${FILE_PATH} >>> ${KEY}${SEPARATOR}${VALUE}"
+#    echo "${CURRENT_VALUE}"
+#    echo "${VALUE}"
+
+    if [[ "${CURRENT_VALUE}" == "${VALUE}" ]]; then
+        return
+    elif is_value_string "${VALUE}"; then
+        if [[ "'${CURRENT_VALUE}'" == "${VALUE}" ]] \
+        || [[ "\"${CURRENT_VALUE}\"" == "${VALUE}" ]]; then
+            return
+        fi
     fi
+
+    # If the config key already exists (with a different value)
+    if [ $(grep -c "^${KEY}${SEPARATOR}.*$" <<< "$FILE_CONTENT") -gt 0 ]; then
+        if [ -w "${FILE_PATH}" ]; then
+            sed -i 's|^'"${KEY}${SEPARATOR}"'.*$|'"${KEY}${SEPARATOR}${VALUE}"'|g' "${FILE_PATH}"
+        else
+            sudo sed -i 's|^'"${KEY}${SEPARATOR}"'.*$|'"${KEY}${SEPARATOR}${VALUE}"'|g' "${FILE_PATH}"
+        fi
+    else
+        append_line "${FILE_PATH}" "${KEY}${SEPARATOR}${VALUE}"
+    fi
+
+    echo "${FILE_PATH} >>> ${KEY}${SEPARATOR}${VALUE}"
 }
 
 function set_firefox_config() {
