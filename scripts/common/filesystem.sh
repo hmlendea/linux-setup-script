@@ -49,7 +49,7 @@ HOME_LOCAL_SHARE="${HOME_LOCAL}/share"
 HOME_VAR="${HOME}/.var"
 
 # Functions
-function does-bin-exist () {
+function does_bin_exist () {
     for BINARY_NAME in "${@}"; do
         if [ -f "${ROOT_BIN}/${BINARY_NAME}" ] \
         || [ -f "${ROOT_USR_BIN}/${BINARY_NAME}" ] \
@@ -85,12 +85,24 @@ function remove() {
             fi
         else
             if [ -f "${PATH_TO_REMOVE}" ]; then
-                run-as-su rm "${PATH_TO_REMOVE}"
+                run_as_su rm "${PATH_TO_REMOVE}"
             else
-                run-as-su rm -r "${PATH_TO_REMOVE}"
+                run_as_su rm -r "${PATH_TO_REMOVE}"
             fi
         fi
     done
+}
+
+function create_file() {
+    local FILE_PATH="${*}"
+
+    [ -z "${FILE_PATH}" ] && return
+    [ -f "${FILE_PATH}" ] && return
+
+    local DIRECTORY_PATH="$(dirname ${FILE_PATH})"
+
+    mkdir -p "${DIRECTORY_PATH}"
+    touch "${FILE_PATH}"
 }
 
 function create_symlink() {
@@ -123,17 +135,17 @@ function get_symlink_target() {
     fi
 }
 
-function read-file() {
+function read_file() {
     local FILE_PATH="${*}"
 
     if [ -r "${FILE_PATH}" ]; then
         cat "${FILE_PATH}"
     else
-        run-as-su cat "${FILE_PATH}"
+        run_as_su cat "${FILE_PATH}"
     fi
 }
 
-function file-append-line() {
+function append_line() {
     local FILE_PATH="${1}"
     local LINE="${@:2}"
 
@@ -144,23 +156,23 @@ function file-append-line() {
     if [ -w "${FILE_PATH}" ]; then
         echo "${LINE}" >> "${FILE_PATH}" 2>/dev/null
     else
-        echo "${LINE}" | run-as-su tee -a "${FILE_PATH}" >/dev/null
+        echo "${LINE}" | run_as_su tee -a "${FILE_PATH}" >/dev/null
     fi
 }
 
-function download-file {
+function download_file {
     local URL="${1}"
     local FILE="${2}"
 
     [ ! -f "${FILE}" ] && wget "${URL}" -O "${FILE}"
 }
 
-function get-file-checksum() {
+function get_file_checksum() {
     [ ! -f "${@}" ] && return
     sha512sum "${@}" | awk '{print $1}'
 }
 
-function does-file-need-updating() {
+function does_file_need_updating() {
     local SOURCE_FILE_PATH="${1}"
     local TARGET_FILE_PATH="${2}"
     local FILES_ARE_SAME=false
@@ -169,8 +181,8 @@ function does-file-need-updating() {
     [ ! -f "${TARGET_FILE_PATH}" ] && return 0 # True
 
     if [ -f "${TARGET_FILE_PATH}" ]; then
-        local SOURCE_FILE_CHECKSUM=$(get-file-checksum "${SOURCE_FILE_PATH}")
-        local TARGET_FILE_CHECKSUM=$(get-file-checksum "${TARGET_FILE_PATH}")
+        local SOURCE_FILE_CHECKSUM=$(get_file_checksum "${SOURCE_FILE_PATH}")
+        local TARGET_FILE_CHECKSUM=$(get_file_checksum "${TARGET_FILE_PATH}")
 
         if [ "${SOURCE_FILE_CHECKSUM}" = "${TARGET_FILE_CHECKSUM}" ]; then
             FILES_ARE_SAME=true
@@ -184,12 +196,12 @@ function does-file-need-updating() {
     fi
 }
 
-function update-file-if-needed() {
+function update_file_if_distinct() {
     local SOURCE_FILE_PATH="${1}"
     local TARGET_FILE_PATH="${2}"
     local TARGET_DIR=$(dirname "${TARGET_FILE_PATH}")
 
-    if $(does-file-need-updating "${SOURCE_FILE_PATH}" "${TARGET_FILE_PATH}"); then
+    if $(does_file_need_updating "${SOURCE_FILE_PATH}" "${TARGET_FILE_PATH}"); then
         if [ ! -d "${TARGET_DIR}" ]; then
             echo "Creating the directory: ${TARGET_DIR}" >&2
             mkdir -p "${TARGET_DIR}"
@@ -199,7 +211,7 @@ function update-file-if-needed() {
         if [ -w "${TARGET_DIR}" ]; then
             cp "${SOURCE_FILE_PATH}" "${TARGET_FILE_PATH}"
         else
-            run-as-su cp "${SOURCE_FILE_PATH}" "${TARGET_FILE_PATH}"
+            run_as_su cp "${SOURCE_FILE_PATH}" "${TARGET_FILE_PATH}"
         fi
     fi
 }

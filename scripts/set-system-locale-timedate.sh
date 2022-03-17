@@ -34,7 +34,7 @@ echo "ro_RO.UTF-8 UTF-8" >> "${LOCALE_GEN_FILE_PATH}"
 for LOCALE in $(awk '{print $1}' "${LOCALE_GEN_FILE_PATH}" | sed -e 's/\([^\.]*\)\.\(.*\)/\1.\L\2/' | sed 's/-//'); do
     if [ ! $(locale -a | grep "${LOCALE}") ]; then
         echo "Generating the localisations..."
-        run-as-su locale-gen
+        run_as_su locale-gen
         break
     fi
 done
@@ -50,6 +50,6 @@ fi
 if ${HAS_GUI}; then
     if [ -d "${KEYBOARD_LAYOUTS_PATH}" ]; then
         echo "Updating the keyboard layouts..."
-        update-file-if-needed "${REPO_KEYBOARD_LAYOUTS_DIR}/ro" "${KEYBOARD_LAYOUTS_PATH}/ro"
+        update_file_if_distinct "${REPO_KEYBOARD_LAYOUTS_DIR}/ro" "${KEYBOARD_LAYOUTS_PATH}/ro"
     fi
 fi

@@ -151,7 +151,7 @@ if ${HAS_GUI}; then
     fi
 fi
 
-if does-bin-exist "mkinitcpio"; then
+if does_bin_exist "mkinitcpio"; then
     MKINITCPIO_CONFIG_FILE="${ROOT_ETC}/mkinitcpio.conf"
 
     set_config_value "${MKINITCPIO_CONFIG_FILE}" "COMPRESSION" "\"lz4\""
@@ -203,7 +203,7 @@ fi
 if [ -d "${ROOT_ETC}/sysctl.d" ]; then
     SYSCTL_CONFIG_FILE="${ROOT_ETC}/sysctl.d/00-system.conf"
 
-    [ ! -f "${SYSCTL_CONFIG_FILE}" ] && run-as-su touch "${SYSCTL_CONFIG_FILE}"
+    [ ! -f "${SYSCTL_CONFIG_FILE}" ] && run_as_su touch "${SYSCTL_CONFIG_FILE}"
 
     set_config_value "${SYSCTL_CONFIG_FILE}" "net.ipv6.conf.all.disable_ipv6" 1 # Disable IPv6
     set_config_value "${SYSCTL_CONFIG_FILE}" "kernel.nmi_watchdog" 0            # Disable NMI interrupts that can consume a lot of power
@@ -256,7 +256,7 @@ if [ -f "${ROOT_ETC}/default/grub" ]; then
     fi
 fi
 
-if does-bin-exist "gnome-shell"; then
+if does_bin_exist "gnome-shell"; then
     if ( ! ${POWERFUL_PC} ); then
         set_gsetting "org.gnome.settings-daemon.plugins.remote-display" active false
         set_gsetting "org.gnome.desktop.interface" enable-animations false
@@ -312,7 +312,7 @@ if is_gnome_shell_extension_installed "multi-monitors-add-on"; then
     set_gsetting "org.gnome.shell.extensions.multi-monitors-add-on" show-indicator false
 fi
 
-if does-bin-exist "panther_launcher"; then
+if does_bin_exist "panther_launcher"; then
     set_gsetting "org.rastersoft.panther" icon-size 48
     set_gsetting "org.rastersoft.panther" use-category true
 fi
@@ -359,19 +359,19 @@ if ${HAS_GUI}; then
     fi
 fi
 
-if does-bin-exist "makepkg"; then
+if does_bin_exist "makepkg"; then
     MAKEPKG_CONFIG_FILE="${ROOT_ETC}/makepkg.conf"
 
     set_config_value "${MAKEPKG_CONFIG_FILE}" "COMPRESSXZ" "(xz -c -z --threads=0 -)"
     set_config_value "${MAKEPKG_CONFIG_FILE}" "COMPRESSZST" "(zstd -c -z -q --threads=0 -)"
 
-    if does-bin-exist "pbzip2"; then
+    if does_bin_exist "pbzip2"; then
         set_config_value "${MAKEPKG_CONFIG_FILE}" "COMPRESSBZ2" "(pbzip2 -c -f)"
     else
         set_config_value "${MAKEPKG_CONFIG_FILE}" "COMPRESSBZ2" "(bzip2 -c -f)"
     fi
 
-    if does-bin-exist "pigz"; then
+    if does_bin_exist "pigz"; then
         set_config_value "${MAKEPKG_CONFIG_FILE}" "COMPRESSGZ" "(pigz -c -f -n)"
     else
         set_config_value "${MAKEPKG_CONFIG_FILE}" "COMPRESSGZ" "(gzip -c -f -n)"
@@ -383,11 +383,11 @@ if [ -f "${HOME_REAL}/.config/lxsession/LXDE/desktop.conf" ]; then
 
     LXDE_WM=""
 
-    if does-bin-exist "openbox"; then
+    if does_bin_exist "openbox"; then
         LXDE_WM="openbox-lxde"
-    elif does-bin-exist "xfwm4"; then
+    elif does_bin_exist "xfwm4"; then
         LXDE_WM="mutter"
-    elif does-bin-exist "mutter"; then
+    elif does_bin_exist "mutter"; then
         LXDE_WM="mutter"
     fi
 
@@ -405,7 +405,7 @@ fi
 ### Ad Blockers ###
 ###################
 
-if does-bin-exist "pihole-FTL"; then
+if does_bin_exist "pihole-FTL"; then
     PIHOLE_DNSMASQ_CONFIG_PATH="/etc/dnsmasq.d/01-pihole.conf"
 
     set_config_value "${PIHOLE_DNSMASQ_CONFIG_PATH}" "cache-size" $((DNS_CACHE_SIZE))
@@ -416,14 +416,14 @@ fi
 ##################
 ### App Stores ###
 ##################
-if does-bin-exist "gnome-software"; then
+if does_bin_exist "gnome-software"; then
     set_gsetting "org.gnome.software" download-updates false
 fi
 
 ########################
 ### Archive Managers ###
 ########################
-if does-bin-exist "file-roller" "org.gnome.FileRoller"; then
+if does_bin_exist "file-roller" "org.gnome.FileRoller"; then
     set_gsetting "org.gnome.FileRoller.General" compression-level "maximum"
     set_gsetting "org.gnome.FileRoller.General" sort-method "name"
     set_gsetting "org.gnome.FileRoller.General" sort-type "ascending"
@@ -432,14 +432,14 @@ fi
 #############
 ### Audio ###
 #############
-if does-bin-exist "gnome-shell"; then
+if does_bin_exist "gnome-shell"; then
     set_gsetting org.gnome.desktop.sound allow-volume-above-100-percent true
     set_gsetting org.gnome.settings-daemon.plugins.media-keys volume-step 3
 fi
-if does-bin-exist "openal-info"; then
+if does_bin_exist "openal-info"; then
     set_config_value "${HOME_REAL}/.alsoftrc" hrtf true
 fi
-if does-bin-exist "pulseaudio"; then
+if does_bin_exist "pulseaudio"; then
     set_config_value "${ROOT_ETC}/pulse/daemon.conf" resample-method speex-float-10
     set_pulseaudio_module_option "module-suspend-on-idle"
     set_pulseaudio_module_option "module-udev-detect" "tsched" 0
@@ -457,7 +457,7 @@ fi
 ###################
 ### Calculators ###
 ###################
-if does-bin-exist "gnome-calculator" "org.gnome.Calculator"; then
+if does_bin_exist "gnome-calculator" "org.gnome.Calculator"; then
     GNOME_CALCULATOR_SCHEMA="org.gnome.calculator"
 
     set_gsetting "${GNOME_CALCULATOR_SCHEMA}" base 10
@@ -466,59 +466,59 @@ if does-bin-exist "gnome-calculator" "org.gnome.Calculator"; then
     set_gsetting "${GNOME_CALCULATOR_SCHEMA}" source-currency 'EUR'
     set_gsetting "${GNOME_CALCULATOR_SCHEMA}" target-currency 'RON'
 fi
-if does-bin-exist "mate-calc"; then
+if does_bin_exist "mate-calc"; then
     set_gsetting "org.mate.calc" show-thousands true
 fi
 
 #################
 ### CHAT APPS ###
 #################
-if does-bin-exist "teams" "teams-insiders" "com.microsoft.Teams"; then
+if does_bin_exist "teams" "teams-insiders" "com.microsoft.Teams"; then
     TEAMS_CONFIG_DIR="${HOME_CONFIG}/Microsoft/Microsoft Teams"
     [ -d "${HOME_VAR}/app/de.haeckerfelix.Fragments" ] && TEAMS_CONFIG_DIR="${HOME_VAR}/app/com.microsoft.Teams/config/Microsoft/Microsoft Teams"
 
     TEAMS_DESKTOP_CONFIG_FILE="${TEAMS_CONFIG_DIR}/desktop-config.json"
 
-    does-bin-exist "teams-insiders" && TEAMS_DESKTOP_CONFIG_FILE="${HOME_CONFIG}/Microsoft/Microsoft Teams - Insiders/desktop-config.json"
+    does_bin_exist "teams-insiders" && TEAMS_DESKTOP_CONFIG_FILE="${HOME_CONFIG}/Microsoft/Microsoft Teams - Insiders/desktop-config.json"
 
     # Fixes
-    set_json_value "${TEAMS_DESKTOP_CONFIG_FILE}" '.appPreferenceSettings.disableGpu' true
+    set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" '.appPreferenceSettings.disableGpu' true
 
     # Appearance
-    set_json_value "${TEAMS_DESKTOP_CONFIG_FILE}" '.currentWebLanguage' "$(echo ${APPS_LANGUAGE,,} | sed 's/_/-/g')"
+    set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" '.currentWebLanguage' "$(echo ${APPS_LANGUAGE,,} | sed 's/_/-/g')"
 
     if ${DESKTOP_THEME_IS_DARK}; then
-        set_json_value "${TEAMS_DESKTOP_CONFIG_FILE}" '.theme' "darkV2"
+        set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" '.theme' "darkV2"
     else
-        set_json_value "${TEAMS_DESKTOP_CONFIG_FILE}" '.theme' "defaultV2"
+        set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" '.theme' "defaultV2"
     fi
 
     # Window state
-    set_json_value "${TEAMS_DESKTOP_CONFIG_FILE}" '.surfaceHubWindowState.isMaximized' true
-    set_json_value "${TEAMS_DESKTOP_CONFIG_FILE}" '.surfaceHubWindowState.isFullScreen' false
-    set_json_value "${TEAMS_DESKTOP_CONFIG_FILE}" '.windowState.isMaximized' true
-    set_json_value "${TEAMS_DESKTOP_CONFIG_FILE}" '.windowState.isFullScreen' false
+    set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" '.surfaceHubWindowState.isMaximized' true
+    set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" '.surfaceHubWindowState.isFullScreen' false
+    set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" '.windowState.isMaximized' true
+    set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" '.windowState.isFullScreen' false
 
 fi
-if does-bin-exist "telegram-desktop" "com.telegram.desktop"; then
+if does_bin_exist "telegram-desktop" "com.telegram.desktop"; then
     set_config_value "${ENVIRONMENT_VARS_FILE}" TDESKTOP_I_KNOW_ABOUT_GTK_INCOMPATIBILITY "1"
 fi
-if does-bin-exist "whatsapp-for-linux"; then
+if does_bin_exist "whatsapp-for-linux"; then
     WAPP_CONFIG_FILE="${HOME_REAL}/.config/whatsapp-for-linux/settings.conf"
 
     # Disable tray because tray icons don't work and the window becomes inaccessible
     set_config_value "${WAPP_CONFIG_FILE}" close_to_tray false
     set_config_value "${WAPP_CONFIG_FILE}" start_in_tray false
 fi
-if does-bin-exist "whatsapp-nativefier"; then
+if does_bin_exist "whatsapp-nativefier"; then
     WAPP_CONFIG_FILE="${ROOT_OPT}/whatsapp-nativefier/resources/app/nativefier.json"
     #WAPP_PREFERENCES_FILE="${HOME}/.config/whatsapp-nativefier-d40211/Preferences"
 
-    #sudo bash -c "$(declare -f set_json_value); set_json_value \"${WAPP_CONFIG_FILE}\" '.tray' \"start-in-tray\""
-    #set_json_value "${WAPP_CONFIG_FILE}" '.tray' "start-in-tray"
+    #sudo bash -c "$(declare -f set_json_property); set_json_property \"${WAPP_CONFIG_FILE}\" '.tray' \"start-in-tray\""
+    #set_json_property "${WAPP_CONFIG_FILE}" '.tray' "start-in-tray"
 
-    #set_json_value "${WAPP_CONFIG_FILE}" '.zoom' "${ZOOM_LEVEL}"
-    #set_json_value "${WAPP_PREFERENCES_FILE}" '.partition.per_host_zoom_levels[]."web.whatsapp.com"' "${ZOOM_LEVEL}"
+    #set_json_property "${WAPP_CONFIG_FILE}" '.zoom' "${ZOOM_LEVEL}"
+    #set_json_property "${WAPP_PREFERENCES_FILE}" '.partition.per_host_zoom_levels[]."web.whatsapp.com"' "${ZOOM_LEVEL}"
 fi
 
 ##############
@@ -531,14 +531,14 @@ fi
 #############################
 ### CONFIGURATION EDITORS ###
 #############################
-if does-bin-exist "dconf-editor"; then
+if does_bin_exist "dconf-editor"; then
     set_gsetting ca.desrt.dconf-editor.Settings show-warning false
 fi
 
 ################
 ### Contacts ###
 ################
-if does-bin-exist "gnome-contacts" "org.gnome.Contacts"; then
+if does_bin_exist "gnome-contacts" "org.gnome.Contacts"; then
     set_gsetting "org.gnome.Contacts" did-initial-setup true
     set_gsetting "org.gnome.Contacts" sort-on-surname true
 fi
@@ -572,7 +572,7 @@ if is_gnome_shell_extension_installed "dash-to-dock"; then
         set_gsetting "${BMS_SCHEMA}" blur-dash false # Breaks the dock if true
     fi
 fi
-if does-bin-exist "plank"; then
+if does_bin_exist "plank"; then
     PLANK_SCHEMA="net.launchpad.plank.dock.settings:/net/launchpad/plank/docks/dock1/"
 
     set_gsetting "${PLANK_SCHEMA}" auto-pinning false
@@ -596,7 +596,7 @@ fi
 ########################
 ### Document Viewers ###
 ########################
-if does-bin-exist "epdfview"; then
+if does_bin_exist "epdfview"; then
     EPDFVIEW_CONFIG_FILE="${HOME_REAL}/.config/epdfview/main.conf"
 
     set_config_value "${EPDFVIEW_CONFIG_FILE}" zoomToFit false
@@ -607,7 +607,7 @@ fi
 #####################
 ### FILE MANAGERS ###
 #####################
-if does-bin-exist "nautilus"; then
+if does_bin_exist "nautilus"; then
     NAUTILUS_SCHEMA="org.gnome.nautilus"
 
     set_gsetting "${NAUTILUS_SCHEMA}.icon-view" default-zoom-level "standard"
@@ -617,7 +617,7 @@ if does-bin-exist "nautilus"; then
     set_gsetting "${NAUTILUS_SCHEMA}.preferences" show-delete-permanently true
     set_gsetting "${NAUTILUS_SCHEMA}.window-state" sidebar-width 240
 fi
-if does-bin-exist "pcmanfm"; then
+if does_bin_exist "pcmanfm"; then
     PCMANFM_CONFIG_FILE="${HOME_REAL}/.config/pcmanfm/LXDE/pcmanfm.conf"
 
     set_config_value "${PCMANFM_CONFIG_FILE}" always_show_tabs 0
@@ -639,7 +639,7 @@ fi
 ###############
 ### FIREFOX ###
 ###############
-if does-bin-exist "firefox" "org.mozilla.firefox"; then
+if does_bin_exist "firefox" "org.mozilla.firefox"; then
     MOZILLA_USERDATA_DIR="${HOME_REAL}/.mozilla"
     [ -d "${HOME_VAR}/app/org.mozilla.firefox" ] && MOZILLA_USERDATA_DIR="${HOME_VAR}/app/org.mozilla.firefox/.mozilla"
 
@@ -785,16 +785,16 @@ if [ -f "${MC_OPTIONS_FILE}" ]; then
     set_config_value --separator ":" "${MC_OPTIONS_FILE}" skipMultiplayerWarning true
     set_config_value --separator ":" "${MC_OPTIONS_FILE}" joinedFirstServer true
 
-    set_json_value "${MC_LAUNCHER_PROFILES_FILE}" '.settings.crashAssistance' false
-    set_json_value "${MC_LAUNCHER_SETTINGS_FILE}" '.deviceId' "${DEVICE_ID}"
-    set_json_value "${MC_LAUNCHER_SETTINGS_FILE}" '.locale' "${GAMES_LANGUAGE/_/-}"
+    set_json_property "${MC_LAUNCHER_PROFILES_FILE}" '.settings.crashAssistance' false
+    set_json_property "${MC_LAUNCHER_SETTINGS_FILE}" '.deviceId' "${DEVICE_ID}"
+    set_json_property "${MC_LAUNCHER_SETTINGS_FILE}" '.locale' "${GAMES_LANGUAGE/_/-}"
 fi
 
 PDX_LAUNCHER_DATA_DIR="${HOME}/.local/share/Paradox Interactive/launcher-v2"
 PDX_LAUNCHER_USER_SETTINGS_FILE="${PDX_LAUNCHER_DATA_DIR}/userSettings.json"
 
 if [ -f "${PDX_LAUNCHER_USER_SETTINGS_FILE}" ]; then
-    set_json_value "${PDX_LAUNCHER_USER_SETTINGS_FILE}" '.allowPersonalizedContent' false
+    set_json_property "${PDX_LAUNCHER_USER_SETTINGS_FILE}" '.allowPersonalizedContent' false
 fi
 
 ASPYR_DIR="{HOME}/.local/share/Aspyr"
@@ -811,13 +811,13 @@ TERRARIA_DIR="${HOME}/.local/share/Terraria"
 TERRARIA_CONFIG_FILE="${TERRARIA_DIR}/config.json"
 
 if [ -f "${TERRARIA_CONFIG_FILE}" ]; then
-    set_json_value "${TERRARIA_CONFIG_FILE}" ".QuickLaunch" true
+    set_json_property "${TERRARIA_CONFIG_FILE}" ".QuickLaunch" true
 fi
 
 ###########
 ### GPG ###
 ###########
-if does-bin-exist "gpg"; then
+if does_bin_exist "gpg"; then
     GNUPG_DIRMNGR_CONFIG="${HOME}/.gnupg/dirmngr.conf"
 
     if [ ! -d "${HOME}/.gnupg" ]; then
@@ -841,82 +841,82 @@ fi
 ############
 ### IDEs ###
 ############
-if does-bin-exist "code" "code-oss" "codium"; then
+if does_bin_exist "code" "code-oss" "codium"; then
     # The order is important, some might be present simultaoneously for a single package
-    does-bin-exist "code" && VSCODE_CONFIG_FILE="${HOME}/.config/Code/User/settings.json"
-    does-bin-exist "code-oss" && VSCODE_CONFIG_FILE="${HOME}/.config/Code - OSS/User/settings.json"
-    does-bin-exist "codium" && VSCODE_CONFIG_FILE="${HOME}/.config/VSCodium/User/settings.json"
+    does_bin_exist "code" && VSCODE_CONFIG_FILE="${HOME}/.config/Code/User/settings.json"
+    does_bin_exist "code-oss" && VSCODE_CONFIG_FILE="${HOME}/.config/Code - OSS/User/settings.json"
+    does_bin_exist "codium" && VSCODE_CONFIG_FILE="${HOME}/.config/VSCodium/User/settings.json"
 
     if [ ! -f "${VSCODE_CONFIG_FILE}" ]; then
-        create-file-if-not-exists "${VSCODE_CONFIG_FILE}"
+        create_file "${VSCODE_CONFIG_FILE}"
         printf "{}" > "${VSCODE_CONFIG_FILE}"
     fi
 
     # Appearance
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["peacock.affectActivityBar"]' false
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["peacock.affectTabActiveBorder"]' true
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["peacock.showColorInStatusBar"]' false
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["update.mode"]' "none"
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["window.autoDetectColorScheme"]' true
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["window.menuBarVisibility"]' "toggle"
-    #set_json_value "${VSCODE_CONFIG_FILE}" '.["window.title"]' '${dirty}${activeEditorShort}${separator}${rootName}${separator}VS Code'
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["workbench.colorTheme"]' "Default Dark+"
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["workbench.iconTheme"]' "seti"
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["peacock.affectActivityBar"]' false
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["peacock.affectTabActiveBorder"]' true
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["peacock.showColorInStatusBar"]' false
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["update.mode"]' "none"
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["window.autoDetectColorScheme"]' true
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["window.menuBarVisibility"]' "toggle"
+    #set_json_property "${VSCODE_CONFIG_FILE}" '.["window.title"]' '${dirty}${activeEditorShort}${separator}${rootName}${separator}VS Code'
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["workbench.colorTheme"]' "Default Dark+"
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["workbench.iconTheme"]' "seti"
 
     # Editor appearance
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.codeLens"]' false
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.fontFamily"]' "${MONOSPACE_FONT_NAME} ${MONOSPACE_FONT_STYLE}"
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.fontSize"]' $((MONOSPACE_FONT_SIZE+3))
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.roundedSelection"]' true
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.minimap.maxColumn"]' 100
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.minimap.renderCharacters"]' false
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.codeLens"]' false
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.fontFamily"]' "${MONOSPACE_FONT_NAME} ${MONOSPACE_FONT_STYLE}"
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.fontSize"]' $((MONOSPACE_FONT_SIZE+3))
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.roundedSelection"]' true
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.minimap.maxColumn"]' 100
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.minimap.renderCharacters"]' false
 
     # Editor behaviour
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.autoClosingBrackets"]' false
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.find.autoFindInSelection"]' "never"
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.find.seedSearchStringFromSelection"]' "selection"
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.foldingMaximumRegions"]' 7500
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["editor.unicodeHighlight.ambiguousCharacters"]' true
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["workbench.largeFileOptimizations"]' false
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["explorer.confirmDragAndDrop"]' false
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["explorer.confirmDelete"]' false
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["git.autofetch"]' true
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["git.autofetchPeriod"]' 300
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.scrollback"]' ${TERMINAL_SCROLLBACK_SIZE}
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.autoClosingBrackets"]' false
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.find.autoFindInSelection"]' "never"
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.find.seedSearchStringFromSelection"]' "selection"
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.foldingMaximumRegions"]' 7500
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.unicodeHighlight.ambiguousCharacters"]' true
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["workbench.largeFileOptimizations"]' false
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["explorer.confirmDragAndDrop"]' false
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["explorer.confirmDelete"]' false
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["git.autofetch"]' true
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["git.autofetchPeriod"]' 300
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.scrollback"]' ${TERMINAL_SCROLLBACK_SIZE}
 
     # Disable unwanted features
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["workbench.startupEditor"]' false
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["security.workspace.trust.enabled"]' false
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.enablePersistentSessions"]' false
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["workbench.startupEditor"]' false
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["security.workspace.trust.enabled"]' false
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.enablePersistentSessions"]' false
 
     # C#
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["omnisharp.enableDecompilationSupport"]' true
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["omnisharp.enableDecompilationSupport"]' true
 
     # Terminal
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.allowChords"]' false
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.drawBoldTextInBrightColors"]' ${TERMINAL_BOLD_TEXT_IS_BRIGHT}
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.fontFamily"]' "${MONOSPACE_FONT_NAME} ${MONOSPACE_FONT_STYLE}"
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.fontSize"]' $((MONOSPACE_FONT_SIZE+3))
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.allowChords"]' false
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.drawBoldTextInBrightColors"]' ${TERMINAL_BOLD_TEXT_IS_BRIGHT}
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.fontFamily"]' "${MONOSPACE_FONT_NAME} ${MONOSPACE_FONT_STYLE}"
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.fontSize"]' $((MONOSPACE_FONT_SIZE+3))
 
     if [ "${TERMINAL_CURSOR_SHAPE}" == "ibeam" ]; then
-        set_json_value "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.cursorStyle"]' "line"
+        set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.cursorStyle"]' "line"
     else
-        set_json_value "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.cursorStyle"]' "${TERMINAL_CURSOR_SHAPE}"
+        set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.cursorStyle"]' "${TERMINAL_CURSOR_SHAPE}"
     fi
 
     # Git
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["git.autoStash"]' true
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["git.autoStash"]' true
 
     # Telemetry
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["telemetry.enableCrashReporter"]' false
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["telemetry.enableTelemetry"]' false
-    set_json_value "${VSCODE_CONFIG_FILE}" '.["telemetry.telemetryLevel"]' "off"
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["telemetry.enableCrashReporter"]' false
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["telemetry.enableTelemetry"]' false
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["telemetry.telemetryLevel"]' "off"
 fi
 
 ################
 ### INKSCAPE ###
 ################
-if does-bin-exist "inkscape" "org.inkscape.Inkscape"; then
+if does_bin_exist "inkscape" "org.inkscape.Inkscape"; then
     INKSCAPE_CONFIG_DIR="${HOME_CONFIG}/inkscape"
     [ -d "${HOME_VAR}/app/org.inkscape.Inkscape" ] && INKSCAPE_CONFIG_DIR="${HOME_VAR}/app/org.inkscape.Inkscape/config/inkscape"
 
@@ -932,7 +932,7 @@ fi
 ########################
 ### KEYBOARD & MOUSE ###
 ########################
-if does-bin-exist "gnome-shell"; then
+if does_bin_exist "gnome-shell"; then
     # Keyboard
     set_gsetting org.gnome.desktop.peripherals.keyboard numlock-state true
     set_gsetting org.gnome.desktop.input-sources sources "[('xkb', 'ro')]"
@@ -945,7 +945,7 @@ if does-bin-exist "gnome-shell"; then
     set_gsetting org.gnome.desktop.peripherals.mouse accel-profile "flat"
     set_gsetting org.gnome.desktop.peripherals.mouse speed 0.17999999999999999 # 0.18 can't be set
 fi
-if does-bin-exist "mutter"; then
+if does_bin_exist "mutter"; then
     MUTTER_KEYBINDINGS_SCHEMA="org.gnome.desktop.wm.keybindings"
 
     set_gsetting "${MUTTER_KEYBINDINGS_SCHEMA}" panel-run-dialog "['<Super>r']"
@@ -959,7 +959,7 @@ fi
 ############
 ### MAPS ###
 ############
-if does-bin-exist "gnome-maps" "org.gnome.Maps"; then
+if does_bin_exist "gnome-maps" "org.gnome.Maps"; then
     set_gsetting "org.gnome.Maps" last-viewed-location "[46.763207396601977, 23.605413436889648]"
     set_gsetting "org.gnome.Maps" night-mode true
     set_gsetting "org.gnome.Maps" window-maximized true
@@ -969,7 +969,7 @@ fi
 ################
 ### NEOFETCH ###
 ################
-if does-bin-exist "neofetch"; then
+if does_bin_exist "neofetch"; then
     NEOFETCH_CONFIG_DIR="${HOME_REAL}/.config/neofetch"
     NEOFETCH_CONFIG_FILE="${NEOFETCH_CONFIG_DIR}/config.conf"
     NEOFETCH_CUSTOM_ASCII_FILE="${NEOFETCH_CONFIG_DIR}/ascii"
@@ -980,18 +980,18 @@ fi
 ###################
 ### NIGHT LIGHT ###
 ###################
-if does-bin-exist "gnome-shell"; then
+if does_bin_exist "gnome-shell"; then
     set_gsetting org.gnome.settings-daemon.plugins.color night-light-enabled true
 fi
 
 #####################
 ### NOTIFICATIONS ###
 #####################
-if does-bin-exist "gnome-shell"; then
+if does_bin_exist "gnome-shell"; then
     GNOME_NOTIFICATIONS_SCHEMA="org.gnome.desktop.notifications.application:/org/gnome/desktop/notifications/application"
 
     # Disable
-    does-bin-exist "simplenote" && set_gsetting "${GNOME_NOTIFICATIONS_SCHEMA}/simplenote/" enable false
+    does_bin_exist "simplenote" && set_gsetting "${GNOME_NOTIFICATIONS_SCHEMA}/simplenote/" enable false
 
     # Hide on lockscreen
     set_gsetting "${GNOME_NOTIFICATIONS_SCHEMA}/gnome-power-panel/" show-in-lock-screen false
@@ -1000,7 +1000,7 @@ fi
 ########################
 ### POWER MANAGEMENT ###
 ########################
-if does-bin-exist "gnome-shell"; then
+if does_bin_exist "gnome-shell"; then
     GNOME_POWER_SCHEMA="org.gnome.settings-daemon.plugins.power"
 
     set_gsetting "${GNOME_POWER_SCHEMA}" idle-dim true
@@ -1008,7 +1008,7 @@ if does-bin-exist "gnome-shell"; then
     set_gsetting "${GNOME_POWER_SCHEMA}" sleep-inactive-battery-timeout 900
 fi
 
-if does-bin-exist "tlp"; then
+if does_bin_exist "tlp"; then
     TLP_CONFIG_FILE="${ROOT_ETC}/tlp.conf"
 
     RUNTIME_PM_DRIVER_DENYLIST=""
@@ -1023,14 +1023,14 @@ fi
 ###################
 ### Screenshots ###
 ###################
-if does-bin-exist "gnome-screenshot"; then
+if does_bin_exist "gnome-screenshot"; then
     set_gsetting "org.gnome.gnome-screenshot" last-save-directory "${HOME}/Pictures"
 fi
 
 ############
 ### Sudo ###
 ############
-if does-bin-exist "sudo"; then
+if does_bin_exist "sudo"; then
     SUDO_CONFIG_FILE="/etc/sudoers"
 
     set_config_value "${SUDO_CONFIG_FILE}" "Defaults timestamp_timeout" 15
@@ -1039,7 +1039,7 @@ fi
 ################
 ### Terminal ###
 ################
-if does-bin-exist "gnome-terminal"; then
+if does_bin_exist "gnome-terminal"; then
     GNOME_TERMINAL_SCHEMA="org.gnome.Terminal.Legacy"
     GNOME_TERMINAL_PROFILE_ID=$(get_gsetting org.gnome.Terminal.ProfilesList default)
     GNOME_TERMINAL_PROFILE_SCHEMA="${GNOME_TERMINAL_SCHEMA}.Profile:/org/gnome/terminal/legacy/profiles:/:${GNOME_TERMINAL_PROFILE_ID}/"
@@ -1071,7 +1071,7 @@ if does-bin-exist "gnome-terminal"; then
     set_gsetting "${GNOME_TERMINAL_PROFILE_SCHEMA}" visible-name "NuciTerm"
 fi
 
-if does-bin-exist "lxterminal"; then
+if does_bin_exist "lxterminal"; then
     LXTERMINAL_CONFIG_FILE="${HOME_REAL}/.config/lxterminal/lxterminal.conf"
 
     # Theme / colours
@@ -1113,7 +1113,7 @@ fi
 ####################
 ### TEXT EDITORS ###
 ####################
-if does-bin-exist "gedit" "org.gnome.gedit"; then
+if does_bin_exist "gedit" "org.gnome.gedit"; then
     GEDIT_EDITOR_SCHEMA="org.gnome.gedit.preferences.editor"
 
     if [ "${TEXT_EDITOR_FONT}" != "${MONOSPACE_FONT}" ]; then
@@ -1128,7 +1128,7 @@ if does-bin-exist "gedit" "org.gnome.gedit"; then
     set_gsetting "${GEDIT_EDITOR_SCHEMA}" restore-cursor-position true
     set_gsetting "${GEDIT_EDITOR_SCHEMA}" tabs-size "uint32 4"
 fi
-if does-bin-exist "pluma"; then
+if does_bin_exist "pluma"; then
     PLUMA_SCHEMA="org.mate.pluma"
 
     if [ "${TEXT_EDITOR_FONT}" != "${MONOSPACE_FONT}" ]; then
@@ -1159,7 +1159,7 @@ fi
 ###########################
 ### TORRENT DOWNLOADERS ###
 ###########################
-if does-bin-exist "fragments" "de.haeckerfelix.Fragments"; then
+if does_bin_exist "fragments" "de.haeckerfelix.Fragments"; then
     FRAGMENTS_SCHEMA="de.haeckerfelix.Fragments"
     FRAGMENTS_CONFIG_DIR="${HOME_CONFIG}/fragments"
     [ -d "${HOME_VAR}/app/de.haeckerfelix.Fragments" ] && FRAGMENTS_CONFIG_DIR="${HOME_VAR}/app/de.haeckerfelix.Fragments/config/fragments"
@@ -1168,17 +1168,17 @@ if does-bin-exist "fragments" "de.haeckerfelix.Fragments"; then
 
     set_gsetting "${FRAGMENTS_SCHEMA}" dark-mode ${DESKTOP_THEME_IS_DARK}
 
-    set_json_value "${FRAGMENTS_SETTINGS_FILE}" '.["encryption"]' 1
-    set_json_value "${FRAGMENTS_SETTINGS_FILE}" '.["download-dir"]' "${HOME}/Downloads"
-    set_json_value "${FRAGMENTS_SETTINGS_FILE}" '.["incomplete-dir"]' "${HOME}/Downloads/.incomplete_fragments"
-    set_json_value "${FRAGMENTS_SETTINGS_FILE}" '.["incomplete-dir-enabled"]' true
-    set_json_value "${FRAGMENTS_SETTINGS_FILE}" '.["download-queue-size"]' 5
+    set_json_property "${FRAGMENTS_SETTINGS_FILE}" '.["encryption"]' 1
+    set_json_property "${FRAGMENTS_SETTINGS_FILE}" '.["download-dir"]' "${HOME}/Downloads"
+    set_json_property "${FRAGMENTS_SETTINGS_FILE}" '.["incomplete-dir"]' "${HOME}/Downloads/.incomplete_fragments"
+    set_json_property "${FRAGMENTS_SETTINGS_FILE}" '.["incomplete-dir-enabled"]' true
+    set_json_property "${FRAGMENTS_SETTINGS_FILE}" '.["download-queue-size"]' 5
 fi
 
 ########################
 ### TRANSLATION APPS ###
 ########################
-if does-bin-exist "dialect"; then
+if does_bin_exist "dialect"; then
     DIALECT_SCHEMA="com.github.gi_lom.dialect"
 
     set_gsetting "${DIALECT_SCHEMA}" dark-mode ${DESKTOP_THEME_IS_DARK}
@@ -1189,7 +1189,7 @@ fi
 #####################
 ### VIDEO PLAYERS ###
 #####################
-if does-bin-exist "totem" "org.gnome.Totem"; then
+if does_bin_exist "totem" "org.gnome.Totem"; then
     TOTEM_SCHEMA="org.gnome.totem"
 
     set_gsetting "${TOTEM_SCHEMA}" autoload-subtitles true
@@ -1218,14 +1218,14 @@ fi
 #######################
 ### Window Managers ###
 #######################
-if does-bin-exist "mutter"; then
+if does_bin_exist "mutter"; then
     #set_gsetting "org.gnome.desktop.wm.preferences" button-layout ":minimize,maximize,close"
     set_gsetting "org.gnome.desktop.wm.preferences" button-layout "close,maximize,minimize:"
     set_gsetting "org.gnome.desktop.wm.preferences" theme "${GTK3_THEME}"
     set_gsetting "org.gnome.desktop.wm.preferences" titlebar-font "${TITLEBAR_FONT}"
 fi
 
-if does-bin-exist "openbox" && does-bin-exist "lxsession"; then
+if does_bin_exist "openbox" && does_bin_exist "lxsession"; then
     OPENBOX_LXDE_RC="${HOME_REAL}/.config/openbox/lxde-rc.xml"
 
     set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/name" "${GTK2_THEME}"
@@ -1244,7 +1244,7 @@ if does-bin-exist "openbox" && does-bin-exist "lxsession"; then
     set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/font[@place='MenuItem']/weight" "$(get_openbox_font_weight ${MENU_FONT_STYLE})"
 fi
 
-if does-bin-exist "xfwm4"; then
+if does_bin_exist "xfwm4"; then
     XFWM4_CONFIG_FILE="${HOME_REAL}/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml"
 
     set_xml_node "${XFWM4_CONFIG_FILE}" "//channel/property[@name='general']/property[@name='button-layout']/@value" "CMH|"

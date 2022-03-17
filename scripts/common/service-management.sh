@@ -31,8 +31,8 @@ function enable_service {
 
     (! does_systemd_service_exist "${SERVICE_NAME}") && return
 
-    run-as-su systemctl enable "${SERVICE_NAME}"
-    run-as-su systemctl start "${SERVICE_NAME}"
+    run_as_su systemctl enable "${SERVICE_NAME}"
+    run_as_su systemctl start "${SERVICE_NAME}"
 }
 
 function disable_service {
@@ -42,6 +42,6 @@ function disable_service {
 
     (! does_systemd_service_exist "${SERVICE_NAME}") && return
 
-    run-as-su systemctl disable "${SERVICE_NAME}"
-    run-as-su systemctl stop "${SERVICE_NAME}"
+    run_as_su systemctl disable "${SERVICE_NAME}"
+    run_as_su systemctl stop "${SERVICE_NAME}"
 }

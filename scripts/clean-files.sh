@@ -3,139 +3,139 @@ source "scripts/common/filesystem.sh"
 source "${REPO_DIR}/scripts/common/common.sh"
 source "${REPO_DIR}/scripts/common/package-management.sh"
 
-! does-bin-exist "aircrack-ng" && remove "${HOME}/.aircrack"
-! does-bin-exist "alsi" && remove "${HOME_CONFIG}/alsi"
-! does-bin-exist "audacity" && remove "${HOME}/.audacity-data"
-! does-bin-exist "autokey-shell" && remove \
+! does_bin_exist "aircrack-ng" && remove "${HOME}/.aircrack"
+! does_bin_exist "alsi" && remove "${HOME_CONFIG}/alsi"
+! does_bin_exist "audacity" && remove "${HOME}/.audacity-data"
+! does_bin_exist "autokey-shell" && remove \
     "${HOME_CONFIG}/autokey" \
     "${HOME_LOCAL_SHARE}/autokey"
-! does-bin-exist "avidemux" && remove "${HOME}/.avidemux6"
-! does-bin-exist "bleachbit" && remove \
+! does_bin_exist "avidemux" && remove "${HOME}/.avidemux6"
+! does_bin_exist "bleachbit" && remove \
     "${HOME_CACHE}/bleachbit" \
     "${HOME_CONFIG}/bleachbit"
-! does-bin-exist "blesh" && remove "${HOME}/.blerc"
-! does-bin-exist "brave" && remove \
+! does_bin_exist "blesh" && remove "${HOME}/.blerc"
+! does_bin_exist "brave" && remove \
     "${HOME_CACHE}/BraveSoftware" \
     "${HOME_CONFIG}/BraveSoftware"
-! does-bin-exist "brz" && remove "${HOME_CACHE}/breezy"
-! does-bin-exist "cairo-dock" && remove "${HOME_CONFIG}/cairo-dock"
-! does-bin-exist "chiaki" && remove \
+! does_bin_exist "brz" && remove "${HOME_CACHE}/breezy"
+! does_bin_exist "cairo-dock" && remove "${HOME_CONFIG}/cairo-dock"
+! does_bin_exist "chiaki" && remove \
     "${HOME_CONFIG}/Chiaki" \
     "${HOME_LOCAL_SHARE}/Chiaki"
-! does-bin-exist "chromium" && remove \
+! does_bin_exist "chromium" && remove \
     "${HOME_CACHE}/chromium" \
     "${HOME_CONFIG}/chromium"
-! does-bin-exist "code" && remove \
+! does_bin_exist "code" && remove \
     "${HOME_CONFIG}/Code" \
     "${HOME}/.vscode"
-! does-bin-exist "code-oss" && remove \
+! does_bin_exist "code-oss" && remove \
     "${HOME_CONFIG}/Code - OSS" \
     "${HOME_CONFIG}/code-oss" \
     "${HOME}/.vscode-oss"
-! does-bin-exist "codium" && remove "${HOME_CONFIG}/VSCodium"
-! does-bin-exist "code-oss" "codium" && remove "${HOME}/.vscode-oss"
-! does-bin-exist "discord" && remove "${HOME_CONFIG}/discord"
-! does-bin-exist "dockx" && remove "${HOME_LOCAL_SHARE}/dockbarx"
-#! does-bin-exist "evolution" && remove \
+! does_bin_exist "codium" && remove "${HOME_CONFIG}/VSCodium"
+! does_bin_exist "code-oss" "codium" && remove "${HOME}/.vscode-oss"
+! does_bin_exist "discord" && remove "${HOME_CONFIG}/discord"
+! does_bin_exist "dockx" && remove "${HOME_LOCAL_SHARE}/dockbarx"
+#! does_bin_exist "evolution" && remove \
 #    "${HOME_CACHE}/evolution" \
 #    "${HOME_CONFIG}/evolution" \
 #    "${HOME_LOCAL_SHARE}/evolution"
-! does-bin-exist "electronmail-bin" && remove "${HOME_CONFIG}/electron-mail"
-! does-bin-exist "etcher" && remove "${HOME_CONFIG}/balena-etcher-electron"
-! does-bin-exist "fltk-config" && remove "${HOME}/.fltk"
-! does-bin-exist "fma-config-tool" && remove "${HOME_CONFIG}/filemanager-actions"
-! does-bin-exist "fragments" && remove "${HOME_LOCAL_SHARE}/fragments"
-! does-bin-exist "/opt/geforcenow-electron/geforcenow-electron" && remove "${HOME_CONFIG}/GeForce NOW"
-! does-bin-exist "gkraken" && remove "${HOME_CONFIG}/gkraken"
-! does-bin-exist "gksu" && remove "${HOME}/.gksu.lock"
-! does-bin-exist "gnome-photos" && remove \
+! does_bin_exist "electronmail-bin" && remove "${HOME_CONFIG}/electron-mail"
+! does_bin_exist "etcher" && remove "${HOME_CONFIG}/balena-etcher-electron"
+! does_bin_exist "fltk-config" && remove "${HOME}/.fltk"
+! does_bin_exist "fma-config-tool" && remove "${HOME_CONFIG}/filemanager-actions"
+! does_bin_exist "fragments" && remove "${HOME_LOCAL_SHARE}/fragments"
+! does_bin_exist "/opt/geforcenow-electron/geforcenow-electron" && remove "${HOME_CONFIG}/GeForce NOW"
+! does_bin_exist "gkraken" && remove "${HOME_CONFIG}/gkraken"
+! does_bin_exist "gksu" && remove "${HOME}/.gksu.lock"
+! does_bin_exist "gnome-photos" && remove \
     "${HOME_CACHE}/gnome-photos" \
     "${HOME_LOCAL_SHARE}/gnome-photos"
-! does-bin-exist "gnome-software" && remove "${HOME_CACHE}/gnome-software"
-! does-bin-exist "gnome-sound-recorder" && remove "${HOME_LOCAL_SHARE}/org.gnome.SoundRecorder"
-! does-bin-exist "gnubg" && remove "${HOME}/.gnubg"
-! does-bin-exist "google-chrome" && remove \
+! does_bin_exist "gnome-software" && remove "${HOME_CACHE}/gnome-software"
+! does_bin_exist "gnome-sound-recorder" && remove "${HOME_LOCAL_SHARE}/org.gnome.SoundRecorder"
+! does_bin_exist "gnubg" && remove "${HOME}/.gnubg"
+! does_bin_exist "google-chrome" && remove \
     "${HOME_CACHE}/google-chrome" \
     "${HOME_CONFIG}/google-chrome"
-! does-bin-exist "gradle" && remove "${HOME}.gradle"
-! does-bin-exist "hardinfo" && remove "${HOME_CONFIG}/hardinfo"
-! does-bin-exist "hashcat" && remove "${HOME_CONFIG}/hashcat"
-! does-bin-exist "inkscape" && remove \
+! does_bin_exist "gradle" && remove "${HOME}.gradle"
+! does_bin_exist "hardinfo" && remove "${HOME_CONFIG}/hardinfo"
+! does_bin_exist "hashcat" && remove "${HOME_CONFIG}/hashcat"
+! does_bin_exist "inkscape" && remove \
     "${HOME_CACHE}/inkscape" \
     "${HOME_CONFIG}/inkscape"
-! does-bin-exist "java" && remove "${HOME}/.java"
-! does-bin-exist "kupfer" && remove "${HOME_CONFIG}/kupfer"
-! does-bin-exist "libreoffice" && remove "${HOME_CONFIG}/libreoffice"
-! does-bin-exist "lollypop" && remove "${HOME_LOCAL_SHARE}/lollypop"
-! does-bin-exist "lsd" && remove "${HOME_CONFIG}/lsd"
-! does-bin-exist "lutris" && remove \
+! does_bin_exist "java" && remove "${HOME}/.java"
+! does_bin_exist "kupfer" && remove "${HOME_CONFIG}/kupfer"
+! does_bin_exist "libreoffice" && remove "${HOME_CONFIG}/libreoffice"
+! does_bin_exist "lollypop" && remove "${HOME_LOCAL_SHARE}/lollypop"
+! does_bin_exist "lsd" && remove "${HOME_CONFIG}/lsd"
+! does_bin_exist "lutris" && remove \
     "${HOME_CONFIG}/lutris" \
     "${HOME_LOCAL_SHARE}/lutris"
-! does-bin-exist "mcaselector" && remove \
+! does_bin_exist "mcaselector" && remove \
     "${HOME}/.mcaselector" \
     "${HOME_CACHE}/mcaselector"
-! does-bin-exist "mcedit" && remove "${HOME}/.mcedit"
-! does-bin-exist "minetest" && remove "${HOME_CACHE}/minetest"
-! does-bin-exist "mono" && remove "${HOME}/.mono"
-! does-bin-exist "mpv" && remove "${HOME_CONFIG}/mpv"
-! does-bin-exist "neofetch" && remove "${HOME_CONFIG}/neofetch"
-! does-bin-exist "notion-app" && remove "${HOME_CONFIG}/Notion"
-! does-bin-exist "nvidia-settings" && remove "${HOME}/.nvidia-settings-rc"
-! does-bin-exist "onlyoffice-desktopeditors" && remove \
+! does_bin_exist "mcedit" && remove "${HOME}/.mcedit"
+! does_bin_exist "minetest" && remove "${HOME_CACHE}/minetest"
+! does_bin_exist "mono" && remove "${HOME}/.mono"
+! does_bin_exist "mpv" && remove "${HOME_CONFIG}/mpv"
+! does_bin_exist "neofetch" && remove "${HOME_CONFIG}/neofetch"
+! does_bin_exist "notion-app" && remove "${HOME_CONFIG}/Notion"
+! does_bin_exist "nvidia-settings" && remove "${HOME}/.nvidia-settings-rc"
+! does_bin_exist "onlyoffice-desktopeditors" && remove \
     "${HOME_CONFIG}/onlyoffice" \
     "${HOME_LOCAL_SHARE}/onlyoffice"
-! does-bin-exist "openshot-qt" && remove "${HOME}/.openshot_qt"
-! does-bin-exist "pavucontrol" && remove "${HOME_CONFIG}/pavucontrol.ini"
-! does-bin-exist "pcmanfm" && remove "${HOME_CONFIG}/pcmanfm"
-! does-bin-exist "pcmanfm-qt" && remove "${HOME_CONFIG}/pcmanfm-qt"
-! does-bin-exist "pip" && remove "${HOME_CACHE}/pip"
-! does-bin-exist "plexmediaplayer" && remove "${HOME_CONFIG}/plex.tv"
-! does-bin-exist "postman" && remove "${HOME_CONFIG}/Postman"
-! does-bin-exist "rhythmbox" && remove \
+! does_bin_exist "openshot-qt" && remove "${HOME}/.openshot_qt"
+! does_bin_exist "pavucontrol" && remove "${HOME_CONFIG}/pavucontrol.ini"
+! does_bin_exist "pcmanfm" && remove "${HOME_CONFIG}/pcmanfm"
+! does_bin_exist "pcmanfm-qt" && remove "${HOME_CONFIG}/pcmanfm-qt"
+! does_bin_exist "pip" && remove "${HOME_CACHE}/pip"
+! does_bin_exist "plexmediaplayer" && remove "${HOME_CONFIG}/plex.tv"
+! does_bin_exist "postman" && remove "${HOME_CONFIG}/Postman"
+! does_bin_exist "rhythmbox" && remove \
     "${HOME_CACHE}/rhythmbox" \
     "${HOME_LOCAL_SHARE}/rhythmbox"
-! does-bin-exist "simplescreenrecorder" && remove "${HOME}/.ssr"
-! does-bin-exist "snapcraft" && remove "${HOME_CACHE}/snapcraft"
-! does-bin-exist "spotify" && remove \
+! does_bin_exist "simplescreenrecorder" && remove "${HOME}/.ssr"
+! does_bin_exist "snapcraft" && remove "${HOME_CACHE}/snapcraft"
+! does_bin_exist "spotify" && remove \
     "${HOME_CACHE}/spotify" \
     "${HOME_CONFIG}/spotify"
-! does-bin-exist "teams" && remove \
+! does_bin_exist "teams" && remove \
     "${HOME_CONFIG}/Microsoft Teams - Preview" \
     "${HOME_CONFIG}/Microsoft/Microsoft Teams"
-! does-bin-exist "teams-insiders" && remove \
+! does_bin_exist "teams-insiders" && remove \
     "${HOME_CONFIG}/Microsoft Teams - Insiders" \
     "${HOME_CONFIG}/Microsoft/Microsoft Teams - Insiders"
-! does-bin-exist "teamviewer" && remove \
+! does_bin_exist "teamviewer" && remove \
     "${HOME_CONFIG}/teamviewer" \
     "${HOME_LOCAL_SHARE}/teamviewer15"
-! does-bin-exist "telegram-desktop" && remove "${HOME_LOCAL_SHARE}/TelegramDesktop"
-! does-bin-exist "thunar" && remove "${HOME_CONFIG}/Thunar"
-! does-bin-exist "totem" && remove \
+! does_bin_exist "telegram-desktop" && remove "${HOME_LOCAL_SHARE}/TelegramDesktop"
+! does_bin_exist "thunar" && remove "${HOME_CONFIG}/Thunar"
+! does_bin_exist "totem" && remove \
     "${HOME_CACHE}/totem" \
     "${HOME_CONFIG}/totem" \
     "${HOME_LOCAL_SHARE}/totem"
-! does-bin-exist "transmission-daemon" && remove "${HOME_CONFIG}/transmission-daemon"
-! does-bin-exist "ulauncher" && remove "${HOME_LOCAL_SHARE}/ulauncher"
-! does-bin-exist "vim" && remove \
+! does_bin_exist "transmission-daemon" && remove "${HOME_CONFIG}/transmission-daemon"
+! does_bin_exist "ulauncher" && remove "${HOME_LOCAL_SHARE}/ulauncher"
+! does_bin_exist "vim" && remove \
     "${HOME}/.viminfo" \
     "${HOME}/.vimrc" \
     "${HOME_CACHE}/vim"
-! does-bin-exist "vlc" && remove \
+! does_bin_exist "vlc" && remove \
     "${HOME_CACHE}/vlc" \
     "${HOME_CONFIG}/vlc"
-! does-bin-exist "whatsapp-nativefier" && remove "${HOME_CONFIG}/whatsapp-nativefier-d40211"
-! does-bin-exist "whatsdesk" && remove "${HOME}/.whatsdesk"
-! does-bin-exist "wike" && remove "${HOME_CACHE}/wike"
-! does-bin-exist "wine" && remove "${HOME_CACHE}/wine"
-! does-bin-exist "winetricks" && remove "${HOME_CACHE}/winetricks"
-! does-bin-exist "yarn" && remove \
+! does_bin_exist "whatsapp-nativefier" && remove "${HOME_CONFIG}/whatsapp-nativefier-d40211"
+! does_bin_exist "whatsdesk" && remove "${HOME}/.whatsdesk"
+! does_bin_exist "wike" && remove "${HOME_CACHE}/wike"
+! does_bin_exist "wine" && remove "${HOME_CACHE}/wine"
+! does_bin_exist "winetricks" && remove "${HOME_CACHE}/winetricks"
+! does_bin_exist "yarn" && remove \
     "${HOME}/.yarn" \
     "${HOME}/.yarnrc"
-! does-bin-exist "yay" && remove \
+! does_bin_exist "yay" && remove \
     "${HOME_CACHE}/yay" \
     "${HOME_CONFIG}/yay"
-! does-bin-exist "youtube-dl" && remove "${HOME_CACHE}/youtube-dl"
-! does-bin-exist "zsh" && remove "${HOME}/.zshrc"
+! does_bin_exist "youtube-dl" && remove "${HOME_CACHE}/youtube-dl"
+! does_bin_exist "zsh" && remove "${HOME}/.zshrc"
 
 # GNOME Extensions
 ! is_gnome_shell_extension_installed "tiling-assistant" && remove "${HOME_CONFIG}/tiling-assistant"

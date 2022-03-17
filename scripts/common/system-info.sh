@@ -3,9 +3,9 @@ source "scripts/common/filesystem.sh"
 source "${REPO_DIR}/scripts/common/common.sh"
 
 function get_screen_width() {
-    if does-bin-exist "xrandr"; then
+    if does_bin_exist "xrandr"; then
         xrandr | grep -w connected | grep primary | sed 's/^.*primary \([0-9][0-9]*\)x.*/\1/g'
-    elif does-bin-exist "xdpyinfo"; then
+    elif does_bin_exist "xdpyinfo"; then
         xdpyinfo | grep "dimensions" | sed 's/^[^0-9]*\([0-9]\+\)x[0-9]\+ pixels.*/\1/g'
     else
         echo 0
@@ -13,9 +13,9 @@ function get_screen_width() {
 }
 
 function get_screen_width_millimetres() {
-    if does-bin-exist "xrandr"; then
+    if does_bin_exist "xrandr"; then
         xrandr | grep -w connected | grep primary | sed 's/.* \([0-9]\+\)mm x [0-9]\+mm.*/\1/g'
-    elif does-bin-exist "xdpyinfo"; then
+    elif does_bin_exist "xdpyinfo"; then
         xdpyinfo | grep "dimensions" | sed 's/^.* pixels (\([0-9]\+\)x[0-9]\+ mil.*/\1/g'
     else
         echo 0
@@ -28,9 +28,9 @@ function get_screen_width_inches() {
 }
 
 function get_screen_height() {
-    if does-bin-exist "xrandr"; then
+    if does_bin_exist "xrandr"; then
         xrandr | grep -w connected | grep primary | sed 's/^.*primary [0-9]\+x\([0-9]\+\).*/\1/g'
-    elif does-bin-exist "xdpyinfo"; then
+    elif does_bin_exist "xdpyinfo"; then
         xdpyinfo | grep "dimensions" | sed 's/^[^0-9]*[0-9]\+x\([0-9]\+\) pixels.*/\1/g'
     else
         echo 0
@@ -38,9 +38,9 @@ function get_screen_height() {
 }
 
 function get_screen_height_millimetres() {
-    if does-bin-exist "xrandr"; then
+    if does_bin_exist "xrandr"; then
         xrandr | grep -w connected | grep primary | sed 's/.* [0-9]\+mm x \([0-9]\+\)mm.*/\1/g'
-    elif does-bin-exist "xdpyinfo"; then
+    elif does_bin_exist "xdpyinfo"; then
         xdpyinfo | grep "dimensions" | sed 's/^.* pixels ([0-9]\+x\([0-9]\+\) mil.*/\1/g'
     else
         echo 0
@@ -52,7 +52,7 @@ function get_screen_dpi() {
 
     if [ "${RESOLUTION_H}" -eq 0 ] \
     || [ -z "${RESOLUTION_H}" ]; then
-        if does-bin-exist "xdpyinfo"; then
+        if does_bin_exist "xdpyinfo"; then
             xdpyinfo | grep "resolution" | sed 's/^[^0-9]*\([0-9]*\)x[0-9]*.*/\1/g'
         else
             echo 0
@@ -70,12 +70,12 @@ function get_screen_dpi() {
 function get_arch() {
     local ARCH=""
 
-    if does-bin-exist "uname"; then
+    if does_bin_exist "uname"; then
         ARCH=$(uname -m)
     fi
 
     if [ -z "${ARCH}" ];then
-        if does-bin-exist "lscpu"; then
+        if does_bin_exist "lscpu"; then
             ARCH=$(lscpu | grep "Architecture" | awk -F: '{print $2}' | sed 's/  //g' | sed 's/^ *//g')
         else
             local CPU_FAMILY="$(get_cpu_family)"
@@ -130,7 +130,7 @@ function get_cpu_model() {
     fi
 
     if [ -z "${CPU_MODEL}" ] \
-    && does-bin-exist "lspci"; then
+    && does_bin_exist "lspci"; then
         if lspci | grep -q "\sPCI bridge:.*BCM[0-9]\+\s"; then
             CPU_MODEL=$(lspci | \
                 grep "\sPCI bridge:" | \
@@ -140,7 +140,7 @@ function get_cpu_model() {
     fi
 
     if [ -z "${CPU_MODEL}" ] \
-    && does-bin-exist "lscpu"; then
+    && does_bin_exist "lscpu"; then
         CPU_MODEL=$(lscpu | \
             grep "^Model name:" | \
             awk -F: '{print $2}')
@@ -175,7 +175,7 @@ function get_cpu_family() {
     local CPU_LINE=""
     local CPU_VENDOR=""
 
-    if does-bin-exist "dmidecode"; then
+    if does_bin_exist "dmidecode"; then
         CPU_LINE=$(get_dmi_string processor-manufacturer)
         CPU_VENDOR="$(get_cpu_vendor_from_line ${CPU_LINE})"
     fi
@@ -193,13 +193,13 @@ function get_cpu_family() {
     fi
 
     if [ -z "${CPU_VENDOR}" ] \
-    && does-bin-exist "lspci"; then
+    && does_bin_exist "lspci"; then
         CPU_LINE=$(lspci | grep "\sPCI bridge:" | head -n 1)
         CPU_VENDOR="$(get_cpu_vendor_from_line ${CPU_LINE})"
     fi
 
     if [ -z "${CPU_VENDOR}" ] \
-    && does-bin-exist "lscpu"; then
+    && does_bin_exist "lscpu"; then
         CPU_LINE=$(lscpu | grep "^Model name:")
         CPU_VENDOR="$(get_cpu_vendor_from_line ${CPU_LINE})"
     fi
@@ -214,7 +214,7 @@ function get_cpu() {
 function get_gpu_family() {
     local GPU_FAMILY=""
 
-    if does-bin-exist "lspci" && [ -e "${ROOT_PROC}/bus/pci" ]; then
+    if does_bin_exist "lspci" && [ -e "${ROOT_PROC}/bus/pci" ]; then
         local VGA_LINE=$(lspci | grep "VGA")
         echo "${VGA_LINE}" | grep -q "AMD"      && GPU_FAMILY="AMD"
         echo "${VGA_LINE}" | grep -q "Intel"    && GPU_FAMILY="Intel"
@@ -231,7 +231,7 @@ function get_gpu_family() {
 function get_gpu_model() {
     local GPU_MODEL=""
 
-    if does-bin-exist "lspci" && [ -e "${ROOT_PROC}/bus/pci" ]; then
+    if does_bin_exist "lspci" && [ -e "${ROOT_PROC}/bus/pci" ]; then
         GPU_MODEL=$(lspci | grep VGA | tail -n 1 | sed \
             -e 's/^[^\[]*\[\([a-zA-Z0-9 ]*\)].*/\1/g' \
             -e 's/^00:0[0-9].[0-9] VGA compatible controller: //g' \
@@ -267,7 +267,7 @@ function get_gpu() {
 function get_driver() {
     local COMPONENT="${*}"
 
-    DRIVER=$(does-bin-exist "lspci" && lspci -k 2> /dev/null | \
+    DRIVER=$(does_bin_exist "lspci" && lspci -k 2> /dev/null | \
         grep "${COMPONENT}" | \
         grep "Kernel driver" | \
         awk -F":" '{print $2}' | \
@@ -299,7 +299,7 @@ function get_audio_driver() {
 
 function get_dmi_string() {
     local KEY="${*}"
-    does-bin-exist "dmidecode" && run-as-su dmidecode -s "${KEY}" 2> /dev/null
+    does_bin_exist "dmidecode" && run_as_su dmidecode -s "${KEY}" 2> /dev/null
 }
 
 function get_chassis_type() {
@@ -321,7 +321,7 @@ function get_chassis_type() {
         return
     fi
 
-    if does-bin-exist "uname" \
+    if does_bin_exist "uname" \
     && uname -r | grep -q "raspberry\|rpi"; then
         echo "SBC"
         return
@@ -433,19 +433,19 @@ else
 fi
 
 if ${HAS_GUI}; then
-    if does-bin-exist "code" "code-oss" "codium" "com.visualstudio.code" \
-    || does-bin-exist "dotnet"; then
+    if does_bin_exist "code" "code-oss" "codium" "com.visualstudio.code" \
+    || does_bin_exist "dotnet"; then
         IS_DEVELOPMENT_DEVICE=true
     fi
 
-    if does-bin-exist "steam" "com.valvesoftware.Steam"; then
+    if does_bin_exist "steam" "com.valvesoftware.Steam"; then
         IS_GAMING_DEVICE=true
     fi
 else
     IS_GENERAL_PURPOSE_DEVICE=false
 fi
 
-if does-bin-exist "sudo"; then
+if does_bin_exist "sudo"; then
     if [ "${DISTRO_FAMILY}" = "Android" ]; then
         [ -f "/sbin/su" ] && HAS_SU_PRIVILEGES=true
     else

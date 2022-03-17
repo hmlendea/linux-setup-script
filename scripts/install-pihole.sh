@@ -9,13 +9,13 @@ DNS_CACHE_SIZE=10000 # Entries
 
 PIHOLE_DNSMASQ_CONFIG_PATH="${ROOT_ETC}/dnsmasq.d/01-pihole.conf"
 
-install-pkg pi-hole-server
-install-pkg php-sqlite
+install_native_package pi-hole-server
+install_native_package php-sqlite
 
-install-dep lighttpd
-install-dep php-cgi
+install_native_package_dependency lighttpd
+install_native_package_dependency php-cgi
 
-update-file-if-needed "/usr/share/pihole/configs/lighttpd.example.conf" "/etc/lighttpd/lighttpd.conf"
+update_file_if_distinct "/usr/share/pihole/configs/lighttpd.example.conf" "/etc/lighttpd/lighttpd.conf"
 
 sudo sed -i 's/^;\(extension=pdo_sqlite\)$/\1/g' "/etc/php/php.ini"
 sudo sed -i 's/^;\(extension=sockets\)$/\1/g' "/etc/php/php.ini"

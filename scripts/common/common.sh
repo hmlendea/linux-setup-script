@@ -4,7 +4,7 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     source "${REPO_DIR}/scripts/common/system-info.sh"
 fi
 
-function run-as-su() {
+function run_as_su() {
     if [ "${UID}" -eq 0 ]; then
         "${@}"
     elif ${HAS_SU_PRIVILEGES}; then
