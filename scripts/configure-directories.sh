@@ -10,16 +10,16 @@ function update-hidden-files-config-if-needed() {
 
 if ${HAS_GUI} && [[ "${OS}" == "Linux" ]]; then
     update-hidden-files-config-if-needed "home" "${HOME}"
-    update-hidden-files-config-if-needed "home-documents" "${HOME}/Documents"
-    update-hidden-files-config-if-needed "home-downloads" "${HOME}/Downloads"
+    update-hidden-files-config-if-needed "home-documents" "${HOME_DOCUMENTS}"
+    update-hidden-files-config-if-needed "home-downloads" "${HOME_DOWNLOADS}"
 fi
 
 if [[ "${OS}" == "Android" ]]; then
     ANDROID_USER_STORAGE_DIR="/storage/emulated/0"
 
-    create_symlink "${ANDROID_USER_STORAGE_DIR}/Documents" "${HOME}/Documents"
-    create_symlink "${ANDROID_USER_STORAGE_DIR}/Download" "${HOME}/Downloads"
-    create_symlink "${ANDROID_USER_STORAGE_DIR}/Music" "${HOME}/Music"
-    create_symlink "${ANDROID_USER_STORAGE_DIR}/Movies" "${HOME}/Videos"
-    create_symlink "${ANDROID_USER_STORAGE_DIR}/Pictures" "${HOME}/Pictures"
+    create_symlink "${ANDROID_USER_STORAGE_DIR}/Documents" "${HOME_DOCUMENTS}"
+    create_symlink "${ANDROID_USER_STORAGE_DIR}/Download" "${HOME_DOWNLOADS}"
+    create_symlink "${ANDROID_USER_STORAGE_DIR}/Music" "${HOME_MUSIC}"
+    create_symlink "${ANDROID_USER_STORAGE_DIR}/Movies" "${HOME_VIDEOS}"
+    create_symlink "${ANDROID_USER_STORAGE_DIR}/Pictures" "${HOME_PICTURES}"
 fi

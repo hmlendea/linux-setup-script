@@ -2,14 +2,11 @@
 source "scripts/common/filesystem.sh"
 source "${REPO_DIR}/scripts/common/common.sh"
 source "${REPO_DIR}/scripts/common/config.sh"
+source "${REPO_DIR}/scripts/common/package-management.sh"
 source "${REPO_DIR}/scripts/common/system-info.sh"
 
 [ "${OS}" != "Linux" ] && exit
 (! ${HAS_GUI}) && exit
-
-GLOBAL_LAUNCHERS_PATH="${ROOT_USR_SHARE}/applications"
-GLOBAL_FLATPAK_LAUNCHERS_PATH="${ROOT_VAR_LIB}/flatpak/exports/share/applications"
-LOCAL_LAUNCHERS_PATH="${HOME_REAL}/.local/share/applications"
 
 ICON_THEME=$(sudo -u "${USER_REAL}" -H gsettings get org.gnome.desktop.interface icon-theme | tr -d "'")
 ICON_THEME_PATH="${ROOT_USR_SHARE}/icons/${ICON_THEME}"
@@ -17,8 +14,8 @@ ICON_THEME_PATH="${ROOT_USR_SHARE}/icons/${ICON_THEME}"
 function find_launcher_by_name() {
     local NAME_ENTRY_VALUE="$1"
 
-    if [ -d "${LOCAL_LAUNCHERS_PATH}" ]; then
-        find "${LOCAL_LAUNCHERS_PATH}" -type f -iname "*.desktop" -print0 | while IFS= read -r -d $'\0' LAUNCHER; do
+    if [ -d "${LOCAL_LAUNCHERS_DIR}" ]; then
+        find "${LOCAL_LAUNCHERS_DIR}" -type f -iname "*.desktop" -print0 | while IFS= read -r -d $'\0' LAUNCHER; do
             if grep -q '^Name='"${NAME_ENTRY_VALUE}"'$' "${LAUNCHER}"; then
                 echo "${LAUNCHER}"
                 return 0
@@ -26,7 +23,7 @@ function find_launcher_by_name() {
         done
     fi
 
-    find "${GLOBAL_LAUNCHERS_PATH}" -type f -iname "*.desktop" -print0 | while IFS= read -r -d $'\0' LAUNCHER; do
+    find "${GLOBAL_LAUNCHERS_DIR}" -type f -iname "*.desktop" -print0 | while IFS= read -r -d $'\0' LAUNCHER; do
         if grep -q '^Name='"${NAME_ENTRY_VALUE}"'' "${LAUNCHER}"; then
             echo "${LAUNCHER}"
             return
@@ -36,98 +33,98 @@ function find_launcher_by_name() {
     return 1
 }
 
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/amidst.desktop" \
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/amidst.desktop" \
     StartupWMClass "amidst-Amidst"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/cups.desktop" NoDisplay true
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/GameConqueror.desktop" Categories "Utility;"
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gparted.desktop" \
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/cups.desktop" NoDisplay true
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/GameConqueror.desktop" Categories "Utility;"
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/gparted.desktop" \
     Name "Partition Editor" \
     Name[ro] "Editor de Partiții"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/gtk-lshw.desktop" NoDisplay true
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/hardinfo.desktop" \
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/gtk-lshw.desktop" NoDisplay true
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/hardinfo.desktop" \
     Categories "System;Monitor;" \
     Icon "hardinfo" \
     Name "Hardware Information" \
     Name[ro] "Informații Hardware"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/lstopo.desktop" NoDisplay true
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/lxhotkey-gtk.desktop" Name[ro] "Scurtături de tastatură"
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/lxappearance.desktop" \
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/lstopo.desktop" NoDisplay true
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/lxhotkey-gtk.desktop" Name[ro] "Scurtături de tastatură"
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/lxappearance.desktop" \
     Name "Look and Feel" \
     Name[ro] "Tema Interfeței"
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/lxsession-edit.desktop" \
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/lxsession-edit.desktop" \
     Name "Desktop Session Settings" \
     Name[ro] "Opțiuni ale Sesiunilor Desktop"
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/lxsession-default-apps.desktop" \
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/lxsession-default-apps.desktop" \
     Name "Default Applications" \
     Name[ro] "Aplicații Implicite"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-color-select.desktop" NoDisplay true
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mate-search-tool.desktop" NoDisplay true
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/nm-connection-editor.desktop" \
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/mate-color-select.desktop" NoDisplay true
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/mate-search-tool.desktop" NoDisplay true
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/nm-connection-editor.desktop" \
     Name "Network Connections" \
     Name[ro] "Conexiuni de Rețea" \
     NoDisplay true
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.DiskUtility.desktop" Categories "GNOME;GTK;System;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Epiphany.desktop" Name "Epiphany"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.SoundRecorder.desktop" Categories "GNOME;GTK;Utility;Audio;"
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/org.gnome.tweaks.desktop" \
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/org.gnome.DiskUtility.desktop" Categories "GNOME;GTK;System;"
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Epiphany.desktop" Name "Epiphany"
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/org.gnome.SoundRecorder.desktop" Categories "GNOME;GTK;Utility;Audio;"
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/org.gnome.tweaks.desktop" \
     Icon "utilities-tweak-tool" \
     Categories "GNOME;GTK;System;"
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/pcmanfm-desktop-pref.desktop" \
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/pcmanfm-desktop-pref.desktop" \
     Name "Desktop Customiser" \
     Name[ro] "Personalizare Desktop"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/picard.desktop" StartupWMClass ""
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/plank.desktop" NoDisplay true
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/qv4l2.desktop" NoDisplay true
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/qvidcap.desktop" NoDisplay true
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/simple-scan.desktop" \
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/picard.desktop" StartupWMClass ""
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/plank.desktop" NoDisplay true
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/qv4l2.desktop" NoDisplay true
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/qvidcap.desktop" NoDisplay true
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/simple-scan.desktop" \
     Name "Scanner" \
     Name[ro] "Scanner"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/simplescreenrecorder.desktop" Name "Screen Recorder"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/stoken-gui-small.desktop" NoDisplay true
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/stoken-gui.desktop" NoDisplay true
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/system-config-printer.desktop" Name[ro] "Configurare Imprimantă"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/virtualbox.desktop" Name "VirtualBox"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/wireshark-gtk.desktop" Name "Wireshark"
-set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-app-list.desktop" NoDisplay true
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/simplescreenrecorder.desktop" Name "Screen Recorder"
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/stoken-gui-small.desktop" NoDisplay true
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/stoken-gui.desktop" NoDisplay true
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/system-config-printer.desktop" Name[ro] "Configurare Imprimantă"
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/virtualbox.desktop" Name "VirtualBox"
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/wireshark-gtk.desktop" Name "Wireshark"
+set_launcher_entry "${LOCAL_LAUNCHERS_DIR}/chrome-app-list.desktop" NoDisplay true
 
 ########################
 ### ARCHIVE MANAGERS ###
 ########################
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/engrampa.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FileRoller.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/xarchiver.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.gnome.FileRoller.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/engrampa.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/org.gnome.FileRoller.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/xarchiver.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.FileRoller.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Archives" \
         Name[ro] "Arhive"
 done
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FileRoller.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.gnome.FileRoller.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.FileRoller.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.FileRoller.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         StartupWMClass "File-Roller"
 done
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/7zFM.desktop" NoDisplay true
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/7zFM.desktop" NoDisplay true
 
 #############
 ### AVAHI ###
 #############
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/avahi-discover.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/bssh.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/bvnc.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/avahi-discover.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/bssh.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/bvnc.desktop"; do
     set_launcher_entry "${LAUNCHER}" NoDisplay true
 done
 
 ##########################
 ### BLUETOOTH MANAGERS ###
 ##########################
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/blueman-manager.desktop" \
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/blueman-manager.desktop" \
     Name "Bluetooth Manager" \
     Name[ro] "Manager Bluetooth"
 
 ############################
 ### BOOTABLE MEDIA MAKER ###
 ############################
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/balena-etcher-electron.desktop" \
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/balena-etcher-electron.desktop" \
     Name "Etcher" \
     Name[ro] "Etcher" \
     Categories "Filesystem;X-GNOME-Utilities;"
@@ -135,8 +132,8 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/balena-etcher-electron.desktop" \
 ###################
 ### Calculators ###
 ###################
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/galculator.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/mate-calc.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/galculator.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/mate-calc.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Calculator" \
         Name[ro] "Calculator"
@@ -147,8 +144,8 @@ done
 ################
 CALENDAR_CATEGORIES="Office;Calendar;Utility;Core;"
 
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Calendar.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.gnome.Calendar.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Calendar.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Calendar.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Calendar" \
         Name[ro] "Calendar" \
@@ -159,7 +156,7 @@ done
 ##############
 ### CAMERA ###
 ##############
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Cheese.desktop" \
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Cheese.desktop" \
     Name "Camera" \
     Name[ro] "Cameră" \
     Icon "camera"
@@ -169,16 +166,16 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Cheese.desktop" \
 #################
 CHAT_APP_CATEGORIES="Network;Chat;InstantMessaging;Communication;"
 
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/discord.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/com.discordapp.Discord.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/discord.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.discordapp.Discord.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Icon "discord" \
         Categories "${CHAT_APP_CATEGORIES}"
 done
 
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/teams.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/teams-insiders.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/com.microsoft.Teams.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/teams.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/teams-insiders.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.microsoft.Teams.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Teams" \
         Name[ro] "Teams" \
@@ -187,27 +184,27 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/teams.desktop" \
 done
 
 #if [ "$(get_gpu_family)" = "Intel" ]; then
-    set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/teams.desktop" Exec "/usr/bin/teams --disable-gpu --no-sandbox"
-    set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/teams-insiders.desktop" Exec "/usr/bin/teams-insiders --disable-gpu --no-sandbox"
+    set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/teams.desktop" Exec "/usr/bin/teams --disable-gpu --no-sandbox"
+    set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/teams-insiders.desktop" Exec "/usr/bin/teams-insiders --disable-gpu --no-sandbox"
 #fi
 
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/meowgram.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/telegramdesktop.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.telegram.desktop.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/meowgram.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/telegramdesktop.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.telegram.desktop.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Telegram" \
         Name[ro] "Telegram"
 done
 
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/meowgram.desktop" Categories "GTK;${CHAT_APP_CATEGORIES}"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/telegramdesktop.desktop" Categories "Qt;${CHAT_APP_CATEGORIES}"
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/meowgram.desktop" Categories "GTK;${CHAT_APP_CATEGORIES}"
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/telegramdesktop.desktop" Categories "Qt;${CHAT_APP_CATEGORIES}"
 
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/whatsapp-for-linux.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/whatsapp-desktop.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier-dark.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/whatsie.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/io.github.mimbrero.WhatsAppDesktop.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/whatsapp-for-linux.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/whatsapp-desktop.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/whatsapp-nativefier.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/whatsapp-nativefier-dark.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/whatsie.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/io.github.mimbrero.WhatsAppDesktop.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "WhatsApp" \
         Name[ro] "WhatsApp" \
@@ -215,59 +212,59 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/whatsapp-for-linux.desktop" \
         Categories "${CHAT_APP_CATEGORIES}"
 done
 
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsapp-desktop.desktop" StartupWMClass "whatsapp"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier.desktop" StartupWMClass "whatsapp-nativefier-d40211"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/whatsapp-nativefier-dark.desktop" StartupWMClass "whatsapp-nativefier-d52542"
-set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-nfjdjopfnbnkmfldmeffmhgodmlhdnei-Default.desktop" Categories "ChromeApp;${CHAT_APP_CATEGORIES}"
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/whatsapp-desktop.desktop" StartupWMClass "whatsapp"
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/whatsapp-nativefier.desktop" StartupWMClass "whatsapp-nativefier-d40211"
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/whatsapp-nativefier-dark.desktop" StartupWMClass "whatsapp-nativefier-d52542"
+set_launcher_entry "${LOCAL_LAUNCHERS_DIR}/chrome-nfjdjopfnbnkmfldmeffmhgodmlhdnei-Default.desktop" Categories "ChromeApp;${CHAT_APP_CATEGORIES}"
 
 ##############
 ### CITRIX ###
 ##############
 if [ -d "${ROOT_OPT}/Citrix" ]; then
-    [ ! -f "${GLOBAL_LAUNCHERS_PATH}wfsplash.desktop" ] && create_launcher "${GLOBAL_LAUNCHERS_PATH}/wfsplash.desktop"
+    [ ! -f "${GLOBAL_LAUNCHERS_DIR}wfsplash.desktop" ] && create_launcher "${GLOBAL_LAUNCHERS_DIR}/wfsplash.desktop"
 
-    for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/citrix-wfica.desktop" \
-                    "${GLOBAL_LAUNCHERS_PATH}/citrix-configmgr.desktop" \
-                    "${GLOBAL_LAUNCHERS_PATH}/citrix-conncenter.desktop" \
-                    "${GLOBAL_LAUNCHERS_PATH}/citrix-workspace.desktop" \
-                    "${GLOBAL_LAUNCHERS_PATH}/configmgr.desktop" \
-                    "${GLOBAL_LAUNCHERS_PATH}/conncentre.desktop" \
-                    "${GLOBAL_LAUNCHERS_PATH}/wfcmgr.desktop" \
-                    "${GLOBAL_LAUNCHERS_PATH}/wfsplash.desktop" \
-                    "${GLOBAL_LAUNCHERS_PATH}/wfica.desktop"; do
+    for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/citrix-wfica.desktop" \
+                    "${GLOBAL_LAUNCHERS_DIR}/citrix-configmgr.desktop" \
+                    "${GLOBAL_LAUNCHERS_DIR}/citrix-conncenter.desktop" \
+                    "${GLOBAL_LAUNCHERS_DIR}/citrix-workspace.desktop" \
+                    "${GLOBAL_LAUNCHERS_DIR}/configmgr.desktop" \
+                    "${GLOBAL_LAUNCHERS_DIR}/conncentre.desktop" \
+                    "${GLOBAL_LAUNCHERS_DIR}/wfcmgr.desktop" \
+                    "${GLOBAL_LAUNCHERS_DIR}/wfsplash.desktop" \
+                    "${GLOBAL_LAUNCHERS_DIR}/wfica.desktop"; do
         set_launcher_entries "${LAUNCHER}" \
             Icon "citrix-receiver" \
             NoDisplay true
     done
 
-    for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/citrix-configmgr.desktop" \
-                    "${GLOBAL_LAUNCHERS_PATH}/configmgr.desktop"; do
+    for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/citrix-configmgr.desktop" \
+                    "${GLOBAL_LAUNCHERS_DIR}/configmgr.desktop"; do
         set_launcher_entries "${LAUNCHER}" \
             Name "Citrix Receiver Preferences" \
             Name[ro] "Configurare Receptor Citrix" \
             StartupWMClass "Configmgr"
     done
 
-    for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/citrix-conncenter.desktop" \
-                    "${GLOBAL_LAUNCHERS_PATH}/conncentre.desktop"; do
+    for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/citrix-conncenter.desktop" \
+                    "${GLOBAL_LAUNCHERS_DIR}/conncentre.desktop"; do
         set_launcher_entries "${LAUNCHER}" \
             Name "Citrix Connection Centre" \
             Name[ro] "Centrul de conexiuni Citrix" \
             StartupWMClass "Conncenter"
     done
 
-    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/wfcmgr.desktop" \
+    set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/wfcmgr.desktop" \
         Name "Citrix Receiver Self Service" \
         Name[ro] "Asistență Receptor Citrix" \
         StartupWMClass "Wfcmgr"
 
-    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/wfsplash.desktop" \
+    set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/wfsplash.desktop" \
         Name "Citrix Splash" \
         Categories "Application;Network;X-Red-Hat-Base;X-SuSE-Core-Internet;" \
         StartupWMClass "Wfica_Splash" # InitPanel_popup
 
-    for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/citrix-wfica.desktop" \
-                    "${GLOBAL_LAUNCHERS_PATH}/wfica.desktop"; do
+    for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/citrix-wfica.desktop" \
+                    "${GLOBAL_LAUNCHERS_DIR}/wfica.desktop"; do
         set_launcher_entries "${LAUNCHER}" \
             Name "Citrix Receiver" \
             Name[ro] "Receptor Citrix" \
@@ -280,9 +277,9 @@ fi
 ### CMAKE ###
 #############
 if does_bin_exist "cmake"; then
-    for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/cmake.desktop" \
-                    "${GLOBAL_LAUNCHERS_PATH}/cmake-gui.desktop" \
-                    "${GLOBAL_LAUNCHERS_PATH}/CMake.desktop"; do
+    for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/cmake.desktop" \
+                    "${GLOBAL_LAUNCHERS_DIR}/cmake-gui.desktop" \
+                    "${GLOBAL_LAUNCHERS_DIR}/CMake.desktop"; do
         set_launcher_entries "${LAUNCHER}" \
             Icon "cmake" \
             NoDisplay true
@@ -292,8 +289,8 @@ fi
 ################
 ### Contacts ###
 ################
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Contacts.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.gnome.Contacts.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Contacts.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Contacts.desktop"; do
     set_launcher_entries "${LAUNCHER}" Categories "GNOME;GTK;Utility;ContactManagement;"
 done
 
@@ -301,10 +298,10 @@ done
 ### DEVELOPMENT ENVIRONMENTS ###
 ################################
 DEVELOPMENT_ENVIRONMENT_CATEGORIES="Development;IDE;"
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/code.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/codium.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/visual-studio-code.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/code-oss.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/code.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/codium.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/visual-studio-code.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Code" \
         Name[ro] "Code" \
@@ -313,50 +310,50 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" \
         Categories "${DEVELOPMENT_ENVIRONMENT_CATEGORIES};TextEditor;"
 done
 
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/monodevelop.desktop" \
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/monodevelop.desktop" \
     Exec "env GNOME_DESKTOP_SESSION_ID="" monodevelop %F" \
     Categories ${DEVELOPMENT_ENVIRONMENT_CATEGORIES}
 
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/unity-editor.desktop" \
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/unity-editor.desktop" \
     Name "Unity Editor" \
     Icon "unity-editor-icon" \
     Categories ${DEVELOPMENT_ENVIRONMENT_CATEGORIES}
 
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/unity-monodevelop.desktop" \
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/unity-monodevelop.desktop" \
     Name "MonoDevelop - Unity" \
     Icon "unity-monodevelop" \
     Categories ${DEVELOPMENT_ENVIRONMENT_CATEGORIES}
 
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/codeblocks.desktop" \
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/codeblocks.desktop" \
     Name "Code::Blocks" \
     Categories "GTK;${DEVELOPMENT_ENVIRONMENT_CATEGORIES}"
 
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/android-studio.desktop" \
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/android-studio.desktop" \
     StartupWMClass "jetbrains-studio"
 
 if [[ "${ARCH_FAMILY}" == "x86" ]]; then
-    set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" StartupWMClass "code"
-    set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss-url-handler.desktop" NoDisplay true
-    set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code.desktop" StartupWMClass "code-oss"
-    set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/visual-studio-code.desktop" StartupWMClass "Code"
+    set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/code-oss.desktop" StartupWMClass "code"
+    set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/code-oss-url-handler.desktop" NoDisplay true
+    set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/code.desktop" StartupWMClass "code-oss"
+    set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/visual-studio-code.desktop" StartupWMClass "Code"
 elif [[ "${ARCH_FAMILY}" == "arm" ]]; then
-    set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/code-oss.desktop" StartupWMClass "Code - OSS (headmelted)"
+    set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/code-oss.desktop" StartupWMClass "Code - OSS (headmelted)"
 fi
 
 ####################
 ### DICTIONARIES ###
 ####################
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/mate-dictionary.desktop" \
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/mate-dictionary.desktop" \
     Name "Dictionary" \
     Name[ro] "Dicționar"
 
 ############################
 ### DISK USAGE ANALYZERS ###
 ############################
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/baobab.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/mate-disk-usage-analyzer.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/org.gnome.baobab.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.gnome.baobab.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/baobab.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/mate-disk-usage-analyzer.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/org.gnome.baobab.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.baobab.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Disk Usage" \
         Name[ro] "Utilizarea Discului" \
@@ -366,8 +363,8 @@ done
 ######################
 ### DISK UTILITIES ###
 ######################
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gnome-disks.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/mate-disk.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/gnome-disks.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/mate-disk.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name[ro] "Discuri" \
         Icon "gnome-disks"
@@ -377,24 +374,24 @@ done
 ### DOCUMENT VIEWERS ###
 ########################
 DOCUMENT_VIEWER_CATEGORIES="Office;Viewer;"
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/atril.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/epdfview.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/evince.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Evince.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.gnome.Evince.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/atril.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/epdfview.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/evince.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Evince.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Evince.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Documents" \
         Name[ro] "Documente"
 done
 
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/atril.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/epdfview.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/atril.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/epdfview.desktop"; do
     set_launcher_entry "${LAUNCHER}" Categories "GTK;${DOCUMENT_VIEWER_CATEGORIES}"
 done
 
 if does_bin_exist "evince"; then
-    for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/evince.desktop" \
-                    "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Evince.desktop"; do
+    for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/evince.desktop" \
+                    "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Evince.desktop"; do
         set_launcher_entry "${LAUNCHER}" Categories "GNOME;GTK;${DOCUMENT_VIEWER_CATEGORIES}"
     done
 fi
@@ -404,7 +401,7 @@ fi
 ################
 if does_bin_exist "electron"; then
     for ELECTRON_VERSION in "" {10..16}; do
-        set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/electron${ELECTRON_VERSION}.desktop" NoDisplay true
+        set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/electron${ELECTRON_VERSION}.desktop" NoDisplay true
     done
 fi
 
@@ -413,11 +410,11 @@ fi
 #################
 EMULATOR_CATEGORIES="Game;Application;Emulator;"
 
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/dosbox.desktop" \
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/dosbox.desktop" \
     Name "DosBox" \
     Categories ${EMULATOR_CATEGORIES}
 
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/PCSX2.desktop" \
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/PCSX2.desktop" \
     Icon "pcsx2" \
     Categories ${EMULATOR_CATEGORIES}
 
@@ -425,12 +422,12 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/PCSX2.desktop" \
 ### EXTENSION MANAGERS ###
 ##########################
 EXTENSION_MANAGER_CATEGORIES="System;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Extensions.desktop" Categories "GNOME;GTK;${EXTENSION_MANAGER_CATEGORIES}"
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Extensions.desktop" Categories "GNOME;GTK;${EXTENSION_MANAGER_CATEGORIES}"
 
 ####################
 ### FEED READERS ###
 ####################
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FeedReader.dekstop" \
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/org.gnome.FeedReader.dekstop" \
     Name "Feed Reader" \
     Icon "feedreader" \
     Categories "GNOME;GTK;Network;Feed;Utility;"
@@ -440,21 +437,21 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/org.gnome.FeedReader.dekstop" \
 #####################
 FILE_MANAGER_CATEGORIES="Utility;Core;FileManager;FileTools;"
 
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/caja-browser.dekstop" \
-                "${GLOBAL_LAUNCHERS_PATH}/io.elementary.files.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Nautilus.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/Thunar.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/thunar.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/pcmanfm.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/caja-browser.dekstop" \
+                "${GLOBAL_LAUNCHERS_DIR}/io.elementary.files.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Nautilus.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/Thunar.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/thunar.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/pcmanfm.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Files" \
         Name[ro] "Fișiere"
 done
 
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/caja.dekstop" \
-                "${GLOBAL_LAUNCHERS_PATH}/Thunar.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/thunar.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/pcmanfm.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/caja.dekstop" \
+                "${GLOBAL_LAUNCHERS_DIR}/Thunar.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/thunar.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/pcmanfm.desktop"; do
     set_launcher_entry "${LAUNCHER}" Categories "GTK;${FILE_MANAGER_CATEGORIES}"
 done
 
@@ -462,10 +459,10 @@ set_launcher_entry "${GLOBAL_LAUNCHER_PATH}/io.elementary.files.desktop" Categor
 set_launcher_entry "${GLOBAL_LAUNCHER_PATH}/org.gnome.Nautilus.desktop" Categories "GNOME;GTK;${FILE_MANAGER_CATEGORIES}"
 
 if does_bin_exist "thunar"; then
-    for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/Thunar-bulk-rename.desktop" \
-                    "${GLOBAL_LAUNCHERS_PATH}/thunar-bulk-rename.desktop" \
-                    "${GLOBAL_LAUNCHERS_PATH}/thunar-settings.desktop" \
-                    "${GLOBAL_LAUNCHERS_PATH}/thunar-volman-settings.desktop"; do
+    for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/Thunar-bulk-rename.desktop" \
+                    "${GLOBAL_LAUNCHERS_DIR}/thunar-bulk-rename.desktop" \
+                    "${GLOBAL_LAUNCHERS_DIR}/thunar-settings.desktop" \
+                    "${GLOBAL_LAUNCHERS_DIR}/thunar-volman-settings.desktop"; do
         set_launcher_entry "${LAUNCHER}" NoDisplay true
     done
 fi
@@ -473,30 +470,30 @@ fi
 #####################
 ### Font Managers ###
 #####################
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/org.gnome.font-viewer.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.gnome.font-viewer.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.font-viewer.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.font-viewer.desktop"; do
     set_launcher_entry "${LAUNCHER}" NoDisplay true
 done
 
 #############
 ### Games ###
 #############
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gnubg.desktop" \
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/gnubg.desktop" \
     Name "Backgammon" \
     Name[ro] "Table"
 
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/minecraft-launcher.desktop" \
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/minecraft-launcher.desktop" \
     Name "Minecraft" \
     StartupWMClass "Minecraft* 1.17.1"
 
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/nfs2se.desktop" \
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/nfs2se.desktop" \
     Name "Need for Speed 2" \
     Icon "nfs2se" \
     StartupWMClass "nfs2se"
 
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.gnome-2048.desktop" Icon "2048"
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/org.gnome.gnome-2048.desktop" Icon "2048"
 
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/openarena-server.desktop" NoDisplay true
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/openarena-server.desktop" NoDisplay true
 
 #####################
 ### IMAGE EDITORS ###
@@ -504,14 +501,14 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/openarena-server.desktop" NoDisplay
 IMAGE_EDITOR_CATEGORIES="Graphics;2DGraphics"
 
 if does_bin_exist "gimp"; then
-    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gimp.desktop" \
+    set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/gimp.desktop" \
         Name "GIMP" \
         Categories "GTK;${IMAGE_EDITOR_CATEGORIES};RasterGraphics;" \
         StartupWMClass "Gimp-2.10"
 
-    [ ! -f "${GLOBAL_LAUNCHERS_PATH}/gmic-qt.desktop" ] && create_launcher "${GLOBAL_LAUNCHERS_PATH}/gmic-qt.desktop"
+    [ ! -f "${GLOBAL_LAUNCHERS_DIR}/gmic-qt.desktop" ] && create_launcher "${GLOBAL_LAUNCHERS_DIR}/gmic-qt.desktop"
 
-    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gmic-qt.desktop" \
+    set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/gmic-qt.desktop" \
         Exec "gmic_qt" \
         Name "GMIC QT for GIMP" \
         Name[ro] "GMIC QT pentru GIMP" \
@@ -520,9 +517,9 @@ if does_bin_exist "gimp"; then
         NoDisplay true
 fi
 
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/inkscape.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/org.inkscape.Inkscape.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.inkscape.Inkscape.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/inkscape.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/org.inkscape.Inkscape.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.inkscape.Inkscape.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Inkscape" \
         Categories "GTK;${IMAGE_EDITOR_CATEGORIES};VectorGraphics;"
@@ -531,11 +528,11 @@ done
 #####################
 ### IMAGE VIEWERS ###
 #####################
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gpicview.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/eog.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/eom.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/org.gnome.eog.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.gnome.eog.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/gpicview.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/eog.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/eom.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/org.gnome.eog.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.eog.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Images" \
         Name[ro] "Imagini"
@@ -546,21 +543,21 @@ done
 #########################
 INTERNET_BROWSER_CATEGORIES="Network;WebBrowser;"
 
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/firefox-developer.desktop" Categories ${INTERNET_BROWSER_CATEGORIES}
-set_launcher_entries "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.mozilla.firefox.desktop" StartupWMClass "firefox"
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/firefox-developer.desktop" Categories ${INTERNET_BROWSER_CATEGORIES}
+set_launcher_entries "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.mozilla.firefox.desktop" StartupWMClass "firefox"
 
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/google-chrome-unstable.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/google-chrome.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/google-chrome-unstable.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/google-chrome.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Chrome" \
         Name[ro] "Chrome" \
         Icon "google-chrome"
 done
 
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-chrome-unstable.desktop" StartupWMClass "Google-chrome-unstable"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-chrome.desktop" StartupWMClass "Google-chrome-stable"
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/google-chrome-unstable.desktop" StartupWMClass "Google-chrome-unstable"
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/google-chrome.desktop" StartupWMClass "Google-chrome-stable"
 
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/tor-browser-en.desktop" \
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/tor-browser-en.desktop" \
     Name "Tor" \
     Icon "tor-browser-en" \
     Categories ${INTERNET_BROWSER_CATEGORIES} \
@@ -570,24 +567,24 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/tor-browser-en.desktop" \
 ### JAVA - JRE & JDK ###
 ########################
 if does_bin_exist "java"; then
-    [ ! -f "${GLOBAL_LAUNCHERS_PATH}/run-java.desktop" ] && create_launcher "${GLOBAL_LAUNCHERS_PATH}/run-java.desktop"
+    [ ! -f "${GLOBAL_LAUNCHERS_DIR}/run-java.desktop" ] && create_launcher "${GLOBAL_LAUNCHERS_DIR}/run-java.desktop"
 
     for JAVA_VERSION in {8..24}; do
-        for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/jconsole-jdk${JAVA_VERSION}.desktop" \
-                        "${GLOBAL_LAUNCHERS_PATH}/jmc-jdk${JAVA_VERSION}.desktop" \
-                        "${GLOBAL_LAUNCHERS_PATH}/jvisualvm-jdk${JAVA_VERSION}.desktop" \
-                        "${GLOBAL_LAUNCHERS_PATH}/policytool-jdk${JAVA_VERSION}.desktop" \
-                        "${GLOBAL_LAUNCHERS_PATH}/policytool-jre${JAVA_VERSION}.desktop" \
-                        "${GLOBAL_LAUNCHERS_PATH}/sun_java-jdk${JAVA_VERSION}.desktop" \
-                        "${GLOBAL_LAUNCHERS_PATH}/sun_java-jre${JAVA_VERSION}.desktop" \
-                        "${GLOBAL_LAUNCHERS_PATH}/sun_javaws-jre${JAVA_VERSION}.desktop"; do
+        for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/jconsole-jdk${JAVA_VERSION}.desktop" \
+                        "${GLOBAL_LAUNCHERS_DIR}/jmc-jdk${JAVA_VERSION}.desktop" \
+                        "${GLOBAL_LAUNCHERS_DIR}/jvisualvm-jdk${JAVA_VERSION}.desktop" \
+                        "${GLOBAL_LAUNCHERS_DIR}/policytool-jdk${JAVA_VERSION}.desktop" \
+                        "${GLOBAL_LAUNCHERS_DIR}/policytool-jre${JAVA_VERSION}.desktop" \
+                        "${GLOBAL_LAUNCHERS_DIR}/sun_java-jdk${JAVA_VERSION}.desktop" \
+                        "${GLOBAL_LAUNCHERS_DIR}/sun_java-jre${JAVA_VERSION}.desktop" \
+                        "${GLOBAL_LAUNCHERS_DIR}/sun_javaws-jre${JAVA_VERSION}.desktop"; do
             set_launcher_entries "${LAUNCHER}" \
                 Icon "java" \
                 NoDisplay true
         done
     done
 
-    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/run-java.desktop" \
+    set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/run-java.desktop" \
         Name "Java" \
         Icon "java" \
         Exec "java -jar %U" \
@@ -598,8 +595,8 @@ fi
 ###################
 ### LOG VIEWERS ###
 ###################
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/mate-system-log.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Logs.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/mate-system-log.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Logs.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Logs" \
         Name[ro] "Loguri" \
@@ -610,9 +607,9 @@ done
 ### MAIL CLIENTS ###
 ####################
 MAIL_APP_CATEGORIES="Network;Email;"
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/electron-mail.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Evolution.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/com.github.vladimiry.ElectronMail.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/electron-mail.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Evolution.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.github.vladimiry.ElectronMail.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Mail" \
         Name[ro] "Mail" \
@@ -624,26 +621,26 @@ done
 ### MAPS ###
 ############
 MAPS_APP_CATEGORIES="Utility;Navigation;"
-for LAUNCHER in "${LOCAL_LAUNCHERS_PATH}/chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Maps.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.gnome.Maps.desktop"; do
+for LAUNCHER in "${LOCAL_LAUNCHERS_DIR}/chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Maps.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Maps.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Maps" \
         Name[ro] "Hărți" \
         NoDisplay "false"
 done
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Maps.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.gnome.Maps.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Maps.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Maps.desktop"; do
     set_launcher_entries "${LAUNCHER}" Categories "GNOME;GTK;${MAPS_APP_CATEGORIES}"
 done
 
-set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default.desktop" Categories "ChromeApp;${MAPS_APP_CATEGORIES}"
+set_launcher_entry "${LOCAL_LAUNCHERS_DIR}/chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default.desktop" Categories "ChromeApp;${MAPS_APP_CATEGORIES}"
 
 ################
 ### MONOGAME ###
 ################
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/Monogame\ Pipeline.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/MonogamePipeline.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/Monogame\ Pipeline.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/MonogamePipeline.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         NoDisplay true \
         StartupWMClass "Pipeline"
@@ -652,7 +649,7 @@ done
 ####################
 ### MUSIC PLAYER ###
 ####################
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/lxmusic.desktop" \
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/lxmusic.desktop" \
     Name "Music" \
     Name[ro] "Muzică" \
     MimeType "application/x-ogg;application/ogg;audio/x-vorbis+ogg;audio/vorbis;audio/x-vorbis;audio/x-scpls;audio/x-mp3;audio/x-mpeg;audio/mpeg;audio/x-mpegurl;audio/x-flac;audio/mp4;x-scheme-handler/itms;x-scheme-handler/itmss;"
@@ -660,8 +657,8 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/lxmusic.desktop" \
 #################
 ### NOTE APPS ###
 #################
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/google-keep.desktop" \
-                "${LOCAL_LAUNCHERS_PATH}/chrome-hmjkmjkepdijhoojdojkdfohbdgmmhki-Default.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/google-keep.desktop" \
+                "${LOCAL_LAUNCHERS_DIR}/chrome-hmjkmjkepdijhoojdojkdfohbdgmmhki-Default.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Keep" \
         Name[ro] "Keep" \
@@ -669,46 +666,46 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/google-keep.desktop" \
         Categories "Utility;" \
         NoDisplay false
 done
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/google-keep.desktop" StartupWMClass "google-keep-nativefier-d04d04"
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/google-keep.desktop" StartupWMClass "google-keep-nativefier-d04d04"
 
 ##############
 ### NVIDIA ###
 ##############
 if does_bin_exist "nvidia-settings"; then
-    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/nvidia-settings.desktop" \
+    set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/nvidia-settings.desktop" \
         Name "Nvidia Settings" \
         Name[ro] "Setări Nvidia" \
         Icon "nvidia-settings" \
         Categories "System;"
 
-    does_bin_exist "optirun" && set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/nvidia-settings.desktop" Exec "optirun -b none nvidia-settings -c :8"
+    does_bin_exist "optirun" && set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/nvidia-settings.desktop" Exec "optirun -b none nvidia-settings -c :8"
 fi
 
 ###################
 ### Office Apps ###
 ###################
 if does_bin_exist "libreoffice"; then
-    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-base.desktop" \
+    set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/libreoffice-base.desktop" \
         Name "Base" \
         Name[ro] "Baze" \
         NoDisplay true
-    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-calc.desktop" \
+    set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/libreoffice-calc.desktop" \
         Name "Calc" \
         Name[ro] "Calcul" \
         NoDisplay true
-    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-draw.desktop" \
+    set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/libreoffice-draw.desktop" \
         Name "Draw" \
         Name[ro] "Schițe" \
         NoDisplay true
-    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-impress.desktop" \
+    set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/libreoffice-impress.desktop" \
         Name "Impress" \
         Name[ro] "Prezentări" \
         NoDisplay true
-    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-math.desktop" \
+    set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/libreoffice-math.desktop" \
         Name "Math" \
         Name[ro] "Mate" \
         NoDisplay true
-    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/libreoffice-writer.desktop" \
+    set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/libreoffice-writer.desktop" \
         Name "Writer" \
         Name[ro] "Scriitor" \
         NoDisplay true
@@ -717,8 +714,8 @@ fi
 #########################
 ### Password Managers ###
 #########################
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/org.gnome.seahorse.Application.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.gnome.seahorse.Application.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.seahorse.Application.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.seahorse.Application.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name[ro] "Parole și Chei" \
         NoDisplay true
@@ -732,14 +729,14 @@ set_launcher_entries "$(find_launcher_by_name \"Google Photos\")" \
     Name[ro] "Fotografii" \
     Categories "Network;Utility;Photography;"
 
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Photos.desktop" \
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Photos.desktop" \
     Icon "multimedia-photo-manager"
 
 ###############
 ### POSTMAN ###
 ###############
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/postman.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/com.getpostman.Postman.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/postman.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.getpostman.Postman.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Icon "postman" \
         Categories "Development;"
@@ -748,8 +745,8 @@ done
 ##############
 ### PYTHON ###
 ##############
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/ipython.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/ipython2.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/ipython.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/ipython2.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Categories "Development;" \
         NoDisplay true \
@@ -759,9 +756,9 @@ done
 ######################
 ### SCREENSHOOTERS ###
 ######################
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gscreenshot.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/mate-screenshot.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Screenshot.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/gscreenshot.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/mate-screenshot.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Screenshot.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Screenshot" \
         Name[ro] "Captură de Ecran" \
@@ -775,65 +772,65 @@ done
 SETTINGS_APP_CATEGORIES="System;" #"Settings;"
 
 ### System Settings
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/gnome-control-center.desktop" \
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/gnome-control-center.desktop" \
     Name "Settings" \
     Name[ro] "Setări" \
     Categories "GNOME;GTK;${SETTINGS_APP_CATEGORIES}"
 
 ### Configuration Settings
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/ca.desrt.dconf-editor.desktop" \
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/ca.desrt.dconf-editor.desktop" \
     Name "Configurator" \
     Name[ro] "Configurator" \
     Icon "dconf-editor" \
     Categories "GNOME;GTK;${SETTINGS_APP_CATEGORIES}"
 
 ### Audio Settings
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/pavucontrol.desktop" \
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/pavucontrol.desktop" \
     Categories "GTK;System;Audio;Mixer;" \
     Name "Audio Settings" \
     Name[ro] "Setări Audio"
 
 ### Mouse Settings
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/org.freedesktop.Piper.desktop" \
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/org.freedesktop.Piper.desktop" \
     Name "Mouse Settings" \
     Icon "gnome-settings-mouse" \
     Categories "GNOME;GTK;System;"
 
 ### Network Displays
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/org.gnome.NetworkDisplays.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.gnome.NetworkDisplays.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.NetworkDisplays.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.NetworkDisplays.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Network Displays" \
         Name[ro] "Monitoare în Rețea"
 done
 
 ### RGB Settings
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/openrgb.desktop" \
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/openrgb.desktop" \
     Categories "Qt;${SETTINGS_APP_CATEGORIES}"
 
 #############
 ### STEAM ###
 #############
 if does_bin_exist "steam" "com.valvesoftware.Steam"; then
-    remove "${GLOBAL_LAUNCHERS_PATH}/steam-native.desktop"
+    remove "${GLOBAL_LAUNCHERS_DIR}/steam-native.desktop"
 
-    for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/steam-runtime.desktop" \
-                    "${GLOBAL_LAUNCHERS_PATH}/valve-URI-steamvr.desktop" \
-                    "${GLOBAL_LAUNCHERS_PATH}/valve-URI-vrmonitor"; do
+    for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/steam-runtime.desktop" \
+                    "${GLOBAL_LAUNCHERS_DIR}/valve-URI-steamvr.desktop" \
+                    "${GLOBAL_LAUNCHERS_DIR}/valve-URI-vrmonitor"; do
         set_launcher_entry "${LAUNCHER}" NoDisplay true
     done
 
-    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/steam.desktop" \
+    set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/steam.desktop" \
         Name "Steam" \
         Name[ro] "Steam" \
         Categories "Game;Steam;"
 
     if does_bin_exist "steam-start"; then
-        set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/steam.desktop" Exec "steam-start"
+        set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/steam.desktop" Exec "steam-start"
     fi
 
-    [ ! -f "${GLOBAL_LAUNCHERS_PATH}/steam-streaming-client.desktop" ] && create_launcher "${GLOBAL_LAUNCHERS_PATH}/steam-streaming-client.desktop"
-    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/steam-streaming-client.desktop" \
+    [ ! -f "${GLOBAL_LAUNCHERS_DIR}/steam-streaming-client.desktop" ] && create_launcher "${GLOBAL_LAUNCHERS_DIR}/steam-streaming-client.desktop"
+    set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/steam-streaming-client.desktop" \
         Name "Steam Remote Play" \
         Comment "Steam Streaming Client" \
         Exec "steam" \
@@ -842,7 +839,7 @@ if does_bin_exist "steam" "com.valvesoftware.Steam"; then
         StartupWMClass "streaming_client" \
         NoDisplay true
 
-    set_launcher_entries "${LOCAL_LAUNCHERS_PATH}/valve-vrmonitor.desktop" \
+    set_launcher_entries "${LOCAL_LAUNCHERS_DIR}/valve-vrmonitor.desktop" \
         Name "SteamVR Monitor" \
         NoDisplay true
 fi
@@ -850,21 +847,21 @@ fi
 #####################
 ### TASK MANAGERS ###
 #####################
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gnome-system-monitor.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/mate-system-monitor.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/gnome-system-monitor.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/mate-system-monitor.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "System Monitor" \
         Name[ro] "Monitor de Sistem"
 done
 
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/lxtask.desktop" Name[ro] "Manager de Activități"
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/lxtask.desktop" Name[ro] "Manager de Activități"
 
 ###################
 ### TEAM VIEWER ###
 ###################
 if does_bin_exist teamviewer; then
-    for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/com.teamviewer.TeamViewer.desktop" \
-                    "${GLOBAL_LAUNCHERS_PATH}/teamviewer.desktop"; do
+    for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/com.teamviewer.TeamViewer.desktop" \
+                    "${GLOBAL_LAUNCHERS_DIR}/teamviewer.desktop"; do
         set_launcher_entries "${LAUNCHER}" \
             Name "TeamViewer" \
             Name[ro] "TeamViewer" \
@@ -877,31 +874,31 @@ fi
 #################
 ### TERMINALS ###
 #################
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gnome-terminal.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/lxterminal.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/mate-terminal.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/gnome-terminal.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/lxterminal.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/mate-terminal.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Terminal" \
         Name[ro] "Terminal"
 done
 
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/xterm.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/uxterm.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/xterm.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/uxterm.desktop"; do
     set_launcher_entry "${LAUNCHER}" NoDisplay true
 done
 
 ####################
 ### TEXT EDITORS ###
 ####################
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gedit.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/io.elementary.code.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/leafpad.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/org.gnome.gedit.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/org.pantheon.scratch.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/medit.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/pluma.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.gnome.gedit.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.gnome.TextEditor.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/gedit.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/io.elementary.code.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/leafpad.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/org.gnome.gedit.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/org.pantheon.scratch.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/medit.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/pluma.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.gedit.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.TextEditor.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Text Editor" \
         Name[ro] "Editor Text" \
@@ -912,19 +909,19 @@ done
 ### TORRENT DOWNLOADERS ###
 ###########################
 TORRENT_APP_CATEGORIES="Network;FileTransfer;P2P;"
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/de.haeckerfelix.Fragments.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/transmission-gtk.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/de.haeckerfelix.Fragments.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/transmission-gtk.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Torrents" \
         Name[ro] "Torente"
 done
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/de.haeckerfelix.Fragments.desktop" Categories "GNOME;GTK;${TORRENT_APP_CATEGORIES}"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/transmission-gtk.desktop" Categories "GTK;${TORRENT_APP_CATEGORIES}"
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/de.haeckerfelix.Fragments.desktop" Categories "GNOME;GTK;${TORRENT_APP_CATEGORIES}"
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/transmission-gtk.desktop" Categories "GTK;${TORRENT_APP_CATEGORIES}"
 
 ########################
 ### TRANSLATION APPS ###
 ########################
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/com.github.gi_lom.dialect.desktop" \
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/com.github.gi_lom.dialect.desktop" \
     Name "Translate" \
     Name[ro] "Traduceri" \
     Categories "GNOME;GTK;Utility;"
@@ -934,31 +931,31 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/com.github.gi_lom.dialect.desktop
 #####################
 
 ### MPV
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/mpv.desktop" NoDisplay true
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/mpv.desktop" NoDisplay true
 
 ### Netflix
 set_launcher_entry "$(find_launcher_by_name Netflix)" Categories "AudioVideo;Video;Player;"
 
 ### Plex
-for LAUNCHER in "${LOCAL_LAUNCHERS_PATH}/chrome-aghlkjcflkcaanjmefomlcfgflfdhkkg-Default.desktop" \
-                "${GLOBAL_LAUNCHERS_PATH}/plexmediaplayer.desktop"; do
+for LAUNCHER in "${LOCAL_LAUNCHERS_DIR}/chrome-aghlkjcflkcaanjmefomlcfgflfdhkkg-Default.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/plexmediaplayer.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Plex" \
         Name[ro] "Plex" \
         Icon "plexhometheater" \
         Categories "AudioVideo;Audio;Video;Player;"
 done
-set_launcher_entry "${LOCAL_LAUNCHERS_PATH}/chrome-aghlkjcflkcaanjmefomlcfgflfdhkkg-Default.desktop" StartupWMClass "crx_aghlkjcflkcaanjmefomlcfgflfdhkkg"
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/plexmediaplayer.desktop" StartupWMClass "plexmediaplayer"
+set_launcher_entry "${LOCAL_LAUNCHERS_DIR}/chrome-aghlkjcflkcaanjmefomlcfgflfdhkkg-Default.desktop" StartupWMClass "crx_aghlkjcflkcaanjmefomlcfgflfdhkkg"
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/plexmediaplayer.desktop" StartupWMClass "plexmediaplayer"
 
 ### VLC
-set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/vlc.desktop" Name "VLC"
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/vlc.desktop" Name "VLC"
 
 ###############
 ### Weather ###
 ###############
-for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/org.gnome.Weather.Application.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.gnome.Weather.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Weather.Application.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Weather.desktop"; do
     set_launcher_entries "${LAUNCHER}" Categories "GNOME;GTK;Utility;Navigation;"
 done
 
@@ -966,15 +963,15 @@ done
 ### WINE ###
 ############
 if does_bin_exist "wine"; then
-    [ ! -f "${GLOBAL_LAUNCHERS_PATH}/winecfg.desktop" ] && create_launcher "${GLOBAL_LAUNCHERS_PATH}/winecfg.desktop"
-    [ ! -f "${GLOBAL_LAUNCHERS_PATH}/winetricks.desktop" ] && create_launcher "${GLOBAL_LAUNCHERS_PATH}/winetricks.desktop"
+    [ ! -f "${GLOBAL_LAUNCHERS_DIR}/winecfg.desktop" ] && create_launcher "${GLOBAL_LAUNCHERS_DIR}/winecfg.desktop"
+    [ ! -f "${GLOBAL_LAUNCHERS_DIR}/winetricks.desktop" ] && create_launcher "${GLOBAL_LAUNCHERS_DIR}/winetricks.desktop"
 
-    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/winecfg.desktop" \
+    set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/winecfg.desktop" \
         Name "Wine Configuration" \
         Categories "Wine;Emulator;System;Settings;" \
         StartupWMClass "winecfg.exe"
 
-    set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/winetricks.desktop" \
+    set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/winetricks.desktop" \
         Name "Winetricks" \
         Icon "winetricks" \
         Categories "Wine;Emulator;" \
@@ -984,9 +981,8 @@ fi
 
 # CREATE ICONS
 
-if [ -d "${ROOT_USR_SHARE}/gnome-shell/extensions/gsconnect@andyholmes.github.io" ] \
-|| [ -d "${HOME}/.local/share/gnome-shell/extensions/gsconnect@andyholmes.github.io" ]; then
-    LAUNCHER="${GLOBAL_LAUNCHERS_PATH}/io.github.andyholmes.gsconnect.desktop"
+if is_gnome_shell_extension_installed "gsconnect"; then
+    LAUNCHER="${GLOBAL_LAUNCHERS_DIR}/io.github.andyholmes.gsconnect.desktop"
 
     [ ! -f "${LAUNCHER}" ] && create_launcher "${LAUNCHER}"
 
@@ -1001,7 +997,7 @@ if [ -d "${ROOT_USR_SHARE}/gnome-shell/extensions/gsconnect@andyholmes.github.io
 fi
 
 if [ -f "${ROOT_USR_BIN}/mono" ]; then
-    NEWLAUNCHER="${GLOBAL_LAUNCHERS_PATH}/run-mono.desktop"
+    NEWLAUNCHER="${GLOBAL_LAUNCHERS_DIR}/run-mono.desktop"
 
     [ ! -f "${NEWLAUNCHER}" ] && create_launcher "${NEWLAUNCHER}"
 
@@ -1052,13 +1048,8 @@ function getSteamAppIconPath() {
 }
 
 if does_bin_exist "steam" "com.valvesoftware.Steam"; then
-    STEAM_PATH="${HOME_REAL}/.local/share/Steam"
-    does_bin_exist "com.valvesoftware.Steam" && STEAM_PATH="${HOME_VAR}/app/com.valvesoftware.Steam/data/Steam"
-
-    STEAM_LAUNCHERS_PATH="${LOCAL_LAUNCHERS_PATH}/Steam"
-    STEAM_ICON_THEME_PATH="${HOME_REAL}/.local/share/icons/steam"
-    STEAM_LIBRARY_PATHS="${STEAM_PATH}/steamapps"
-    STEAM_LIBRARY_CUSTOM_PATHS=$(grep "\"/" "${STEAM_PATH}/steamapps/libraryfolders.vdf")
+    STEAM_ICON_THEME_PATH="${HOME_LOCAL_SHARE}/icons/steam"
+    STEAM_LIBRARY_CUSTOM_PATHS=$(grep "\"/" "${STEAM_DIR}/steamapps/libraryfolders.vdf")
     STEAM_WMCLASSES_FILE="data/steam-wmclasses.txt"
     STEAM_NAMES_FILE="data/steam-names.txt"
 
@@ -1088,7 +1079,7 @@ if does_bin_exist "steam" "com.valvesoftware.Steam"; then
         done
 
         set_launcher_entry "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" NoDisplay "${IS_APP_MISSING}"
-        update_file_if_distinct "${STEAM_PATH}/appcache/librarycache/${APP_ID}_icon.jpg" "${STEAM_ICON_THEME_PATH}/48x48/apps/steam_icon_${APP_ID}.jpg"
+        update_file_if_distinct "${STEAM_DIR}/appcache/librarycache/${APP_ID}_icon.jpg" "${STEAM_ICON_THEME_PATH}/48x48/apps/steam_icon_${APP_ID}.jpg"
     done
 
     for STEAM_LIBRARY_PATH in ${STEAM_LIBRARY_PATHS}; do
@@ -1189,4 +1180,4 @@ for ICON_THEME in ${ICON_THEMES}; do
 done
 
 run_as_su update-desktop-database
-update-desktop-database "${LOCAL_LAUNCHERS_PATH}"
+update-desktop-database "${LOCAL_LAUNCHERS_DIR}"

@@ -20,6 +20,7 @@ REPO_KEYBOARD_LAYOUTS_DIR="${REPO_RC_DIR}/keyboard-layouts"
 LOCAL_INSTALL_TEMP_DIR="${REPO_DIR}/.temp-sysinstall"
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    source "${REPO_DIR}/scripts/common/package-managements.sh"
     source "${REPO_DIR}/scripts/common/system-info.sh"
 fi
 
@@ -41,12 +42,35 @@ ROOT_USR_SHARE="${ROOT_USR}/share"
 ROOT_VAR="${ROOT}/var"
 ROOT_VAR_LIB="${ROOT_VAR}/lib"
 
-HOME_CACHE="${HOME}/.cache"
-HOME_CONFIG="${HOME}/.config"
-HOME_LOCAL="${HOME}/.local"
+# Username and home directory
+USER_REAL=${SUDO_USER}
+[ -z "${USER_REAL}" ] && USER_REAL=${USER}
+
+HOME_REAL=$(grep "${USER_REAL}" "${ROOT_PATH}/etc/passwd" 2>/dev/null | cut -f6 -d":")
+[ "${USER_REAL}" = "root" ] && HOME_REAL="${ROOT_PATH}/root"
+
+if [ ! -d "${HOME_REAL}" ]; then
+    if [ -d "/data/data/com.termux/files/home" ]; then
+        HOME_REAL="/data/data/com.termux/files/home"
+    else
+        HOME_REAL="/home/${USER_REAL}"
+    fi
+fi
+
+[ -z "${HOME}" ] && HOME="${HOME_REAL}"
+
+HOME_CACHE="${HOME_REAL}/.cache"
+HOME_CONFIG="${HOME_REAL}/.config"
+HOME_DOCUMENTS="${HOME_REAL}/Documents"
+HOME_DOWNLOADS="${HOME_REAL}/Downloads"
+HOME_LOCAL="${HOME_REAL}/.local"
 HOME_LOCAL_BIN="${HOME_LOCAL}/bin"
 HOME_LOCAL_SHARE="${HOME_LOCAL}/share"
-HOME_VAR="${HOME}/.var"
+HOME_MUSIC="${HOME_REAL}/Music"
+HOME_PICTURES="${HOME_REAL}/Pictures"
+HOME_TEMPLATES="${HOME_REAL}/Templates"
+HOME_VAR="${HOME_REAL}/.var"
+HOME_VIDEOS="${HOME_REAL}/Videos"
 
 # Functions
 function does_bin_exist () {
@@ -215,3 +239,22 @@ function update_file_if_distinct() {
         fi
     fi
 }
+
+
+
+# Specific directories
+HOME_MOZILLA="${HOME_REAL}/.mozilla"
+
+does_bin_exist "org.mozilla.firefox" && HOME_MOZILLA="${HOME_VAR}/app/org.mozilla.firefox/.mozilla"
+
+GLOBAL_LAUNCHERS_DIR="${ROOT_USR_SHARE}/applications"
+GLOBAL_FLATPAK_LAUNCHERS_DIR="${ROOT_VAR_LIB}/flatpak/exports/share/applications"
+LOCAL_LAUNCHERS_DIR="${HOME_LOCAL_SHARE}/applications"
+
+if does_bin_exist "steam" "org.valvesoftware.Steam"; then
+    STEAM_DIR="${HOME_LOCAL_SHARE}/Steam"
+    does_bin_exist "com.valvesoftware.Steam" && STEAM_DIR="${HOME_VAR}/app/com.valvesoftware.Steam/data/Steam"
+
+    STEAM_LIBRARY_PATHS="${STEAM_DIR}/steamapps"
+    STEAM_LAUNCHERS_PATH="${LOCAL_LAUNCHERS_DIR}/Steam"
+fi

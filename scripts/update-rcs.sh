@@ -17,16 +17,16 @@ fi
 does_bin_exist "nano"       && update_file_if_distinct "${REPO_RC_DIR}/nanorc"        "${HOME}/.nanorc"
 does_bin_exist "vim"        && update_file_if_distinct "${REPO_RC_DIR}/vimrc"         "${HOME}/.vimrc"
 does_bin_exist "git"        && update_file_if_distinct "${REPO_RC_DIR}/gitconfig"     "${HOME}/.gitconfig"
-does_bin_exist "lxpanel"    && update_file_if_distinct "${REPO_RC_DIR}/lxde-panel"    "${HOME}/.config/lxpanel/LXDE/panels/panel"
-#[ -f "${ROOT_USR_BIN}/lxpanel" ]   && copy_rc "lxde-dock" "${HOME}/.config/lxpanel/LXDE/panels/dock"
+does_bin_exist "lxpanel"    && update_file_if_distinct "${REPO_RC_DIR}/lxde-panel"    "${HOME_CONFIG}/lxpanel/LXDE/panels/panel"
+#[ -f "${ROOT_USR_BIN}/lxpanel" ]   && copy_rc "lxde-dock" "${HOME_CONFIG}/lxpanel/LXDE/panels/dock"
 
-if does_bin_exist "firefox"; then
-    FIREFOX_PROFILES_DIR="${HOME_REAL}/.mozilla/firefox"
+if does_bin_exist "firefox" "org.mozilla.firefox"; then
+    FIREFOX_PROFILES_DIR="${HOME_MOZILLA}/firefox"
     FIREFOX_PROFILES_INI_FILE="${FIREFOX_PROFILES_DIR}/profiles.ini"
 
     if [ -f "${FIREFOX_PROFILES_INI_FILE}" ]; then
         FIREFOX_PROFILE_ID=$(grep "^Path=" "${FIREFOX_PROFILES_INI_FILE}" | awk -F= '{print $2}' | head -n 1)
 
-        update_file_if_distinct "${REPO_RC_DIR}/firefox-policies.json" "/usr/lib/firefox/distribution/policies.json"
+        update_file_if_distinct "${REPO_RC_DIR}/firefox-policies.json" "${ROOT_USR_LIB}/firefox/distribution/policies.json"
     fi
 fi

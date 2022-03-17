@@ -322,8 +322,8 @@ if ${HAS_GUI}; then
     set_config_value "${ENVIRONMENT_VARS_FILE}" QT_QPA_PLATFORMTHEME "gtk3"
 
     if [ -d "${ROOT_USR_LIB}/gtk-2.0" ]; then
-        GTK2_CONFIG_FILE="${HOME_REAL}/.gtkrc-2.0"
-        GTK2_FILECHOOSER_CONFIG_FILE="${HOME_REAL}/.config/gtk-2.0/filechooser.ini"
+        GTK2_CONFIG_FILE="${HOME}/.gtkrc-2.0"
+        GTK2_FILECHOOSER_CONFIG_FILE="${HOME_CONFIG}/gtk-2.0/filechooser.ini"
 
         set_config_value "${GTK2_CONFIG_FILE}" gtk-theme-name "${GTK2_THEME}"
         set_config_value "${GTK2_CONFIG_FILE}" gtk-icon-theme-name "${ICON_THEME}"
@@ -336,7 +336,7 @@ if ${HAS_GUI}; then
     fi
 
     if [ -d "${ROOT_USR_LIB}/gtk-3.0" ]; then
-        GTK3_CONFIG_FILE="${HOME_REAL}/.config/gtk-3.0/settings.ini"
+        GTK3_CONFIG_FILE="${HOME_CONFIG}/gtk-3.0/settings.ini"
 
         set_config_value "${GTK3_CONFIG_FILE}" gtk-application-prefer-dark-theme ${DESKTOP_THEME_IS_DARK_BINARY}
         set_config_value "${GTK3_CONFIG_FILE}" gtk-theme-name "${GTK3_THEME}"
@@ -348,7 +348,7 @@ if ${HAS_GUI}; then
     fi
 
     if [ -d "${ROOT_USR_LIB}/gtk-4.0" ]; then
-        GTK4_CONFIG_FILE="${HOME_REAL}/.config/gtk-4.0/settings.ini"
+        GTK4_CONFIG_FILE="${HOME_CONFIG}/gtk-4.0/settings.ini"
 
         set_config_value "${GTK4_CONFIG_FILE}" gtk-application-prefer-dark-theme ${DESKTOP_THEME_IS_DARK_BINARY}
         set_config_value "${GTK4_CONFIG_FILE}" gtk-theme-name "${GTK4_THEME}"
@@ -378,8 +378,8 @@ if does_bin_exist "makepkg"; then
     fi
 fi
 
-if [ -f "${HOME_REAL}/.config/lxsession/LXDE/desktop.conf" ]; then
-    LXSESSION_CONFIG_FILE="${HOME_REAL}/.config/lxsession/LXDE/desktop.conf"
+if [ -f "${HOME_CONFIG}/lxsession/LXDE/desktop.conf" ]; then
+    LXSESSION_CONFIG_FILE="${HOME_CONFIG}/lxsession/LXDE/desktop.conf"
 
     LXDE_WM=""
 
@@ -437,7 +437,7 @@ if does_bin_exist "gnome-shell"; then
     set_gsetting org.gnome.settings-daemon.plugins.media-keys volume-step 3
 fi
 if does_bin_exist "openal-info"; then
-    set_config_value "${HOME_REAL}/.alsoftrc" hrtf true
+    set_config_value "${HOME}/.alsoftrc" hrtf true
 fi
 if does_bin_exist "pulseaudio"; then
     set_config_value "${ROOT_ETC}/pulse/daemon.conf" resample-method speex-float-10
@@ -504,7 +504,7 @@ if does_bin_exist "telegram-desktop" "com.telegram.desktop"; then
     set_config_value "${ENVIRONMENT_VARS_FILE}" TDESKTOP_I_KNOW_ABOUT_GTK_INCOMPATIBILITY "1"
 fi
 if does_bin_exist "whatsapp-for-linux"; then
-    WAPP_CONFIG_FILE="${HOME_REAL}/.config/whatsapp-for-linux/settings.conf"
+    WAPP_CONFIG_FILE="${HOME_CONFIG}/whatsapp-for-linux/settings.conf"
 
     # Disable tray because tray icons don't work and the window becomes inaccessible
     set_config_value "${WAPP_CONFIG_FILE}" close_to_tray false
@@ -512,7 +512,7 @@ if does_bin_exist "whatsapp-for-linux"; then
 fi
 if does_bin_exist "whatsapp-nativefier"; then
     WAPP_CONFIG_FILE="${ROOT_OPT}/whatsapp-nativefier/resources/app/nativefier.json"
-    #WAPP_PREFERENCES_FILE="${HOME}/.config/whatsapp-nativefier-d40211/Preferences"
+    #WAPP_PREFERENCES_FILE="${HOME_CONFIG}/whatsapp-nativefier-d40211/Preferences"
 
     #sudo bash -c "$(declare -f set_json_property); set_json_property \"${WAPP_CONFIG_FILE}\" '.tray' \"start-in-tray\""
     #set_json_property "${WAPP_CONFIG_FILE}" '.tray' "start-in-tray"
@@ -525,7 +525,7 @@ fi
 ### Citrix ###
 ##############
 #if [ -d "${ROOT_OPT}/Citrix" ]; then
-#    set_config_value "${HOME_REAL}/.ICAClient/wfclient.ini" SSLCiphers "ALL" # TODO: Make sure it's put under [WFClient]
+#    set_config_value "${HOME}/.ICAClient/wfclient.ini" SSLCiphers "ALL" # TODO: Make sure it's put under [WFClient]
 #fi
 
 #############################
@@ -597,7 +597,7 @@ fi
 ### Document Viewers ###
 ########################
 if does_bin_exist "epdfview"; then
-    EPDFVIEW_CONFIG_FILE="${HOME_REAL}/.config/epdfview/main.conf"
+    EPDFVIEW_CONFIG_FILE="${HOME_CONFIG}/epdfview/main.conf"
 
     set_config_value "${EPDFVIEW_CONFIG_FILE}" zoomToFit false
     set_config_value "${EPDFVIEW_CONFIG_FILE}" zoomToWidth true
@@ -618,7 +618,7 @@ if does_bin_exist "nautilus"; then
     set_gsetting "${NAUTILUS_SCHEMA}.window-state" sidebar-width 240
 fi
 if does_bin_exist "pcmanfm"; then
-    PCMANFM_CONFIG_FILE="${HOME_REAL}/.config/pcmanfm/LXDE/pcmanfm.conf"
+    PCMANFM_CONFIG_FILE="${HOME_CONFIG}/pcmanfm/LXDE/pcmanfm.conf"
 
     set_config_value "${PCMANFM_CONFIG_FILE}" always_show_tabs 0
     set_config_value "${PCMANFM_CONFIG_FILE}" max_tab_chars 48
@@ -627,8 +627,8 @@ if does_bin_exist "pcmanfm"; then
     set_config_value "${PCMANFM_CONFIG_FILE}" toolbar "navigation;"
     set_config_value "${PCMANFM_CONFIG_FILE}" side_pane_mode "hidden;places"
 fi
-if [ -f "${HOME_REAL}/.config/pcmanfm/LXDE/desktop-items-0.conf" ]; then
-    PCMANFM_DESKTOP_CONFIG_FILE="${HOME_REAL}/.config/pcmanfm/LXDE/desktop-items-0.conf"
+if [ -f "${HOME_CONFIG}/pcmanfm/LXDE/desktop-items-0.conf" ]; then
+    PCMANFM_DESKTOP_CONFIG_FILE="${HOME_CONFIG}/pcmanfm/LXDE/desktop-items-0.conf"
 
     set_config_value "${PCMANFM_DESKTOP_CONFIG_FILE}" folder ""
     set_config_value "${PCMANFM_DESKTOP_CONFIG_FILE}" show_documents 0
@@ -640,10 +640,7 @@ fi
 ### FIREFOX ###
 ###############
 if does_bin_exist "firefox" "org.mozilla.firefox"; then
-    MOZILLA_USERDATA_DIR="${HOME_REAL}/.mozilla"
-    [ -d "${HOME_VAR}/app/org.mozilla.firefox" ] && MOZILLA_USERDATA_DIR="${HOME_VAR}/app/org.mozilla.firefox/.mozilla"
-
-    FIREFOX_PROFILES_INI_FILE="${MOZILLA_USERDATA_DIR}/firefox/profiles.ini"
+    FIREFOX_PROFILES_INI_FILE="${HOME_MOZILLA}/firefox/profiles.ini"
     FIREFOX_PROFILE_ID=$(grep "^Path=" "${FIREFOX_PROFILES_INI_FILE}" | awk -F= '{print $2}' | head -n 1)
 
     # First time prompts
@@ -790,14 +787,14 @@ if [ -f "${MC_OPTIONS_FILE}" ]; then
     set_json_property "${MC_LAUNCHER_SETTINGS_FILE}" '.locale' "${GAMES_LANGUAGE/_/-}"
 fi
 
-PDX_LAUNCHER_DATA_DIR="${HOME}/.local/share/Paradox Interactive/launcher-v2"
+PDX_LAUNCHER_DATA_DIR="${HOME_LOCAL_SHARE}/Paradox Interactive/launcher-v2"
 PDX_LAUNCHER_USER_SETTINGS_FILE="${PDX_LAUNCHER_DATA_DIR}/userSettings.json"
 
 if [ -f "${PDX_LAUNCHER_USER_SETTINGS_FILE}" ]; then
     set_json_property "${PDX_LAUNCHER_USER_SETTINGS_FILE}" '.allowPersonalizedContent' false
 fi
 
-ASPYR_DIR="{HOME}/.local/share/Aspyr"
+ASPYR_DIR="${HOME_LOCAL_SHARE}/Aspyr"
 CIV5_DIR="${ASPYR_DIR}/Sid Meier's Civilization 5"
 CIV5_USER_SETTINGS_FILE="${CIV5_DIR}/UserSettings.ini"
 
@@ -807,7 +804,7 @@ if [ -f "${CIV5_USER_SETTINGS_FILE}" ]; then
     set_config_value "${CIV5_USER_SETTINGS_FILE}" "SkipIntroVideo" 1
 fi
 
-TERRARIA_DIR="${HOME}/.local/share/Terraria"
+TERRARIA_DIR="${HOME_LOCAL_SHARE}/Terraria"
 TERRARIA_CONFIG_FILE="${TERRARIA_DIR}/config.json"
 
 if [ -f "${TERRARIA_CONFIG_FILE}" ]; then
@@ -832,7 +829,7 @@ fi
 ### GSConnect ###
 #################
 if [ -d "${ROOT_USR}/share/gnome-shell/extensions/gsconnect@andyholmes.github.io" ] \
-|| [ -d "${HOME}/.local/share/gnome-shell/extensions/gsconnect@andyholmes.github.io" ]; then
+|| [ -d "${HOME_LOCAL_SHARE}/gnome-shell/extensions/gsconnect@andyholmes.github.io" ]; then
     GSCONNECT_SCHEMA="org.gnome.Shell.Extensions.GSConnect"
 
     set_gsetting "${GSCONNECT_SCHEMA}" name "${HOSTNAME}"
@@ -843,9 +840,9 @@ fi
 ############
 if does_bin_exist "code" "code-oss" "codium"; then
     # The order is important, some might be present simultaoneously for a single package
-    does_bin_exist "code" && VSCODE_CONFIG_FILE="${HOME}/.config/Code/User/settings.json"
-    does_bin_exist "code-oss" && VSCODE_CONFIG_FILE="${HOME}/.config/Code - OSS/User/settings.json"
-    does_bin_exist "codium" && VSCODE_CONFIG_FILE="${HOME}/.config/VSCodium/User/settings.json"
+    does_bin_exist "code" && VSCODE_CONFIG_FILE="${HOME_CONFIG}/Code/User/settings.json"
+    does_bin_exist "code-oss" && VSCODE_CONFIG_FILE="${HOME_CONFIG}/Code - OSS/User/settings.json"
+    does_bin_exist "codium" && VSCODE_CONFIG_FILE="${HOME_CONFIG}/VSCodium/User/settings.json"
 
     if [ ! -f "${VSCODE_CONFIG_FILE}" ]; then
         create_file "${VSCODE_CONFIG_FILE}"
@@ -970,7 +967,7 @@ fi
 ### NEOFETCH ###
 ################
 if does_bin_exist "neofetch"; then
-    NEOFETCH_CONFIG_DIR="${HOME_REAL}/.config/neofetch"
+    NEOFETCH_CONFIG_DIR="${HOME_CONFIG}/neofetch"
     NEOFETCH_CONFIG_FILE="${NEOFETCH_CONFIG_DIR}/config.conf"
     NEOFETCH_CUSTOM_ASCII_FILE="${NEOFETCH_CONFIG_DIR}/ascii"
 
@@ -1072,7 +1069,7 @@ if does_bin_exist "gnome-terminal"; then
 fi
 
 if does_bin_exist "lxterminal"; then
-    LXTERMINAL_CONFIG_FILE="${HOME_REAL}/.config/lxterminal/lxterminal.conf"
+    LXTERMINAL_CONFIG_FILE="${HOME_CONFIG}/lxterminal/lxterminal.conf"
 
     # Theme / colours
     set_config_value "${LXTERMINAL_CONFIG_FILE}" bgcolor ${TERMINAL_BG}
@@ -1169,8 +1166,8 @@ if does_bin_exist "fragments" "de.haeckerfelix.Fragments"; then
     set_gsetting "${FRAGMENTS_SCHEMA}" dark-mode ${DESKTOP_THEME_IS_DARK}
 
     set_json_property "${FRAGMENTS_SETTINGS_FILE}" '.["encryption"]' 1
-    set_json_property "${FRAGMENTS_SETTINGS_FILE}" '.["download-dir"]' "${HOME}/Downloads"
-    set_json_property "${FRAGMENTS_SETTINGS_FILE}" '.["incomplete-dir"]' "${HOME}/Downloads/.incomplete_fragments"
+    set_json_property "${FRAGMENTS_SETTINGS_FILE}" '.["download-dir"]' "${HOME_DOWNLOADS}"
+    set_json_property "${FRAGMENTS_SETTINGS_FILE}" '.["incomplete-dir"]' "${HOME_DOWNLOADS}/.incomplete_fragments"
     set_json_property "${FRAGMENTS_SETTINGS_FILE}" '.["incomplete-dir-enabled"]' true
     set_json_property "${FRAGMENTS_SETTINGS_FILE}" '.["download-queue-size"]' 5
 fi
@@ -1226,7 +1223,7 @@ if does_bin_exist "mutter"; then
 fi
 
 if does_bin_exist "openbox" && does_bin_exist "lxsession"; then
-    OPENBOX_LXDE_RC="${HOME_REAL}/.config/openbox/lxde-rc.xml"
+    OPENBOX_LXDE_RC="${HOME_CONFIG}/openbox/lxde-rc.xml"
 
     set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/name" "${GTK2_THEME}"
     set_xml_node "${OPENBOX_LXDE_RC}" "//openbox_config/theme/titleLayout" "LIMC"
@@ -1245,7 +1242,7 @@ if does_bin_exist "openbox" && does_bin_exist "lxsession"; then
 fi
 
 if does_bin_exist "xfwm4"; then
-    XFWM4_CONFIG_FILE="${HOME_REAL}/.config/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml"
+    XFWM4_CONFIG_FILE="${HOME_CONFIG}/xfce4/xfconf/xfce-perchannel-xml/xfwm4.xml"
 
     set_xml_node "${XFWM4_CONFIG_FILE}" "//channel/property[@name='general']/property[@name='button-layout']/@value" "CMH|"
     set_xml_node "${XFWM4_CONFIG_FILE}" "//channel/property[@name='general']/property[@name='theme']/@value" "${GTK2_THEME}"
