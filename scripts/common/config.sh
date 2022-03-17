@@ -69,9 +69,6 @@ function set_config_value() {
 
     CURRENT_VALUE=$(get_config_value --separator "${SEPARATOR}" "${FILE_PATH}" "${KEY}")
 
-#    echo "${CURRENT_VALUE}"
-#    echo "${VALUE}"
-
     if [[ "${CURRENT_VALUE}" == "${VALUE}" ]]; then
         return
     elif is_value_string "${VALUE}"; then
@@ -135,7 +132,7 @@ function set_json_property() {
     local VALUE=$(echo "${VALUE_RAW}" | sed -e 's/[]\/$*.^|[]/\\&/g')
 
     local FILE_CONTENT=$(cat "${FILE_PATH}" | grep -v "^[ \t]*//" | tr -d '\n' | sed 's/,[ \t]*}/ }/g')
-    local CURRENT_VALUE=$(jq "${PROPERTY}" <<< ${FILE_CONTENT})
+    local CURRENT_VALUE=$(jq "${PROPERTY}" <<< "${FILE_CONTENT}")
 
     VALUE=$(echo "${VALUE}" | sed 's/\\\././g') # dirty fix
 
@@ -146,9 +143,9 @@ function set_json_property() {
     && [ "${VALUE_RAW}" != "${CURRENT_VALUE}" ] \
     && [ "\"${VALUE_RAW}\"" != "${CURRENT_VALUE}" ]; then
         if [ -w "${FILE_PATH}" ]; then
-            jq "${PROPERTY}"'='"${VALUE}" <<< ${FILE_CONTENT} > "${FILE_PATH}"
+            jq "${PROPERTY}"'='"${VALUE}" <<< "${FILE_CONTENT}" > "${FILE_PATH}"
         elif ${HAS_SU_PRIVILEGES}; then
-            jq "${PROPERTY}"'='"${VALUE}" <<< ${FILE_CONTENT} | run_as_su tee "${FILE_PATH}" > /dev/null
+            jq "${PROPERTY}"'='"${VALUE}" <<< "${FILE_CONTENT}" | run_as_su tee "${FILE_PATH}" > /dev/null
         else
             echo "Cannot set ${PROPERTY}=${VALUE} in ${FILE_PATH}"
             return
