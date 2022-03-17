@@ -96,6 +96,7 @@
 275390=steam_app_275390
 275850=steam_app_275850
 281990=stellaris
+284710=Abyss: the Wraiths of Eden Collector's Edition
 286690=metro
 287450=steam_app_287450
 287580=Pandora
@@ -119,6 +120,7 @@
 362890=bms_linux
 367520=hollow_knight.x86_64
 374320=darksoulsiii.exe
+375460=Trader.x86
 379720=doomx64vk.exe
 383150=DeadIslandGame
 383870=fw.x86_64
