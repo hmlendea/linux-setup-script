@@ -811,8 +811,9 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_PATH}/openrgb.desktop" \
 ### STEAM ###
 #############
 if does-bin-exist "steam" "com.valvesoftware.Steam"; then
-    for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/steam-native.desktop" \
-                    "${GLOBAL_LAUNCHERS_PATH}/steam-runtime.desktop" \
+    remove "${GLOBAL_LAUNCHERS_PATH}/steam-native.desktop"
+
+    for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/steam-runtime.desktop" \
                     "${GLOBAL_LAUNCHERS_PATH}/valve-URI-steamvr.desktop" \
                     "${GLOBAL_LAUNCHERS_PATH}/valve-URI-vrmonitor"; do
         set_launcher_entry "${LAUNCHER}" NoDisplay true
@@ -1128,7 +1129,9 @@ if does-bin-exist "steam" "com.valvesoftware.Steam"; then
                     STEAM_EXECUTABLE="steam"
 
                     if does-bin-exist "com.valvesoftware.Steam"; then
-                        STEAM_EXECUTABLE="/usr/bin/flatpak run com.valvesoftware.Steam"
+                        STEAM_EXECUTABLE="flatpak run com.valvesoftware.Steam"
+                    elif does-bin-exist "steam-start"
+                        STEAM_EXECUTABLE="steam-start"
                     fi
 
                     APP_KEYWORDS="${APP_ID}"
