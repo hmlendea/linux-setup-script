@@ -142,6 +142,9 @@ elif [ "${SCREEN_RESOLUTION_V}" -le 2160 ]; then
     TERMINAL_SIZE_ROWS=45
 fi
 
+TEXT_EDITOR_TAB_SPACES=true
+TEXT_EDITOR_TAB_SIZE=4
+
 if ${HAS_GUI}; then
     if [[ "${ICON_THEME}" == *"Papirus"* ]]; then
         CURRENT_PAPIRUS_FOLDER_COLOUR=$(papirus-folders -l -t "${ICON_THEME}" | grep ">" | sed 's/ *> *//g')
@@ -863,8 +866,8 @@ if does_bin_exist "code" "code-oss" "codium"; then
 
     # Editor appearance
     set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.codeLens"]' false
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.fontFamily"]' "${MONOSPACE_FONT_NAME} ${MONOSPACE_FONT_STYLE}"
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.fontSize"]' $((MONOSPACE_FONT_SIZE+3))
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.fontFamily"]' "${TEXT_EDITOR_FONT_NAME} ${TEXT_EDITOR_FONT_STYLE}"
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.fontSize"]' $((TEXT_EDITOR_FONT_SIZE+3))
     set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.roundedSelection"]' true
     set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.minimap.maxColumn"]' 100
     set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.minimap.renderCharacters"]' false
@@ -1122,9 +1125,9 @@ if does_bin_exist "gedit" "org.gnome.gedit"; then
     #fi
 
     set_gsetting "${GEDIT_EDITOR_SCHEMA}" highlight-current-line false
-    set_gsetting "${GEDIT_EDITOR_SCHEMA}" insert-spaces true
+    set_gsetting "${GEDIT_EDITOR_SCHEMA}" insert-spaces ${TEXT_EDITOR_TAB_SPACES}
     set_gsetting "${GEDIT_EDITOR_SCHEMA}" restore-cursor-position true
-    set_gsetting "${GEDIT_EDITOR_SCHEMA}" tabs-size "uint32 4"
+    set_gsetting "${GEDIT_EDITOR_SCHEMA}" tabs-size "uint32 ${TEXT_EDITOR_TAB_SIZE}"
 fi
 if does_bin_exist "pluma"; then
     PLUMA_SCHEMA="org.mate.pluma"
@@ -1141,7 +1144,7 @@ if does_bin_exist "pluma"; then
     set_gsetting "${PLUMA_SCHEMA}" display-line-numbers true
     set_gsetting "${PLUMA_SCHEMA}" enable-space-drawer-space "show-trailing"
     set_gsetting "${PLUMA_SCHEMA}" enable-space-drawer-tab "show-all"
-    set_gsetting "${PLUMA_SCHEMA}" insert-spaces true
+    set_gsetting "${PLUMA_SCHEMA}" insert-spaces ${TEXT_EDITOR_TAB_SPACES}
     set_gsetting "${PLUMA_SCHEMA}" show-single-tab false
     set_gsetting "${PLUMA_SCHEMA}" toolbar-visible false
 fi
