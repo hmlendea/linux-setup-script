@@ -771,7 +771,13 @@ MC_LAUNCHER_PROFILES_FILE="${MC_DIR}/launcher_profiles.json"
 MC_LAUNCHER_SETTINGS_FILE="${MC_DIR}/launcher_settings.json"
 
 if [ -f "${MC_OPTIONS_FILE}" ]; then
-    DEVICE_ID=$(shuf -i1000000000000000000-9999999999999999999 -n1)
+    #MC_DEVICE_ID=$(shuf -i1000000000000000000-9999999999999999999 -n1)
+    MC_DEVICE_ID=$(date -r "${MC_DIR}/launcher_accounts.json" | \
+        sha512sum | \
+        awk '{print $1}' | \
+        sed 's/[a-z]//g' | \
+        cut -c 1-15)
+    MC_DEVICE_ID="${MC_DEVICE_ID}3000" # Make it 19 digits long. The last 4 need to be 3000 because that's how jq will save them no matter what
 
     set_config_value --separator ":" "${MC_OPTIONS_FILE}" lang "${GAMES_LANGUAGE,,}"
 
@@ -787,7 +793,7 @@ if [ -f "${MC_OPTIONS_FILE}" ]; then
     set_config_value --separator ":" "${MC_OPTIONS_FILE}" joinedFirstServer true
 
     set_json_property "${MC_LAUNCHER_PROFILES_FILE}" '.settings.crashAssistance' false
-    set_json_property "${MC_LAUNCHER_SETTINGS_FILE}" '.deviceId' "${DEVICE_ID}"
+    set_json_property "${MC_LAUNCHER_SETTINGS_FILE}" '.deviceId' "${MC_DEVICE_ID}"
     set_json_property "${MC_LAUNCHER_SETTINGS_FILE}" '.locale' "${GAMES_LANGUAGE/_/-}"
 fi
 
