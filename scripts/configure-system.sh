@@ -87,8 +87,9 @@ SUBTITLES_FONT_SIZE=20
 
 TEXT_EDITOR_FONT_NAME="${MONOSPACE_FONT_NAME}"
 TEXT_EDITOR_FONT_STYLE="${MONOSPACE_FONT_STYLE}"
-TEXT_EDITOR_FONT_SIZE=12
-[ "${SCREEN_RESOLUTION_V}" -lt 1080 ] && TEXT_EDITOR_FONT_SIZE=11
+#TEXT_EDITOR_FONT_SIZE=12
+#[ "${SCREEN_RESOLUTION_V}" -lt 1080 ] && TEXT_EDITOR_FONT_SIZE=11
+TEXT_EDITOR_FONT_SIZE="${MONOSPACE_FONT_SIZE}"
 
 INTERFACE_FONT="${INTERFACE_FONT_NAME} ${INTERFACE_FONT_STYLE} ${INTERFACE_FONT_SIZE}"
 DOCUMENT_FONT="${DOCUMENT_FONT_NAME} ${DOCUMENT_FONT_STYLE} ${DOCUMENT_FONT_SIZE}"
@@ -1113,12 +1114,12 @@ fi
 if does_bin_exist "gedit" "org.gnome.gedit"; then
     GEDIT_EDITOR_SCHEMA="org.gnome.gedit.preferences.editor"
 
-    if [ "${TEXT_EDITOR_FONT}" != "${MONOSPACE_FONT}" ]; then
+    #if [ "${TEXT_EDITOR_FONT}" != "${MONOSPACE_FONT}" ]; then
         set_gsetting "${GEDIT_EDITOR_SCHEMA}" editor-font "${TEXT_EDITOR_FONT}"
         set_gsetting "${GEDIT_EDITOR_SCHEMA}" use-default-font false
-    else
-        set_gsetting "${GEDIT_EDITOR_SCHEMA}" use-default-font true
-    fi
+    #else
+    #    set_gsetting "${GEDIT_EDITOR_SCHEMA}" use-default-font true
+    #fi
 
     set_gsetting "${GEDIT_EDITOR_SCHEMA}" highlight-current-line false
     set_gsetting "${GEDIT_EDITOR_SCHEMA}" insert-spaces true
