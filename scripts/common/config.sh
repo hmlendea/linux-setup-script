@@ -66,7 +66,7 @@ function set_firefox_config() {
     local PROFILE="${1}"
     local KEY="${2}"
     local VALUE_RAW="${@:3}"
-    local FILE="${HOME_REAL}/.mozilla/firefox/${PROFILE}/prefs.js"
+    local FILE="${HOME_MOZILLA}/firefox/${PROFILE}/prefs.js"
 
     create_file "${FILE_PATH}"
 

@@ -150,18 +150,18 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
 ! is_steam_app_installed "736260" && remove "${HOME_LOCAL_SHARE}/Baba_Is_You"
 
 # Unnecessary files
-if [ -d "${HOME}/Downloads" ]; then
+if [ -d "${HOME_DOWNLOADS}" ]; then
     while IFS='' read -r -d '' TORRENT_FILE; do
         remove "${TORRENT_FILE}"
-    done < <(find "${HOME}/Downloads" -maxdepth 1 -type f -name "*.torrent" -print0)
+    done < <(find "${HOME_DOWNLOADS}" -maxdepth 1 -type f -name "*.torrent" -print0)
 fi
 
 # Logs
-remove "${HOME}/.config/logs"
+remove "${HOME_CONFIG}/logs"
 remove "${HOME}/.minecraft/logs"
 remove "${HOME_LOCAL_SHARE}/xorg/Xorg.0.log"
 remove "${HOME_LOCAL_SHARE}/xorg/Xorg.0.log.old"
 
 # Unwanted application launchers
-remove "${HOME_REAL}/.local/share/applications/wine"
-remove "${HOME_REAL}/.config/menus/applications-merged/user-chrome-apps.menu"
+remove "${HOME_LOCAL_SHARE}/applications/wine"
+remove "${HOME_CONFIG}/menus/applications-merged/user-chrome-apps.menu"
