@@ -426,10 +426,11 @@ if ${HAS_GUI}; then
         # Gaming
         if ${IS_GAMING_DEVICE}; then
             # Launchers
-            install_flatpak com.valvesoftware.Steam
+            install-pkg steam # No flatpak yet because the games will share the same icon in GNOME (e.g. alt-tabbing), concerns about steam-start, per-game desktop launchers, udev rules for controllers
+            install-pkg steam-start
 
             # Runtimes
-            #install-dep steam-native-runtime
+            install-dep steam-native-runtime
             install-pkg proton-ge-custom-bin
             install-pkg luxtorpeda-git
 
