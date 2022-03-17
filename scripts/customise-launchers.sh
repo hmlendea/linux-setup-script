@@ -714,11 +714,14 @@ if does-bin-exist "libreoffice"; then
 fi
 
 #########################
-### PASSWORD MANAGERS ###
+### Password Managers ###
 #########################
-set_launcher_entries "${GLOBAL_LAUNCHERS_PATH}/org.gnome.seahorse.Application.desktop" \
-    Name[ro] "Parole și Chei" \
-    NoDisplay true
+for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/org.gnome.seahorse.Application.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.gnome.seahorse.Application.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name[ro] "Parole și Chei" \
+        NoDisplay true
+done
 
 ####################
 ### PHOTO ALBUMS ###
@@ -896,7 +899,8 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_PATH}/gedit.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/org.pantheon.scratch.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/medit.desktop" \
                 "${GLOBAL_LAUNCHERS_PATH}/pluma.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.gnome.gedit.desktop"; do
+                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.gnome.gedit.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_PATH}/org.gnome.TextEditor.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Text Editor" \
         Name[ro] "Editor Text" \

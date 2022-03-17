@@ -156,7 +156,7 @@ function uninstall_package() {
 function uninstall_flatpak() {
     local PKG="${1}"
 
-    is_flatpak_installed "${PKG}" && return
+    ! is_flatpak_installed "${PKG}" && return
 
     echo " >>> Uninstalling flatpak: ${PKG}"
     call_flatpak uninstall "${PKG}"
