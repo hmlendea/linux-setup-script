@@ -158,9 +158,15 @@ fi
 
 # Logs
 remove "${HOME_CONFIG}/logs"
-remove "${HOME}/.minecraft/logs"
 remove "${HOME_LOCAL_SHARE}/xorg/Xorg.0.log"
 remove "${HOME_LOCAL_SHARE}/xorg/Xorg.0.log.old"
+
+for MC_DIR in "${HOME}/.minecraft" "${HOME_VAR}/apps/com.mojang.Minecraft"; do
+    remove "${MC_DIR}/logs"
+    remove "${MC_DIR}/bootstrap_log.txt"
+    remove "${MC_DIR}/launcher_cef_log.txt"
+    remove "${MC_DIR}/launcher_log.txt"
+done
 
 # Unwanted application launchers
 remove "${HOME_LOCAL_SHARE}/applications/wine"

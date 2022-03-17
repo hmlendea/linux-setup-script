@@ -437,6 +437,9 @@ if ${HAS_GUI}; then
 
             # Communication
             install_flatpak com.discordapp.Discord
+
+            # Games
+            install_flatpak com.mojang.Minecraft
         fi
     fi
 

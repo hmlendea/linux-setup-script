@@ -466,9 +466,8 @@ function create_launcher() {
     local FILE_LABEL=$(basename "${FILE_PATH}" | cut -f 1 -d '.')
     local NAME=$(echo "${FILE_LABEL}" | sed -e 's/-/ /g' -e 's/^./\U&/g' -e 's/\s./\U&/g')
 
-    create_file "${FILE_PATH}"
-
     if [ ! -f "${FILE_PATH}" ]; then
+        create_file "${FILE_PATH}"
         {
             echo "[Desktop Entry]"
             echo "Version=1.0"
