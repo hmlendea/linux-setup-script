@@ -280,9 +280,10 @@ fi
 
 if [ -f "${ROOT_ETC}/systemd/system/display-manager.service" ]; then
     HAS_GUI=true
-elif ! ${HAS_GUI}; then
+else
     case ${HOSTNAME} in
         *"PC")  HAS_GUI=true ;;
+        *"Pi")  HAS_GUI=false ;;
         *"Top") HAS_GUI=true ;;
         *)      HAS_GUI=false ;;
     esac

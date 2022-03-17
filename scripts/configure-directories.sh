@@ -1,8 +1,6 @@
 #!/bin/bash
 source "scripts/common/common.sh"
 
-[ ! ${HAS_GUI} ] && exit
-
 function update-hidden-files-config-if-needed() {
     local CONFIG_FILE_NAME="${1}"
     local DESTINATION_DIR="${2}"
@@ -10,7 +8,7 @@ function update-hidden-files-config-if-needed() {
     update-file-if-needed "${REPO_RC_DIR}/hidden-files/${CONFIG_FILE_NAME}" "${DESTINATION_DIR}/.hidden"
 }
 
-if [[ "${OS}" == "Linux" ]]; then
+if ${HAS_GUI} && [[ "${OS}" == "Linux" ]]; then
     update-hidden-files-config-if-needed "home" "${HOME}"
     update-hidden-files-config-if-needed "home-documents" "${HOME}/Documents"
     update-hidden-files-config-if-needed "home-downloads" "${HOME}/Downloads"
