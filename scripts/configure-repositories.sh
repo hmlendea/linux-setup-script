@@ -43,30 +43,33 @@ function add_flatpak_remote() {
     fi
 }
 
-add_flatpak_remote "zorinos" "https://flatpak.zorinos.com/repo/"
-
-add_repository "hmlendea" 'https://github.com/hmlendea/PKGBUILDs/releases/latest/download/' "" "Never"
-
-if [[ "${ARCH}" == "aarch64" ]]; then
-    add_repository "hmlendea-aarch64" 'https://github.com/hmlendea/PKGBUILDs/releases/latest/download/' "" "Never"
+if does-bin-exist "flatpak"; then
+    add_flatpak_remote "zorinos" "https://flatpak.zorinos.com/repo/"
 fi
 
-if [[ "${ARCH}" == "armv7h" ]] || [[ "${ARCH}" == "armv7l" ]]; then
-    add_repository "hmlendea-armv7h" 'https://github.com/hmlendea/PKGBUILDs/releases/latest/download/' "" "Never"
-fi
+if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
+    add_repository "hmlendea" 'https://github.com/hmlendea/PKGBUILDs/releases/latest/download/' "" "Never"
 
-if [[ "${ARCH}" == "x86_64" ]]; then
-    add_repository "hmlendea-x86_64" 'https://github.com/hmlendea/PKGBUILDs/releases/latest/download/' "" "Never"
-fi
+    if [[ "${ARCH_FAMILY}" == "arm" ]]; then
+        if [[ "${ARCH}" == "aarch64" ]]; then
+            add_repository "hmlendea-aarch64" 'https://github.com/hmlendea/PKGBUILDs/releases/latest/download/' "" "Never"
+        fi
 
-if [[ "${ARCH_FAMILY}" == "x86" ]]; then
-    add_repository "multilib" "" "${ROOT_ETC}/pacman.d/mirrorlist"
-    add_repository "valveaur" "http://repo.steampowered.com/arch/valveaur/" "" "" "8DC2CE3A3D245E64"
-    add_repository "dx37essentials" 'https://dx37.gitlab.io/$repo/$arch' "" "PackageOptional" # For things like ttf-ms-win10
-fi
+        if [[ "${ARCH}" == "armv7h" ]] || [[ "${ARCH}" == "armv7l" ]]; then
+            add_repository "hmlendea-armv7h" 'https://github.com/hmlendea/PKGBUILDs/releases/latest/download/' "" "Never"
+        fi
+    fi
 
-if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then # && ${DATABASES_NEED_UPDATING}; then
+    if [[ "${ARCH_FAMILY}" == "x86" ]]; then
+        add_repository "multilib" "" "${ROOT_ETC}/pacman.d/mirrorlist"
+        add_repository "valveaur" "http://repo.steampowered.com/arch/valveaur/" "" "" "8DC2CE3A3D245E64"
+        add_repository "dx37essentials" 'https://dx37.gitlab.io/$repo/$arch' "" "PackageOptional" # For things like ttf-ms-win10
+
+        if [[ "${ARCH}" == "x86_64" ]]; then
+            add_repository "hmlendea-x86_64" 'https://github.com/hmlendea/PKGBUILDs/releases/latest/download/' "" "Never"
+        fi
+    fi
+
     pacman -Syy
+    does-bin-exist "pkgfile" && pkgfile -u
 fi
-
-does-bin-exist "pkgfile" && pkgfile -u
