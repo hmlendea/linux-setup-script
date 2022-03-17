@@ -69,12 +69,14 @@ echo "CPU:              $(get_cpu)"
 echo "GPU:              $(get_gpu)"
 echo "Audio driver:     $(get_audio_driver)"
 echo "Chassis:          $(get_chassis_type)"
-echo "GUI:              ${HAS_GUI}"
 echo "EFI support:      ${HAS_EFI_SUPPORT}"
-echo "Screen DPI:       $(get_screen_dpi)"
 echo ""
 
 if ${HAS_GUI}; then
+    echo "GUI:        ${HAS_GUI}"
+    echo "Screen DPI: $(get_screen_dpi)"
+    echo ""
+
     echo "Is development device:        ${IS_DEVELOPMENT_DEVICE}"
     echo "Is gaming device:             ${IS_GAMING_DEVICE}"
     echo "Is general purpose device:    ${IS_GENERAL_PURPOSE_DEVICE}"
