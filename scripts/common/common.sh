@@ -159,6 +159,25 @@ function create_symlink() {
     ln -s "${SOURCE}" "${TARGET}"
 }
 
+function get_symlink_target() {
+    local SYMLINK="${1}"
+
+    if [ ! -L "${SYMLINK}" ]; then
+        echo "${SYMLINK}"
+        return
+    fi
+
+    TARGET=$(readlink "${SYMLINK}")
+
+    if [ -e "${TARGET}" ] \
+    && echo "${TARGET}" | grep -q "^/.*"; then
+        echo "${TARGET}"
+    else
+        SYMLINK_DIR=$(dirname "${SYMLINK}")
+        readlink -m "${SYMLINK_DIR}/${TARGET}"
+    fi
+}
+
 function read-file() {
     local FILE_PATH="${*}"
 
@@ -172,6 +191,10 @@ function read-file() {
 function file-append-line() {
     local FILE_PATH="${1}"
     local LINE="${@:2}"
+
+    if [ -L "${FILE_PATH}" ]; then
+        FILE_PATH=$(get_symlink_target "${FILE_PATH}")
+    fi
 
     if [ -w "${FILE_PATH}" ]; then
         echo "${LINE}" >> "${FILE_PATH}" 2>/dev/null
