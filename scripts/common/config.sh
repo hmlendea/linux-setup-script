@@ -294,8 +294,7 @@ function set_gsetting_flatpak() {
 }
 
 function set_launcher_entries() {
-    local FILE="${1}"
-    shift
+    local FILE="${1}" && shift
 
     if [ "$(( $# % 2))" -ne 0 ]; then
         echo "ERROR: Invalid arguments (count: $#) for set_launcher_entries: ${*}" >&2
@@ -323,9 +322,12 @@ function set_launcher_entry() {
     local KEY="${2}"
     local VAL="${*:3}"
 
+    local FILE_PATH_RAW=$(get_symlink_target "${FILE}")
+
     if [ "$#" != "3" ]; then
         echo "ERROR: Invalid arguments (count: $#) for set_launcher_entry: ${*}" >&2
     fi
+
 
     if [ ! -f "${FILE}" ]; then
         return
@@ -362,13 +364,13 @@ function set_launcher_entry() {
         || [[ $(grep -c "^${KEY_ESC}=$" <<< "${FILE_CONTENTS}") == 1 ]]; then
             if [ $(grep -c "^${KEY_ESC}=.*$" <<< "${FILE_CONTENTS}") -gt 0 ]; then
                 if [ -z "${VAL}" ]; then
-                    run-as-su sed -i '1,'"${LAST_SECTION_LINE}"' {/^'"${KEY_ESC}"'=.*$/d}' "${FILE}"
+                    run-as-su sed -i '1,'"${LAST_SECTION_LINE}"' {/^'"${KEY_ESC}"'=.*$/d}' "${FILE_PATH_RAW}"
                 else
-                    run-as-su sed -i '1,'"${LAST_SECTION_LINE}"' s|^'"${KEY_ESC}"'=.*$|'"${KEY_ESC}"'='"${VAL}"'|g' "${FILE}"
+                    run-as-su sed -i '1,'"${LAST_SECTION_LINE}"' s|^'"${KEY_ESC}"'=.*$|'"${KEY_ESC}"'='"${VAL}"'|g' "${FILE_PATH_RAW}"
                 fi
             elif [ -n "${VAL}" ]; then
                 if ${HAS_MULTIPLE_SECTIONS}; then
-                    run-as-su sed -i "${LAST_SECTION_LINE} i ${KEY_ESC}=${VAL_ESC}" "${FILE}"
+                    run-as-su sed -i "${LAST_SECTION_LINE} i ${KEY_ESC}=${VAL_ESC}" "${FILE_PATH_RAW}"
                 else
                     file-append-line "${FILE}" "${KEY}=${VAL}"
                 fi
