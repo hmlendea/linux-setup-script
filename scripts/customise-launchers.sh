@@ -482,9 +482,52 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/gnubg.desktop" \
     Name "Backgammon" \
     Name[ro] "Table"
 
-set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/minecraft-launcher.desktop" \
-    Name "Minecraft" \
-    StartupWMClass "Minecraft* 1.17.1"
+if does_bin_exist "minecraft-launcher" "com.mojang.Minecraft"; then
+    for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/minecraft-launcher.desktop" \
+                    "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.mojang.Minecraft.desktop"; do
+        set_launcher_entry "${LAUNCHER}" Name "Minecraft"
+    done
+
+    MC_DIR="${HOME}/.minecraft"
+    MC_EXECUTABLE="minecraft-launcher"
+
+    if [ -d "${HOME_VAR}/app/com.mojang.Minecraft" ]; then
+        MC_DIR="${HOME_VAR}/app/com.mojang.Minecraft/.minecraft"
+        MC_EXECUTABLE="flatpak run com.mojang.Minecraft"
+    fi
+
+    if [ -d "${MC_DIR}/versions" ]; then
+        MC_LATEST_RELEASE=$(cat "${MC_DIR}/versions/version_manifest_v2.json" | jq '.latest.release' | sed 's/\"//g')
+
+        MC_VANILLA_LAUNCHER_FILE="${LOCAL_LAUNCHERS_DIR}/minecraft/minecraft_${MC_LATEST_RELEASE}_vanilla.desktop"
+        MC_MODDED_LAUNCHER_FILE="${LOCAL_LAUNCHERS_DIR}/minecraft/minecraft_${MC_LATEST_RELEASE}_modded.desktop"
+
+        [ ! -f "${MC_VANILLA_LAUNCHER_FILE}" ] && create_launcher "${MC_VANILLA_LAUNCHER_FILE}"
+        [ ! -f "${MC_MODDED_LAUNCHER_FILE}" ] && create_launcher "${MC_MODDED_LAUNCHER_FILE}"
+
+        for MC_LAUNCHER_FILE in "${MC_VANILLA_LAUNCHER_FILE}" "${MC_MODDED_LAUNCHER_FILE}"; do
+            set_launcher_entries "${MC_LAUNCHER_FILE}" \
+                Name "Minecraft" \
+                FullName "Minecraft ${MC_LATEST_RELEASE}" \
+                Comment "Play Minecraft ${MC_LATEST_RELEASE}" \
+                Comment[de] "Spiele Minecraft ${MC_LATEST_RELEASE}" \
+                Comment[es] "Juega Minecraft ${MC_LATEST_RELEASE}" \
+                Comment[ro] "Joacă Minecraft ${MC_LATEST_RELEASE}" \
+                Keywords "Game;Minecraft;" \
+                Keywords[de] "Spiel;Minecraft;" \
+                Keywords[es] "Juego;Minecraft;" \
+                Keywords[ro] "Joc;Minecraft;" \
+                Exec "${MC_EXECUTABLE}" \
+                Icon "minecraft" \
+                Categories "Game;" \
+                PrefersNonDefaultGPU true \
+                NoDisplay true
+        done
+
+        set_launcher_entry "${MC_VANILLA_LAUNCHER_FILE}" StartupWMClass "Minecraft ${MC_LATEST_RELEASE}"
+        set_launcher_entry "${MC_MODDED_LAUNCHER_FILE}" StartupWMClass "Minecraft* ${MC_LATEST_RELEASE}"
+    fi
+fi
 
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/nfs2se.desktop" \
     Name "Need for Speed 2" \
