@@ -411,8 +411,15 @@ if does-bin-exist "pihole-FTL"; then
     set_config_value "${PIHOLE_DNSMASQ_CONFIG_PATH}" "min-cache-ttl" $((DNS_CACHE_TTL*60))
 fi
 
+##################
+### App Stores ###
+##################
+if does-bin-exist "gnome-software"; then
+    set_gsetting "org.gnome.software" download-updates false
+fi
+
 ########################
-### ARCHIVE MANAGERS ###
+### Archive Managers ###
 ########################
 if does-bin-exist "file-roller" "org.gnome.FileRoller"; then
     set_gsetting "org.gnome.FileRoller.General" compression-level "maximum"

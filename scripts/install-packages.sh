@@ -242,7 +242,7 @@ if ${HAS_GUI}; then
     fi
 
     install-pkg gnome-keyring
-    install-pkg seahorse
+    install_flatpak org.gnome.seahorse.Application
 
     install-pkg networkmanager
     install-pkg networkmanager-openvpn

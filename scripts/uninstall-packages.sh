@@ -30,7 +30,7 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_package "gnome-calculator"                    # Replaced by flatpak: org.gnome.Calculator
     uninstall_package "gnome-calendar"                      # Replaced by flatpak: org.gnome.Calendar
     uninstall_package "gnome-contacts"                      # Replaced by flatpak: org.gnome.Contacts
-    uninstall_package "gnome-clock"                         # Replaced by flatpak: org.gnome.Clocks
+    uninstall_package "gnome-clocks"                        # Replaced by flatpak: org.gnome.Clocks
     uninstall_package "gnome-font-viewer"                   # Replaced by flatpak: org.gnome.font-viewer
     uninstall_package "gnome-maps"                          # Replaced by flatpak: org.gnome.Maps
     uninstall_package "gnome-network-displays"              # Replaced by flatpak: org.gnome.NetworkDisplays
@@ -42,6 +42,7 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_package "paper-icon-theme-git"                # Replaced by paper-icon-theme
     uninstall_package "postman-bin"                         # Replaced by flatpak: com.getpostman.Postman
     uninstall_package "rhythmbox"                           # Replaced by flatpak: org.gnome.Rhythmbox3
+    uninstall_package "seahorse"                            # Replaced by flatpak: org.gnome.seahorse.Application
     uninstall_package "signal-desktop"                      # Replaced by flatpak: org.signal.Signal
     uninstall_package "simplenote-electron-bin"             # Replaced by flatpak: com.simplenote.Simplenote
     uninstall_package "simplenote-electron-arm-bin"         # Replaced by flatpak: com.simplenote.Simplenote
@@ -51,6 +52,8 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_package "transmission-gtk"                    # Replaced by flatpak: com.transmissionbt.Transmission
     uninstall_package "ttf-ms-fonts"                        # Replaced by ttf-ms-win10
     uninstall_package "yaourt-auto-sync"                    # Replaced by repo-synchroniser
+
+    uninstall_flatpak "org.gnome.TextEditor" # Replaced by org.gnome.gedit
 
     if is-package-installed "visual-studio-code-bin"; then
         uninstall_package "code"
