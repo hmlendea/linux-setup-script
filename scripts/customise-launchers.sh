@@ -660,6 +660,9 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/electron-mail.desktop" \
         NoDisplay "false"
 done
 
+set_launcher_entry "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.github.vladimiry.ElectronMail.desktop" \
+    Keywords "Email;Mail;Electron;"
+
 ############
 ### MAPS ###
 ############
