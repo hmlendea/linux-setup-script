@@ -61,12 +61,6 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
         uninstall_native_package "code"
         uninstall_native_package "vscodium-bin"
     fi
-
-    elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
-        yes | apt autoremove
-    elif [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
-        yes | run_as_su apt autoremove
-    fi
 elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
     yes | apt autoremove
 elif [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
