@@ -121,6 +121,7 @@ fi
 
 # Configure and customise the system
 execute-script "configure-system.sh" # Run after update-rcs.sh
+execute-script "configure-permissions.sh" # Run after install-packages.sh
 execute-script-superuser "set-system-locale-timedate.sh"
 [ "${DISTRO_FAMILY}" != "Android" ] && execute-script-superuser "update-profiles.sh"
 
