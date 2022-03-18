@@ -78,19 +78,15 @@ HOME_VIDEOS="${HOME_REAL}/Videos"
 # Functions
 function does_bin_exist () {
     for BINARY_NAME in "${@}"; do
-        if [ -f "${ROOT_BIN}/${BINARY_NAME}" ] \
-        || [ -f "${ROOT_USR_BIN}/${BINARY_NAME}" ] \
-        || [ -f "${ROOT_VAR_LIB}/flatpak/exports/bin/${BINARY_NAME}" ] \
-        || [ -f "${HOME_LOCAL_BIN}/${BINARY_NAME}" ] \
-        || [ -f "${HOME_LOCAL_SHARE}/flatpak/exports/bin/${BINARY_NAME}" ]; then
+        for PATH_DIR in $(echo "${PATH}" | sed 's/:/\n/g'); do
+            [ -f "${PATH_DIR}/${BINARY_NAME}" ] && return 0 # True
+        done
+
+        if echo "${BINARY_NAME}" | grep -q "^/" \
+        && [ -f "${BINARY_NAME}" ]; then
             return 0 # True
         fi
     done
-
-    if echo "${BINARY_NAME}" | grep -q "^/" \
-    && [ -f "${BINARY_NAME}" ]; then
-        return 0 # True
-    fi
 
     return 1 # False
 }
