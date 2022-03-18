@@ -951,6 +951,17 @@ if does_bin_exist "gnome-shell"; then
     # Mouse
     set_gsetting org.gnome.desktop.peripherals.mouse accel-profile "flat"
     set_gsetting org.gnome.desktop.peripherals.mouse speed 0.17999999999999999 # 0.18 can't be set
+
+    SEARCH_PROVIDERS=""
+    does_bin_exist "org.gnome.clocks" && SEARCH_PROVIDERS="${SEARCH_PROVIDERS}, 'org.gnome.clocks.desktop'"
+    does_bin_exist "org.gnome.Weather" && SEARCH_PROVIDERS="${SEARCH_PROVIDERS}, 'org.gnome.Weather.desktop'"
+    SEARCH_PROVIDERS=$(echo "${SEARCH_PROVIDERS}" | sed 's/^\s*,*\s*//g')
+
+    if [ -n "${SEARCH_PROVIDERS}" ]; then
+        set_gsetting org.gnome.desktop.search-providers enabled "[${SEARCH_PROVIDERS}]"
+    else
+        set_gsetting org.gnome.desktop.search-providers enabled "@as []"
+    fi
 fi
 if does_bin_exist "mutter"; then
     MUTTER_KEYBINDINGS_SCHEMA="org.gnome.desktop.wm.keybindings"
