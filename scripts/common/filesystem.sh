@@ -36,6 +36,9 @@ ROOT_OPT="${ROOT_PATH}/opt"
 ROOT_PROC="${ROOT_PATH}/proc"
 ROOT_SYS="${ROOT_PATH}/sys"
 ROOT_USR="${ROOT_PATH}/usr"
+
+[ "${DISTRO_FAMILY}" = "Android" ] && ROOT_USR="${ROOT_PATH}"
+
 ROOT_USR_BIN="${ROOT_USR}/bin"
 ROOT_USR_LIB="${ROOT_USR}/lib"
 ROOT_USR_SHARE="${ROOT_USR}/share"
@@ -79,11 +82,15 @@ function does_bin_exist () {
         || [ -f "${ROOT_USR_BIN}/${BINARY_NAME}" ] \
         || [ -f "${ROOT_VAR_LIB}/flatpak/exports/bin/${BINARY_NAME}" ] \
         || [ -f "${HOME_LOCAL_BIN}/${BINARY_NAME}" ] \
-        || [ -f "${HOME_LOCAL_SHARE}/flatpak/exports/bin/${BINARY_NAME}" ] \
-        || [ -f "${BINARY_NAME}" ]; then
+        || [ -f "${HOME_LOCAL_SHARE}/flatpak/exports/bin/${BINARY_NAME}" ]; then
             return 0 # True
         fi
     done
+
+    if echo "${BINARY_NAME}" | grep -q "^/" \
+    && [ -f "${BINARY_NAME}" ]; then
+        return 0 # True
+    fi
 
     return 1 # False
 }
