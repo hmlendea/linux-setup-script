@@ -1,7 +1,7 @@
 #!/bin/bash
 source "scripts/common/filesystem.sh"
-source "${REPO_DIR}/scripts/common/common.sh"
-source "${REPO_DIR}/scripts/common/system-info.sh"
+source "${REPO_SCRIPTS_DIR}/common/common.sh"
+source "${REPO_SCRIPTS_DIR}/common/system-info.sh"
 
 if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
     if does_bin_exist "paccache"; then
@@ -14,4 +14,8 @@ if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
     does_bin_exist "paru" && yes | paru -Scc
     does_bin_exist "yay" && yes | yay -Scc
     does_bin_exist "yaourt" && yes | yaourt -Scc
+elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
+    yes | apt autoremove
+elif [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
+    yes | run_as_su apt autoremove
 fi
