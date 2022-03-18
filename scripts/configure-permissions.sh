@@ -51,30 +51,55 @@ function set_flatpak_permission() {
 
 if does_bin_exist "flatpak"; then
     set_flatpak_permission "com.microsoft.Teams" "background" false
-    set_flatpak_permission "com.mojang.Minecraft" "background" false
+    set_flatpak_permission "com.mojang.Minecraft" \
+        "background" false \
+        "notifications:notification" false
     set_flatpak_permission "com.getpostman.Postman" \
         "background" false \
         "notifications:notification" false
     set_flatpak_permission "com.simplenote.Simplenote" \
         "background" false \
         "notifications:notification" false
-    set_flatpak_permission "io.github.hmlendea.geforcenow-electron" "background" false
+    set_flatpak_permission "io.github.hmlendea.geforcenow-electron" \
+        "background" false \
+        "notifications:notification" false
     set_flatpak_permission "org.gnome.baobab" "background" false
-    set_flatpak_permission "org.gnome.Calculator" "background" false
+    set_flatpak_permission "org.gnome.Calculator" \
+        "background" false \
+        "notifications:notification" false
     set_flatpak_permission "org.gnome.Calendar" "background" false
-    set_flatpak_permission "org.gnome.Contacts" "background" false
-    set_flatpak_permission "org.gnome.eog" "background" false
-    set_flatpak_permission "org.gnome.Evince" "background" false
+    set_flatpak_permission "org.gnome.Contacts" \
+        "background" false \
+        "notifications:notification" false
+    set_flatpak_permission "org.gnome.eog" \
+        "background" false \
+        "notifications:notification" false
+    set_flatpak_permission "org.gnome.Evince" \
+        "background" false \
+        "notifications:notification" false
     set_flatpak_permission "org.gnome.gedit" \
         "background" false \
         "notifications:notification" false
-    set_flatpak_permission "org.gnome.Maps" "background" false
+    set_flatpak_permission "org.gnome.Maps" \
+        "background" false \
+        "notifications:notification" false
+    set_flatpak_permission "org.gnome.NetworkDisplays" \
+        "background" false \
+        "notifications:notification" false
     set_flatpak_permission "org.gnome.Rhythmbox3" "background" false
     set_flatpak_permission "org.gnome.TextEditor" \
         "background" false \
         "notifications:notification" false
-    set_flatpak_permission "org.gnome.Totem" "background" false
-    set_flatpak_permission "org.gnome.Weather" "background" false
-    set_flatpak_permission "org.inkscape.Inkscape" "background" false
-    set_flatpak_permission "org.mozilla.firefox" "background" false
+    set_flatpak_permission "org.gnome.Totem" \
+        "background" false \
+        "notifications:notification" false
+    set_flatpak_permission "org.gnome.Weather" \
+        "background" false \
+        "notifications:notification" false
+    set_flatpak_permission "org.inkscape.Inkscape" \
+        "background" false \
+        "notifications:notification" false
+    set_flatpak_permission "org.mozilla.firefox" \
+        "background" false \
+        "notifications:notification" false
 fi
