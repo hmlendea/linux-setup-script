@@ -9,7 +9,6 @@ if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
     call_package_manager -Syu
 elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
   || [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
-    call_package_manager update
     call_package_manager upgrade
 fi
 

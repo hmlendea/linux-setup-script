@@ -70,7 +70,4 @@ if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
             add_repository "hmlendea-x86_64" 'https://github.com/hmlendea/PKGBUILDs/releases/latest/download/' "" "Never"
         fi
     fi
-
-    pacman -Syy
-    does_bin_exist "pkgfile" && pkgfile -u
 fi
