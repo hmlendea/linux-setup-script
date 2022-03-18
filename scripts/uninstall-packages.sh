@@ -61,21 +61,14 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
         uninstall_native_package "code"
         uninstall_native_package "vscodium-bin"
     fi
-fi
 
-if [ "$(get_gpu_family)" != "AMD" ]; then
-    uninstall_native_package "amdvlk"
-    uninstall_native_package "lib32-amdvlk"
-fi
-
-if [[ "${CHASSIS_TYPE}" != "Laptop" ]]; then
-    uninstall_native_package "acpi"
-    uninstall_native_package "tlp"
-
-    uninstall_native_package "powertop"
-
-    if ( ! get_dmi_string "system-sku-number" | grep -q "ThinkPad" ); then
-        uninstall_native_package acpi_call
-        uninstall_native_package tp_smapi
+    elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
+        yes | apt autoremove
+    elif [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
+        yes | run_as_su apt autoremove
     fi
+elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
+    yes | apt autoremove
+elif [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
+    yes | run_as_su apt autoremove
 fi
