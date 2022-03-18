@@ -113,7 +113,7 @@ function install_native_package() {
 
     is_native_package_installed "${PKG}" && return
 
-    echo " >>> Installing package: ${PKG}"
+    echo -e " >>> Installing native package: \e[0;33m${PKG}\e[0m..."
     if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
     	call_package_manager -S --asexplicit "${PKG}"
     elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
@@ -127,7 +127,7 @@ function install_native_package_dependency() {
 
     is_native_package_installed "${PKG}" && return
 
-    echo " >>> Installing dependency: ${PKG}"
+    echo -e " >>> Installing native package dependency: \e[0;33m${PKG}\e[0m..."
     if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
         call_package_manager -S --asexplicit "${PKG}"
     elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
@@ -147,7 +147,7 @@ function install_flatpak() {
 
     is_flatpak_installed "${PACKAGE}" && return
 
-    echo " >>> Installing flatpak: ${PACKAGE} (${REMOTE})"
+    echo -e " >>> Installing flatpak: \e[0;33m${PACKAGE}\e[0m (${REMOTE})..."
     call_flatpak install "${REMOTE}" "${PACKAGE}"
 }
 
@@ -156,7 +156,7 @@ function install_vscode_package() {
 
     is_vscode_extension_installed "${EXTENSION}" && return
 
-    echo " >>> Installing VS Code extension: ${EXTENSION}"
+    echo -e " >>> Installing VS Code extension: \e[0;33m${EXTENSION}\e[0m..."
     call_vscode --install-extension "${EXTENSION}"
 }
 
@@ -175,30 +175,31 @@ function uninstall_native_package() {
 }
 
 function uninstall_flatpak() {
-    local PKG="${1}"
+    local PACKAGE="${1}"
 
-    ! is_flatpak_installed "${PKG}" && return
+    ! is_flatpak_installed "${PACKAGE}" && return
 
-    echo " >>> Uninstalling flatpak: ${PKG}"
-    call_flatpak uninstall "${PKG}"
+    echo -e " >>> Uninstalling flatpak: \e[0;33m${PACKAGE}\e[0m..."
+    call_flatpak uninstall "${PACKAGE}"
 }
 
 function install_aur_package_manually() {
 	local PKG="${1}"
+
+    is_native_package_installed "${PKG}" && return
+
     local PKG_SNAPSHOT_URL="https://aur.archlinux.org/cgit/aur.git/snapshot/${PKG}.tar.gz"
     local OLD_PWD="$(pwd)"
 
     [ ! -d "${LOCAL_INSTALL_TEMP_DIR}" ] && mkdir -p "${LOCAL_INSTALL_TEMP_DIR}"
+
     cd "${LOCAL_INSTALL_TEMP_DIR}"
+    echo -e " >>> Installing AUR package manually: \e[0;33m${PKG}\e[0m..."
 
-	if (! is_native_package_installed "${PKG}"); then
-        wget "${PKG_SNAPSHOT_URL}"
-	    tar xvf "${PKG}.tar.gz"
+    wget "${PKG_SNAPSHOT_URL}"
+    tar xvf "${PKG}.tar.gz"
 
-    	cd "${PKG}"
-	    makepkg -sri --noconfirm
-	    cd ..
-    fi
-
+    cd "${PKG}"
+    makepkg -sri --noconfirm
     cd "${OLD_PWD}"
 }
