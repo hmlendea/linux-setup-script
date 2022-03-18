@@ -480,6 +480,8 @@ if ${HAS_GUI}; then
         fi
 
         install_flatpak com.getpostman.Postman
+
+        does_bin_exist "flatpak" && install_native_package "flatpak-builder"
     fi
 
     # Tools
