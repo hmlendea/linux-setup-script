@@ -88,11 +88,12 @@ fi
 # Remove the MOTD
 [ -f "${ROOT_ETC}/motd" ] && remove "${ROOT_ETC}/motd"
 
-# Configure package repositories
-execute-script-superuser "configure-repositories.sh"
-
 # Package management
 if [ "${OS}" != "Windows" ]; then
+    # Configure package repositories
+    execute-script-superuser "configure-repositories.sh"
+    execute-script "update-package-repositories.sh"
+
     # Manage packages and extensions
     execute-script "uninstall-packages.sh"
     execute-script "update-packages.sh"
