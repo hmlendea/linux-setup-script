@@ -345,10 +345,10 @@ if ${HAS_GUI}; then
         install_native_package gnome-shell-extension-installer
 
         # Enhancements
-        install_gnome_shell_extension "dash-to-plank"
+        does_bin_exist "plank" && install_gnome_shell_extension "dash-to-plank"
         install_gnome_shell_extension "sound-output-device-chooser"
         install_gnome_shell_extension "multi-monitors-add-on"
-        install_gnome_shell_extension "wintile"
+        #install_gnome_shell_extension "wintile"
 
         # New features
         install_gnome_shell_extension "gsconnect"
@@ -361,6 +361,10 @@ if ${HAS_GUI}; then
         install_gnome_shell_extension "windowIsReady_Remover"
         install_gnome_shell_extension "no-overview"
         install_gnome_shell_extension "Hide_Activities"
+
+        if get_dmi_string "system-sku-number" | grep -q "ThinkPad"; then
+            install_gnome_shell_extension "keyboard-backlight-menu"
+        fi
     fi
 
     # Themes
