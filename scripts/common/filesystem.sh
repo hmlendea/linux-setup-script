@@ -96,14 +96,15 @@ function remove() {
         PATH_TO_REMOVE=$(echo "${PATH_TO_REMOVE}" | sed \
                             -e 's/^\s*//g' \
                             -e 's/\s*$//g')
-
         if [ ! -e "${PATH_TO_REMOVE}" ] \
         || [ -z "${PATH_TO_REMOVE}" ] \
         || [ "${PATH_TO_REMOVE}" == "/" ]; then
-            return
+            continue
         fi
 
-        echo -e "Removing \e[0;33m${PATH_TO_REMOVE}\e[0m ..."
+        local SIZE=$(du -sh "${PATH_TO_REMOVE}" | awk '{print $1}')
+
+        echo -e "Removing \e[0;33m${PATH_TO_REMOVE}\e[0m (${SIZE})..."
         if [ -w "${PATH_TO_REMOVE}" ]; then
             if [ -f "${PATH_TO_REMOVE}" ]; then
                 rm "${PATH_TO_REMOVE}"
@@ -117,6 +118,16 @@ function remove() {
                 run_as_su rm -r "${PATH_TO_REMOVE}"
             fi
         fi
+    done
+}
+
+function remove_dir_if_empty() {
+    for PATH_TO_REMOVE in "${@}"; do
+        PATH_TO_REMOVE=$(echo "${PATH_TO_REMOVE}" | sed \
+                            -e 's/^\s*//g' \
+                            -e 's/\s*$//g')
+        [ ! -d "${PATH_TO_REMOVE}" ] && continue
+        [ ! "$(ls ${PATH_TO_REMOVE})" ] && remove "${PATH_TO_REMOVE}"
     done
 }
 

@@ -36,6 +36,7 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
 ! does_bin_exist "code-oss" "codium" && remove "${HOME}/.vscode-oss"
 ! does_bin_exist "discord" && remove "${HOME_CONFIG}/discord"
 ! does_bin_exist "dockx" && remove "${HOME_LOCAL_SHARE}/dockbarx"
+! does_bin_exist "duolingo-desktop" && remove "${HOME_CONFIG}/Duolingo"
 #! does_bin_exist "evolution" && remove \
 #    "${HOME_CACHE}/evolution" \
 #    "${HOME_CONFIG}/evolution" \
@@ -45,6 +46,7 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
 ! does_bin_exist "fltk-config" && remove "${HOME}/.fltk"
 ! does_bin_exist "fma-config-tool" && remove "${HOME_CONFIG}/filemanager-actions"
 ! does_bin_exist "fragments" && remove "${HOME_LOCAL_SHARE}/fragments"
+! does_bin_exist "gedit" && remove "${HOME_CONFIG}/gedit"
 ! does_bin_exist "/opt/geforcenow-electron/geforcenow-electron" && remove "${HOME_CONFIG}/GeForce NOW"
 ! does_bin_exist "gkraken" && remove "${HOME_CONFIG}/gkraken"
 ! does_bin_exist "gksu" && remove "${HOME}/.gksu.lock"
@@ -57,6 +59,12 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
 ! does_bin_exist "google-chrome" && remove \
     "${HOME_CACHE}/google-chrome" \
     "${HOME_CONFIG}/google-chrome"
+! does_bin_exist "google-chrome-beta" && remove \
+    "${HOME_CACHE}/google-chrome-beta" \
+    "${HOME_CONFIG}/google-chrome-beta"
+! does_bin_exist "google-chrome-unstable" && remove \
+    "${HOME_CACHE}/google-chrome-unstable" \
+    "${HOME_CONFIG}/google-chrome-unstable"
 ! does_bin_exist "gradle" && remove "${HOME}.gradle"
 ! does_bin_exist "hardinfo" && remove "${HOME_CONFIG}/hardinfo"
 ! does_bin_exist "hashcat" && remove "${HOME_CONFIG}/hashcat"
@@ -75,6 +83,12 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
     "${HOME}/.mcaselector" \
     "${HOME_CACHE}/mcaselector"
 ! does_bin_exist "mcedit" && remove "${HOME}/.mcedit"
+! does_bin_exist "microsoft-edge-beta" && remove \
+    "${HOME_CACHE}/microsoft-edge-beta" \
+    "${HOME_CONFIG}/microsoft-edge-beta"
+! does_bin_exist "microsoft-edge-dev" && remove \
+    "${HOME_CACHE}/microsoft-edge-dev" \
+    "${HOME_CONFIG}/microsoft-edge-dev"
 ! does_bin_exist "minetest" && remove "${HOME_CACHE}/minetest"
 ! does_bin_exist "mono" && remove "${HOME}/.mono"
 ! does_bin_exist "mpv" && remove "${HOME_CONFIG}/mpv"
@@ -89,12 +103,17 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
 ! does_bin_exist "pcmanfm" && remove "${HOME_CONFIG}/pcmanfm"
 ! does_bin_exist "pcmanfm-qt" && remove "${HOME_CONFIG}/pcmanfm-qt"
 ! does_bin_exist "pip" && remove "${HOME_CACHE}/pip"
+! does_bin_exist "plank" && remove \
+    "${HOME_CONFIG}/plank" \
+    "${HOME_LOCAL_SHARE}/plank"
 ! does_bin_exist "plexmediaplayer" && remove "${HOME_CONFIG}/plex.tv"
 ! does_bin_exist "postman" && remove "${HOME_CONFIG}/Postman"
 ! does_bin_exist "rhythmbox" && remove \
     "${HOME_CACHE}/rhythmbox" \
     "${HOME_LOCAL_SHARE}/rhythmbox"
+! does_bin_exist "signal-desktop" && remove "${HOME_CONFIG}/Signal"
 ! does_bin_exist "simplescreenrecorder" && remove "${HOME}/.ssr"
+! does_bin_exist "simplenote" && remove "${HOME_CONFIG}/Simplenote"
 ! does_bin_exist "snapcraft" && remove "${HOME_CACHE}/snapcraft"
 ! does_bin_exist "spotify" && remove \
     "${HOME_CACHE}/spotify" \
@@ -105,6 +124,7 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
 ! does_bin_exist "teams-insiders" && remove \
     "${HOME_CONFIG}/Microsoft Teams - Insiders" \
     "${HOME_CONFIG}/Microsoft/Microsoft Teams - Insiders"
+! does_bin_exist "teams" "teams-insiders" && remove "${HOME_CONFIG}/teams"
 ! does_bin_exist "teamviewer" && remove \
     "${HOME_CONFIG}/teamviewer" \
     "${HOME_LOCAL_SHARE}/teamviewer15"
@@ -116,6 +136,7 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
     "${HOME_LOCAL_SHARE}/totem"
 ! does_bin_exist "transmission-daemon" && remove "${HOME_CONFIG}/transmission-daemon"
 ! does_bin_exist "ulauncher" && remove "${HOME_LOCAL_SHARE}/ulauncher"
+! does_bin_exist "virtualbox" && remove "${HOME_CONFIG}/VirtualBox"
 ! does_bin_exist "vim" && remove \
     "${HOME}/.viminfo" \
     "${HOME}/.vimrc" \
@@ -171,3 +192,6 @@ done
 # Unwanted application launchers
 remove "${HOME_LOCAL_SHARE}/applications/wine"
 remove "${HOME_CONFIG}/menus/applications-merged/user-chrome-apps.menu"
+
+# Empty directories
+remove_dir_if_empty "${HOME_CONFIG}/Microsoft"
