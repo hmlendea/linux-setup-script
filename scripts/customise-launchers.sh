@@ -497,7 +497,7 @@ if does_bin_exist "minecraft-launcher" "com.mojang.Minecraft"; then
     fi
 
     if [ -d "${MC_DIR}/versions" ]; then
-        MC_LATEST_RELEASE=$(cat "${MC_DIR}/versions/version_manifest_v2.json" | jq '.latest.release' | sed 's/\"//g')
+        MC_LATEST_RELEASE=$(jq '.latest.release' "${MC_DIR}/versions/version_manifest_v2.json" | sed 's/\"//g')
 
         MC_VANILLA_LAUNCHER_FILE="${LOCAL_LAUNCHERS_DIR}/minecraft/minecraft_${MC_LATEST_RELEASE}_vanilla.desktop"
         MC_MODDED_LAUNCHER_FILE="${LOCAL_LAUNCHERS_DIR}/minecraft/minecraft_${MC_LATEST_RELEASE}_modded.desktop"
@@ -1063,7 +1063,7 @@ fi
 # CREATE STEAM ICONS
 
 function getSteamAppIconPath() {
-    local STEAM_APP_ID="${@}"
+    local APP_ID="${*}"
     local APPS_DIR_NAME="48x48/apps"
 
     [ ! -d "${ICON_THEME_PATH}/${APPS_DIR_NAME}" ] && APPS_DIR_NAME="48/apps"
@@ -1105,14 +1105,14 @@ if does_bin_exist "steam" "com.valvesoftware.Steam"; then
     STEAM_NAMES_FILE="data/steam-names.txt"
 
     if [ -n "${STEAM_LIBRARY_CUSTOM_PATHS}" ]; then
-        STEAM_LIBRARY_CUSTOM_PATHS=$(echo ${STEAM_LIBRARY_CUSTOM_PATHS} | \
+        STEAM_LIBRARY_CUSTOM_PATHS=$(echo "${STEAM_LIBRARY_CUSTOM_PATHS}" | \
                                         sed 's/\"[0-9]\"//g' | \
                                         sed 's/^ *//g' | \
                                         sed 's/\t//g' | \
                                         sed 's/\"//g' | \
                                         sed 's/^ *path *//g' | \
                                         sed 's/$/\/steamapps/g')
-        STEAM_LIBRARY_PATHS=$(printf "${STEAM_LIBRARY_PATHS}\n${STEAM_LIBRARY_CUSTOM_PATHS}" | sort | uniq)
+        STEAM_LIBRARY_PATHS=$(echo -e "${STEAM_LIBRARY_PATHS}\n${STEAM_LIBRARY_CUSTOM_PATHS}" | sort | uniq)
     fi
 
     [ ! -d "${STEAM_LAUNCHERS_PATH}" ]              && mkdir -p "${STEAM_LAUNCHERS_PATH}"
@@ -1183,7 +1183,7 @@ if does_bin_exist "steam" "com.valvesoftware.Steam"; then
 
                     APP_KEYWORDS="${APP_ID}"
 
-                    for APP_NAME_WORD in $(echo "${APP_NAME}"); do
+                    for APP_NAME_WORD in ${APP_NAME}; do
                         APP_NAME_WORD=$(echo "${APP_NAME_WORD}" | sed \
                             -e 's/'\''s//g' \
                             -e 's/[\[\]]//g' \
