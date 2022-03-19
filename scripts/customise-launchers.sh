@@ -493,7 +493,7 @@ if does_bin_exist "minecraft-launcher" "com.mojang.Minecraft"; then
 
     if [ -d "${HOME_VAR}/app/com.mojang.Minecraft" ]; then
         MC_DIR="${HOME_VAR}/app/com.mojang.Minecraft/.minecraft"
-        MC_EXECUTABLE="flatpak run com.mojang.Minecraft"
+        MC_EXECUTABLE="com.mojang.Minecraft"
     fi
 
     if [ -d "${MC_DIR}/versions" ]; then
@@ -1176,7 +1176,7 @@ if does_bin_exist "steam" "com.valvesoftware.Steam"; then
                     STEAM_EXECUTABLE="steam"
 
                     if does_bin_exist "com.valvesoftware.Steam"; then
-                        STEAM_EXECUTABLE="flatpak run com.valvesoftware.Steam"
+                        STEAM_EXECUTABLE="com.valvesoftware.Steam"
                     elif does_bin_exist "steam-start"; then
                         STEAM_EXECUTABLE="steam-start"
                     fi
