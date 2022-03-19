@@ -182,6 +182,8 @@ remove "${HOME_CONFIG}/logs"
 remove "${HOME_LOCAL_SHARE}/xorg/Xorg.0.log"
 remove "${HOME_LOCAL_SHARE}/xorg/Xorg.0.log.old"
 
+does_bin_exist "journalctl" && run_as_su journalctl --vacuum-time=3days
+
 for MC_DIR in "${HOME}/.minecraft" "${HOME_VAR}/apps/com.mojang.Minecraft"; do
     remove "${MC_DIR}/logs"
     remove "${MC_DIR}/bootstrap_log.txt"
