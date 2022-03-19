@@ -32,7 +32,7 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "firefox"                             # Replaced by flatpak: org.mozilla.firefox
     uninstall_native_package "fragments"                           # Replaced by flatpak: de.haeckerfelix.Fragments
     uninstall_native_package "gedit"                               # Replaced by flatpak: org.gnome.gedit
-    uninstall_native_package "gimp"                                # Replaced by flatpak: org.gimp.GIMP
+    #uninstall_native_package "gimp"                                # Replaced by flatpak: org.gimp.GIMP
     uninstall_native_package "gnome-calculator"                    # Replaced by flatpak: org.gnome.Calculator
     uninstall_native_package "gnome-calendar"                      # Replaced by flatpak: org.gnome.Calendar
     uninstall_native_package "gnome-contacts"                      # Replaced by flatpak: org.gnome.Contacts
