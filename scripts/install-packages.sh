@@ -345,22 +345,22 @@ if ${HAS_GUI}; then
         install_native_package gnome-shell-extension-installer
 
         # Enhancements
-        install_native_package gnome-shell-extension-dash-to-plank
-        install_native_package gnome-shell-extension-sound-output-device-chooser
-        install_native_package gnome-shell-extension-multi-monitors-add-on-git
-        install_native_package gnome-shell-extension-wintile
+        install_gnome_shell_extension "dash-to-plank"
+        install_gnome_shell_extension "sound-output-device-chooser"
+        install_gnome_shell_extension "multi-monitors-add-on"
+        install_gnome_shell_extension "wintile"
 
         # New features
-        install_native_package gnome-shell-extension-gsconnect
-        install_native_package gnome-shell-extension-openweather-git
+        install_gnome_shell_extension "gsconnect"
+        install_gnome_shell_extension "openweather-extension"
 
         # Appearance
-        install_native_package gnome-shell-extension-blur-my-shell
+        install_gnome_shell_extension "blur-my-shell"
 
         # Remove annoyances
-        install_native_package gnome-shell-extension-windowisready_remover
-        install_native_package gnome-shell-extension-no-overview
-        install_native_package gnome-shell-extension-hide-activities-git
+        install_gnome_shell_extension "windowIsReady_Remover"
+        install_gnome_shell_extension "no-overview"
+        install_gnome_shell_extension "Hide_Activities"
     fi
 
     # Themes

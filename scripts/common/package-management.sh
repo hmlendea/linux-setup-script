@@ -40,6 +40,25 @@ function call_vscode() {
     fi
 }
 
+function call_gnome_shell_extension_installer() {
+    local EXTENSION="${1}" && shift
+    local EXTENSION_ID="${EXTENSION}"
+
+    if ! [[ ${EXTENSION} =~ ^[0-9]+$ ]]; then
+        EXTENSION_ID=$(echo "q" | \
+            gnome-shell-extension-installer -s "${EXTENSION}" | \
+            grep "\"link\": \"/extension" | \
+            head -n 1 | \
+            sed 's/^.*\"link\": \"\/extension\/\([0-9]\+\).*/\1/g')
+    fi
+
+    #if ${HAS_SU_PRIVILEGES}; then
+    #    run_as_su gnome-shell-extension-installer --yes ${*} "${EXTENSION_ID}"
+    #else
+        gnome-shell-extension-installer --yes ${*} "${EXTENSION_ID}"
+    #fi
+}
+
 function is_native_package_installed() {
 	local PKG="${1}"
 
@@ -158,6 +177,15 @@ function install_vscode_package() {
 
     echo -e " >>> Installing VS Code extension: \e[0;33m${EXTENSION}\e[0m..."
     call_vscode --install-extension "${EXTENSION}"
+}
+
+function install_gnome_shell_extension() {
+    local EXTENSION="${1}"
+
+    is_gnome_shell_extension_installed "${EXTENSION}" && return
+
+    echo -e " >>> Installing GNOME Shell extension: \e[0;33m${EXTENSION}\e[0m..."
+    call_gnome_shell_extension_installer "${EXTENSION}"
 }
 
 function uninstall_native_package() {

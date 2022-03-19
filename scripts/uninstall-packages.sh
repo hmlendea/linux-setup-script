@@ -55,6 +55,18 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "ttf-ms-fonts"                        # Replaced by ttf-ms-win10
     uninstall_native_package "yaourt-auto-sync"                    # Replaced by repo-synchroniser
 
+    # Replaced by installation directly from extensions.gnome.org
+    uninstall_native_package "gnome-shell-extension-dash-to-plank"
+    uninstall_native_package "gnome-shell-extension-sound-output-device-chooser"
+    uninstall_native_package "gnome-shell-extension-multi-monitors-add-on-git"
+    uninstall_native_package "gnome-shell-extension-wintile"
+    uninstall_native_package "gnome-shell-extension-gsconnect"
+    uninstall_native_package "gnome-shell-extension-openweather-git"
+    uninstall_native_package "gnome-shell-extension-blur-my-shell"
+    uninstall_native_package "gnome-shell-extension-windowisready_remover"
+    uninstall_native_package "gnome-shell-extension-no-overview"
+    uninstall_native_package "gnome-shell-extension-hide-activities-git"
+
     uninstall_flatpak "org.gnome.TextEditor" # Replaced by org.gnome.gedit
 
     if is_native_package_installed "visual-studio-code-bin"; then
