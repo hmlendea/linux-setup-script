@@ -42,6 +42,7 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
 #    "${HOME_CONFIG}/evolution" \
 #    "${HOME_LOCAL_SHARE}/evolution"
 ! does_bin_exist "electronmail-bin" && remove "${HOME_CONFIG}/electron-mail"
+! does_bin_exist "eog" && remove "${HOME_CONFIG}/eog"
 ! does_bin_exist "etcher" && remove "${HOME_CONFIG}/balena-etcher-electron"
 ! does_bin_exist "fltk-config" && remove "${HOME}/.fltk"
 ! does_bin_exist "fma-config-tool" && remove "${HOME_CONFIG}/filemanager-actions"
@@ -114,7 +115,9 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
 ! does_bin_exist "signal-desktop" && remove "${HOME_CONFIG}/Signal"
 ! does_bin_exist "simplescreenrecorder" && remove "${HOME}/.ssr"
 ! does_bin_exist "simplenote" && remove "${HOME_CONFIG}/Simplenote"
+! does_bin_exist "snap" && remove "${HOME}/.snap"
 ! does_bin_exist "snapcraft" && remove "${HOME_CACHE}/snapcraft"
+! does_bin_exist "sokogrump" && remove "${HOME_LOCAL_SHARE}/SokoGrump"
 ! does_bin_exist "spotify" && remove \
     "${HOME_CACHE}/spotify" \
     "${HOME_CONFIG}/spotify"
@@ -177,12 +180,24 @@ if [ -d "${HOME_DOWNLOADS}" ]; then
     done < <(find "${HOME_DOWNLOADS}" -maxdepth 1 -type f -name "*.torrent" -print0)
 fi
 
+# Unwanted application launchers
+remove "${HOME_LOCAL_SHARE}/applications/wine"
+remove "${HOME_CONFIG}/menus/applications-merged/user-chrome-apps.menu"
+
+# Empty directories
+remove_dir_if_empty "${HOME_CONFIG}/ibus/bus"
+remove_dir_if_empty "${HOME_CONFIG}/ibus"
+remove_dir_if_empty "${HOME_CONFIG}/Microsoft"
+remove_dir_if_empty "${HOME_CONFIG}/paradox-launcher-v2/Dictionaries"
+remove_dir_if_empty "${HOME_CONFIG}/paradox-launcher-v2"
+remove_dir_if_empty "${HOME_LOCAL_SHARE}/gegl-0.4/plug-ins"
+remove_dir_if_empty "${HOME_LOCAL_SHARE}/gegl-0.4"
+remove_dir_if_empty "${HOME_LOCAL_SHARE}/xorg"
+
 # Logs
 remove "${HOME_CONFIG}/logs"
 remove "${HOME_LOCAL_SHARE}/xorg/Xorg.0.log"
 remove "${HOME_LOCAL_SHARE}/xorg/Xorg.0.log.old"
-
-does_bin_exist "journalctl" && run_as_su journalctl --vacuum-time=3days
 
 for MC_DIR in "${HOME}/.minecraft" "${HOME_VAR}/apps/com.mojang.Minecraft"; do
     remove "${MC_DIR}/logs"
@@ -191,9 +206,4 @@ for MC_DIR in "${HOME}/.minecraft" "${HOME_VAR}/apps/com.mojang.Minecraft"; do
     remove "${MC_DIR}/launcher_log.txt"
 done
 
-# Unwanted application launchers
-remove "${HOME_LOCAL_SHARE}/applications/wine"
-remove "${HOME_CONFIG}/menus/applications-merged/user-chrome-apps.menu"
-
-# Empty directories
-remove_dir_if_empty "${HOME_CONFIG}/Microsoft"
+does_bin_exist "journalctl" && run_as_su journalctl --vacuum-time=3days
