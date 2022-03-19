@@ -16,6 +16,10 @@ fi
 
 # Uninstall the packages
 if [ "${DISTRO_FAMILY}" = "Arch" ]; then
+    if ${IS_POWERFUL_PC}; then
+        uninstall_native_package "plank"
+    fi
+
     uninstall_native_package "alsi"                                # Replaced by fastfetch-git
     uninstall_native_package "baobab"                              # Replaced by flatpak: org.gnome.baobab
     uninstall_native_package "dialect"                             # Depends on outdated libs
@@ -68,6 +72,10 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "gnome-shell-extension-no-overview"
     uninstall_native_package "gnome-shell-extension-hide-activities-git"
 
+    # Uninstall GNOME Shell extensions
+    ! does_bin_exist "plank" && uninstall_gnome_shell_extension "dash-to-plank"
+
+    # Uninstall flatpaks
     uninstall_flatpak "org.gnome.TextEditor" # Replaced by org.gnome.gedit
 
     if is_native_package_installed "visual-studio-code-bin"; then
