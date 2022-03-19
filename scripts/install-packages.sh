@@ -336,7 +336,7 @@ if ${HAS_GUI}; then
         install_native_package_dependency gvfs-google
     fi
 
-    install_native_package plank
+    ! ${POWERFUL_PC} && install_native_package plank
 
     # GNOME Shell Extensions
     if ${POWERFUL_PC}; then
@@ -345,7 +345,12 @@ if ${HAS_GUI}; then
         install_native_package gnome-shell-extension-installer
 
         # Enhancements
-        does_bin_exist "plank" && install_gnome_shell_extension "dash-to-plank"
+        if does_bin_exist "plank"; then
+            install_gnome_shell_extension "dash-to-plank"
+        else
+            install_gnome_shell_extension "dash-to-dock"
+        fi
+
         install_gnome_shell_extension "sound-output-device-chooser"
         install_gnome_shell_extension "multi-monitors-add-on"
         #install_gnome_shell_extension "wintile"

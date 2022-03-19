@@ -1,8 +1,6 @@
 #!/bin/bash
-if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-    source "scripts/common/filesystem.sh"
-    source "${REPO_DIR}/scripts/common/common.sh"
-fi
+source "scripts/common/filesystem.sh"
+source "${REPO_SCRIPTS_DIR}/common/common.sh"
 
 GLOBAL_GS_EXTENSIONS_DIR="${ROOT_USR_SHARE}/gnome-shell/extensions"
 LOCAL_GS_EXTENSIONS_DIR="${HOME_LOCAL_SHARE}/gnome-shell/extensions"
@@ -214,6 +212,30 @@ function uninstall_flatpak() {
 
     echo -e " >>> Uninstalling flatpak: \e[0;33m${PACKAGE}\e[0m..."
     call_flatpak uninstall "${PACKAGE}"
+}
+
+function uninstall_gnome_shell_extension() {
+    local EXTENSION_NAME="${*}"
+
+    ! is_gnome_shell_extension_installed "${EXTENSION_NAME}" && return
+
+    echo -e " >>> Uninstalling GNOME Shell extension: \e[0;33m${EXTENSION_NAME}\e[0m..."
+
+    if [ -d "${GLOBAL_GS_EXTENSIONS_DIR}" ]; then
+        local EXTENSION_PATH=$(find "${GLOBAL_GS_EXTENSIONS_DIR}" -type d -name "${EXTENSION_NAME}@*")
+
+        if [ -n "${EXTENSION_PATH}" ]; then
+            run_as_su rm -rf "${EXTENSION_PATH}"
+        fi
+    fi
+
+    if [ -d "${LOCAL_GS_EXTENSIONS_DIR}" ]; then
+        local EXTENSION_PATH=$(find "${LOCAL_GS_EXTENSIONS_DIR}" -type d -name "${EXTENSION_NAME}@*")
+
+        if [ -n "${EXTENSION_PATH}" ]; then
+            rm -rf "${EXTENSION_PATH}"
+        fi
+    fi
 }
 
 function install_aur_package_manually() {

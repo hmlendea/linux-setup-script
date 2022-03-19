@@ -266,7 +266,6 @@ function set_gsetting() {
     local VALUE="${@:3}"
     local CURRENT_VALUE=""
 
-
     if [ -d "${HOME_VAR}/app/${SCHEMA}" ]; then
         set_gsetting_flatpak "${SCHEMA}" "${PROPERTY}" "${VALUE}"
         return
@@ -286,6 +285,8 @@ function set_gsetting() {
             return
         fi
     fi
+
+    ! gsettings list-schemas | grep -q "^${SCHEMA}" && return
 
     CURRENT_VALUE=$(get_gsetting "${SCHEMA}" "${PROPERTY}")
 
