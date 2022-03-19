@@ -4,6 +4,9 @@ if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     source "${REPO_DIR}/scripts/common/common.sh"
 fi
 
+GLOBAL_GS_EXTENSIONS_DIR="${ROOT_USR_SHARE}/gnome-shell/extensions"
+LOCAL_GS_EXTENSIONS_DIR="${HOME_LOCAL_SHARE}/gnome-shell/extensions"
+
 function call_package_manager() {
     if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
         if [[ "${UID}" != "0" ]]; then
@@ -102,20 +105,18 @@ function is_vscode_extension_installed() {
 function is_gnome_shell_extension_installed() {
     local EXTENSION_NAME="${*}"
 
-    local GLOBAL_EXTENSIONS_DIR="${ROOT_USR_SHARE}/gnome-shell/extensions"
-    local LOCAL_EXTENSIONS_DIR="${HOME_LOCAL_SHARE}/gnome-shell/extensions"
-
-    if [ -d "${GLOBAL_EXTENSIONS_DIR}" ]; then
-        local EXTENSION_PATH=$(find "${GLOBAL_EXTENSIONS_DIR}" -type d -name "${EXTENSION_NAME}@*")
+    if [ -d "${GLOBAL_GS_EXTENSIONS_DIR}" ]; then
+        local EXTENSION_PATH=$(find "${GLOBAL_GS_EXTENSIONS_DIR}" -type d -name "${EXTENSION_NAME}@*")
         [ -n "${EXTENSION_PATH}" ] && return 0 # True
-    elif [ -d "${LOCAL_EXTENSIONS_DIR}" ]; then
-        local EXTENSION_PATH=$(find "${LOCAL_EXTENSIONS_DIR}" -type d -name "${EXTENSION_NAME}@*")
+    fi
+
+    if [ -d "${LOCAL_GS_EXTENSIONS_DIR}" ]; then
+        local EXTENSION_PATH=$(find "${LOCAL_GS_EXTENSIONS_DIR}" -type d -name "${EXTENSION_NAME}@*")
         [ -n "${EXTENSION_PATH}" ] && return 0 # True
     fi
 
     return 1 # False
 }
-
 
 function is_steam_app_installed() {
     local STEAM_APP_ID="${1}"
