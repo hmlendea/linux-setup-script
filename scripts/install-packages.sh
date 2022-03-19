@@ -447,8 +447,8 @@ if ${HAS_GUI}; then
         # Runtimes
         install_native_package python
         install_native_package python2
-        install_native_package mono
-        install_native_package jre-openjdk-headless
+        #install_native_package mono
+        #install_native_package jre-openjdk-headless
 
         if [[ "${ARCH_FAMILY}" == "x86" ]]; then
             install_native_package dotnet-runtime
@@ -489,5 +489,4 @@ if ${HAS_GUI}; then
 
     install_native_package xorg-xdpyinfo
     install_native_package xorg-xkill
-    install_native_package start-wmclass
 fi
