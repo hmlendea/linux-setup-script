@@ -26,7 +26,7 @@ configure-autostart-for-app "discord" \
     Icon "discord"
 configure-autostart-for-app "com.discordapp.Discord" \
     Name "Discord" \
-    Exec "/usr/bin/flatpak run --branch=stable --command=discord com.discordapp.Discord --start-minimized" \
+    Exec "com.discordapp.Discord --start-minimized" \
     Icon "discord"
 
 # ElectronMail
@@ -35,7 +35,7 @@ configure-autostart-for-app "/opt/ElectronMail/electron-mail" \
     Exec "/opt/ElectronMail/electron-mail --js-flags=\"--max-old-space-size=6144\" %U"
 configure-autostart-for-app "com.github.vladimiry.ElectronMail" \
     Name "Mail" \
-    Exec "/usr/bin/flatpak run --branch=stable --command=/app/bin/electron-mail --file-forwarding com.github.vladimiry.ElectronMail --js-flags=--max-old-space-size=12288 %U"
+    Exec "com.github.vladimiry.ElectronMail --js-flags=--max-old-space-size=12288 %U"
 
 # Plank
 configure-autostart-for-app "plank" \
@@ -48,7 +48,7 @@ configure-autostart-for-app "signal-desktop" \
     Exec "signal-desktop --start-in-tray --no-sandbox -- %u"
 configure-autostart-for-app "org.signal.Signal" \
     Name "Signal" \
-    Exec "/usr/bin/flatpak run --branch=stable --command=signal-desktop --file-forwarding org.signal.Signal --start-in-tray --no-sandbox -- %u"
+    Exec "org.signal.Signal --start-in-tray --no-sandbox -- %u"
 
 # Telegram
 configure-autostart-for-app "telegram-desktop" \
@@ -58,7 +58,7 @@ configure-autostart-for-app "telegram-desktop" \
 configure-autostart-for-app "org.telegram.desktop" \
     Name "Telegram" \
     Icon "telegram" \
-    Exec "flatpak run --command=telegram-desktop org.telegram.desktop -workdir ${HOME_VAR}/app/org.telegram.desktop/data/TelegramDesktop/ -startintray -autostart"
+    Exec "org.telegram.desktop -workdir ${HOME_VAR}/app/org.telegram.desktop/data/TelegramDesktop/ -startintray -autostart"
 
 # WhatsApp
 configure-autostart-for-app "whatsapp-nativefier" \
