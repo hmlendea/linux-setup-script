@@ -180,6 +180,7 @@ function get_soc_family() {
 function get_cpu_model() {
     local MODEL=""
 
+    [[ "${SOC_MODEL}" == "BCM2835" ]] && MODEL="ARM1176JZF-S"
     [[ "${SOC_MODEL}" == "BCM2837" ]] && MODEL="Cortex-A53"
     [[ "${SOC_MODEL}" == "BCM2711" ]] && MODEL="Cortex-A73"
     [[ "${SOC_MODEL}" == "SDM660" ]] && MODEL="Kryo 260"
@@ -301,20 +302,23 @@ function get_gpu_family() {
         VENDOR="${SOC_FAMILY}"
     fi
 
+    [ -z "${VENDOR}" ] && VENDOR="${CPU_FAMILY}"
+
     echo "${VENDOR}"
 }
 
 function get_gpu_model() {
-    local GPU_MODEL=""
+    local MODEL=""
 
-    [[ "${SOC_MODEL}" == "BCM2837" ]] && GPU_MODEL="VideoCore IV"
-    [[ "${SOC_MODEL}" == "BCM2711" ]] && GPU_MODEL="VideoCore VI"
-    [[ "${SOC_MODEL}" == "SDM660" ]] && GPU_MODEL="Adreno 512"
+    [[ "${SOC_MODEL}" == "BCM2835" ]] && MODEL="VideoCore IV"
+    [[ "${SOC_MODEL}" == "BCM2837" ]] && MODEL="VideoCore IV"
+    [[ "${SOC_MODEL}" == "BCM2711" ]] && MODEL="VideoCore VI"
+    [[ "${SOC_MODEL}" == "SDM660" ]] && MODEL="Adreno 512"
 
-    if [ -z "${GPU_MODEL}" ] \
+    if [ -z "${MODEL}" ] \
     && does_bin_exist "lspci" \
     && [ -e "${ROOT_PROC}/bus/pci" ]; then
-        GPU_MODEL=$(lspci | grep VGA | tail -n 1 | sed \
+        MODEL=$(lspci | grep VGA | tail -n 1 | sed \
             -e 's/^[^\[]*\[\([a-zA-Z0-9 ]*\)].*/\1/g' \
             -e 's/^00:0[0-9].[0-9] VGA compatible controller: //g' \
             -e 's/\(AMD\|Intel\|NVIDIA\)//g' \
@@ -324,12 +328,12 @@ function get_gpu_model() {
             -e 's/\s*$//g')
     fi
 
-    if [ -z "${GPU_MODEL}" ] \
+    if [ -z "${MODEL}" ] \
     && [[ "${ARCH_FAMILY}" == "arm" ]]; then
-        GPU_MODEL="$(get_cpu_model)"
+        MODEL="$(get_cpu_model)"
     fi
 
-    echo "${GPU_MODEL}"
+    echo "${MODEL}"
 }
 
 function get_gpu() {
