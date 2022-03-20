@@ -111,46 +111,45 @@ function get_arch_family() {
 }
 
 function get_soc_name() {
-    local SOC_MODEL=""
+    local MODEL=""
 
-    if [ -z "${SOC_MODEL}" ] \
+    if [ -z "${MODEL}" ] \
     && [ -f "${ROOT_PROC}/cpuinfo" ]; then
-        SOC_MODEL=$(cat "${ROOT_PROC}/cpuinfo" | \
+        MODEL=$(cat "${ROOT_PROC}/cpuinfo" | \
             grep "^Hardware\s*:" | \
             awk -F: '{print $2}')
     fi
 
-    if [ -z "${SOC_MODEL}" ] \
+    if [ -z "${MODEL}" ] \
     && [ -f "${ROOT_PROC}/cpuinfo" ]; then
-        SOC_MODEL=$(cat "${ROOT_PROC}/cpuinfo" | \
+        MODEL=$(cat "${ROOT_PROC}/cpuinfo" | \
             grep "^model name" | \
             awk -F: '{print $2}')
     fi
 
-    if [ -z "${SOC_MODEL}" ] \
+    if [ -z "${MODEL}" ] \
     && does_bin_exist "lspci"; then
         if lspci | grep -q "\sPCI bridge:.*BCM[0-9]\+\s"; then
-            SOC_MODEL=$(lspci | \
+            MODEL=$(lspci | \
                 grep "\sPCI bridge:" | \
                 head -n 1 | \
                 sed 's/.*\(BCM[0-9]\+\).*/\1/g')
         fi
     fi
 
-    if [ -z "${SOC_MODEL}" ] \
+    if [ -z "${MODEL}" ] \
     && [ -f "${ROOT_PROC}/device-tree/model" ]; then
         local DEVICE_MODEL=$(cat -A "${ROOT_PROC}/device-tree/model")
 
         if echo "${DEVICE_MODEL}" | grep -q "Raspberry Pi 3"; then
-            SOC_MODEL="BCM2837"
+            MODEL="BCM2837"
         elif echo "${DEVICE_MODEL}" | grep -q "Raspberry Pi 4"; then
-            SOC_MODEL="BCM2711"
+            MODEL="BCM2711"
         fi
     fi
 
-    SOC_MODEL=$(echo "${SOC_MODEL}" | \
+    MODEL=$(echo "${MODEL}" | \
             head -n 1 | sed \
-                -e 's/^\s*\(.*\)\s*$/\1/g' \
                 -e 's/ Technologies//g' \
                 -e 's/\sInc\s//g' \
                 -e 's/,//g' \
@@ -158,66 +157,66 @@ function get_soc_name() {
                 -e 's/\s*$//g' \
                 -e 's/\s\+/ /g')
 
-    echo "${SOC_MODEL}"
+    echo "${MODEL}"
 }
 
 function get_soc_model() {
-    get_soc_name | sed 's/'"${SOC_FAMILY}"'//g'
+    if [ -n "${SOC_FAMILY}" ]; then
+        get_soc_name | sed 's/'"${SOC_FAMILY}"'//g'
+    else
+        get_soc_name
+    fi
 }
 
 function get_soc_family() {
-    local SOC_FAMILY=""
-    local SOC_NAME="$(get_soc_name)"
+    local VENDOR=""
 
-    echo "${SOC_NAME}" | grep -q "BCM\|Broadcom" && SOC_FAMILY="Broadcom"
-    echo "${SOC_NAME}" | grep -q "Qualcomm" && SOC_FAMILY="Qualcomm"
+    echo "${SOC_NAME}" | grep -q "BCM\|Broadcom" && VENDOR="Broadcom"
+    echo "${SOC_NAME}" | grep -q "Qualcomm" && VENDOR="Qualcomm"
 
-    echo "${SOC_FAMILY}"
+    echo "${VENDOR}"
 }
 
 function get_cpu_model() {
-    local CPU_MODEL=""
+    local MODEL=""
 
-    if [ -n "${SOC_MODEL}" ]; then
-        [[ "${SOC_MODEL}" == "BCM2837" ]] && CPU_MODEL="Cortex-A53"
-        [[ "${SOC_MODEL}" == "BCM2711" ]] && CPU_MODEL="Cortex-A73"
-        [[ "${SOC_MODEL}" == "SDM660" ]] && CPU_MODEL="Kryo 260"
-    fi
+    [[ "${SOC_MODEL}" == "BCM2837" ]] && MODEL="Cortex-A53"
+    [[ "${SOC_MODEL}" == "BCM2711" ]] && MODEL="Cortex-A73"
+    [[ "${SOC_MODEL}" == "SDM660" ]] && MODEL="Kryo 260"
 
-    if [ -z "${CPU_MODEL}" ] \
+    if [ -z "${MODEL}" ] \
     && [ -f "${ROOT_PROC}/cpuinfo" ]; then
-        CPU_MODEL=$(cat "${ROOT_PROC}/cpuinfo" | \
+        MODEL=$(cat "${ROOT_PROC}/cpuinfo" | \
             grep "^Hardware\s*:" | \
             awk -F: '{print $2}')
     fi
 
-    if [ -z "${CPU_MODEL}" ] \
+    if [ -z "${MODEL}" ] \
     && [ -f "${ROOT_PROC}/cpuinfo" ]; then
-        CPU_MODEL=$(cat "${ROOT_PROC}/cpuinfo" | \
+        MODEL=$(cat "${ROOT_PROC}/cpuinfo" | \
             grep "^model name" | \
             awk -F: '{print $2}')
     fi
 
-    if [ -z "${CPU_MODEL}" ] \
+    if [ -z "${MODEL}" ] \
     && does_bin_exist "lspci"; then
         if lspci | grep -q "\sPCI bridge:.*BCM[0-9]\+\s"; then
-            CPU_MODEL=$(lspci | \
+            MODEL=$(lspci | \
                 grep "\sPCI bridge:" | \
                 head -n 1 | \
                 sed 's/.*\(BCM[0-9]\+\).*/\1/g')
         fi
     fi
 
-    if [ -z "${CPU_MODEL}" ] \
+    if [ -z "${MODEL}" ] \
     && does_bin_exist "lscpu"; then
-        CPU_MODEL=$(lscpu | \
+        MODEL=$(lscpu | \
             grep "^Model name:" | \
             awk -F: '{print $2}')
     fi
 
-    CPU_MODEL=$(echo "${CPU_MODEL}" | \
+    MODEL=$(echo "${MODEL}" | \
             head -n 1 | sed \
-                -e 's/^\s*\(.*\)\s*$/\1/g' \
                 -e 's/(TM)//g' \
                 -e 's/(R)//g' \
                 -e 's/ Technologies//g' \
@@ -231,7 +230,7 @@ function get_cpu_model() {
                 -e 's/\s*$//g' \
                 -e 's/\s\+/ /g')
 
-    echo "${CPU_MODEL}"
+    echo "${MODEL}"
 }
 
 function get_cpu_vendor_from_line() {
@@ -248,40 +247,40 @@ function get_cpu_vendor_from_line() {
 
 function get_cpu_family() {
     local CPU_LINE=""
-    local CPU_VENDOR=""
+    local VENDOR=""
 
     if does_bin_exist "dmidecode"; then
         CPU_LINE=$(get_dmi_string processor-manufacturer)
-        CPU_VENDOR="$(get_cpu_vendor_from_line ${CPU_LINE})"
+        VENDOR="$(get_cpu_vendor_from_line ${CPU_LINE})"
     fi
 
-    if [ -z "${CPU_VENDOR}" ] \
+    if [ -z "${VENDOR}" ] \
     && [ -f "${ROOT_PROC}/cpuinfo" ]; then
         CPU_LINE=$(cat "${ROOT_PROC}/cpuinfo" | grep "^Hardware\s*:")
-        CPU_VENDOR="$(get_cpu_vendor_from_line ${CPU_LINE})"
+        VENDOR="$(get_cpu_vendor_from_line ${CPU_LINE})"
     fi
 
-    if [ -z "${CPU_VENDOR}" ] \
+    if [ -z "${VENDOR}" ] \
     && [ -f "${ROOT_PROC}/cpuinfo" ]; then
         CPU_LINE=$(cat "${ROOT_PROC}/cpuinfo" | grep "^model name" | head -n 1)
-        CPU_VENDOR="$(get_cpu_vendor_from_line ${CPU_LINE})"
+        VENDOR="$(get_cpu_vendor_from_line ${CPU_LINE})"
     fi
 
-    if [ -z "${CPU_VENDOR}" ] \
+    if [ -z "${VENDOR}" ] \
     && does_bin_exist "lspci"; then
         CPU_LINE=$(lspci | grep "\sPCI bridge:" | head -n 1)
-        CPU_VENDOR="$(get_cpu_vendor_from_line ${CPU_LINE})"
+        VENDOR="$(get_cpu_vendor_from_line ${CPU_LINE})"
     fi
 
-    if [ -z "${CPU_VENDOR}" ] \
+    if [ -z "${VENDOR}" ] \
     && does_bin_exist "lscpu"; then
         CPU_LINE=$(lscpu | grep "^Model name:")
-        CPU_VENDOR="$(get_cpu_vendor_from_line ${CPU_LINE})"
+        VENDOR="$(get_cpu_vendor_from_line ${CPU_LINE})"
     fi
 
-    [ -z "${CPU_VENDOR}" ] && CPU_VENDOR="${SOC_FAMILY}"
+    [ -z "${VENDOR}" ] && VENDOR="${SOC_FAMILY}"
 
-    echo "${CPU_VENDOR}"
+    echo "${VENDOR}"
 }
 
 function get_cpu() {
@@ -308,11 +307,9 @@ function get_gpu_family() {
 function get_gpu_model() {
     local GPU_MODEL=""
 
-    if [ -n "${SOC_MODEL}" ]; then
-        [[ "${SOC_MODEL}" == "BCM2837" ]] && GPU_MODEL="VideoCore IV"
-        [[ "${SOC_MODEL}" == "BCM2711" ]] && GPU_MODEL="VideoCore VI"
-        [[ "${SOC_MODEL}" == "SDM660" ]] && GPU_MODEL="Adreno 512"
-    fi
+    [[ "${SOC_MODEL}" == "BCM2837" ]] && GPU_MODEL="VideoCore IV"
+    [[ "${SOC_MODEL}" == "BCM2711" ]] && GPU_MODEL="VideoCore VI"
+    [[ "${SOC_MODEL}" == "SDM660" ]] && GPU_MODEL="Adreno 512"
 
     if [ -z "${GPU_MODEL}" ] \
     && does_bin_exist "lspci" \
@@ -323,7 +320,8 @@ function get_gpu_model() {
             -e 's/\(AMD\|Intel\|NVIDIA\)//g' \
             -e 's/Corporation//g' \
             -e 's/(rev [0-9][0-9])//g' \
-            -e 's/^\s*//g' -e 's/\s*$//g')
+            -e 's/^\s*//g' \
+            -e 's/\s*$//g')
     fi
 
     if [ -z "${GPU_MODEL}" ] \
@@ -426,7 +424,12 @@ KERNEL_VERSION=$(uname -r)
 if [ -f "/etc/os-release" ]; then
     DISTRO=$(grep "^ID" "/etc/os-release" | tail -n 1 | awk -F'=' '{print $2}')
 else
-    DISTRO=$(echo "${KERNEL_VERSION}" | sed -e 's/^[^-]*-//g' -e 's/^[0-9][0-9]*-//g' -e 's/raspberrypi-//g' -e 's/-[0-9]*$//g' -e 's/-[a-z0-9]*$//g')
+    DISTRO=$(echo "${KERNEL_VERSION}" | sed \
+        -e 's/^[^-]*-//g' \
+        -e 's/^[0-9][0-9]*-//g' \
+        -e 's/raspberrypi-//g' \
+        -e 's/-[0-9]*$//g' \
+        -e 's/-[a-z0-9]*$//g')
 fi
 
 OS=$(uname -s)
