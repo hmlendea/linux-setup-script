@@ -1,6 +1,6 @@
 #!/bin/bash
 source "scripts/common/filesystem.sh"
-source "${REPO_DIR}/scripts/common/common.sh"
+source "${REPO_SCRIPTS_DIR}/common/common.sh"
 
 update_file_if_distinct "${REPO_RC_DIR}/inputrc" "${HOME}/.inputrc"
 update_file_if_distinct "${REPO_RC_DIR}/shell_aliases" "${HOME}/.shell_aliases"
@@ -14,6 +14,7 @@ if does_bin_exist "bash"; then
     update_file_if_distinct "${REPO_RC_DIR}/bashrc" "${HOME}/.bash_prompt"
 fi
 
+does_bin_exist "gimp"       && update_file_if_distinct "${REPO_RC_DIR}/gimprc"        "${HOME_CONFIG}/GIMP/2.10/gimprc"
 does_bin_exist "nano"       && update_file_if_distinct "${REPO_RC_DIR}/nanorc"        "${HOME}/.nanorc"
 does_bin_exist "vim"        && update_file_if_distinct "${REPO_RC_DIR}/vimrc"         "${HOME}/.vimrc"
 does_bin_exist "git"        && update_file_if_distinct "${REPO_RC_DIR}/gitconfig"     "${HOME}/.gitconfig"
