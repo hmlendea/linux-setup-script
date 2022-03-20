@@ -111,13 +111,60 @@ function get_arch_family() {
     echo "${ARCH_FAMILY}"
 }
 
+function get_soc_model() {
+    local SOC_MODEL=""
+
+    if [ -z "${SOC_MODEL}" ] \
+    && [ -f "${ROOT_PROC}/cpuinfo" ]; then
+        SOC_MODEL=$(cat "${ROOT_PROC}/cpuinfo" | \
+            grep "^Hardware\s*:" | \
+            awk -F: '{print $2}')
+    fi
+
+    if [ -z "${SOC_MODEL}" ] \
+    && [ -f "${ROOT_PROC}/cpuinfo" ]; then
+        SOC_MODEL=$(cat "${ROOT_PROC}/cpuinfo" | \
+            grep "^model name" | \
+            awk -F: '{print $2}')
+    fi
+
+    if [ -z "${SOC_MODEL}" ] \
+    && does_bin_exist "lspci"; then
+        if lspci | grep -q "\sPCI bridge:.*BCM[0-9]\+\s"; then
+            SOC_MODEL=$(lspci | \
+                grep "\sPCI bridge:" | \
+                head -n 1 | \
+                sed 's/.*\(BCM[0-9]\+\).*/\1/g')
+        fi
+    fi
+
+    SOC_MODEL=$(echo "${SOC_MODEL}" | \
+            head -n 1 | sed \
+                -e 's/^\s*\(.*\)\s*$/\1/g' \
+                -e 's/ Technologies//g' \
+                -e 's/\sInc\s//g' \
+                -e 's/,//g' \
+                -e 's/\(Broadcom\|Qualcomm\)//g' \
+                -e 's/^\s*//g' \
+                -e 's/\s*$//g' \
+                -e 's/\s\+/ /g')
+
+    echo "${SOC_MODEL}"
+}
+
 function get_cpu_model() {
     local CPU_MODEL=""
+    local CPU_FAMILY="$(get_cpu_family)"
+    local SOC_MODEL="$(get_soc_model)"
 
-# && grep -q "^Hardware\s*:" "${ROOT_PROC}/cpuinfo"; then
+    if [ -n "${SOC_MODEL}" ]; then
+        [[ "${SOC_MODEL}" == "BCM2837" ]] && CPU_MODEL="Cortex-A53"
+        [[ "${SOC_MODEL}" == "BCM2711" ]] && CPU_MODEL="Cortex-A73"
+        [[ "${SOC_MODEL}" == "SDM660" ]] && CPU_MODEL="Kryo 260"
+    fi
 
-
-    if [ -f "${ROOT_PROC}/cpuinfo" ]; then
+    if [ -z "${CPU_MODEL}" ] \
+    && [ -f "${ROOT_PROC}/cpuinfo" ]; then
         CPU_MODEL=$(cat "${ROOT_PROC}/cpuinfo" | \
             grep "^Hardware\s*:" | \
             awk -F: '{print $2}')
@@ -158,8 +205,6 @@ function get_cpu_model() {
                 -e 's/ \(CPU\|Processor\)//g' \
                 -e 's/@ .*//g' \
                 -e 's/,//g')
-
-    CPU_FAMILY="$(get_cpu_family)"
 
     [ -n "${CPU_FAMILY}" ] && CPU_MODEL=$(echo "${CPU_MODEL}" | sed 's/'"${CPU_FAMILY}"'//g')
 
@@ -242,8 +287,18 @@ function get_gpu_family() {
 
 function get_gpu_model() {
     local GPU_MODEL=""
+    local GPU_FAMILY="$(get_gpu_family)"
+    local SOC_MODEL="$(get_soc_model)"
 
-    if does_bin_exist "lspci" && [ -e "${ROOT_PROC}/bus/pci" ]; then
+    if [ -n "${SOC_MODEL}" ]; then
+        [[ "${SOC_MODEL}" == "BCM2837" ]] && GPU_MODEL="VideoCore IV"
+        [[ "${SOC_MODEL}" == "BCM2711" ]] && GPU_MODEL="VideoCore VI"
+        [[ "${SOC_MODEL}" == "SDM660" ]] && GPU_MODEL="Adreno 512"
+    fi
+
+    if [ -z "${GPU_MODEL}" ] \
+    && does_bin_exist "lspci" \
+    && [ -e "${ROOT_PROC}/bus/pci" ]; then
         GPU_MODEL=$(lspci | grep VGA | tail -n 1 | sed \
             -e 's/^[^\[]*\[\([a-zA-Z0-9 ]*\)].*/\1/g' \
             -e 's/^00:0[0-9].[0-9] VGA compatible controller: //g' \
