@@ -78,7 +78,6 @@ function get_arch() {
         if does_bin_exist "lscpu"; then
             ARCH=$(lscpu | grep "Architecture" | awk -F: '{print $2}' | sed 's/  //g' | sed 's/^ *//g')
         else
-            local CPU_FAMILY="$(get_cpu_family)"
             # We make some big assumptions here
             echo "${CPU_FAMILY}" | grep -q "AMD\|Intel" && ARCH="x86_64"
             echo "${CPU_FAMILY}" | grep -q "Broadcom" && ARCH="aarch64"
@@ -111,7 +110,7 @@ function get_arch_family() {
     echo "${ARCH_FAMILY}"
 }
 
-function get_soc_model() {
+function get_soc_name() {
     local SOC_MODEL=""
 
     if [ -z "${SOC_MODEL}" ] \
@@ -138,13 +137,23 @@ function get_soc_model() {
         fi
     fi
 
+    if [ -z "${SOC_MODEL}" ] \
+    && [ -f "${ROOT_PROC}/device-tree/model" ]; then
+        local DEVICE_MODEL=$(cat -A "${ROOT_PROC}/device-tree/model")
+
+        if echo "${DEVICE_MODEL}" | grep -q "Raspberry Pi 3"; then
+            SOC_MODEL="BCM2837"
+        elif echo "${DEVICE_MODEL}" | grep -q "Raspberry Pi 4"; then
+            SOC_MODEL="BCM2711"
+        fi
+    fi
+
     SOC_MODEL=$(echo "${SOC_MODEL}" | \
             head -n 1 | sed \
                 -e 's/^\s*\(.*\)\s*$/\1/g' \
                 -e 's/ Technologies//g' \
                 -e 's/\sInc\s//g' \
                 -e 's/,//g' \
-                -e 's/\(Broadcom\|Qualcomm\)//g' \
                 -e 's/^\s*//g' \
                 -e 's/\s*$//g' \
                 -e 's/\s\+/ /g')
@@ -152,10 +161,22 @@ function get_soc_model() {
     echo "${SOC_MODEL}"
 }
 
+function get_soc_model() {
+    get_soc_name | sed 's/'"${SOC_FAMILY}"'//g'
+}
+
+function get_soc_family() {
+    local SOC_FAMILY=""
+    local SOC_NAME="$(get_soc_name)"
+
+    echo "${SOC_NAME}" | grep -q "BCM\|Broadcom" && SOC_FAMILY="Broadcom"
+    echo "${SOC_NAME}" | grep -q "Qualcomm" && SOC_FAMILY="Qualcomm"
+
+    echo "${SOC_FAMILY}"
+}
+
 function get_cpu_model() {
     local CPU_MODEL=""
-    local CPU_FAMILY="$(get_cpu_family)"
-    local SOC_MODEL="$(get_soc_model)"
 
     if [ -n "${SOC_MODEL}" ]; then
         [[ "${SOC_MODEL}" == "BCM2837" ]] && CPU_MODEL="Cortex-A53"
@@ -204,11 +225,8 @@ function get_cpu_model() {
                 -e 's/ [48][ -][Cc]ore//g' \
                 -e 's/ \(CPU\|Processor\)//g' \
                 -e 's/@ .*//g' \
-                -e 's/,//g')
-
-    [ -n "${CPU_FAMILY}" ] && CPU_MODEL=$(echo "${CPU_MODEL}" | sed 's/'"${CPU_FAMILY}"'//g')
-
-    CPU_MODEL=$(echo "${CPU_MODEL}" | sed \
+                -e 's/,//g' \
+                -e 's/'"${CPU_FAMILY}"'//g' \
                 -e 's/^\s*//g' \
                 -e 's/\s*$//g' \
                 -e 's/\s\+/ /g')
@@ -261,34 +279,34 @@ function get_cpu_family() {
         CPU_VENDOR="$(get_cpu_vendor_from_line ${CPU_LINE})"
     fi
 
+    [ -z "${CPU_VENDOR}" ] && CPU_VENDOR="${SOC_FAMILY}"
+
     echo "${CPU_VENDOR}"
 }
 
 function get_cpu() {
-    echo "$(get_cpu_family) $(get_cpu_model)" | sed 's/^\s*//g'
+    echo "${CPU_FAMILY} ${CPU_MODEL}" | sed 's/^\s*//g'
 }
 
 function get_gpu_family() {
-    local GPU_FAMILY=""
+    local VENDOR=""
 
     if does_bin_exist "lspci" && [ -e "${ROOT_PROC}/bus/pci" ]; then
         local VGA_LINE=$(lspci | grep "VGA")
-        echo "${VGA_LINE}" | grep -q "AMD"      && GPU_FAMILY="AMD"
-        echo "${VGA_LINE}" | grep -q "Intel"    && GPU_FAMILY="Intel"
-        echo "${VGA_LINE}" | grep -q "NVIDIA"   && GPU_FAMILY="Nvidia"
+        echo "${VGA_LINE}" | grep -q "AMD"      && VENDOR="AMD"
+        echo "${VGA_LINE}" | grep -q "Intel"    && VENDOR="Intel"
+        echo "${VGA_LINE}" | grep -q "NVIDIA"   && VENDOR="Nvidia"
     fi
 
-    if [ -z "${GPU_FAMILY}" ] && [ "${ARCH_FAMILY}" == "arm" ]; then
-        GPU_FAMILY="$(get_cpu_family)"
+    if [ -z "${VENDOR}" ] && [ "${ARCH_FAMILY}" == "arm" ]; then
+        VENDOR="${SOC_FAMILY}"
     fi
 
-    echo "${GPU_FAMILY}"
+    echo "${VENDOR}"
 }
 
 function get_gpu_model() {
     local GPU_MODEL=""
-    local GPU_FAMILY="$(get_gpu_family)"
-    local SOC_MODEL="$(get_soc_model)"
 
     if [ -n "${SOC_MODEL}" ]; then
         [[ "${SOC_MODEL}" == "BCM2837" ]] && GPU_MODEL="VideoCore IV"
@@ -309,17 +327,6 @@ function get_gpu_model() {
     fi
 
     if [ -z "${GPU_MODEL}" ] \
-    && [ -f "${ROOT_PROC}/device-tree/model" ]; then
-        local DEVICE_MODEL=$(cat -A "${ROOT_PROC}/device-tree/model")
-
-        if echo "${DEVICE_MODEL}" | grep -q "Raspberry Pi 3"; then
-            GPU_MODEL="VideoCore IV"
-        elif echo "${DEVICE_MODEL}" | grep -q "Raspberry Pi 4"; then
-            GPU_MODEL="VideoCore VI"
-        fi
-    fi
-
-    if [ -z "${GPU_MODEL}" ] \
     && [[ "${ARCH_FAMILY}" == "arm" ]]; then
         GPU_MODEL="$(get_cpu_model)"
     fi
@@ -328,7 +335,7 @@ function get_gpu_model() {
 }
 
 function get_gpu() {
-    echo "$(get_gpu_family) $(get_gpu_model)" | sed 's/^\s*//g'
+    echo "${GPU_FAMILY} ${GPU_MODEL}" | sed 's/^\s*//g'
 }
 
 function get_driver() {
@@ -404,9 +411,6 @@ function get_chassis_type() {
 }
 
 function gpu_has_optimus_support() {
-    local GPU_FAMILY="$(get_gpu_family)"
-    local GPU_MODEL="$(get_gpu_model)"
-
     if [ "${GPU_FAMILY}" = "Nvidia" ]; then
         if [ "${GPU_MODEL}" = "GeForce 610M" ]; then
             return 0 # True
@@ -447,8 +451,14 @@ if [ "${OS}" = "CYGWIN_NT-10.0" ]; then
 fi
 
 # Architecture
-ARCH="$(get_arch)"
-ARCH_FAMILY="$(get_arch_family ${ARCH})"
+[ -z "${ARCH}" ] && ARCH="$(get_arch)"
+[ -z "${ARCH_FAMILY}" ] && ARCH_FAMILY="$(get_arch_family ${ARCH})"
+[ -z "${SOC_FAMILY}" ] && SOC_FAMILY="$(get_soc_family)"
+[ -z "${SOC_MODEL}" ] && SOC_MODEL="$(get_soc_model)"
+[ -z "${CPU_FAMILY}" ] && CPU_FAMILY="$(get_cpu_family)"
+[ -z "${CPU_MODEL}" ] && CPU_MODEL="$(get_cpu_model)"
+[ -z "${GPU_FAMILY}" ] && GPU_FAMILY="$(get_gpu_family)"
+[ -z "${GPU_MODEL}" ] && GPU_MODEL="$(get_gpu_model)"
 
 # System characteristics
 CPU_MODEL="$(get_cpu_model)"
