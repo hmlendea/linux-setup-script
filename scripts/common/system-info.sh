@@ -82,6 +82,7 @@ function get_arch() {
             # We make some big assumptions here
             echo "${CPU_FAMILY}" | grep -q "AMD\|Intel" && ARCH="x86_64"
             echo "${CPU_FAMILY}" | grep -q "Broadcom" && ARCH="aarch64"
+            echo "${CPU_FAMILY}" | grep -q "Qualcomm" && ARCH="aarch64"
         fi
     fi
 
@@ -147,17 +148,27 @@ function get_cpu_model() {
     fi
 
     CPU_MODEL=$(echo "${CPU_MODEL}" | \
-            head -n 1 | \
-            sed 's/^\s*\(.*\)\s*$/\1/g' | \
-            sed 's/(TM)//g' | \
-            sed 's/(R)//g' | \
-            sed 's/ [48][ -][Cc]ore//g' | \
-            sed 's/ \(CPU\|Processor\)//g' | \
-            sed 's/@ .*//g' | \
-            sed 's/^[ \t]*//g' | \
-            sed 's/[ \t]*$//g')
+            head -n 1 | sed \
+                -e 's/^\s*\(.*\)\s*$/\1/g' \
+                -e 's/(TM)//g' \
+                -e 's/(R)//g' \
+                -e 's/ Technologies//g' \
+                -e 's/\sInc\s//g' \
+                -e 's/ [48][ -][Cc]ore//g' \
+                -e 's/ \(CPU\|Processor\)//g' \
+                -e 's/@ .*//g' \
+                -e 's/,//g')
 
-    echo "${CPU_MODEL}"  | sed 's/\(AMD\|Broadcom\|Intel\) //g'
+    CPU_FAMILY="$(get_cpu_family)"
+
+    [ -n "${CPU_FAMILY}" ] && CPU_MODEL=$(echo "${CPU_MODEL}" | sed 's/'"${CPU_FAMILY}"'//g')
+
+    CPU_MODEL=$(echo "${CPU_MODEL}" | sed \
+                -e 's/^\s*//g' \
+                -e 's/\s*$//g' \
+                -e 's/\s\+/ /g')
+
+    echo "${CPU_MODEL}"
 }
 
 function get_cpu_vendor_from_line() {
@@ -167,6 +178,7 @@ function get_cpu_vendor_from_line() {
     echo "${CPU_LINE}" | grep -q "Advanced Micro Devices\|AMD" && CPU_VENDOR="AMD"
     echo "${CPU_LINE}" | grep -q "BCM\|Broadcom" && CPU_VENDOR="Broadcom"
     echo "${CPU_LINE}" | grep -q "Intel" && CPU_VENDOR="Intel"
+    echo "${CPU_LINE}" | grep -q "Qualcomm" && CPU_VENDOR="Qualcomm"
 
     echo "${CPU_VENDOR}"
 }
