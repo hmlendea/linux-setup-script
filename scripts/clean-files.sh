@@ -173,11 +173,11 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
 ! is_steam_app_installed "729040" && remove "${HOME_LOCAL_SHARE}/Steam/steamapps/common/BorderlandsGOTYEnhanced"
 ! is_steam_app_installed "736260" && remove "${HOME_LOCAL_SHARE}/Baba_Is_You"
 
-# Unnecessary files
+# Unwanted files in the Downloads dir, by extension
 if [ -d "${HOME_DOWNLOADS}" ]; then
-    while IFS='' read -r -d '' TORRENT_FILE; do
-        remove "${TORRENT_FILE}"
-    done < <(find "${HOME_DOWNLOADS}" -maxdepth 1 -type f -name "*.torrent" -print0)
+    while IFS='' read -r -d '' UNWANTED_FILE; do
+        remove "${UNWANTED_FILE}"
+    done < <(find "${HOME_DOWNLOADS}" -maxdepth 1 -type f -iregex ".*\.\(ica\|torrent\)$" -print0)
 fi
 
 # Unwanted application launchers
