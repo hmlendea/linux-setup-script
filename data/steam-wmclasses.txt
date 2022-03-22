@@ -109,6 +109,7 @@
 306130=steam_app_306130
 312900=steam_app_312900
 313340=Mountain.x86_64
+319270=FLTK
 319630=LifeIsStrange
 322330=dontstarve_steam_x64
 322500=SUPERHOT.x86_64
