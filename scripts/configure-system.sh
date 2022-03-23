@@ -486,7 +486,7 @@ if does_bin_exist "teams" "teams-insiders" "com.microsoft.Teams"; then
     does_bin_exist "teams-insiders" && TEAMS_DESKTOP_CONFIG_FILE="${HOME_CONFIG}/Microsoft/Microsoft Teams - Insiders/desktop-config.json"
 
     # Fixes
-    set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" '.appPreferenceSettings.disableGpu' true
+    #set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" '.appPreferenceSettings.disableGpu' true # Not needed for the flatpak version
 
     # Appearance
     set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" '.currentWebLanguage' "$(echo ${APPS_LANGUAGE,,} | sed 's/_/-/g')"
