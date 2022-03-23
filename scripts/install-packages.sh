@@ -375,7 +375,12 @@ if ${HAS_GUI}; then
     # Themes
     install_native_package zorin-desktop-themes
     install_flatpak zorinos org.gtk.Gtk3theme.ZorinGrey-Dark
+
+    install_native_package adw-gtk3
+    install_flatpak org.gtk.Gtk3theme.adw-gtk3-dark
+
     install_native_package vimix-cursors
+
     install_native_package papirus-icon-theme
     install_native_package papirus-folders
 
