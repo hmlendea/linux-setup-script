@@ -954,6 +954,7 @@ if does_bin_exist "gnome-shell"; then
 
     SEARCH_PROVIDERS=""
     does_bin_exist "org.gnome.Calculator" && SEARCH_PROVIDERS="${SEARCH_PROVIDERS}, 'org.gnome.Calculator.desktop'"
+    does_bin_exist "org.gnome.Calendar" && SEARCH_PROVIDERS="${SEARCH_PROVIDERS}, 'org.gnome.Calendar.desktop'"
     does_bin_exist "org.gnome.clocks" && SEARCH_PROVIDERS="${SEARCH_PROVIDERS}, 'org.gnome.clocks.desktop'"
     does_bin_exist "org.gnome.Weather" && SEARCH_PROVIDERS="${SEARCH_PROVIDERS}, 'org.gnome.Weather.desktop'"
     SEARCH_PROVIDERS=$(echo "${SEARCH_PROVIDERS}" | sed 's/^\s*,*\s*//g')
