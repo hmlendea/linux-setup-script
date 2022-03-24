@@ -37,9 +37,6 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/amidst.desktop" \
     StartupWMClass "amidst-Amidst"
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/cups.desktop" NoDisplay true
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/GameConqueror.desktop" Categories "Utility;"
-set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/gparted.desktop" \
-    Name "Partition Editor" \
-    Name[ro] "Editor de Partiții"
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/gtk-lshw.desktop" NoDisplay true
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/hardinfo.desktop" \
     Categories "System;Monitor;" \
@@ -63,8 +60,6 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/nm-connection-editor.desktop" \
     Name "Network Connections" \
     Name[ro] "Conexiuni de Rețea" \
     NoDisplay true
-set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/org.gnome.DiskUtility.desktop" Categories "GNOME;GTK;System;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Epiphany.desktop" Name "Epiphany"
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/org.gnome.SoundRecorder.desktop" Categories "GNOME;GTK;Utility;Audio;"
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/org.gnome.tweaks.desktop" \
     Icon "utilities-tweak-tool" \
@@ -86,6 +81,13 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/system-config-printer.desktop" Name[
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/virtualbox.desktop" Name "VirtualBox"
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/wireshark-gtk.desktop" Name "Wireshark"
 set_launcher_entry "${LOCAL_LAUNCHERS_DIR}/chrome-app-list.desktop" NoDisplay true
+
+##################
+### App Stores ###
+##################
+APP_STORE_KEYWORDS="Updates;Upgrade;Sources;Repositories;Install;Uninstall;Program;Software;App;Store;"
+
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Software.desktop" Keywords "Preferences;Flatpak;FlatHub;${APP_STORE_KEYWORDS}"
 
 ########################
 ### ARCHIVE MANAGERS ###
@@ -297,7 +299,7 @@ done
 ################################
 ### DEVELOPMENT ENVIRONMENTS ###
 ################################
-DEVELOPMENT_ENVIRONMENT_CATEGORIES="Development;IDE;"
+IDE_CATEGORIES="Development;IDE;"
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/code-oss.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/code.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/codium.desktop" \
@@ -307,26 +309,26 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/code-oss.desktop" \
         Name[ro] "Code" \
         Icon "code" \
         Keywords "VS;VSCode;Visual;Studio;Code;" \
-        Categories "${DEVELOPMENT_ENVIRONMENT_CATEGORIES};TextEditor;"
+        Categories "${IDE_CATEGORIES};TextEditor;"
 done
 
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/monodevelop.desktop" \
     Exec "env GNOME_DESKTOP_SESSION_ID="" monodevelop %F" \
-    Categories ${DEVELOPMENT_ENVIRONMENT_CATEGORIES}
+    Categories "${IDE_CATEGORIES}"
 
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/unity-editor.desktop" \
     Name "Unity Editor" \
     Icon "unity-editor-icon" \
-    Categories ${DEVELOPMENT_ENVIRONMENT_CATEGORIES}
+    Categories "${IDE_CATEGORIES}"
 
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/unity-monodevelop.desktop" \
     Name "MonoDevelop - Unity" \
     Icon "unity-monodevelop" \
-    Categories ${DEVELOPMENT_ENVIRONMENT_CATEGORIES}
+    Categories "${IDE_CATEGORIES}"
 
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/codeblocks.desktop" \
     Name "Code::Blocks" \
-    Categories "GTK;${DEVELOPMENT_ENVIRONMENT_CATEGORIES}"
+    Categories "GTK;${IDE_CATEGORIES}"
 
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/android-studio.desktop" \
     StartupWMClass "jetbrains-studio"
@@ -761,6 +763,14 @@ if does_bin_exist "libreoffice"; then
         Name[ro] "Scriitor" \
         NoDisplay true
 fi
+
+#########################
+### Partition Editors ###
+#########################
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/gparted.desktop" \
+    Name "Partition Editor" \
+    Name[ro] "Editor de Partiții"
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/org.gnome.DiskUtility.desktop" Categories "GNOME;GTK;System;"
 
 #########################
 ### Password Managers ###
