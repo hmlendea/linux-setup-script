@@ -839,11 +839,14 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/gnome-control-center.desktop" \
     Categories "GNOME;GTK;${SETTINGS_APP_CATEGORIES}"
 
 ### Configuration Settings
-set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/ca.desrt.dconf-editor.desktop" \
-    Name "Configurator" \
-    Name[ro] "Configurator" \
-    Icon "dconf-editor" \
-    Categories "GNOME;GTK;${SETTINGS_APP_CATEGORIES}"
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/ca.desrt.dconf-editor.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/ca.desrt.dconf-editor.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Configurator" \
+        Name[ro] "Configurator" \
+        Icon "dconf-editor" \
+        Categories "GNOME;GTK;${SETTINGS_APP_CATEGORIES}"
+done
 
 ### Audio Settings
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/pavucontrol.desktop" \

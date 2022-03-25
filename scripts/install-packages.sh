@@ -294,7 +294,7 @@ if ${HAS_GUI}; then
         install_native_package xarchiver
     fi
 
-    install_native_package dconf-editor
+    install_flatpak ca.desrt.dconf-editor
 
     # Text Editor
     if ${POWERFUL_PC}; then

@@ -27,6 +27,7 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "electronmail-bin"                    # Replaced by flatpak: com.github.vladimiry.ElectronMail
     uninstall_native_package "evince"                              # Replaced by flatpak: org.gnome.Evince
     uninstall_native_package "chrome-gnome-shell"                  # Does not work with flatpak browsers
+    uninstall_native_package "dconf-editor"                        # Replaced by flatpak: ca.desrt.dconf-editor
     uninstall_native_package "eog"                                 # Replaced by flatpak: org.gnome.eog
     uninstall_native_package "file-roller"                         # Replaced by flatpak: org.gnome.FileRoller
     uninstall_native_package "firefox"                             # Replaced by flatpak: org.mozilla.firefox
