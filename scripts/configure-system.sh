@@ -912,6 +912,7 @@ if does_bin_exist "code" "code-oss" "codium"; then
     fi
 
     # Git
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["diffEditor.maxComputationTime"]' 10000 # 10 seconds
     set_json_property "${VSCODE_CONFIG_FILE}" '.["git.autoStash"]' true
 
     # Telemetry
