@@ -1,7 +1,7 @@
 ### Appearance
 include /usr/share/nano*/*.nanorc
 
-set linenumbers
+#set linenumbers
 set constantshow
 set nohelp
 
