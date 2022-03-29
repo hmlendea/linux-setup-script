@@ -82,6 +82,8 @@ function is_native_package_installed() {
 function is_flatpak_installed() {
     local PKG="${1}"
 
+    ! does_bin_exist "flatpak" && return 1 # False
+
     if (flatpak list | grep -q "${PKG}" > /dev/null); then
         return 0 # True
     else
