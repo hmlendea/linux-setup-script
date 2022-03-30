@@ -184,6 +184,11 @@ fi
 remove "${HOME_LOCAL_SHARE}/applications/wine"
 remove "${HOME_CONFIG}/menus/applications-merged/user-chrome-apps.menu"
 
+for STEAM_APP_LAUNCHER in $(grep "^Exec=steam" "${HOME_LOCAL_SHARE}/applications"/*.desktop | awk -F":" '{print $1}' | sed 's/ /@SPACE@/g'); do
+    STEAM_APP_LAUNCHER=$(echo "${STEAM_APP_LAUNCHER}" | sed 's/@SPACE@/ /g')
+    remove "${STEAM_APP_LAUNCHER}"
+done
+
 # Empty directories
 remove_dir_if_empty "${HOME_CONFIG}/ibus/bus"
 remove_dir_if_empty "${HOME_CONFIG}/ibus"
