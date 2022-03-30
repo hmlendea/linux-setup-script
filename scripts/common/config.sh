@@ -79,9 +79,9 @@ function set_config_value() {
     fi
 
     # If the config key already exists (with a different value)
-    if [ $(grep -c "^${KEY}${SEPARATOR}.*$" <<< "$FILE_CONTENT") -gt 0 ]; then
+    if [ $(grep -c "^${KEY}\s*${SEPARATOR}.*$" <<< "${FILE_CONTENT}") -gt 0 ]; then
         if [ -w "${FILE_PATH}" ]; then
-            sed -i 's|^'"${KEY}${SEPARATOR}"'.*$|'"${KEY}${SEPARATOR}${VALUE}"'|g' "${FILE_PATH}"
+            sed -i 's|^'"${KEY}\s*${SEPARATOR}"'.*$|'"${KEY}${SEPARATOR}${VALUE}"'|g' "${FILE_PATH}"
         else
             sudo sed -i 's|^'"${KEY}${SEPARATOR}"'.*$|'"${KEY}${SEPARATOR}${VALUE}"'|g' "${FILE_PATH}"
         fi

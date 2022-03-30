@@ -810,6 +810,7 @@ CIV5_USER_SETTINGS_FILE="${CIV5_DIR}/UserSettings.ini"
 
 if [ -f "${CIV5_USER_SETTINGS_FILE}" ]; then
     set_config_value "${CIV5_USER_SETTINGS_FILE}" "AdvisorLevel" 0
+    set_config_value "${CIV5_USER_SETTINGS_FILE}" "TurnsBetweenAutosave" 5
     set_config_value "${CIV5_USER_SETTINGS_FILE}" "TutorialLevel" 0
     set_config_value "${CIV5_USER_SETTINGS_FILE}" "SkipIntroVideo" 1
 fi
