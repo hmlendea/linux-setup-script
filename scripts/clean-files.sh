@@ -95,6 +95,7 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
 ! does_bin_exist "mpv" && remove "${HOME_CONFIG}/mpv"
 ! does_bin_exist "neofetch" && remove "${HOME_CONFIG}/neofetch"
 ! does_bin_exist "notion-app" && remove "${HOME_CONFIG}/Notion"
+! does_bin_exist "npm" && remove "${HOME}/.npm"
 ! does_bin_exist "nvidia-settings" && remove "${HOME}/.nvidia-settings-rc"
 ! does_bin_exist "onlyoffice-desktopeditors" && remove \
     "${HOME_CONFIG}/onlyoffice" \
@@ -164,12 +165,19 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
 # GNOME Extensions
 ! is_gnome_shell_extension_installed "tiling-assistant" && remove "${HOME_CONFIG}/tiling-assistant"
 
-# Steam apps
+# Steam games / apps
+! is_steam_app_installed "8930" && remove "${HOME_LOCAL_SHARE}/Aspyr/Sid Meier's Civilization 5"
 ! is_steam_app_installed "105600" && remove "${HOME_LOCAL_SHARE}/Terraria"
+! is_steam_app_installed "319270" && remove "${HOME_LOCAL_SHARE}/great-permutator"
 ! is_steam_app_installed "322330" && remove \
     "${HOME}/.klei/DoNotStarveTogether" \
     "${HOME}/.klei/DoNotStarveTogetherBetaBranch"
+! is_steam_app_installed "370360" && remove \
+    "${HOME_CONFIG}/unity3d/Zachtronics/TIS-100" \
+    "${HOME_LOCAL_SHARE}/TIS-100"
+! is_steam_app_installed "434210" && remove "${HOME_CONFIG}/unity3d/BabaYaga/It's Spring Again"
 ! is_steam_app_installed "476240" && remove "${HOME_CONFIG}/unity3d/Arzola's/KNIGHTS"
+! is_steam_app_installed "517910" && remove "${HOME_LOCAL_SHARE}/ags/Sisyphus Reborn"
 ! is_steam_app_installed "729040" && remove "${HOME_LOCAL_SHARE}/Steam/steamapps/common/BorderlandsGOTYEnhanced"
 ! is_steam_app_installed "736260" && remove "${HOME_LOCAL_SHARE}/Baba_Is_You"
 
@@ -195,8 +203,16 @@ remove_dir_if_empty "${HOME_CONFIG}/ibus"
 remove_dir_if_empty "${HOME_CONFIG}/Microsoft"
 remove_dir_if_empty "${HOME_CONFIG}/paradox-launcher-v2/Dictionaries"
 remove_dir_if_empty "${HOME_CONFIG}/paradox-launcher-v2"
+remove_dir_if_empty "${HOME_CONFIG}/procps"
+remove_dir_if_empty "${HOME_CONFIG}/unity3d/BabaYaga"
+remove_dir_if_empty "${HOME_CONFIG}/unity3d/Zachtronics"
+remove_dir_if_empty "${HOME_CONFIG}/unity3d"
+remove_dir_if_empty "${HOME_LOCAL_SHARE}/ags"
+remove_dir_if_empty "${HOME_LOCAL_SHARE}/Aspyr"
 remove_dir_if_empty "${HOME_LOCAL_SHARE}/gegl-0.4/plug-ins"
 remove_dir_if_empty "${HOME_LOCAL_SHARE}/gegl-0.4"
+remove_dir_if_empty "${HOME_LOCAL_SHARE}/pixmaps/faces"
+remove_dir_if_empty "${HOME_LOCAL_SHARE}/pixmaps"
 remove_dir_if_empty "${HOME_LOCAL_SHARE}/xorg"
 
 # Logs
@@ -209,6 +225,14 @@ for MC_DIR in "${HOME}/.minecraft" "${HOME_VAR}/apps/com.mojang.Minecraft"; do
     remove "${MC_DIR}/bootstrap_log.txt"
     remove "${MC_DIR}/launcher_cef_log.txt"
     remove "${MC_DIR}/launcher_log.txt"
+done
+
+# Game intros
+for STEAM_LIBRARY_PATH in "${STEAM_LIBRARY_PATHS}"; do
+    if is_steam_app_installed "8930"; then
+        remove "${STEAM_LIBRARY_PATH}/common/Sid Meier's Civilization V/steamassets/"*.mov
+        remove "${STEAM_LIBRARY_PATH}/common/Sid Meier's Civilization V/steamassets/assets/dlc/"*/*.mov
+    fi
 done
 
 does_bin_exist "journalctl" && run_as_su journalctl --vacuum-time=3days
