@@ -136,7 +136,7 @@
 496300=Kingdom.x86_64
 552110=steam_app_552110
 570940=darksoulsremastered.exe
-588430=falloutshelter.exe
+588430=steam_app_588430
 618140=steam_app_618140
 620980=beat\ saber.exe
 644390=steam_app_644390
