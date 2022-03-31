@@ -228,7 +228,7 @@ for MC_DIR in "${HOME}/.minecraft" "${HOME_VAR}/apps/com.mojang.Minecraft"; do
 done
 
 # Game intros
-for STEAM_LIBRARY_PATH in "${STEAM_LIBRARY_PATHS}"; do
+for STEAM_LIBRARY_PATH in ${STEAM_LIBRARY_PATHS}; do
     if is_steam_app_installed "8930"; then
         remove "${STEAM_LIBRARY_PATH}/common/Sid Meier's Civilization V/steamassets/"*.mov
         remove "${STEAM_LIBRARY_PATH}/common/Sid Meier's Civilization V/steamassets/assets/dlc/"*/*.mov
