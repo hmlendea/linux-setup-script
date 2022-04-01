@@ -228,17 +228,52 @@ remove_dir_if_empty "${HOME_LOCAL_SHARE}/pixmaps"
 remove_dir_if_empty "${HOME_LOCAL_SHARE}/xorg"
 
 # Logs
+remove \
+    "${HOME}/.mozilla/firefox/Crash Reports" \
+    "${HOME_VAR}/app/org.mozilla.firefox/.mozilla/firefox/Crash Reports"
 remove "${HOME_CONFIG}/logs"
-remove "${HOME_LOCAL_SHARE}/xorg/Xorg.0.log"
-remove "${HOME_LOCAL_SHARE}/xorg/Xorg.0.log.old"
+remove "${HOME_LOCAL_SHARE}/xorg/"*".log"
+remove "${HOME_LOCAL_SHARE}/xorg/"*".log.old"
+remove \
+    "${HOME}/.klei/DoNotStarveTogether/backup/client_chat_log" \
+    "${HOME}/.klei/DoNotStarveTogether/backup/client_log"
 
-for GAME_DIR in "${HOME}/.factorio" \
-                "${HOME}/.klei/DoNotStarveTogether" \
-                "${HOME}/.minecraft" \
-                "${HOME_VAR}/apps/com.mojang.Minecraft"; do
-    remove "${GAME_DIR}/logs"
-    remove "${GAME_DIR}/"*_log.txt
-    remove "${GAME_DIR}/"*.log
+for DIR in "${HOME}/.factorio" \
+            "${HOME}/.ICAClient" \
+            "${HOME}/.klei/DoNotStarveTogether" \
+            "${HOME}/.minecraft" \
+            "${HOME}/.npm" \
+            "${HOME_CONFIG}/Code" \
+            "${HOME_LOCAL_SHARE}/gvfs-metadata" \
+            "${HOME_LOCAL_SHARE}/Paradox Interactive"/* \
+            "${HOME_LOCAL_SHARE}/Steam" \
+            "${HOME_LOCAL_SHARE}/Steam/steamapps/common"/* \
+            "${HOME_LOCAL_SHARE}/Steam/steamapps/common"/*/*_Data \
+            "${HOME_LOCAL_SHARE}/Steam/steamapps/compatdata/"*"/pfx/drive_c/users/steamuser/Temp" \
+            "${HOME_LOCAL_SHARE}/Steam/steamapps/compatdata/"*"/pfx/drive_c/windows" \
+            "${HOME_VAR}/app/com.bitwarden.desktop/config/Bitwarden" \
+            "${HOME_VAR}/app/com.getpostman.Postman/config/Postman" \
+            "${HOME_VAR}/app/com.github.vladimiry.ElectronMail/config/electron-mail" \
+            "${HOME_VAR}/app/com.microsoft.Teams/config/teams" \
+            "${HOME_VAR}/app/com.microsoft.Teams/config/Microsoft/Microsoft Teams" \
+            "${HOME_VAR}/app/com.mojang.Minecraft/.minecraft" \
+            "${HOME_VAR}/app/com.simplenote.Simplenote/config" \
+            "${HOME_VAR}/app/org.signal.Signal/config/Signal" \
+            "${HOME_VAR}/app/org.telegram.desktop/data/TelegramDesktop"; do
+    [ -d "${DIR}" ] && remove \
+        "${DIR}/logs" \
+        "${DIR}/_logs" \
+        "${DIR}"/*-log.txt \
+        "${DIR}"/*_log.txt \
+        "${DIR}"/*-log-*.txt \
+        "${DIR}"/*_log_*.txt \
+        "${DIR}"/*-logs-*.txt \
+        "${DIR}"/*_logs_*.txt \
+        "${DIR}"/*.log \
+        "${DIR}"/changelog.txt \
+        "${DIR}"/log.txt \
+        "${DIR}"/logs.txt \
+        "${DIR}"/logfile.txt
 done
 
 # Game intros
