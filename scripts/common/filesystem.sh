@@ -126,9 +126,22 @@ function remove_dir_if_empty() {
         PATH_TO_REMOVE=$(echo "${PATH_TO_REMOVE}" | sed \
                             -e 's/^\s*//g' \
                             -e 's/\s*$//g')
+        remove_empty_subdirectories "${PATH_TO_REMOVE}"
+
         [ ! -d "${PATH_TO_REMOVE}" ] && continue
         [ ! "$(ls ${PATH_TO_REMOVE})" ] && remove "${PATH_TO_REMOVE}"
     done
+}
+
+function remove_empty_subdirectories() {
+    local PARENT_DIRECTORY="${*}"
+
+    [ ! -d "${PARENT_DIRECTORY}" ] && return
+
+    while IFS='' read -r -d '' SUB_DIRECTORY; do
+        [ ! -d "${SUB_DIRECTORY}" ] && continue
+        [ ! "$(ls ${SUB_DIRECTORY})" ] && remove "${SUB_DIRECTORY}"
+    done < <(find "${PARENT_DIRECTORY}" -maxdepth 1 -type d -print0)
 }
 
 function create_file() {
@@ -253,8 +266,6 @@ function update_file_if_distinct() {
         fi
     fi
 }
-
-
 
 # Specific directories
 HOME_MOZILLA="${HOME_REAL}/.mozilla"

@@ -214,23 +214,16 @@ for STEAM_APP_LAUNCHER in $(grep "^Exec=steam" "${HOME_LOCAL_SHARE}/applications
 done
 
 # Empty directories
-remove_dir_if_empty "${HOME_CONFIG}/cache/ArtifexMundi"
-remove_dir_if_empty "${HOME_CONFIG}/cache/Microsoft"
-remove_dir_if_empty "${HOME_CONFIG}/ibus/bus"
+remove_dir_if_empty "${HOME_CACHE}/ArtifexMundi"
+remove_dir_if_empty "${HOME_CACHE}/Microsoft"
 remove_dir_if_empty "${HOME_CONFIG}/ibus"
 remove_dir_if_empty "${HOME_CONFIG}/Microsoft"
-remove_dir_if_empty "${HOME_CONFIG}/paradox-launcher-v2/Dictionaries"
 remove_dir_if_empty "${HOME_CONFIG}/paradox-launcher-v2"
 remove_dir_if_empty "${HOME_CONFIG}/procps"
-remove_dir_if_empty "${HOME_CONFIG}/unity3d/BabaYaga"
-remove_dir_if_empty "${HOME_CONFIG}/unity3d/David OReilly"
-remove_dir_if_empty "${HOME_CONFIG}/unity3d/Zachtronics"
 remove_dir_if_empty "${HOME_CONFIG}/unity3d"
 remove_dir_if_empty "${HOME_LOCAL_SHARE}/ags"
 remove_dir_if_empty "${HOME_LOCAL_SHARE}/Aspyr"
-remove_dir_if_empty "${HOME_LOCAL_SHARE}/gegl-0.4/plug-ins"
 remove_dir_if_empty "${HOME_LOCAL_SHARE}/gegl-0.4"
-remove_dir_if_empty "${HOME_LOCAL_SHARE}/pixmaps/faces"
 remove_dir_if_empty "${HOME_LOCAL_SHARE}/pixmaps"
 remove_dir_if_empty "${HOME_LOCAL_SHARE}/xorg"
 
