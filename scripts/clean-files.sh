@@ -232,17 +232,13 @@ remove "${HOME_CONFIG}/logs"
 remove "${HOME_LOCAL_SHARE}/xorg/Xorg.0.log"
 remove "${HOME_LOCAL_SHARE}/xorg/Xorg.0.log.old"
 
-for MC_DIR in "${HOME}/.factorio"; do
-    remove "${MC_DIR}/"*.log
-done
-
-for MC_DIR in "${HOME}/.klei/DoNotStarveTogether"; do
-    remove "${MC_DIR}/"*_log.txt
-done
-
-for MC_DIR in "${HOME}/.minecraft" "${HOME_VAR}/apps/com.mojang.Minecraft"; do
-    remove "${MC_DIR}/logs"
-    remove "${MC_DIR}/"*_log.txt
+for GAME_DIR in "${HOME}/.factorio" \
+                "${HOME}/.klei/DoNotStarveTogether" \
+                "${HOME}/.minecraft" \
+                "${HOME_VAR}/apps/com.mojang.Minecraft"; do
+    remove "${GAME_DIR}/logs"
+    remove "${GAME_DIR}/"*_log.txt
+    remove "${GAME_DIR}/"*.log
 done
 
 # Game intros
