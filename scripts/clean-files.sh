@@ -44,13 +44,20 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
 ! does_bin_exist "electronmail-bin" && remove "${HOME_CONFIG}/electron-mail"
 ! does_bin_exist "eog" && remove "${HOME_CONFIG}/eog"
 ! does_bin_exist "etcher" && remove "${HOME_CONFIG}/balena-etcher-electron"
+! does_bin_exist "fastfetch" && remove \
+    "${HOME_CACHE}/fastfetch" \
+    "${HOME_CONFIG}/fastfetch"
 ! does_bin_exist "fltk-config" && remove "${HOME}/.fltk"
 ! does_bin_exist "fma-config-tool" && remove "${HOME_CONFIG}/filemanager-actions"
-! does_bin_exist "fragments" && remove "${HOME_LOCAL_SHARE}/fragments"
+! does_bin_exist "fragments" && remove \
+    "${HOME_CACHE}/fragments" \
+    "${HOME_CONFIG}/fragments" \
+    "${HOME_LOCAL_SHARE}/fragments"
 ! does_bin_exist "gedit" && remove "${HOME_CONFIG}/gedit"
 ! does_bin_exist "/opt/geforcenow-electron/geforcenow-electron" && remove "${HOME_CONFIG}/GeForce NOW"
 ! does_bin_exist "gkraken" && remove "${HOME_CONFIG}/gkraken"
 ! does_bin_exist "gksu" && remove "${HOME}/.gksu.lock"
+! does_bin_exist "gnome-calculator" && remove "${HOME_CACHE}/gnome-calculator"
 ! does_bin_exist "gnome-photos" && remove \
     "${HOME_CACHE}/gnome-photos" \
     "${HOME_LOCAL_SHARE}/gnome-photos"
@@ -78,6 +85,7 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
 ! does_bin_exist "lollypop" && remove "${HOME_LOCAL_SHARE}/lollypop"
 ! does_bin_exist "lsd" && remove "${HOME_CONFIG}/lsd"
 ! does_bin_exist "lutris" && remove \
+    "${HOME_CACHE}/lutris" \
     "${HOME_CONFIG}/lutris" \
     "${HOME_LOCAL_SHARE}/lutris"
 ! does_bin_exist "mcaselector" && remove \
@@ -86,9 +94,11 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
 ! does_bin_exist "mcedit" && remove "${HOME}/.mcedit"
 ! does_bin_exist "microsoft-edge-beta" && remove \
     "${HOME_CACHE}/microsoft-edge-beta" \
+    "${HOME_CACHE}/Microsoft/Edge" \
     "${HOME_CONFIG}/microsoft-edge-beta"
 ! does_bin_exist "microsoft-edge-dev" && remove \
     "${HOME_CACHE}/microsoft-edge-dev" \
+    "${HOME_CACHE}/Microsoft/Edge" \
     "${HOME_CONFIG}/microsoft-edge-dev"
 ! does_bin_exist "minetest" && remove "${HOME_CACHE}/minetest"
 ! does_bin_exist "mono" && remove "${HOME}/.mono"
@@ -106,6 +116,7 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
 ! does_bin_exist "pcmanfm-qt" && remove "${HOME_CONFIG}/pcmanfm-qt"
 ! does_bin_exist "pip" && remove "${HOME_CACHE}/pip"
 ! does_bin_exist "plank" && remove \
+    "${HOME_CACHE}/plank" \
     "${HOME_CONFIG}/plank" \
     "${HOME_LOCAL_SHARE}/plank"
 ! does_bin_exist "plexmediaplayer" && remove "${HOME_CONFIG}/plex.tv"
@@ -166,8 +177,12 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
 ! is_gnome_shell_extension_installed "tiling-assistant" && remove "${HOME_CONFIG}/tiling-assistant"
 
 # Steam games / apps
-! is_steam_app_installed "8930" && remove "${HOME_LOCAL_SHARE}/Aspyr/Sid Meier's Civilization 5"
+! is_steam_app_installed "8930" && remove \
+    "${HOME_LOCAL_SHARE}/Aspyr/Sid Meier's Civilization 5" \
+    "${HOME_LOCAL_SHARE}/Aspyr/com.aspyr.civ5xp.json"
 ! is_steam_app_installed "105600" && remove "${HOME_LOCAL_SHARE}/Terraria"
+! is_steam_app_installed "284710" && remove "${HOME_CACHE}/ArtifexMundi/Abyss_TheWraithsOfEden"
+! is_steam_app_installed "313340" && remove "${HOME_CONFIG}/unity3d/David\ OReilly/Mountain"
 ! is_steam_app_installed "319270" && remove "${HOME_LOCAL_SHARE}/great-permutator"
 ! is_steam_app_installed "322330" && remove \
     "${HOME}/.klei/DoNotStarveTogether" \
@@ -177,6 +192,7 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
     "${HOME_LOCAL_SHARE}/TIS-100"
 ! is_steam_app_installed "434210" && remove "${HOME_CONFIG}/unity3d/BabaYaga/It's Spring Again"
 ! is_steam_app_installed "476240" && remove "${HOME_CONFIG}/unity3d/Arzola's/KNIGHTS"
+! is_steam_app_installed "490230" && remove "${HOME_CONFIG}/SWARMRIDERS"
 ! is_steam_app_installed "517910" && remove "${HOME_LOCAL_SHARE}/ags/Sisyphus Reborn"
 ! is_steam_app_installed "729040" && remove "${HOME_LOCAL_SHARE}/Steam/steamapps/common/BorderlandsGOTYEnhanced"
 ! is_steam_app_installed "736260" && remove "${HOME_LOCAL_SHARE}/Baba_Is_You"
@@ -198,6 +214,8 @@ for STEAM_APP_LAUNCHER in $(grep "^Exec=steam" "${HOME_LOCAL_SHARE}/applications
 done
 
 # Empty directories
+remove_dir_if_empty "${HOME_CONFIG}/cache/ArtifexMundi"
+remove_dir_if_empty "${HOME_CONFIG}/cache/Microsoft"
 remove_dir_if_empty "${HOME_CONFIG}/ibus/bus"
 remove_dir_if_empty "${HOME_CONFIG}/ibus"
 remove_dir_if_empty "${HOME_CONFIG}/Microsoft"
@@ -205,6 +223,7 @@ remove_dir_if_empty "${HOME_CONFIG}/paradox-launcher-v2/Dictionaries"
 remove_dir_if_empty "${HOME_CONFIG}/paradox-launcher-v2"
 remove_dir_if_empty "${HOME_CONFIG}/procps"
 remove_dir_if_empty "${HOME_CONFIG}/unity3d/BabaYaga"
+remove_dir_if_empty "${HOME_CONFIG}/unity3d/David OReilly"
 remove_dir_if_empty "${HOME_CONFIG}/unity3d/Zachtronics"
 remove_dir_if_empty "${HOME_CONFIG}/unity3d"
 remove_dir_if_empty "${HOME_LOCAL_SHARE}/ags"
