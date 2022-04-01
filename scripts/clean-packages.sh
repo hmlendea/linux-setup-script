@@ -14,4 +14,5 @@ if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
     does_bin_exist "paru" && yes | paru -Scc
     does_bin_exist "yay" && yes | yay -Scc
     does_bin_exist "yaourt" && yes | yaourt -Scc
+    echo ""
 fi
