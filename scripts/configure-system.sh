@@ -819,7 +819,10 @@ TERRARIA_DIR="${HOME_LOCAL_SHARE}/Terraria"
 TERRARIA_CONFIG_FILE="${TERRARIA_DIR}/config.json"
 
 if [ -f "${TERRARIA_CONFIG_FILE}" ]; then
+    set_json_property "${TERRARIA_CONFIG_FILE}" ".CloudSavingDefault" true
+    set_json_property "${TERRARIA_CONFIG_FILE}" ".HidePasswords" true
     set_json_property "${TERRARIA_CONFIG_FILE}" ".QuickLaunch" true
+    set_json_property "${TERRARIA_CONFIG_FILE}" ".Zoom" 1
 fi
 
 ###########
