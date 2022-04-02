@@ -55,6 +55,7 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "simplenote-electron-bin"             # Replaced by flatpak: com.simplenote.Simplenote
     uninstall_native_package "simplenote-electron-arm-bin"         # Replaced by flatpak: com.simplenote.Simplenote
     uninstall_native_package "spotify"                             # Replaced by flatpak: com.spotify.Client
+    uninstall_native_package "teams"                               # Replaced by flatpak: com.microsoft.Teams
     uninstall_native_package "telegram-desktop"                    # Replaced by flatpak: com.telegram.desktop
     uninstall_native_package "totem"                               # Replaced by flatpak: org.gnome.Totem
     uninstall_native_package "transmission-gtk"                    # Replaced by flatpak: com.transmissionbt.Transmission

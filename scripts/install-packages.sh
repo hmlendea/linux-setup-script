@@ -418,6 +418,7 @@ if ${HAS_GUI}; then
     fi
 
     # Communication
+    install_flatpak com.microsoft.Teams
     install_flatpak com.github.vladimiry.ElectronMail
     install_flatpak org.telegram.desktop
     install_flatpak org.signal.Signal
