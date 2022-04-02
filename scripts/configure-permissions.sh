@@ -108,4 +108,10 @@ if does_bin_exist "flatpak"; then
     set_flatpak_permission "org.mozilla.firefox" \
         "background" false \
         "notifications:notification" false
+    set_flatpak_permission "org.signal.Signal" \
+        "background" true \
+        "notifications:notification" true
+    set_flatpak_permission "org.telegram.desktop" \
+        "background" true \
+        "notifications:notification" true
 fi
