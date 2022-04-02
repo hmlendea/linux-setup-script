@@ -50,7 +50,12 @@ function set_flatpak_permission() {
 }
 
 if does_bin_exist "flatpak"; then
-    set_flatpak_permission "com.microsoft.Teams" "background" false
+    set_flatpak_permission "com.discordapp.Discord" \
+        "background" true \
+        "notifications:notification" true
+    set_flatpak_permission "com.microsoft.Teams" \
+        "background" false \
+        "notifications:notification" true
     set_flatpak_permission "com.mojang.Minecraft" \
         "background" false \
         "notifications:notification" false
