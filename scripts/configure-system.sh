@@ -480,7 +480,7 @@ fi
 #################
 if does_bin_exist "teams" "teams-insiders" "com.microsoft.Teams"; then
     TEAMS_CONFIG_DIR="${HOME_CONFIG}/Microsoft/Microsoft Teams"
-    [ -d "${HOME_VAR}/app/de.haeckerfelix.Fragments" ] && TEAMS_CONFIG_DIR="${HOME_VAR}/app/com.microsoft.Teams/config/Microsoft/Microsoft Teams"
+    [ -d "${HOME_VAR}/app/com.microsoft.Teams" ] && TEAMS_CONFIG_DIR="${HOME_VAR}/app/com.microsoft.Teams/config/Microsoft/Microsoft Teams"
 
     TEAMS_DESKTOP_CONFIG_FILE="${TEAMS_CONFIG_DIR}/desktop-config.json"
 
@@ -498,12 +498,19 @@ if does_bin_exist "teams" "teams-insiders" "com.microsoft.Teams"; then
         set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" '.theme' "defaultV2"
     fi
 
+    # First time experiences
+    set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" '.isAppFirstRun' false
+
     # Window state
+    set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" '.appPreferenceSettings.openAtLogin' false
+    set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" '.appPreferenceSettings.runningOnClose' false
     set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" '.surfaceHubWindowState.isMaximized' true
     set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" '.surfaceHubWindowState.isFullScreen' false
     set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" '.windowState.isMaximized' true
     set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" '.windowState.isFullScreen' false
 
+    # Telemetry
+    set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" '.appPreferenceSettings.enableMediaLoggingPreferenceKey' false
 fi
 if does_bin_exist "telegram-desktop" "com.telegram.desktop"; then
     set_config_value "${ENVIRONMENT_VARS_FILE}" TDESKTOP_I_KNOW_ABOUT_GTK_INCOMPATIBILITY "1"
