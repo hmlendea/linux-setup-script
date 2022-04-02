@@ -447,7 +447,7 @@ if ${HAS_GUI}; then
             install_native_package steam-start
 
             # Runtimes
-            install_native_package_dependency steam-native-runtime
+            #install_native_package_dependency steam-native-runtime
             install_native_package proton-ge-custom-bin
             install_native_package luxtorpeda-git
 
