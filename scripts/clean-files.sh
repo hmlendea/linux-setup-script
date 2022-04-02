@@ -10,6 +10,9 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
     "${HOME_CONFIG}/autokey" \
     "${HOME_LOCAL_SHARE}/autokey"
 ! does_bin_exist "avidemux" && remove "${HOME}/.avidemux6"
+! does_bin_exist "balena-etcher" "balena-etcher-electron" "etcher" && remove \
+    "${HOME_CONFIG}/balena-etcher" \
+    "${HOME_CONFIG}/balena-etcher-electron"
 ! does_bin_exist "bleachbit" && remove \
     "${HOME_CACHE}/bleachbit" \
     "${HOME_CONFIG}/bleachbit"
@@ -43,7 +46,6 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
 #    "${HOME_LOCAL_SHARE}/evolution"
 ! does_bin_exist "electronmail-bin" && remove "${HOME_CONFIG}/electron-mail"
 ! does_bin_exist "eog" && remove "${HOME_CONFIG}/eog"
-! does_bin_exist "etcher" && remove "${HOME_CONFIG}/balena-etcher-electron"
 ! does_bin_exist "fastfetch" && remove \
     "${HOME_CACHE}/fastfetch" \
     "${HOME_CONFIG}/fastfetch"
@@ -119,7 +121,10 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
     "${HOME_CACHE}/plank" \
     "${HOME_CONFIG}/plank" \
     "${HOME_LOCAL_SHARE}/plank"
-! does_bin_exist "plexmediaplayer" && remove "${HOME_CONFIG}/plex.tv"
+! does_bin_exist "plexmediaplayer" && remove \
+    "${HOME_CACHE}/plex-media-player" \
+    "${HOME_CONFIG}/plex.tv" \
+    "${HOME_LOCAL_SHARE}/plexmediaplayer"
 ! does_bin_exist "postman" && remove "${HOME_CONFIG}/Postman"
 ! does_bin_exist "rhythmbox" && remove \
     "${HOME_CACHE}/rhythmbox" \
@@ -128,7 +133,9 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
 ! does_bin_exist "simplescreenrecorder" && remove "${HOME}/.ssr"
 ! does_bin_exist "simplenote" && remove "${HOME_CONFIG}/Simplenote"
 ! does_bin_exist "snap" && remove "${HOME}/.snap"
-! does_bin_exist "snapcraft" && remove "${HOME_CACHE}/snapcraft"
+! does_bin_exist "snapcraft" && remove \
+    "${HOME_CACHE}/snapcraft" \
+    "${HOME_CONFIG}/snapcraft"
 ! does_bin_exist "sokogrump" && remove "${HOME_LOCAL_SHARE}/SokoGrump"
 ! does_bin_exist "spotify" && remove \
     "${HOME_CACHE}/spotify" \
@@ -141,6 +148,7 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
     "${HOME_CONFIG}/Microsoft/Microsoft Teams - Insiders"
 ! does_bin_exist "teams" "teams-insiders" && remove "${HOME_CONFIG}/teams"
 ! does_bin_exist "teamviewer" && remove \
+    "${HOME_CACHE}/TeamViewer" \
     "${HOME_CONFIG}/teamviewer" \
     "${HOME_LOCAL_SHARE}/teamviewer15"
 ! does_bin_exist "telegram-desktop" && remove "${HOME_LOCAL_SHARE}/TelegramDesktop"
@@ -158,7 +166,8 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
     "${HOME_CACHE}/vim"
 ! does_bin_exist "vlc" && remove \
     "${HOME_CACHE}/vlc" \
-    "${HOME_CONFIG}/vlc"
+    "${HOME_CONFIG}/vlc" \
+    "${HOME_LOCAL_SHARE}/vlc"
 ! does_bin_exist "whatsapp-nativefier" && remove "${HOME_CONFIG}/whatsapp-nativefier-d40211"
 ! does_bin_exist "whatsdesk" && remove "${HOME}/.whatsdesk"
 ! does_bin_exist "wike" && remove "${HOME_CACHE}/wike"
@@ -180,7 +189,18 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
 ! is_steam_app_installed "8930" && remove \
     "${HOME_LOCAL_SHARE}/Aspyr/Sid Meier's Civilization 5" \
     "${HOME_LOCAL_SHARE}/Aspyr/com.aspyr.civ5xp.json"
+! is_steam_app_installed "20920" && remove "${HOME_LOCAL_SHARE}/cdprojektred/witcher2"
+! is_steam_app_installed "38700" && remove "${HOME_LOCAL_SHARE}/twotribes/toki_tori"
 ! is_steam_app_installed "105600" && remove "${HOME_LOCAL_SHARE}/Terraria"
+! is_steam_app_installed "200510" && remove "${HOME_LOCAL_SHARE}/feral-interactive/XCOM"
+! is_steam_app_installed "203160" && remove "${HOME_LOCAL_SHARE}/feral-interactive/Tomb Raider"
+! is_steam_app_installed "200710" && remove "${HOME_LOCAL_SHARE}/Runic Games/Torchlight 2"
+! is_steam_app_installed "215510" && remove "${HOME_LOCAL_SHARE}/rocketbirds"
+! is_steam_app_installed "219150" && remove "${HOME_LOCAL_SHARE}/HotlineMiami"
+! is_steam_app_installed "246110" && remove "${HOME_LOCAL_SHARE}/doublefine/massivechalice"
+! is_steam_app_installed "251910" && remove "${HOME_LOCAL_SHARE}/Firebrand Games/Solar Flux"
+! is_steam_app_installed "252950" && remove "${HOME_LOCAL_SHARE}/Rocket League"
+! is_steam_app_installed "255300" && remove "${HOME_LOCAL_SHARE}/Daedalic Entertainment/Journey of a Roach"
 ! is_steam_app_installed "284710" && remove "${HOME_CACHE}/ArtifexMundi/Abyss_TheWraithsOfEden"
 ! is_steam_app_installed "313340" && remove "${HOME_CONFIG}/unity3d/David\ OReilly/Mountain"
 ! is_steam_app_installed "319270" && remove "${HOME_LOCAL_SHARE}/great-permutator"
@@ -190,7 +210,9 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
 ! is_steam_app_installed "370360" && remove \
     "${HOME_CONFIG}/unity3d/Zachtronics/TIS-100" \
     "${HOME_LOCAL_SHARE}/TIS-100"
+! is_steam_app_installed "385710" && remove "${HOME_CONFIG}/INK"
 ! is_steam_app_installed "434210" && remove "${HOME_CONFIG}/unity3d/BabaYaga/It's Spring Again"
+! is_steam_app_installed "464920" && remove "${HOME_LOCAL_SHARE}/Surviving Mas"
 ! is_steam_app_installed "476240" && remove "${HOME_CONFIG}/unity3d/Arzola's/KNIGHTS"
 ! is_steam_app_installed "490230" && remove "${HOME_CONFIG}/SWARMRIDERS"
 ! is_steam_app_installed "517910" && remove "${HOME_LOCAL_SHARE}/ags/Sisyphus Reborn"
@@ -223,8 +245,15 @@ remove_dir_if_empty "${HOME_CONFIG}/procps"
 remove_dir_if_empty "${HOME_CONFIG}/unity3d"
 remove_dir_if_empty "${HOME_LOCAL_SHARE}/ags"
 remove_dir_if_empty "${HOME_LOCAL_SHARE}/Aspyr"
+remove_dir_if_empty "${HOME_LOCAL_SHARE}/cdprojektred"
+remove_dir_if_empty "${HOME_LOCAL_SHARE}/Daedalic\ Entertainment"
+remove_dir_if_empty "${HOME_LOCAL_SHARE}/doublefine"
+remove_dir_if_empty "${HOME_LOCAL_SHARE}/feral-interactive"
+remove_dir_if_empty "${HOME_LOCAL_SHARE}/Firebrand\ Games"
 remove_dir_if_empty "${HOME_LOCAL_SHARE}/gegl-0.4"
 remove_dir_if_empty "${HOME_LOCAL_SHARE}/pixmaps"
+remove_dir_if_empty "${HOME_LOCAL_SHARE}/Runic\ Games"
+remove_dir_if_empty "${HOME_LOCAL_SHARE}/twotribes"
 remove_dir_if_empty "${HOME_LOCAL_SHARE}/xorg"
 
 # Logs
