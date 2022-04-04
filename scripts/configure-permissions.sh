@@ -65,6 +65,12 @@ if does_bin_exist "flatpak"; then
     set_flatpak_permission "com.simplenote.Simplenote" \
         "background" false \
         "notifications:notification" false
+    set_flatpak_permission "com.github.vladimiry.ElectronMail" \
+        "background" true \
+        "notifications:notification" true
+    set_flatpak_permission "de.haeckerfelix.Fragments" \
+        "background" true \
+        "notifications:notification" true
     set_flatpak_permission "io.github.hmlendea.geforcenow-electron" \
         "background" false \
         "notifications:notification" false
@@ -74,11 +80,15 @@ if does_bin_exist "flatpak"; then
     set_flatpak_permission "org.gimp.GIMP" \
         "background" false \
         "notifications:notification" false
-    set_flatpak_permission "org.gnome.baobab" "background" false
+    set_flatpak_permission "org.gnome.baobab" \
+        "background" false \
+        "notifications:notification" true
     set_flatpak_permission "org.gnome.Calculator" \
         "background" false \
         "notifications:notification" false
-    set_flatpak_permission "org.gnome.Calendar" "background" false
+    set_flatpak_permission "org.gnome.Calendar" \
+        "background" false \
+        "notifications:notification" true
     set_flatpak_permission "org.gnome.Contacts" \
         "background" false \
         "notifications:notification" false
