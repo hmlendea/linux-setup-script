@@ -1193,6 +1193,7 @@ if does_bin_exist "steam" "com.valvesoftware.Steam"; then
 
                     if does_bin_exist "com.valvesoftware.Steam"; then
                         STEAM_EXECUTABLE="com.valvesoftware.Steam"
+                        #STEAM_EXECUTABLE="/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=/app/bin/steam-wrapper com.valvesoftware.Steam"
                     elif does_bin_exist "steam-start"; then
                         STEAM_EXECUTABLE="steam-start"
                     fi
@@ -1229,6 +1230,11 @@ if does_bin_exist "steam" "com.valvesoftware.Steam"; then
                         StartupWMClass "${APP_WMCLASS}" \
                         PrefersNonDefaultGPU true \
                         NoDisplay false
+
+#                    does_bin_exist "com.valvesoftware.Steam" && set_launcher_entries "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" \
+#                        "X-Flatpak-RenamedFrom" "steam.desktop" \
+#                        "X-Flatpak-Tags" "proprietary" \
+#                        "X-Flatpak" "com.valvesoftware.Steam"
                 fi
             done
 
