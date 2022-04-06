@@ -272,7 +272,8 @@ if [ -d "${ROOT_OPT}/Citrix" ]; then
             Name[ro] "Receptor Citrix" \
             StartupWMClass "Wfica"
     done
-
+else
+    remove "${GLOBAL_LAUNCHERS_DIR}/wfsplash.desktop"
 fi
 
 #############
@@ -640,6 +641,8 @@ if does_bin_exist "java"; then
         Exec "java -jar %U" \
         Terminal true \
         NoDisplay true
+else
+    remove "${GLOBAL_LAUNCHERS_DIR}/run-java.desktop"
 fi
 
 ###################
@@ -884,10 +887,13 @@ if does_bin_exist "steam" "com.valvesoftware.Steam"; then
         set_launcher_entry "${LAUNCHER}" NoDisplay true
     done
 
-    set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/steam.desktop" \
-        Name "Steam" \
-        Name[ro] "Steam" \
-        Categories "Game;Steam;"
+    for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/steam.desktop" \
+                    "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.valvesoftware.Steam.desktop"; do
+        set_launcher_entries "${LAUNCHER}" \
+            Name "Steam" \
+            Name[ro] "Steam" \
+            Categories "Game;Steam;"
+    done
 
     if does_bin_exist "steam-start"; then
         set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/steam.desktop" Exec "steam-start"
@@ -906,6 +912,8 @@ if does_bin_exist "steam" "com.valvesoftware.Steam"; then
     set_launcher_entries "${LOCAL_LAUNCHERS_DIR}/valve-vrmonitor.desktop" \
         Name "SteamVR Monitor" \
         NoDisplay true
+else
+    remove "${GLOBAL_LAUNCHERS_DIR}/steam-streaming-client.desktop"
 fi
 
 #####################
@@ -1041,6 +1049,9 @@ if does_bin_exist "wine"; then
         Categories "Wine;Emulator;" \
         StartupWMClass "winetricks" \
         NoDisplay true
+else
+    remove "${GLOBAL_LAUNCHERS_DIR}/winecfg.desktop"
+    remove "${GLOBAL_LAUNCHERS_DIR}/winetricks.desktop"
 fi
 
 # CREATE ICONS
@@ -1058,6 +1069,8 @@ if is_gnome_shell_extension_installed "gsconnect"; then
         Icon "org.gnome.Shell.Extensions.GSConnect" \
         StartupWMClass "gsconnect" \
         NoDisplay true
+else
+    remove "${GLOBAL_LAUNCHERS_DIR}/io.github.andyholmes.gsconnect.desktop"
 fi
 
 if [ -f "${ROOT_USR_BIN}/mono" ]; then
@@ -1071,6 +1084,8 @@ if [ -f "${ROOT_USR_BIN}/mono" ]; then
         Exec "mono %U" \
         Terminal true \
         NoDisplay true
+else
+    remove "${GLOBAL_LAUNCHERS_DIR}/run-mono.desktop"
 fi
 
 # CREATE STEAM ICONS
@@ -1113,20 +1128,8 @@ function getSteamAppIconPath() {
 
 if does_bin_exist "steam" "com.valvesoftware.Steam"; then
     STEAM_ICON_THEME_PATH="${HOME_LOCAL_SHARE}/icons/steam"
-    STEAM_LIBRARY_CUSTOM_PATHS=$(grep "\"/" "${STEAM_DIR}/steamapps/libraryfolders.vdf")
     STEAM_WMCLASSES_FILE="data/steam-wmclasses.txt"
     STEAM_NAMES_FILE="data/steam-names.txt"
-
-    if [ -n "${STEAM_LIBRARY_CUSTOM_PATHS}" ]; then
-        STEAM_LIBRARY_CUSTOM_PATHS=$(echo "${STEAM_LIBRARY_CUSTOM_PATHS}" | \
-                                        sed 's/\"[0-9]\"//g' | \
-                                        sed 's/^ *//g' | \
-                                        sed 's/\t//g' | \
-                                        sed 's/\"//g' | \
-                                        sed 's/^ *path *//g' | \
-                                        sed 's/$/\/steamapps/g')
-        STEAM_LIBRARY_PATHS=$(echo -e "${STEAM_LIBRARY_PATHS}\n${STEAM_LIBRARY_CUSTOM_PATHS}" | sort | uniq)
-    fi
 
     [ ! -d "${STEAM_LAUNCHERS_PATH}" ]              && mkdir -p "${STEAM_LAUNCHERS_PATH}"
     [ ! -f "${STEAM_ICON_THEME_PATH}/48x48/apps" ]  && mkdir -p "${STEAM_ICON_THEME_PATH}/48x48/apps"

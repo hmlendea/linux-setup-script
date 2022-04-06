@@ -444,8 +444,9 @@ if ${HAS_GUI}; then
         # Gaming
         if ${IS_GAMING_DEVICE}; then
             # Launchers
-            install_native_package steam # No flatpak yet because the games will share the same icon in GNOME (e.g. alt-tabbing), concerns about steam-start, per-game desktop launchers, udev rules for controllers
-            install_native_package steam-start
+            #install_native_package steam # No flatpak yet because the games will share the same icon in GNOME (e.g. alt-tabbing), concerns about steam-start, per-game desktop launchers, udev rules for controllers
+            #install_native_package steam-start
+            install_flatpak com.valvesoftware.Steam
 
             # Runtimes
             #install_native_package_dependency steam-native-runtime
