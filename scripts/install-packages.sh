@@ -449,8 +449,8 @@ if ${HAS_GUI}; then
 
             # Runtimes
             #install_native_package_dependency steam-native-runtime
-            install_native_package proton-ge-custom-bin
-            install_native_package luxtorpeda-git
+            #install_native_package proton-ge-custom-bin
+            #install_native_package luxtorpeda-git
 
             # Communication
             install_flatpak com.discordapp.Discord
