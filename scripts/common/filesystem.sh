@@ -276,10 +276,23 @@ GLOBAL_LAUNCHERS_DIR="${ROOT_USR_SHARE}/applications"
 GLOBAL_FLATPAK_LAUNCHERS_DIR="${ROOT_VAR_LIB}/flatpak/exports/share/applications"
 LOCAL_LAUNCHERS_DIR="${HOME_LOCAL_SHARE}/applications"
 
-if does_bin_exist "steam" "org.valvesoftware.Steam"; then
+if does_bin_exist "steam" "com.valvesoftware.Steam"; then
     STEAM_DIR="${HOME_LOCAL_SHARE}/Steam"
-    does_bin_exist "com.valvesoftware.Steam" && STEAM_DIR="${HOME_VAR}/app/com.valvesoftware.Steam/data/Steam"
+    does_bin_exist "com.valvesoftware.Steam" && STEAM_DIR="${HOME_VAR}/app/com.valvesoftware.Steam/.local/share/Steam"
 
     STEAM_LIBRARY_PATHS="${STEAM_DIR}/steamapps"
     STEAM_LAUNCHERS_PATH="${LOCAL_LAUNCHERS_DIR}/Steam"
+
+    STEAM_LIBRARY_CUSTOM_PATHS=$(grep "\"/" "${STEAM_DIR}/steamapps/libraryfolders.vdf")
+
+    if [ -n "${STEAM_LIBRARY_CUSTOM_PATHS}" ]; then
+        STEAM_LIBRARY_CUSTOM_PATHS=$(echo "${STEAM_LIBRARY_CUSTOM_PATHS}" | \
+                                        sed 's/\"[0-9]\"//g' | \
+                                        sed 's/^ *//g' | \
+                                        sed 's/\t//g' | \
+                                        sed 's/\"//g' | \
+                                        sed 's/^ *path *//g' | \
+                                        sed 's/$/\/steamapps/g')
+        STEAM_LIBRARY_PATHS=$(echo -e "${STEAM_LIBRARY_PATHS}\n${STEAM_LIBRARY_CUSTOM_PATHS}" | sort | uniq)
+    fi
 fi

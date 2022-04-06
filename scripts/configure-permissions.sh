@@ -68,6 +68,9 @@ if does_bin_exist "flatpak"; then
     set_flatpak_permission "com.github.vladimiry.ElectronMail" \
         "background" true \
         "notifications:notification" true
+    set_flatpak_permission "com.valvesoftware.Steam" \
+        "background" true \
+        "notifications:notification" false
     set_flatpak_permission "de.haeckerfelix.Fragments" \
         "background" true \
         "notifications:notification" true
