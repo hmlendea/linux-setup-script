@@ -370,6 +370,7 @@ if ${HAS_GUI}; then
         set_config_value "${GTK4_CONFIG_FILE}" gtk-cursor-theme-name "${CURSOR_THEME}"
         set_config_value "${GTK4_CONFIG_FILE}" gtk-button-images 0
         set_config_value "${GTK4_CONFIG_FILE}" gtk-menu-images 0
+        set_config_value "${GTK4_CONFIG_FILE}" gtk-hint-font-metrics true
     fi
 fi
 
