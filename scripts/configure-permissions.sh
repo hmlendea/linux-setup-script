@@ -9,8 +9,6 @@ function get_flatpak_permission() {
 
     ! is_flatpak_installed "${PACKAGE}" && return
 
-    [ -z "${OBJECT}" ] && OBJECT="${TABLE}"
-
     flatpak permission-show "${PACKAGE}" | grep "^${TABLE}\s${OBJECT}\s" | awk '{print $4}'
 }
 
@@ -30,21 +28,37 @@ function set_flatpak_permission() {
         local PERMISSION="${1}" && shift
         local VALUE="${1}" && shift
 
-        local TABLE=$(echo "${PERMISSION}" | awk -F":" '{print $1}')
-        local OBJECT=$(echo "${PERMISSION}" | awk -F":" '{print $2}')
+        local TABLE="${PERMISSION}"
+        local OBJECT="${PERMISSION}"
 
-        [ -z "${OBJECT}" ] && OBJECT="${TABLE}"
+        if echo "${PERMISSION}" | grep -q ":"; then
+            TABLE=$(echo "${PERMISSION}" | awk -F":" '{print $1}')
+            OBJECT=$(echo "${PERMISSION}" | awk -F":" '{print $2}')
+        else
+            [[ "${TABLE}" == "notification" ]] && TABLE="notifications"
+        fi
 
         PERMISSION="${TABLE}:${OBJECT}"
 
-        [[ "${VALUE}" == "true" ]] && VALUE="yes"
-        [[ "${VALUE}" == "false" ]] && VALUE="no"
+        if [[ "${OBJECT}" == "location" ]]; then
+            if [[ "${VALUE}" == "true" ]]; then
+                VALUE="EXACT,0"
+            elif [[ "${VALUE}" == "false" ]]; then
+                VALUE="NONE,0"
+            fi
+        else
+            if [[ "${VALUE}" == "true" ]]; then
+                VALUE="yes"
+            elif [[ "${VALUE}" == "false" ]]; then
+                VALUE="no"
+            fi
+        fi
 
         local CURRENT_VALUE=$(get_flatpak_permission "${PACKAGE}" "${TABLE}" "${OBJECT}")
 
         if [[ "${VALUE}" != "${CURRENT_VALUE}" ]]; then
            flatpak permission-set "${TABLE}" "${OBJECT}" "${PACKAGE}" "${VALUE}"
-            echo -e "\e[0;33m${PACKAGE}\e[0m permission \e[0;32m${PERMISSION}\e[0m >>> ${VALUE}"
+           echo -e "\e[0;33m${PACKAGE}\e[0m permission \e[0;32m${PERMISSION}\e[0m >>> ${VALUE}"
         fi
     done
 }
@@ -52,84 +66,114 @@ function set_flatpak_permission() {
 if does_bin_exist "flatpak"; then
     set_flatpak_permission "com.discordapp.Discord" \
         "background" true \
-        "notifications:notification" true
+        "notification" true \
+        "location" false
     set_flatpak_permission "com.microsoft.Teams" \
         "background" false \
-        "notifications:notification" true
+        "notification" true \
+        "location" false
     set_flatpak_permission "com.mojang.Minecraft" \
         "background" false \
-        "notifications:notification" false
+        "notification" false \
+        "location" false
     set_flatpak_permission "com.getpostman.Postman" \
         "background" false \
-        "notifications:notification" false
+        "notification" false \
+        "location" false
     set_flatpak_permission "com.simplenote.Simplenote" \
         "background" false \
-        "notifications:notification" false
+        "notification" false \
+        "location" false
     set_flatpak_permission "com.github.vladimiry.ElectronMail" \
         "background" true \
-        "notifications:notification" true
+        "notification" true \
+        "location" false
     set_flatpak_permission "com.valvesoftware.Steam" \
         "background" true \
-        "notifications:notification" false
+        "notification" false \
+        "location" false
     set_flatpak_permission "de.haeckerfelix.Fragments" \
         "background" true \
-        "notifications:notification" true
+        "notification" true \
+        "location" false
     set_flatpak_permission "io.github.hmlendea.geforcenow-electron" \
         "background" false \
-        "notifications:notification" false
+        "notification" false \
+        "location" false
     set_flatpak_permission "nl.hjdskes.gcolor3" \
         "background" false \
-        "notifications:notification" false
+        "notification" false \
+        "location" false
     set_flatpak_permission "org.gimp.GIMP" \
         "background" false \
-        "notifications:notification" false
+        "notification" false \
+        "location" false
     set_flatpak_permission "org.gnome.baobab" \
         "background" false \
-        "notifications:notification" true
+        "notification" true \
+        "location" false
     set_flatpak_permission "org.gnome.Calculator" \
         "background" false \
-        "notifications:notification" false
+        "notification" false \
+        "location" false
     set_flatpak_permission "org.gnome.Calendar" \
         "background" false \
-        "notifications:notification" true
+        "notification" true \
+        "location" true
     set_flatpak_permission "org.gnome.Contacts" \
         "background" false \
-        "notifications:notification" false
+        "notification" false \
+        "location" false
     set_flatpak_permission "org.gnome.eog" \
         "background" false \
-        "notifications:notification" false
+        "notification" false \
+        "location" false
     set_flatpak_permission "org.gnome.Evince" \
         "background" false \
-        "notifications:notification" false
+        "notification" false \
+        "location" false
     set_flatpak_permission "org.gnome.gedit" \
         "background" false \
-        "notifications:notification" false
+        "notification" false \
+        "location" false
     set_flatpak_permission "org.gnome.Maps" \
         "background" false \
-        "notifications:notification" false
+        "notification" false \
+        "location" true
     set_flatpak_permission "org.gnome.NetworkDisplays" \
         "background" false \
-        "notifications:notification" false
-    set_flatpak_permission "org.gnome.Rhythmbox3" "background" false
+        "notification" false \
+        "location" false
+    set_flatpak_permission "org.gnome.Rhythmbox3" \
+        "background" false \
+        "notification" true \
+        "location" false
     set_flatpak_permission "org.gnome.TextEditor" \
         "background" false \
-        "notifications:notification" false
+        "notification" false \
+        "location" false
     set_flatpak_permission "org.gnome.Totem" \
         "background" false \
-        "notifications:notification" false
+        "notification" false \
+        "location" false
     set_flatpak_permission "org.gnome.Weather" \
         "background" false \
-        "notifications:notification" false
+        "notification" false \
+        "location" true
     set_flatpak_permission "org.inkscape.Inkscape" \
         "background" false \
-        "notifications:notification" false
+        "notification" false \
+        "location" false
     set_flatpak_permission "org.mozilla.firefox" \
         "background" false \
-        "notifications:notification" false
+        "notification" false \
+        "location" true
     set_flatpak_permission "org.signal.Signal" \
         "background" true \
-        "notifications:notification" true
+        "notification" true \
+        "location" false
     set_flatpak_permission "org.telegram.desktop" \
         "background" true \
-        "notifications:notification" true
+        "notification" true \
+        "location" false
 fi
