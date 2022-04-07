@@ -32,7 +32,7 @@ APPS_LANGUAGE="ro_RO"
 GAMES_LANGUAGE="en_GB"
 
 # THEMES
-GTK_THEME="ZorinGrey-Dark"
+GTK_THEME="adw-gtk3-dark" # "ZorinGrey-Dark"
 GTK_THEME_VARIANT="dark"
 GTK2_THEME="${GTK_THEME}"
 GTK3_THEME="${GTK_THEME}"
@@ -410,10 +410,19 @@ if [ -f "${HOME_CONFIG}/lxsession/LXDE/desktop.conf" ]; then
     set_config_value "${LXSESSION_CONFIG_FILE}" iGtk/ToolbarStyle 0
 fi
 
+##################
+### 2FA Client ###
+##################
+if does_bin_exist "com.belmoussaoui.Authenticator"; then
+    AUTHENTICATOR_SCHEMA="com.belmoussaoui.Authenticator"
+
+    set_gsetting "${AUTHENTICATOR_SCHEMA}" dark-theme ${DESKTOP_THEME_IS_DARK}
+    set_gsetting "${AUTHENTICATOR_SCHEMA}" is-maximized false
+fi
+
 ###################
 ### Ad Blockers ###
 ###################
-
 if does_bin_exist "pihole-FTL"; then
     PIHOLE_DNSMASQ_CONFIG_PATH="/etc/dnsmasq.d/01-pihole.conf"
 
