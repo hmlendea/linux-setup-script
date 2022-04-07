@@ -262,19 +262,23 @@ if [ -f "${ROOT_ETC}/default/grub" ]; then
 fi
 
 if does_bin_exist "gnome-shell"; then
-    if ( ! ${POWERFUL_PC} ); then
+    if ${POWERFUL_PC}; then
+        set_gsetting "org.gnome.settings-daemon.plugins.remote-display" active true
+        set_gsetting "org.gnome.desktop.interface" enable-animations true
+    else
         set_gsetting "org.gnome.settings-daemon.plugins.remote-display" active false
         set_gsetting "org.gnome.desktop.interface" enable-animations false
     fi
 
     set_gsetting "org.gnome.desktop.datetime" automatic-timezone true
 
+    set_gsetting "org.gnome.desktop.interface" clock-format "24h"
     set_gsetting "org.gnome.desktop.interface" clock-show-weekday true
     set_gsetting "org.gnome.desktop.interface" enable-hot-corners false
     set_gsetting "org.gnome.desktop.interface" toolbar-icons-size 'small'
     set_gsetting "org.gnome.desktop.interface" toolbar-style 'icons'
 
-    set_gsetting "org.gnome.desktop.privacy" old-files-age "uint32 14"
+    set_gsetting "org.gnome.desktop.privacy" old-files-age "uint32 7"
     set_gsetting "org.gnome.desktop.privacy" remove-old-temp-files true
     set_gsetting "org.gnome.desktop.privacy" remove-old-trash-files true
 
@@ -957,6 +961,7 @@ fi
 if does_bin_exist "gnome-shell"; then
     # Keyboard
     set_gsetting org.gnome.desktop.peripherals.keyboard numlock-state true
+    set_gsetting org.gnome.desktop.input-sources per-window false
     set_gsetting org.gnome.desktop.input-sources sources "[('xkb', 'ro')]"
     set_gsetting org.gnome.desktop.input-sources xkb-options "['lv3:ralt_switch']"
 

@@ -847,6 +847,8 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/ca.desrt.dconf-editor.desktop" \
     set_launcher_entries "${LAUNCHER}" \
         Name "Configurator" \
         Name[ro] "Configurator" \
+        Keywords "settings;configuration;dconf;" \
+        Keywords[ro] "settings;configuration;dconf;setări;configurare;configurări;configurație;" \
         Icon "dconf-editor" \
         Categories "GNOME;GTK;${SETTINGS_APP_CATEGORIES}"
 done
