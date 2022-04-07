@@ -51,8 +51,8 @@ fi
 
 GTK_THEME_BG_COLOUR="#202020"
 
-[ "${GTK3_THEME}" == ZorinGrey* ]   && GTK_THEME_BG_COLOUR="#202020"
-[ "${GTK3_THEME}" == adw-gtk3* ]    && GTK_THEME_BG_COLOUR="#1e1e1e"
+[[ "${GTK3_THEME}" == ZorinGrey* ]] && GTK_THEME_BG_COLOUR="#202020"
+[[ "${GTK3_THEME}" == adw-gtk3* ]]  && GTK_THEME_BG_COLOUR="#1e1e1e"
 
 # FONT FACES
 INTERFACE_FONT_NAME="Sans"
