@@ -273,6 +273,8 @@ if does_bin_exist "gnome-shell"; then
         set_gsetting "org.gnome.desktop.interface" enable-animations false
     fi
 
+    set_gsetting "org.gnome.desktop.calendar" show-weekdate true
+
     set_gsetting "org.gnome.desktop.datetime" automatic-timezone true
 
     set_gsetting "org.gnome.desktop.interface" clock-format "24h"
@@ -835,10 +837,18 @@ CIV5_DIR="${ASPYR_DIR}/Sid Meier's Civilization 5"
 CIV5_USER_SETTINGS_FILE="${CIV5_DIR}/UserSettings.ini"
 
 if [ -f "${CIV5_USER_SETTINGS_FILE}" ]; then
-    set_config_value "${CIV5_USER_SETTINGS_FILE}" "AdvisorLevel" 0
-    set_config_value "${CIV5_USER_SETTINGS_FILE}" "TurnsBetweenAutosave" 5
-    set_config_value "${CIV5_USER_SETTINGS_FILE}" "TutorialLevel" 0
-    set_config_value "${CIV5_USER_SETTINGS_FILE}" "SkipIntroVideo" 1
+    # Autosave
+    set_config_value --separator " = " "${CIV5_USER_SETTINGS_FILE}" "TurnsBetweenAutosave" 1
+    set_config_value --separator " = " "${CIV5_USER_SETTINGS_FILE}" "NumAutosavesKept" 99
+
+    # Advisor
+    set_config_value --separator " = " "${CIV5_USER_SETTINGS_FILE}" "AdvisorLevel" -1
+    set_config_value --separator " = " "${CIV5_USER_SETTINGS_FILE}" "TutorialLevel" 0
+
+    # Speed things up
+    set_config_value --separator " = " "${CIV5_USER_SETTINGS_FILE}" "SkipIntroVideo" 1
+    set_config_value --separator " = " "${CIV5_USER_SETTINGS_FILE}" "SinglePlayerQuickCombatEnabled" 1
+    set_config_value --separator " = " "${CIV5_USER_SETTINGS_FILE}" "SinglePlayerQuickMovementEnabled" 1
 fi
 
 TERRARIA_DIR="${HOME_LOCAL_SHARE}/Terraria"
