@@ -373,8 +373,8 @@ if ${HAS_GUI}; then
     fi
 
     # Themes
-    install_native_package zorin-desktop-themes
-    install_flatpak zorinos org.gtk.Gtk3theme.ZorinGrey-Dark
+    #install_native_package zorin-desktop-themes
+    #install_flatpak zorinos org.gtk.Gtk3theme.ZorinGrey-Dark
 
     install_native_package adw-gtk3
     install_flatpak org.gtk.Gtk3theme.adw-gtk3-dark
