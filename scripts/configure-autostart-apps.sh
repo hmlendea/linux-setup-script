@@ -1,7 +1,8 @@
 #!/bin/bash
 source "scripts/common/filesystem.sh"
-source "${REPO_DIR}/scripts/common/common.sh"
-source "${REPO_DIR}/scripts/common/config.sh"
+source "${REPO_SCRIPTS_DIR}/common/common.sh"
+source "${REPO_SCRIPTS_DIR}/common/config.sh"
+source "${REPO_SCRIPTS_DIR}/common/system-info.sh"
 
 [ "${OS}" != "Linux" ] && exit
 (! ${HAS_GUI}) && exit
