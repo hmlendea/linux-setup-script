@@ -39,6 +39,7 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
 ! does_bin_exist "code-oss" "codium" && remove "${HOME}/.vscode-oss"
 ! does_bin_exist "discord" && remove "${HOME_CONFIG}/discord"
 ! does_bin_exist "dockx" && remove "${HOME_LOCAL_SHARE}/dockbarx"
+! does_bin_exist "droidcam" && remove "${HOME_CONFIG}/droidcam"
 ! does_bin_exist "duolingo-desktop" && remove "${HOME_CONFIG}/Duolingo"
 #! does_bin_exist "evolution" && remove \
 #    "${HOME_CACHE}/evolution" \
@@ -77,7 +78,9 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
     "${HOME_CONFIG}/google-chrome-unstable"
 ! does_bin_exist "gradle" && remove "${HOME}.gradle"
 ! does_bin_exist "hardinfo" && remove "${HOME_CONFIG}/hardinfo"
-! does_bin_exist "hashcat" && remove "${HOME_CONFIG}/hashcat"
+! does_bin_exist "hashcat" && remove \
+    "${HOME_CONFIG}/hashcat" \
+    "${HOME_LOCAL_SHARE}/hashcat"
 ! does_bin_exist "inkscape" && remove \
     "${HOME_CACHE}/inkscape" \
     "${HOME_CONFIG}/inkscape"
@@ -125,7 +128,9 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
     "${HOME_CACHE}/plex-media-player" \
     "${HOME_CONFIG}/plex.tv" \
     "${HOME_LOCAL_SHARE}/plexmediaplayer"
-! does_bin_exist "postman" && remove "${HOME_CONFIG}/Postman"
+! does_bin_exist "postman" && \
+    remove "${HOME}/Postman" \
+    remove "${HOME_CONFIG}/Postman"
 ! does_bin_exist "rhythmbox" && remove \
     "${HOME_CACHE}/rhythmbox" \
     "${HOME_LOCAL_SHARE}/rhythmbox"
