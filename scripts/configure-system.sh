@@ -283,6 +283,10 @@ if does_bin_exist "gnome-shell"; then
     set_gsetting "org.gnome.desktop.interface" toolbar-icons-size 'small'
     set_gsetting "org.gnome.desktop.interface" toolbar-style 'icons'
 
+    # Font
+    set_gsetting "org.gnome.desktop.interface" font-antialiasing 'greyscale'
+    set_gsetting "org.gnome.desktop.interface" font-hinting 'slight'
+
     set_gsetting "org.gnome.desktop.privacy" old-files-age "uint32 7"
     set_gsetting "org.gnome.desktop.privacy" remove-old-temp-files true
     set_gsetting "org.gnome.desktop.privacy" remove-old-trash-files true
@@ -359,6 +363,11 @@ if ${HAS_GUI}; then
         set_config_value "${GTK3_CONFIG_FILE}" gtk-button-images 0
         set_config_value "${GTK3_CONFIG_FILE}" gtk-menu-images 0
         set_config_value "${GTK3_CONFIG_FILE}" gtk-toolbar-style GTK_TOOLBAR_ICONS
+        set_config_value "${GTK3_CONFIG_FILE}" gtk-hint-font-metrics true
+        set_config_value "${GTK3_CONFIG_FILE}" gtk-xft-antialias 1
+        set_config_value "${GTK3_CONFIG_FILE}" gtk-xft-hinting 1
+        set_config_value "${GTK3_CONFIG_FILE}" gtk-xft-hintstyle hintslight
+        set_config_value "${GTK3_CONFIG_FILE}" gtk-xft-rgba none
     fi
 
     if [ -d "${ROOT_USR_LIB}/gtk-4.0" ]; then
@@ -371,6 +380,10 @@ if ${HAS_GUI}; then
         set_config_value "${GTK4_CONFIG_FILE}" gtk-button-images 0
         set_config_value "${GTK4_CONFIG_FILE}" gtk-menu-images 0
         set_config_value "${GTK4_CONFIG_FILE}" gtk-hint-font-metrics true
+        set_config_value "${GTK4_CONFIG_FILE}" gtk-xft-antialias 1
+        set_config_value "${GTK4_CONFIG_FILE}" gtk-xft-hinting 1
+        set_config_value "${GTK4_CONFIG_FILE}" gtk-xft-hintstyle hintslight
+        set_config_value "${GTK4_CONFIG_FILE}" gtk-xft-rgba none
     fi
 fi
 
