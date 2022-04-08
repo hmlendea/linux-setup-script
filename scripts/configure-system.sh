@@ -40,6 +40,9 @@ GTK4_THEME="Adwaita-Dark" # Until the Zorin theme supports GTK4
 ICON_THEME="Papirus-Dark"
 ICON_THEME_FOLDER_COLOUR="grey"
 CURSOR_THEME="Vimix-white-cursors"
+SOUND_THEME="freedesktop"
+
+is_native_package_installed "pop-sound-theme-bin" && SOUND_THEME="Pop"
 
 if [[ "${GTK_THEME_VARIANT}" == "dark" ]]; then
     DESKTOP_THEME_IS_DARK=true
@@ -284,7 +287,7 @@ if does_bin_exist "gnome-shell"; then
     set_gsetting "org.gnome.desktop.interface" toolbar-style 'icons'
 
     # Font
-    set_gsetting "org.gnome.desktop.interface" font-antialiasing 'greyscale'
+    set_gsetting "org.gnome.desktop.interface" font-antialiasing 'grayscale'
     set_gsetting "org.gnome.desktop.interface" font-hinting 'slight'
 
     set_gsetting "org.gnome.desktop.privacy" old-files-age "uint32 7"
@@ -360,6 +363,7 @@ if ${HAS_GUI}; then
         set_config_value "${GTK3_CONFIG_FILE}" gtk-theme-name "${GTK3_THEME}"
         set_config_value "${GTK3_CONFIG_FILE}" gtk-icon-theme-name "${ICON_THEME}"
         set_config_value "${GTK3_CONFIG_FILE}" gtk-cursor-theme-name "${CURSOR_THEME}"
+        set_config_value "${GTK3_CONFIG_FILE}" gtk-sound-theme-name "${SOUND_THEME}"
         set_config_value "${GTK3_CONFIG_FILE}" gtk-button-images 0
         set_config_value "${GTK3_CONFIG_FILE}" gtk-menu-images 0
         set_config_value "${GTK3_CONFIG_FILE}" gtk-toolbar-style GTK_TOOLBAR_ICONS
@@ -377,6 +381,7 @@ if ${HAS_GUI}; then
         set_config_value "${GTK4_CONFIG_FILE}" gtk-theme-name "${GTK4_THEME}"
         set_config_value "${GTK4_CONFIG_FILE}" gtk-icon-theme-name "${ICON_THEME}"
         set_config_value "${GTK4_CONFIG_FILE}" gtk-cursor-theme-name "${CURSOR_THEME}"
+        set_config_value "${GTK3_CONFIG_FILE}" gtk-sound-theme-name "${SOUND_THEME}"
         set_config_value "${GTK4_CONFIG_FILE}" gtk-button-images 0
         set_config_value "${GTK4_CONFIG_FILE}" gtk-menu-images 0
         set_config_value "${GTK4_CONFIG_FILE}" gtk-hint-font-metrics true
@@ -470,8 +475,10 @@ fi
 ### Audio ###
 #############
 if does_bin_exist "gnome-shell"; then
-    set_gsetting org.gnome.desktop.sound allow-volume-above-100-percent true
-    set_gsetting org.gnome.settings-daemon.plugins.media-keys volume-step 3
+    set_gsetting "org.gnome.desktop.sound" allow-volume-above-100-percent true
+    set_gsetting "org.gnome.desktop.sound" theme-name "${SOUND_THEME}"
+
+    set_gsetting "org.gnome.settings-daemon.plugins.media-keys" volume-step 3
 fi
 if does_bin_exist "openal-info"; then
     set_config_value "${HOME}/.alsoftrc" hrtf true

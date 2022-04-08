@@ -384,6 +384,8 @@ if ${HAS_GUI}; then
     install_native_package papirus-icon-theme
     install_native_package papirus-folders
 
+    install_native_package pop-sound-theme-bin
+
     # Themes - Fallbacks
     install_native_package numix-circle-icon-theme-git
     install_native_package paper-icon-theme
