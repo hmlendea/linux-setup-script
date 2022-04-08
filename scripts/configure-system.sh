@@ -367,11 +367,16 @@ if ${HAS_GUI}; then
         set_config_value "${GTK3_CONFIG_FILE}" gtk-button-images 0
         set_config_value "${GTK3_CONFIG_FILE}" gtk-menu-images 0
         set_config_value "${GTK3_CONFIG_FILE}" gtk-toolbar-style GTK_TOOLBAR_ICONS
-        set_config_value "${GTK3_CONFIG_FILE}" gtk-hint-font-metrics true
         set_config_value "${GTK3_CONFIG_FILE}" gtk-xft-antialias 1
         set_config_value "${GTK3_CONFIG_FILE}" gtk-xft-hinting 1
         set_config_value "${GTK3_CONFIG_FILE}" gtk-xft-hintstyle hintslight
         set_config_value "${GTK3_CONFIG_FILE}" gtk-xft-rgba none
+
+        if ${POWERFUL_PC}; then
+            set_config_value "${GTK3_CONFIG_FILE}" gtk-enable-animations TRUE
+        else
+            set_config_value "${GTK3_CONFIG_FILE}" gtk-enable-animations FALSE
+        fi
     fi
 
     if [ -d "${ROOT_USR_LIB}/gtk-4.0" ]; then
@@ -381,7 +386,7 @@ if ${HAS_GUI}; then
         set_config_value "${GTK4_CONFIG_FILE}" gtk-theme-name "${GTK4_THEME}"
         set_config_value "${GTK4_CONFIG_FILE}" gtk-icon-theme-name "${ICON_THEME}"
         set_config_value "${GTK4_CONFIG_FILE}" gtk-cursor-theme-name "${CURSOR_THEME}"
-        set_config_value "${GTK3_CONFIG_FILE}" gtk-sound-theme-name "${SOUND_THEME}"
+        set_config_value "${GTK4_CONFIG_FILE}" gtk-sound-theme-name "${SOUND_THEME}"
         set_config_value "${GTK4_CONFIG_FILE}" gtk-button-images 0
         set_config_value "${GTK4_CONFIG_FILE}" gtk-menu-images 0
         set_config_value "${GTK4_CONFIG_FILE}" gtk-hint-font-metrics true
@@ -389,6 +394,12 @@ if ${HAS_GUI}; then
         set_config_value "${GTK4_CONFIG_FILE}" gtk-xft-hinting 1
         set_config_value "${GTK4_CONFIG_FILE}" gtk-xft-hintstyle hintslight
         set_config_value "${GTK4_CONFIG_FILE}" gtk-xft-rgba none
+
+        if ${POWERFUL_PC}; then
+            set_config_value "${GTK4_CONFIG_FILE}" gtk-enable-animations TRUE
+        else
+            set_config_value "${GTK4_CONFIG_FILE}" gtk-enable-animations FALSE
+        fi
     fi
 fi
 
