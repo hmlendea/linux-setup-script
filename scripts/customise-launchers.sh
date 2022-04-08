@@ -217,6 +217,7 @@ done
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/whatsapp-desktop.desktop" StartupWMClass "whatsapp"
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/whatsapp-nativefier.desktop" StartupWMClass "whatsapp-nativefier-d40211"
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/whatsapp-nativefier-dark.desktop" StartupWMClass "whatsapp-nativefier-d52542"
+set_launcher_entry "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/io.github.mimbrero.WhatsAppDesktop.desktop" StartupWMClass "whatsapp-desktop-linux"
 set_launcher_entry "${LOCAL_LAUNCHERS_DIR}/chrome-nfjdjopfnbnkmfldmeffmhgodmlhdnei-Default.desktop" Categories "ChromeApp;${CHAT_APP_CATEGORIES}"
 
 ##############
