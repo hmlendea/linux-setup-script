@@ -1,5 +1,6 @@
 #!/bin/bash
-source "scripts/common/common.sh"
+source "scripts/common/filesystem.sh"
+source "${REPO_SCRIPTS_DIR}/common/system-info.sh"
 
 function update-hidden-files-config-if-needed() {
     local CONFIG_FILE_NAME="${1}"
