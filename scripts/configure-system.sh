@@ -32,17 +32,26 @@ APPS_LANGUAGE="ro_RO"
 GAMES_LANGUAGE="en_GB"
 
 # THEMES
-GTK_THEME="adw-gtk3-dark" # "ZorinGrey-Dark"
+GTK_THEME="adw-gtk3-dark"
 GTK_THEME_VARIANT="dark"
 GTK2_THEME="${GTK_THEME}"
 GTK3_THEME="${GTK_THEME}"
-GTK4_THEME="Adwaita-Dark" # Until the Zorin theme supports GTK4
+GTK4_THEME="${GTK_THEME}"
 ICON_THEME="Papirus-Dark"
 ICON_THEME_FOLDER_COLOUR="grey"
 CURSOR_THEME="Vimix-white-cursors"
 SOUND_THEME="freedesktop"
 
+GTK2_THEME=$(echo "${GTK2_THEME}" | sed 's/adw-gtk3/Adwaita/g')
+
+[[ "${GTK4_THEME}" == "ZorinGrey-Dark" ]] && GTK4_THEME="Adwaita-dark" # Until the Zorin theme supports GTK4
 is_native_package_installed "pop-sound-theme-bin" && SOUND_THEME="Pop"
+
+if [[ echo "${GTK_THEME}" | grep -q "[Dd]ark$" ]]; then
+    GTK_THEME_VARIANT="dark"
+else
+    GTK_THEME_VARIANT="light"
+fi
 
 if [[ "${GTK_THEME_VARIANT}" == "dark" ]]; then
     DESKTOP_THEME_IS_DARK=true
@@ -54,8 +63,8 @@ fi
 
 GTK_THEME_BG_COLOUR="#202020"
 
-[[ "${GTK3_THEME}" == ZorinGrey* ]] && GTK_THEME_BG_COLOUR="#202020"
-[[ "${GTK3_THEME}" == adw-gtk3* ]]  && GTK_THEME_BG_COLOUR="#1e1e1e"
+[[ "${GTK_THEME}" == ZorinGrey* ]]  && GTK_THEME_BG_COLOUR="#202020"
+[[ "${GTK_THEME}" == adw-gtk3* ]]   && GTK_THEME_BG_COLOUR="#1e1e1e"
 
 # FONT FACES
 INTERFACE_FONT_NAME="Sans"
@@ -346,6 +355,7 @@ if ${HAS_GUI}; then
         GTK2_CONFIG_FILE="${HOME}/.gtkrc-2.0"
         GTK2_FILECHOOSER_CONFIG_FILE="${HOME_CONFIG}/gtk-2.0/filechooser.ini"
 
+        set_config_value --separator " " "${GTK2_CONFIG_FILE}" include '\"/usr/share/themes/'"${GTK2_THEME}"'/gtk-2.0/gtkrc\"'
         set_config_value "${GTK2_CONFIG_FILE}" gtk-theme-name "${GTK2_THEME}"
         set_config_value "${GTK2_CONFIG_FILE}" gtk-icon-theme-name "${ICON_THEME}"
         set_config_value "${GTK2_CONFIG_FILE}" gtk-cursor-theme-name "${CURSOR_THEME}"
