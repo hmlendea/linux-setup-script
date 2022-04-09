@@ -287,6 +287,7 @@ for DIR in "${HOME}/.factorio" \
             "${HOME_LOCAL_SHARE}/Steam/steamapps/common"/*/*_Data \
             "${HOME_LOCAL_SHARE}/Steam/steamapps/compatdata/"*"/pfx/drive_c/users/steamuser/Temp" \
             "${HOME_LOCAL_SHARE}/Steam/steamapps/compatdata/"*"/pfx/drive_c/windows" \
+            "${HOME_VAR}/app/"*"/data/gvfs-metadata"/*.log \
             "${HOME_VAR}/app/com.bitwarden.desktop/config/Bitwarden" \
             "${HOME_VAR}/app/com.getpostman.Postman/config/Postman" \
             "${HOME_VAR}/app/com.github.vladimiry.ElectronMail/config/electron-mail" \
