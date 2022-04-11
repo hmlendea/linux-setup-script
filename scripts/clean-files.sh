@@ -235,7 +235,7 @@ fi
 remove "${HOME_LOCAL_SHARE}/applications/wine"
 remove "${HOME_CONFIG}/menus/applications-merged/user-chrome-apps.menu"
 
-if [ -f "${HOME_LOCAL_SHARE}/applications"/*.desktop ]; then
+if ls "${HOME_LOCAL_SHARE}/applications" | grep -q "*\.desktop$"; then
     for STEAM_APP_LAUNCHER in $(grep "^Exec=steam" "${HOME_LOCAL_SHARE}/applications"/*.desktop | awk -F":" '{print $1}' | sed 's/ /@SPACE@/g'); do
         STEAM_APP_LAUNCHER=$(echo "${STEAM_APP_LAUNCHER}" | sed 's/@SPACE@/ /g')
         remove "${STEAM_APP_LAUNCHER}"
