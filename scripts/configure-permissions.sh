@@ -92,6 +92,10 @@ if does_bin_exist "flatpak"; then
         "background" true \
         "notification" false \
         "location" false
+    set_flatpak_permission "com.visualstudio.code" \
+        "background" false \
+        "notification" false \
+        "location" false
     set_flatpak_permission "de.haeckerfelix.Fragments" \
         "background" true \
         "notification" true \
