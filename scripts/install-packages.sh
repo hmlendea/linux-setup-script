@@ -480,6 +480,8 @@ if ${HAS_GUI}; then
 
         # Development
         install_native_package dotnet-sdk
+        install_flatpak org.freedesktop.Sdk.Extension.dotnet6/x86_64/21.08
+        install_flatpak org.freedesktop.Sdk.Extension.mono6/x86_64/21.08
 
         if [[ "${ARCH_FAMILY}" == "x86" ]]; then
             install_native_package electron

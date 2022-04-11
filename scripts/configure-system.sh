@@ -995,6 +995,7 @@ if does_bin_exist "code" "code-oss" "codium" "com.visualstudio.code"; then
     set_json_property "${VSCODE_CONFIG_FILE}" '.["omnisharp.enableDecompilationSupport"]' true
 
     # Terminal
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.shell.linux"]' "${SHELL}"
     set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.allowChords"]' false
     set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.drawBoldTextInBrightColors"]' ${TERMINAL_BOLD_TEXT_IS_BRIGHT}
     set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.fontFamily"]' "${MONOSPACE_FONT_NAME} ${MONOSPACE_FONT_STYLE}"
@@ -1014,6 +1015,28 @@ if does_bin_exist "code" "code-oss" "codium" "com.visualstudio.code"; then
     set_json_property "${VSCODE_CONFIG_FILE}" '.["telemetry.enableCrashReporter"]' false
     set_json_property "${VSCODE_CONFIG_FILE}" '.["telemetry.enableTelemetry"]' false
     set_json_property "${VSCODE_CONFIG_FILE}" '.["telemetry.telemetryLevel"]' "off"
+
+    if does_bin_exist "com.visualstudio.code" \
+    && is_flatpak_installed "org.freedesktop.Sdk.Extension.mono6/x86_64/21.08"; then
+        set_json_property "${VSCODE_CONFIG_FILE}" '.["omnisharp.monoPath"]' "/usr/lib/sdk/mono6"
+        set_json_property "${VSCODE_CONFIG_FILE}" '.["omnisharp.useGlobalMono"]' "always"
+
+        FLATPAK_DOTNET_SDK=$(ls "/var/lib/flatpak/runtime/" | \
+                                grep "org.freedesktop.Sdk.Extension.dotnet" | \
+                                sed 's/org.freedesktop.Sdk.Extension.//g' | \
+                                sed 's/\"//g' | \
+                                sort -h | tail -n 1)
+        FLATPAK_DOTNET_VERSION=$(/var/lib/flatpak/runtime/org.freedesktop.Sdk.Extension."${FLATPAK_DOTNET_SDK}"/x86_64/*/active/files/lib/dotnet --version)
+
+        if [ -n "${FLATPAK_DOTNET_SDK}" ] && [ -n "${FLATPAK_DOTNET_VERSION}" ]; then
+            run_as_su flatpak override "com.visualstudio.code" \
+                --env=PATH=/app/bin:/usr/bin:/usr/lib/sdk/"${FLATPAK_DOTNET_SDK}"/bin \
+                --env=DOTNET_ROOT=/usr/lib/sdk/"${FLATPAK_DOTNET_SDK}" \
+                --env=MSBuildSDKsPath=/usr/lib/sdk/"${FLATPAK_DOTNET_SDK}"/lib/sdk/"${FLATPAK_DOTNET_VERSION}"/Sdks
+        else
+            echo "ERROR: Cannot read the flatpak dotnet version info"
+        fi
+    fi
 fi
 
 ################

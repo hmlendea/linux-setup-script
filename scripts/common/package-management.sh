@@ -84,13 +84,21 @@ function is_native_package_installed() {
 function is_flatpak_installed() {
     local PKG="${1}"
 
+    local PACKAGE_NAME=$(echo "${PKG}" | awk -F"/" '{print $1}')
+    local PACKAGE_ARCH=$(echo "${PKG}" | awk -F"/" '{print $2}')
+    local PACKAGE_BRANCH=$(echo "${PKG}" | awk -F"/" '{print $3}')
+
     ! does_bin_exist "flatpak" && return 1 # False
 
-    if (flatpak list | grep -q "${PKG}" > /dev/null); then
-        return 0 # True
-    else
-        return 1 # False
+    if (flatpak list | grep -q "${PACKAGE_NAME}" > /dev/null); then
+        if [ -z "${PACKAGE_BRANCH}" ]; then
+            return 0 # True
+        elif (flatpak list | grep "${PACKAGE_NAME}" | grep -q "${PACKAGE_BRANCH}" > /dev/null); then
+            return 0 # True
+        fi
     fi
+
+    return 1 # False
 }
 
 function is_vscode_extension_installed() {
