@@ -929,16 +929,30 @@ fi
 ############
 ### IDEs ###
 ############
-if does_bin_exist "code" "code-oss" "codium"; then
+if does_bin_exist "code" "code-oss" "codium" "com.visualstudio.code"; then
+    VSCODE_BIN="code"
+
     # The order is important, some might be present simultaoneously for a single package
-    does_bin_exist "code" && VSCODE_CONFIG_FILE="${HOME_CONFIG}/Code/User/settings.json"
-    does_bin_exist "code-oss" && VSCODE_CONFIG_FILE="${HOME_CONFIG}/Code - OSS/User/settings.json"
-    does_bin_exist "codium" && VSCODE_CONFIG_FILE="${HOME_CONFIG}/VSCodium/User/settings.json"
+    if does_bin_exist "code"; then
+        VSCODE_CONFIG_FILE="${HOME_CONFIG}/Code/User/settings.json"
+        VSCODE_BIN="code"
+    elif does_bin_exist "code-oss"; then
+        VSCODE_CONFIG_FILE="${HOME_CONFIG}/Code - OSS/User/settings.json"
+        VSCODE_BIN="code-oss"
+    elif does_bin_exist "codium"; then
+        VSCODE_CONFIG_FILE="${HOME_CONFIG}/VSCodium/User/settings.json"
+        VSCODE_BIN="codium"
+    elif does_bin_exist "com.visualstudio.code"; then
+        VSCODE_CONFIG_FILE="${HOME_VAR}/app/com.visualstudio.code/config/Code/User/settings.json"
+        VSCODE_BIN="com.visualstudio.code"
+    fi
 
     if [ ! -f "${VSCODE_CONFIG_FILE}" ]; then
         create_file "${VSCODE_CONFIG_FILE}"
         printf "{}" > "${VSCODE_CONFIG_FILE}"
     fi
+
+    set_config_value --separator " = " "/usr/share/nautilus-python/extensions/code-nautilus.py" "VSCODE" "'${VSCODE_BIN}'"
 
     # Appearance
     set_json_property "${VSCODE_CONFIG_FILE}" '.["peacock.affectActivityBar"]' false

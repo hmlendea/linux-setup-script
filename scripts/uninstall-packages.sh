@@ -62,6 +62,12 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "ttf-ms-fonts"                        # Replaced by ttf-ms-win10
     uninstall_native_package "yaourt-auto-sync"                    # Replaced by repo-synchroniser
 
+    # VS Code - Replaced by flatpak: com.visualstudio.code
+    uninstall_native_package code
+    uninstall_native_package code-headmelted-bin
+    uninstall_native_package visual-studio-code-bin
+    uninstall_native_package vscodium
+
     # Replaced by installation directly from extensions.gnome.org
     uninstall_native_package "gnome-shell-extension-dash-to-plank"
     uninstall_native_package "gnome-shell-extension-sound-output-device-chooser"
@@ -79,11 +85,6 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
 
     # Uninstall flatpaks
     uninstall_flatpak "org.gnome.TextEditor" # Replaced by org.gnome.gedit
-
-    if is_native_package_installed "visual-studio-code-bin"; then
-        uninstall_native_package "code"
-        uninstall_native_package "vscodium-bin"
-    fi
 elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
     yes | apt autoremove
 elif [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
