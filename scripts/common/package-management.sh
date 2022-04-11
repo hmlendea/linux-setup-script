@@ -32,7 +32,9 @@ function call_flatpak() {
 }
 
 function call_vscode() {
-    if does_bin_exist "codium"; then
+    if does_bin_exist "com.visualstudio.code"; then
+        com.visualstudio.code ${*}
+    elif does_bin_exist "codium"; then
         codium ${*}
     elif does_bin_exist "code-oss"; then
         code-oss ${*}

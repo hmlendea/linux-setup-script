@@ -305,10 +305,12 @@ IDE_CATEGORIES="Development;IDE;"
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/code-oss.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/code.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/codium.desktop" \
-                "${GLOBAL_LAUNCHERS_DIR}/visual-studio-code.desktop"; do
+                "${GLOBAL_LAUNCHERS_DIR}/visual-studio-code.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.visualstudio.code.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Code" \
         Name[ro] "Code" \
+        GenericName "Code" \
         Icon "code" \
         Keywords "VS;VSCode;Visual;Studio;Code;" \
         Categories "${IDE_CATEGORIES};TextEditor;"

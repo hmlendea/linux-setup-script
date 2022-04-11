@@ -486,8 +486,7 @@ if ${HAS_GUI}; then
             ! is_native_package_installed "chromium" && install_native_package chromedriver
         fi
 
-        [[ "${ARCH_FAMILY}" == "x86" ]] && install_native_package visual-studio-code-bin
-        [[ "${ARCH_FAMILY}" == "arm" ]] && install_native_package code-headmelted-bin
+        install_flatpak com.visualstudio.code
         install_vscode_package "dakara.transformer"
         install_vscode_package "johnpapa.vscode-peacock"
         install_vscode_package "mechatroner.rainbow-csv"
