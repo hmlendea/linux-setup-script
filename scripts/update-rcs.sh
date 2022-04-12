@@ -14,7 +14,12 @@ if does_bin_exist "bash"; then
     update_file_if_distinct "${REPO_RC_DIR}/bashrc" "${HOME}/.bash_prompt"
 fi
 
-does_bin_exist "gimp"       && update_file_if_distinct "${REPO_RC_DIR}/gimprc"        "${HOME_CONFIG}/GIMP/2.10/gimprc"
+if does_bin_exist "gimp"; then
+    update_file_if_distinct "${REPO_RC_DIR}/gimprc"        "${HOME_CONFIG}/GIMP/2.10/gimprc"
+else
+    update_file_if_distinct "${REPO_RC_DIR}/gimprc"        "${HOME_VAR}/app/org.gimp.GIMP/config/GIMP/2.10/gimprc"
+fi
+
 does_bin_exist "nano"       && update_file_if_distinct "${REPO_RC_DIR}/nanorc"        "${HOME}/.nanorc"
 does_bin_exist "vim"        && update_file_if_distinct "${REPO_RC_DIR}/vimrc"         "${HOME}/.vimrc"
 does_bin_exist "git"        && update_file_if_distinct "${REPO_RC_DIR}/gitconfig"     "${HOME}/.gitconfig"
