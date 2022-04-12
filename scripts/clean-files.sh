@@ -17,6 +17,7 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
     "${HOME_CACHE}/bleachbit" \
     "${HOME_CONFIG}/bleachbit"
 ! does_bin_exist "blesh" && remove "${HOME}/.blerc"
+! does_bin_exist "bna" && remove "${HOME_CONFIG}/bna"
 ! does_bin_exist "brave" && remove \
     "${HOME_CACHE}/BraveSoftware" \
     "${HOME_CONFIG}/BraveSoftware"
@@ -56,7 +57,9 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
     "${HOME_CACHE}/fragments" \
     "${HOME_CONFIG}/fragments" \
     "${HOME_LOCAL_SHARE}/fragments"
-! does_bin_exist "gedit" && remove "${HOME_CONFIG}/gedit"
+! does_bin_exist "gedit" && \
+    remove "${HOME_CONFIG}/gedit" \
+    remove "${HOME_LOCAL_SHARE}/gedit"
 ! does_bin_exist "/opt/geforcenow-electron/geforcenow-electron" && remove "${HOME_CONFIG}/GeForce NOW"
 ! does_bin_exist "gkraken" && remove "${HOME_CONFIG}/gkraken"
 ! does_bin_exist "gksu" && remove "${HOME}/.gksu.lock"
@@ -115,6 +118,7 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
 ! does_bin_exist "onlyoffice-desktopeditors" && remove \
     "${HOME_CONFIG}/onlyoffice" \
     "${HOME_LOCAL_SHARE}/onlyoffice"
+! does_bin_exist "openrgb" && remove "${HOME_CONFIG}/OpenRGB"
 ! does_bin_exist "openshot-qt" && remove "${HOME}/.openshot_qt"
 ! does_bin_exist "pavucontrol" && remove "${HOME_CONFIG}/pavucontrol.ini"
 ! does_bin_exist "pcmanfm" && remove "${HOME_CONFIG}/pcmanfm"
@@ -191,6 +195,7 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
 ! is_gnome_shell_extension_installed "tiling-assistant" && remove "${HOME_CONFIG}/tiling-assistant"
 
 # Steam games / apps
+
 ! is_steam_app_installed "8930" && remove \
     "${HOME_LOCAL_SHARE}/Aspyr/Sid Meier's Civilization 5" \
     "${HOME_LOCAL_SHARE}/Aspyr/com.aspyr.civ5xp.json"
@@ -203,6 +208,11 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
 ! is_steam_app_installed "215510" && remove "${HOME_LOCAL_SHARE}/rocketbirds"
 ! is_steam_app_installed "219150" && remove "${HOME_LOCAL_SHARE}/HotlineMiami"
 ! is_steam_app_installed "246110" && remove "${HOME_LOCAL_SHARE}/doublefine/massivechalice"
+! is_steam_app_installed "250820" && remove \
+    "${HOME}/steamvr" \
+    "${HOME_CONFIG}/openvr" \
+    "${HOME_CONFIG}/openxr" \
+    "${HOME_CONFIG}/Valve/vrmonitor.conf"
 ! is_steam_app_installed "251910" && remove "${HOME_LOCAL_SHARE}/Firebrand Games/Solar Flux"
 ! is_steam_app_installed "252950" && remove "${HOME_LOCAL_SHARE}/Rocket League"
 ! is_steam_app_installed "255300" && remove "${HOME_LOCAL_SHARE}/Daedalic Entertainment/Journey of a Roach"
@@ -243,6 +253,7 @@ if ls "${HOME_LOCAL_SHARE}/applications" | grep -q "*\.desktop$"; then
 fi
 
 # Empty directories
+remove_dir_if_empty "${HOME}/.w3m"
 remove_dir_if_empty "${HOME_CACHE}/ArtifexMundi"
 remove_dir_if_empty "${HOME_CACHE}/Microsoft"
 remove_dir_if_empty "${HOME_CONFIG}/ibus"
@@ -250,6 +261,7 @@ remove_dir_if_empty "${HOME_CONFIG}/Microsoft"
 remove_dir_if_empty "${HOME_CONFIG}/paradox-launcher-v2"
 remove_dir_if_empty "${HOME_CONFIG}/procps"
 remove_dir_if_empty "${HOME_CONFIG}/unity3d"
+remove_dir_if_empty "${HOME_CONFIG}/Valve"
 remove_dir_if_empty "${HOME_LOCAL_SHARE}/ags"
 remove_dir_if_empty "${HOME_LOCAL_SHARE}/Aspyr"
 remove_dir_if_empty "${HOME_LOCAL_SHARE}/cdprojektred"
@@ -262,6 +274,9 @@ remove_dir_if_empty "${HOME_LOCAL_SHARE}/pixmaps"
 remove_dir_if_empty "${HOME_LOCAL_SHARE}/Runic\ Games"
 remove_dir_if_empty "${HOME_LOCAL_SHARE}/twotribes"
 remove_dir_if_empty "${HOME_LOCAL_SHARE}/xorg"
+
+# Backups
+remove "${HOME_CONFIG}/monitors.xml~"
 
 # Logs
 remove \
