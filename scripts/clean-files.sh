@@ -215,7 +215,8 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
     "${HOME}/steamvr" \
     "${HOME_CONFIG}/openvr" \
     "${HOME_CONFIG}/openxr" \
-    "${HOME_CONFIG}/Valve/vrmonitor.conf"
+    "${HOME_CONFIG}/Valve/vrmonitor.conf" \
+    "${HOME_LOCAL_SHARE}/applications/valve-vrmonitor.desktop"
 ! is_steam_app_installed "251910" && remove "${HOME_LOCAL_SHARE}/Firebrand Games/Solar Flux"
 ! is_steam_app_installed "252950" && remove "${HOME_LOCAL_SHARE}/Rocket League"
 ! is_steam_app_installed "255300" && remove "${HOME_LOCAL_SHARE}/Daedalic Entertainment/Journey of a Roach"
