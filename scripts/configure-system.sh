@@ -348,7 +348,7 @@ if is_gnome_shell_extension_installed "blur-my-shell"; then
 fi
 
 if is_gnome_shell_extension_installed "user-theme"; then
-    set_gsetting "org.gnome.shell.extensions.user-theme" name "${GTK_THEME}"
+    [[ "${GTK_THEME}" != adw-gtk3* ]] && set_gsetting "org.gnome.shell.extensions.user-theme" name "${GTK_THEME}"
 fi
 
 if is_gnome_shell_extension_installed "multi-monitors-add-on"; then
