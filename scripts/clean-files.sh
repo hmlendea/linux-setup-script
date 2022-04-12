@@ -63,7 +63,10 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
 ! does_bin_exist "gedit" && \
     remove "${HOME_CONFIG}/gedit" \
     remove "${HOME_LOCAL_SHARE}/gedit"
-! does_bin_exist "/opt/geforcenow-electron/geforcenow-electron" && remove "${HOME_CONFIG}/GeForce NOW"
+! does_bin_exist "geforcenow-electron" && remove "${HOME_CONFIG}/GeForce NOW"
+! does_bin_exist "gimp" && \
+    remove "${HOME_CACHE}/gimp" \
+    remove "${HOME_CONFIG}/GIMP"
 ! does_bin_exist "gkraken" && remove "${HOME_CONFIG}/gkraken"
 ! does_bin_exist "gksu" && remove "${HOME}/.gksu.lock"
 ! does_bin_exist "gnome-calculator" && remove "${HOME_CACHE}/gnome-calculator"

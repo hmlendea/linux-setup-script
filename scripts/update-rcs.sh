@@ -14,11 +14,10 @@ if does_bin_exist "bash"; then
     update_file_if_distinct "${REPO_RC_DIR}/bashrc" "${HOME}/.bash_prompt"
 fi
 
-if does_bin_exist "gimp"; then
-    update_file_if_distinct "${REPO_RC_DIR}/gimprc"        "${HOME_CONFIG}/GIMP/2.10/gimprc"
-else
-    update_file_if_distinct "${REPO_RC_DIR}/gimprc"        "${HOME_VAR}/app/org.gimp.GIMP/config/GIMP/2.10/gimprc"
-fi
+for RC in "gimprc" "sessionrc" "toolrc"; do
+    does_bin_exist "gimp" && update_file_if_distinct "${REPO_RC_DIR}/gimp/${RC}" "${HOME_CONFIG}/GIMP/2.10/${RC}"
+    does_bin_exist "org.gimp.GIMP" && update_file_if_distinct "${REPO_RC_DIR}/gimp/${RC}" "${HOME_VAR}/app/org.gimp.GIMP/config/GIMP/2.10/${RC}"
+done
 
 does_bin_exist "nano"       && update_file_if_distinct "${REPO_RC_DIR}/nanorc"        "${HOME}/.nanorc"
 does_bin_exist "vim"        && update_file_if_distinct "${REPO_RC_DIR}/vimrc"         "${HOME}/.vimrc"
