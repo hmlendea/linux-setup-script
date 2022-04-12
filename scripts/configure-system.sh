@@ -6,7 +6,19 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
 source "${REPO_DIR}/scripts/common/system-info.sh"
 
 function get_openbox_font_weight() {
-    [[ "${*}" == "Bold" ]] && echo "Bold" || echo "Normal"
+    if [[ "${*}" == "Bold" ]]; then
+        echo "Bold"
+    else
+        echo "Normal"
+    fi
+}
+
+function bool_to_onoff() {
+    if ${1}; then
+        echo "on"
+    else
+        echo "off"
+    fi
 }
 
 CHASSIS_TYPE="$(get_chassis_type)"
@@ -160,6 +172,7 @@ fi
 
 TEXT_EDITOR_TAB_SPACES=true
 TEXT_EDITOR_TAB_SIZE=4
+TEXT_EDITOR_WORD_WRAP=false
 
 if ${HAS_GUI}; then
     if [[ "${ICON_THEME}" == *"Papirus"* ]]; then
@@ -947,7 +960,8 @@ if does_bin_exist "code" "code-oss" "codium" "com.visualstudio.code"; then
         VSCODE_BIN="com.visualstudio.code"
     fi
 
-    if [ ! -f "${VSCODE_CONFIG_FILE}" ]; then
+    if [ ! -f "${VSCODE_CONFIG_FILE}" ] \
+    || [ -z "$(cat ${VSCODE_CONFIG_FILE})" ]; then
         create_file "${VSCODE_CONFIG_FILE}"
         printf "{}" > "${VSCODE_CONFIG_FILE}"
     fi
@@ -961,7 +975,8 @@ if does_bin_exist "code" "code-oss" "codium" "com.visualstudio.code"; then
     set_json_property "${VSCODE_CONFIG_FILE}" '.["update.mode"]' "none"
     set_json_property "${VSCODE_CONFIG_FILE}" '.["window.autoDetectColorScheme"]' true
     set_json_property "${VSCODE_CONFIG_FILE}" '.["window.menuBarVisibility"]' "toggle"
-    #set_json_property "${VSCODE_CONFIG_FILE}" '.["window.title"]' '${dirty}${activeEditorShort}${separator}${rootName}${separator}VS Code'
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["window.newWindowDimensions"]' "maximized"
+    #set_json_property "${VSCODE_CONFIG_FILE}" '.["window.title"]' '${dirty}${separator}${rootName}${separator}VS Code'
     set_json_property "${VSCODE_CONFIG_FILE}" '.["workbench.colorTheme"]' "Default Dark+"
     set_json_property "${VSCODE_CONFIG_FILE}" '.["workbench.iconTheme"]' "seti"
 
@@ -979,17 +994,18 @@ if does_bin_exist "code" "code-oss" "codium" "com.visualstudio.code"; then
     set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.find.seedSearchStringFromSelection"]' "selection"
     set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.foldingMaximumRegions"]' 7500
     set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.unicodeHighlight.ambiguousCharacters"]' true
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.wordWrap"]' $(bool_to_onoff ${TEXT_EDITOR_WORD_WRAP})
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["files.trimTrailingWhitespace"]' true
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["files.trimFinalNewlines"]' true
     set_json_property "${VSCODE_CONFIG_FILE}" '.["workbench.largeFileOptimizations"]' false
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["explorer.confirmDragAndDrop"]' false
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["explorer.confirmDelete"]' false
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["git.autofetch"]' true
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["git.autofetchPeriod"]' 300
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.scrollback"]' ${TERMINAL_SCROLLBACK_SIZE}
 
     # Disable unwanted features
     set_json_property "${VSCODE_CONFIG_FILE}" '.["workbench.startupEditor"]' false
     set_json_property "${VSCODE_CONFIG_FILE}" '.["security.workspace.trust.enabled"]' false
     set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.enablePersistentSessions"]' false
+    # Disable unwanted features - Confirmation dialogues
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["explorer.confirmDragAndDrop"]' false
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["explorer.confirmDelete"]' false
 
     # C#
     set_json_property "${VSCODE_CONFIG_FILE}" '.["omnisharp.enableDecompilationSupport"]' true
@@ -1000,6 +1016,7 @@ if does_bin_exist "code" "code-oss" "codium" "com.visualstudio.code"; then
     set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.drawBoldTextInBrightColors"]' ${TERMINAL_BOLD_TEXT_IS_BRIGHT}
     set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.fontFamily"]' "${MONOSPACE_FONT_NAME} ${MONOSPACE_FONT_STYLE}"
     set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.fontSize"]' $((MONOSPACE_FONT_SIZE+3))
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.scrollback"]' ${TERMINAL_SCROLLBACK_SIZE}
 
     if [ "${TERMINAL_CURSOR_SHAPE}" == "ibeam" ]; then
         set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.cursorStyle"]' "line"
@@ -1009,6 +1026,8 @@ if does_bin_exist "code" "code-oss" "codium" "com.visualstudio.code"; then
 
     # Git
     set_json_property "${VSCODE_CONFIG_FILE}" '.["diffEditor.maxComputationTime"]' 10000 # 10 seconds
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["git.autofetch"]' true
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["git.autofetchPeriod"]' 300
     set_json_property "${VSCODE_CONFIG_FILE}" '.["git.autoStash"]' true
 
     # Telemetry
