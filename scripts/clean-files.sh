@@ -40,6 +40,9 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
 ! does_bin_exist "code-oss" "codium" && remove "${HOME}/.vscode-oss"
 ! does_bin_exist "discord" && remove "${HOME_CONFIG}/discord"
 ! does_bin_exist "dockx" && remove "${HOME_LOCAL_SHARE}/dockbarx"
+! does_bin_exist "dotnet" && \
+    remove "${HOME}/.dotnet" \
+    remove "${HOME}/.templateengine"
 ! does_bin_exist "droidcam" && remove "${HOME_CONFIG}/droidcam"
 ! does_bin_exist "duolingo-desktop" && remove "${HOME_CONFIG}/Duolingo"
 #! does_bin_exist "evolution" && remove \
