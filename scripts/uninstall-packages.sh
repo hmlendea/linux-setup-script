@@ -62,6 +62,9 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "ttf-ms-fonts"                        # Replaced by ttf-ms-win10
     uninstall_native_package "yaourt-auto-sync"                    # Replaced by repo-synchroniser
 
+    # Removed altogether
+    uninstall_native_package "pop-sound-theme-git"
+
     # VS Code - Replaced by flatpak: com.visualstudio.code
     uninstall_native_package code
     uninstall_native_package code-headmelted-bin
