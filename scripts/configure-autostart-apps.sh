@@ -27,8 +27,8 @@ configure-autostart-for-app "discord" \
     Icon "discord"
 configure-autostart-for-app "com.discordapp.Discord" \
     Name "Discord" \
-    Exec "com.discordapp.Discord --start-minimized" \
-    Icon "discord"
+    Icon "discord" \
+    Exec "com.discordapp.Discord --start-minimized"
 
 # ElectronMail
 configure-autostart-for-app "/opt/ElectronMail/electron-mail" \
@@ -36,6 +36,7 @@ configure-autostart-for-app "/opt/ElectronMail/electron-mail" \
     Exec "/opt/ElectronMail/electron-mail --js-flags=\"--max-old-space-size=6144\" %U"
 configure-autostart-for-app "com.github.vladimiry.ElectronMail" \
     Name "Mail" \
+    Icon "electron-mail" \
     Exec "com.github.vladimiry.ElectronMail --js-flags=--max-old-space-size=12288 %U"
 
 # Plank
@@ -49,6 +50,7 @@ configure-autostart-for-app "signal-desktop" \
     Exec "signal-desktop --start-in-tray --no-sandbox -- %u"
 configure-autostart-for-app "org.signal.Signal" \
     Name "Signal" \
+    Icon "signal" \
     Exec "org.signal.Signal --start-in-tray --no-sandbox -- %u"
 
 # Telegram
