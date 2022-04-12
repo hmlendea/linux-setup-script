@@ -61,6 +61,7 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "yaourt-auto-sync"             # Replaced by repo-synchroniser
 
     # Removed altogether
+    uninstall_native_pacakge "gnome-dds-thumbnailer"
     uninstall_native_package "pop-sound-theme-git"
 
     # GIMP - Replaced by flatpak: org.gimp.GIMP
