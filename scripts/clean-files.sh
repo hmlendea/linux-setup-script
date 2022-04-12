@@ -234,6 +234,33 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
 ! is_steam_app_installed "729040" && remove "${HOME_LOCAL_SHARE}/Steam/steamapps/common/BorderlandsGOTYEnhanced"
 ! is_steam_app_installed "736260" && remove "${HOME_LOCAL_SHARE}/Baba_Is_You"
 
+for STEAM_LIBRARY_PATH in ${STEAM_LIBRARY_PATHS}; do
+    if is_steam_app_installed "8930"; then
+        remove "${STEAM_LIBRARY_PATH}/common/Sid Meier's Civilization V/steamassets/"*.mov
+        remove "${STEAM_LIBRARY_PATH}/common/Sid Meier's Civilization V/steamassets/assets/dlc/"*/*.mov
+    fi
+
+    ! is_steam_app_installed "41070" && remove "${STEAM_LIBRARY_PATH}/common/Serious Sam 3"
+    ! is_steam_app_installed "50300" && remove "${STEAM_LIBRARY_PATH}/common/SpecOps_TheLine"
+    ! is_steam_app_installed "70000" && remove "${STEAM_LIBRARY_PATH}/common/Dino D-Day"
+    ! is_steam_app_installed "91310" && remove "${STEAM_LIBRARY_PATH}/common/Dead Island"
+    ! is_steam_app_installed "99910" && remove "${STEAM_LIBRARY_PATH}/common/Puzzle Pirates"
+    ! is_steam_app_installed "206690" && remove "${STEAM_LIBRARY_PATH}/common/ibomber defense pacific"
+    ! is_steam_app_installed "219150" && remove "${STEAM_LIBRARY_PATH}/common/hotline_miami"
+    ! is_steam_app_installed "221380" && remove "${STEAM_LIBRARY_PATH}/common/Age2HD"
+    ! is_steam_app_installed "234390" && remove "${STEAM_LIBRARY_PATH}/common/TeleglitchDME"
+    ! is_steam_app_installed "250820" && remove "${STEAM_LIBRARY_PATH}/common/SteamVR"
+    ! is_steam_app_installed "266840" && remove "${STEAM_LIBRARY_PATH}/common/Age of Mythology"
+    ! is_steam_app_installed "271570" && remove "${STEAM_LIBRARY_PATH}/common/SpaceFarmers"
+    ! is_steam_app_installed "304050" && remove "${STEAM_LIBRARY_PATH}/common/Trove"
+    ! is_steam_app_installed "304930" && remove "${STEAM_LIBRARY_PATH}/common/Unturned"
+    ! is_steam_app_installed "312900" && remove "${STEAM_LIBRARY_PATH}/common/Zoo Rampage"
+    ! is_steam_app_installed "328080" && remove "${STEAM_LIBRARY_PATH}/common/Rise to Ruins"
+    ! is_steam_app_installed "346010" && remove "${STEAM_LIBRARY_PATH}/common/Besiege"
+    ! is_steam_app_installed "356040" && remove "${STEAM_LIBRARY_PATH}/common/Sheltered"
+    ! is_steam_app_installed "552110" && remove "${STEAM_LIBRARY_PATH}/common/Puzzle Pirates Dark Seas"
+done
+
 # Unwanted files in the Downloads dir, by extension
 if [ -d "${HOME_DOWNLOADS}" ]; then
     while IFS='' read -r -d '' UNWANTED_FILE; do
@@ -326,14 +353,6 @@ for DIR in "${HOME}/.factorio" \
         "${DIR}"/log.txt \
         "${DIR}"/logs.txt \
         "${DIR}"/logfile.txt
-done
-
-# Game intros
-for STEAM_LIBRARY_PATH in ${STEAM_LIBRARY_PATHS}; do
-    if is_steam_app_installed "8930"; then
-        remove "${STEAM_LIBRARY_PATH}/common/Sid Meier's Civilization V/steamassets/"*.mov
-        remove "${STEAM_LIBRARY_PATH}/common/Sid Meier's Civilization V/steamassets/assets/dlc/"*/*.mov
-    fi
 done
 
 does_bin_exist "journalctl" && run_as_su journalctl --vacuum-time=3days
