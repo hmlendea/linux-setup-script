@@ -42,7 +42,6 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "gnome-maps"                          # Replaced by flatpak: org.gnome.Maps
     uninstall_native_package "gnome-network-displays"              # Replaced by flatpak: org.gnome.NetworkDisplays
     uninstall_native_package "gnome-weather"                       # Replaced by flatpak: org.gnome.Weather
-    uninstall_native_package "gnome-shell-extension-dash-to-dock"  # Replaced by plank
     uninstall_native_package "grub2-theme-vimix"                   # Replaced by grub2-theme-nuci
     uninstall_native_package "inkscape"                            # Replaced by flatpak: org.inkscape.Inkscape
     uninstall_native_package "minecraft-launcher"                  # Replaced by flatpak: com.mojang.Minecraft
@@ -78,7 +77,9 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
         uninstall_native_package "vscodium-bin"
     fi
 
+    # GNOME Shell Extensions
     # Replaced by installation directly from extensions.gnome.org
+    #uninstall_native_package "gnome-shell-extension-dash-to-dock"  # Replaced by plank / installation from GSE
     uninstall_native_package "gnome-shell-extension-dash-to-plank"
     uninstall_native_package "gnome-shell-extension-sound-output-device-chooser"
     uninstall_native_package "gnome-shell-extension-multi-monitors-add-on-git"
@@ -89,9 +90,9 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "gnome-shell-extension-windowisready_remover"
     uninstall_native_package "gnome-shell-extension-no-overview"
     uninstall_native_package "gnome-shell-extension-hide-activities-git"
-
-    # Uninstall GNOME Shell extensions
+    # Not necessary with/without system packaeg
     ! does_bin_exist "plank" && uninstall_gnome_shell_extension "dash-to-plank"
+    is_native_package_installed "gnome-shell-extension-dash-to-dock" && uninstall_gnome_shell_extension "dash-to-dock"
 
     # Uninstall flatpaks
     uninstall_flatpak "org.gnome.TextEditor" # Replaced by org.gnome.gedit

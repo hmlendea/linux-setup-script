@@ -348,7 +348,8 @@ if ${HAS_GUI}; then
         if does_bin_exist "plank"; then
             install_gnome_shell_extension "dash-to-plank"
         else
-            install_gnome_shell_extension "dash-to-dock"
+            install_native_package "gnome-shell-extension-dash-to-dock"
+            #install_gnome_shell_extension "dash-to-dock"
         fi
 
         install_gnome_shell_extension "sound-output-device-chooser"
