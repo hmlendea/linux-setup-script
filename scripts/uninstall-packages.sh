@@ -65,11 +65,18 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     # Removed altogether
     uninstall_native_package "pop-sound-theme-git"
 
-    # VS Code - Replaced by flatpak: com.visualstudio.code
-    uninstall_native_package code
-    uninstall_native_package code-headmelted-bin
-    uninstall_native_package visual-studio-code-bin
-    uninstall_native_package vscodium
+    # VS Code
+    uninstall_flatpak "com.visualstudio.code" # A lot of trouble due to not being able to access the host (e.g. the terminal, SSH/GPG, dotnet (fixable), other SDKs)
+
+    if ! is_flatpak_installed "com.visualstudio.code"; then
+        uninstall_flatpak org.freedesktop.Sdk.Extension.dotnet6
+        uninstall_flatpak org.freedesktop.Sdk.Extension.mono6
+    fi
+
+    if is_native_package_installed "visual-studio-code-bin"; then
+        uninstall_native_package "code"
+        uninstall_native_package "vscodium-bin"
+    fi
 
     # Replaced by installation directly from extensions.gnome.org
     uninstall_native_package "gnome-shell-extension-dash-to-plank"
