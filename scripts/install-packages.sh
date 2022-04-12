@@ -478,21 +478,21 @@ if ${HAS_GUI}; then
 
         # Development
         install_native_package dotnet-sdk
-        install_flatpak org.freedesktop.Sdk.Extension.dotnet6/x86_64/21.08
-        install_flatpak org.freedesktop.Sdk.Extension.mono6/x86_64/21.08
 
         if [[ "${ARCH_FAMILY}" == "x86" ]]; then
             install_native_package electron
             ! is_native_package_installed "chromium" && install_native_package chromedriver
         fi
 
-        install_flatpak com.visualstudio.code
+        [[ "${ARCH_FAMILY}" == "x86" ]] && install_native_package visual-studio-code-bin
+        [[ "${ARCH_FAMILY}" == "arm" ]] && install_native_package code-headmelted-bin
         install_vscode_package "dakara.transformer"
         install_vscode_package "johnpapa.vscode-peacock"
         install_vscode_package "mechatroner.rainbow-csv"
         install_vscode_package "mgcb-vscode.mgcb-vscode"
         install_vscode_package "ms-dotnettools.csharp"
         install_vscode_package "nico-castell.linux-desktop-file"
+        install_vscode_package "qinjia.seti-icons"
 
         if does_bin_exist "code" "code-oss" "codium"; then
             does_bin_exist "nautilus" && install_native_package code-nautilus-git
