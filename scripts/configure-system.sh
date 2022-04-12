@@ -299,7 +299,6 @@ if does_bin_exist "gnome-shell"; then
     fi
 
     set_gsetting "org.gnome.desktop.calendar" show-weekdate true
-
     set_gsetting "org.gnome.desktop.datetime" automatic-timezone true
 
     set_gsetting "org.gnome.desktop.interface" clock-format "24h"
@@ -327,6 +326,12 @@ if does_bin_exist "gnome-shell"; then
     set_gsetting "org.gnome.desktop.interface" icon-theme "${ICON_THEME}"
     set_gsetting "org.gnome.desktop.interface" monospace-font-name "${MONOSPACE_FONT}"
     set_gsetting "org.gnome.desktop.interface" show-battery-percentage true
+
+    if ${DESKTOP_THEME_IS_DARK}; then
+        set_gsetting "org.gnome.desktop.interface" color-scheme "prefer-dark"
+    else
+        set_gsetting "org.gnome.desktop.interface" color-scheme "default"
+    fi
 
     set_gsetting "org.gnome.desktop.peripherals.touchpad" disable-while-typing false
 
