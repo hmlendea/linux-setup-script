@@ -289,6 +289,8 @@ if ${HAS_GUI}; then
         install_native_package nautilus
         install_native_package folder-color-nautilus
         install_flatpak org.gnome.FileRoller
+
+        install_native_package_dependency webp-pixbuf-loader
     else
         install_native_package pcmanfm
         install_native_package xarchiver
