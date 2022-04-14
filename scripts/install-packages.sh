@@ -230,7 +230,7 @@ if ${HAS_GUI}; then
         install_native_package xdg-user-dirs-gtk
         install_native_package_dependency gnome-control-center
         install_native_package gnome-tweaks
-        install_native_package gnome-backgrounds
+        #install_native_package gnome-backgrounds
         install_flatpak org.gnome.font-viewer
     else
         install_native_package mutter # openbox
@@ -312,7 +312,7 @@ if ${HAS_GUI}; then
 
     if ${POWERFUL_PC}; then
         install_flatpak org.gnome.baobab
-        install_native_package gnome-screenshot
+        #install_native_package gnome-screenshot
     else
         install_native_package mate-utils
     fi

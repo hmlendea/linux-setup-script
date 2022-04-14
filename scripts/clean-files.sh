@@ -363,3 +363,5 @@ for DIR in "${HOME}/.factorio" \
 done
 
 does_bin_exist "journalctl" && run_as_su journalctl --vacuum-time=3days
+
+remove "${ROOT_ETC}/motd"
