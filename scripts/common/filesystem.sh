@@ -26,7 +26,7 @@ fi
 
 # Root partition mount point
 ROOT_PATH=""
-[ "${DISTRO_FAMILY}" = "Android" ] && ROOT_PATH="/data/data/com.termux/files/usr"
+[ -d "/data/data/com.termux/files/usr" ] && ROOT_PATH="/data/data/com.termux/files/usr"
 
 ROOT_BIN="${ROOT_PATH}/bin"
 ROOT_BOOT="${ROOT_PATH}/boot"
