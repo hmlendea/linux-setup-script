@@ -126,6 +126,10 @@ elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
         uninstall_android_package "org.fdroid.fdroid"
     fi
 
+    # Backup
+    uninstall_android_package "com.android.calllogbackup"
+    uninstall_android_package "com.android.wallpaperbackup"
+
     # Email clients
     uninstall_android_package "com.android.exchange"
 
