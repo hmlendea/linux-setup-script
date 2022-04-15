@@ -107,9 +107,9 @@ function remove() {
         echo -e "Removing \e[0;33m${PATH_TO_REMOVE}\e[0m (${SIZE})..."
         if [ -w "${PATH_TO_REMOVE}" ]; then
             if [ -f "${PATH_TO_REMOVE}" ]; then
-                rm "${PATH_TO_REMOVE}"
+                yes | rm "${PATH_TO_REMOVE}"
             else
-                rm -r "${PATH_TO_REMOVE}"
+                yes | rm -r "${PATH_TO_REMOVE}"
             fi
         else
             if [ -f "${PATH_TO_REMOVE}" ]; then
