@@ -1195,7 +1195,7 @@ fi
 ### Sudo ###
 ############
 if does_bin_exist "sudo"; then
-    SUDO_CONFIG_FILE="/etc/sudoers"
+    SUDO_CONFIG_FILE="${ROOT_ETC}/sudoers"
 
     set_config_value "${SUDO_CONFIG_FILE}" "Defaults timestamp_timeout" 15
 fi
