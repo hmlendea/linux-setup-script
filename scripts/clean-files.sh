@@ -3,6 +3,10 @@ source "scripts/common/filesystem.sh"
 source "${REPO_DIR}/scripts/common/common.sh"
 source "${REPO_DIR}/scripts/common/package-management.sh"
 
+remove "${LOCAL_INSTALL_TEMP_DIR}"
+
+remove "${ROOT_ETC}/motd"
+
 ! does_bin_exist "aircrack-ng" && remove "${HOME}/.aircrack"
 ! does_bin_exist "alsi" && remove "${HOME_CONFIG}/alsi"
 ! does_bin_exist "audacity" && remove "${HOME}/.audacity-data"
@@ -364,5 +368,3 @@ for DIR in "${HOME}/.factorio" \
 done
 
 does_bin_exist "journalctl" && run_as_su journalctl --vacuum-time=3days
-
-remove "${ROOT_ETC}/motd"
