@@ -12,6 +12,10 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
         echo "Uninstalling unused dependencies ($UNUSED_DEPS_COUNT):"
         uninstall_native_package "${UNUSED_DEPS[@]}"
     fi
+elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
+    yes | apt autoremove
+elif [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
+    yes | run_as_su apt autoremove
 fi
 
 # Uninstall the packages
@@ -101,8 +105,46 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
 
     # Uninstall flatpaks
     uninstall_flatpak "org.gnome.TextEditor" # Replaced by org.gnome.gedit
-elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
-    yes | apt autoremove
-elif [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
-    yes | run_as_su apt autoremove
+elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
+&& ${HAS_SU_PRIVILEGES}; then
+    uninstall_android_package "com.android.stk"
+    uninstall_android_package "com.generalmagic.magicearth"
+    uninstall_android_package "org.documentfoundation.libreoffice"
+    uninstall_android_package "org.lineageos.eleven"
+    uninstall_android_package "org.lineageos.recorder"
+    uninstall_android_package "org.sufficientlysecure.keychain"
+
+    if is_android_package_installed "ch.protonmail.android"; then
+        uninstall_android_package "foundation.e.mail"
+    fi
+
+    if is_android_package_installed "com.automattic.simplenote"; then
+        uninstall_android_package "foundation.e.notes"
+        uninstall_android_package "foundation.e.tasks"
+    fi
+
+    if is_android_package_installed "com.best.deskclock"; then
+        uninstall_android_package "com.android.deskclock"
+    fi
+
+    if is_android_package_installed "org.dslul.openboard.inputmethod.latin"; then
+        uninstall_android_package "com.android.inputmethod.latin"
+    fi
+
+    if is_android_package_installed "com.teslacoilsw.launcher"; then
+        uninstall_android_package "foundation.e.blisslauncher"
+    fi
+
+    if is_android_package_installed "org.codeaurora.snapcam"; then
+        uninstall_android_package "foundation.e.camera"
+    fi
+
+    if is_android_package_installed "org.mozilla.fenix" \
+    || is_android_package_installed "org.mozilla.firefox"; then
+        uninstall_android_package "foundation.e.browser"
+    fi
+
+    if is_android_package_installed "org.thoughtcrime.securesms"; then
+        uninstall_android_package "foundation.e.message"
+    fi
 fi

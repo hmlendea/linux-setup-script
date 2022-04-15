@@ -530,8 +530,11 @@ else
 fi
 
 if does_bin_exist "sudo"; then
-    if [ "${DISTRO_FAMILY}" = "Android" ]; then
-        [ -f "/sbin/su" ] && HAS_SU_PRIVILEGES=true
+    if [[ "${DISTRO_FAMILY}" == "Android" ]]; then
+        if [ -f "/sbin/su" ] \
+        || [ -f "/bin/su" ]; then
+            HAS_SU_PRIVILEGES=true
+        fi
     else
         HAS_SU_PRIVILEGES=true
     fi
