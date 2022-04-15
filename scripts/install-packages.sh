@@ -541,21 +541,21 @@ elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
     install_android_remote_package "https://f-droid.org/repo/org.telegram.messenger_26006.apk" "org.telegram.messenger"                                         # Telegram
 
     # Internet of Things
-    install_android_remote_package $(get_latest_github_release_assets "home-assistant/android" | grep "minimal") "io.homeassistant.companion.android.minimal" # Home Assistant
+    install_android_remote_package "$(get_latest_github_release_assets home-assistant/android | grep minimal)" "io.homeassistant.companion.android.minimal" # Home Assistant
 
     # Navigation
     install_android_remote_package "https://download.osmand.net/releases/net.osmand-4.1.11-421.apk" "net.osmand" # OsmAnd
 
     # Security
-    install_android_remote_package $(get_latest_github_release_assets "beemdevelopment/Aegis") "com.beemdevelopment.aegis"      # Aegis
-    install_android_remote_package $(get_latest_github_release_assets "bitwarden/mobile" | grep "fdroid") "com.x8bit.bitwarden" # Bitwarden
-    install_android_remote_package $(get_latest_github_release_assets "M66B/NetGuard") "eu.faircode.netguard"                   # NetGuard
+    install_android_remote_package "$(get_latest_github_release_assets beemdevelopment/Aegis)" "com.beemdevelopment.aegis"      # Aegis
+    install_android_remote_package "$(get_latest_github_release_assets bitwarden/mobile | grep fdroid)" "com.x8bit.bitwarden" # Bitwarden
+    install_android_remote_package "$(get_latest_github_release_assets M66B/NetGuard)" "eu.faircode.netguard"                   # NetGuard
 
     # Tools
     install_android_remote_package "https://f-droid.org/repo/org.kde.kdeconnect_tp_11910.apk" "org.kde.kdeconnect_tp"       # KDE Connect
-    install_android_remote_package $(get_latest_github_release_assets "Automattic/simplenote") "com.automattic.simplenote"  # Simplenote
-    install_android_remote_package $(get_latest_github_release_assets "termux/termux-app") "com.termux"                     # Termux
+    install_android_remote_package "$(get_latest_github_release_assets Automattic/simplenote)" "com.automattic.simplenote"  # Simplenote
+    install_android_remote_package "$(get_latest_github_release_assets termux/termux-app)" "com.termux"                     # Termux
 
     # Weather
-    install_android_remote_package $(get_latest_github_release_assets "WangDaYeeeeee/GeometricWeather" | grep "minimal") "wangdaye.com.geometricweather" # Geometric Weather
+    install_android_remote_package "$(get_latest_github_release_assets WangDaYeeeeee/GeometricWeather)" "wangdaye.com.geometricweather" # Geometric Weather
 fi
