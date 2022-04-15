@@ -159,7 +159,7 @@ function install_native_package() {
 
     echo -e " >>> Installing native package: \e[0;33m${PKG}\e[0m..."
     if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-    	call_package_manager -S --asexplicit "${PKG}"
+        call_package_manager -S --asexplicit "${PKG}"
     elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
       || [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
         call_package_manager install "${PKG}"
@@ -178,6 +178,16 @@ function install_native_package_dependency() {
       || [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
         call_package_manager install "${PKG}" # TODO: See if there is a way to mark them as dep
     fi
+}
+
+function install_android_package() {
+	local PACKAGE="${1}"
+    local PACKAGE_NAME=$(echo "${PACKAGE}" | sed 's/.*\/\([^\/]*\.apk\)$/\1/g')
+
+    is_android_package_installed "${PACKAGE_NAME}" && return
+
+    echo -e " >>> Installing Android package: \e[0;33m${PACKAGE_NAME}\e[0m..."
+    call_android_package_manager install --user 0 "${PACKAGE}"
 }
 
 function install_flatpak() {
