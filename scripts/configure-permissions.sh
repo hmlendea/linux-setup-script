@@ -1,5 +1,6 @@
 #!/bin/bash
 source "scripts/common/filesystem.sh"
+source "${REPO_SCRIPTS_DIR}/common/config.sh"
 source "${REPO_SCRIPTS_DIR}/common/package-management.sh"
 
 function get_flatpak_permission() {
@@ -40,6 +41,12 @@ function set_flatpak_permission() {
 
         PERMISSION="${TABLE}:${OBJECT}"
 
+        if [[ "${OBJECT}" == "notification" ]]; then
+            local GSETTING_SCHEMA="/org/gnome/desktop/notifications/application/$(echo ${PACKAGE} | sed 's/\./-/g' | tr '[:upper:]' '[:lower:]')/"
+            GSETTING_SCHEMA="org.gnome.desktop.notifications.application:${GSETTING_SCHEMA}"
+            set_gsetting "${GSETTING_SCHEMA}" enable "${VALUE}"
+        fi
+
         if [[ "${OBJECT}" == "location" ]]; then
             if [[ "${VALUE}" == "true" ]]; then
                 VALUE="EXACT,0"
@@ -64,6 +71,10 @@ function set_flatpak_permission() {
 }
 
 if does_bin_exist "flatpak"; then
+    set_flatpak_permission "ca.desrt.dconf-editor" \
+        "background" false \
+        "notification" false \
+        "location" false
     set_flatpak_permission "com.discordapp.Discord" \
         "background" true \
         "notification" true \
@@ -135,6 +146,10 @@ if does_bin_exist "flatpak"; then
     set_flatpak_permission "org.gnome.Evince" \
         "background" false \
         "notification" false \
+        "location" false
+    set_flatpak_permission "org.gnome.FileRoller" \
+        "background" true \
+        "notification" true \
         "location" false
     set_flatpak_permission "org.gnome.gedit" \
         "background" false \
