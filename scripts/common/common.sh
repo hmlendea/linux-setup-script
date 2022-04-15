@@ -8,7 +8,11 @@ function run_as_su() {
     if [ "${UID}" -eq 0 ]; then
         "${@}"
     elif ${HAS_SU_PRIVILEGES}; then
-        sudo "${@}"
+        if [[ "${DISTRO_FAMILY}" == "Android" ]]; then
+            su -c ${*}
+        else
+            sudo "${@}"
+        fi
     else
         echo "Failed to run '${*}': Missing SU privileges!"
     fi

@@ -2,6 +2,7 @@
 source "scripts/common/filesystem.sh"
 source "${REPO_SCRIPTS_DIR}/common/config.sh"
 source "${REPO_SCRIPTS_DIR}/common/package-management.sh"
+source "${REPO_SCRIPTS_DIR}/common/system-info.sh"
 
 function get_flatpak_permission() {
     local PACKAGE="${1}"
@@ -24,7 +25,6 @@ function set_flatpak_permission() {
     fi
 
     local PAIRS_COUNT=$(($# / 2))
-
     for I in $(seq 1 ${PAIRS_COUNT}); do
         local PERMISSION="${1}" && shift
         local VALUE="${1}" && shift
@@ -64,8 +64,87 @@ function set_flatpak_permission() {
         local CURRENT_VALUE=$(get_flatpak_permission "${PACKAGE}" "${TABLE}" "${OBJECT}")
 
         if [[ "${VALUE}" != "${CURRENT_VALUE}" ]]; then
-           flatpak permission-set "${TABLE}" "${OBJECT}" "${PACKAGE}" "${VALUE}"
-           echo -e "\e[0;33m${PACKAGE}\e[0m permission \e[0;32m${PERMISSION}\e[0m >>> ${VALUE}"
+            flatpak permission-set "${TABLE}" "${OBJECT}" "${PACKAGE}" "${VALUE}"
+            echo -e "\e[0;33m${PACKAGE}\e[0m permission \e[0;32m${PERMISSION}\e[0m >>> ${VALUE}"
+        fi
+    done
+}
+
+function get_android_permission() {
+    local PACKAGE="${1}"
+    local PERMISSION="${2}"
+    local STATE="false"
+
+    STATE=$(run_as_su dumpsys package "${PACKAGE}" | \
+        grep "${PERMISSION}" | \
+        grep "granted" | \
+        sed 's/.*granted=\([^,]*\).*/\1/g')
+
+    [ -z "${STATE}" ] && STATE="false"
+
+    echo "${STATE}"
+}
+
+function toggle_android_permission() {
+    local PACKAGE="${1}"
+    local PERMISSION="${2}"
+    local VALUE="${3}"
+    local CURRENT_VALUE="false"
+
+    CURRENT_VALUE=$(get_android_permission "${PACKAGE}" "${PERMISSION}")
+
+    if [[ "${VALUE}" != "${CURRENT_VALUE}" ]]; then
+        echo -e "\e[0;33m${PACKAGE}\e[0m permission \e[0;32m${PERMISSION}\e[0m >>> ${VALUE}"
+        if [[ "${VALUE}" == "true" ]]; then
+            call_android_package_manager grant "${PACKAGE}" "${PERMISSION}"
+        else
+            call_android_package_manager revoke "${PACKAGE}" "${PERMISSION}"
+        fi
+    fi
+}
+
+function set_android_permission() {
+    local PACKAGE="${1}" && shift
+
+    ! is_android_package_installed "${PACKAGE}" && return
+
+    local PAIRS_COUNT=$(($# / 2))
+    for I in $(seq 1 ${PAIRS_COUNT}); do
+        local PERMISSION="${1}" && shift
+        local VALUE="${1}" && shift
+
+        if [[ "${PERMISSION}" == "calendar" ]]; then
+            toggle_android_permission "${PACKAGE}" "android.permission.READ_CALENDAR" "${VALUE}"
+            toggle_android_permission "${PACKAGE}" "android.permission.WRITE_CALENDAR" "${VALUE}"
+        elif [[ "${PERMISSION}" == "camera" ]]; then
+            toggle_android_permission "${PACKAGE}" "android.permission.CAMERA" "${VALUE}"
+        elif [[ "${PERMISSION}" == "contacts" ]]; then
+            toggle_android_permission "${PACKAGE}" "android.permission.READ_CONTACTS" "${VALUE}"
+            toggle_android_permission "${PACKAGE}" "android.permission.WRITE_CONTACTS" "${VALUE}"
+        elif [[ "${PERMISSION}" == "contacts_read" ]]; then
+            toggle_android_permission "${PACKAGE}" "android.permission.READ_CONTACTS" "${VALUE}"
+        elif [[ "${PERMISSION}" == "contacts_write" ]]; then
+            toggle_android_permission "${PACKAGE}" "android.permission.WRITE_CONTACTS" "${VALUE}"
+        elif [[ "${PERMISSION}" == "location" ]]; then
+            toggle_android_permission "${PACKAGE}" "android.permission.ACCESS_COARSE_LOCATION" "${VALUE}"
+            toggle_android_permission "${PACKAGE}" "android.permission.ACCESS_FINE_LOCATION" "${VALUE}"
+        elif [[ "${PERMISSION}" == "microphone" ]]; then
+            toggle_android_permission "${PACKAGE}" "android.permission.RECORD_AUDIO" "${VALUE}"
+        elif [[ "${PERMISSION}" == "phone_log" ]]; then
+            toggle_android_permission "${PACKAGE}" "android.permission.READ_CALL_LOG" "${VALUE}"
+        elif [[ "${PERMISSION}" == "phone" ]]; then
+            toggle_android_permission "${PACKAGE}" "android.permission.ANSWER_PHONE_CALLS" "${VALUE}"
+            toggle_android_permission "${PACKAGE}" "android.permission.CALL_PHONE" "${VALUE}"
+            toggle_android_permission "${PACKAGE}" "android.permission.READ_PHONE_NUMBERS" "${VALUE}"
+            toggle_android_permission "${PACKAGE}" "android.permission.READ_PHONE_STATE" "${VALUE}"
+        elif [[ "${PERMISSION}" == "sms" ]]; then
+            toggle_android_permission "${PACKAGE}" "android.permission.RECEIVE_SMS" "${VALUE}"
+            toggle_android_permission "${PACKAGE}" "android.permission.SEND_SMS" "${VALUE}"
+        elif [[ "${PERMISSION}" == "storage" ]]; then
+            toggle_android_permission "${PACKAGE}" "android.permission.READ_EXTERNAL_STORAGE" "${VALUE}"
+            toggle_android_permission "${PACKAGE}" "android.permission.WRITE_EXTERNAL_STORAGE" "${VALUE}"
+        else
+            toggle_android_permission "${PACKAGE}" "${PERMISSION}" "${VALUE}"
         fi
     done
 }
@@ -215,4 +294,34 @@ if does_bin_exist "flatpak"; then
         "background" false \
         "notification" false \
         "location" false
+fi
+
+if [[ "${DISTRO_FAMILY}" == "Android" ]] \
+&& ${HAS_SU_PRIVILEGES}; then
+    set_android_permission "com.aurora.store" "storage" true
+    set_android_permission "com.best.deskclock" "org.codeaurora.permission.POWER_OFF_ALARM" true
+    set_android_permission "com.spotify.music" \
+        "camera" false \
+        "microphone" false \
+        "storage" false \
+        "android.permission.GET_ACCOUNTS" false
+    set_android_permission "com.whatsapp" \
+        "location" false \
+        "camera" true \
+        "contacts" true \
+        "microphone" false \
+        "phone_log" false \
+        "phone" false \
+        "sms" false \
+        "storage" false
+    set_android_permission "foundation.e.apps" "storage" true
+    set_android_permission "foundation.e.calendar" \
+        "calendar" true \
+        "contacts_read" true \
+        "storage" true
+    set_android_permission "org.codeaurora.snapcam" \
+        "camera" true \
+        "location" true \
+        "microphone" true \
+        "storage" true
 fi
