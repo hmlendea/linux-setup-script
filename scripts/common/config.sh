@@ -286,7 +286,10 @@ function set_gsetting() {
         fi
     fi
 
-    ! gsettings list-schemas | grep -q "^${SCHEMA}" && return
+    if ! gsettings list-schemas | grep -q "^${SCHEMA}" \
+    && ! gsettings writable "${SCHEMA}" "${PROPERTY}" 2>/dev/null | grep -q "true"; then
+        return
+    fi
 
     CURRENT_VALUE=$(get_gsetting "${SCHEMA}" "${PROPERTY}")
 
