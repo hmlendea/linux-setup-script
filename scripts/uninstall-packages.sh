@@ -208,12 +208,12 @@ elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
 
     # Voice Assistants / Input / TTS / etc
     uninstall_android_package "com.google.android.tts"
-    uninstall_android_package "com.google.android.hotwordenrollment.okgoogle"
+    uninstall_android_package "com.android.hotwordenrollment.okgoogle"
 
     # zzz others
     uninstall_android_package "org.sufficientlysecure.keychain"
-    uninstall_android_package "com.google.android.hotwordenrollment.tgoogle"
-    uninstall_android_package "com.google.android.hotwordenrollment.xgoogle"
+    uninstall_android_package "com.android.hotwordenrollment.tgoogle"
+    uninstall_android_package "com.android.hotwordenrollment.xgoogle"
     uninstall_android_package "com.google.android.projection.gearhead"
 
     if is_android_package_installed "com.best.deskclock"; then
