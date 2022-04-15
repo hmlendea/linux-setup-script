@@ -111,7 +111,24 @@ elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
     uninstall_android_package "com.generalmagic.magicearth"
     uninstall_android_package "org.documentfoundation.libreoffice"
 
+    # App stores
+    if is_android_package_installed "com.aurora.store" \
+    || is_android_package_installed "foundation.e.apps"; then
+        uninstall_android_package "com.android.vending"
+    fi
+
+    if is_android_package_installed "foundation.e.apps"; then
+        uninstall_android_package "com.aurora.adroid"
+    fi
+
+    if is_android_package_installed "com.aurora.adroid" \
+    || is_android_package_installed "foundation.e.apps"; then
+        uninstall_android_package "org.fdroid.fdroid"
+    fi
+
     # Email clients
+    uninstall_android_package "com.android.exchange"
+
     if is_android_package_installed "ch.protonmail.android"; then
         uninstall_android_package "com.android.email"
         uninstall_android_package "foundation.e.mail"
@@ -119,6 +136,9 @@ elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
 
     # Equaliser
     uninstall_android_package "org.lineageos.audiofx"
+
+    # Feedback
+    uninstall_android_package "com.google.android.feedback"
 
     # FM Radios
     uninstall_android_package "com.android.fmradio"
@@ -148,8 +168,12 @@ elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
     # Recording apps
     uninstall_android_package "org.lineageos.recorder"
 
+    # Setup
+    uninstall_android_package "com.google.android.partnersetup"
+    uninstall_android_package "com.google.android.setupwizard"
+
     # Screen recorders
-    uninstall_android_pacakge "com.xiaomi.screenrecorder"
+    uninstall_android_package "com.xiaomi.screenrecorder"
 
     # Terminals
     if is_android_package_installed "com.termux"; then
@@ -164,7 +188,9 @@ elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
     uninstall_android_package "com.android.theme.color.purple"
     uninstall_android_package "org.lineageos.overlay.accent.brown"
     uninstall_android_package "org.lineageos.overlay.accent.green"
+    uninstall_android_package "org.lineageos.overlay.accent.orange"
     uninstall_android_package "org.lineageos.overlay.accent.pink"
+    uninstall_android_package "org.lineageos.overlay.accent.purple"
     uninstall_android_package "org.lineageos.overlay.accent.red"
 
     # Themes - Fonts
@@ -172,6 +198,7 @@ elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
     uninstall_android_package "org.lineageos.overlay.font.lato"
 
     # Themes - Icons
+    uninstall_android_package "com.android.theme.icon.roundedrect"
     uninstall_android_package "com.android.theme.icon.roundrect"
     uninstall_android_package "com.android.theme.icon.teardrop"
 
@@ -179,8 +206,15 @@ elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
     uninstall_android_package "com.mitv.mivideoplayer"
     uninstall_android_package "com.mitv.videoplayer"
 
+    # Voice Assistants / Input / TTS / etc
+    uninstall_android_package "com.google.android.tts"
+    uninstall_android_package "com.google.android.hotwordenrollment.okgoogle"
+
     # zzz others
     uninstall_android_package "org.sufficientlysecure.keychain"
+    uninstall_android_package "com.google.android.hotwordenrollment.tgoogle"
+    uninstall_android_package "com.google.android.hotwordenrollment.xgoogle"
+    uninstall_android_package "com.google.android.projection.gearhead"
 
     if is_android_package_installed "com.best.deskclock"; then
         uninstall_android_package "com.android.deskclock"
@@ -191,7 +225,8 @@ elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
         uninstall_android_package "com.sohu.inputmethod.sogou.tv"
     fi
 
-    if is_android_package_installed "org.codeaurora.snapcam"; then
+    if is_android_package_installed "com.google.android.GoogleCamera" \
+    || is_android_package_installed "org.codeaurora.snapcam"; then
         uninstall_android_package "foundation.e.camera"
         uninstall_android_package "net.sourceforge.opencamera"
         uninstall_android_package "org.lineageos.snap"
