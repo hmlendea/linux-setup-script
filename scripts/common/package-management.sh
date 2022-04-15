@@ -182,12 +182,28 @@ function install_native_package_dependency() {
 
 function install_android_package() {
 	local PACKAGE="${1}"
-    local PACKAGE_NAME=$(echo "${PACKAGE}" | sed 's/.*\/\([^\/]*\.apk\)$/\1/g')
+    local PACKAGE_NAME="${2}"
+
+    [ -z "${PACKAGE_NAME}" ] && PACKAGE_NAME=$(echo "${PACKAGE}" | sed 's/.*\/\([^\/]*\)\.apk$/\1/g')
 
     is_android_package_installed "${PACKAGE_NAME}" && return
 
     echo -e " >>> Installing Android package: \e[0;33m${PACKAGE_NAME}\e[0m..."
     call_android_package_manager install --user 0 "${PACKAGE}"
+}
+
+function install_android_remote_package() {
+    local PACKAGE_URL="${1}"
+    local PACKAGE_NAME="${2}"
+
+    [ -z "${PACKAGE_NAME}" ] && PACKAGE_NAME=$(echo "${PACKAGE_URL}" | sed 's/.*\/\([^\/]*\)\.apk.*/\1/g')
+
+    is_android_package_installed "${PACKAGE_NAME}" && return
+
+    [ ! -d "${LOCAL_INSTALL_TEMP_DIR}" ] && mkdir -p "${LOCAL_INSTALL_TEMP_DIR}"
+
+    wget "${PACKAGE_URL}" -c -O "${LOCAL_INSTALL_TEMP_DIR}/${PACKAGE_NAME}.apk"
+    install_android_package "${LOCAL_INSTALL_TEMP_DIR}/${PACKAGE_NAME}.apk"
 }
 
 function install_flatpak() {

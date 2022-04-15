@@ -4,6 +4,12 @@ source "${REPO_SCRIPTS_DIR}/common/common.sh"
 source "${REPO_SCRIPTS_DIR}/common/package-management.sh"
 source "${REPO_SCRIPTS_DIR}/common/system-info.sh"
 
+function get_latest_github_release_assets() {
+    curl -Ls "https://api.github.com/repos/${1}/releases/latest" | \
+        grep "browser_download_url" | \
+        cut -d "\"" -f 4
+}
+
 ##############
 ### Basics ###
 ##############
@@ -515,9 +521,41 @@ elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
         for TREBUCHET_LOCATION in   "/system_ext/priv-app/TrebuchetQuickStep/TrebuchetQuickStep.apk" \
                                     "/system/product/priv-app/TrebuchetQuickStep/TrebuchetQuickStep.apk"; do
             if [ -f "${TREBUCHET_LOCATION}" ]; then
-                install_android_package "${TREBUCHET_LOCATION}"
+                install_android_package "${TREBUCHET_LOCATION}" "com.android.launcher3" # Trebuchet
                 break
             fi
         done
     fi
+
+    # App stores
+    install_android_remote_package "https://files.auroraoss.com/AuroraStore/Stable/AuroraStore_4.1.1.apk" "com.aurora.store" # Aurora Store
+
+    if ! is_android_package_installed "foundation.e.apps"; then
+        install_android_remote_package "https://files.auroraoss.com/AuroraDroid/Stable/AuroraDroid_1.0.8.apk" "com.aurora.adroid" # Aurora Droid
+    fi
+
+    # Communication
+    install_android_remote_package "https://f-droid.org/repo/me.austinhuang.instagrabber_65.apk" "me.austinhuang.instagrabber"                                  # Instagram
+    install_android_remote_package "https://protonmail.com/download/MailAndroid/ProtonMail-Android.apk" "ch.protonmail.android"                                 # ProtonMail
+    install_android_remote_package "https://updates.signal.org/android/Signal-Android-website-prod-universal-release-5.34.10.apk" "org.thoughtcrime.securesms"  # Signal
+    install_android_remote_package "https://f-droid.org/repo/org.telegram.messenger_26006.apk" "org.telegram.messenger"                                         # Telegram
+
+    # Internet of Things
+    install_android_remote_package $(get_latest_github_release_assets "home-assistant/android" | grep "minimal") "io.homeassistant.companion.android.minimal" # Home Assistant
+
+    # Navigation
+    install_android_remote_package "https://download.osmand.net/releases/net.osmand-4.1.11-421.apk" "net.osmand" # OsmAnd
+
+    # Security
+    install_android_remote_package $(get_latest_github_release_assets "beemdevelopment/Aegis") "com.beemdevelopment.aegis"      # Aegis
+    install_android_remote_package $(get_latest_github_release_assets "bitwarden/mobile" | grep "fdroid") "com.x8bit.bitwarden" # Bitwarden
+    install_android_remote_package $(get_latest_github_release_assets "M66B/NetGuard") "eu.faircode.netguard"                   # NetGuard
+
+    # Tools
+    install_android_remote_package "https://f-droid.org/repo/org.kde.kdeconnect_tp_11910.apk" "org.kde.kdeconnect_tp"       # KDE Connect
+    install_android_remote_package $(get_latest_github_release_assets "Automattic/simplenote") "com.automattic.simplenote"  # Simplenote
+    install_android_remote_package $(get_latest_github_release_assets "termux/termux-app") "com.termux"                     # Termux
+
+    # Weather
+    install_android_remote_package $(get_latest_github_release_assets "WangDaYeeeeee/GeometricWeather" | grep "minimal") "wangdaye.com.geometricweather" # Geometric Weather
 fi
