@@ -201,6 +201,10 @@ remove "${ROOT_ETC}/motd"
 ! does_bin_exist "youtube-dl" && remove "${HOME_CACHE}/youtube-dl"
 ! does_bin_exist "zsh" && remove "${HOME}/.zshrc"
 
+for FLATPAK in $(ls "${HOME_VAR}/app"); do
+    ! is_flatpak_installed "${FLATPAK}" && remove "${HOME_VAR}/app/${FLATPAK}"
+done
+
 # GNOME Extensions
 ! is_gnome_shell_extension_installed "tiling-assistant" && remove "${HOME_CONFIG}/tiling-assistant"
 
@@ -301,7 +305,7 @@ remove_dir_if_empty "${HOME_CONFIG}/paradox-launcher-v2"
 remove_dir_if_empty "${HOME_CONFIG}/procps"
 remove_dir_if_empty "${HOME_CONFIG}/unity3d"
 remove_dir_if_empty "${HOME_CONFIG}/Valve"
-remove_dir_if_empty "${HOME_LOCAL_SHARE}/ags"
+remove_dir_if_empty "${HOME_LOCALF_SHARE}/ags"
 remove_dir_if_empty "${HOME_LOCAL_SHARE}/Aspyr"
 remove_dir_if_empty "${HOME_LOCAL_SHARE}/cdprojektred"
 remove_dir_if_empty "${HOME_LOCAL_SHARE}/Daedalic\ Entertainment"
