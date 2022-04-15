@@ -79,6 +79,10 @@ if does_bin_exist "flatpak"; then
         "background" true \
         "notification" true \
         "location" false
+    set_flatpak_permission "com.brave.Browser" \
+        "background" false \
+        "notification" false \
+        "location" true
     set_flatpak_permission "com.microsoft.Teams" \
         "background" false \
         "notification" true \
@@ -91,9 +95,17 @@ if does_bin_exist "flatpak"; then
         "background" false \
         "notification" false \
         "location" false
+    set_flatpak_permission "com.github.tchx84.Flatseal" \
+        "background" false \
+        "notification" false \
+        "location" false
     set_flatpak_permission "com.simplenote.Simplenote" \
         "background" false \
         "notification" false \
+        "location" false
+    set_flatpak_permission "com.spotify.Client" \
+        "background" false \
+        "notification" true \
         "location" false
     set_flatpak_permission "com.github.vladimiry.ElectronMail" \
         "background" true \
@@ -135,6 +147,10 @@ if does_bin_exist "flatpak"; then
         "background" false \
         "notification" true \
         "location" true
+    set_flatpak_permission "org.gnome.clocks" \
+        "background" true \
+        "notification" true \
+        "location" false
     set_flatpak_permission "org.gnome.Contacts" \
         "background" false \
         "notification" false \
@@ -194,5 +210,9 @@ if does_bin_exist "flatpak"; then
     set_flatpak_permission "org.telegram.desktop" \
         "background" true \
         "notification" true \
+        "location" false
+    set_flatpak_permission "ro.go.hmlendea.DL-Desktop" \
+        "background" false \
+        "notification" false \
         "location" false
 fi
