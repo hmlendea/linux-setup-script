@@ -110,18 +110,42 @@ elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
     uninstall_android_package "com.android.stk"
     uninstall_android_package "com.generalmagic.magicearth"
     uninstall_android_package "org.documentfoundation.libreoffice"
-    uninstall_android_package "org.lineageos.eleven"
-    uninstall_android_package "org.lineageos.recorder"
-    uninstall_android_package "org.sufficientlysecure.keychain"
 
+    # Email clients
     if is_android_package_installed "ch.protonmail.android"; then
+        uninstall_android_package "com.android.email"
         uninstall_android_package "foundation.e.mail"
     fi
 
+    # Equaliser
+    uninstall_android_package "org.lineageos.audiofx"
+
+    # Messaging (SMS)
+    if is_android_package_installed "org.thoughtcrime.securesms"; then
+        uninstall_android_package "com.android.messaging"
+        uninstall_android_package "foundation.e.message"
+    fi
+
+    # Launchers
+    if is_android_package_installed "com.teslacoilsw.launcher"; then
+        uninstall_android_package "com.android.launcher3"
+        uninstall_android_package "foundation.e.blisslauncher"
+    fi
+
+    # Music players
+    uninstall_android_package "org.lineageos.eleven"
+
+    # Note and TODO apps
     if is_android_package_installed "com.automattic.simplenote"; then
         uninstall_android_package "foundation.e.notes"
         uninstall_android_package "foundation.e.tasks"
     fi
+
+    # Recording apps
+    uninstall_android_package "org.lineageos.recorder"
+
+    # zzz others
+    uninstall_android_package "org.sufficientlysecure.keychain"
 
     if is_android_package_installed "com.best.deskclock"; then
         uninstall_android_package "com.android.deskclock"
@@ -131,20 +155,14 @@ elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
         uninstall_android_package "com.android.inputmethod.latin"
     fi
 
-    if is_android_package_installed "com.teslacoilsw.launcher"; then
-        uninstall_android_package "foundation.e.blisslauncher"
-    fi
-
     if is_android_package_installed "org.codeaurora.snapcam"; then
         uninstall_android_package "foundation.e.camera"
+        uninstall_android_package "org.lineageos.snap"
     fi
 
     if is_android_package_installed "org.mozilla.fenix" \
     || is_android_package_installed "org.mozilla.firefox"; then
         uninstall_android_package "foundation.e.browser"
-    fi
-
-    if is_android_package_installed "org.thoughtcrime.securesms"; then
-        uninstall_android_package "foundation.e.message"
+        uninstall_android_package "org.lineageos.jelly"
     fi
 fi
