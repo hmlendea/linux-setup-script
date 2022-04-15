@@ -201,7 +201,8 @@ remove "${ROOT_ETC}/motd"
 ! does_bin_exist "youtube-dl" && remove "${HOME_CACHE}/youtube-dl"
 ! does_bin_exist "zsh" && remove "${HOME}/.zshrc"
 
-for FLATPAK in $(ls "${HOME_VAR}/app"); do
+for FLATPAK in "${HOME_VAR}/app"/*; do
+    FLATPAK=$(echo "${FLATPAK}" | sed 's/.*\/\([^\/]*\)$/\1/g')
     ! is_flatpak_installed "${FLATPAK}" && remove "${HOME_VAR}/app/${FLATPAK}"
 done
 
