@@ -120,6 +120,9 @@ elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
     # Equaliser
     uninstall_android_package "org.lineageos.audiofx"
 
+    # FM Radios
+    uninstall_android_package "com.android.fmradio"
+
     # Messaging (SMS)
     if is_android_package_installed "org.thoughtcrime.securesms"; then
         uninstall_android_package "com.android.messaging"
@@ -134,6 +137,7 @@ elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
 
     # Music players
     uninstall_android_package "org.lineageos.eleven"
+    uninstall_android_package "com.xiaomi.mimusic2"
 
     # Note and TODO apps
     if is_android_package_installed "com.automattic.simplenote"; then
@@ -144,6 +148,37 @@ elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
     # Recording apps
     uninstall_android_package "org.lineageos.recorder"
 
+    # Screen recorders
+    uninstall_android_pacakge "com.xiaomi.screenrecorder"
+
+    # Terminals
+    if is_android_package_installed "com.termux"; then
+        uninstall_android_package "com.android.terminal"
+    fi
+
+    # Themes - Accent colours
+    uninstall_android_package "com.android.theme.color.cinnamon"
+    uninstall_android_package "com.android.theme.color.green"
+    uninstall_android_package "com.android.theme.color.orange"
+    uninstall_android_package "com.android.theme.color.orchid"
+    uninstall_android_package "com.android.theme.color.purple"
+    uninstall_android_package "org.lineageos.overlay.accent.brown"
+    uninstall_android_package "org.lineageos.overlay.accent.green"
+    uninstall_android_package "org.lineageos.overlay.accent.pink"
+    uninstall_android_package "org.lineageos.overlay.accent.red"
+
+    # Themes - Fonts
+    #uninstall_android_package "com.android.theme.font.notoserifsource"
+    uninstall_android_package "org.lineageos.overlay.font.lato"
+
+    # Themes - Icons
+    uninstall_android_package "com.android.theme.icon.roundrect"
+    uninstall_android_package "com.android.theme.icon.teardrop"
+
+    # Video players
+    uninstall_android_package "com.mitv.mivideoplayer"
+    uninstall_android_package "com.mitv.videoplayer"
+
     # zzz others
     uninstall_android_package "org.sufficientlysecure.keychain"
 
@@ -153,10 +188,12 @@ elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
 
     if is_android_package_installed "org.dslul.openboard.inputmethod.latin"; then
         uninstall_android_package "com.android.inputmethod.latin"
+        uninstall_android_package "com.sohu.inputmethod.sogou.tv"
     fi
 
     if is_android_package_installed "org.codeaurora.snapcam"; then
         uninstall_android_package "foundation.e.camera"
+        uninstall_android_package "net.sourceforge.opencamera"
         uninstall_android_package "org.lineageos.snap"
     fi
 
