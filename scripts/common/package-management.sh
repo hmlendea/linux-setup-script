@@ -28,7 +28,7 @@ function call_package_manager() {
 }
 
 function call_android_package_manager() {
-    sudo pm ${@}
+    sudo pm ${*}
 }
 
 function call_flatpak() {
