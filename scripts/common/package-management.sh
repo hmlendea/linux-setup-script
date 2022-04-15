@@ -27,6 +27,10 @@ function call_package_manager() {
     fi
 }
 
+function call_android_package_manager() {
+    sudo pm ${@}
+}
+
 function call_flatpak() {
     flatpak ${*} --assumeyes
 }
@@ -78,6 +82,16 @@ function is_native_package_installed() {
         else
 		    return 1 # False
         fi
+    fi
+}
+
+function is_android_package_installed() {
+    local PACKAGE="${1}"
+
+    if call_android_package_manager list packages | grep -q "^package:${PACKAGE}$"; then
+        return 0 # True
+    else
+        return 1 # False
     fi
 }
 
@@ -214,6 +228,17 @@ function uninstall_native_package() {
           || [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
             call_package_manager remove "${PKG}"
         fi
+    done
+}
+
+function uninstall_android_package() {
+    [[ "${DISTRO_FAMILY}" != "Android" ]] && return
+
+    for PACKAGE in ${*// /\n}; do
+        is_android_package_installed "${PACKAGE}" || return
+
+        echo -e " >>> Uninstalling Android package: \e[0;33m${PACKAGE}\e[0m..."
+        call_android_package_manager uninstall --user 0 "${PACKAGE}"
     done
 }
 
