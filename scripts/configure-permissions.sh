@@ -152,6 +152,8 @@ function set_android_permission() {
         elif [[ "${PERMISSION}" == "storage" ]]; then
             toggle_android_permission "${PACKAGE}" "android.permission.READ_EXTERNAL_STORAGE" "${VALUE}"
             toggle_android_permission "${PACKAGE}" "android.permission.WRITE_EXTERNAL_STORAGE" "${VALUE}"
+        elif [[ "${PERMISSION}" == "storage_media" ]]; then
+            toggle_android_permission "${PACKAGE}" "android.permission.ACCESS_MEDIA_LOCATION" "${VALUE}"
         else
             toggle_android_permission "${PACKAGE}" "${PERMISSION}" "${VALUE}"
         fi
@@ -316,11 +318,26 @@ if [[ "${DISTRO_FAMILY}" == "Android" ]] \
 && ${HAS_SU_PRIVILEGES}; then
     set_android_permission "com.aurora.store" "storage" true
     set_android_permission "com.best.deskclock" "org.codeaurora.permission.POWER_OFF_ALARM" true
+    set_android_permission "com.duolingo" \
+        "camera" false \
+        "contacts" false \
+        "microphone" true \
+        "storage" false \
+        "android.permission.GET_ACCOUNTS" false
     set_android_permission "com.spotify.music" \
         "camera" false \
+        "contacts" false \
         "microphone" false \
         "storage" false \
         "android.permission.GET_ACCOUNTS" false
+    set_android_permission "com.google.android.apps.photos" \
+        "contacts" false \
+        "location" false \
+        "microphone" false \
+        "phone" false \
+        "storage" true \
+        "storage_media" true \
+        "android.permission.GET_ACCOUNTS" true
     set_android_permission "com.whatsapp" \
         "location" false \
         "camera" true \
@@ -329,7 +346,8 @@ if [[ "${DISTRO_FAMILY}" == "Android" ]] \
         "phone_log" false \
         "phone" false \
         "sms" false \
-        "storage" false
+        "storage" true \
+        "android.permission.GET_ACCOUNTS" false
     set_android_permission "foundation.e.apps" "storage" true
     set_android_permission "foundation.e.calendar" \
         "calendar" true \
@@ -340,4 +358,11 @@ if [[ "${DISTRO_FAMILY}" == "Android" ]] \
         "location" true \
         "microphone" true \
         "storage" true
+    for FIREFOX_APP in "org.mozilla.fenix" "org.mozilla.firefox"; do
+        set_android_permission "${FIREFOX_APP}" \
+            "camera" false \
+            "location" false \
+            "microphone" false \
+            "storage" false
+    done
 fi
