@@ -517,26 +517,6 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
     fi
 elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
 && ${HAS_SU_PRIVILEGES}; then
-    if ! is_android_package_installed "com.android.launcher3"; then
-        # Trebuchet
-        for STOCK_LAUNCHER_LOCATION in  "/system_ext/priv-app/TrebuchetQuickStep/TrebuchetQuickStep.apk" \
-                                        "/system/product/priv-app/TrebuchetQuickStep/TrebuchetQuickStep.apk"; do
-            if [ -f "${STOCK_LAUNCHER_LOCATION}" ]; then
-                install_android_package "${STOCK_LAUNCHER_LOCATION}" "com.android.launcher3"
-                break
-            fi
-        done
-    fi
-    if ! is_android_package_installed "foundation.e.blisslauncher"; then
-        # Bliss Launcher
-        for STOCK_LAUNCHER_LOCATION in  "/system/priv-app/BlissLauncher/BlissLauncher.apk"; do
-            if [ -f "${STOCK_LAUNCHER_LOCATION}" ]; then
-                install_android_package "${STOCK_LAUNCHER_LOCATION}" "foundation.e.blisslauncher"
-                break
-            fi
-        done
-    fi
-
     # App stores
     install_android_remote_package "https://files.auroraoss.com/AuroraStore/Stable/AuroraStore_4.1.1.apk" "com.aurora.store" # Aurora Store
 

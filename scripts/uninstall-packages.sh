@@ -153,12 +153,6 @@ elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
         uninstall_android_package "foundation.e.message"
     fi
 
-    # Launchers
-    if is_android_package_installed "com.teslacoilsw.launcher"; then
-        #uninstall_android_package "com.android.launcher3"      # Also contains the app switcher, it should not be removed
-        #uninstall_android_package "foundation.e.blisslauncher" # Also cintains the app switcher, it should not be removed
-    fi
-
     # Music players
     uninstall_android_package "org.lineageos.eleven"
     uninstall_android_package "com.xiaomi.mimusic2"
