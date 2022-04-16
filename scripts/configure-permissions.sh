@@ -12,7 +12,13 @@ function set_linux_permission() {
         exit 1
     fi
 
-    local IS_FLATPAK=$(is_flatpak_installed "${APPLICATION}")
+    local IS_SYSTEM_INSTALLED=false
+    local IS_FLATPAK_INSTALLED=false
+
+    is_flatpak_installed "${APPLICATION}" && IS_FLATPAK_INSTALLED=true
+    [ -f "${ROOT_USR_SHARE}/applications/${APPLICATION}.desktop" ] && IS_SYSTEM_INSTALLED=true
+
+    ! ${IS_SYSTEM_APP} && ! ${IS_FLATPAK_INSTALLED} && return
 
     local PAIRS_COUNT=$(($# / 2))
     for I in $(seq 1 ${PAIRS_COUNT}); do
@@ -25,7 +31,7 @@ function set_linux_permission() {
             set_gsetting "${GSETTING_SCHEMA}" enable "${STATE}"
         fi
 
-        if ${IS_FLATPAK}; then
+        if ${IS_FLATPAK_INSTALLED}; then
             if [[ "${PERMISSION}" == "background" ]]; then
                 set_flatpak_permission "${APPLICATION}" "background" "background" "${STATE}"
             elif [[ "${PERMISSION}" == "location" ]]; then
@@ -265,6 +271,8 @@ if does_bin_exist "flatpak"; then
         "background" false \
         "notification" true \
         "location" false
+    set_linux_permission "org.gnome.Settings" "notification" false
+    set_linux_permission "org.gnome.Terminal" "notification" false
     set_linux_permission "org.gnome.TextEditor" \
         "background" false \
         "notification" false \
@@ -297,6 +305,11 @@ if does_bin_exist "flatpak"; then
         "background" false \
         "notification" false \
         "location" false
+    set_linux_permission "ro.go.hmlendea.Sokogrump" \
+        "background" false \
+        "notification" false \
+        "location" false
+    set_linux_permission "visual-studio-code" "notification" false
 fi
 
 if [[ "${DISTRO_FAMILY}" == "Android" ]] \
