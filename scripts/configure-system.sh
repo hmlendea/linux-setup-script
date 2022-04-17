@@ -1096,17 +1096,37 @@ if does_bin_exist "gnome-shell"; then
     set_gsetting org.gnome.desktop.peripherals.mouse accel-profile "flat"
     set_gsetting org.gnome.desktop.peripherals.mouse speed 0.17999999999999999 # 0.18 can't be set
 
-    SEARCH_PROVIDERS=""
-    does_bin_exist "org.gnome.Calculator" && SEARCH_PROVIDERS="${SEARCH_PROVIDERS}, 'org.gnome.Calculator.desktop'"
-    does_bin_exist "org.gnome.Calendar" && SEARCH_PROVIDERS="${SEARCH_PROVIDERS}, 'org.gnome.Calendar.desktop'"
-    does_bin_exist "org.gnome.clocks" && SEARCH_PROVIDERS="${SEARCH_PROVIDERS}, 'org.gnome.clocks.desktop'"
-    does_bin_exist "org.gnome.Weather" && SEARCH_PROVIDERS="${SEARCH_PROVIDERS}, 'org.gnome.Weather.desktop'"
-    SEARCH_PROVIDERS=$(echo "${SEARCH_PROVIDERS}" | sed 's/^\s*,*\s*//g')
+    ENABLED_SEARCH_PROVIDERS=""
+    DISABLED_SEARCH_PROVIDERS=""
 
-    if [ -n "${SEARCH_PROVIDERS}" ]; then
-        set_gsetting org.gnome.desktop.search-providers enabled "[${SEARCH_PROVIDERS}]"
+    # Enabled ones - order is important
+    does_bin_exist "org.gnome.Calculator" && ENABLED_SEARCH_PROVIDERS="${ENABLED_SEARCH_PROVIDERS}, 'org.gnome.Calculator.desktop'"
+    does_bin_exist "org.gnome.Weather" && ENABLED_SEARCH_PROVIDERS="${ENABLED_SEARCH_PROVIDERS}, 'org.gnome.Weather.desktop'"
+    does_bin_exist "org.gnome.clocks" && ENABLED_SEARCH_PROVIDERS="${ENABLED_SEARCH_PROVIDERS}, 'org.gnome.clocks.desktop'"
+    does_bin_exist "org.gnome.Calendar" && ENABLED_SEARCH_PROVIDERS="${ENABLED_SEARCH_PROVIDERS}, 'org.gnome.Calendar.desktop'"
+    does_bin_exist "org.gnome.Contacts" && ENABLED_SEARCH_PROVIDERS="${ENABLED_SEARCH_PROVIDERS}, 'org.gnome.Contacts.desktop'"
+    does_bin_exist "gnome-software" && ENABLED_SEARCH_PROVIDERS="${ENABLED_SEARCH_PROVIDERS}, 'org.gnome.Software.desktop'"
+    does_bin_exist "org.gnome.Settings" && ENABLED_SEARCH_PROVIDERS="${ENABLED_SEARCH_PROVIDERS}, 'org.gnome.Settings.desktop'"
+
+    # Disabled ones
+    does_bin_exist "gnome-terminal" && DISABLED_SEARCH_PROVIDERS="${DISABLED_SEARCH_PROVIDERS}, 'org.gnome.Terminal.desktop'"
+    does_bin_exist "nautilus" && DISABLED_SEARCH_PROVIDERS="${DISABLED_SEARCH_PROVIDERS}, 'org.gnome.Nautilus.desktop'"
+
+    ENABLED_SEARCH_PROVIDERS=$(echo "${ENABLED_SEARCH_PROVIDERS}" | sed 's/^\s*,*\s*//g')
+    DISABLED_SEARCH_PROVIDERS=$(echo "${DISABLED_SEARCH_PROVIDERS}" | sed 's/^\s*,*\s*//g')
+
+    if [ -n "${ENABLED_SEARCH_PROVIDERS}" ]; then
+        set_gsetting org.gnome.desktop.search-providers enabled "[${ENABLED_SEARCH_PROVIDERS}]"
+        set_gsetting org.gnome.desktop.search-providers sort-order "[${ENABLED_SEARCH_PROVIDERS}]"
     else
         set_gsetting org.gnome.desktop.search-providers enabled "@as []"
+        set_gsetting org.gnome.desktop.search-providers sort-order "@as []"
+    fi
+
+    if [ -n "${DISABLED_SEARCH_PROVIDERS}" ]; then
+        set_gsetting org.gnome.desktop.search-providers disabled "[${DISABLED_SEARCH_PROVIDERS}]"
+    else
+        set_gsetting org.gnome.desktop.search-providers disabled "@as []"
     fi
 fi
 if does_bin_exist "mutter"; then
