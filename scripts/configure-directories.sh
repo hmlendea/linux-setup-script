@@ -23,4 +23,5 @@ if [[ "${OS}" == "Android" ]]; then
     create_symlink "${ANDROID_USER_STORAGE_DIR}/Music" "${HOME_MUSIC}"
     create_symlink "${ANDROID_USER_STORAGE_DIR}/Movies" "${HOME_VIDEOS}"
     create_symlink "${ANDROID_USER_STORAGE_DIR}/Pictures" "${HOME_PICTURES}"
+    create_symlink "${ANDROID_USER_STORAGE_DIR}/Public" "${HOME_PUBLIC}"
 fi
