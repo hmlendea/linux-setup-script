@@ -122,7 +122,9 @@ function set_android_permission() {
         local PERMISSION="${1}" && shift
         local VALUE="${1}" && shift
 
-        if [[ "${PERMISSION}" == "calendar" ]]; then
+        if [[ "${PERMISSION}" == "accounts_get" ]]; then
+            toggle_android_permission "${PACKAGE}" "android.permission.GET_ACCOUNTS" "${VALUE}"
+        elif [[ "${PERMISSION}" == "calendar" ]]; then
             toggle_android_permission "${PACKAGE}" "android.permission.READ_CALENDAR" "${VALUE}"
             toggle_android_permission "${PACKAGE}" "android.permission.WRITE_CALENDAR" "${VALUE}"
         elif [[ "${PERMISSION}" == "camera" ]]; then
@@ -137,6 +139,11 @@ function set_android_permission() {
         elif [[ "${PERMISSION}" == "location" ]]; then
             toggle_android_permission "${PACKAGE}" "android.permission.ACCESS_COARSE_LOCATION" "${VALUE}"
             toggle_android_permission "${PACKAGE}" "android.permission.ACCESS_FINE_LOCATION" "${VALUE}"
+        elif [[ "${PERMISSION}" == "location" ]]; then
+            toggle_android_permission "${PACKAGE}" "android.permission.ACCESS_COARSE_LOCATION" "${VALUE}"
+            toggle_android_permission "${PACKAGE}" "android.permission.ACCESS_FINE_LOCATION" "${VALUE}"
+        elif [[ "${PERMISSION}" == "location_background" ]]; then
+            toggle_android_permission "${PACKAGE}" "android.permission.ACCESS_BACKGROUND_LOCATION" "${VALUE}"
         elif [[ "${PERMISSION}" == "microphone" ]]; then
             toggle_android_permission "${PACKAGE}" "android.permission.RECORD_AUDIO" "${VALUE}"
         elif [[ "${PERMISSION}" == "phone_log" ]]; then
@@ -146,14 +153,22 @@ function set_android_permission() {
             toggle_android_permission "${PACKAGE}" "android.permission.CALL_PHONE" "${VALUE}"
             toggle_android_permission "${PACKAGE}" "android.permission.READ_PHONE_NUMBERS" "${VALUE}"
             toggle_android_permission "${PACKAGE}" "android.permission.READ_PHONE_STATE" "${VALUE}"
+        elif [[ "${PERMISSION}" == "physical_activity" ]]; then
+            toggle_android_permission "${PACKAGE}" "android.permission.ACTIVITY_RECOGNITION" "${VALUE}"
         elif [[ "${PERMISSION}" == "sms" ]]; then
+            toggle_android_permission "${PACKAGE}" "android.permission.READ_SMS" "${VALUE}"
+            toggle_android_permission "${PACKAGE}" "android.permission.RECEIVE_MMS" "${VALUE}"
             toggle_android_permission "${PACKAGE}" "android.permission.RECEIVE_SMS" "${VALUE}"
             toggle_android_permission "${PACKAGE}" "android.permission.SEND_SMS" "${VALUE}"
         elif [[ "${PERMISSION}" == "storage" ]]; then
             toggle_android_permission "${PACKAGE}" "android.permission.READ_EXTERNAL_STORAGE" "${VALUE}"
             toggle_android_permission "${PACKAGE}" "android.permission.WRITE_EXTERNAL_STORAGE" "${VALUE}"
+        elif [[ "${PERMISSION}" == "storage_read" ]]; then
+            toggle_android_permission "${PACKAGE}" "android.permission.READ_EXTERNAL_STORAGE" "${VALUE}"
         elif [[ "${PERMISSION}" == "storage_media" ]]; then
             toggle_android_permission "${PACKAGE}" "android.permission.ACCESS_MEDIA_LOCATION" "${VALUE}"
+        elif [[ "${PERMISSION}" == "storage_write" ]]; then
+            toggle_android_permission "${PACKAGE}" "android.permission.WRITE_EXTERNAL_STORAGE" "${VALUE}"
         else
             toggle_android_permission "${PACKAGE}" "${PERMISSION}" "${VALUE}"
         fi
@@ -316,29 +331,61 @@ fi
 
 if [[ "${DISTRO_FAMILY}" == "Android" ]] \
 && ${HAS_SU_PRIVILEGES}; then
+    set_android_permission "ch.protonmail.android" \
+        "accounts_get" false \
+        "contacts_read" true \
+        "storage" true
     set_android_permission "com.aurora.store" "storage" true
+    set_android_permission "com.beemdevelopment.aegis" "camera" true
+    set_android_permission "com.bumble.app" \
+        "accounts_get" false \
+        "camera" false \
+        "contacts" false \
+        "location" true \
+        "microphone" false \
+        "phone" false \
+        "storage" false
     set_android_permission "com.best.deskclock" "org.codeaurora.permission.POWER_OFF_ALARM" true
     set_android_permission "com.duolingo" \
+        "accounts_get" false \
         "camera" false \
         "contacts" false \
         "microphone" true \
-        "storage" false \
-        "android.permission.GET_ACCOUNTS" false
+        "storage" false
     set_android_permission "com.spotify.music" \
+        "accounts_get" false \
         "camera" false \
         "contacts" false \
         "microphone" false \
-        "storage" false \
-        "android.permission.GET_ACCOUNTS" false
+        "storage" false
+    set_android_permission "com.revolut.revolut" \
+        "accounts_get" false \
+        "camera" false \
+        "contacts" true \
+        "location" false \
+        "microphone" false \
+        "phone" false \
+        "storage" false
     set_android_permission "com.google.android.apps.photos" \
+        "accounts_get" true \
         "contacts" false \
         "location" false \
         "microphone" false \
         "phone" false \
         "storage" true \
-        "storage_media" true \
-        "android.permission.GET_ACCOUNTS" true
+        "storage_media" true
+    set_android_permission "com.odysee.app" "storage" false
+    set_android_permission "com.secuso.privacyFriendlyCodeScanner" "camera" true
+    set_android_permission "com.vanced.android.youtube" \
+        "accounts_get" false \
+        "camera" false \
+        "contacts" false \
+        "location" false \
+        "microphone" false \
+        "phone" false \
+        "storage" false
     set_android_permission "com.whatsapp" \
+        "accounts_get" false \
         "location" false \
         "camera" true \
         "contacts" true \
@@ -346,13 +393,37 @@ if [[ "${DISTRO_FAMILY}" == "Android" ]] \
         "phone_log" false \
         "phone" false \
         "sms" false \
-        "storage" true \
-        "android.permission.GET_ACCOUNTS" false
+        "storage" true
+    set_android_permission "com.x8bit.bitwarden" \
+        "camera" false \
+        "storage" false
+    set_android_permission "de.stocard.stocard" \
+        "camera" false \
+        "location" false \
+        "location_background" false \
+        "storage" false
     set_android_permission "foundation.e.apps" "storage" true
     set_android_permission "foundation.e.calendar" \
         "calendar" true \
         "contacts_read" true \
         "storage" true
+    set_android_permission "io.homeassistant.companion.android.minimal" \
+        "camera" false \
+        "location" false \
+        "location_background" false \
+        "microphone" false \
+        "phone" false \
+        "physical_activity" false \
+        "storage" false
+    set_android_permission "me.austinhuang.instagrabber" \
+        "camera" false \
+        "microphone" false \
+        "storage" false
+    set_android_permission "net.osmand" \
+        "camera" false \
+        "location" true \
+        "microphone" false \
+        "storage" false
     set_android_permission "org.codeaurora.snapcam" \
         "camera" true \
         "location" true \
@@ -365,4 +436,19 @@ if [[ "${DISTRO_FAMILY}" == "Android" ]] \
             "microphone" false \
             "storage" false
     done
+    set_android_permission "org.thoughtcrime.securesms" \
+        "accounts_get" false \
+        "location" false \
+        "calendar" false \
+        "camera" true \
+        "contacts" true \
+        "microphone" true \
+        "phone" false \
+        "sms" true \
+        "storage_read" true
+    set_android_permission "wangdaye.com.geometricweather" \
+        "location" true \
+        "location_background" true \
+        "phone" false \
+        "storage" false
 fi
