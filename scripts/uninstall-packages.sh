@@ -114,7 +114,9 @@ elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
     # App stores
     if is_android_package_installed "com.aurora.store" \
     || is_android_package_installed "foundation.e.apps"; then
-        uninstall_android_package "com.android.vending"
+        if ! sudo test -d "/system/priv-app/FakeStore"; then
+            uninstall_android_package "com.android.vending"
+        fi
     fi
 
     if is_android_package_installed "foundation.e.apps"; then
