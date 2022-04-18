@@ -252,6 +252,10 @@ if does_bin_exist "flatpak"; then
         "background" false \
         "notification" true \
         "location" true
+    set_linux_permission "org.gnome.Cheese" \
+        "background" false \
+        "notification" false \
+        "location" true
     set_linux_permission "org.gnome.clocks" \
         "background" true \
         "notification" true \
