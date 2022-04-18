@@ -158,10 +158,13 @@ done
 ##############
 ### CAMERA ###
 ##############
-set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Cheese.desktop" \
-    Name "Camera" \
-    Name[ro] "Cameră" \
-    Icon "camera"
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Cheese.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Cheese.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Camera" \
+        Name[ro] "Cameră" \
+        Icon "camera"
+done
 
 #################
 ### CHAT APPS ###

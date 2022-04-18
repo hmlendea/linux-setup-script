@@ -341,6 +341,9 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
             install_native_package_dependency gvfs-google
         fi
 
+        # Camera app
+        install_flatpak "org.gnome.Cheese"
+
         ! ${POWERFUL_PC} && install_native_package plank
 
         # GNOME Shell Extensions
