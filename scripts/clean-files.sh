@@ -77,6 +77,7 @@ remove "${ROOT_ETC}/motd"
 ! does_bin_exist "gnome-photos" && remove \
     "${HOME_CACHE}/gnome-photos" \
     "${HOME_LOCAL_SHARE}/gnome-photos"
+! does_bin_exist "gnome-screenshot" && remove "${HOME_CACHE}/gnome-screenshot"
 ! does_bin_exist "gnome-software" && remove "${HOME_CACHE}/gnome-software"
 ! does_bin_exist "gnome-sound-recorder" && remove "${HOME_LOCAL_SHARE}/org.gnome.SoundRecorder"
 ! does_bin_exist "gnubg" && remove "${HOME}/.gnubg"
@@ -92,6 +93,7 @@ remove "${ROOT_ETC}/motd"
 ! does_bin_exist "gradle" && remove "${HOME}.gradle"
 ! does_bin_exist "hardinfo" && remove "${HOME_CONFIG}/hardinfo"
 ! does_bin_exist "hashcat" && remove \
+    "${HOME_CACHE}/hashcat" \
     "${HOME_CONFIG}/hashcat" \
     "${HOME_LOCAL_SHARE}/hashcat"
 ! does_bin_exist "inkscape" && remove \
@@ -140,6 +142,7 @@ remove "${ROOT_ETC}/motd"
     "${HOME_LOCAL_SHARE}/plank"
 ! does_bin_exist "plexmediaplayer" && remove \
     "${HOME_CACHE}/plex-media-player" \
+    "${HOME_CACHE}/plexmediaplayer" \
     "${HOME_CONFIG}/plex.tv" \
     "${HOME_LOCAL_SHARE}/plexmediaplayer"
 ! does_bin_exist "postman" && \
@@ -220,11 +223,14 @@ done
 ! is_steam_app_installed "200510" && remove "${HOME_LOCAL_SHARE}/feral-interactive/XCOM"
 ! is_steam_app_installed "203160" && remove "${HOME_LOCAL_SHARE}/feral-interactive/Tomb Raider"
 ! is_steam_app_installed "200710" && remove "${HOME_LOCAL_SHARE}/Runic Games/Torchlight 2"
+! is_steam_app_installed "206690" && remove "${HOME}/.ibomberdefensepacific"
 ! is_steam_app_installed "215510" && remove "${HOME_LOCAL_SHARE}/rocketbirds"
+! is_steam_app_installed "218660" && remove "${HOME}/.Cobra Mobile/iBomber Attack"
 ! is_steam_app_installed "219150" && remove "${HOME_LOCAL_SHARE}/HotlineMiami"
 ! is_steam_app_installed "246110" && remove "${HOME_LOCAL_SHARE}/doublefine/massivechalice"
 ! is_steam_app_installed "250820" && remove \
     "${HOME}/steamvr" \
+    "${HOME_CACHE}/SteamVR" \
     "${HOME_CONFIG}/openvr" \
     "${HOME_CONFIG}/openxr" \
     "${HOME_CONFIG}/Valve/vrmonitor.conf" \
@@ -297,6 +303,7 @@ if [ -d "${HOME_LOCAL_SHARE}/applications" ] \
 fi
 
 # Empty directories
+remove_dir_if_empty "${HOME}/.Cobra Mobile"
 remove_dir_if_empty "${HOME}/.w3m"
 remove_dir_if_empty "${HOME_CACHE}/ArtifexMundi"
 remove_dir_if_empty "${HOME_CACHE}/Microsoft"
@@ -309,13 +316,13 @@ remove_dir_if_empty "${HOME_CONFIG}/Valve"
 remove_dir_if_empty "${HOME_LOCALF_SHARE}/ags"
 remove_dir_if_empty "${HOME_LOCAL_SHARE}/Aspyr"
 remove_dir_if_empty "${HOME_LOCAL_SHARE}/cdprojektred"
-remove_dir_if_empty "${HOME_LOCAL_SHARE}/Daedalic\ Entertainment"
+remove_dir_if_empty "${HOME_LOCAL_SHARE}/Daedalic Entertainment"
 remove_dir_if_empty "${HOME_LOCAL_SHARE}/doublefine"
 remove_dir_if_empty "${HOME_LOCAL_SHARE}/feral-interactive"
-remove_dir_if_empty "${HOME_LOCAL_SHARE}/Firebrand\ Games"
+remove_dir_if_empty "${HOME_LOCAL_SHARE}/Firebrand Games"
 remove_dir_if_empty "${HOME_LOCAL_SHARE}/gegl-0.4"
 remove_dir_if_empty "${HOME_LOCAL_SHARE}/pixmaps"
-remove_dir_if_empty "${HOME_LOCAL_SHARE}/Runic\ Games"
+remove_dir_if_empty "${HOME_LOCAL_SHARE}/Runic Games"
 remove_dir_if_empty "${HOME_LOCAL_SHARE}/twotribes"
 remove_dir_if_empty "${HOME_LOCAL_SHARE}/xorg"
 

@@ -123,15 +123,14 @@ function remove() {
 }
 
 function remove_dir_if_empty() {
-    for PATH_TO_REMOVE in "${@}"; do
-        PATH_TO_REMOVE=$(echo "${PATH_TO_REMOVE}" | sed \
-                            -e 's/^\s*//g' \
-                            -e 's/\s*$//g')
-        remove_empty_subdirectories "${PATH_TO_REMOVE}"
+    local PATH_TO_REMOVE="${*}"
+    PATH_TO_REMOVE=$(echo "${PATH_TO_REMOVE}" | sed \
+                        -e 's/^\s*//g' \
+                        -e 's/\s*$//g')
+    remove_empty_subdirectories "${PATH_TO_REMOVE}"
 
-        [ ! -d "${PATH_TO_REMOVE}" ] && continue
-        [ ! "$(ls ${PATH_TO_REMOVE})" ] && remove "${PATH_TO_REMOVE}"
-    done
+    [ ! -d "${PATH_TO_REMOVE}" ] && return
+    [ ! "$(ls ${PATH_TO_REMOVE})" ] && remove "${PATH_TO_REMOVE}"
 }
 
 function remove_empty_subdirectories() {
