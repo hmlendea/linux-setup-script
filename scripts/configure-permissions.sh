@@ -25,10 +25,20 @@ function set_linux_permission() {
         local PERMISSION="${1}" && shift
         local STATE="${1}" && shift
 
+        local GSETTING_SCHEMA="/org/gnome/desktop/notifications/application/$(echo ${APPLICATION} | sed 's/\./-/g' | tr '[:upper:]' '[:lower:]')/"
+        GSETTING_SCHEMA="org.gnome.desktop.notifications.application:${GSETTING_SCHEMA}"
+
         if [[ "${PERMISSION}" == "notification" ]]; then
-            local GSETTING_SCHEMA="/org/gnome/desktop/notifications/application/$(echo ${APPLICATION} | sed 's/\./-/g' | tr '[:upper:]' '[:lower:]')/"
-            GSETTING_SCHEMA="org.gnome.desktop.notifications.application:${GSETTING_SCHEMA}"
             set_gsetting "${GSETTING_SCHEMA}" enable "${STATE}"
+
+            if [[ "${STATE}" == "false" ]]; then
+                set_gsetting "${GSETTING_SCHEMA}" show-banners false
+                set_gsetting "${GSETTING_SCHEMA}" show-in-lock-screen false
+            fi
+        elif [[ "${PERMISSION}" == "notification_banner" ]]; then
+            set_gsetting "${GSETTING_SCHEMA}" show-banners "${STATE}"
+        elif [[ "${PERMISSION}" == "notification_lockscreen" ]]; then
+            set_gsetting "${GSETTING_SCHEMA}" show-in-lock-screen "${STATE}"
         fi
 
         if ${IS_FLATPAK_INSTALLED}; then
@@ -183,6 +193,8 @@ if does_bin_exist "flatpak"; then
     set_linux_permission "com.discordapp.Discord" \
         "background" true \
         "notification" true \
+        "notification_banner" true \
+        "notification_lockscreen" true \
         "location" false
     set_linux_permission "com.brave.Browser" \
         "background" false \
@@ -191,6 +203,8 @@ if does_bin_exist "flatpak"; then
     set_linux_permission "com.microsoft.Teams" \
         "background" false \
         "notification" true \
+        "notification_banner" true \
+        "notification_lockscreen" true \
         "location" false
     set_linux_permission "com.mojang.Minecraft" \
         "background" false \
@@ -211,10 +225,14 @@ if does_bin_exist "flatpak"; then
     set_linux_permission "com.spotify.Client" \
         "background" false \
         "notification" true \
+        "notification_banner" false \
+        "notification_lockscreen" true \
         "location" false
     set_linux_permission "com.github.vladimiry.ElectronMail" \
         "background" true \
         "notification" true \
+        "notification_banner" true \
+        "notification_lockscreen" true \
         "location" false
     set_linux_permission "com.valvesoftware.Steam" \
         "background" true \
@@ -227,6 +245,8 @@ if does_bin_exist "flatpak"; then
     set_linux_permission "de.haeckerfelix.Fragments" \
         "background" true \
         "notification" true \
+        "notification_banner" true \
+        "notification_lockscreen" false \
         "location" false
     set_linux_permission "io.github.hmlendea.geforcenow-electron" \
         "background" false \
@@ -243,6 +263,8 @@ if does_bin_exist "flatpak"; then
     set_linux_permission "org.gnome.baobab" \
         "background" false \
         "notification" true \
+        "notification_banner" false \
+        "notification_lockscreen" false \
         "location" false
     set_linux_permission "org.gnome.Calculator" \
         "background" false \
@@ -251,6 +273,8 @@ if does_bin_exist "flatpak"; then
     set_linux_permission "org.gnome.Calendar" \
         "background" false \
         "notification" true \
+        "notification_banner" true \
+        "notification_lockscreen" true \
         "location" true
     set_linux_permission "org.gnome.Cheese" \
         "background" false \
@@ -259,6 +283,8 @@ if does_bin_exist "flatpak"; then
     set_linux_permission "org.gnome.clocks" \
         "background" true \
         "notification" true \
+        "notification_banner" true \
+        "notification_lockscreen" true \
         "location" false
     set_linux_permission "org.gnome.Contacts" \
         "background" false \
@@ -275,6 +301,8 @@ if does_bin_exist "flatpak"; then
     set_linux_permission "org.gnome.FileRoller" \
         "background" true \
         "notification" true \
+        "notification_banner" true \
+        "notification_lockscreen" false \
         "location" false
     set_linux_permission "org.gnome.gedit" \
         "background" false \
@@ -291,6 +319,8 @@ if does_bin_exist "flatpak"; then
     set_linux_permission "org.gnome.Rhythmbox3" \
         "background" false \
         "notification" true \
+        "notification_banner" false \
+        "notification_lockscreen" true \
         "location" false
     set_linux_permission "org.gnome.Settings" "notification" false
     set_linux_permission "org.gnome.Terminal" "notification" false
@@ -317,10 +347,14 @@ if does_bin_exist "flatpak"; then
     set_linux_permission "org.signal.Signal" \
         "background" true \
         "notification" true \
+        "notification_banner" true \
+        "notification_lockscreen" true \
         "location" false
     set_linux_permission "org.telegram.desktop" \
         "background" true \
         "notification" true \
+        "notification_banner" true \
+        "notification_lockscreen" true \
         "location" false
     set_linux_permission "ro.go.hmlendea.DL-Desktop" \
         "background" false \
