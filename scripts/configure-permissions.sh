@@ -234,10 +234,12 @@ if does_bin_exist "flatpak"; then
         "notification_banner" true \
         "notification_lockscreen" true \
         "location" false
-    set_linux_permission "com.valvesoftware.Steam" \
-        "background" true \
-        "notification" false \
-        "location" false
+    for APP in "com.valvesoftware.Steam" "steam"; do
+        set_linux_permission "${APP}" \
+            "background" true \
+            "notification" false \
+            "location" false
+    done
     set_linux_permission "com.visualstudio.code" \
         "background" false \
         "notification" false \
@@ -256,6 +258,12 @@ if does_bin_exist "flatpak"; then
         "background" false \
         "notification" false \
         "location" false
+    for APP in "org.chromium.Chromium" "chromium"; do
+        set_linux_permission "${APP}" \
+            "background" false \
+            "notification" false \
+            "location" true
+    done
     set_linux_permission "org.gimp.GIMP" \
         "background" false \
         "notification" false \
@@ -467,8 +475,8 @@ if [[ "${DISTRO_FAMILY}" == "Android" ]] \
         "location" true \
         "microphone" true \
         "storage" true
-    for FIREFOX_APP in "org.mozilla.fenix" "org.mozilla.firefox"; do
-        set_android_permission "${FIREFOX_APP}" \
+    for APP in "org.mozilla.fenix" "org.mozilla.firefox"; do
+        set_android_permission "${APP}" \
             "camera" false \
             "location" false \
             "microphone" false \
