@@ -334,6 +334,7 @@ remove \
     "${HOME}/.mozilla/firefox/Crash Reports" \
     "${HOME_VAR}/app/org.mozilla.firefox/.mozilla/firefox/Crash Reports"
 remove "${HOME_CONFIG}/logs"
+remove "${HOME_CONFIG}/unity3d"/*.log
 remove "${HOME_LOCAL_SHARE}/xorg/"*".log"
 remove "${HOME_LOCAL_SHARE}/xorg/"*".log.old"
 remove \
