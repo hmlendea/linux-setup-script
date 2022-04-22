@@ -1128,6 +1128,57 @@ if does_bin_exist "gnome-shell"; then
     else
         set_gsetting org.gnome.desktop.search-providers disabled "@as []"
     fi
+
+    FAVOURITE_APPS=""
+
+    if does_bin_exist "org.mozilla.firefox"; then
+        FAVOURITE_APPS="${FAVOURITE_APPS}, 'org.mozilla.firefox.desktop'"
+    elif does_bin_exist "firefox"; then
+        FAVOURITE_APPS="${FAVOURITE_APPS}, 'firefox.desktop'"
+    fi
+
+    does_bin_exist "gnome-terminal" && FAVOURITE_APPS="${FAVOURITE_APPS}, 'org.gnome.Terminal.desktop'"
+    does_bin_exist "nautilus" && FAVOURITE_APPS="${FAVOURITE_APPS}, 'org.gnome.Nautilus.desktop'"
+
+    if does_bin_exist "com.valvesoftware.Steam"; then
+        FAVOURITE_APPS="${FAVOURITE_APPS}, 'com.valvesoftware.Steam.desktop'"
+    elif does_bin_exist "steam"; then
+        FAVOURITE_APPS="${FAVOURITE_APPS}, 'steam.desktop'"
+    fi
+
+    if does_bin_exist "org.telegram.desktop"; then
+        FAVOURITE_APPS="${FAVOURITE_APPS}, 'org.telegram.desktop.desktop'"
+    elif does_bin_exist "telegram-desktop"; then
+        FAVOURITE_APPS="${FAVOURITE_APPS}, 'telegramdesktop.desktop'"
+    fi
+
+    if does_bin_exist "org.signal.Signal"; then
+        FAVOURITE_APPS="${FAVOURITE_APPS}, 'org.signal.Signal.desktop'"
+    elif does_bin_exist "signal-desktop"; then
+        FAVOURITE_APPS="${FAVOURITE_APPS}, 'signal-desktop.desktop'"
+    fi
+
+    does_bin_exist "whatsapp-nativefier" && FAVOURITE_APPS="${FAVOURITE_APPS}, 'whatsapp-nativefier.desktop'"
+
+    if does_bin_exist "com.github.vladimiry.ElectronMail"; then
+        FAVOURITE_APPS="${FAVOURITE_APPS}, 'com.github.vladimiry.ElectronMail.desktop'"
+    elif does_bin_exist "electronmail-bin"; then
+        FAVOURITE_APPS="${FAVOURITE_APPS}, 'electron-mail.desktop'"
+    fi
+
+    if does_bin_exist "com.simplenote.Simplenote"; then
+        FAVOURITE_APPS="${FAVOURITE_APPS}, 'com.simplenote.Simplenote.desktop'"
+    elif does_bin_exist "simplenote"; then
+        FAVOURITE_APPS="${FAVOURITE_APPS}, 'simplenote.desktop'"
+    fi
+
+    FAVOURITE_APPS=$(echo "${FAVOURITE_APPS}" | sed 's/^\s*,*\s*//g')
+
+    if [ -n "${FAVOURITE_APPS}" ]; then
+        set_gsetting "org.gnome.shell" favorite-apps "[${FAVOURITE_APPS}]"
+    else
+        set_gsetting "org.gnome.shell" favorite-apps "@as []"
+    fi
 fi
 if does_bin_exist "mutter"; then
     MUTTER_KEYBINDINGS_SCHEMA="org.gnome.desktop.wm.keybindings"
