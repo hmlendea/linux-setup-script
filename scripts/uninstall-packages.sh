@@ -44,6 +44,7 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "gnome-font-viewer"            # Replaced by flatpak: org.gnome.font-viewer
     uninstall_native_package "gnome-maps"                   # Replaced by flatpak: org.gnome.Maps
     uninstall_native_package "gnome-network-displays"       # Replaced by flatpak: org.gnome.NetworkDisplays
+    uninstall_native_package "gnome-screenshot"             # Integrated in GNOME Shell itself since version 42
     uninstall_native_package "gnome-weather"                # Replaced by flatpak: org.gnome.Weather
     uninstall_native_package "grub2-theme-vimix"            # Replaced by grub2-theme-nuci
     uninstall_native_package "inkscape"                     # Replaced by flatpak: org.inkscape.Inkscape
