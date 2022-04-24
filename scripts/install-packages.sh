@@ -75,7 +75,7 @@ fi
 ### Monitoring ###
 ##################
 if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-    install_native_package fastfetch-git
+    install_native_package fastfetch
 else
     install_native_package neofetch
 fi

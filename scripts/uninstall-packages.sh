@@ -33,6 +33,7 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "chrome-gnome-shell"           # Does not work with flatpak browsers
     uninstall_native_package "dconf-editor"                 # Replaced by flatpak: ca.desrt.dconf-editor
     uninstall_native_package "eog-plugins" "eog"            # Replaced by flatpak: org.gnome.eog
+    uninstall_native_package "fastfetch-git"                # Replaced by fastfetch
     uninstall_native_package "file-roller"                  # Replaced by flatpak: org.gnome.FileRoller
     uninstall_native_package "firefox"                      # Replaced by flatpak: org.mozilla.firefox
     uninstall_native_package "fragments"                    # Replaced by flatpak: de.haeckerfelix.Fragments
