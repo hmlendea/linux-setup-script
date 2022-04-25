@@ -121,6 +121,7 @@ fi
 ################
 install_native_package cabextract
 install_native_package unzip
+install_native_package zip
 
 if [[ "${DISTRO_FAMILY}" == "Arch" ]] \
 || [[ "${DISTRO_FAMILY}" == "Android" ]]; then
@@ -438,7 +439,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
         install_flatpak org.gnome.Totem
         install_flatpak com.spotify.Client
 
-        install_native_package_dependency gst-plugins-ugly
+        #install_native_package_dependency gst-plugins-ugly
         install_native_package_dependency gst-libav
 
         if ${POWERFUL_PC}; then
