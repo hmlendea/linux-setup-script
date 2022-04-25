@@ -73,6 +73,7 @@ remove "${ROOT_ETC}/motd"
     remove "${HOME_CONFIG}/GIMP"
 ! does_bin_exist "gkraken" && remove "${HOME_CONFIG}/gkraken"
 ! does_bin_exist "gksu" && remove "${HOME}/.gksu.lock"
+! does_bin_exist "gmic" && remove "${HOME_CONFIG}/gmic"
 ! does_bin_exist "gnome-calculator" && remove "${HOME_CACHE}/gnome-calculator"
 ! does_bin_exist "gnome-photos" && remove \
     "${HOME_CACHE}/gnome-photos" \
@@ -233,6 +234,7 @@ done
     "${HOME_CACHE}/SteamVR" \
     "${HOME_CONFIG}/openvr" \
     "${HOME_CONFIG}/openxr" \
+    "${HOME_CONFIG}/unity3d/Valve/SteamVR\ Room\ Setup" \
     "${HOME_CONFIG}/Valve/vrmonitor.conf" \
     "${HOME_LOCAL_SHARE}/applications/valve-vrmonitor.desktop"
 ! is_steam_app_installed "251910" && remove "${HOME_LOCAL_SHARE}/Firebrand Games/Solar Flux"
@@ -244,9 +246,11 @@ done
 ! is_steam_app_installed "322330" && remove \
     "${HOME}/.klei/DoNotStarveTogether" \
     "${HOME}/.klei/DoNotStarveTogetherBetaBranch"
+! is_steam_app_installed "356040" && remove "${STEAM_CONFIG}/unity3d/Team17/Sheltered"
 ! is_steam_app_installed "370360" && remove \
     "${HOME_CONFIG}/unity3d/Zachtronics/TIS-100" \
     "${HOME_LOCAL_SHARE}/TIS-100"
+! is_steam_app_installed "383870" && remove "${HOME_CONFIG}/unity3d/CampoSanto/Firewatch"
 ! is_steam_app_installed "385710" && remove "${HOME_CONFIG}/INK"
 ! is_steam_app_installed "434210" && remove "${HOME_CONFIG}/unity3d/BabaYaga/It's Spring Again"
 ! is_steam_app_installed "464920" && remove "${HOME_LOCAL_SHARE}/Surviving Mas"
