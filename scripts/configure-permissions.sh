@@ -497,4 +497,7 @@ if [[ "${DISTRO_FAMILY}" == "Android" ]] \
         "location_background" true \
         "phone" false \
         "storage" false
+    set_android_permission "ro.profi.store" \
+        "location" false \
+        "camera" false
 fi
