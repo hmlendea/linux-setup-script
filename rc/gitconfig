@@ -5,7 +5,7 @@
     autocrlf = input
     pager = most
     ignorecase = false
-    fileMode = false
+    filemode = false
     askpass = 
     fscache = true
 [merge]
