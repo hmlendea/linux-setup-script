@@ -489,7 +489,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
             # Development
             install_native_package dotnet-sdk
 
-            if [[ "${ARCH_FAMILY}" == "x86" ]]; then
+            if [[ "${ARCH_FAMILY}" == "x86" ]] && ! ${IS_BATTERY_DEVICE}; then
                 install_native_package electron
                 ! is_native_package_installed "chromium" && install_native_package chromedriver
             fi

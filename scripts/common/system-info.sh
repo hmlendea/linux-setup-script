@@ -475,6 +475,7 @@ POWERFUL_PC=false
 IS_DEVELOPMENT_DEVICE=false
 IS_GENERAL_PURPOSE_DEVICE=true
 IS_GAMING_DEVICE=false
+IS_BATTERY_DEVICE=false
 HAS_GUI=true
 HAS_SU_PRIVILEGES=true
 HAS_EFI_SUPPORT=false
@@ -483,10 +484,15 @@ if [ "${CHASSIS_TYPE}" = "Phone" ]; then
     POWERFUL_PC=false
     IS_GENERAL_PURPOSE_DEVICE=true
     IS_GAMING_DEVICE=false
+    IS_BATTERY_DEVICE=true
     HAS_GUI=true
     HAS_SU_PRIVILEGES=false
     HAS_EFI_SUPPORT=false
 else
+    if [ "${CHASSIS_TYPE}" = "Laptop" ]; then
+        IS_BATTERY_DEVICE=true
+    fi
+
     if [ "${ARCH_FAMILY}" = "x86" ]; then
         if [ -n "${CPU_MODEL}" ] && [ $(echo ${CPU_MODEL} | grep -c "Atom") -le 1 ]; then
             POWERFUL_PC=true
