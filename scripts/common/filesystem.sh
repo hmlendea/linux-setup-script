@@ -140,7 +140,10 @@ function remove_empty_subdirectories() {
 
     while IFS='' read -r -d '' SUB_DIRECTORY; do
         [ ! -d "${SUB_DIRECTORY}" ] && continue
-        [ ! "$(ls ${SUB_DIRECTORY})" ] && remove "${SUB_DIRECTORY}"
+        SUB_DIRECTORY_CONTENTS=$(ls -A "${SUB_DIRECTORY}")
+        if [ -z "${SUB_DIRECTORY_CONTENTS}" ]; then
+            remove "${SUB_DIRECTORY}"
+        fi
     done < <(find "${PARENT_DIRECTORY}" -maxdepth 1 -type d -print0)
 }
 
