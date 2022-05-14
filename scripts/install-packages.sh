@@ -132,7 +132,7 @@ fi
 
 if [ "${DISTRO_FAMILY}" == "Arch" ]; then
     # Package manager
-    install_aur_package_manually package-query
+    #install_aur_package_manually package-query
 
     if [[ "${ARCH}" != "armv7l" ]]; then
         install_aur_package_manually paru-bin
