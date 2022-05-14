@@ -480,10 +480,10 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
 
             if [[ "${ARCH_FAMILY}" == "x86" ]]; then
                 install_native_package dotnet-runtime
-    #            install_native_package aspnet-runtime
+                install_native_package aspnet-runtime
             elif [[ "${ARCH_FAMILY}" == "arm" ]]; then
                 install_native_package dotnet-runtime-bin
-    #            install_native_package aspnet-runtime-bin
+                install_native_package aspnet-runtime-bin
             fi
 
             # Development
