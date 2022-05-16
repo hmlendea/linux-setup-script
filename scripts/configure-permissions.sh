@@ -375,6 +375,11 @@ if does_bin_exist "flatpak"; then
         "notification_banner" true \
         "notification_lockscreen" false \
         "location" false
+    set_linux_permission "org.gnome.font-viewer" \
+        "background" false \
+        "network" false \
+        "notification" false \
+        "location" false
     set_linux_permission "org.gnome.gedit" \
         "background" false \
         "network" false \
@@ -396,6 +401,11 @@ if does_bin_exist "flatpak"; then
         "notification" true \
         "notification_banner" false \
         "notification_lockscreen" true \
+        "location" false
+    set_linux_permission "org.gnome.seahorse.Application" \
+        "background" false \
+        "network" false \
+        "notification" false \
         "location" false
     set_linux_permission "org.gnome.Settings" "notification" false
     set_linux_permission "org.gnome.Terminal" "notification" false
@@ -419,11 +429,21 @@ if does_bin_exist "flatpak"; then
         "network" false \
         "notification" false \
         "location" false
+    set_linux_permission "org.libreoffice.LibreOffice" \
+        "background" false \
+        "network" false \
+        "notification" false \
+        "location" false
     set_linux_permission "org.mozilla.firefox" \
         "background" false \
         "network" true \
         "notification" false \
         "location" true
+    set_linux_permission "org.obsproject.Studio" \
+        "background" false \
+        "network" false \
+        "notification" false \
+        "location" false
     set_linux_permission "org.signal.Signal" \
         "background" true \
         "network" true \
