@@ -103,7 +103,7 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "gnome-shell-extension-hide-activities-git"
     # Not necessary with/without system packaeg
     ! does_bin_exist "plank" && uninstall_gnome_shell_extension "dash-to-plank"
-    is_native_package_installed "gnome-shell-extension-dash-to-dock" && uninstall_gnome_shell_extension "dash-to-dock"
+    #is_native_package_installed "gnome-shell-extension-dash-to-dock" && uninstall_gnome_shell_extension "dash-to-dock"
 
     # Uninstall flatpaks
     uninstall_flatpak "org.gnome.TextEditor" # Replaced by org.gnome.gedit
