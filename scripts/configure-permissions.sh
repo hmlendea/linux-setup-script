@@ -46,6 +46,8 @@ function set_linux_permission() {
                 set_flatpak_permission "${APPLICATION}" "background" "background" "${STATE}"
             elif [[ "${PERMISSION}" == "location" ]]; then
                 set_flatpak_permission "${APPLICATION}" "location" "location" "${STATE}"
+            elif [[ "${PERMISSION}" == "network" ]]; then
+                set_flatpak_shared "${APPLICATION}" "network" "${STATE}"
             elif [[ "${PERMISSION}" == "notification" ]]; then
                 set_flatpak_permission "${APPLICATION}" "notifications" "notification" "${STATE}"
             fi
@@ -87,6 +89,41 @@ function set_flatpak_permission() {
         flatpak permission-set "${TABLE}" "${OBJECT}" "${PACKAGE}" "${VALUE}"
         echo -e "\e[0;33m${PACKAGE}\e[0m permission \e[0;32m${PERMISSION}\e[0m >>> ${VALUE}"
     fi
+}
+
+function get_flatpak_shared() {
+    local APPLICATION="${1}"
+    local OBJECT="${2}"
+    local METADATA_FILE="${ROOT_VAR_LIB}/flatpak/app/${APPLICATION}/current/active/metadata"
+    local SHARED_OBJECTS=$(grep "^shared=" "${METADATA_FILE}" | awk -F'=' '{print $2}')
+
+    if echo "${SHARED_OBJECTS}" | grep -q "${OBJECT};"; then
+        return 0 # True
+    fi
+
+    return 1 # False
+}
+
+function set_flatpak_shared() {
+    local APPLICATION="${1}"
+    local OBJECT="${2}"
+    local STATE="${3}"
+    local METADATA_FILE="${ROOT_VAR_LIB}/flatpak/app/${APPLICATION}/current/active/metadata"
+    local SHARED_OBJECTS=$(grep "^shared=" "${METADATA_FILE}" | awk -F'=' '{print $2}')
+    local CURRENT_STATE=false
+
+    get_flatpak_shared "${APPLICATION}" "${OBJECT}" && CURRENT_STATE=true
+
+    [[ "${STATE}" == "${CURRENT_STATE}" ]] && return
+
+    if ${STATE}; then
+        SHARED_OBJECTS="${OBJECT};${SHARED_OBJECTS}"
+    else
+        SHARED_OBJECTS=$(echo "${SHARED_OBJECTS}" | sed 's/'"${OBJECT}"';//g')
+    fi
+
+    run_as_su sed -i 's/^shared=.*/shared='"${SHARED_OBJECTS}"'/g' "${METADATA_FILE}"
+    echo -e "\e[0;33m${APPLICATION}\e[0m permission \e[0;32m${OBJECT}\e[0m >>> ${STATE}"
 }
 
 function get_android_permission() {
@@ -188,48 +225,58 @@ function set_android_permission() {
 if does_bin_exist "flatpak"; then
     set_linux_permission "ca.desrt.dconf-editor" \
         "background" false \
+        "network" false \
         "notification" false \
         "location" false
     set_linux_permission "com.discordapp.Discord" \
         "background" true \
+        "network" true \
         "notification" true \
         "notification_banner" true \
         "notification_lockscreen" true \
         "location" false
     set_linux_permission "com.brave.Browser" \
         "background" false \
+        "network" true \
         "notification" false \
         "location" true
     set_linux_permission "com.microsoft.Teams" \
         "background" false \
+        "network" true \
         "notification" true \
         "notification_banner" true \
         "notification_lockscreen" true \
         "location" false
     set_linux_permission "com.mojang.Minecraft" \
         "background" false \
+        "network" true \
         "notification" false \
         "location" false
     set_linux_permission "com.getpostman.Postman" \
         "background" false \
+        "network" true \
         "notification" false \
         "location" false
     set_linux_permission "com.github.tchx84.Flatseal" \
         "background" false \
+        "network" false \
         "notification" false \
         "location" false
     set_linux_permission "com.simplenote.Simplenote" \
         "background" false \
+        "network" true \
         "notification" false \
         "location" false
     set_linux_permission "com.spotify.Client" \
         "background" false \
+        "network" true \
         "notification" true \
         "notification_banner" false \
         "notification_lockscreen" true \
         "location" false
     set_linux_permission "com.github.vladimiry.ElectronMail" \
         "background" true \
+        "network" true \
         "notification" true \
         "notification_banner" true \
         "notification_lockscreen" true \
@@ -237,95 +284,115 @@ if does_bin_exist "flatpak"; then
     for APP in "com.valvesoftware.Steam" "steam"; do
         set_linux_permission "${APP}" \
             "background" true \
+            "network" true \
             "notification" false \
             "location" false
     done
     set_linux_permission "com.visualstudio.code" \
         "background" false \
+        "network" true \
         "notification" false \
         "location" false
     set_linux_permission "de.haeckerfelix.Fragments" \
         "background" true \
+        "network" true \
         "notification" true \
         "notification_banner" true \
         "notification_lockscreen" false \
         "location" false
     set_linux_permission "io.github.hmlendea.geforcenow-electron" \
         "background" false \
+        "network" true \
         "notification" false \
         "location" false
     set_linux_permission "nl.hjdskes.gcolor3" \
         "background" false \
+        "network" false \
         "notification" false \
         "location" false
     for APP in "org.chromium.Chromium" "chromium"; do
         set_linux_permission "${APP}" \
             "background" false \
+        "network" true \
             "notification" false \
             "location" true
     done
     set_linux_permission "org.gimp.GIMP" \
         "background" false \
+        "network" false \
         "notification" false \
         "location" false
     set_linux_permission "org.gnome.baobab" \
         "background" false \
+        "network" false \
         "notification" true \
         "notification_banner" false \
         "notification_lockscreen" false \
         "location" false
     set_linux_permission "org.gnome.Calculator" \
         "background" false \
+        "network" false \
         "notification" false \
         "location" false
     set_linux_permission "org.gnome.Calendar" \
         "background" false \
+        "network" true \
         "notification" true \
         "notification_banner" true \
         "notification_lockscreen" true \
         "location" true
     set_linux_permission "org.gnome.Cheese" \
         "background" false \
+        "network" false \
         "notification" false \
         "location" true
     set_linux_permission "org.gnome.clocks" \
         "background" true \
+        "network" false \
         "notification" true \
         "notification_banner" true \
         "notification_lockscreen" true \
         "location" false
     set_linux_permission "org.gnome.Contacts" \
         "background" false \
+        "network" false \
         "notification" false \
         "location" false
     set_linux_permission "org.gnome.eog" \
         "background" false \
+        "network" false \
         "notification" false \
         "location" false
     set_linux_permission "org.gnome.Evince" \
         "background" false \
+        "network" false \
         "notification" false \
         "location" false
     set_linux_permission "org.gnome.FileRoller" \
         "background" true \
+        "network" false \
         "notification" true \
         "notification_banner" true \
         "notification_lockscreen" false \
         "location" false
     set_linux_permission "org.gnome.gedit" \
         "background" false \
+        "network" false \
         "notification" false \
         "location" false
     set_linux_permission "org.gnome.Maps" \
         "background" false \
+        "network" true \
         "notification" false \
         "location" true
     set_linux_permission "org.gnome.NetworkDisplays" \
         "background" false \
+        "network" true \
         "notification" false \
         "location" false
     set_linux_permission "org.gnome.Rhythmbox3" \
         "background" false \
+        "network" false \
         "notification" true \
         "notification_banner" false \
         "notification_lockscreen" true \
@@ -334,42 +401,51 @@ if does_bin_exist "flatpak"; then
     set_linux_permission "org.gnome.Terminal" "notification" false
     set_linux_permission "org.gnome.TextEditor" \
         "background" false \
+        "network" false \
         "notification" false \
         "location" false
     set_linux_permission "org.gnome.Totem" \
         "background" false \
+        "network" true \
         "notification" false \
         "location" false
     set_linux_permission "org.gnome.Weather" \
         "background" false \
+        "network" true \
         "notification" false \
         "location" true
     set_linux_permission "org.inkscape.Inkscape" \
         "background" false \
+        "network" false \
         "notification" false \
         "location" false
     set_linux_permission "org.mozilla.firefox" \
         "background" false \
+        "network" true \
         "notification" false \
         "location" true
     set_linux_permission "org.signal.Signal" \
         "background" true \
+        "network" true \
         "notification" true \
         "notification_banner" true \
         "notification_lockscreen" true \
         "location" false
     set_linux_permission "org.telegram.desktop" \
         "background" true \
+        "network" true \
         "notification" true \
         "notification_banner" true \
         "notification_lockscreen" true \
         "location" false
     set_linux_permission "ro.go.hmlendea.DL-Desktop" \
         "background" false \
+        "network" true \
         "notification" false \
         "location" false
     set_linux_permission "ro.go.hmlendea.Sokogrump" \
         "background" false \
+        "network" false \
         "notification" false \
         "location" false
     set_linux_permission "visual-studio-code" "notification" false
