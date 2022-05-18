@@ -4,6 +4,8 @@ source "${REPO_SCRIPTS_DIR}/common/common.sh"
 source "${REPO_SCRIPTS_DIR}/common/package-management.sh"
 source "${REPO_SCRIPTS_DIR}/common/system-info.sh"
 
+INSTALL_PARTITION_EDITORS=false
+
 function get_latest_github_release_assets() {
     curl -Ls "https://api.github.com/repos/${1}/releases/latest" | \
         grep "browser_download_url" | \
@@ -141,17 +143,20 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
         install_aur_package_manually yay-bin
     fi
 
-    install_native_package pacman-contrib
-    install_native_package pacutils
-    install_native_package pkgfile
+    #install_native_package pacman-contrib
+    #install_native_package pacutils
+    #install_native_package pkgfile
     install_native_package repo-synchroniser
 
     # Partition editors
-    install_native_package parted
-    if ${HAS_GUI} && ${IS_GENERAL_PURPOSE_DEVICE}; then
-        install_native_package gparted
-        install_native_package_dependency gpart
-        install_native_package_dependency mtools
+    if ${INSTALL_PARTITION_EDITORS}; then
+        install_native_package parted
+
+        if ${HAS_GUI} && ${IS_GENERAL_PURPOSE_DEVICE}; then
+            install_native_package gparted
+            install_native_package_dependency gpart
+            install_native_package_dependency mtools
+        fi
     fi
 
     # Filesystems
@@ -187,7 +192,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
         install_native_package flatpak
 
         install_native_package dkms
-        install_native_package rsync
+        #install_native_package rsync
 
         # System management
         [[ "${ARCH_FAMILY}" == "x86" ]] && install_native_package thermald
@@ -517,7 +522,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
         install_flatpak com.simplenote.Simplenote
 
         install_native_package xorg-xdpyinfo
-        install_native_package xorg-xkill
+        #install_native_package xorg-xkill
     fi
 elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
 && ${HAS_SU_PRIVILEGES}; then
