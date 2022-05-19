@@ -357,7 +357,9 @@ if is_gnome_shell_extension_installed "user-theme"; then
 fi
 
 if is_gnome_shell_extension_installed "multi-monitors-add-on"; then
-    set_gsetting "org.gnome.shell.extensions.multi-monitors-add-on" show-indicator false
+    MMA_SCHEMA="org.gnome.shell.extensions.multi-monitors-add-on"
+
+    set_gsetting "${MMA_SCHEMA}" show-indicator false
 fi
 
 if does_bin_exist "panther_launcher"; then
@@ -1437,14 +1439,19 @@ fi
 ##############################
 ### WEATHER APPS & PLUGINS ###
 ##############################
-if [ -d "${ROOT_USR}/share/gnome-shell/extensions/openweather-extension@jenslody.de" ]; then
+if is_gnome_shell_extension_installed "openweather-extension"; then
     OPENWEATHER_GSEXT_SCHEMA="org.gnome.shell.extensions.openweather"
 
+    # Units
     set_gsetting "${OPENWEATHER_GSEXT_SCHEMA}" pressure-unit "mbar"
     set_gsetting "${OPENWEATHER_GSEXT_SCHEMA}" unit "celsius"
     set_gsetting "${OPENWEATHER_GSEXT_SCHEMA}" wind-speed-unit "kph"
+
+    # Layout
+    set_gsetting "${OPENWEATHER_GSEXT_SCHEMA}" position-in-panel "center"
+    set_gsetting "${OPENWEATHER_GSEXT_SCHEMA}" position-index 1
 fi
-if [ -d "${ROOT_USR}/share/gnome-shell/extensions/weather-extension@xeked.com" ]; then
+if is_gnome_shell_extension_installed "weather-extension"; then
     WEATHER_GSEXT_SCHEMA="org.gnome.shell.extensions.weather"
 
     set_gsetting "${WEATHER_GSEXT_SCHEMA}" show-comment-in-panel true
