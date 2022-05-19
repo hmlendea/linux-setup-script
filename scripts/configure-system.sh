@@ -658,6 +658,7 @@ if is_gnome_shell_extension_installed "dash-to-dock"; then
         BMS_SCHEMA="org.gnome.shell.extensions.blur-my-shell"
 
         set_gsetting "${BMS_SCHEMA}" blur-dash false # Breaks the dock if true
+        set_gsetting "${BMS_SCHEMA}.dash-to-dock" blur false # Breaks the dock if true
     fi
 fi
 if does_bin_exist "plank"; then
