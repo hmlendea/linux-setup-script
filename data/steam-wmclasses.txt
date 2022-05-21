@@ -43,7 +43,7 @@
 113020=Monaco.bin.x86
 115100=Cq.bin.x86
 200510=XCOM: Enemy Unknown
-200710=Torchlight2.bin.x86_64
+200710=ModLauncher.bin.x86_64
 203160=TombRaider
 203770=ck2
 204300=Awesomenauts.bin.x86
