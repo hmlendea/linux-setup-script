@@ -527,9 +527,8 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
 elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
 && ${HAS_SU_PRIVILEGES}; then
     # App stores
-    install_android_remote_package "https://files.auroraoss.com/AuroraStore/Stable/AuroraStore_4.1.1.apk" "com.aurora.store" # Aurora Store
-
     if ! is_android_package_installed "foundation.e.apps"; then
+        install_android_remote_package "https://files.auroraoss.com/AuroraStore/Stable/AuroraStore_4.1.1.apk" "com.aurora.store" # Aurora Store
         install_android_remote_package "https://files.auroraoss.com/AuroraDroid/Stable/AuroraDroid_1.0.8.apk" "com.aurora.adroid" # Aurora Droid
     fi
 
