@@ -247,7 +247,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
             install_native_package lxappearance-obconf
         fi
 
-        #install_native_package gnome-keyring
+        install_native_package gnome-keyring
         install_flatpak org.gnome.seahorse.Application
 
         install_native_package networkmanager
