@@ -55,8 +55,6 @@ if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
     install_native_package pigz    # Drop-in replacement for gzip, with multithreading
 fi
 
-install_native_package bc # Mathematical calculations, e.g. echo "2+2-1" | bc
-
 ###################
 ### Development ###
 ###################
@@ -121,7 +119,6 @@ fi
 ################
 ### Archives ###
 ################
-install_native_package cabextract
 install_native_package unzip
 install_native_package zip
 
@@ -167,7 +164,6 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
     install_native_package unp # A script for unpacking a wide variety of archive formats
     install_native_package p7zip
     install_native_package lrzip
-    install_native_package_dependency unace
 
     install_native_package realtime-privileges
 
@@ -251,7 +247,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
             install_native_package lxappearance-obconf
         fi
 
-        install_native_package gnome-keyring
+        #install_native_package gnome-keyring
         install_flatpak org.gnome.seahorse.Application
 
         install_native_package networkmanager
@@ -440,7 +436,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
         install_flatpak com.spotify.Client
 
         #install_native_package_dependency gst-plugins-ugly
-        install_native_package_dependency gst-libav
+        #install_native_package_dependency gst-libav
 
         if ${POWERFUL_PC}; then
             # Graphics

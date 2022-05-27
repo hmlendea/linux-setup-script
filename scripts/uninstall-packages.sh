@@ -73,11 +73,17 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     fi
 
     # Removed altogether
+    uninstall_native_package "bc" # Mathematical calculator
     uninstall_native_package "gnome-dds-thumbnailer"
+    uninstall_native_package "gnome-keyring"
     uninstall_native_package "pop-sound-theme-git"
     uninstall_native_package "python2"
     uninstall_native_package "subversion"
     uninstall_native_package "tk"
+
+    # Archives
+    uninstall_native_package "cabextract"
+    uninstall_native_package "unace"
 
     # GIMP - Replaced by flatpak: org.gimp.GIMP
     uninstall_native_package "gimp-extras"
@@ -135,9 +141,12 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "aspell" "hunspell"
     uninstall_native_package "chafa"
     uninstall_native_package "dbus-broker"
+    uninstall_native_package "freeglut"
+    uninstall_native_package "gst-libav"
     uninstall_native_package "libdecor"
     uninstall_native_package "libjxl"
     uninstall_native_package "libwmf"
+    uninstall_native_package "sdl12-compat"
     uninstall_native_package "xfconf"
 elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
 && ${HAS_SU_PRIVILEGES}; then
