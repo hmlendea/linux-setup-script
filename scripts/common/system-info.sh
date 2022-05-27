@@ -62,7 +62,7 @@ function get_screen_dpi() {
     fi
 
     local RESOLUTION_H_INCHES=$(get_screen_width_inches)
-    local DPI=$(awk 'BEGIN {print '${RESOLUTION_H}'/'${RESOLUTION_H_INCHDES}'}')
+    local DPI=$(awk 'BEGIN {print '${RESOLUTION_H}'/'${RESOLUTION_H_INCHES}'}')
 
     echo "${DPI}" | awk '{print int($1+0.5)}' # Round to nearest
 }
