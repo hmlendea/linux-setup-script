@@ -24,7 +24,7 @@ function get_screen_width_millimetres() {
 
 function get_screen_width_inches() {
     local SCREEN_WIDTH_MM=$(get_screen_width_millimetres)
-    echo "${SCREEN_WIDTH_MM}/10/2.54" | bc -l
+    awk 'BEGIN {print '${SCREEN_WIDTH_MM}'/10/2.54}'
 }
 
 function get_screen_height() {
@@ -62,7 +62,7 @@ function get_screen_dpi() {
     fi
 
     local RESOLUTION_H_INCHES=$(get_screen_width_inches)
-    local DPI=$(echo "${RESOLUTION_H}/${RESOLUTION_H_INCHES}" | bc -l)
+    local DPI=$(awk 'BEGIN {print '${RESOLUTION_H}'/'${RESOLUTION_H_INCHDES}'}')
 
     echo "${DPI}" | awk '{print int($1+0.5)}' # Round to nearest
 }
