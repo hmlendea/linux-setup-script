@@ -66,9 +66,18 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "ttf-ms-fonts"                 # Replaced by ttf-ms-win10
     uninstall_native_package "yaourt-auto-sync"             # Replaced by repo-synchroniser
 
+    # DM
+    if is_native_package_installed "gdm"; then
+        uninstall_native_package "lightdm-gtk-greeter"
+        uninstall_native_package "lightdm"
+    fi
+
     # Removed altogether
     uninstall_native_package "gnome-dds-thumbnailer"
     uninstall_native_package "pop-sound-theme-git"
+    uninstall_native_package "python2"
+    uninstall_native_package "subversion"
+    uninstall_native_package "tk"
 
     # GIMP - Replaced by flatpak: org.gimp.GIMP
     uninstall_native_package "gimp-extras"
@@ -87,6 +96,20 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
         uninstall_native_package "code"
         uninstall_native_package "vscodium-bin"
     fi
+
+    # Packages I don't need
+    uninstall_native_package "gvfs-afc" # Apple mobile devices
+    uninstall_native_package "gvfs-afc" # Camera devices
+    uninstall_native_package "gvfs-google" # Google integration
+    uninstall_native_package "gvfs-nfs"
+    uninstall_native_package "gvfs-smb" # Samba
+    uninstall_native_package "libappindicator-gtk3"
+    uninstall_native_package "modemmanager"
+    uninstall_native_package "perl-locale-gettext"
+    uninstall_native_package "perl-term-readkey"
+    uninstall_native_package "poppler-data"
+    uninstall_native_package "python-dnspython"
+    uninstall_native_package "python2-setuptools"
 
     # GNOME Shell Extensions
     # Replaced by installation directly from extensions.gnome.org
@@ -107,6 +130,15 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
 
     # Uninstall flatpaks
     uninstall_flatpak "org.gnome.TextEditor" # Replaced by org.gnome.gedit
+
+    # Uselss deps
+    uninstall_native_package "aspell" "hunspell"
+    uninstall_native_package "chafa"
+    uninstall_native_package "dbus-broker"
+    uninstall_native_package "libdecor"
+    uninstall_native_package "libjxl"
+    uninstall_native_package "libwmf"
+    uninstall_native_package "xfconf"
 elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
 && ${HAS_SU_PRIVILEGES}; then
     uninstall_android_package "com.android.stk"

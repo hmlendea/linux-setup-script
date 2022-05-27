@@ -338,13 +338,8 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
         if ${POWERFUL_PC}; then
             install_native_package_dependency gnome-menus
 
-            install_native_package_dependency gvfs-afc
-            install_native_package_dependency gvfs-smb
-            install_native_package_dependency gvfs-gphoto2
             install_native_package_dependency gvfs-mtp
             install_native_package_dependency gvfs-goa
-            install_native_package_dependency gvfs-nfs
-            install_native_package_dependency gvfs-google
         fi
 
         # Camera app
@@ -401,7 +396,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
 
         # Themes - Fallbacks
         install_native_package numix-circle-icon-theme-git
-        install_native_package paper-icon-theme
+        #install_native_package paper-icon-theme
 
         # Fonts
         install_native_package gnu-free-fonts
@@ -479,7 +474,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
         if ${IS_DEVELOPMENT_DEVICE}; then
             # Runtimes
             install_native_package python
-            install_native_package python2
+            #install_native_package python2
             #install_native_package mono
             #install_native_package jre-openjdk-headless
 
