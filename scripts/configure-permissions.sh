@@ -94,12 +94,17 @@ function set_flatpak_permission() {
 function get_flatpak_shared() {
     local APPLICATION="${1}"
     local OBJECT="${2}"
-    local METADATA_FILE="${ROOT_VAR_LIB}/flatpak/app/${APPLICATION}/current/active/metadata"
-    local SHARED_OBJECTS=$(grep "^shared=" "${METADATA_FILE}" | awk -F'=' '{print $2}')
 
-    if echo "${SHARED_OBJECTS}" | grep -q "${OBJECT};"; then
-        return 0 # True
-    fi
+    for METADATA_FILE in    "${ROOT_VAR_LIB}/flatpak/app/${APPLICATION}/current/active/metadata" \
+                            "${HOME_LOCAL_SHARE}/flatpak/app/${APPLICATION}/current/active/metadata"; do
+        [ ! -f "${METADATA_FILE}" ] && continue
+
+        local SHARED_OBJECTS=$(grep "^shared=" "${METADATA_FILE}" | awk -F'=' '{print $2}')
+
+        if echo "${SHARED_OBJECTS}" | grep -q "${OBJECT};"; then
+            return 0 # True
+        fi
+    done
 
     return 1 # False
 }
@@ -108,22 +113,27 @@ function set_flatpak_shared() {
     local APPLICATION="${1}"
     local OBJECT="${2}"
     local STATE="${3}"
-    local METADATA_FILE="${ROOT_VAR_LIB}/flatpak/app/${APPLICATION}/current/active/metadata"
-    local SHARED_OBJECTS=$(grep "^shared=" "${METADATA_FILE}" | awk -F'=' '{print $2}')
-    local CURRENT_STATE=false
 
-    get_flatpak_shared "${APPLICATION}" "${OBJECT}" && CURRENT_STATE=true
+    for METADATA_FILE in    "${ROOT_VAR_LIB}/flatpak/app/${APPLICATION}/current/active/metadata" \
+                            "${HOME_LOCAL_SHARE}/flatpak/app/${APPLICATION}/current/active/metadata"; do
+        [ ! -f "${METADATA_FILE}" ] && continue
 
-    [[ "${STATE}" == "${CURRENT_STATE}" ]] && return
+        local SHARED_OBJECTS=$(grep "^shared=" "${METADATA_FILE}" | awk -F'=' '{print $2}')
+        local CURRENT_STATE=false
 
-    if ${STATE}; then
-        SHARED_OBJECTS="${OBJECT};${SHARED_OBJECTS}"
-    else
-        SHARED_OBJECTS=$(echo "${SHARED_OBJECTS}" | sed 's/'"${OBJECT}"';//g')
-    fi
+        get_flatpak_shared "${APPLICATION}" "${OBJECT}" && CURRENT_STATE=true
 
-    run_as_su sed -i 's/^shared=.*/shared='"${SHARED_OBJECTS}"'/g' "${METADATA_FILE}"
-    echo -e "\e[0;33m${APPLICATION}\e[0m permission \e[0;32m${OBJECT}\e[0m >>> ${STATE}"
+        [[ "${STATE}" == "${CURRENT_STATE}" ]] && return
+
+        if ${STATE}; then
+            SHARED_OBJECTS="${OBJECT};${SHARED_OBJECTS}"
+        else
+            SHARED_OBJECTS=$(echo "${SHARED_OBJECTS}" | sed 's/'"${OBJECT}"';//g')
+        fi
+
+        echo -e "\e[0;33m${APPLICATION}\e[0m permission \e[0;32m${OBJECT}\e[0m >>> ${STATE}"
+        run_as_su sed -i 's/^shared=.*/shared='"${SHARED_OBJECTS}"'/g' "${METADATA_FILE}"
+    done
 }
 
 function get_android_permission() {
@@ -288,6 +298,11 @@ if does_bin_exist "flatpak"; then
             "notification" false \
             "location" false
     done
+    set_linux_permission "com.obsproject.Studio" \
+        "background" false \
+        "network" false \
+        "notification" false \
+        "location" false
     set_linux_permission "com.visualstudio.code" \
         "background" false \
         "network" true \
@@ -300,10 +315,22 @@ if does_bin_exist "flatpak"; then
         "notification_banner" true \
         "notification_lockscreen" false \
         "location" false
+    set_linux_permission "fr.romainvigier.MetadataCleaner" \
+        "background" false \
+        "network" false \
+        "notification" false \
+        "location" false
     set_linux_permission "io.github.hmlendea.geforcenow-electron" \
         "background" false \
         "network" true \
         "notification" false \
+        "location" false
+    set_linux_permission "net.lutris.Lutris" \
+        "background" false \
+        "network" true \
+        "notification" true \
+        "notification_banner" true \
+        "notification_lockscreen" true \
         "location" false
     set_linux_permission "nl.hjdskes.gcolor3" \
         "background" false \
@@ -439,11 +466,6 @@ if does_bin_exist "flatpak"; then
         "network" true \
         "notification" false \
         "location" true
-    set_linux_permission "org.obsproject.Studio" \
-        "background" false \
-        "network" false \
-        "notification" false \
-        "location" false
     set_linux_permission "org.signal.Signal" \
         "background" true \
         "network" true \
