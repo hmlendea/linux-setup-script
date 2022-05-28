@@ -25,9 +25,19 @@ done
 is_flatpak_installed "com.microsoft.Teams" && update_mimetype_association "x-scheme-handler/msteams" "com.microsoft.Teams.desktop"
 
 BROWSER_LAUNCHER=""
+FILE_MANAGER_LAUNCHER=""
+STEAM_LAUNCHER=""
 TEXT_EDITOR_LAUNCHER=""
 
 is_flatpak_installed "org.mozilla.firefox" && BROWSER_LAUNCHER="org.mozilla.firefox.desktop"
+is_native_package_installed "nautilus" && FILE_MANAGER_LAUNCHER="org.gnome.Nautilus.desktop"
+
+if is_flatpak_installed "com.valvesoftware.Steam"; then
+    STEAM_LAUNCHER="com.valvesoftware.Steam.desktop"
+elif is_native_package_installed "steam"; then
+    STEAM_LAUNCHER="steam.desktop"
+fi
+
 is_flatpak_installed "org.gnome.gedit" && TEXT_EDITOR_LAUNCHER="org.gnome.gedit.desktop"
 
 if [ -n "${BROWSER_LAUNCHER}" ]; then
@@ -40,6 +50,14 @@ if [ -n "${BROWSER_LAUNCHER}" ]; then
 
     update_mimetype_association "application/xhtml+xml" "${BROWSER_LAUNCHER}"
     update_mimetype_association "text/html" "${BROWSER_LAUNCHER}"
+fi
+
+if [ -n "${FILE_MANAGER_LAUNCHER}" ]; then
+    update_mimetype_association "x-scheme-handler/file" "${FILE_MANAGER_LAUNCHER}"
+fi
+
+if [ -n "${STEAM_LAUNCHER}" ]; then
+    update_mimetype_association "x-scheme-handler/steam" "${STEAM_LAUNCHER}"
 fi
 
 if [ -n "${TEXT_EDITOR_LAUNCHER}" ]; then
