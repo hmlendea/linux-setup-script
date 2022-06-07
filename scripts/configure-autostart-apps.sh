@@ -9,10 +9,16 @@ source "${REPO_SCRIPTS_DIR}/common/system-info.sh"
 
 AUTOSTART_DIR="${HOME_CONFIG}/autostart"
 
+function get_launcher_path_for_app() {
+    local BINARY_NAME="${1}"
+    local LAUNCHER_LABEL=$(basename "${BINARY_NAME}")
+
+    echo "${AUTOSTART_DIR}/${LAUNCHER_LABEL}.desktop"
+}
+
 function configure-autostart-for-app() {
     local BINARY_NAME="${1}" && shift
-    local LAUNCHER_LABEL=$(basename "${BINARY_NAME}")
-    local LAUNCHER_PATH="${AUTOSTART_DIR}/${LAUNCHER_LABEL}.desktop"
+    local LAUNCHER_PATH=$(get_launcher_path_for_app "${BINARY_NAME}")
 
     if does_bin_exist "${BINARY_NAME}"; then
         [ ! -f "${LAUNCHER_PATH}" ] && create_launcher "${LAUNCHER_PATH}"
@@ -22,13 +28,21 @@ function configure-autostart-for-app() {
 }
 
 # Discord
-configure-autostart-for-app "discord" \
-    Exec "/usr/bin/discord --start-minimized" \
-    Icon "discord"
-configure-autostart-for-app "com.discordapp.Discord" \
-    Name "Discord" \
-    Icon "discord" \
-    Exec "com.discordapp.Discord --start-minimized"
+AUTOSTART_DISCORD=false
+if ${AUTOSTART_DISCORD}; then
+    configure-autostart-for-app "discord" \
+        Exec "/usr/bin/discord --start-minimized" \
+        Icon "discord"
+    configure-autostart-for-app "com.discordapp.Discord" \
+        Name "Discord" \
+        Icon "discord" \
+        Exec "com.discordapp.Discord --start-minimized"
+else
+    for DISCORD_BINARY in "com.discordapp.Discord" "discord"; do
+        DISCORD_LAUNCHER_PATH=$(get_launcher_path_for_app "${DISCORD_BINARY}")
+        remove "${DISCORD_LAUNCHER_PATH}"
+    done
+fi
 
 # ElectronMail
 configure-autostart-for-app "/opt/ElectronMail/electron-mail" \
