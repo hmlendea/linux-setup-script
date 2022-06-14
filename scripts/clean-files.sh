@@ -42,6 +42,7 @@ remove "${ROOT_ETC}/motd"
     "${HOME}/.vscode-oss"
 ! does_bin_exist "codium" && remove "${HOME_CONFIG}/VSCodium"
 ! does_bin_exist "code-oss" "codium" && remove "${HOME}/.vscode-oss"
+! does_bin_exist "convert" && remove "${HOME_CACHE}/ImageMagick"
 ! does_bin_exist "discord" && remove "${HOME_CONFIG}/discord"
 ! does_bin_exist "dockx" && remove "${HOME_LOCAL_SHARE}/dockbarx"
 ! does_bin_exist "dotnet" && \
@@ -131,6 +132,7 @@ remove "${ROOT_ETC}/motd"
 ! does_bin_exist "onlyoffice-desktopeditors" && remove \
     "${HOME_CONFIG}/onlyoffice" \
     "${HOME_LOCAL_SHARE}/onlyoffice"
+! does_bin_exist "openrazer-daemon" && remove "${HOME_LOCAL_SHARE}/openrazer"
 ! does_bin_exist "openrgb" && remove "${HOME_CONFIG}/OpenRGB"
 ! does_bin_exist "openshot-qt" && remove "${HOME}/.openshot_qt"
 ! does_bin_exist "pavucontrol" && remove "${HOME_CONFIG}/pavucontrol.ini"
@@ -149,9 +151,12 @@ remove "${ROOT_ETC}/motd"
 ! does_bin_exist "postman" && \
     remove "${HOME}/Postman" \
     remove "${HOME_CONFIG}/Postman"
+! does_bin_exist "protonfixes" && remove "${HOME_CACHE}/protonfixes"
+! does_bin_exist "protontricks" && remove "${HOME_CACHE}/protontricks"
 ! does_bin_exist "rhythmbox" && remove \
     "${HOME_CACHE}/rhythmbox" \
     "${HOME_LOCAL_SHARE}/rhythmbox"
+! does_bin_exist "samrewritten" && remove "${HOME_CACHE}/SamRewritten"
 ! does_bin_exist "signal-desktop" && remove "${HOME_CONFIG}/Signal"
 ! does_bin_exist "simplescreenrecorder" && remove "${HOME}/.ssr"
 ! does_bin_exist "simplenote" && remove "${HOME_CONFIG}/Simplenote"
