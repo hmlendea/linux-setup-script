@@ -1161,7 +1161,11 @@ if does_bin_exist "gnome-shell"; then
         FAVOURITE_APPS="${FAVOURITE_APPS}, 'signal-desktop.desktop'"
     fi
 
-    does_bin_exist "whatsapp-nativefier" && FAVOURITE_APPS="${FAVOURITE_APPS}, 'whatsapp-nativefier.desktop'"
+    if does_bin_exist "whatsapp-nativefier"; then
+        FAVOURITE_APPS="${FAVOURITE_APPS}, 'whatsapp-nativefier.desktop'"
+    elif does_bin_exist "io.github.mimbrero.WhatsAppDesktop"; then
+        FAVOURITE_APPS="${FAVOURITE_APPS}, 'io.github.mimrero.WhatsAppDesktop.desktop"
+    fi
 
     if does_bin_exist "com.github.vladimiry.ElectronMail"; then
         FAVOURITE_APPS="${FAVOURITE_APPS}, 'com.github.vladimiry.ElectronMail.desktop'"

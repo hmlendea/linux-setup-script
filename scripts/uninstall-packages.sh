@@ -64,6 +64,7 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "totem"                        # Replaced by flatpak: org.gnome.Totem
     uninstall_native_package "transmission-gtk"             # Replaced by flatpak: com.transmissionbt.Transmission
     uninstall_native_package "ttf-ms-fonts"                 # Replaced by ttf-ms-win10
+    uninstall_native_package "whatsapp-desktop"             # Replaced by flatpah: io.github.mimbrero.WhatsAppDesktop
     uninstall_native_package "yaourt-auto-sync"             # Replaced by repo-synchroniser
 
     # DM

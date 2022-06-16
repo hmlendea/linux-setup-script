@@ -78,6 +78,10 @@ configure-autostart-for-app "org.telegram.desktop" \
     Exec "org.telegram.desktop -workdir ${HOME_VAR}/app/org.telegram.desktop/data/TelegramDesktop/ -startintray -autostart"
 
 # WhatsApp
+configure-autostart-for-app "io.github.mimbrero.WhatsAppDesktop" \
+    Name "WhatsApp" \
+    Icon "whatsapp" \
+    Exec "io.github.mimbrero.WhatsAppDesktop --start-hidden"
 configure-autostart-for-app "whatsapp-nativefier" \
     Name "WhatsApp" \
     Icon "whatsapp" \
