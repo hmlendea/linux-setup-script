@@ -428,7 +428,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
         install_flatpak com.github.vladimiry.ElectronMail
         install_flatpak org.telegram.desktop
         install_flatpak org.signal.Signal
-        install_native_package whatsapp-nativefier
+        install_flatpak io.github.mimbrero.WhatsAppDesktop
 
         # Multimedia
         install_flatpak org.gnome.Rhythmbox3
