@@ -325,6 +325,13 @@ if does_bin_exist "flatpak"; then
         "network" true \
         "notification" false \
         "location" false
+    set_linux_permission "io.github.mimbrero.WhatsAppDesktop" \
+        "background" true \
+        "network" true \
+        "notification" true \
+        "notification_banner" true \
+        "notification_lockscreen" true \
+        "location" false
     set_linux_permission "net.lutris.Lutris" \
         "background" false \
         "network" true \
