@@ -49,7 +49,9 @@ remove "${ROOT_ETC}/motd"
     remove "${HOME}/.dotnet" \
     remove "${HOME}/.templateengine"
 ! does_bin_exist "droidcam" && remove "${HOME_CONFIG}/droidcam"
-! does_bin_exist "duolingo-desktop" && remove "${HOME_CONFIG}/Duolingo"
+! does_bin_exist "duolingo-desktop" && remove \
+    "${HOME_CONFIG}/DL: language lessons" \
+    "${HOME_CONFIG}/Duolingo"
 #! does_bin_exist "evolution" && remove \
 #    "${HOME_CACHE}/evolution" \
 #    "${HOME_CONFIG}/evolution" \
