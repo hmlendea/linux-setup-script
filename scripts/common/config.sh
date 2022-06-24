@@ -342,7 +342,12 @@ function set_launcher_entry() {
     local FILE="${1}"
     local KEY="${2}"
     local VAL="${3}"
-    local SECTION="${4}"
+    local SECTION="Desktop Entry"
+
+    if grep -q "/" <<< "${KEY}"; then
+        SECTION=$(awk -F'/' '{print $1}' <<< "${KEY}")
+        KEY=$(awk -F'/' '{print $2}' <<< "${KEY}")
+    fi
 
     local FILE_PATH_RAW=$(get_symlink_target "${FILE}")
 
@@ -367,56 +372,73 @@ function set_launcher_entry() {
 
         local FILE_CONTENTS=""
         local HAS_MULTIPLE_SECTIONS=false
-        local LAST_SECTION_LINE=-1
+        local SECTION_INDEX=1
+        local SECTION_FIRST_LINE=1
+        local SECTION_LAST_LINE=1
 
         KEY_ESC=$(echo "${KEY}" | sed -e 's/[]\/$*.^|[]/\\&/g')
         VAL_ESC=$(echo "${VAL}" | sed -e 's/[]\/$*.^|[]/\\&/g')
 
+        if ! grep -q "^\[${SECTION}\]$" "${FILE}"; then
+            append_line "${FILE}" "[${SECTION}]"
+            append_line "${FILE}" ""
+        fi
+
         FILE_CONTENTS=$(cat "${FILE}")
-        LAST_SECTION_LINE=$(wc -l "${FILE}" | awk '{print $1}')
+        SECTION_LAST_LINE=$(wc -l "${FILE}" | awk '{print $1}')
 
         if [ $(grep -c "^\[.*\]$" <<< "${FILE_CONTENTS}") -gt 1 ]; then
             HAS_MULTIPLE_SECTIONS=true
-            LAST_SECTION_LINE=$(grep -n "^\[.*\]$" "${FILE}" | sed '2q;d' | awk -F: '{print $1}')
-            FILE_CONTENTS=$(echo "${FILE_CONTENTS}" | head -n "${LAST_SECTION_LINE}")
+            SECTION_INDEX=$(grep -n "^\[.*\]$" "${FILE}" | grep -n "\[${SECTION}\]" | awk -F: '{print $1}')
+
+            [ -z "${SECTION_INDEX}" ] && SECTION_INDEX=1
+
+            SECTION_FIRST_LINE=$(grep -n "^\[${SECTION}\]$" "${FILE}" | awk -F: '{print $1}')
+            SECTION_LAST_LINE=$(grep -n "^\[.*\]$" "${FILE}" | tail -n +$((SECTION_INDEX+1)) | awk -F: '{print $1}' | head -n 1)
+
+            [ -z "${SECTION_LAST_LINE}" ] && SECTION_LAST_LINE=$(wc -l "${FILE}" | awk '{print $1}')
+
+            FILE_CONTENTS=$(tail -n "+${SECTION_FIRST_LINE}" "${FILE}" | head -n "$((SECTION_LAST_LINE-SECTION_FIRST_LINE+1))")
         fi
 
         if ! grep -q "^${KEY_ESC}=\(${VAL}\|${VAL_ESC}\)$" <<< "${FILE_CONTENTS}" \
         || grep -q "^${KEY_ESC}=$" <<< "${FILE_CONTENTS}"; then
             if grep -q "^${KEY_ESC}=.*$" <<< "${FILE_CONTENTS}"; then
                 if [ -z "${VAL}" ]; then
-                    run_as_su sed -i '1,'"${LAST_SECTION_LINE}"' {/^'"${KEY_ESC}"'=.*$/d}' "${FILE_PATH_RAW}"
+                    run_as_su sed -i '1,'"${SECTION_LAST_LINE}"' {/^'"${KEY_ESC}"'=.*$/d}' "${FILE_PATH_RAW}"
                 else
-                    run_as_su sed -i '1,'"${LAST_SECTION_LINE}"' s|^'"${KEY_ESC}"'=.*$|'"${KEY_ESC}"'='"${VAL}"'|g' "${FILE_PATH_RAW}"
+                    run_as_su sed -i '1,'"${SECTION_LAST_LINE}"' s|^'"${KEY_ESC}"'=.*$|'"${KEY_ESC}"'='"${VAL}"'|g' "${FILE_PATH_RAW}"
                 fi
             elif [ -n "${VAL}" ]; then
                 if ${HAS_MULTIPLE_SECTIONS}; then
-                    run_as_su sed -i "${LAST_SECTION_LINE} i ${KEY_ESC}=${VAL_ESC}" "${FILE_PATH_RAW}"
+                    run_as_su sed -i "${SECTION_LAST_LINE} i ${KEY_ESC}=${VAL_ESC}" "${FILE_PATH_RAW}"
                 else
                     append_line "${FILE}" "${KEY}=${VAL}"
                 fi
             fi
 
-            echo "${FILE} >>> ${KEY}=${VAL}"
+            KEY_TO_PRINT=$(echo "${SECTION}/${KEY}" | sed 's/Desktop Entry\///g')
+
+            echo "${FILE} >>> ${SECTION}/${KEY}=${VAL}"
         fi
     fi
 
 
     if [[ "${KEY_ID}" == "Name" ]]; then
-        set_launcher_entry_for_language "${FILE}" "${KEY_LANGUAGE}" "Name" "${VAL}"
-        if [[ "${KEY_LANGUAGE}" == "en"* ]]; then
-            set_launcher_entry "${FILE}" "GenericName" "${VAL}"
-        else
-            set_launcher_entry_for_language "${FILE}" "${KEY_LANGUAGE}" "GenericName" "${VAL}"
-        fi
+        set_launcher_entry_for_language "${FILE}" "${KEY_LANGUAGE}" "${SECTION}/Name" "${VAL}"
+        #if [[ "${KEY_LANGUAGE}" == "en"* ]]; then
+        #    set_launcher_entry "${FILE}" "${SECTION}/GenericName" "${VAL}"
+        #else
+        #    set_launcher_entry_for_language "${FILE}" "${KEY_LANGUAGE}" "${SECTION}/GenericName" "${VAL}"
+        #fi
     elif [[ "${KEY_ID}" == "FullName" ]]; then
-        set_launcher_entry_for_language "${FILE}" "${KEY_LANGUAGE}" "X-GNOME-${KEY_ID}" "${VAL}"
-        set_launcher_entry_for_language "${FILE}" "${KEY_LANGUAGE}" "X-MATE-${KEY_ID}" "${VAL}"
+        set_launcher_entry_for_language "${FILE}" "${KEY_LANGUAGE}" "${SECTION}/X-GNOME-${KEY_ID}" "${VAL}"
+        set_launcher_entry_for_language "${FILE}" "${KEY_LANGUAGE}" "${SECTION}/X-MATE-${KEY_ID}" "${VAL}"
     elif [[ "${KEY_ID}" == "Comment" ]] \
       || [[ "${KEY_ID}" == "GenericName" ]] \
       || [[ "${KEY_ID}" == "Icon" ]] \
       || [[ "${KEY_ID}" == "Keywords" ]]; then
-        set_launcher_entry_for_language "${FILE}" "${KEY_LANGUAGE}" "${KEY_ID}" "${VAL}"
+        set_launcher_entry_for_language "${FILE}" "${KEY_LANGUAGE}" "${SECTION}/${KEY_ID}" "${VAL}"
     fi
 }
 
