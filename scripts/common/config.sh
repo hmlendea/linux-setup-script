@@ -401,13 +401,19 @@ function set_launcher_entry() {
         fi
     fi
 
+
     if [[ "${KEY_ID}" == "Name" ]]; then
         set_launcher_entry_for_language "${FILE}" "${KEY_LANGUAGE}" "Name" "${VAL}"
-        set_launcher_entry_for_language "${FILE}" "${KEY_LANGUAGE}" "GenericName" "${VAL}"
+        if [[ "${KEY_LANGUAGE}" == "en"* ]]; then
+            set_launcher_entry "${FILE}" "GenericName" "${VAL}"
+        else
+            set_launcher_entry_for_language "${FILE}" "${KEY_LANGUAGE}" "GenericName" "${VAL}"
+        fi
     elif [[ "${KEY_ID}" == "FullName" ]]; then
         set_launcher_entry_for_language "${FILE}" "${KEY_LANGUAGE}" "X-GNOME-${KEY_ID}" "${VAL}"
         set_launcher_entry_for_language "${FILE}" "${KEY_LANGUAGE}" "X-MATE-${KEY_ID}" "${VAL}"
     elif [[ "${KEY_ID}" == "Comment" ]] \
+      || [[ "${KEY_ID}" == "GenericName" ]] \
       || [[ "${KEY_ID}" == "Icon" ]] \
       || [[ "${KEY_ID}" == "Keywords" ]]; then
         set_launcher_entry_for_language "${FILE}" "${KEY_LANGUAGE}" "${KEY_ID}" "${VAL}"
