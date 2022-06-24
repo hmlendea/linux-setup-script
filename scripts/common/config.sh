@@ -341,14 +341,14 @@ function set_launcher_entries() {
 function set_launcher_entry() {
     local FILE="${1}"
     local KEY="${2}"
-    local VAL="${*:3}"
+    local VAL="${3}"
+    local SECTION="${4}"
 
     local FILE_PATH_RAW=$(get_symlink_target "${FILE}")
 
     if [ "$#" != "3" ]; then
         echo "ERROR: Invalid arguments (count: $#) for set_launcher_entry: ${*}" >&2
     fi
-
 
     if [ ! -f "${FILE}" ]; then
         return
@@ -381,9 +381,9 @@ function set_launcher_entry() {
             FILE_CONTENTS=$(echo "${FILE_CONTENTS}" | head -n "${LAST_SECTION_LINE}")
         fi
 
-        if [[ $(grep -c "^${KEY_ESC}=\(${VAL}\|${VAL_ESC}\)$" <<< "${FILE_CONTENTS}") == 0 ]] \
-        || [[ $(grep -c "^${KEY_ESC}=$" <<< "${FILE_CONTENTS}") == 1 ]]; then
-            if [ $(grep -c "^${KEY_ESC}=.*$" <<< "${FILE_CONTENTS}") -gt 0 ]; then
+        if ! grep -q "^${KEY_ESC}=\(${VAL}\|${VAL_ESC}\)$" <<< "${FILE_CONTENTS}" \
+        || grep -q "^${KEY_ESC}=$" <<< "${FILE_CONTENTS}"; then
+            if grep -q "^${KEY_ESC}=.*$" <<< "${FILE_CONTENTS}"; then
                 if [ -z "${VAL}" ]; then
                     run_as_su sed -i '1,'"${LAST_SECTION_LINE}"' {/^'"${KEY_ESC}"'=.*$/d}' "${FILE_PATH_RAW}"
                 else
