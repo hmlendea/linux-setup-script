@@ -431,7 +431,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
         install_flatpak io.github.mimbrero.WhatsAppDesktop
 
         # Multimedia
-        install_flatpak org.gnome.Rhythmbox3
+        install_flatpak io.bassi.Amberol
         install_flatpak org.gnome.Totem
         install_flatpak com.spotify.Client
 
