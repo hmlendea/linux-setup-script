@@ -320,6 +320,13 @@ if does_bin_exist "flatpak"; then
         "network" false \
         "notification" false \
         "location" false
+    set_linux_permission "io.bassi.Amberol" \
+        "background" false \
+        "network" false \
+        "notification" true \
+        "notification_banner" false \
+        "notification_lockscreen" true \
+        "location" false
     set_linux_permission "io.github.hmlendea.geforcenow-electron" \
         "background" false \
         "network" true \
@@ -347,7 +354,7 @@ if does_bin_exist "flatpak"; then
     for APP in "org.chromium.Chromium" "chromium"; do
         set_linux_permission "${APP}" \
             "background" false \
-        "network" true \
+            "network" true \
             "notification" false \
             "location" true
     done
