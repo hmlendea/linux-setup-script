@@ -405,9 +405,9 @@ function set_launcher_entry() {
         || grep -q "^${KEY_ESC}=$" <<< "${FILE_CONTENTS}"; then
             if grep -q "^${KEY_ESC}=.*$" <<< "${FILE_CONTENTS}"; then
                 if [ -z "${VAL}" ]; then
-                    run_as_su sed -i '1,'"${SECTION_LAST_LINE}"' {/^'"${KEY_ESC}"'=.*$/d}' "${FILE_PATH_RAW}"
+                    run_as_su sed -i ''"${SECTION_FIRST_LINE}"','"${SECTION_LAST_LINE}"' {/^'"${KEY_ESC}"'=.*$/d}' "${FILE_PATH_RAW}"
                 else
-                    run_as_su sed -i '1,'"${SECTION_LAST_LINE}"' s|^'"${KEY_ESC}"'=.*$|'"${KEY_ESC}"'='"${VAL}"'|g' "${FILE_PATH_RAW}"
+                    run_as_su sed -i ''"${SECTION_FIRST_LINE}"','"${SECTION_LAST_LINE}"' s|^'"${KEY_ESC}"'=.*$|'"${KEY_ESC}"'='"${VAL}"'|g' "${FILE_PATH_RAW}"
                 fi
             elif [ -n "${VAL}" ]; then
                 if ${HAS_MULTIPLE_SECTIONS}; then
@@ -419,7 +419,7 @@ function set_launcher_entry() {
 
             KEY_TO_PRINT=$(echo "${SECTION}/${KEY}" | sed 's/Desktop Entry\///g')
 
-            echo "${FILE} >>> ${SECTION}/${KEY}=${VAL}"
+            echo "${FILE} >>> ${KEY_TO_PRINT}=${VAL}"
         fi
     fi
 
