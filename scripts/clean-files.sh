@@ -86,6 +86,7 @@ remove "${ROOT_ETC}/motd"
 ! does_bin_exist "gnome-software" && remove "${HOME_CACHE}/gnome-software"
 ! does_bin_exist "gnome-sound-recorder" && remove "${HOME_LOCAL_SHARE}/org.gnome.SoundRecorder"
 ! does_bin_exist "gnubg" && remove "${HOME}/.gnubg"
+! does_bin_exist "go" && remove "${HOME_CACHE}/go-build"
 ! does_bin_exist "google-chrome" && remove \
     "${HOME_CACHE}/google-chrome" \
     "${HOME_CONFIG}/google-chrome"
@@ -128,7 +129,9 @@ remove "${ROOT_ETC}/motd"
 ! does_bin_exist "minetest" && remove "${HOME_CACHE}/minetest"
 ! does_bin_exist "mono" && remove "${HOME}/.mono"
 ! does_bin_exist "mpv" && remove "${HOME_CONFIG}/mpv"
-! does_bin_exist "nemo" && remove "${HOME_LOCAL_SHARE}/nemo"
+! does_bin_exist "nemo" && remove \
+    "${HOME_LOCAL_SHARE}/nemo" \
+    "${HOME_LOCAL_SHARE}/nemo-python"
 ! does_bin_exist "neofetch" && remove "${HOME_CONFIG}/neofetch"
 ! does_bin_exist "notion-app" && remove "${HOME_CONFIG}/Notion"
 ! does_bin_exist "npm" && remove "${HOME}/.npm"
@@ -316,29 +319,15 @@ if [ -d "${HOME_LOCAL_SHARE}/applications" ] \
 fi
 
 # Empty directories
-remove_dir_if_empty "${HOME}/.Cobra Mobile"
-remove_dir_if_empty "${HOME}/.w3m"
-remove_dir_if_empty "${HOME_CACHE}/ArtifexMundi"
-remove_dir_if_empty "${HOME_CACHE}/Microsoft"
-remove_dir_if_empty "${HOME_CACHE}/mozilla"
-remove_dir_if_empty "${HOME_CONFIG}/ibus"
-remove_dir_if_empty "${HOME_CONFIG}/Microsoft"
-remove_dir_if_empty "${HOME_CONFIG}/paradox-launcher-v2"
-remove_dir_if_empty "${HOME_CONFIG}/procps"
-remove_dir_if_empty "${HOME_CONFIG}/unity3d"
-remove_dir_if_empty "${HOME_CONFIG}/Valve"
-remove_dir_if_empty "${HOME_LOCALF_SHARE}/ags"
-remove_dir_if_empty "${HOME_LOCAL_SHARE}/Aspyr"
-remove_dir_if_empty "${HOME_LOCAL_SHARE}/cdprojektred"
-remove_dir_if_empty "${HOME_LOCAL_SHARE}/Daedalic Entertainment"
-remove_dir_if_empty "${HOME_LOCAL_SHARE}/doublefine"
-remove_dir_if_empty "${HOME_LOCAL_SHARE}/feral-interactive"
-remove_dir_if_empty "${HOME_LOCAL_SHARE}/Firebrand Games"
-remove_dir_if_empty "${HOME_LOCAL_SHARE}/gegl-0.4"
-remove_dir_if_empty "${HOME_LOCAL_SHARE}/pixmaps"
-remove_dir_if_empty "${HOME_LOCAL_SHARE}/Runic Games"
-remove_dir_if_empty "${HOME_LOCAL_SHARE}/twotribes"
-remove_dir_if_empty "${HOME_LOCAL_SHARE}/xorg"
+for DIR in  "${HOME}/.Cobra Mobile" \
+            "${HOME}/.w3m" \
+            "${HOME_CACHE}"/* \
+            "${HOME_CONFIG}"/* \
+            "${HOME_LOCAL_SHARE}"/*; do
+    [ ! -d "${DIR}" ] && continue
+
+    remove_dir_if_empty "${DIR}"
+done
 
 # Backups
 remove "${HOME_CONFIG}/monitors.xml~"
