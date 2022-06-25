@@ -1067,15 +1067,16 @@ fi
 
 # ALL FLATPAKS
 for FLATPAK_LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}"/*.desktop; do
-    APP_NAME=$(basename "${FLATPAK_LAUNCHER}" | sed 's/\.desktop$//g')
+    APP_ID=$(basename "${FLATPAK_LAUNCHER}" | sed 's/\.desktop$//g')
     ACTIONS=$(grep "^Actions=" "${FLATPAK_LAUNCHER}" | sed -e 's/^Actions=//g' -e 's/Quit;//g')
     set_launcher_entries "${FLATPAK_LAUNCHER}" \
+        "Exec" "/usr/bin/flatpak run ${APP_ID}" \
         "Actions" "${ACTIONS}Quit;" \
         "Desktop Action Quit/Name" "Quit" \
         "Desktop Action Quit/Name[ro]" "Închide" \
         "Desktop Action Quit/GenericName" "Quit" \
         "Desktop Action Quit/GenericName[ro]" "Închide" \
-        "Desktop Action Quit/Exec" "/usr/bin/flatpak kill ${APP_NAME}" \
+        "Desktop Action Quit/Exec" "/usr/bin/flatpak kill ${APP_ID}" \
         "Desktop Action Quit/Icon" "application-exit" \
         "Desktop Action Quit/Icon[ro]" "application-exit"
 done
