@@ -78,6 +78,7 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     # Removed altogether
     uninstall_native_package "bc" # Mathematical calculator
     uninstall_native_package "gnome-dds-thumbnailer"
+    uninstall_native_package "lshw"
     uninstall_native_package "pop-sound-theme-git"
     uninstall_native_package "python2"
     uninstall_native_package "subversion"

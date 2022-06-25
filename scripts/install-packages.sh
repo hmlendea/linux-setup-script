@@ -22,7 +22,6 @@ install_native_package wget
 if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
     install_native_package bash-completion
     install_native_package usbutils
-    install_native_package lshw
 
     install_native_package man-db
     install_native_package man-pages
