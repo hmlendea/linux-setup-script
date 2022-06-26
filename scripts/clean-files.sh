@@ -163,6 +163,7 @@ remove "${ROOT_ETC}/motd"
 ! does_bin_exist "rhythmbox" && remove \
     "${HOME_CACHE}/rhythmbox" \
     "${HOME_LOCAL_SHARE}/rhythmbox"
+! does_bin_exist "runelite" && remove "${HOME}/.runelite"
 ! does_bin_exist "samrewritten" && remove "${HOME_CACHE}/SamRewritten"
 ! does_bin_exist "signal-desktop" && remove "${HOME_CONFIG}/Signal"
 ! does_bin_exist "simplescreenrecorder" && remove "${HOME}/.ssr"
@@ -318,17 +319,6 @@ if [ -d "${HOME_LOCAL_SHARE}/applications" ] \
     done
 fi
 
-# Empty directories
-for DIR in  "${HOME}/.Cobra Mobile" \
-            "${HOME}/.w3m" \
-            "${HOME_CACHE}"/* \
-            "${HOME_CONFIG}"/* \
-            "${HOME_LOCAL_SHARE}"/*; do
-    [ ! -d "${DIR}" ] && continue
-
-    remove_dir_if_empty "${DIR}"
-done
-
 # Backups
 remove "${HOME_CONFIG}/monitors.xml~"
 
@@ -344,30 +334,10 @@ remove \
     "${HOME}/.klei/DoNotStarveTogether/backup/client_chat_log" \
     "${HOME}/.klei/DoNotStarveTogether/backup/client_log"
 
-for DIR in "${HOME}/.factorio" \
-            "${HOME}/.ICAClient" \
-            "${HOME}/.klei/DoNotStarveTogether" \
-            "${HOME}/.minecraft" \
-            "${HOME}/.npm" \
-            "${HOME_CONFIG}/Code" \
-            "${HOME_LOCAL_SHARE}/gvfs-metadata" \
-            "${HOME_LOCAL_SHARE}/Paradox Interactive"/* \
-            "${HOME_LOCAL_SHARE}/Steam" \
-            "${HOME_LOCAL_SHARE}/Steam/steamapps/common"/* \
-            "${HOME_LOCAL_SHARE}/Steam/steamapps/common"/*/*_Data \
-            "${HOME_LOCAL_SHARE}/Steam/steamapps/compatdata/"*"/pfx/drive_c/users/steamuser/Temp" \
-            "${HOME_LOCAL_SHARE}/Steam/steamapps/compatdata/"*"/pfx/drive_c/windows" \
-            "${HOME_VAR}/app/"*"/data/gvfs-metadata"/*.log \
-            "${HOME_VAR}/app/com.bitwarden.desktop/config/Bitwarden" \
-            "${HOME_VAR}/app/com.getpostman.Postman/config/Postman" \
-            "${HOME_VAR}/app/com.github.vladimiry.ElectronMail/config/electron-mail" \
-            "${HOME_VAR}/app/com.microsoft.Teams/config/teams" \
-            "${HOME_VAR}/app/com.microsoft.Teams/config/Microsoft/Microsoft Teams" \
-            "${HOME_VAR}/app/com.mojang.Minecraft/.minecraft" \
-            "${HOME_VAR}/app/com.simplenote.Simplenote/config" \
-            "${HOME_VAR}/app/org.signal.Signal/config/Signal" \
-            "${HOME_VAR}/app/org.telegram.desktop/data/TelegramDesktop"; do
-    [ -d "${DIR}" ] && remove \
+function remove_logs_in_dir() {
+    [ ! -d "${DIR}" ] && return
+
+    remove \
         "${DIR}/logs" \
         "${DIR}/_logs" \
         "${DIR}"/*-log.txt \
@@ -377,10 +347,77 @@ for DIR in "${HOME}/.factorio" \
         "${DIR}"/*-logs-*.txt \
         "${DIR}"/*_logs_*.txt \
         "${DIR}"/*.log \
+        "${DIR}"/*.log.old \
         "${DIR}"/changelog.txt \
         "${DIR}"/log.txt \
         "${DIR}"/logs.txt \
         "${DIR}"/logfile.txt
+}
+
+for DIR in  "${HOME}/.factorio" \
+            "${HOME}/.gradle/daemon/"* \
+            "${HOME}/.ICAClient" \
+            "${HOME}/.klei/DoNotStarveTogether" \
+            "${HOME}/.minecraft" \
+            "${HOME}/.npm" \
+            "${HOME}/.steam/steamcmd/workshopbuilds" \
+            "${HOME}/.vscode/extensions/"* \
+            "${HOME}/.vscode/extensions/"*"/file-types" \
+            "${HOME}/Zomboid" \
+            "${HOME_CONFIG}/Code" \
+            "${HOME_CONFIG}/unity3d" \
+            "${HOME_CONFIG}/unity3d"/*/* \
+            "${HOME_LOCAL_SHARE}/gvfs-metadata" \
+            "${HOME_LOCAL_SHARE}/Paradox Interactive"/* \
+            "${HOME_LOCAL_SHARE}/Steam" \
+            "${HOME_LOCAL_SHARE}/Steam/config/htmlcache" \
+            "${HOME_LOCAL_SHARE}/Steam/config/htmlcache/VideoDecodeStats" \
+            "${HOME_LOCAL_SHARE}/Steam/config/SteamVR/htmlcache" \
+            "${HOME_LOCAL_SHARE}/Steam/steamapps/common"/* \
+            "${HOME_LOCAL_SHARE}/Steam/steamapps/common"/*/*_Data \
+            "${HOME_LOCAL_SHARE}/Steam/steamapps/compatdata/"*"/pfx" \
+            "${HOME_LOCAL_SHARE}/Steam/steamapps/compatdata/"*"/pfx/drive_c/users/steamuser/Temp" \
+            "${HOME_LOCAL_SHARE}/Steam/steamapps/compatdata/"*"/pfx/drive_c/windows" \
+            "${HOME_LOCAL_SHARE}/Steam/workshopbuilds" \
+            "${HOME_LOCAL_SHARE}/Surviving Mars" \
+            "${HOME_VAR_APP}"/*"/cache"/*/* \
+            "${HOME_VAR_APP}"/*"/config"/* \
+            "${HOME_VAR_APP}"/*"/config"/*/* \
+            "${HOME_VAR_APP}"/*"/data/gvfs-metadata" \
+            "${HOME_VAR_APP}/com.bitwarden.desktop/config/Bitwarden" \
+            "${HOME_VAR_APP}/com.discordapp.Discord/config/discord" \
+            "${HOME_VAR_APP}/com.getpostman.Postman/config/Postman" \
+            "${HOME_VAR_APP}/com.github.vladimiry.ElectronMail/config/electron-mail" \
+            "${HOME_VAR_APP}/com.microsoft.Teams/config/teams" \
+            "${HOME_VAR_APP}/com.microsoft.Teams/config/Microsoft/Microsoft Teams" \
+            "${HOME_VAR_APP}/com.mojang.Minecraft/.minecraft" \
+            "${HOME_VAR_APP}/com.simplenote.Simplenote/config" \
+            "${HOME_VAR_APP}/org.libreoffice.LibreOffice/config/libreoffice/4/user" \
+            "${HOME_VAR_APP}/org.signal.Signal/config/Signal" \
+            "${HOME_VAR_APP}/org.telegram.desktop/data/TelegramDesktop"; do
+    remove_logs_in_dir "${DIR}"
+
+    if [ -d "${DIR}/IndexedDB" ] \
+    || [ -d "${DIR}/shared_proto_db" ]; then
+        remove_logs_in_dir "${DIR}/IndexedDB"/*
+        remove_logs_in_dir "${DIR}/File System"/*
+        remove_logs_in_dir "${DIR}/File System"/*/*/*
+        remove_logs_in_dir "${DIR}/Session Storage"
+        remove_logs_in_dir "${DIR}/Service Worker/Database"
+        remove_logs_in_dir "${DIR}/shared_proto_db"
+        remove_logs_in_dir "${DIR}/shared_proto_db/metadata"
+    fi
+done
+
+# Empty directories
+for DIR in  "${HOME}/.Cobra Mobile" \
+            "${HOME}/.w3m" \
+            "${HOME_CACHE}"/* \
+            "${HOME_CONFIG}"/* \
+            "${HOME_LOCAL_SHARE}"/*; do
+    [ ! -d "${DIR}" ] && continue
+
+    remove_dir_if_empty "${DIR}"
 done
 
 does_bin_exist "journalctl" && run_as_su journalctl --vacuum-time=3days
