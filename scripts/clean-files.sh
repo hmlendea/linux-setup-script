@@ -3,6 +3,9 @@ source "scripts/common/filesystem.sh"
 source "${REPO_DIR}/scripts/common/common.sh"
 source "${REPO_DIR}/scripts/common/package-management.sh"
 
+CLEAN_LOGS=true
+CLEAN_BROWSER_LOGS=false
+
 remove "${LOCAL_INSTALL_TEMP_DIR}"
 
 remove "${ROOT_ETC}/motd"
@@ -323,91 +326,95 @@ fi
 remove "${HOME_CONFIG}/monitors.xml~"
 
 # Logs
-remove \
-    "${HOME}/.mozilla/firefox/Crash Reports" \
-    "${HOME_VAR}/app/org.mozilla.firefox/.mozilla/firefox/Crash Reports"
-remove "${HOME_CONFIG}/logs"
-remove "${HOME_CONFIG}/unity3d"/*.log
-remove "${HOME_LOCAL_SHARE}/xorg/"*".log"
-remove "${HOME_LOCAL_SHARE}/xorg/"*".log.old"
-remove \
-    "${HOME}/.klei/DoNotStarveTogether/backup/client_chat_log" \
-    "${HOME}/.klei/DoNotStarveTogether/backup/client_log"
-
-function remove_logs_in_dir() {
-    [ ! -d "${DIR}" ] && return
-
+if ${CLEAN_LOGS}; then
     remove \
-        "${DIR}/logs" \
-        "${DIR}/_logs" \
-        "${DIR}"/*-log.txt \
-        "${DIR}"/*_log.txt \
-        "${DIR}"/*-log-*.txt \
-        "${DIR}"/*_log_*.txt \
-        "${DIR}"/*-logs-*.txt \
-        "${DIR}"/*_logs_*.txt \
-        "${DIR}"/*.log \
-        "${DIR}"/*.log.old \
-        "${DIR}"/changelog.txt \
-        "${DIR}"/log.txt \
-        "${DIR}"/logs.txt \
-        "${DIR}"/logfile.txt
-}
+        "${HOME}/.mozilla/firefox/Crash Reports" \
+        "${HOME_VAR}/app/org.mozilla.firefox/.mozilla/firefox/Crash Reports"
+    remove "${HOME_CONFIG}/logs"
+    remove "${HOME_CONFIG}/unity3d"/*.log
+    remove "${HOME_LOCAL_SHARE}/xorg/"*".log"
+    remove "${HOME_LOCAL_SHARE}/xorg/"*".log.old"
+    remove \
+        "${HOME}/.klei/DoNotStarveTogether/backup/client_chat_log" \
+        "${HOME}/.klei/DoNotStarveTogether/backup/client_log"
 
-for DIR in  "${HOME}/.factorio" \
-            "${HOME}/.gradle/daemon/"* \
-            "${HOME}/.ICAClient" \
-            "${HOME}/.klei/DoNotStarveTogether" \
-            "${HOME}/.minecraft" \
-            "${HOME}/.npm" \
-            "${HOME}/.steam/steamcmd/workshopbuilds" \
-            "${HOME}/.vscode/extensions/"* \
-            "${HOME}/.vscode/extensions/"*"/file-types" \
-            "${HOME}/Zomboid" \
-            "${HOME_CONFIG}/Code" \
-            "${HOME_CONFIG}/unity3d" \
-            "${HOME_CONFIG}/unity3d"/*/* \
-            "${HOME_LOCAL_SHARE}/gvfs-metadata" \
-            "${HOME_LOCAL_SHARE}/Paradox Interactive"/* \
-            "${HOME_LOCAL_SHARE}/Steam" \
-            "${HOME_LOCAL_SHARE}/Steam/config/htmlcache" \
-            "${HOME_LOCAL_SHARE}/Steam/config/htmlcache/VideoDecodeStats" \
-            "${HOME_LOCAL_SHARE}/Steam/config/SteamVR/htmlcache" \
-            "${HOME_LOCAL_SHARE}/Steam/steamapps/common"/* \
-            "${HOME_LOCAL_SHARE}/Steam/steamapps/common"/*/*_Data \
-            "${HOME_LOCAL_SHARE}/Steam/steamapps/compatdata/"*"/pfx" \
-            "${HOME_LOCAL_SHARE}/Steam/steamapps/compatdata/"*"/pfx/drive_c/users/steamuser/Temp" \
-            "${HOME_LOCAL_SHARE}/Steam/steamapps/compatdata/"*"/pfx/drive_c/windows" \
-            "${HOME_LOCAL_SHARE}/Steam/workshopbuilds" \
-            "${HOME_LOCAL_SHARE}/Surviving Mars" \
-            "${HOME_VAR_APP}"/*"/cache"/*/* \
-            "${HOME_VAR_APP}"/*"/config"/* \
-            "${HOME_VAR_APP}"/*"/config"/*/* \
-            "${HOME_VAR_APP}"/*"/data/gvfs-metadata" \
-            "${HOME_VAR_APP}/com.bitwarden.desktop/config/Bitwarden" \
-            "${HOME_VAR_APP}/com.discordapp.Discord/config/discord" \
-            "${HOME_VAR_APP}/com.getpostman.Postman/config/Postman" \
-            "${HOME_VAR_APP}/com.github.vladimiry.ElectronMail/config/electron-mail" \
-            "${HOME_VAR_APP}/com.microsoft.Teams/config/teams" \
-            "${HOME_VAR_APP}/com.microsoft.Teams/config/Microsoft/Microsoft Teams" \
-            "${HOME_VAR_APP}/com.mojang.Minecraft/.minecraft" \
-            "${HOME_VAR_APP}/com.simplenote.Simplenote/config" \
-            "${HOME_VAR_APP}/org.libreoffice.LibreOffice/config/libreoffice/4/user" \
-            "${HOME_VAR_APP}/org.signal.Signal/config/Signal" \
-            "${HOME_VAR_APP}/org.telegram.desktop/data/TelegramDesktop"; do
-    remove_logs_in_dir "${DIR}"
+    function remove_logs_in_dir() {
+        [ ! -d "${DIR}" ] && return
 
-    if [ -d "${DIR}/IndexedDB" ] \
-    || [ -d "${DIR}/shared_proto_db" ]; then
-        remove_logs_in_dir "${DIR}/IndexedDB"/*
-        remove_logs_in_dir "${DIR}/File System"/*
-        remove_logs_in_dir "${DIR}/File System"/*/*/*
-        remove_logs_in_dir "${DIR}/Session Storage"
-        remove_logs_in_dir "${DIR}/Service Worker/Database"
-        remove_logs_in_dir "${DIR}/shared_proto_db"
-        remove_logs_in_dir "${DIR}/shared_proto_db/metadata"
-    fi
-done
+        remove \
+            "${DIR}/logs" \
+            "${DIR}/_logs" \
+            "${DIR}"/*-log.txt \
+            "${DIR}"/*_log.txt \
+            "${DIR}"/*-log-*.txt \
+            "${DIR}"/*_log_*.txt \
+            "${DIR}"/*-logs-*.txt \
+            "${DIR}"/*_logs_*.txt \
+            "${DIR}"/*.log \
+            "${DIR}"/*.log.old \
+            "${DIR}"/changelog.txt \
+            "${DIR}"/log.txt \
+            "${DIR}"/logs.txt \
+            "${DIR}"/logfile.txt
+    }
+
+    for DIR in  "${HOME}/.factorio" \
+                "${HOME}/.gradle/daemon/"* \
+                "${HOME}/.ICAClient" \
+                "${HOME}/.klei/DoNotStarveTogether" \
+                "${HOME}/.minecraft" \
+                "${HOME}/.npm" \
+                "${HOME}/.steam/steamcmd/workshopbuilds" \
+                "${HOME}/.vscode/extensions/"* \
+                "${HOME}/.vscode/extensions/"*"/file-types" \
+                "${HOME}/Zomboid" \
+                "${HOME_CONFIG}/Code" \
+                "${HOME_CONFIG}/unity3d" \
+                "${HOME_CONFIG}/unity3d"/*/* \
+                "${HOME_LOCAL_SHARE}/gvfs-metadata" \
+                "${HOME_LOCAL_SHARE}/Paradox Interactive"/* \
+                "${HOME_LOCAL_SHARE}/Steam" \
+                "${HOME_LOCAL_SHARE}/Steam/config/htmlcache" \
+                "${HOME_LOCAL_SHARE}/Steam/config/htmlcache/VideoDecodeStats" \
+                "${HOME_LOCAL_SHARE}/Steam/config/SteamVR/htmlcache" \
+                "${HOME_LOCAL_SHARE}/Steam/steamapps/common"/* \
+                "${HOME_LOCAL_SHARE}/Steam/steamapps/common"/*/*_Data \
+                "${HOME_LOCAL_SHARE}/Steam/steamapps/compatdata/"*"/pfx" \
+                "${HOME_LOCAL_SHARE}/Steam/steamapps/compatdata/"*"/pfx/drive_c/users/steamuser/Temp" \
+                "${HOME_LOCAL_SHARE}/Steam/steamapps/compatdata/"*"/pfx/drive_c/windows" \
+                "${HOME_LOCAL_SHARE}/Steam/workshopbuilds" \
+                "${HOME_LOCAL_SHARE}/Surviving Mars" \
+                "${HOME_VAR_APP}"/*"/cache"/* \
+                "${HOME_VAR_APP}"/*"/config"/* \
+                "${HOME_VAR_APP}"/*"/config"/*/* \
+                "${HOME_VAR_APP}"/*"/data/gvfs-metadata" \
+                "${HOME_VAR_APP}/com.bitwarden.desktop/config/Bitwarden" \
+                "${HOME_VAR_APP}/com.discordapp.Discord/config/discord" \
+                "${HOME_VAR_APP}/com.getpostman.Postman/config/Postman" \
+                "${HOME_VAR_APP}/com.github.vladimiry.ElectronMail/config/electron-mail" \
+                "${HOME_VAR_APP}/com.microsoft.Teams/config/teams" \
+                "${HOME_VAR_APP}/com.microsoft.Teams/config/Microsoft/Microsoft Teams" \
+                "${HOME_VAR_APP}/com.mojang.Minecraft/.minecraft" \
+                "${HOME_VAR_APP}/com.simplenote.Simplenote/config" \
+                "${HOME_VAR_APP}/org.libreoffice.LibreOffice/config/libreoffice/4/user" \
+                "${HOME_VAR_APP}/org.signal.Signal/config/Signal" \
+                "${HOME_VAR_APP}/org.telegram.desktop/data/TelegramDesktop"; do
+        remove_logs_in_dir "${DIR}"
+
+        if ${CLEAN_BROWSER_LOGS}; then
+            if [ -d "${DIR}/IndexedDB" ] \
+            || [ -d "${DIR}/shared_proto_db" ]; then
+                remove_logs_in_dir "${DIR}/IndexedDB"/*
+                remove_logs_in_dir "${DIR}/File System"/*
+                remove_logs_in_dir "${DIR}/File System"/*/*/*
+                remove_logs_in_dir "${DIR}/Session Storage"
+                remove_logs_in_dir "${DIR}/Service Worker/Database"
+                remove_logs_in_dir "${DIR}/shared_proto_db"
+                remove_logs_in_dir "${DIR}/shared_proto_db/metadata"
+            fi
+        fi
+    done
+fi
 
 # Empty directories
 for DIR in  "${HOME}/.Cobra Mobile" \
