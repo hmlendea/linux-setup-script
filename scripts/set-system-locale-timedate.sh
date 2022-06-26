@@ -1,5 +1,6 @@
 #!/bin/bash
-source "scripts/common/common.sh"
+source "scripts/common/filesystem.sh"
+source "${REPO_SCRIPTS_COMMON_DIR}/system-info.sh"
 
 LOCALE_GEN_FILE_PATH="${ROOT_ETC}/locale.gen"
 LOCALE_CONF_FILE_PATH="${ROOT_ETC}/locale.conf"
@@ -34,7 +35,7 @@ echo "ro_RO.UTF-8 UTF-8" >> "${LOCALE_GEN_FILE_PATH}"
 for LOCALE in $(awk '{print $1}' "${LOCALE_GEN_FILE_PATH}" | sed -e 's/\([^\.]*\)\.\(.*\)/\1.\L\2/' | sed 's/-//'); do
     if [ ! $(locale -a | grep "${LOCALE}") ]; then
         echo "Generating the localisations..."
-        run_as_su locale-gen
+        locale-gen
         break
     fi
 done

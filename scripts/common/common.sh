@@ -1,7 +1,7 @@
 #!/bin/bash
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     source "scripts/common/filesystem.sh"
-    source "${REPO_SCRIPTS_DIR}/common/system-info.sh"
+    source "${REPO_SCRIPTS_COMMON_DIR}/system-info.sh"
 fi
 
 function run_as_su() {
