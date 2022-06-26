@@ -74,6 +74,7 @@ HOME_PICTURES="${HOME_REAL}/Pictures"
 HOME_PUBLIC="${HOME_REAL}/Public"
 HOME_TEMPLATES="${HOME_REAL}/Templates"
 HOME_VAR="${HOME_REAL}/.var"
+HOME_VAR_APP="${HOME_VAR}/app"
 HOME_VIDEOS="${HOME_REAL}/Videos"
 
 # Functions
@@ -277,7 +278,7 @@ function update_file_if_distinct() {
 # Specific directories
 HOME_MOZILLA="${HOME_REAL}/.mozilla"
 
-does_bin_exist "org.mozilla.firefox" && HOME_MOZILLA="${HOME_VAR}/app/org.mozilla.firefox/.mozilla"
+does_bin_exist "org.mozilla.firefox" && HOME_MOZILLA="${HOME_VAR_APP}/org.mozilla.firefox/.mozilla"
 
 GLOBAL_LAUNCHERS_DIR="${ROOT_USR_SHARE}/applications"
 GLOBAL_FLATPAK_LAUNCHERS_DIR="${ROOT_VAR_LIB}/flatpak/exports/share/applications"
@@ -285,7 +286,7 @@ LOCAL_LAUNCHERS_DIR="${HOME_LOCAL_SHARE}/applications"
 
 if does_bin_exist "steam" "com.valvesoftware.Steam"; then
     STEAM_DIR="${HOME_LOCAL_SHARE}/Steam"
-    does_bin_exist "com.valvesoftware.Steam" && STEAM_DIR="${HOME_VAR}/app/com.valvesoftware.Steam/.local/share/Steam"
+    does_bin_exist "com.valvesoftware.Steam" && STEAM_DIR="${HOME_VAR_APP}/com.valvesoftware.Steam/.local/share/Steam"
 
     STEAM_LIBRARY_PATHS="${STEAM_DIR}/steamapps"
     STEAM_LAUNCHERS_PATH="${LOCAL_LAUNCHERS_DIR}/Steam"

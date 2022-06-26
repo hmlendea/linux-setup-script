@@ -556,9 +556,15 @@ fi
 #################
 ### CHAT APPS ###
 #################
+if does_bin_exist "discord" "com.discordapp.Discord"; then
+    DISCORD_SETTINGS_FILE="${HOME_CONFIG}/discord/settings.json"
+    [ -d "${HOME_VAR_APP}/com.discordapp.Discord" ] && DISCORD_SETTINGS_FILE="${HOME_VAR_APP}/com.discordapp.Discord/config/discord/settings.json"
+
+    set_json_property "${DISCORD_SETTINGS_FILE}" ".SKIP_HOST_UPDATE" true
+fi
 if does_bin_exist "teams" "teams-insiders" "com.microsoft.Teams"; then
     TEAMS_CONFIG_DIR="${HOME_CONFIG}/Microsoft/Microsoft Teams"
-    [ -d "${HOME_VAR}/app/com.microsoft.Teams" ] && TEAMS_CONFIG_DIR="${HOME_VAR}/app/com.microsoft.Teams/config/Microsoft/Microsoft Teams"
+    [ -d "${HOME_VAR_APP}/com.microsoft.Teams" ] && TEAMS_CONFIG_DIR="${HOME_VAR_APP}/com.microsoft.Teams/config/Microsoft/Microsoft Teams"
 
     TEAMS_DESKTOP_CONFIG_FILE="${TEAMS_CONFIG_DIR}/desktop-config.json"
 
@@ -964,7 +970,7 @@ if does_bin_exist "code" "code-oss" "codium" "com.visualstudio.code"; then
         VSCODE_CONFIG_FILE="${HOME_CONFIG}/VSCodium/User/settings.json"
         VSCODE_BIN="codium"
     elif does_bin_exist "com.visualstudio.code"; then
-        VSCODE_CONFIG_FILE="${HOME_VAR}/app/com.visualstudio.code/config/Code/User/settings.json"
+        VSCODE_CONFIG_FILE="${HOME_VAR_APP}/com.visualstudio.code/config/Code/User/settings.json"
         VSCODE_BIN="com.visualstudio.code"
     fi
 
@@ -1071,7 +1077,7 @@ fi
 ################
 if does_bin_exist "inkscape" "org.inkscape.Inkscape"; then
     INKSCAPE_CONFIG_DIR="${HOME_CONFIG}/inkscape"
-    [ -d "${HOME_VAR}/app/org.inkscape.Inkscape" ] && INKSCAPE_CONFIG_DIR="${HOME_VAR}/app/org.inkscape.Inkscape/config/inkscape"
+    [ -d "${HOME_VAR_APP}/org.inkscape.Inkscape" ] && INKSCAPE_CONFIG_DIR="${HOME_VAR_APP}/org.inkscape.Inkscape/config/inkscape"
 
     INKSCAPE_PREFERENCES_FILE="${INKSCAPE_CONFIG_DIR}/preferences.xml"
 
@@ -1404,7 +1410,7 @@ fi
 if does_bin_exist "fragments" "de.haeckerfelix.Fragments"; then
     FRAGMENTS_SCHEMA="de.haeckerfelix.Fragments"
     FRAGMENTS_CONFIG_DIR="${HOME_CONFIG}/fragments"
-    [ -d "${HOME_VAR}/app/de.haeckerfelix.Fragments" ] && FRAGMENTS_CONFIG_DIR="${HOME_VAR}/app/de.haeckerfelix.Fragments/config/fragments"
+    [ -d "${HOME_VAR_APP}/de.haeckerfelix.Fragments" ] && FRAGMENTS_CONFIG_DIR="${HOME_VAR_APP}/de.haeckerfelix.Fragments/config/fragments"
 
     FRAGMENTS_SETTINGS_FILE="${FRAGMENTS_CONFIG_DIR}/settings.json"
 
