@@ -95,13 +95,15 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Software.desktop" Keywords
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/engrampa.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/org.gnome.FileRoller.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/xarchiver.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.FileRoller.desktop"; do
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.FileRoller.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.FileRoller.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Archives" \
         Name[ro] "Arhive"
 done
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.FileRoller.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.FileRoller.desktop"; do
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.FileRoller.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.FileRoller.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         StartupWMClass "File-Roller"
 done
@@ -147,7 +149,8 @@ done
 CALENDAR_CATEGORIES="Office;Calendar;Utility;Core;"
 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Calendar.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Calendar.desktop"; do
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Calendar.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Calendar.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Calendar" \
         Name[ro] "Calendar" \
@@ -160,7 +163,8 @@ done
 ##############
 CAMERA_APP_KEYWORDS="photo;video;webcam;camera;selfie;"
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Cheese.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Cheese.desktop"; do
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Cheese.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Cheese.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Camera" \
         Name[ro] "Cameră" \
@@ -175,7 +179,8 @@ done
 CHAT_APP_CATEGORIES="Network;Chat;InstantMessaging;Communication;"
 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/discord.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.discordapp.Discord.desktop"; do
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.discordapp.Discord.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.discordapp.Discord.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Icon "discord" \
         Categories "${CHAT_APP_CATEGORIES}"
@@ -183,7 +188,8 @@ done
 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/teams.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/teams-insiders.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.microsoft.Teams.desktop"; do
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.microsoft.Teams.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.microsoft.Teams.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Teams" \
         Name[ro] "Teams" \
@@ -198,7 +204,8 @@ done
 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/meowgram.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/telegramdesktop.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.telegram.desktop.desktop"; do
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.telegram.desktop.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.telegram.desktop.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Telegram" \
         Name[ro] "Telegram"
@@ -212,7 +219,8 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/whatsapp-for-linux.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/whatsapp-nativefier.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/whatsapp-nativefier-dark.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/whatsie.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/io.github.mimbrero.WhatsAppDesktop.desktop"; do
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/io.github.mimbrero.WhatsAppDesktop.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/io.github.mimbrero.WhatsAppDesktop.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "WhatsApp" \
         Name[ro] "WhatsApp" \
@@ -220,10 +228,15 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/whatsapp-for-linux.desktop" \
         Categories "${CHAT_APP_CATEGORIES}"
 done
 
+for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/io.github.mimbrero.WhatsAppDesktop.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/io.github.mimbrero.WhatsAppDesktop.desktop"; do
+    set_launcher_entry "${LAUNCHER}" \
+        StartupWMClass "whatsapp-desktop-linux"
+done
+
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/whatsapp-desktop.desktop" StartupWMClass "whatsapp"
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/whatsapp-nativefier.desktop" StartupWMClass "whatsapp-nativefier-d40211"
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/whatsapp-nativefier-dark.desktop" StartupWMClass "whatsapp-nativefier-d52542"
-set_launcher_entry "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/io.github.mimbrero.WhatsAppDesktop.desktop" StartupWMClass "whatsapp-desktop-linux"
 set_launcher_entry "${LOCAL_LAUNCHERS_DIR}/chrome-nfjdjopfnbnkmfldmeffmhgodmlhdnei-Default.desktop" Categories "ChromeApp;${CHAT_APP_CATEGORIES}"
 
 ##############
@@ -300,7 +313,8 @@ fi
 ### Contacts ###
 ################
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Contacts.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Contacts.desktop"; do
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Contacts.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Contacts.desktop"; do
     set_launcher_entries "${LAUNCHER}" Categories "GNOME;GTK;Utility;ContactManagement;"
 done
 
@@ -312,7 +326,8 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/code-oss.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/code.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/codium.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/visual-studio-code.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.visualstudio.code.desktop"; do
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.visualstudio.code.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.visualstudio.code.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Code" \
         Name[ro] "Code" \
@@ -365,7 +380,8 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/mate-dictionary.desktop" \
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/baobab.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/mate-disk-usage-analyzer.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/org.gnome.baobab.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.baobab.desktop"; do
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.baobab.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.baobab.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Disk Usage" \
         Name[ro] "Utilizarea Discului" \
@@ -390,7 +406,8 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/atril.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/epdfview.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/evince.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Evince.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Evince.desktop"; do
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Evince.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Evince.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Documents" \
         Name[ro] "Documente"
@@ -483,7 +500,8 @@ fi
 ### Font Managers ###
 #####################
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.font-viewer.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.font-viewer.desktop"; do
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.font-viewer.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.font-viewer.desktop"; do
     set_launcher_entry "${LAUNCHER}" NoDisplay true
 done
 
@@ -496,7 +514,8 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/gnubg.desktop" \
 
 if does_bin_exist "minecraft-launcher" "com.mojang.Minecraft"; then
     for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/minecraft-launcher.desktop" \
-                    "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.mojang.Minecraft.desktop"; do
+                    "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.mojang.Minecraft.desktop" \
+                    "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.mojang.Minecraft.desktop"; do
         set_launcher_entry "${LAUNCHER}" Name "Minecraft"
     done
 
@@ -557,7 +576,8 @@ IMAGE_EDITOR_CATEGORIES="Graphics;2DGraphics"
 
 if does_bin_exist "gimp" "org.gimp.GIMP"; then
     for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/gimp.desktop" \
-                    "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gimp.GIMP.desktop"; do
+                    "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gimp.GIMP.desktop" \
+                    "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gimp.GIMP.desktop"; do
         set_launcher_entries "${LAUNCHER}" \
             Name "GIMP" \
             Categories "GTK;${IMAGE_EDITOR_CATEGORIES};RasterGraphics;" \
@@ -579,7 +599,8 @@ fi
 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/inkscape.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/org.inkscape.Inkscape.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.inkscape.Inkscape.desktop"; do
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.inkscape.Inkscape.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.inkscape.Inkscape.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Inkscape" \
         Categories "GTK;${IMAGE_EDITOR_CATEGORIES};VectorGraphics;"
@@ -592,7 +613,8 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/gpicview.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/eog.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/eom.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/org.gnome.eog.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.eog.desktop"; do
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.eog.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.eog.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Images" \
         Name[ro] "Imagini"
@@ -604,7 +626,12 @@ done
 INTERNET_BROWSER_CATEGORIES="Network;WebBrowser;"
 
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/firefox-developer.desktop" Categories ${INTERNET_BROWSER_CATEGORIES}
-set_launcher_entries "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.mozilla.firefox.desktop" StartupWMClass "firefox"
+
+for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.mozilla.firefox.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.mozilla.firefox.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        StartupWMClass "firefox"
+done
 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/google-chrome-unstable.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/google-chrome.desktop"; do
@@ -671,7 +698,8 @@ done
 MAIL_APP_CATEGORIES="Network;Email;"
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/electron-mail.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Evolution.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.github.vladimiry.ElectronMail.desktop"; do
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.github.vladimiry.ElectronMail.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.github.vladimiry.ElectronMail.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Mail" \
         Name[ro] "Mail" \
@@ -679,8 +707,13 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/electron-mail.desktop" \
         NoDisplay "false"
 done
 
-set_launcher_entry "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.github.vladimiry.ElectronMail.desktop" \
-    Keywords "Email;Mail;Electron;"
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/electron-mail.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Evolution.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.github.vladimiry.ElectronMail.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.github.vladimiry.ElectronMail.desktop"; do
+    set_launcher_entry "${LAUNCHER}" \
+        Keywords "Email;Mail;Electron;"
+done
 
 ############
 ### MAPS ###
@@ -688,14 +721,16 @@ set_launcher_entry "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.github.vladimiry.Electro
 MAPS_APP_CATEGORIES="Utility;Navigation;"
 for LAUNCHER in "${LOCAL_LAUNCHERS_DIR}/chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Maps.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Maps.desktop"; do
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Maps.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Maps.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Maps" \
         Name[ro] "Hărți" \
         NoDisplay "false"
 done
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Maps.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Maps.desktop"; do
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Maps.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Maps.desktop"; do
     set_launcher_entries "${LAUNCHER}" Categories "GNOME;GTK;${MAPS_APP_CATEGORIES}"
 done
 
@@ -788,7 +823,8 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/org.gnome.DiskUtility.desktop" Categ
 ### Password Managers ###
 #########################
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.seahorse.Application.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.seahorse.Application.desktop"; do
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.seahorse.Application.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.seahorse.Application.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name[ro] "Parole și Chei" \
         NoDisplay true
@@ -809,7 +845,8 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Photos.desktop" \
 ### POSTMAN ###
 ###############
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/postman.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.getpostman.Postman.desktop"; do
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.getpostman.Postman.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.getpostman.Postman.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Icon "postman" \
         Categories "Development;"
@@ -852,7 +889,8 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/gnome-control-center.desktop" \
 
 ### Configuration Settings
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/ca.desrt.dconf-editor.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/ca.desrt.dconf-editor.desktop"; do
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/ca.desrt.dconf-editor.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/ca.desrt.dconf-editor.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Configurator" \
         Name[ro] "Configurator" \
@@ -876,7 +914,8 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/org.freedesktop.Piper.desktop" \
 
 ### Network Displays
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.NetworkDisplays.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.NetworkDisplays.desktop"; do
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.NetworkDisplays.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.NetworkDisplays.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Network Displays" \
         Name[ro] "Monitoare în Rețea"
@@ -899,7 +938,8 @@ if does_bin_exist "steam" "com.valvesoftware.Steam"; then
     done
 
     for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/steam.desktop" \
-                    "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.valvesoftware.Steam.desktop"; do
+                    "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.valvesoftware.Steam.desktop" \
+                    "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.valvesoftware.Steam.desktop"; do
         set_launcher_entries "${LAUNCHER}" \
             Name "Steam" \
             Name[ro] "Steam" \
@@ -981,7 +1021,9 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/gedit.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/medit.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/pluma.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.gedit.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.TextEditor.desktop"; do
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.TextEditor.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.gedit.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.TextEditor.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Text Editor" \
         Name[ro] "Editor Text" \
@@ -1038,7 +1080,8 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/vlc.desktop" Name "VLC"
 ### Weather ###
 ###############
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Weather.Application.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Weather.desktop"; do
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Weather.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Weather.desktop"; do
     set_launcher_entries "${LAUNCHER}" Categories "GNOME;GTK;Utility;Navigation;"
 done
 
@@ -1066,7 +1109,8 @@ else
 fi
 
 # ALL FLATPAKS
-for FLATPAK_LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}"/*.desktop; do
+for FLATPAK_LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}"/*.desktop \
+                        "${LOCAL_FLATPAK_LAUNCHERS_DIR}"/*.desktop; do
     APP_ID=$(basename "${FLATPAK_LAUNCHER}" | sed 's/\.desktop$//g')
     ACTIONS=$(grep "^Actions=" "${FLATPAK_LAUNCHER}" | sed -e 's/^Actions=//g' -e 's/Quit;//g')
     set_launcher_entries "${FLATPAK_LAUNCHER}" \
@@ -1253,6 +1297,9 @@ if does_bin_exist "steam" "com.valvesoftware.Steam"; then
                         Keywords[ro] "Joc;Steam;${APP_KEYWORDS};" \
                         Exec "${STEAM_EXECUTABLE} steam:\/\/rungameid\/${APP_ID}" \
                         Icon "${APP_ICON_PATH}" \
+                        Icon[de] "${APP_ICON_PATH}" \
+                        Icon[es] "${APP_ICON_PATH}" \
+                        Icon[ro] "${APP_ICON_PATH}" \
                         Categories "Game;Steam;" \
                         StartupWMClass "${APP_WMCLASS}" \
                         PrefersNonDefaultGPU true \

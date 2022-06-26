@@ -284,6 +284,7 @@ does_bin_exist "org.mozilla.firefox" && HOME_MOZILLA="${HOME_VAR_APP}/org.mozill
 GLOBAL_LAUNCHERS_DIR="${ROOT_USR_SHARE}/applications"
 GLOBAL_FLATPAK_LAUNCHERS_DIR="${ROOT_VAR_LIB}/flatpak/exports/share/applications"
 LOCAL_LAUNCHERS_DIR="${HOME_LOCAL_SHARE}/applications"
+LOCAL_FLATPAK_LAUNCHERS_DIR="${HOME_LOCAL_SHARE}/flatpak/exports/share/applications"
 
 if does_bin_exist "steam" "com.valvesoftware.Steam"; then
     STEAM_DIR="${HOME_LOCAL_SHARE}/Steam"
