@@ -103,7 +103,6 @@ fi
 
 if [[ "${OS}" == "Linux" ]]; then
     execute-script "clean-files.sh"
-    execute-script-superuser "clean-files.sh"
 
     if ${HAS_GUI}; then
         execute-script-superuser "customise-launchers.sh"

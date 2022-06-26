@@ -266,21 +266,21 @@ function set_gsetting() {
     local VALUE="${@:3}"
     local CURRENT_VALUE=""
 
-    if [ -d "${HOME_VAR}/app/${SCHEMA}" ]; then
+    if [ -d "${HOME_VAR_APP}/${SCHEMA}" ]; then
         set_gsetting_flatpak "${SCHEMA}" "${PROPERTY}" "${VALUE}"
         return
     else
         local SCHEMA_ROOT=$(echo "${SCHEMA}" | awk -F"." '{print $1"."$2"."$3}')
 
-        if [ -d "${HOME_VAR}/app/${SCHEMA_ROOT}" ]; then
+        if [ -d "${HOME_VAR_APP}/${SCHEMA_ROOT}" ]; then
             set_gsetting_flatpak "${SCHEMA_ROOT}" "${PROPERTY}" "${VALUE}"
             return
         fi
 
-        local APP_NAME=$(ls "${HOME_VAR}/app" | grep -i "^${SCHEMA_ROOT}$" | head -n 1)
+        local APP_NAME=$(ls "${HOME_VAR_APP}" | grep -i "^${SCHEMA_ROOT}$" | head -n 1)
 
         if [ -n "${APP_NAME}" ] \
-        && [ -d "${HOME_VAR}/app/${APP_NAME}" ]; then
+        && [ -d "${HOME_VAR_APP}/${APP_NAME}" ]; then
             set_gsetting_flatpak "${APP_NAME}" "${PROPERTY}" "${VALUE}"
             return
         fi
@@ -309,7 +309,7 @@ function set_gsetting_flatpak() {
 
     is_value_string "${VALUE}" && VALUE="'${VALUE}'"
 
-    local KEYFILE_PATH="${HOME_VAR}/app/${APP}/config/glib-2.0/settings/keyfile"
+    local KEYFILE_PATH="${HOME_VAR_APP}/${APP}/config/glib-2.0/settings/keyfile"
 
     set_config_value "${KEYFILE_PATH}" "${PROPERTY}" "${VALUE}"
 }
