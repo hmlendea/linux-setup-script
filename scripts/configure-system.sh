@@ -897,6 +897,7 @@ PDX_LAUNCHER_DATA_DIR="${HOME_LOCAL_SHARE}/Paradox Interactive/launcher-v2"
 PDX_LAUNCHER_USER_SETTINGS_FILE="${PDX_LAUNCHER_DATA_DIR}/userSettings.json"
 
 if [ -f "${PDX_LAUNCHER_USER_SETTINGS_FILE}" ]; then
+    set_json_property "${PDX_LAUNCHER_USER_SETTINGS_FILE}" '.isOnboarded' true
     set_json_property "${PDX_LAUNCHER_USER_SETTINGS_FILE}" '.allowPersonalizedContent' false
 fi
 
