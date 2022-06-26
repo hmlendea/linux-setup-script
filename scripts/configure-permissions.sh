@@ -37,6 +37,8 @@ function set_linux_permission() {
             fi
         elif [[ "${PERMISSION}" == "notification_banner" ]]; then
             set_gsetting "${GSETTING_SCHEMA}" show-banners "${STATE}"
+        elif [[ "${PERMISSION}" == "notification_content" ]]; then
+            set_gsetting "${GSETTING_SCHEMA}" force-expanded "${STATE}"
         elif [[ "${PERMISSION}" == "notification_lockscreen" ]]; then
             set_gsetting "${GSETTING_SCHEMA}" show-in-lock-screen "${STATE}"
         fi
@@ -243,6 +245,7 @@ if does_bin_exist "flatpak"; then
         "network" true \
         "notification" true \
         "notification_banner" true \
+        "notification_content" true \
         "notification_lockscreen" true \
         "location" false
     set_linux_permission "com.brave.Browser" \
@@ -255,6 +258,7 @@ if does_bin_exist "flatpak"; then
         "network" true \
         "notification" true \
         "notification_banner" true \
+        "notification_content" true \
         "notification_lockscreen" true \
         "location" false
     set_linux_permission "com.mojang.Minecraft" \
@@ -282,6 +286,7 @@ if does_bin_exist "flatpak"; then
         "network" true \
         "notification" true \
         "notification_banner" false \
+        "notification_content" true \
         "notification_lockscreen" true \
         "location" false
     set_linux_permission "com.github.vladimiry.ElectronMail" \
@@ -289,6 +294,7 @@ if does_bin_exist "flatpak"; then
         "network" true \
         "notification" true \
         "notification_banner" true \
+        "notification_content" true \
         "notification_lockscreen" true \
         "location" false
     for APP in "com.valvesoftware.Steam" "steam"; do
@@ -337,6 +343,7 @@ if does_bin_exist "flatpak"; then
         "network" true \
         "notification" true \
         "notification_banner" true \
+        "notification_content" true \
         "notification_lockscreen" true \
         "location" false
     set_linux_permission "net.lutris.Lutris" \
@@ -485,6 +492,7 @@ if does_bin_exist "flatpak"; then
         "network" true \
         "notification" true \
         "notification_banner" true \
+        "notification_content" true \
         "notification_lockscreen" true \
         "location" false
     set_linux_permission "org.telegram.desktop" \
@@ -492,6 +500,7 @@ if does_bin_exist "flatpak"; then
         "network" true \
         "notification" true \
         "notification_banner" true \
+        "notification_content" true \
         "notification_lockscreen" true \
         "location" false
     set_linux_permission "ro.go.hmlendea.DL-Desktop" \
