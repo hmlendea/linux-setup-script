@@ -221,9 +221,9 @@ remove "${ROOT_ETC}/motd"
 ! does_bin_exist "youtube-dl" && remove "${HOME_CACHE}/youtube-dl"
 ! does_bin_exist "zsh" && remove "${HOME}/.zshrc"
 
-for FLATPAK in "${HOME_VAR}/app"/*; do
+for FLATPAK in "${HOME_VAR_APP}"/*; do
     FLATPAK=$(echo "${FLATPAK}" | sed 's/.*\/\([^\/]*\)$/\1/g')
-    ! is_flatpak_installed "${FLATPAK}" && remove "${HOME_VAR}/app/${FLATPAK}"
+    ! is_flatpak_installed "${FLATPAK}" && remove "${HOME_VAR_APP}/${FLATPAK}"
 done
 
 # GNOME Extensions
@@ -329,7 +329,7 @@ remove "${HOME_CONFIG}/monitors.xml~"
 if ${CLEAN_LOGS}; then
     remove \
         "${HOME}/.mozilla/firefox/Crash Reports" \
-        "${HOME_VAR}/app/org.mozilla.firefox/.mozilla/firefox/Crash Reports"
+        "${HOME_VAR_APP}/org.mozilla.firefox/.mozilla/firefox/Crash Reports"
     remove "${HOME_CONFIG}/logs"
     remove "${HOME_CONFIG}/unity3d"/*.log
     remove "${HOME_LOCAL_SHARE}/xorg/"*".log"

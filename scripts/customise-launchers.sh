@@ -522,8 +522,8 @@ if does_bin_exist "minecraft-launcher" "com.mojang.Minecraft"; then
     MC_DIR="${HOME}/.minecraft"
     MC_EXECUTABLE="minecraft-launcher"
 
-    if [ -d "${HOME_VAR}/app/com.mojang.Minecraft" ]; then
-        MC_DIR="${HOME_VAR}/app/com.mojang.Minecraft/.minecraft"
+    if [ -d "${HOME_VAR_APP}/com.mojang.Minecraft" ]; then
+        MC_DIR="${HOME_VAR_APP}/com.mojang.Minecraft/.minecraft"
         MC_EXECUTABLE="com.mojang.Minecraft"
     fi
 
