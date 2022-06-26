@@ -54,7 +54,10 @@ ICON_THEME_FOLDER_COLOUR="grey"
 CURSOR_THEME="Vimix-white-cursors"
 SOUND_THEME="freedesktop"
 
-GTK2_THEME=$(echo "${GTK2_THEME}" | sed 's/adw-gtk3/Adwaita/g')
+# TODO: Allow non-dark when a package is available
+GTK2_THEME=$(echo "${GTK2_THEME}" | sed \
+                -e 's/adw-gtk3/AdwaitaDark/g' \
+                -e 's/Dark-dark/Dark/g')
 
 [[ "${GTK4_THEME}" == "ZorinGrey-Dark" ]] && GTK4_THEME="Adwaita-dark" # Until the Zorin theme supports GTK4
 is_native_package_installed "pop-sound-theme-bin" && SOUND_THEME="Pop"
