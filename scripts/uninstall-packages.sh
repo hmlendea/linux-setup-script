@@ -18,6 +18,10 @@ elif [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
     yes | run_as_su apt autoremove
 fi
 
+if does_bin_exist "flatpak"; then
+    call_flatpak uninstall --unused
+fi
+
 # Uninstall the packages
 if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     if ${IS_POWERFUL_PC}; then
