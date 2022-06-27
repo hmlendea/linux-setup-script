@@ -1131,12 +1131,14 @@ fi
 for FLATPAK_LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}"/*.desktop \
                         "${LOCAL_FLATPAK_LAUNCHERS_DIR}"/*.desktop; do
     APP_ID=$(basename "${FLATPAK_LAUNCHER}" | sed 's/\.desktop$//g')
-    QUIT_ACTION_ID="ForceQuit"
+    QUIT_ACTION_ID="force-quit"
     FLATPAK_LAUNCHER_CONTENT=$(cat "${FLATPAK_LAUNCHER}")
     FLATPAK_NAME=$(grep "^Name=" <<< "${FLATPAK_LAUNCHER_CONTENT}" | head -n 1 | awk -F= '{print $2}')
     FLATPAK_NAME_NOSPACES=$(echo "${FLATPAK_NAME}" | sed 's/\s*//g')
 
-    if grep -q "^\[Desktop Action Quit\]" <<< "${FLATPAK_LAUNCHER_CONTENT}"; then
+    if grep -q "^\[Desktop Action ForceQuit\]" <<< "${FLATPAK_LAUNCHER_CONTENT}"; then
+        QUIT_ACTION_ID="ForceQuit"
+    elif grep -q "^\[Desktop Action Quit\]" <<< "${FLATPAK_LAUNCHER_CONTENT}"; then
         QUIT_ACTION_ID="Quit"
     elif grep -q "^\[Desktop Action Quit${FLATPAK_NAME_NOSPACES}\]$" <<< "${FLATPAK_LAUNCHER_CONTENT}"; then
         QUIT_ACTION_ID="Quit${FLATPAK_NAME_NOSPACES}"
