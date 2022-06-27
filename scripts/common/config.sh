@@ -371,7 +371,7 @@ function set_launcher_entry() {
         local VAL_ESC="${VAL}"
 
         local FILE_CONTENTS=""
-        local HAS_MULTIPLE_SECTIONS=false
+        #local HAS_MULTIPLE_SECTIONS=false
         local SECTION_INDEX=1
         local SECTION_FIRST_LINE=1
         local SECTION_LAST_LINE=1
@@ -380,15 +380,13 @@ function set_launcher_entry() {
         VAL_ESC=$(echo "${VAL}" | sed -e 's/[]\/$*.^|[]/\\&/g')
 
         if ! grep -q "^\[${SECTION}\]$" "${FILE}"; then
+            append_line "${FILE}" ""
             append_line "${FILE}" "[${SECTION}]"
             append_line "${FILE}" ""
         fi
 
-        FILE_CONTENTS=$(cat "${FILE}")
-        SECTION_LAST_LINE=$(wc -l "${FILE}" | awk '{print $1}')
-
         if [ $(grep -c "^\[.*\]$" <<< "${FILE_CONTENTS}") -gt 1 ]; then
-            HAS_MULTIPLE_SECTIONS=true
+            #HAS_MULTIPLE_SECTIONS=true
             SECTION_INDEX=$(grep -n "^\[.*\]$" "${FILE}" | grep -n "\[${SECTION}\]" | awk -F: '{print $1}')
 
             [ -z "${SECTION_INDEX}" ] && SECTION_INDEX=1
@@ -399,6 +397,9 @@ function set_launcher_entry() {
             [ -z "${SECTION_LAST_LINE}" ] && SECTION_LAST_LINE=$(wc -l "${FILE}" | awk '{print $1}')
 
             FILE_CONTENTS=$(tail -n "+${SECTION_FIRST_LINE}" "${FILE}" | head -n "$((SECTION_LAST_LINE-SECTION_FIRST_LINE+1))")
+        else
+            SECTION_LAST_LINE=$(wc -l "${FILE}" | awk '{print $1}')
+            FILE_CONTENTS=$(cat "${FILE}")
         fi
 
         if ! grep -q "^${KEY_ESC}=\(${VAL}\|${VAL_ESC}\)$" <<< "${FILE_CONTENTS}" \
@@ -410,11 +411,11 @@ function set_launcher_entry() {
                     run_as_su sed -i ''"${SECTION_FIRST_LINE}"','"${SECTION_LAST_LINE}"' s|^'"${KEY_ESC}"'=.*$|'"${KEY_ESC}"'='"${VAL}"'|g' "${FILE_PATH_RAW}"
                 fi
             elif [ -n "${VAL}" ]; then
-                if ${HAS_MULTIPLE_SECTIONS}; then
+                #if ${HAS_MULTIPLE_SECTIONS}; then
                     run_as_su sed -i "${SECTION_LAST_LINE} i ${KEY_ESC}=${VAL_ESC}" "${FILE_PATH_RAW}"
-                else
-                    append_line "${FILE}" "${KEY}=${VAL}"
-                fi
+                #else
+                #    append_line "${FILE}" "${KEY}=${VAL}"
+                #fi
             fi
 
             KEY_TO_PRINT=$(echo "${SECTION}/${KEY}" | sed 's/Desktop Entry\///g')
