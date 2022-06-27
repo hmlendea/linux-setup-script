@@ -385,21 +385,21 @@ function set_launcher_entry() {
             append_line "${FILE}" ""
         fi
 
+        FILE_CONTENTS=$(cat "${FILE}")
+
         if [ $(grep -c "^\[.*\]$" <<< "${FILE_CONTENTS}") -gt 1 ]; then
             #HAS_MULTIPLE_SECTIONS=true
-            SECTION_INDEX=$(grep -n "^\[.*\]$" "${FILE}" | grep -n "\[${SECTION}\]" | awk -F: '{print $1}')
+            SECTION_INDEX=$(grep -n "^\[.*\]$" <<< "${FILE_CONTENTS}" | grep -n "\[${SECTION}\]" | awk -F: '{print $1}')
 
             [ -z "${SECTION_INDEX}" ] && SECTION_INDEX=1
 
             SECTION_FIRST_LINE=$(grep -n "^\[${SECTION}\]$" "${FILE}" | awk -F: '{print $1}')
             SECTION_LAST_LINE=$(grep -n "^\[.*\]$" "${FILE}" | tail -n +$((SECTION_INDEX+1)) | awk -F: '{print $1}' | head -n 1)
-
             [ -z "${SECTION_LAST_LINE}" ] && SECTION_LAST_LINE=$(wc -l "${FILE}" | awk '{print $1}')
 
             FILE_CONTENTS=$(tail -n "+${SECTION_FIRST_LINE}" "${FILE}" | head -n "$((SECTION_LAST_LINE-SECTION_FIRST_LINE+1))")
         else
             SECTION_LAST_LINE=$(wc -l "${FILE}" | awk '{print $1}')
-            FILE_CONTENTS=$(cat "${FILE}")
         fi
 
         if ! grep -q "^${KEY_ESC}=\(${VAL}\|${VAL_ESC}\)$" <<< "${FILE_CONTENTS}" \

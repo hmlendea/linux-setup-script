@@ -137,7 +137,9 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/balena-etcher-electron.desktop" \
 ### Calculators ###
 ###################
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/galculator.desktop" \
-                "${GLOBAL_LAUNCHERS_DIR}/mate-calc.desktop"; do
+                "${GLOBAL_LAUNCHERS_DIR}/mate-calc.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Calculator.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Calculator.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Calculator" \
         Name[ro] "Calculator"
@@ -182,6 +184,7 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/discord.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.discordapp.Discord.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.discordapp.Discord.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
+        Name "Discord" \
         Icon "discord" \
         Categories "${CHAT_APP_CATEGORIES}"
 done
@@ -627,6 +630,13 @@ INTERNET_BROWSER_CATEGORIES="Network;WebBrowser;"
 
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/firefox-developer.desktop" Categories ${INTERNET_BROWSER_CATEGORIES}
 
+for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.brave.Browser.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.brave.Broser.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Brave" \
+        GenericName "Browser"
+done
+
 for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.mozilla.firefox.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.mozilla.firefox.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
@@ -848,6 +858,7 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/postman.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.getpostman.Postman.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.getpostman.Postman.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
+        Name "Postman" \
         Icon "postman" \
         Categories "Development;"
 done
@@ -1035,12 +1046,20 @@ done
 ###########################
 TORRENT_APP_CATEGORIES="Network;FileTransfer;P2P;"
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/de.haeckerfelix.Fragments.desktop" \
-                "${GLOBAL_LAUNCHERS_DIR}/transmission-gtk.desktop"; do
+                "${GLOBAL_LAUNCHERS_DIR}/transmission-gtk.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/de.haeckerfelix.Fragments.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/de.haeckerfelix.Fragments.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Torrents" \
         Name[ro] "Torente"
 done
-set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/de.haeckerfelix.Fragments.desktop" Categories "GNOME;GTK;${TORRENT_APP_CATEGORIES}"
+
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/de.haeckerfelix.Fragments.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/de.haeckerfelix.Fragments.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/de.haeckerfelix.Fragments.desktop"; do
+    set_launcher_entry "${LAUNCHER}" Categories "GNOME;GTK;${TORRENT_APP_CATEGORIES}"
+done
+
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/transmission-gtk.desktop" Categories "GTK;${TORRENT_APP_CATEGORIES}"
 
 ########################
@@ -1112,17 +1131,29 @@ fi
 for FLATPAK_LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}"/*.desktop \
                         "${LOCAL_FLATPAK_LAUNCHERS_DIR}"/*.desktop; do
     APP_ID=$(basename "${FLATPAK_LAUNCHER}" | sed 's/\.desktop$//g')
-    ACTIONS=$(grep "^Actions=" "${FLATPAK_LAUNCHER}" | sed -e 's/^Actions=//g' -e 's/Quit;//g')
+    QUIT_ACTION_ID="ForceQuit"
+    FLATPAK_LAUNCHER_CONTENT=$(cat "${FLATPAK_LAUNCHER}")
+    FLATPAK_NAME=$(grep "^Name=" <<< "${FLATPAK_LAUNCHER_CONTENT}" | head -n 1 | awk -F= '{print $2}')
+    FLATPAK_NAME_NOSPACES=$(echo "${FLATPAK_NAME}" | sed 's/\s*//g')
+
+    if grep -q "^\[Desktop Action Quit\]" <<< "${FLATPAK_LAUNCHER_CONTENT}"; then
+        QUIT_ACTION_ID="Quit"
+    elif grep -q "^\[Desktop Action Quit${FLATPAK_NAME_NOSPACES}\]$" <<< "${FLATPAK_LAUNCHER_CONTENT}"; then
+        QUIT_ACTION_ID="Quit${FLATPAK_NAME_NOSPACES}"
+    fi
+
+    ACTIONS=$(grep "^Actions=" "${FLATPAK_LAUNCHER}" | sed -e 's/^Actions=//g' -e 's/'"${QUIT_ACTION_ID}"';//g')
+
     set_launcher_entries "${FLATPAK_LAUNCHER}" \
         "Exec" "/usr/bin/flatpak run ${APP_ID}" \
-        "Actions" "${ACTIONS}Quit;" \
-        "Desktop Action Quit/Name" "Quit" \
-        "Desktop Action Quit/Name[ro]" "Închide" \
-        "Desktop Action Quit/GenericName" "Quit" \
-        "Desktop Action Quit/GenericName[ro]" "Închide" \
-        "Desktop Action Quit/Exec" "/usr/bin/flatpak kill ${APP_ID}" \
-        "Desktop Action Quit/Icon" "application-exit" \
-        "Desktop Action Quit/Icon[ro]" "application-exit"
+        "Actions" "${ACTIONS}${QUIT_ACTION_ID};" \
+        "Desktop Action ${QUIT_ACTION_ID}/Name" "Force Quit" \
+        "Desktop Action ${QUIT_ACTION_ID}/Name[ro]" "Închide Forțat" \
+        "Desktop Action ${QUIT_ACTION_ID}/GenericName" "Force Quit" \
+        "Desktop Action ${QUIT_ACTION_ID}/GenericName[ro]" "Închide Forțat" \
+        "Desktop Action ${QUIT_ACTION_ID}/Exec" "/usr/bin/flatpak kill ${APP_ID}" \
+        "Desktop Action ${QUIT_ACTION_ID}/Icon" "application-exit" \
+        "Desktop Action ${QUIT_ACTION_ID}/Icon[ro]" "application-exit"
 done
 
 # CREATE ICONS
