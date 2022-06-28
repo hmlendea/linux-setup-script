@@ -74,6 +74,7 @@ if [ -z "${EDITOR}" ] \
 	[ -f "${ROOT_USR_BIN}/micro" ] && export EDITOR=micro
 fi
 
+[ -f "${ROOT_USR_BIN}/micro" ] && [[ ${COLORTERM} =~ ^(truecolor|24-bit|24bit)$ ]] && export MICRO_TRUECOLOR=1
 [ -f "${ROOT_USR_BIN}/optirun" ] && export VGL_READBACK=pbo  # Better optirun performance
 
 if [ -f "${ROOT_USR_BIN}/dotnet" ]; then
