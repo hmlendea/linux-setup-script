@@ -10,10 +10,12 @@ function loadSource {
     fi
 }
 
-loadSource ~/.shell_vars
-loadSource ~/.shell_aliases
-loadSource ~/.shell_prompt
-loadSource ~/.shell_opts
+[ -z "${XDG_DATA_HOME}" ] && loadSource "${HOME}/.profile"
+
+loadSource "${XDG_DATA_HOME}/bash/variables"
+loadSource "${XDG_DATA_HOME}/bash/aliases"
+loadSource "${XDG_DATA_HOME}/bash/prompt"
+loadSource "${XDG_DATA_HOME}/bash/options"
 
 loadSource "/usr/share/blesh/ble.sh"
 loadSource "/usr/share/doc/pkgfile/command-not-found.bash"

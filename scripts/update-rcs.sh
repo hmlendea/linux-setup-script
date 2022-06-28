@@ -2,11 +2,13 @@
 source "scripts/common/filesystem.sh"
 source "${REPO_SCRIPTS_COMMON_DIR}/common.sh"
 
+update_file_if_distinct "${REPO_RC_DIR}/profile" "${HOME}/.profile"
 update_file_if_distinct "${REPO_RC_DIR}/inputrc" "${XDG_CONFIG_HOME}/readline/inputrc"
-update_file_if_distinct "${REPO_RC_DIR}/shell_aliases" "${HOME}/.shell_aliases"
-update_file_if_distinct "${REPO_RC_DIR}/shell_opts" "${HOME}/.shell_opts"
-update_file_if_distinct "${REPO_RC_DIR}/shell_prompt" "${HOME}/.shell_prompt"
-update_file_if_distinct "${REPO_RC_DIR}/shell_vars" "${HOME}/.shell_vars"
+
+update_file_if_distinct "${REPO_RC_DIR}/shell_aliases" "${XDG_DATA_HOME}/bash/aliases"
+update_file_if_distinct "${REPO_RC_DIR}/shell_opts" "${XDG_DATA_HOME}/bash/options"
+update_file_if_distinct "${REPO_RC_DIR}/shell_prompt" "${XDG_DATA_HOME}/bash/prompt"
+update_file_if_distinct "${REPO_RC_DIR}/shell_vars" "${XDG_DATA_HOME}/bash/variables"
 
 if does_bin_exist "bash"; then
     update_file_if_distinct "${REPO_RC_DIR}/bashrc" "${HOME}/.bashrc"
