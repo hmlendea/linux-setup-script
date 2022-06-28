@@ -7,7 +7,7 @@ source "${REPO_SCRIPTS_DIR}/common/system-info.sh"
 [ "${OS}" != "Linux" ] && exit
 (! ${HAS_GUI}) && exit
 
-AUTOSTART_DIR="${HOME_CONFIG}/autostart"
+AUTOSTART_DIR="${XDG_CONFIG_HOME}/autostart"
 
 function get_launcher_path_for_app() {
     local BINARY_NAME="${1}"
@@ -71,7 +71,7 @@ configure-autostart-for-app "org.signal.Signal" \
 configure-autostart-for-app "telegram-desktop" \
     Name "Telegram" \
     Icon "telegram" \
-    Exec "/usr/bin/telegram-desktop -workdir ${HOME_LOCAL_SHARE}/TelegramDesktop/ -startintray -autostart"
+    Exec "/usr/bin/telegram-desktop -workdir ${XDG_DATA_HOME}/TelegramDesktop/ -startintray -autostart"
 configure-autostart-for-app "org.telegram.desktop" \
     Name "Telegram" \
     Icon "telegram" \

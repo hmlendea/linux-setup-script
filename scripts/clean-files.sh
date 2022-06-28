@@ -11,214 +11,214 @@ remove "${LOCAL_INSTALL_TEMP_DIR}"
 remove "${ROOT_ETC}/motd"
 
 ! does_bin_exist "aircrack-ng" && remove "${HOME}/.aircrack"
-! does_bin_exist "alsi" && remove "${HOME_CONFIG}/alsi"
+! does_bin_exist "alsi" && remove "${XDG_CONFIG_HOME}/alsi"
 ! does_bin_exist "audacity" && remove "${HOME}/.audacity-data"
 ! does_bin_exist "autokey-shell" && remove \
-    "${HOME_CONFIG}/autokey" \
-    "${HOME_LOCAL_SHARE}/autokey"
+    "${XDG_CONFIG_HOME}/autokey" \
+    "${XDG_DATA_HOME}/autokey"
 ! does_bin_exist "avidemux" && remove "${HOME}/.avidemux6"
 ! does_bin_exist "balena-etcher" "balena-etcher-electron" "etcher" && remove \
-    "${HOME_CONFIG}/balena-etcher" \
-    "${HOME_CONFIG}/balena-etcher-electron"
+    "${XDG_CONFIG_HOME}/balena-etcher" \
+    "${XDG_CONFIG_HOME}/balena-etcher-electron"
 ! does_bin_exist "bleachbit" && remove \
-    "${HOME_CACHE}/bleachbit" \
-    "${HOME_CONFIG}/bleachbit"
+    "${XDG_CACHE_HOME}/bleachbit" \
+    "${XDG_CONFIG_HOME}/bleachbit"
 ! does_bin_exist "blesh" && remove "${HOME}/.blerc"
-! does_bin_exist "bna" && remove "${HOME_CONFIG}/bna"
+! does_bin_exist "bna" && remove "${XDG_CONFIG_HOME}/bna"
 ! does_bin_exist "brave" && remove \
-    "${HOME_CACHE}/BraveSoftware" \
-    "${HOME_CONFIG}/BraveSoftware"
-! does_bin_exist "brz" && remove "${HOME_CACHE}/breezy"
-! does_bin_exist "cairo-dock" && remove "${HOME_CONFIG}/cairo-dock"
+    "${XDG_CACHE_HOME}/BraveSoftware" \
+    "${XDG_CONFIG_HOME}/BraveSoftware"
+! does_bin_exist "brz" && remove "${XDG_CACHE_HOME}/breezy"
+! does_bin_exist "cairo-dock" && remove "${XDG_CONFIG_HOME}/cairo-dock"
 ! does_bin_exist "chiaki" && remove \
-    "${HOME_CONFIG}/Chiaki" \
-    "${HOME_LOCAL_SHARE}/Chiaki"
+    "${XDG_CONFIG_HOME}/Chiaki" \
+    "${XDG_DATA_HOME}/Chiaki"
 ! does_bin_exist "chromium" && remove \
-    "${HOME_CACHE}/chromium" \
-    "${HOME_CONFIG}/chromium"
+    "${XDG_CACHE_HOME}/chromium" \
+    "${XDG_CONFIG_HOME}/chromium"
 ! does_bin_exist "code" && remove \
-    "${HOME_CONFIG}/Code" \
+    "${XDG_CONFIG_HOME}/Code" \
     "${HOME}/.vscode"
 ! does_bin_exist "code-oss" && remove \
-    "${HOME_CONFIG}/Code - OSS" \
-    "${HOME_CONFIG}/code-oss" \
+    "${XDG_CONFIG_HOME}/Code - OSS" \
+    "${XDG_CONFIG_HOME}/code-oss" \
     "${HOME}/.vscode-oss"
-! does_bin_exist "codium" && remove "${HOME_CONFIG}/VSCodium"
+! does_bin_exist "codium" && remove "${XDG_CONFIG_HOME}/VSCodium"
 ! does_bin_exist "code-oss" "codium" && remove "${HOME}/.vscode-oss"
-! does_bin_exist "convert" && remove "${HOME_CACHE}/ImageMagick"
-! does_bin_exist "discord" && remove "${HOME_CONFIG}/discord"
-! does_bin_exist "dockx" && remove "${HOME_LOCAL_SHARE}/dockbarx"
+! does_bin_exist "convert" && remove "${XDG_CACHE_HOME}/ImageMagick"
+! does_bin_exist "discord" && remove "${XDG_CONFIG_HOME}/discord"
+! does_bin_exist "dockx" && remove "${XDG_DATA_HOME}/dockbarx"
 ! does_bin_exist "dotnet" && \
     remove "${HOME}/.dotnet" \
     remove "${HOME}/.templateengine"
-! does_bin_exist "droidcam" && remove "${HOME_CONFIG}/droidcam"
+! does_bin_exist "droidcam" && remove "${XDG_CONFIG_HOME}/droidcam"
 ! does_bin_exist "duolingo-desktop" && remove \
-    "${HOME_CONFIG}/DL: language lessons" \
-    "${HOME_CONFIG}/Duolingo"
+    "${XDG_CONFIG_HOME}/DL: language lessons" \
+    "${XDG_CONFIG_HOME}/Duolingo"
 #! does_bin_exist "evolution" && remove \
-#    "${HOME_CACHE}/evolution" \
-#    "${HOME_CONFIG}/evolution" \
-#    "${HOME_LOCAL_SHARE}/evolution"
-! does_bin_exist "electronmail-bin" && remove "${HOME_CONFIG}/electron-mail"
-! does_bin_exist "eog" && remove "${HOME_CONFIG}/eog"
+#    "${XDG_CACHE_HOME}/evolution" \
+#    "${XDG_CONFIG_HOME}/evolution" \
+#    "${XDG_DATA_HOME}/evolution"
+! does_bin_exist "electronmail-bin" && remove "${XDG_CONFIG_HOME}/electron-mail"
+! does_bin_exist "eog" && remove "${XDG_CONFIG_HOME}/eog"
 ! does_bin_exist "fastfetch" && remove \
-    "${HOME_CACHE}/fastfetch" \
-    "${HOME_CONFIG}/fastfetch"
-! does_bin_exist "firefox" && remove "${HOME_CACHE}/mozilla/firefox"
+    "${XDG_CACHE_HOME}/fastfetch" \
+    "${XDG_CONFIG_HOME}/fastfetch"
+! does_bin_exist "firefox" && remove "${XDG_CACHE_HOME}/mozilla/firefox"
 ! does_bin_exist "fltk-config" && remove "${HOME}/.fltk"
-! does_bin_exist "fma-config-tool" && remove "${HOME_CONFIG}/filemanager-actions"
+! does_bin_exist "fma-config-tool" && remove "${XDG_CONFIG_HOME}/filemanager-actions"
 ! does_bin_exist "fragments" && remove \
-    "${HOME_CACHE}/fragments" \
-    "${HOME_CONFIG}/fragments" \
-    "${HOME_LOCAL_SHARE}/fragments"
+    "${XDG_CACHE_HOME}/fragments" \
+    "${XDG_CONFIG_HOME}/fragments" \
+    "${XDG_DATA_HOME}/fragments"
 ! does_bin_exist "gedit" && \
-    remove "${HOME_CONFIG}/gedit" \
-    remove "${HOME_LOCAL_SHARE}/gedit"
-! does_bin_exist "geforcenow-electron" && remove "${HOME_CONFIG}/GeForce NOW"
+    remove "${XDG_CONFIG_HOME}/gedit" \
+    remove "${XDG_DATA_HOME}/gedit"
+! does_bin_exist "geforcenow-electron" && remove "${XDG_CONFIG_HOME}/GeForce NOW"
 ! does_bin_exist "gimp" && \
-    remove "${HOME_CACHE}/gimp" \
-    remove "${HOME_CONFIG}/GIMP"
-! does_bin_exist "gkraken" && remove "${HOME_CONFIG}/gkraken"
+    remove "${XDG_CACHE_HOME}/gimp" \
+    remove "${XDG_CONFIG_HOME}/GIMP"
+! does_bin_exist "gkraken" && remove "${XDG_CONFIG_HOME}/gkraken"
 ! does_bin_exist "gksu" && remove "${HOME}/.gksu.lock"
-! does_bin_exist "gmic" && remove "${HOME_CONFIG}/gmic"
-! does_bin_exist "gnome-calculator" && remove "${HOME_CACHE}/gnome-calculator"
+! does_bin_exist "gmic" && remove "${XDG_CONFIG_HOME}/gmic"
+! does_bin_exist "gnome-calculator" && remove "${XDG_CACHE_HOME}/gnome-calculator"
 ! does_bin_exist "gnome-photos" && remove \
-    "${HOME_CACHE}/gnome-photos" \
-    "${HOME_LOCAL_SHARE}/gnome-photos"
-! does_bin_exist "gnome-screenshot" && remove "${HOME_CACHE}/gnome-screenshot"
-! does_bin_exist "gnome-software" && remove "${HOME_CACHE}/gnome-software"
-! does_bin_exist "gnome-sound-recorder" && remove "${HOME_LOCAL_SHARE}/org.gnome.SoundRecorder"
+    "${XDG_CACHE_HOME}/gnome-photos" \
+    "${XDG_DATA_HOME}/gnome-photos"
+! does_bin_exist "gnome-screenshot" && remove "${XDG_CACHE_HOME}/gnome-screenshot"
+! does_bin_exist "gnome-software" && remove "${XDG_CACHE_HOME}/gnome-software"
+! does_bin_exist "gnome-sound-recorder" && remove "${XDG_DATA_HOME}/org.gnome.SoundRecorder"
 ! does_bin_exist "gnubg" && remove "${HOME}/.gnubg"
-! does_bin_exist "go" && remove "${HOME_CACHE}/go-build"
+! does_bin_exist "go" && remove "${XDG_CACHE_HOME}/go-build"
 ! does_bin_exist "google-chrome" && remove \
-    "${HOME_CACHE}/google-chrome" \
-    "${HOME_CONFIG}/google-chrome"
+    "${XDG_CACHE_HOME}/google-chrome" \
+    "${XDG_CONFIG_HOME}/google-chrome"
 ! does_bin_exist "google-chrome-beta" && remove \
-    "${HOME_CACHE}/google-chrome-beta" \
-    "${HOME_CONFIG}/google-chrome-beta"
+    "${XDG_CACHE_HOME}/google-chrome-beta" \
+    "${XDG_CONFIG_HOME}/google-chrome-beta"
 ! does_bin_exist "google-chrome-unstable" && remove \
-    "${HOME_CACHE}/google-chrome-unstable" \
-    "${HOME_CONFIG}/google-chrome-unstable"
+    "${XDG_CACHE_HOME}/google-chrome-unstable" \
+    "${XDG_CONFIG_HOME}/google-chrome-unstable"
 ! does_bin_exist "gradle" && remove "${HOME}.gradle"
-! does_bin_exist "hardinfo" && remove "${HOME_CONFIG}/hardinfo"
+! does_bin_exist "hardinfo" && remove "${XDG_CONFIG_HOME}/hardinfo"
 ! does_bin_exist "hashcat" && remove \
-    "${HOME_CACHE}/hashcat" \
-    "${HOME_CONFIG}/hashcat" \
-    "${HOME_LOCAL_SHARE}/hashcat"
+    "${XDG_CACHE_HOME}/hashcat" \
+    "${XDG_CONFIG_HOME}/hashcat" \
+    "${XDG_DATA_HOME}/hashcat"
 ! does_bin_exist "inkscape" && remove \
-    "${HOME_CACHE}/inkscape" \
-    "${HOME_CONFIG}/inkscape"
+    "${XDG_CACHE_HOME}/inkscape" \
+    "${XDG_CONFIG_HOME}/inkscape"
 ! does_bin_exist "java" && remove "${HOME}/.java"
-! does_bin_exist "kupfer" && remove "${HOME_CONFIG}/kupfer"
-! does_bin_exist "libreoffice" && remove "${HOME_CONFIG}/libreoffice"
-! does_bin_exist "lollypop" && remove "${HOME_LOCAL_SHARE}/lollypop"
-! does_bin_exist "lsd" && remove "${HOME_CONFIG}/lsd"
+! does_bin_exist "kupfer" && remove "${XDG_CONFIG_HOME}/kupfer"
+! does_bin_exist "libreoffice" && remove "${XDG_CONFIG_HOME}/libreoffice"
+! does_bin_exist "lollypop" && remove "${XDG_DATA_HOME}/lollypop"
+! does_bin_exist "lsd" && remove "${XDG_CONFIG_HOME}/lsd"
 ! does_bin_exist "lutris" && remove \
-    "${HOME_CACHE}/lutris" \
-    "${HOME_CONFIG}/lutris" \
-    "${HOME_LOCAL_SHARE}/lutris"
+    "${XDG_CACHE_HOME}/lutris" \
+    "${XDG_CONFIG_HOME}/lutris" \
+    "${XDG_DATA_HOME}/lutris"
 ! does_bin_exist "mcaselector" && remove \
     "${HOME}/.mcaselector" \
-    "${HOME_CACHE}/mcaselector"
+    "${XDG_CACHE_HOME}/mcaselector"
 ! does_bin_exist "mcedit" && remove "${HOME}/.mcedit"
 ! does_bin_exist "microsoft-edge-beta" && remove \
-    "${HOME_CACHE}/microsoft-edge-beta" \
-    "${HOME_CACHE}/Microsoft/Edge" \
-    "${HOME_CONFIG}/microsoft-edge-beta"
+    "${XDG_CACHE_HOME}/microsoft-edge-beta" \
+    "${XDG_CACHE_HOME}/Microsoft/Edge" \
+    "${XDG_CONFIG_HOME}/microsoft-edge-beta"
 ! does_bin_exist "microsoft-edge-dev" && remove \
-    "${HOME_CACHE}/microsoft-edge-dev" \
-    "${HOME_CACHE}/Microsoft/Edge" \
-    "${HOME_CONFIG}/microsoft-edge-dev"
-! does_bin_exist "minetest" && remove "${HOME_CACHE}/minetest"
+    "${XDG_CACHE_HOME}/microsoft-edge-dev" \
+    "${XDG_CACHE_HOME}/Microsoft/Edge" \
+    "${XDG_CONFIG_HOME}/microsoft-edge-dev"
+! does_bin_exist "minetest" && remove "${XDG_CACHE_HOME}/minetest"
 ! does_bin_exist "mono" && remove "${HOME}/.mono"
-! does_bin_exist "mpv" && remove "${HOME_CONFIG}/mpv"
+! does_bin_exist "mpv" && remove "${XDG_CONFIG_HOME}/mpv"
 ! does_bin_exist "nemo" && remove \
-    "${HOME_LOCAL_SHARE}/nemo" \
-    "${HOME_LOCAL_SHARE}/nemo-python"
-! does_bin_exist "neofetch" && remove "${HOME_CONFIG}/neofetch"
-! does_bin_exist "notion-app" && remove "${HOME_CONFIG}/Notion"
+    "${XDG_DATA_HOME}/nemo" \
+    "${XDG_DATA_HOME}/nemo-python"
+! does_bin_exist "neofetch" && remove "${XDG_CONFIG_HOME}/neofetch"
+! does_bin_exist "notion-app" && remove "${XDG_CONFIG_HOME}/Notion"
 ! does_bin_exist "npm" && remove "${HOME}/.npm"
 ! does_bin_exist "nvidia-settings" && remove "${HOME}/.nvidia-settings-rc"
 ! does_bin_exist "onlyoffice-desktopeditors" && remove \
-    "${HOME_CONFIG}/onlyoffice" \
-    "${HOME_LOCAL_SHARE}/onlyoffice"
-! does_bin_exist "openrazer-daemon" && remove "${HOME_LOCAL_SHARE}/openrazer"
-! does_bin_exist "openrgb" && remove "${HOME_CONFIG}/OpenRGB"
+    "${XDG_CONFIG_HOME}/onlyoffice" \
+    "${XDG_DATA_HOME}/onlyoffice"
+! does_bin_exist "openrazer-daemon" && remove "${XDG_DATA_HOME}/openrazer"
+! does_bin_exist "openrgb" && remove "${XDG_CONFIG_HOME}/OpenRGB"
 ! does_bin_exist "openshot-qt" && remove "${HOME}/.openshot_qt"
-! does_bin_exist "pavucontrol" && remove "${HOME_CONFIG}/pavucontrol.ini"
-! does_bin_exist "pcmanfm" && remove "${HOME_CONFIG}/pcmanfm"
-! does_bin_exist "pcmanfm-qt" && remove "${HOME_CONFIG}/pcmanfm-qt"
-! does_bin_exist "pip" && remove "${HOME_CACHE}/pip"
+! does_bin_exist "pavucontrol" && remove "${XDG_CONFIG_HOME}/pavucontrol.ini"
+! does_bin_exist "pcmanfm" && remove "${XDG_CONFIG_HOME}/pcmanfm"
+! does_bin_exist "pcmanfm-qt" && remove "${XDG_CONFIG_HOME}/pcmanfm-qt"
+! does_bin_exist "pip" && remove "${XDG_CACHE_HOME}/pip"
 ! does_bin_exist "plank" && remove \
-    "${HOME_CACHE}/plank" \
-    "${HOME_CONFIG}/plank" \
-    "${HOME_LOCAL_SHARE}/plank"
+    "${XDG_CACHE_HOME}/plank" \
+    "${XDG_CONFIG_HOME}/plank" \
+    "${XDG_DATA_HOME}/plank"
 ! does_bin_exist "plexmediaplayer" && remove \
-    "${HOME_CACHE}/plex-media-player" \
-    "${HOME_CACHE}/plexmediaplayer" \
-    "${HOME_CONFIG}/plex.tv" \
-    "${HOME_LOCAL_SHARE}/plexmediaplayer"
+    "${XDG_CACHE_HOME}/plex-media-player" \
+    "${XDG_CACHE_HOME}/plexmediaplayer" \
+    "${XDG_CONFIG_HOME}/plex.tv" \
+    "${XDG_DATA_HOME}/plexmediaplayer"
 ! does_bin_exist "postman" && \
     remove "${HOME}/Postman" \
-    remove "${HOME_CONFIG}/Postman"
-! does_bin_exist "protonfixes" && remove "${HOME_CACHE}/protonfixes"
-! does_bin_exist "protontricks" && remove "${HOME_CACHE}/protontricks"
+    remove "${XDG_CONFIG_HOME}/Postman"
+! does_bin_exist "protonfixes" && remove "${XDG_CACHE_HOME}/protonfixes"
+! does_bin_exist "protontricks" && remove "${XDG_CACHE_HOME}/protontricks"
 ! does_bin_exist "rhythmbox" && remove \
-    "${HOME_CACHE}/rhythmbox" \
-    "${HOME_LOCAL_SHARE}/rhythmbox"
+    "${XDG_CACHE_HOME}/rhythmbox" \
+    "${XDG_DATA_HOME}/rhythmbox"
 ! does_bin_exist "runelite" && remove "${HOME}/.runelite"
-! does_bin_exist "samrewritten" && remove "${HOME_CACHE}/SamRewritten"
-! does_bin_exist "signal-desktop" && remove "${HOME_CONFIG}/Signal"
+! does_bin_exist "samrewritten" && remove "${XDG_CACHE_HOME}/SamRewritten"
+! does_bin_exist "signal-desktop" && remove "${XDG_CONFIG_HOME}/Signal"
 ! does_bin_exist "simplescreenrecorder" && remove "${HOME}/.ssr"
-! does_bin_exist "simplenote" && remove "${HOME_CONFIG}/Simplenote"
+! does_bin_exist "simplenote" && remove "${XDG_CONFIG_HOME}/Simplenote"
 ! does_bin_exist "snap" && remove "${HOME}/.snap"
 ! does_bin_exist "snapcraft" && remove \
-    "${HOME_CACHE}/snapcraft" \
-    "${HOME_CONFIG}/snapcraft"
-! does_bin_exist "sokogrump" && remove "${HOME_LOCAL_SHARE}/SokoGrump"
+    "${XDG_CACHE_HOME}/snapcraft" \
+    "${XDG_CONFIG_HOME}/snapcraft"
+! does_bin_exist "sokogrump" && remove "${XDG_DATA_HOME}/SokoGrump"
 ! does_bin_exist "spotify" && remove \
-    "${HOME_CACHE}/spotify" \
-    "${HOME_CONFIG}/spotify"
+    "${XDG_CACHE_HOME}/spotify" \
+    "${XDG_CONFIG_HOME}/spotify"
 ! does_bin_exist "teams" && remove \
-    "${HOME_CONFIG}/Microsoft Teams - Preview" \
-    "${HOME_CONFIG}/Microsoft/Microsoft Teams"
+    "${XDG_CONFIG_HOME}/Microsoft Teams - Preview" \
+    "${XDG_CONFIG_HOME}/Microsoft/Microsoft Teams"
 ! does_bin_exist "teams-insiders" && remove \
-    "${HOME_CONFIG}/Microsoft Teams - Insiders" \
-    "${HOME_CONFIG}/Microsoft/Microsoft Teams - Insiders"
-! does_bin_exist "teams" "teams-insiders" && remove "${HOME_CONFIG}/teams"
+    "${XDG_CONFIG_HOME}/Microsoft Teams - Insiders" \
+    "${XDG_CONFIG_HOME}/Microsoft/Microsoft Teams - Insiders"
+! does_bin_exist "teams" "teams-insiders" && remove "${XDG_CONFIG_HOME}/teams"
 ! does_bin_exist "teamviewer" && remove \
-    "${HOME_CACHE}/TeamViewer" \
-    "${HOME_CONFIG}/teamviewer" \
-    "${HOME_LOCAL_SHARE}/teamviewer15"
-! does_bin_exist "telegram-desktop" && remove "${HOME_LOCAL_SHARE}/TelegramDesktop"
-! does_bin_exist "thunar" && remove "${HOME_CONFIG}/Thunar"
+    "${XDG_CACHE_HOME}/TeamViewer" \
+    "${XDG_CONFIG_HOME}/teamviewer" \
+    "${XDG_DATA_HOME}/teamviewer15"
+! does_bin_exist "telegram-desktop" && remove "${XDG_DATA_HOME}/TelegramDesktop"
+! does_bin_exist "thunar" && remove "${XDG_CONFIG_HOME}/Thunar"
 ! does_bin_exist "totem" && remove \
-    "${HOME_CACHE}/totem" \
-    "${HOME_CONFIG}/totem" \
-    "${HOME_LOCAL_SHARE}/totem"
-! does_bin_exist "transmission-daemon" && remove "${HOME_CONFIG}/transmission-daemon"
-! does_bin_exist "ulauncher" && remove "${HOME_LOCAL_SHARE}/ulauncher"
-! does_bin_exist "virtualbox" && remove "${HOME_CONFIG}/VirtualBox"
+    "${XDG_CACHE_HOME}/totem" \
+    "${XDG_CONFIG_HOME}/totem" \
+    "${XDG_DATA_HOME}/totem"
+! does_bin_exist "transmission-daemon" && remove "${XDG_CONFIG_HOME}/transmission-daemon"
+! does_bin_exist "ulauncher" && remove "${XDG_DATA_HOME}/ulauncher"
+! does_bin_exist "virtualbox" && remove "${XDG_CONFIG_HOME}/VirtualBox"
 ! does_bin_exist "vim" && remove \
     "${HOME}/.viminfo" \
     "${HOME}/.vimrc" \
-    "${HOME_CACHE}/vim"
+    "${XDG_CACHE_HOME}/vim"
 ! does_bin_exist "vlc" && remove \
-    "${HOME_CACHE}/vlc" \
-    "${HOME_CONFIG}/vlc" \
-    "${HOME_LOCAL_SHARE}/vlc"
-! does_bin_exist "whatsapp-nativefier" && remove "${HOME_CONFIG}/whatsapp-nativefier-d40211"
+    "${XDG_CACHE_HOME}/vlc" \
+    "${XDG_CONFIG_HOME}/vlc" \
+    "${XDG_DATA_HOME}/vlc"
+! does_bin_exist "whatsapp-nativefier" && remove "${XDG_CONFIG_HOME}/whatsapp-nativefier-d40211"
 ! does_bin_exist "whatsdesk" && remove "${HOME}/.whatsdesk"
-! does_bin_exist "wike" && remove "${HOME_CACHE}/wike"
-! does_bin_exist "wine" && remove "${HOME_CACHE}/wine"
-! does_bin_exist "winetricks" && remove "${HOME_CACHE}/winetricks"
+! does_bin_exist "wike" && remove "${XDG_CACHE_HOME}/wike"
+! does_bin_exist "wine" && remove "${XDG_CACHE_HOME}/wine"
+! does_bin_exist "winetricks" && remove "${XDG_CACHE_HOME}/winetricks"
 ! does_bin_exist "yarn" && remove \
     "${HOME}/.yarn" \
     "${HOME}/.yarnrc"
 ! does_bin_exist "yay" && remove \
-    "${HOME_CACHE}/yay" \
-    "${HOME_CONFIG}/yay"
-! does_bin_exist "youtube-dl" && remove "${HOME_CACHE}/youtube-dl"
+    "${XDG_CACHE_HOME}/yay" \
+    "${XDG_CONFIG_HOME}/yay"
+! does_bin_exist "youtube-dl" && remove "${XDG_CACHE_HOME}/youtube-dl"
 ! does_bin_exist "zsh" && remove "${HOME}/.zshrc"
 
 for FLATPAK in "${HOME_VAR_APP}"/*; do
@@ -240,54 +240,54 @@ done
 [ -f "${XDG_DATA_HOME}/wget/hosts" ]        && remove "${HOME}/.wget-hsts"
 
 # GNOME Extensions
-! is_gnome_shell_extension_installed "tiling-assistant" && remove "${HOME_CONFIG}/tiling-assistant"
+! is_gnome_shell_extension_installed "tiling-assistant" && remove "${XDG_CONFIG_HOME}/tiling-assistant"
 
 # Steam games / apps
 
 ! is_steam_app_installed "8930" && remove \
-    "${HOME_LOCAL_SHARE}/Aspyr/Sid Meier's Civilization 5" \
-    "${HOME_LOCAL_SHARE}/Aspyr/com.aspyr.civ5xp.json"
-! is_steam_app_installed "20920" && remove "${HOME_LOCAL_SHARE}/cdprojektred/witcher2"
-! is_steam_app_installed "38700" && remove "${HOME_LOCAL_SHARE}/twotribes/toki_tori"
-! is_steam_app_installed "105600" && remove "${HOME_LOCAL_SHARE}/Terraria"
-! is_steam_app_installed "200510" && remove "${HOME_LOCAL_SHARE}/feral-interactive/XCOM"
-! is_steam_app_installed "203160" && remove "${HOME_LOCAL_SHARE}/feral-interactive/Tomb Raider"
-! is_steam_app_installed "200710" && remove "${HOME_LOCAL_SHARE}/Runic Games/Torchlight 2"
+    "${XDG_DATA_HOME}/Aspyr/Sid Meier's Civilization 5" \
+    "${XDG_DATA_HOME}/Aspyr/com.aspyr.civ5xp.json"
+! is_steam_app_installed "20920" && remove "${XDG_DATA_HOME}/cdprojektred/witcher2"
+! is_steam_app_installed "38700" && remove "${XDG_DATA_HOME}/twotribes/toki_tori"
+! is_steam_app_installed "105600" && remove "${XDG_DATA_HOME}/Terraria"
+! is_steam_app_installed "200510" && remove "${XDG_DATA_HOME}/feral-interactive/XCOM"
+! is_steam_app_installed "203160" && remove "${XDG_DATA_HOME}/feral-interactive/Tomb Raider"
+! is_steam_app_installed "200710" && remove "${XDG_DATA_HOME}/Runic Games/Torchlight 2"
 ! is_steam_app_installed "206690" && remove "${HOME}/.ibomberdefensepacific"
-! is_steam_app_installed "215510" && remove "${HOME_LOCAL_SHARE}/rocketbirds"
+! is_steam_app_installed "215510" && remove "${XDG_DATA_HOME}/rocketbirds"
 ! is_steam_app_installed "218660" && remove "${HOME}/.Cobra Mobile/iBomber Attack"
-! is_steam_app_installed "219150" && remove "${HOME_LOCAL_SHARE}/HotlineMiami"
-! is_steam_app_installed "246110" && remove "${HOME_LOCAL_SHARE}/doublefine/massivechalice"
+! is_steam_app_installed "219150" && remove "${XDG_DATA_HOME}/HotlineMiami"
+! is_steam_app_installed "246110" && remove "${XDG_DATA_HOME}/doublefine/massivechalice"
 ! is_steam_app_installed "250820" && remove \
     "${HOME}/steamvr" \
-    "${HOME_CACHE}/SteamVR" \
-    "${HOME_CONFIG}/openvr" \
-    "${HOME_CONFIG}/openxr" \
-    "${HOME_CONFIG}/unity3d/Valve/SteamVR\ Room\ Setup" \
-    "${HOME_CONFIG}/Valve/vrmonitor.conf" \
-    "${HOME_LOCAL_SHARE}/applications/valve-vrmonitor.desktop"
-! is_steam_app_installed "251910" && remove "${HOME_LOCAL_SHARE}/Firebrand Games/Solar Flux"
-! is_steam_app_installed "252950" && remove "${HOME_LOCAL_SHARE}/Rocket League"
-! is_steam_app_installed "255300" && remove "${HOME_LOCAL_SHARE}/Daedalic Entertainment/Journey of a Roach"
-! is_steam_app_installed "284710" && remove "${HOME_CACHE}/ArtifexMundi/Abyss_TheWraithsOfEden"
-! is_steam_app_installed "313340" && remove "${HOME_CONFIG}/unity3d/David\ OReilly/Mountain"
-! is_steam_app_installed "319270" && remove "${HOME_LOCAL_SHARE}/great-permutator"
+    "${XDG_CACHE_HOME}/SteamVR" \
+    "${XDG_CONFIG_HOME}/openvr" \
+    "${XDG_CONFIG_HOME}/openxr" \
+    "${XDG_CONFIG_HOME}/unity3d/Valve/SteamVR\ Room\ Setup" \
+    "${XDG_CONFIG_HOME}/Valve/vrmonitor.conf" \
+    "${XDG_DATA_HOME}/applications/valve-vrmonitor.desktop"
+! is_steam_app_installed "251910" && remove "${XDG_DATA_HOME}/Firebrand Games/Solar Flux"
+! is_steam_app_installed "252950" && remove "${XDG_DATA_HOME}/Rocket League"
+! is_steam_app_installed "255300" && remove "${XDG_DATA_HOME}/Daedalic Entertainment/Journey of a Roach"
+! is_steam_app_installed "284710" && remove "${XDG_CACHE_HOME}/ArtifexMundi/Abyss_TheWraithsOfEden"
+! is_steam_app_installed "313340" && remove "${XDG_CONFIG_HOME}/unity3d/David\ OReilly/Mountain"
+! is_steam_app_installed "319270" && remove "${XDG_DATA_HOME}/great-permutator"
 ! is_steam_app_installed "322330" && remove \
     "${HOME}/.klei/DoNotStarveTogether" \
     "${HOME}/.klei/DoNotStarveTogetherBetaBranch"
 ! is_steam_app_installed "356040" && remove "${STEAM_CONFIG}/unity3d/Team17/Sheltered"
 ! is_steam_app_installed "370360" && remove \
-    "${HOME_CONFIG}/unity3d/Zachtronics/TIS-100" \
-    "${HOME_LOCAL_SHARE}/TIS-100"
-! is_steam_app_installed "383870" && remove "${HOME_CONFIG}/unity3d/CampoSanto/Firewatch"
-! is_steam_app_installed "385710" && remove "${HOME_CONFIG}/INK"
-! is_steam_app_installed "434210" && remove "${HOME_CONFIG}/unity3d/BabaYaga/It's Spring Again"
-! is_steam_app_installed "464920" && remove "${HOME_LOCAL_SHARE}/Surviving Mas"
-! is_steam_app_installed "476240" && remove "${HOME_CONFIG}/unity3d/Arzola's/KNIGHTS"
-! is_steam_app_installed "490230" && remove "${HOME_CONFIG}/SWARMRIDERS"
-! is_steam_app_installed "517910" && remove "${HOME_LOCAL_SHARE}/ags/Sisyphus Reborn"
-! is_steam_app_installed "729040" && remove "${HOME_LOCAL_SHARE}/Steam/steamapps/common/BorderlandsGOTYEnhanced"
-! is_steam_app_installed "736260" && remove "${HOME_LOCAL_SHARE}/Baba_Is_You"
+    "${XDG_CONFIG_HOME}/unity3d/Zachtronics/TIS-100" \
+    "${XDG_DATA_HOME}/TIS-100"
+! is_steam_app_installed "383870" && remove "${XDG_CONFIG_HOME}/unity3d/CampoSanto/Firewatch"
+! is_steam_app_installed "385710" && remove "${XDG_CONFIG_HOME}/INK"
+! is_steam_app_installed "434210" && remove "${XDG_CONFIG_HOME}/unity3d/BabaYaga/It's Spring Again"
+! is_steam_app_installed "464920" && remove "${XDG_DATA_HOME}/Surviving Mas"
+! is_steam_app_installed "476240" && remove "${XDG_CONFIG_HOME}/unity3d/Arzola's/KNIGHTS"
+! is_steam_app_installed "490230" && remove "${XDG_CONFIG_HOME}/SWARMRIDERS"
+! is_steam_app_installed "517910" && remove "${XDG_DATA_HOME}/ags/Sisyphus Reborn"
+! is_steam_app_installed "729040" && remove "${XDG_DATA_HOME}/Steam/steamapps/common/BorderlandsGOTYEnhanced"
+! is_steam_app_installed "736260" && remove "${XDG_DATA_HOME}/Baba_Is_You"
 
 for STEAM_LIBRARY_PATH in ${STEAM_LIBRARY_PATHS}; do
     if is_steam_app_installed "8930"; then
@@ -324,29 +324,29 @@ if [ -d "${HOME_DOWNLOADS}" ]; then
 fi
 
 # Unwanted application launchers
-remove "${HOME_LOCAL_SHARE}/applications/wine"
-remove "${HOME_CONFIG}/menus/applications-merged/user-chrome-apps.menu"
+remove "${XDG_DATA_HOME}/applications/wine"
+remove "${XDG_CONFIG_HOME}/menus/applications-merged/user-chrome-apps.menu"
 
-if [ -d "${HOME_LOCAL_SHARE}/applications" ] \
-&& ls "${HOME_LOCAL_SHARE}/applications" | grep -q "*\.desktop$"; then
-    for STEAM_APP_LAUNCHER in $(grep "^Exec=steam" "${HOME_LOCAL_SHARE}/applications"/*.desktop | awk -F":" '{print $1}' | sed 's/ /@SPACE@/g'); do
+if [ -d "${XDG_DATA_HOME}/applications" ] \
+&& ls "${XDG_DATA_HOME}/applications" | grep -q "*\.desktop$"; then
+    for STEAM_APP_LAUNCHER in $(grep "^Exec=steam" "${XDG_DATA_HOME}/applications"/*.desktop | awk -F":" '{print $1}' | sed 's/ /@SPACE@/g'); do
         STEAM_APP_LAUNCHER=$(echo "${STEAM_APP_LAUNCHER}" | sed 's/@SPACE@/ /g')
         remove "${STEAM_APP_LAUNCHER}"
     done
 fi
 
 # Backups
-remove "${HOME_CONFIG}/monitors.xml~"
+remove "${XDG_CONFIG_HOME}/monitors.xml~"
 
 # Logs
 if ${CLEAN_LOGS}; then
     remove \
         "${HOME}/.mozilla/firefox/Crash Reports" \
         "${HOME_VAR_APP}/org.mozilla.firefox/.mozilla/firefox/Crash Reports"
-    remove "${HOME_CONFIG}/logs"
-    remove "${HOME_CONFIG}/unity3d"/*.log
-    remove "${HOME_LOCAL_SHARE}/xorg/"*".log"
-    remove "${HOME_LOCAL_SHARE}/xorg/"*".log.old"
+    remove "${XDG_CONFIG_HOME}/logs"
+    remove "${XDG_CONFIG_HOME}/unity3d"/*.log
+    remove "${XDG_DATA_HOME}/xorg/"*".log"
+    remove "${XDG_DATA_HOME}/xorg/"*".log.old"
     remove \
         "${HOME}/.klei/DoNotStarveTogether/backup/client_chat_log" \
         "${HOME}/.klei/DoNotStarveTogether/backup/client_log"
@@ -381,22 +381,22 @@ if ${CLEAN_LOGS}; then
                 "${HOME}/.vscode/extensions/"* \
                 "${HOME}/.vscode/extensions/"*"/file-types" \
                 "${HOME}/Zomboid" \
-                "${HOME_CONFIG}/Code" \
-                "${HOME_CONFIG}/unity3d" \
-                "${HOME_CONFIG}/unity3d"/*/* \
-                "${HOME_LOCAL_SHARE}/gvfs-metadata" \
-                "${HOME_LOCAL_SHARE}/Paradox Interactive"/* \
-                "${HOME_LOCAL_SHARE}/Steam" \
-                "${HOME_LOCAL_SHARE}/Steam/config/htmlcache" \
-                "${HOME_LOCAL_SHARE}/Steam/config/htmlcache/VideoDecodeStats" \
-                "${HOME_LOCAL_SHARE}/Steam/config/SteamVR/htmlcache" \
-                "${HOME_LOCAL_SHARE}/Steam/steamapps/common"/* \
-                "${HOME_LOCAL_SHARE}/Steam/steamapps/common"/*/*_Data \
-                "${HOME_LOCAL_SHARE}/Steam/steamapps/compatdata/"*"/pfx" \
-                "${HOME_LOCAL_SHARE}/Steam/steamapps/compatdata/"*"/pfx/drive_c/users/steamuser/Temp" \
-                "${HOME_LOCAL_SHARE}/Steam/steamapps/compatdata/"*"/pfx/drive_c/windows" \
-                "${HOME_LOCAL_SHARE}/Steam/workshopbuilds" \
-                "${HOME_LOCAL_SHARE}/Surviving Mars" \
+                "${XDG_CONFIG_HOME}/Code" \
+                "${XDG_CONFIG_HOME}/unity3d" \
+                "${XDG_CONFIG_HOME}/unity3d"/*/* \
+                "${XDG_DATA_HOME}/gvfs-metadata" \
+                "${XDG_DATA_HOME}/Paradox Interactive"/* \
+                "${XDG_DATA_HOME}/Steam" \
+                "${XDG_DATA_HOME}/Steam/config/htmlcache" \
+                "${XDG_DATA_HOME}/Steam/config/htmlcache/VideoDecodeStats" \
+                "${XDG_DATA_HOME}/Steam/config/SteamVR/htmlcache" \
+                "${XDG_DATA_HOME}/Steam/steamapps/common"/* \
+                "${XDG_DATA_HOME}/Steam/steamapps/common"/*/*_Data \
+                "${XDG_DATA_HOME}/Steam/steamapps/compatdata/"*"/pfx" \
+                "${XDG_DATA_HOME}/Steam/steamapps/compatdata/"*"/pfx/drive_c/users/steamuser/Temp" \
+                "${XDG_DATA_HOME}/Steam/steamapps/compatdata/"*"/pfx/drive_c/windows" \
+                "${XDG_DATA_HOME}/Steam/workshopbuilds" \
+                "${XDG_DATA_HOME}/Surviving Mars" \
                 "${HOME_VAR_APP}"/*"/cache"/* \
                 "${HOME_VAR_APP}"/*"/config"/* \
                 "${HOME_VAR_APP}"/*"/config"/*/* \
@@ -432,9 +432,9 @@ fi
 # Empty directories
 for DIR in  "${HOME}/.Cobra Mobile" \
             "${HOME}/.w3m" \
-            "${HOME_CACHE}"/* \
-            "${HOME_CONFIG}"/* \
-            "${HOME_LOCAL_SHARE}"/*; do
+            "${XDG_CACHE_HOME}"/* \
+            "${XDG_CONFIG_HOME}"/* \
+            "${XDG_DATA_HOME}"/*; do
     [ ! -d "${DIR}" ] && continue
 
     remove_dir_if_empty "${DIR}"
