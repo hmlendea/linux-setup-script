@@ -65,7 +65,15 @@ if [ -z "${USER}" ]; then
     fi
 fi
 
-[ -f "${ROOT_USR_BIN}/nano" ]    && export EDITOR=nano       # Make nano the default editor
+# Set the default CLI text editor
+if [ -z "${EDITOR}" ] \
+|| [ ! -f "${ROOT_USR_BIN}/${EDITOR}" ]; then
+	[ -f "${ROOT_USR_BIN}/vi" ] && export EDITOR=vi
+	[ -f "${ROOT_USR_BIN}/vim" ] && export EDITOR=vim
+	[ -f "${ROOT_USR_BIN}/nano" ] && export EDITOR=nano
+	[ -f "${ROOT_USR_BIN}/micro" ] && export EDITOR=micro
+fi
+
 [ -f "${ROOT_USR_BIN}/optirun" ] && export VGL_READBACK=pbo  # Better optirun performance
 
 if [ -f "${ROOT_USR_BIN}/dotnet" ]; then

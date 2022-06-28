@@ -1388,6 +1388,22 @@ if does_bin_exist "gedit" "org.gnome.gedit"; then
     set_gsetting "${GEDIT_EDITOR_SCHEMA}" restore-cursor-position true
     set_gsetting "${GEDIT_EDITOR_SCHEMA}" tabs-size "uint32 ${TEXT_EDITOR_TAB_SIZE}"
 fi
+if does_bin_exist "micro"; then
+    MICRO_SETTINGS_FILE="${XDG_CONFIG_HOME}/micro/settings.json"
+
+	# Behaviour
+    set_json_property "${MICRO_SETTINGS_FILE}" '.["savecursor"]' true
+    set_json_property "${MICRO_SETTINGS_FILE}" '.["saveundo"]' true
+    set_json_property "${MICRO_SETTINGS_FILE}" '.["smartpaste"]' true
+
+	# Coding style
+    set_json_property "${MICRO_SETTINGS_FILE}" '.["ftoptions"]' false # Required as it could overwrite tabstospaces
+    set_json_property "${MICRO_SETTINGS_FILE}" '.["tabsize"]' 4
+    set_json_property "${MICRO_SETTINGS_FILE}" '.["tabstospaces"]' true
+
+	# Appearance
+    set_json_property "${MICRO_SETTINGS_FILE}" '.["scrollbar"]' true
+fi
 if does_bin_exist "pluma"; then
     PLUMA_SCHEMA="org.mate.pluma"
 

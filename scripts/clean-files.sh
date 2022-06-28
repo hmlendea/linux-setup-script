@@ -134,6 +134,9 @@ remove "${ROOT_ETC}/motd"
 ! does_bin_exist "minetest" && remove "${XDG_CACHE_HOME}/minetest"
 ! does_bin_exist "mono" && remove "${HOME}/.mono"
 ! does_bin_exist "mpv" && remove "${XDG_CONFIG_HOME}/mpv"
+! does_bin_exist "nano" && remove \
+    "${HOME}/.nanorc" \
+    "${XDG_DATA_HOME}/nano"
 ! does_bin_exist "nemo" && remove \
     "${XDG_DATA_HOME}/nemo" \
     "${XDG_DATA_HOME}/nemo-python"
