@@ -335,10 +335,10 @@ for STEAM_LIBRARY_PATH in ${STEAM_LIBRARY_PATHS}; do
 done
 
 # Unwanted files in the Downloads dir, by extension
-if [ -d "${HOME_DOWNLOADS}" ]; then
+if [ -d "${XDG_DOWNLOAD_DIR}" ]; then
     while IFS='' read -r -d '' UNWANTED_FILE; do
         remove "${UNWANTED_FILE}"
-    done < <(find "${HOME_DOWNLOADS}" -maxdepth 1 -type f -iregex ".*\.\(ica\|torrent\)$" -print0)
+    done < <(find "${XDG_DOWNLOAD_DIR}" -maxdepth 1 -type f -iregex ".*\.\(ica\|torrent\)$" -print0)
 fi
 
 # Unwanted application launchers

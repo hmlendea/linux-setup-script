@@ -51,13 +51,13 @@ fi
 
 # Templates
 if ${HAS_GUI}; then
-    update_file_if_distinct "${REPO_RES_DIR}/templates/file" "${HOME_TEMPLATES}/Blank file"
+    update_file_if_distinct "${REPO_RES_DIR}/templates/file" "${XDG_TEMPLATES_DIR}/Blank file"
 
     if does_bin_exist "libreoffice"; then
-        update_file_if_distinct "${REPO_RES_DIR}/templates/doc" "${HOME_TEMPLATES}/Microsoft Document.doc"
-        update_file_if_distinct "${REPO_RES_DIR}/templates/odt" "${HOME_TEMPLATES}/Document.odt"
+        update_file_if_distinct "${REPO_RES_DIR}/templates/doc" "${XDG_TEMPLATES_DIR}/Microsoft Document.doc"
+        update_file_if_distinct "${REPO_RES_DIR}/templates/odt" "${XDG_TEMPLATES_DIR}/Document.odt"
     else
-        remove "${HOME_TEMPLATES}/Microsoft Document.doc"
-        remove "${HOME_TEMPLATES}/Document.odt"
+        remove "${XDG_TEMPLATES_DIR}/Microsoft Document.doc"
+        remove "${XDG_TEMPLATES_DIR}/Document.odt"
     fi
 fi

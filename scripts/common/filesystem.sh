@@ -61,23 +61,26 @@ if [ ! -d "${HOME_REAL}" ]; then
     fi
 fi
 
-[ -z "${HOME}" ]            && HOME="${HOME_REAL}"
-[ -z "${XDG_CACHE_HOME}" ]  && XDG_CACHE_HOME="${HOME}/.cache"
-[ -z "${XDG_CONFIG_HOME}" ] && XDG_CONFIG_HOME="${HOME}/.config"
-[ -z "${XDG_DATA_HOME}" ]   && XDG_DATA_HOME="${HOME}/.local/share"
-[ -z "${XDG_STATE_HOME}" ]  && XDG_STATE_HOME="${HOME}/.local/state"
+[ -z "${HOME}" ]                && HOME="${HOME_REAL}"
 
-HOME_DOCUMENTS="${HOME_REAL}/Documents"
-HOME_DOWNLOADS="${HOME_REAL}/Downloads"
+[ -z "${XDG_CACHE_HOME}" ]      && XDG_CACHE_HOME="${HOME_REAL}/.cache"
+[ -z "${XDG_CONFIG_HOME}" ]     && XDG_CONFIG_HOME="${HOME_REAL}/.config"
+[ -z "${XDG_DATA_HOME}" ]       && XDG_DATA_HOME="${HOME_REAL}/.local/share"
+[ -z "${XDG_STATE_HOME}" ]      && XDG_STATE_HOME="${HOME_REAL}/.local/state"
+
+[ -z "${XDG_DESKTOP_DIR}" ]     && XDG_DESKTOP_DIR="${HOME_REAL}/Desktop"
+[ -z "${XDG_DOCUMENTS_DIR}" ]   && XDG_DOCUMENTS_DIR="${HOME_REAL}/Documents"
+[ -z "${XDG_DOWNLOAD_DIR}" ]    && XDG_DOWNLOAD_DIR="${HOME_REAL}/Downloads"
+[ -z "${XDG_MUSIC_DIR}" ]       && XDG_MUSIC_DIR="${HOME_REAL}/Music"
+[ -z "${XDG_PICTURES_DIR}" ]    && XDG_PICTURES_DIR="${HOME_REAL}/Pictures"
+[ -z "${XDG_PUBLICSHARE_DIR}" ] && XDG_PUBLICSHARE_DIR="${HOME_REAL}/Public"
+[ -z "${XDG_TEMPLATES_DIR}" ]   && XDG_TEMPLATES_DIR="${HOME_REAL}/Templates"
+[ -z "${XDG_VIDEOS_DIR}" ]      && XDG_VIDEOS_DIR="${HOME_REAL}/Videos"
+
 HOME_LOCAL="${HOME_REAL}/.local"
 HOME_LOCAL_BIN="${HOME_LOCAL}/bin"
-HOME_MUSIC="${HOME_REAL}/Music"
-HOME_PICTURES="${HOME_REAL}/Pictures"
-HOME_PUBLIC="${HOME_REAL}/Public"
-HOME_TEMPLATES="${HOME_REAL}/Templates"
 HOME_VAR="${HOME_REAL}/.var"
 HOME_VAR_APP="${HOME_VAR}/app"
-HOME_VIDEOS="${HOME_REAL}/Videos"
 
 # Functions
 function does_bin_exist () {

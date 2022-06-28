@@ -1422,8 +1422,8 @@ if does_bin_exist "fragments" "de.haeckerfelix.Fragments"; then
     set_gsetting "${FRAGMENTS_SCHEMA}" dark-mode ${DESKTOP_THEME_IS_DARK}
 
     set_json_property "${FRAGMENTS_SETTINGS_FILE}" '.["encryption"]' 1
-    set_json_property "${FRAGMENTS_SETTINGS_FILE}" '.["download-dir"]' "${HOME_DOWNLOADS}"
-    set_json_property "${FRAGMENTS_SETTINGS_FILE}" '.["incomplete-dir"]' "${HOME_DOWNLOADS}/.incomplete_fragments"
+    set_json_property "${FRAGMENTS_SETTINGS_FILE}" '.["download-dir"]' "${XDG_DOWNLOAD_DIR}"
+    set_json_property "${FRAGMENTS_SETTINGS_FILE}" '.["incomplete-dir"]' "${XDG_DOWNLOAD_DIR}/.incomplete_fragments"
     set_json_property "${FRAGMENTS_SETTINGS_FILE}" '.["incomplete-dir-enabled"]' true
     set_json_property "${FRAGMENTS_SETTINGS_FILE}" '.["download-queue-size"]' 5
 fi
