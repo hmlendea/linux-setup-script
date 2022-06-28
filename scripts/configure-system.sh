@@ -887,7 +887,9 @@ if [ -f "${MC_OPTIONS_FILE}" ]; then
         awk '{print $1}' | \
         sed 's/[a-z]//g' | \
         cut -c 1-15)
-    MC_DEVICE_ID="${MC_DEVICE_ID}3000" # Make it 19 digits long. The last 4 need to be 3000 because that's how jq will save them no matter what
+        
+    # Make it 19 digits long. The last 4 need to be 3000 because that's how jq will save them no matter what
+    MC_DEVICE_ID="${MC_DEVICE_ID}3000"
 
     set_config_value --separator ":" "${MC_OPTIONS_FILE}" lang "${GAMES_LANGUAGE,,}"
 
