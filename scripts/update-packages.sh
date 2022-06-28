@@ -21,5 +21,12 @@ fi
 if does_bin_exist "gnome-shell-extension-installer"; then
     echo ""
     echo -e "Updating the \e[0;32mGNOME extensions\e[0m ..."
-    gnome-shell-extension-installer --yes --update --restart-shell
+    gnome-shell-extension-installer --yes --update --restart-shell | \
+      grep -v "The extension is up-to-date" | \
+      grep -v "Searching extensions.gnome.org" | \
+      grep -v "Extension not available for GNOME Shell [0-9]" | \
+      grep -v "This extension is available for the following" | \
+      grep -v "^\s*-\s*[0-9]" | \
+      grep -v "Type a version to install" | \
+      grep -v "^\s*$"
 fi
