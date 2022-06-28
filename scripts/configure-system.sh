@@ -194,14 +194,14 @@ if does_bin_exist "mkinitcpio"; then
 fi
 
 set_config_values "${XDG_CONFIG_HOME}/user-dirs.dirs" \
-    "XDG_DESKTOP_DIR" "\"${XDG_DESKTOP_DIR}\"" \
-    "XDG_DOCUMENTS_DIR" "\"${XDG_DOCUMENTS_DIR}\"" \
-    "XDG_DOWNLOAD_DIR" "\"${XDG_DOWNLOAD_DIR=}\"" \
-    "XDG_MUSIC_DIR" "\"${XDG_MUSIC_DIR}\"" \
-    "XDG_PICTURES_DIR" "\"${XDG_PICTURES_DIR}\"" \
-    "XDG_PUBLICSHARE_DIR" "\"${XDG_PUBLICSHARE_DIR}\"" \
-    "XDG_TEMPLATES_DIR" "\"${XDG_TEMPLATES_DIR}\"" \
-    "XDG_VIDEOS_DIR" "\"${XDG_VIDEOS_DIR}\""
+    XDG_DESKTOP_DIR     "\"${XDG_DESKTOP_DIR}\"" \
+    XDG_DOCUMENTS_DIR   "\"${XDG_DOCUMENTS_DIR}\"" \
+    XDG_DOWNLOAD_DIR    "\"${XDG_DOWNLOAD_DIR=}\"" \
+    XDG_MUSIC_DIR       "\"${XDG_MUSIC_DIR}\"" \
+    XDG_PICTURES_DIR    "\"${XDG_PICTURES_DIR}\"" \
+    XDG_PUBLICSHARE_DIR "\"${XDG_PUBLICSHARE_DIR}\"" \
+    XDG_TEMPLATES_DIR   "\"${XDG_TEMPLATES_DIR}\"" \
+    XDG_VIDEOS_DIR      "\"${XDG_VIDEOS_DIR}\""
 
 if [ -d "${ROOT_ETC}/modprobe.d" ]; then
     set_gsetting org.gtk.Settings.FileChooser startup-mode 'cwd'
@@ -276,7 +276,7 @@ if [ -f "${ROOT_ETC}/default/grub" ]; then
     [ ${GRUB_BOOT_ENTRIES_COUNT} -eq 1 ] && GRUB_TIMEOUT=0
 
     BOOT_FLAGS_DEFAULT="loglevel=3 quiet" # Defaults
-    BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} random.trust_cpu=on" # Trust the CPU's random number generator ratherthan software. Better boot time
+    BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} random.trust_cpu=on" # Trust the CPU random number generator ratherthan software. Better boot time
 
     #if [ "${CHASSIS_TYPE}" = "Laptop" ] && is_driver_loaded "i915"; then
         #BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} i915.i915_enable_rc6=1"   # Can cause some tearing. Allow the GPU to enter a low power state when it is idling
@@ -565,6 +565,15 @@ if does_bin_exist "gnome-calculator" "org.gnome.Calculator"; then
 fi
 if does_bin_exist "mate-calc"; then
     set_gsetting "org.mate.calc" show-thousands true
+fi
+
+###############
+### Cameras ###
+###############
+if does_bin_exist "droidcam"; then
+    DROIDCAM_CONFIG_FILE="${XDG_CONFIG_HOME}/droidcam"
+
+    set_config_value "${DROIDCAM_CONFIG_FILE}" confirm_close 0
 fi
 
 #################
