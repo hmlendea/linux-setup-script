@@ -121,7 +121,10 @@ fi
 
 # Configure and customise the system
 execute-script "configure-system.sh" # Run after update-rcs.sh
-[ "${DISTRO_FAMILY}" == "Linux" ] && execute-script "configure-default-apps.sh"
+if [ "${DISTRO_FAMILY}" == "Linux" ]; then
+    execute-script "configure-autostart-apps.sh"
+    execute-script "configure-default-apps.sh"
+fi
 execute-script "configure-permissions.sh" # Run after install-packages.sh
 [ "${DISTRO_FAMILY}" == "Linux" ] && execute-script-superuser "set-system-locale-timedate.sh"
 [ "${DISTRO_FAMILY}" != "Android" ] && execute-script-superuser "update-profiles.sh"
