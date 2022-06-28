@@ -2,7 +2,7 @@
 source "scripts/common/filesystem.sh"
 source "${REPO_SCRIPTS_COMMON_DIR}/common.sh"
 
-update_file_if_distinct "${REPO_RC_DIR}/inputrc" "${HOME}/.inputrc"
+update_file_if_distinct "${REPO_RC_DIR}/inputrc" "${XDG_CONFIG_HOME}/readline/inputrc"
 update_file_if_distinct "${REPO_RC_DIR}/shell_aliases" "${HOME}/.shell_aliases"
 update_file_if_distinct "${REPO_RC_DIR}/shell_opts" "${HOME}/.shell_opts"
 update_file_if_distinct "${REPO_RC_DIR}/shell_prompt" "${HOME}/.shell_prompt"
@@ -21,8 +21,8 @@ done
 
 does_bin_exist "nano"       && update_file_if_distinct "${REPO_RC_DIR}/nanorc"        "${HOME}/.nanorc"
 does_bin_exist "vim"        && update_file_if_distinct "${REPO_RC_DIR}/vimrc"         "${HOME}/.vimrc"
-does_bin_exist "git"        && update_file_if_distinct "${REPO_RC_DIR}/gitconfig"     "${HOME}/.gitconfig"
-does_bin_exist "lxpanel"    && update_file_if_distinct "${REPO_RC_DIR}/lxde-panel"    "${HOME_CONFIG}/lxpanel/LXDE/panels/panel"
+does_bin_exist "git"        && update_file_if_distinct "${REPO_RC_DIR}/gitconfig"     "${XDG_CONFIG_HOME}/git/config"
+does_bin_exist "lxpanel"    && update_file_if_distinct "${REPO_RC_DIR}/lxde-panel"    "${XDG_CONFIG_HOME}/lxpanel/LXDE/panels/panel"
 #[ -f "${ROOT_USR_BIN}/lxpanel" ]   && copy_rc "lxde-dock" "${HOME_CONFIG}/lxpanel/LXDE/panels/dock"
 
 if does_bin_exist "firefox" "org.mozilla.firefox"; then

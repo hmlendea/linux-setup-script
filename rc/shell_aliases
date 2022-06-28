@@ -71,7 +71,7 @@ alias ls="ls --color=auto -h -Q --group-directories-first --format=horizontal"
 [ -f "${ROOT_USR_BIN}/open" ]       && alias open='xdg-open'
 [ -f "${ROOT_USR_BIN}/shellcheck" ] && alias shellcheck='shellcheck -e SC2035,SC2164'
 [ -f "${ROOT_USR_BIN}/systemctl" ]  && alias systemctl='systemctl --no-pager -l -n25'
-[ -f "${ROOT_USR_BIN}/wget" ]       && alias wget-persistent='wget -c --retry-connrefused --waitretry=1 --read-timeout=10 --timeout=5 -t 0'
+[ -f "${ROOT_USR_BIN}/wget" ]       && alias wget-persistent='wget -c --retry-connrefused --waitretry=1 --read-timeout=10 --timeout=5 -t 0 --hsts-file="${XDG_DATA_HOME}/wget/hosts"'
 [ -f "${ROOT_USR_BIN}/xterm" ]      && alias xterm='xterm -rv'
 [ -f "${ROOT_USR_BIN}/xprop" ]      && alias xprop-wmclass='xprop | grep "WM_CLASS"'
 [ -f "${ROOT_PROC}/acpi/bbswitch" ] && alias bbswitch-status="awk '{print $2}' /proc/acpi/bbswitch"
