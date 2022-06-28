@@ -1,8 +1,10 @@
 #!/bin/bash
+source "scripts/common/filesystem.sh"
 
-PUBRING_FILE_PATH="${HOME}/.gnupg/pubring.kbx"
-GITHUB_KEY_ID_FILE_PATH="${HOME}/.gnupg/github_key_id.txt"
-GITCONFIG_FILE_PATH="${HOME}/.gitconfig"
+GNPUPG_PATH="${XDG_DATA_HOME}/gnupg"
+PUBRING_FILE_PATH="${GNUPG_PATH}/pubring.kbx"
+GITHUB_KEY_ID_FILE_PATH="${GNUPG_PATH}/github_key_id.txt"
+GITCONFIG_FILE_PATH="${XDG_CONFIG_HOME}/git/config"
 
 if [ -f "${PUBRING_FILE_PATH}" ] &&
    [ -f "${GITHUB_KEY_ID_FILE_PATH}" ]; then

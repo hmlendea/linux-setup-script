@@ -13,9 +13,26 @@ ROOT_USR_SHARE="${ROOT_USR}/share"
 
 ### Environment variables
 #export TERM=linux
+
+# Paths
+export XDG_CACHE_HOME="${HOME}/.cache"
+export XDG_CONFIG_HOME="${HOME}/.config"
+export XDG_DATA_HOME="${HOME}/.local/share"
+export XDG_STATE_HOME="${HOME}/.local/state"
+
 export LD_LIBRARY_PATH="${LD_LIBRARY_PATH-}:/usr/lib32"
-export SSL_CERT_DIR="/etc/ssl/certs"
 export PATH="${PATH}:/${HOME}/.local/bin"
+
+export NUGET_PACKAGES="${XDG_CACHE_HOME}/nuget/packages"
+export SSL_CERT_DIR="/etc/ssl/certs"
+
+export CARGOHOME="${XDG_DATA_HOME}/cargo"
+export GNUPGHOME="${XDG_DATA_HOME}/gnupg"
+export GTK2_RC_FILES="${XDG_CONFIG_HOME}/gtk-2.0/gtkrc"
+export INPUTRC="${XDG_CONFIG_HOME}/readline/inputrc"
+
+export HISTFILE="${XDG_DATA_HOME}/bash/history"
+export LESSHISTFILE="${XDG_CACHE_HOME}/less/history"
 
 # Gaming
 if [ -f "/usr/bin/steam" ]; then

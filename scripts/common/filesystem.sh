@@ -78,6 +78,10 @@ HOME_VAR="${HOME_REAL}/.var"
 HOME_VAR_APP="${HOME_VAR}/app"
 HOME_VIDEOS="${HOME_REAL}/Videos"
 
+[ -z "${XDG_CACHE_HOME}" ] && XDG_CACHE_HOME="${HOME}/.cache"
+[ -z "${XDG_CONFIG_HOME}" ] && XDG_CONFIG_HOME="${HOME}/.config"
+[ -z "${XDG_DATA_HOME}" ] && XDG_DATA_HOME="${HOME}/.local/state"
+
 # Functions
 function does_bin_exist () {
     for BINARY_NAME in "${@}"; do

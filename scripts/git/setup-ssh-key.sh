@@ -1,6 +1,7 @@
 #!/bin/bash
+source "scripts/common/filesystem.sh"
 
-GITCONFIG_LOCATION="${HOME}/.gitconfig"
+GITCONFIG_LOCATION="${XDG_CONFIG_HOME}/git/config"
 GITHUB_KEY_SETTINGS_PAGE="https://github.com/settings/keys"
 SSH_CONFIG_FILE_PATH="${HOME}/.ssh/config"
 

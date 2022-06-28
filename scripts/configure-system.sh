@@ -375,8 +375,9 @@ if ${HAS_GUI}; then
     set_config_value "${ENVIRONMENT_VARS_FILE}" QT_QPA_PLATFORMTHEME "gtk3"
 
     if [ -d "${ROOT_USR_LIB}/gtk-2.0" ]; then
-        GTK2_CONFIG_FILE="${HOME}/.gtkrc-2.0"
-        GTK2_FILECHOOSER_CONFIG_FILE="${HOME_CONFIG}/gtk-2.0/filechooser.ini"
+        GTK2_CONFIG_DIR="${XDG_CONFIG_HOME}/gtk-2.0"
+        GTK2_CONFIG_FILE="${GTK2_CONFIG_DIR}/gtkrc"
+        GTK2_FILECHOOSER_CONFIG_FILE="${GTK2_CONFIG_DIR}/filechooser.ini"
 
         set_config_value --separator " " "${GTK2_CONFIG_FILE}" include '"/usr/share/themes/'"${GTK2_THEME}"'/gtk-2.0/gtkrc"'
         set_config_value "${GTK2_CONFIG_FILE}" gtk-theme-name "${GTK2_THEME}"
@@ -785,7 +786,7 @@ if does_bin_exist "firefox" "org.mozilla.firefox"; then
         set_firefox_config "${FIREFOX_PROFILE_ID}" "toolkit.legacyUserProfileCustomizations.stylesheets" true
         #set_firefox_config "${FIREFOX_PROFILE_ID}" "widget.non-native-theme.enabled" false # If true then some page elements (e.g. drop-down arrows in Bitwarden) look very ugly and out of place
         set_firefox_config "${FIREFOX_PROFILE_ID}" "widget.content.allow-gtk-dark-theme" ${DESKTOP_THEME_IS_DARK}
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "widget.gtk.overlay-scrollbars.enabled" true # Turn scrollbars into GTK scrollbars
+        #set_firefox_config "${FIREFOX_PROFILE_ID}" "widget.gtk.overlay-scrollbars.enabled" true # Turn scrollbars into GTK scrollbars
 
         # Appearance - Links
         set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.anchor_color" "${TERMINAL_CYAN_D}" # "#00BCD4"

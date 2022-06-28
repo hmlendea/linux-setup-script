@@ -226,6 +226,19 @@ for FLATPAK in "${HOME_VAR_APP}"/*; do
     ! is_flatpak_installed "${FLATPAK}" && remove "${HOME_VAR_APP}/${FLATPAK}"
 done
 
+# Redundant home directories
+[ -d "${XDG_CACHE_HOME}/nuget/packages" ]   && remove "${HOME}/.nuget/packages"
+[ -d "${XDG_DATA_HOME}/cargo" ]             && remove "${HOME}/.cargo"
+
+# Redundant home files
+[ -f "${XDG_CACHE_HOME}/less/history" ]     && remove "${HOME}/.lesshst"
+[ -f "${XDG_CONFIG_HOME}/git/config" ]      && remove "${HOME}/.gitconfig"
+[ -f "${XDG_CONFIG_HOME}/pulse/cookie" ]    && remove "${HOME}/.pulse-cookie"
+[ -f "${XDG_CONFIG_HOME}/gtk-2.0/gtkrc" ]   && remove "${HOME}/.gtkrc-2.0"
+[ -f "${XDG_DATA_HOME}/bash/history" ]      && remove "${HOME}/.bash_history"
+[ -f "${XDG_DATA_HOME}/readline/inputrc" ]  && remove "${HOME}/.inputrc"
+[ -f "${XDG_DATA_HOME}/wget/hosts" ]        && remove "${HOME}/.wget-hsts"
+
 # GNOME Extensions
 ! is_gnome_shell_extension_installed "tiling-assistant" && remove "${HOME_CONFIG}/tiling-assistant"
 
