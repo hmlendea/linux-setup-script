@@ -1155,7 +1155,7 @@ for FLATPAK_LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}"/*.desktop \
     ACTIONS=$(grep "^Actions=" "${FLATPAK_LAUNCHER}" | sed -e 's/^Actions=//g' -e 's/'"${QUIT_ACTION_ID}"';//g')
 
     set_launcher_entries "${FLATPAK_LAUNCHER}" \
-        "Exec" "/usr/bin/flatpak run ${APP_ID}" \
+        "Exec" "/usr/bin/flatpak run ${APP_ID} %U" \
         "Actions" "${ACTIONS}${QUIT_ACTION_ID};" \
         "Desktop Action ${QUIT_ACTION_ID}/Name" "Force Quit" \
         "Desktop Action ${QUIT_ACTION_ID}/Name[ro]" "Închide Forțat" \
