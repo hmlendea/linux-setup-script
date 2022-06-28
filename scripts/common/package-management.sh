@@ -3,7 +3,7 @@ source "scripts/common/filesystem.sh"
 source "${REPO_SCRIPTS_DIR}/common/common.sh"
 
 GLOBAL_GS_EXTENSIONS_DIR="${ROOT_USR_SHARE}/gnome-shell/extensions"
-LOCAL_GS_EXTENSIONS_DIR="${HOME_LOCAL_SHARE}/gnome-shell/extensions"
+LOCAL_GS_EXTENSIONS_DIR="${XDG_DATA_HOME}/gnome-shell/extensions"
 
 function call_package_manager() {
     if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
@@ -145,7 +145,7 @@ function is_gnome_shell_extension_installed() {
 function is_steam_app_installed() {
     local STEAM_APP_ID="${1}"
 
-    if [ -f "${HOME_LOCAL_SHARE}/Steam/steamapps/appmanifest_${STEAM_APP_ID}.acf" ]; then
+    if [ -f "${XDG_DATA_HOME}/Steam/steamapps/appmanifest_${STEAM_APP_ID}.acf" ]; then
         return 0 # True
     else
         return 1 # False

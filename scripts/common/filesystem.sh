@@ -62,14 +62,15 @@ if [ ! -d "${HOME_REAL}" ]; then
 fi
 
 [ -z "${HOME}" ] && HOME="${HOME_REAL}"
+[ -z "${XDG_CACHE_HOME}" ]  && XDG_CACHE_HOME="${HOME}/.cache"
+[ -z "${XDG_CONFIG_HOME}" ] && XDG_CONFIG_HOME="${HOME}/.config"
+[ -z "${XDG_DATA_HOME}" ]   && XDG_DATA_HOME="${HOME}/.local/share"
+[ -z "${XDG_STATE_HOME}" ]  && XDG_STATE_HOME="${HOME}/.local/state"
 
-HOME_CACHE="${HOME_REAL}/.cache"
-HOME_CONFIG="${HOME_REAL}/.config"
 HOME_DOCUMENTS="${HOME_REAL}/Documents"
 HOME_DOWNLOADS="${HOME_REAL}/Downloads"
 HOME_LOCAL="${HOME_REAL}/.local"
 HOME_LOCAL_BIN="${HOME_LOCAL}/bin"
-HOME_LOCAL_SHARE="${HOME_LOCAL}/share"
 HOME_MUSIC="${HOME_REAL}/Music"
 HOME_PICTURES="${HOME_REAL}/Pictures"
 HOME_PUBLIC="${HOME_REAL}/Public"
@@ -77,10 +78,6 @@ HOME_TEMPLATES="${HOME_REAL}/Templates"
 HOME_VAR="${HOME_REAL}/.var"
 HOME_VAR_APP="${HOME_VAR}/app"
 HOME_VIDEOS="${HOME_REAL}/Videos"
-
-[ -z "${XDG_CACHE_HOME}" ] && XDG_CACHE_HOME="${HOME}/.cache"
-[ -z "${XDG_CONFIG_HOME}" ] && XDG_CONFIG_HOME="${HOME}/.config"
-[ -z "${XDG_DATA_HOME}" ] && XDG_DATA_HOME="${HOME}/.local/state"
 
 # Functions
 function does_bin_exist () {
@@ -287,11 +284,11 @@ does_bin_exist "org.mozilla.firefox" && HOME_MOZILLA="${HOME_VAR_APP}/org.mozill
 
 GLOBAL_LAUNCHERS_DIR="${ROOT_USR_SHARE}/applications"
 GLOBAL_FLATPAK_LAUNCHERS_DIR="${ROOT_VAR_LIB}/flatpak/exports/share/applications"
-LOCAL_LAUNCHERS_DIR="${HOME_LOCAL_SHARE}/applications"
-LOCAL_FLATPAK_LAUNCHERS_DIR="${HOME_LOCAL_SHARE}/flatpak/exports/share/applications"
+LOCAL_LAUNCHERS_DIR="${XDG_DATA_HOME}/applications"
+LOCAL_FLATPAK_LAUNCHERS_DIR="${XDG_DATA_HOME}/flatpak/exports/share/applications"
 
 if does_bin_exist "steam" "com.valvesoftware.Steam"; then
-    STEAM_DIR="${HOME_LOCAL_SHARE}/Steam"
+    STEAM_DIR="${XDG_DATA_HOME}/Steam"
     does_bin_exist "com.valvesoftware.Steam" && STEAM_DIR="${HOME_VAR_APP}/com.valvesoftware.Steam/.local/share/Steam"
 
     STEAM_LIBRARY_PATHS="${STEAM_DIR}/steamapps"

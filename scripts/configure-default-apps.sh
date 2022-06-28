@@ -7,7 +7,7 @@ function update_mimetype_association() {
     local MIMETYPE="${1}"
     local LAUNCHER="${2}"
 
-    local MIMEAPPS_FILE="${HOME_CONFIG}/mimeapps.list"
+    local MIMEAPPS_FILE="${XDG_CONFIG_HOME}/mimeapps.list"
 
     grep -q "^${MIMETYPE}=${LAUNCHER}$" "${MIMEAPPS_FILE}" && return
 

@@ -1239,7 +1239,7 @@ function getSteamAppIconPath() {
 }
 
 if does_bin_exist "steam" "com.valvesoftware.Steam"; then
-    STEAM_ICON_THEME_PATH="${HOME_LOCAL_SHARE}/icons/steam"
+    STEAM_ICON_THEME_PATH="${XDG_DATA_HOME}/icons/steam"
     STEAM_WMCLASSES_FILE="data/steam-wmclasses.txt"
     STEAM_NAMES_FILE="data/steam-names.txt"
 

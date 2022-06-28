@@ -98,7 +98,7 @@ function get_flatpak_shared() {
     local OBJECT="${2}"
 
     for METADATA_FILE in    "${ROOT_VAR_LIB}/flatpak/app/${APPLICATION}/current/active/metadata" \
-                            "${HOME_LOCAL_SHARE}/flatpak/app/${APPLICATION}/current/active/metadata"; do
+                            "${XDG_DATA_HOME}/flatpak/app/${APPLICATION}/current/active/metadata"; do
         [ ! -f "${METADATA_FILE}" ] && continue
 
         local SHARED_OBJECTS=$(grep "^shared=" "${METADATA_FILE}" | awk -F'=' '{print $2}')
@@ -117,7 +117,7 @@ function set_flatpak_shared() {
     local STATE="${3}"
 
     for METADATA_FILE in    "${ROOT_VAR_LIB}/flatpak/app/${APPLICATION}/current/active/metadata" \
-                            "${HOME_LOCAL_SHARE}/flatpak/app/${APPLICATION}/current/active/metadata"; do
+                            "${XDG_DATA_HOME}/flatpak/app/${APPLICATION}/current/active/metadata"; do
         [ ! -f "${METADATA_FILE}" ] && continue
 
         local SHARED_OBJECTS=$(grep "^shared=" "${METADATA_FILE}" | awk -F'=' '{print $2}')

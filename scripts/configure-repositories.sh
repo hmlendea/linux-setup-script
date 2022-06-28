@@ -51,7 +51,7 @@ function add_user_flatpak_remote() {
 
     if ! flatpak remotes | grep -q "^${REMOTE_NAME}\s"; then
         echo -e "Adding the \e[0;33m${REMOTE_NAME}\e[0m user flatpak remote..."
-        update_file_if_distinct "${REPO_DATA_DIR}/flatpak/keys/${REMOTE_NAME}" "${HOME_LOCAL_SHARE}/flatpak/repo/${REMOTE_NAME}.trustedkeys.gpg"
+        update_file_if_distinct "${REPO_DATA_DIR}/flatpak/keys/${REMOTE_NAME}" "${XDG_DATA_HOME}/flatpak/repo/${REMOTE_NAME}.trustedkeys.gpg"
         flatpak remote-add --user --if-not-exists "${REMOTE_NAME}" "${REMOTE_URL}"
     fi
 }
