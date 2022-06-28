@@ -61,7 +61,7 @@ if [ ! -d "${HOME_REAL}" ]; then
     fi
 fi
 
-[ -z "${HOME}" ] && HOME="${HOME_REAL}"
+[ -z "${HOME}" ]            && HOME="${HOME_REAL}"
 [ -z "${XDG_CACHE_HOME}" ]  && XDG_CACHE_HOME="${HOME}/.cache"
 [ -z "${XDG_CONFIG_HOME}" ] && XDG_CONFIG_HOME="${HOME}/.config"
 [ -z "${XDG_DATA_HOME}" ]   && XDG_DATA_HOME="${HOME}/.local/share"
