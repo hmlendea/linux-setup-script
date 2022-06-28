@@ -102,8 +102,6 @@ if [ "${OS}" != "Windows" ]; then
 fi
 
 if [[ "${OS}" == "Linux" ]]; then
-    execute-script "clean-files.sh"
-
     if ${HAS_GUI}; then
         execute-script-superuser "customise-launchers.sh"
     fi
@@ -136,6 +134,8 @@ fi
 execute-script "configure-directories.sh"
 
 execute-script "git/setup-gpg-key.sh"
+
+execute-script "clean-files.sh"
 
 # Assign users and groups
 [ "${OS}" == "Linux" ] && execute-script-superuser "assign-users-and-groups.sh"

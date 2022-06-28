@@ -99,7 +99,9 @@ remove "${ROOT_ETC}/motd"
 ! does_bin_exist "google-chrome-unstable" && remove \
     "${XDG_CACHE_HOME}/google-chrome-unstable" \
     "${XDG_CONFIG_HOME}/google-chrome-unstable"
-! does_bin_exist "gradle" && remove "${HOME}.gradle"
+! does_bin_exist "gradle" && remove \
+    "${HOME}/.gradle" \
+    "${XDG_DATA_HOME}/gradle"
 ! does_bin_exist "hardinfo" && remove "${XDG_CONFIG_HOME}/hardinfo"
 ! does_bin_exist "hashcat" && remove \
     "${XDG_CACHE_HOME}/hashcat" \
@@ -137,8 +139,16 @@ remove "${ROOT_ETC}/motd"
     "${XDG_DATA_HOME}/nemo-python"
 ! does_bin_exist "neofetch" && remove "${XDG_CONFIG_HOME}/neofetch"
 ! does_bin_exist "notion-app" && remove "${XDG_CONFIG_HOME}/Notion"
-! does_bin_exist "npm" && remove "${HOME}/.npm"
-! does_bin_exist "nvidia-settings" && remove "${HOME}/.nvidia-settings-rc"
+! does_bin_exist "npm" && remove \
+    "${HOME}/.npm" \
+    "${HOME}/.npmrc" \
+    "${XDG_DATA_HOME}/npm" \
+    "${XDG_CACHE_HOME}/npm" \
+    "${XDG_CONFIG_HOME}/npm" \
+    "${XDG_RUNTIME_HOME}/npm"
+! does_bin_exist "nvidia-settings" && remove \
+    "${HOME}/.nvidia-settings-rc" \
+    "${XDG_CONFIG_HOME}/nvidia/settings"
 ! does_bin_exist "onlyoffice-desktopeditors" && remove \
     "${XDG_CONFIG_HOME}/onlyoffice" \
     "${XDG_DATA_HOME}/onlyoffice"
@@ -228,16 +238,24 @@ done
 
 # Redundant home directories
 [ -d "${XDG_CACHE_HOME}/nuget/packages" ]   && remove "${HOME}/.nuget/packages"
+[ -d "${XDG_CACHE_HOME}/nvidia" ]           && remove "${HOME}/.nv"
 [ -d "${XDG_DATA_HOME}/cargo" ]             && remove "${HOME}/.cargo"
 
 # Redundant home files
-[ -f "${XDG_CACHE_HOME}/less/history" ]     && remove "${HOME}/.lesshst"
-[ -f "${XDG_CONFIG_HOME}/git/config" ]      && remove "${HOME}/.gitconfig"
-[ -f "${XDG_CONFIG_HOME}/pulse/cookie" ]    && remove "${HOME}/.pulse-cookie"
-[ -f "${XDG_CONFIG_HOME}/gtk-2.0/gtkrc" ]   && remove "${HOME}/.gtkrc-2.0"
-[ -f "${XDG_DATA_HOME}/bash/history" ]      && remove "${HOME}/.bash_history"
-[ -f "${XDG_DATA_HOME}/readline/inputrc" ]  && remove "${HOME}/.inputrc"
-[ -f "${XDG_DATA_HOME}/wget/hosts" ]        && remove "${HOME}/.wget-hsts"
+[ -f "${XDG_CACHE_HOME}/less/history" ]         && remove "${HOME}/.lesshst"
+[ -f "${XDG_CONFIG_HOME}/git/config" ]          && remove "${HOME}/.gitconfig"
+[ -f "${XDG_CONFIG_HOME}/nvidia/settings" ]     && remove "${HOME}/.nvidia-settings-rc"
+[ -f "${XDG_CONFIG_HOME}/pulse/cookie" ]        && remove "${HOME}/.pulse-cookie"
+[ -f "${XDG_CONFIG_HOME}/readline/inputrc" ]    && remove "${HOME}/.inputrc"
+[ -f "${XDG_CONFIG_HOME}/gtk-2.0/gtkrc" ]       && remove "${HOME}/.gtkrc-2.0"
+[ -f "${XDG_DATA_HOME}/bash/aliases" ]          && remove "${HOME}/.shell_aliases"
+[ -f "${XDG_DATA_HOME}/bash/history" ]          && remove "${HOME}/.bash_history"
+[ -f "${XDG_DATA_HOME}/bash/options" ]          && remove "${HOME}/.shell_opts"
+[ -f "${XDG_DATA_HOME}/bash/prompt" ]           && remove "${HOME}/.shell_prompt"
+[ -f "${XDG_DATA_HOME}/bash/variables" ]        && remove "${HOME}/.shell_vars"
+[ -f "${XDG_DATA_HOME}/readline/inputrc" ]      && remove "${HOME}/.inputrc"
+[ -f "${XDG_DATA_HOME}/wget/hosts" ]            && remove "${HOME}/.wget-hsts"
+[ -f "${XDG_RUNTIME_DIR}/Xauthority" ]          && remove "${HOME}/.Xauthority"
 
 # GNOME Extensions
 ! is_gnome_shell_extension_installed "tiling-assistant" && remove "${XDG_CONFIG_HOME}/tiling-assistant"

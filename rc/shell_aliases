@@ -90,6 +90,10 @@ if [ -f "${ROOT_USR_BIN}/git" ]; then
     alias git-commit="git fetch && __gitCommit"
 fi
 
+if [ -f "${ROOT_USR_BIN}/nvidia-settings" ]; then
+    alias nvidia-settings="nvidia-settings --config=\"${XDG_CONFIG_HOME}/nvidia/settings\""
+fi
+
 if [ -f "${ROOT_USR_BIN}/unp" ]; then
     alias extract='unp'
     alias uncompress='extract'

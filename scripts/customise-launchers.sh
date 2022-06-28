@@ -744,14 +744,18 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/google-keep.desktop" StartupWMClass 
 ##############
 ### NVIDIA ###
 ##############
+NVIDIA_SETTINGS_EXEC="/usr/bin/nvidia-settings --config=\"${XDG_CONFIG_HOME}/nvidia/settings\""
+
 if does_bin_exist "nvidia-settings"; then
     set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/nvidia-settings.desktop" \
         Name "Nvidia Settings" \
         Name[ro] "Setări Nvidia" \
         Icon "nvidia-settings" \
-        Categories "System;"
+        Categories "System;" \
+        Exec "${NVIDIA_SETTINGS_EXEC}"
 
-    does_bin_exist "optirun" && set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/nvidia-settings.desktop" Exec "optirun -b none nvidia-settings -c :8"
+    does_bin_exist "optirun" && set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/nvidia-settings.desktop" \
+        Exec "optirun -b none ${NVIDIA_SETTINGS_EXEC} -c :8"
 fi
 
 ###################
