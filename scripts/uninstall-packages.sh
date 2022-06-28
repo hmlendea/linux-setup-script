@@ -54,6 +54,7 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "grub2-theme-vimix"            # Replaced by grub2-theme-nuci
     uninstall_native_package "inkscape"                     # Replaced by flatpak: org.inkscape.Inkscape
     uninstall_native_package "minecraft-launcher"           # Replaced by flatpak: com.mojang.Minecraft
+    uninstall_native_package "nano"                         # Replaced by micro
     uninstall_native_package "neofetch"                     # Replaced by fastfetch-git
     uninstall_native_package "paper-icon-theme-git"         # Replaced by paper-icon-theme
     uninstall_native_package "postman-bin"                  # Replaced by flatpak: com.getpostman.Postman

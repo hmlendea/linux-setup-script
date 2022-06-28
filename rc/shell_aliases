@@ -30,7 +30,9 @@ function set_alias_completion_source() {
 }
 
 # Basic
-alias sh="${SHELL}"
+[ ! -z "${EDITOR}" ]    && alias edit="${EDITOR}"
+[ ! -z "${SHELL}" ]     && alias sh="${SHELL}"
+
 alias sudo='sudo ' # Enables the simultaneous use of sudo and other aliases
 alias lsmnt='lsblk -l | tail -n +2 | awk '\''length($7) { print $1" => "$7 }'\'''
 alias grep='grep -a --color --text'
@@ -82,6 +84,11 @@ alias ls="ls --color=auto -h -Q --group-directories-first --format=horizontal"
 [ -f "${ROOT_USR_BIN}/fastfetch" ]   && [ ! -f "${ROOT_USR_BIN}/neofetch" ]     && alias neofetch='fastfetch'
 [ -f "${ROOT_USR_BIN}/neofetch" ]    && [ ! -f "${ROOT_USR_BIN}/alsi" ]         && alias alsi='neofetch'
 [ -f "${ROOT_USR_BIN}/neofetch" ]    && [ ! -f "${ROOT_USR_BIN}/fastfetch" ]    && alias fastfetch='neofetch'
+
+if [ -f "${ROOT_USR_BIN}/micro" ] \
+&& [ ! -f "${ROOT_USR_BIN}/nano" ]; then
+	alias nano="micro"
+fi
 
 if [ -f "${ROOT_USR_BIN}/git" ]; then
     alias git="git --no-pager"
