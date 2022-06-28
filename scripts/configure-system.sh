@@ -193,6 +193,16 @@ if does_bin_exist "mkinitcpio"; then
     set_config_value "${MKINITCPIO_CONFIG_FILE}" "COMPRESSION" "\"lz4\""
 fi
 
+set_config_values "${XDG_CONFIG_HOME}/user-dirs.dirs" \
+    "XDG_DESKTOP_DIR" "\"${XDG_DESKTOP_DIR}\"" \
+    "XDG_DOCUMENTS_DIR" "\"${XDG_DOCUMENTS_DIR}\"" \
+    "XDG_DOWNLOAD_DIR" "\"${XDG_DOWNLOAD_DIR=}\"" \
+    "XDG_MUSIC_DIR" "\"${XDG_MUSIC_DIR}\"" \
+    "XDG_PICTURES_DIR" "\"${XDG_PICTURES_DIR}\"" \
+    "XDG_PUBLICSHARE_DIR" "\"${XDG_PUBLICSHARE_DIR}\"" \
+    "XDG_TEMPLATES_DIR" "\"${XDG_TEMPLATES_DIR}\"" \
+    "XDG_VIDEOS_DIR" "\"${XDG_VIDEOS_DIR}\""
+
 if [ -d "${ROOT_ETC}/modprobe.d" ]; then
     set_gsetting org.gtk.Settings.FileChooser startup-mode 'cwd'
 
@@ -938,12 +948,9 @@ fi
 ### GPG ###
 ###########
 if does_bin_exist "gpg"; then
-    GNUPG_DIRMNGR_CONFIG="${HOME}/.gnupg/dirmngr.conf"
+    GNUPG_DIRMNGR_CONFIG="${XDG_DATA_HOME}/gnupg/dirmngr.conf"
 
-    if [ ! -d "${HOME}/.gnupg" ]; then
-        mkdir "${HOME}/.gnupg"
-        touch "${GNUPG_DIRMNGR_CONFIG}"
-    fi
+    create_file "${GNUPG_DIRMNGR_CONFIG}"
 
     set_config_value --separator " " "${GNUPG_DIRMNGR_CONFIG}" keyserver "hkp://keyserver.ubuntu.com"
 fi

@@ -92,6 +92,36 @@ function set_config_value() {
     echo "${FILE_PATH} >>> ${KEY}${SEPARATOR}${VALUE}"
 }
 
+function set_config_values() {
+    local SEPARATOR="="
+
+    if [[ "${1}" == "--separator" ]]; then
+        shift
+        SEPARATOR="${1}"
+        shift
+    fi
+
+    local FILE="${1}" && shift
+
+    [ ! -f "${FILE}" ] && return
+
+    if [ "$(( $# % 2))" -ne 0 ]; then
+        echo "ERROR: Invalid arguments (count: $#) for set_config_values: ${*}" >&2
+        exit 1
+    fi
+
+    local PAIRS_COUNT=$(($# / 2))
+
+    for I in $(seq 1 ${PAIRS_COUNT}); do
+        local KEY="${1}" && shift
+        local VAL="${1}" && shift
+
+        if [ -n "${KEY}" ] && [ -n "${VAL}" ]; then
+            set_config_value --separator "${SEPARATOR}" "${FILE}" "${KEY}" "${VAL}"
+        fi
+    done
+}
+
 function set_firefox_config() {
     local PROFILE="${1}"
     local KEY="${2}"
