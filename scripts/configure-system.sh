@@ -1402,6 +1402,7 @@ if does_bin_exist "micro"; then
     set_json_property "${MICRO_SETTINGS_FILE}" '.["tabstospaces"]' true
 
 	# Appearance
+    set_json_property "${MICRO_SETTINGS_FILE}" '.["colorscheme"]' "twilight"
     set_json_property "${MICRO_SETTINGS_FILE}" '.["scrollbar"]' true
 fi
 if does_bin_exist "pluma"; then
