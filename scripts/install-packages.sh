@@ -229,10 +229,10 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
         fi
 
         # Desktop Environment & Base applications
+        install_native_package xdg-user-dirs
         if ${POWERFUL_PC}; then
             install_native_package gnome-shell
             install_native_package gdm
-            install_native_package xdg-user-dirs-gtk
             install_native_package_dependency gnome-control-center
             install_native_package gnome-tweaks
             #install_native_package gnome-backgrounds
@@ -254,7 +254,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
         install_native_package networkmanager-openvpn
         ! ${POWERFUL_PC} && install_native_package network-manager-applet
 
-        install_native_package_dependency dnsmasq
+        #install_native_package_dependency dnsmasq # For setting up WiFi hotspots
 
         # Audio drivers
         install_native_package sennheiser-gsp670-pulseaudio-profile
@@ -331,10 +331,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
             install_native_package gpicview
         fi
 
-        if ${POWERFUL_PC}; then
-            install_native_package_dependency gnome-menus
-
-            install_native_package_dependency gvfs-mtp
+        if is_native_package_installed "gnome-shell"; then
             install_native_package_dependency gvfs-goa
         fi
 
@@ -506,7 +503,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
 
             install_flatpak com.getpostman.Postman
 
-            does_bin_exist "flatpak" && install_native_package "flatpak-builder"
+            #does_bin_exist "flatpak" && install_native_package "flatpak-builder"
         fi
 
         # Tools
