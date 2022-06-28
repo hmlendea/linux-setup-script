@@ -10,7 +10,7 @@ function loadSource {
     fi
 }
 
-[ -z "${XDG_DATA_HOME}" ] && loadSource "${HOME}/.profile"
+loadSource "${HOME}/.profile"
 
 loadSource "${XDG_DATA_HOME}/bash/variables"
 loadSource "${XDG_DATA_HOME}/bash/aliases"
