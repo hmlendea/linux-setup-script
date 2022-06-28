@@ -623,43 +623,6 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/gpicview.desktop" \
         Name[ro] "Imagini"
 done
 
-#########################
-### INTERNET BROWSERS ###
-#########################
-INTERNET_BROWSER_CATEGORIES="Network;WebBrowser;"
-
-set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/firefox-developer.desktop" Categories ${INTERNET_BROWSER_CATEGORIES}
-
-for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.brave.Browser.desktop" \
-                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.brave.Broser.desktop"; do
-    set_launcher_entries "${LAUNCHER}" \
-        Name "Brave" \
-        GenericName "Browser"
-done
-
-for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.mozilla.firefox.desktop" \
-                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.mozilla.firefox.desktop"; do
-    set_launcher_entries "${LAUNCHER}" \
-        StartupWMClass "firefox"
-done
-
-for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/google-chrome-unstable.desktop" \
-                "${GLOBAL_LAUNCHERS_DIR}/google-chrome.desktop"; do
-    set_launcher_entries "${LAUNCHER}" \
-        Name "Chrome" \
-        Name[ro] "Chrome" \
-        Icon "google-chrome"
-done
-
-set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/google-chrome-unstable.desktop" StartupWMClass "Google-chrome-unstable"
-set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/google-chrome.desktop" StartupWMClass "Google-chrome-stable"
-
-set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/tor-browser-en.desktop" \
-    Name "Tor" \
-    Icon "tor-browser-en" \
-    Categories ${INTERNET_BROWSER_CATEGORIES} \
-    StartupWMClass "Tor Browser"
-
 ########################
 ### JAVA - JRE & JDK ###
 ########################
@@ -1103,6 +1066,51 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Weather.Application.desktop" 
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Weather.desktop"; do
     set_launcher_entries "${LAUNCHER}" Categories "GNOME;GTK;Utility;Navigation;"
 done
+
+####################
+### WEB BROWSERS ###
+####################
+WEB_BROWSER_CATEGORIES="Network;WebBrowser;"
+
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/chromium.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/firefox-developer.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/google-chrome-unstable.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/google-chrome.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/tor-browser-en.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.brave.Browser.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.mozilla.firefox.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.brave.Broser.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.mozilla.firefox.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        GenericName "Web Browser" \
+        Categories "${WEB_BROWSER_CATEGORIES}"
+done
+
+for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.brave.Browser.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.brave.Broser.desktop"; do
+    set_launcher_entry "${LAUNCHER}" Name "Brave"
+done
+
+for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.mozilla.firefox.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.mozilla.firefox.desktop"; do
+    set_launcher_entry "${LAUNCHER}" StartupWMClass "firefox"
+done
+
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/google-chrome-unstable.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/google-chrome.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Chrome" \
+        Name[ro] "Chrome" \
+        Icon "google-chrome"
+done
+
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/google-chrome-unstable.desktop" StartupWMClass "Google-chrome-unstable"
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/google-chrome.desktop" StartupWMClass "Google-chrome-stable"
+
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/tor-browser-en.desktop" \
+    Name "Tor" \
+    Icon "tor-browser-en" \
+    StartupWMClass "Tor Browser"
 
 ############
 ### WINE ###
