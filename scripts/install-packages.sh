@@ -446,7 +446,6 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
             #install_native_package gimp-plugin-pixel-art-scalers
             install_flatpak org.gimp.GIMP # Wait at least until it uses GTK3
             install_flatpak org.inkscape.Inkscape
-            install_flatpak nl.hjdskes.gcolor3
 
             # Gaming
             if ${IS_GAMING_DEVICE}; then
