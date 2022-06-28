@@ -112,13 +112,19 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     fi
 
     # Packages I don't need
+    uninstall_native_package "dnsmasq" # For setting up NetworkManager WiFi hotspots
+    uninstall_native_package "gnome-menus" # For the GS Applications extension
+    uninstall_native_package "gst-plugin-pipewire" # For GS screen recording
     uninstall_native_package "gvfs-afc" # Apple mobile devices
-    uninstall_native_package "gvfs-afc" # Camera devices
     uninstall_native_package "gvfs-google" # Google integration
+    uninstall_native_package "gvfs-gphoto2" # Camera devices
+    uninstall_native_package "gvfs-mtp" # Android mobile devices
     uninstall_native_package "gvfs-nfs"
     uninstall_native_package "gvfs-smb" # Samba
     uninstall_native_package "libappindicator-gtk3"
+    uninstall_native_package "malcontent" # Parental control. Sometimes comes as a deps and stays there
     uninstall_native_package "modemmanager"
+    uninstall_native_package "nodejs-nativefier"
     uninstall_native_package "perl-locale-gettext"
     uninstall_native_package "perl-term-readkey"
     uninstall_native_package "poppler-data"
@@ -153,6 +159,7 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "dbus-broker"
     uninstall_native_package "freeglut"
     uninstall_native_package "gst-libav"
+    uninstall_native_package "libdbusmenu-glib" # Needed for Global Menu
     uninstall_native_package "libdecor"
     uninstall_native_package "libjxl"
     uninstall_native_package "libwmf"
