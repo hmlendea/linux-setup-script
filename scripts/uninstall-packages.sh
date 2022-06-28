@@ -125,6 +125,8 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "python-dnspython"
     uninstall_native_package "python2-setuptools"
 
+    uninstall_flatpak "nl.hjdskes.gcolor3"
+
     # GNOME Shell Extensions
     # Replaced by installation directly from extensions.gnome.org
     #uninstall_native_package "gnome-shell-extension-dash-to-dock"  # Replaced by plank / installation from GSE
