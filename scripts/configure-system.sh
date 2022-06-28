@@ -1011,11 +1011,11 @@ if does_bin_exist "code" "code-oss" "codium" "com.visualstudio.code"; then
     set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.find.autoFindInSelection"]' "never"
     set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.find.seedSearchStringFromSelection"]' "selection"
     set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.foldingMaximumRegions"]' 7500
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.largeFileOptimizations"]' false
     set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.unicodeHighlight.ambiguousCharacters"]' true
     set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.wordWrap"]' $(bool_to_onoff ${TEXT_EDITOR_WORD_WRAP})
     set_json_property "${VSCODE_CONFIG_FILE}" '.["files.trimTrailingWhitespace"]' true
     set_json_property "${VSCODE_CONFIG_FILE}" '.["files.trimFinalNewlines"]' true
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["workbench.largeFileOptimizations"]' false
 
     # Disable unwanted features
     set_json_property "${VSCODE_CONFIG_FILE}" '.["workbench.startupEditor"]' false
