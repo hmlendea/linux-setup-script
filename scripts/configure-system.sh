@@ -645,7 +645,7 @@ fi
 ### Citrix ###
 ##############
 #if [ -d "${ROOT_OPT}/Citrix" ]; then
-#    set_config_value "${HOME}/.ICAClient/wfclient.ini" SSLCiphers "ALL" # TODO: Make sure it's put under [WFClient]
+#    set_config_value "${HOME}/.ICAClient/wfclient.ini" SSLCiphers "ALL" # TODO: Make sure it is put under [WFClient]
 #fi
 
 #############################
@@ -1027,7 +1027,7 @@ if does_bin_exist "code" "code-oss" "codium" "com.visualstudio.code"; then
     set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.minimap.renderCharacters"]' false
 
     # Editor behaviour
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.autoClosingBrackets"]' false
+    #set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.autoClosingBrackets"]' false # It is false by default and gets removed if set
     set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.find.autoFindInSelection"]' "never"
     set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.find.seedSearchStringFromSelection"]' "selection"
     set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.foldingMaximumRegions"]' 7500
@@ -1409,11 +1409,11 @@ if does_bin_exist "micro"; then
     set_json_property "${MICRO_SETTINGS_FILE}" '.["autoclose"]' false # Whether to automatically close braces
     set_json_property "${MICRO_SETTINGS_FILE}" '.["savecursor"]' true
     set_json_property "${MICRO_SETTINGS_FILE}" '.["saveundo"]' true
-    set_json_property "${MICRO_SETTINGS_FILE}" '.["smartpaste"]' true
+    #set_json_property "${MICRO_SETTINGS_FILE}" '.["smartpaste"]' true # It's true by default and gets removed if set
 
 	# Coding style
     set_json_property "${MICRO_SETTINGS_FILE}" '.["ftoptions"]' false # Required as it could overwrite tabstospaces
-    set_json_property "${MICRO_SETTINGS_FILE}" '.["tabsize"]' 4
+    #set_json_property "${MICRO_SETTINGS_FILE}" '.["tabsize"]' 4 # It is 4 by default and gets removed if set
     set_json_property "${MICRO_SETTINGS_FILE}" '.["tabstospaces"]' true
 
 	# Appearance
