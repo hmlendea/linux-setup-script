@@ -128,6 +128,16 @@ elif [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
     install_native_package unrar-free
 fi
 
+##################
+### CLI basics ###
+##################
+install_native_package micro
+
+if is_native_package_installed "micro" \
+&& is_native_package_installed "xorg-server"; then
+    install_native_package_dependency xclip # Required by micro, to use the X11 clipboard
+fi
+
 if [ "${DISTRO_FAMILY}" == "Arch" ]; then
     # Package manager
     #install_aur_package_manually package-query
@@ -166,10 +176,6 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
 
     install_native_package realtime-privileges
 
-    # CLI
-    #install_native_package nano-syntax-highlighting
-    install_native_package_dependency xclip # Required by micro, to use the X11 clipboard
-    
     # Monitoring
     install_native_package lm_sensors
 
