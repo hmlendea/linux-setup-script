@@ -1403,7 +1403,10 @@ fi
 if does_bin_exist "micro"; then
     MICRO_SETTINGS_FILE="${XDG_CONFIG_HOME}/micro/settings.json"
 
+    [ ! -f "${MICRO_SETTINGS_FILE}" ] && create_file "${MICRO_SETTINGS_FILE}"
+
 	# Behaviour
+    set_json_property "${MICRO_SETTINGS_FILE}" '.["autoclose"]' false # Whether to automatically close braces
     set_json_property "${MICRO_SETTINGS_FILE}" '.["savecursor"]' true
     set_json_property "${MICRO_SETTINGS_FILE}" '.["saveundo"]' true
     set_json_property "${MICRO_SETTINGS_FILE}" '.["smartpaste"]' true
