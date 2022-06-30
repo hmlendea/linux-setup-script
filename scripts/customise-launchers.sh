@@ -293,7 +293,9 @@ if [ -d "${ROOT_OPT}/Citrix" ]; then
         set_launcher_entries "${LAUNCHER}" \
             Name "Citrix Receiver" \
             Name[ro] "Receptor Citrix" \
-            StartupWMClass "Wfica"
+            StartupWMClass "Wfica" \
+            Exec "/opt/Citrix/ICAClient/wfica.sh %U" \
+            TryExec ""
     done
 else
     remove "${GLOBAL_LAUNCHERS_DIR}/wfsplash.desktop"
