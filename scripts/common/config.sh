@@ -362,7 +362,7 @@ function set_launcher_entries() {
         local KEY="${1}" && shift
         local VAL="${1}" && shift
 
-        if [ -n "${KEY}" ] && [ -n "${VAL}" ]; then
+        if [ -n "${KEY}" ]; then
             set_launcher_entry "${FILE}" "${KEY}" "${VAL}"
         fi
     done
@@ -434,12 +434,16 @@ function set_launcher_entry() {
 
         if ! grep -q "^${KEY_ESC}=\(${VAL}\|${VAL_ESC}\)$" <<< "${FILE_CONTENTS}" \
         || grep -q "^${KEY_ESC}=$" <<< "${FILE_CONTENTS}"; then
-            if grep -q "^${KEY_ESC}=.*$" <<< "${FILE_CONTENTS}"; then
+            # If it needs to be updated
+            if grep -q "^${KEY_ESC}=" <<< "${FILE_CONTENTS}"; then
+                # If it needs to be removed
                 if [ -z "${VAL}" ]; then
                     run_as_su sed -i ''"${SECTION_FIRST_LINE}"','"${SECTION_LAST_LINE}"' {/^'"${KEY_ESC}"'=.*$/d}' "${FILE_PATH_RAW}"
+                # If it needs to be updated
                 else
                     run_as_su sed -i ''"${SECTION_FIRST_LINE}"','"${SECTION_LAST_LINE}"' s|^'"${KEY_ESC}"'=.*$|'"${KEY_ESC}"'='"${VAL}"'|g' "${FILE_PATH_RAW}"
                 fi
+            # If it needs to be inserted from scratch
             elif [ -n "${VAL}" ]; then
                 #if ${HAS_MULTIPLE_SECTIONS}; then
                     run_as_su sed -i "${SECTION_LAST_LINE} i ${KEY_ESC}=${VAL_ESC}" "${FILE_PATH_RAW}"
