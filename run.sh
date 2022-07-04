@@ -119,7 +119,7 @@ fi
 
 # Configure and customise the system
 execute-script "configure-system.sh" # Run after update-rcs.sh
-if [ "${DISTRO_FAMILY}" == "Linux" ]; then
+if [ "${OS}" == "Linux" ]; then
     execute-script "configure-autostart-apps.sh"
     execute-script "configure-default-apps.sh"
 fi

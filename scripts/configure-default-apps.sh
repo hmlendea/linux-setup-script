@@ -40,6 +40,8 @@ fi
 
 is_flatpak_installed "org.gnome.gedit" && TEXT_EDITOR_LAUNCHER="org.gnome.gedit.desktop"
 
+is_native_package_installed "icaclient" && update_mimetype_association "application/x-extension-ica" "citrix-wfica.desktop"
+
 if [ -n "${BROWSER_LAUNCHER}" ]; then
     for SCHEME_TYPE in "http" "https" "chrome"; do
         update_mimetype_association "x-scheme-handler/${SCHEME_TYPE}" "${BROWSER_LAUNCHER}"
