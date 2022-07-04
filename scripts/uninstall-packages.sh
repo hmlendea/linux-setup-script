@@ -287,6 +287,7 @@ elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
     fi
 
     if is_android_package_installed "com.google.android.GoogleCamera" \
+    || is_android_package_installed "com.google.android.GoogleCameraEng" \
     || is_android_package_installed "org.codeaurora.snapcam"; then
         uninstall_android_package "foundation.e.camera"
         uninstall_android_package "net.sourceforge.opencamera"
