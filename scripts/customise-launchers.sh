@@ -1010,6 +1010,8 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/gedit.desktop" \
         Icon "accessories-text-editor"
 done
 
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/micro.desktop" NoDisplay true
+
 ###########################
 ### TORRENT DOWNLOADERS ###
 ###########################
