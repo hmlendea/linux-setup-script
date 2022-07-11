@@ -342,6 +342,11 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/code-oss.desktop" \
         Categories "${IDE_CATEGORIES};TextEditor;"
 done
 
+for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.jetbrains.PyCharm-Community.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.jetbrains.PyCharm-Community.desktop"; do
+    set_launcher_entries "${LAUNCHER}" Name "PyCharm"
+done
+
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/monodevelop.desktop" \
     Exec "env GNOME_DESKTOP_SESSION_ID="" monodevelop %F" \
     Categories "${IDE_CATEGORIES}"
