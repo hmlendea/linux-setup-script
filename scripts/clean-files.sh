@@ -12,6 +12,7 @@ remove "${ROOT_ETC}/motd"
 
 ! does_bin_exist "aircrack-ng" && remove "${HOME}/.aircrack"
 ! does_bin_exist "alsi" && remove "${XDG_CONFIG_HOME}/alsi"
+! does_bin_exist "asciinema" && remove "${XDG_CONFIG_HOME}/asciinema"
 ! does_bin_exist "audacity" && remove "${HOME}/.audacity-data"
 ! does_bin_exist "autokey-shell" && remove \
     "${XDG_CONFIG_HOME}/autokey" \
