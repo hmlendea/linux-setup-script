@@ -101,12 +101,6 @@ if [ "${OS}" != "Windows" ]; then
     execute-script "clean-packages.sh"
 fi
 
-if [[ "${OS}" == "Linux" ]]; then
-    if ${HAS_GUI}; then
-        execute-script-superuser "customise-launchers.sh"
-    fi
-fi
-
 # Update the RCs
 execute-script "update-rcs.sh"
 [ "${OS}" == "Linux" ] && execute-script-superuser "update-rcs.sh"
@@ -119,10 +113,14 @@ fi
 
 # Configure and customise the system
 execute-script "configure-system.sh" # Run after update-rcs.sh
-if [ "${OS}" == "Linux" ]; then
-    execute-script "configure-autostart-apps.sh"
-    execute-script "configure-default-apps.sh"
+if [[ "${OS}" == "Linux" ]]; then
+    if ${HAS_GUI}; then
+        execute-script-superuser "customise-launchers.sh"
+        execute-script "configure-autostart-apps.sh"
+        execute-script "configure-default-apps.sh"
+    fi
 fi
+
 execute-script "configure-permissions.sh" # Run after install-packages.sh
 [ "${DISTRO_FAMILY}" == "Linux" ] && execute-script-superuser "set-system-locale-timedate.sh"
 [ "${DISTRO_FAMILY}" != "Android" ] && execute-script-superuser "update-profiles.sh"
