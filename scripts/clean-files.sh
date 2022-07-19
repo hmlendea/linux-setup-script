@@ -240,18 +240,23 @@ for FLATPAK in "${HOME_VAR_APP}"/*; do
     ! is_flatpak_installed "${FLATPAK}" && remove "${HOME_VAR_APP}/${FLATPAK}"
 done
 
+[ "${NPM_CONFIG_USERCONFIG}" != "${HOME}/.npmrc" ] && remove "${HOME}/.npmrc"
+[ -f "${XDG_DATA_HOME}/wget/hosts" ] && remove "${HOME}/.wget-hsts"
+[ -f "${HOME}/.bash_logout" ] && [[ -z "$(grep -v '^\s*#.*$' ${HOME}/.bash_logout)" ]] && remove "${HOME}/.bash_logout"
+
 # Redundant home directories
 [ -d "${XDG_CACHE_HOME}/nuget/packages" ]   && remove "${HOME}/.nuget/packages"
 [ -d "${XDG_CACHE_HOME}/nvidia" ]           && remove "${HOME}/.nv"
 [ -d "${XDG_DATA_HOME}/cargo" ]             && remove "${HOME}/.cargo"
+[ -d "${XDG_DATA_HOME}/pki" ]               && remove "${HOME}/.pki"
 
 # Redundant home files
 [ -f "${XDG_CACHE_HOME}/less/history" ]         && remove "${HOME}/.lesshst"
 [ -f "${XDG_CONFIG_HOME}/git/config" ]          && remove "${HOME}/.gitconfig"
+[ -f "${XDG_CONFIG_HOME}/gtk-2.0/gtkrc" ]       && remove "${HOME}/.gtkrc-2.0"
 [ -f "${XDG_CONFIG_HOME}/nvidia/settings" ]     && remove "${HOME}/.nvidia-settings-rc"
 [ -f "${XDG_CONFIG_HOME}/pulse/cookie" ]        && remove "${HOME}/.pulse-cookie"
 [ -f "${XDG_CONFIG_HOME}/readline/inputrc" ]    && remove "${HOME}/.inputrc"
-[ -f "${XDG_CONFIG_HOME}/gtk-2.0/gtkrc" ]       && remove "${HOME}/.gtkrc-2.0"
 [ -f "${XDG_DATA_HOME}/bash/aliases" ]          && remove "${HOME}/.shell_aliases"
 [ -f "${XDG_DATA_HOME}/bash/history" ]          && remove "${HOME}/.bash_history"
 [ -f "${XDG_DATA_HOME}/bash/options" ]          && remove "${HOME}/.shell_opts"
@@ -265,7 +270,6 @@ done
 ! is_gnome_shell_extension_installed "tiling-assistant" && remove "${XDG_CONFIG_HOME}/tiling-assistant"
 
 # Steam games / apps
-
 ! is_steam_app_installed "8930" && remove \
     "${XDG_DATA_HOME}/Aspyr/Sid Meier's Civilization 5" \
     "${XDG_DATA_HOME}/Aspyr/com.aspyr.civ5xp.json"
@@ -359,6 +363,9 @@ fi
 
 # Backups
 remove "${XDG_CONFIG_HOME}/monitors.xml~"
+
+# Telemetry
+remove "${HOME}/.dotnet/TelemetryStorageService"
 
 # Logs
 if ${CLEAN_LOGS}; then
