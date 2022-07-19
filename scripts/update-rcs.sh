@@ -42,6 +42,8 @@ fi
 if does_bin_exist "npm"; then
     NPMRC_FILE="${HOME}/.npmrc"
 
+    [ -n "${NPM_CONFIG_USERCONFIG}" ] && NPMRC_FILE="${NPM_CONFIG_USERCONFIG}"
+
     set_config_value "${NPMRC_FILE}" prefix "\"${XDG_DATA_HOME}/npm\""
     set_config_value "${NPMRC_FILE}" cache "\"${XDG_CACHE_HOME}/npm\""
     set_config_value "${NPMRC_FILE}" tmp "\"${XDG_RUNTIME_DIR}/npm\""
