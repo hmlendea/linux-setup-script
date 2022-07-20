@@ -228,7 +228,7 @@ if [ -d "${ROOT_ETC}/modprobe.d" ]; then
     fi
 
     if [ "$(get_wifi_driver)" = "iwlwifi" ]; then
-        set_modprobe_option iwlwifi power_save 1
+        set_modprobe_option iwlwifi power_save 0 #1
         set_modprobe_option iwlwifi uapsd_disable 0
 
         IWL_MODULE=$(lsmod | grep '^iwl.vm' | awk '{print $1}')
