@@ -211,13 +211,13 @@ function set_xml_node() {
 }
 
 function set_modprobe_option() {
-    FILE="${ROOT_ETC}/modprobe.d/hori-system-config.conf"
-    ACTION="options"
-    MODULE="${1}"
-    KEY="${2}"
-    VALUE="${3}"
+    local FILE="${ROOT_ETC}/modprobe.d/hori-system-config.conf"
+    local ACTION="options"
+    local MODULE="${1}"
+    local KEY="${2}"
+    local VALUE="${3}"
 
-    FILE_CONTENT=$(cat "${FILE}")
+    local FILE_CONTENT=$(cat "${FILE}")
 
     if [ "${MODULE}" = "blacklist" ]; then
         ACTION="blacklist"
@@ -231,7 +231,12 @@ function set_modprobe_option() {
         if [[ $(grep -c "^${ACTION} ${MODULE} ${KEY}=${VALUE}$" <<< "${FILE_CONTENT}") == 0 ]]; then
             # If the option key already exists (with a different value)
             if [ $(grep -c "^${ACTION} ${MODULE} ${KEY}=.*$" <<< "${FILE_CONTENT}") -gt 0 ]; then
-                sed -i 's|^'"${ACTION} ${MODULE} ${KEY}"'=.*$|'"${ACTION} ${MODULE} ${KEY}"'='"${VALUE}"'|g' "${FILE}"
+                SED_COMMAND='s|^'"${ACTION} ${MODULE} ${KEY}"'=.*$|'"${ACTION} ${MODULE} ${KEY}"'='"${VALUE}"'|g'
+                if [ -w "${FILE}" ]; then
+                    sed -i "${SED_COMMAND}" "${FILE}"
+                else
+                    run_as_su sed -i "${SED_COMMAND}" "${FILE}"
+                fi
             else
                 append_line "${FILE}" "${ACTION} ${MODULE} ${KEY}=${VALUE}"
             fi
