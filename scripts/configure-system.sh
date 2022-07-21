@@ -675,7 +675,7 @@ if is_gnome_shell_extension_installed "dash-to-dock"; then
     set_gsetting "${DTD_SCHEMA}" background-opacity 0.0
     set_gsetting "${DTD_SCHEMA}" click-action minimize
     set_gsetting "${DTD_SCHEMA}" custom-theme-customize-running-dots true
-    set_gsetting "${DTD_SCHEMA}" custom-theme-running-dots-color "#FFFFFF" # Turqoise: "#01a299"
+    set_gsetting "${DTD_SCHEMA}" custom-theme-running-dots-color "#DEDDDA" # Gray: "#DEDDDA", Turqoise: "#01a299"
     set_gsetting "${DTD_SCHEMA}" custom-theme-shrink true
     set_gsetting "${DTD_SCHEMA}" dock-position BOTTOM
     set_gsetting "${DTD_SCHEMA}" intellihide-mode ALL_WINDOWS
