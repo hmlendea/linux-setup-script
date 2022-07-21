@@ -363,7 +363,9 @@ fi
 if is_gnome_shell_extension_installed "blur-my-shell"; then
     BMS_SCHEMA="org.gnome.shell.extensions.blur-my-shell"
 
-    set_gsetting "${BMS_SCHEMA}" blur-panel false # Let it be handled by the theme itself
+    set_gsetting "${BMS_SCHEMA}.dash-to-dock" blur false
+    set_gsetting "${BMS_SCHEMA}.panel" blur true
+    set_gsetting "${BMS_SCHEMA}.panel" unblur-dynamically true
 fi
 
 if is_gnome_shell_extension_installed "user-theme"; then
@@ -669,13 +671,11 @@ fi
 if is_gnome_shell_extension_installed "dash-to-dock"; then
     DTD_SCHEMA="org.gnome.shell.extensions.dash-to-dock"
 
-    # Temp-fix for messed-up background
-    set_gsetting "${DTD_SCHEMA}" apply-custom-theme true
-
+    set_gsetting "${DTD_SCHEMA}" apply-custom-theme false
     set_gsetting "${DTD_SCHEMA}" background-opacity 0.0
     set_gsetting "${DTD_SCHEMA}" click-action minimize
     set_gsetting "${DTD_SCHEMA}" custom-theme-customize-running-dots true
-    set_gsetting "${DTD_SCHEMA}" custom-theme-running-dots-color "#01a299"
+    set_gsetting "${DTD_SCHEMA}" custom-theme-running-dots-color "#FFFFFF" # Turqoise: "#01a299"
     set_gsetting "${DTD_SCHEMA}" custom-theme-shrink true
     set_gsetting "${DTD_SCHEMA}" dock-position BOTTOM
     set_gsetting "${DTD_SCHEMA}" intellihide-mode ALL_WINDOWS
