@@ -19,3 +19,4 @@
 813780=Age of Empires II
 885970=Total War: Rome
 1017900=Age of Empires
+1206560=WorldBox
