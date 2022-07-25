@@ -155,4 +155,6 @@
 905340=heaveho.exe
 1017900=aoede_s.exe
 1158310=ck3
+1169040=Necesse v. 0.21.23
+1206560=worldbox
 1343370=steam_app_1343370
