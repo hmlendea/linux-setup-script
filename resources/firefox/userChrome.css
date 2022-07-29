@@ -132,6 +132,13 @@ toolbarbutton#authenticator_mymindstorm-browser-action.toolbarbutton-1.chromecla
     background: url("icons/qrcode.png") no-repeat center/20px;
 }
 
+toolbarbutton.bookmark-item[label="Audiobookshelf"] > image,
+toolbarbutton.bookmark-item[label="AudioBookshelf"] > image { visibility: hidden; }
+toolbarbutton.bookmark-item[label="Audiobookshelf"],
+toolbarbutton.bookmark-item[label="AudioBookshelf"] {
+    background: url("icons/book-music.png") no-repeat center/20px;
+}
+
 toolbarbutton.bookmark-item[label="Bitwarden"] > image { visibility: hidden; }
 toolbarbutton.bookmark-item[label="Bitwarden"] { background: url("icons/bitwarden.png") no-repeat center/20px; }
 
@@ -151,7 +158,7 @@ toolbarbutton.bookmark-item[label="Google Photos"],
 toolbarbutton.bookmark-item[label="Photos"] > image { visibility: hidden; }
 toolbarbutton.bookmark-item[label="Google Photos"],
 toolbarbutton.bookmark-item[label="Photos"] {
-    background: url("icons/image.png") no-repeat center/20px;
+    background: url("icons/google-photos.png") no-repeat center/20px;
 }
 
 toolbarbutton.bookmark-item[label="GitHub"] > image { visibility: hidden; }
@@ -176,12 +183,17 @@ toolbarbutton.bookmark-item[label="Gaming on Linux"] {
     background: url("icons/penguin.png") no-repeat center/20px;
 }
 
-toolbarbutton.bookmark-item[label="Odysee"] > image { visibility: hidden;}
+toolbarbutton.bookmark-item[label="Instagram"] > image { visibility: hidden; }
+toolbarbutton.bookmark-item[label="Instagram"] {
+    background: url("icons/instagram.png") no-repeat center/20px;
+}
+
+toolbarbutton.bookmark-item[label="Odysee"] > image { visibility: hidden; }
 toolbarbutton.bookmark-item[label="Odysee"] { background: url("icons/odysee.png") no-repeat center/20px; }
 
-toolbarbutton.bookmark-item[label="ProtonMail"] > image { visibility: hidden;}
+toolbarbutton.bookmark-item[label="ProtonMail"] > image { visibility: hidden; }
 toolbarbutton.bookmark-item[label="ProtonMail"] {
-    background: url("icons/email.png") no-repeat center/20px;
+    background: url("icons/proton-mail.png") no-repeat center/20px;
 }
 
 toolbarbutton.bookmark-item[label="Steam"] > image { visibility: hidden; }
