@@ -83,12 +83,15 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
 
     # Removed altogether
     uninstall_native_package "bc" # Mathematical calculator
+    uninstall_native_package "chafa" # Image output for fastfetch
     uninstall_native_package "gnome-dds-thumbnailer"
     uninstall_native_package "lshw"
+    uninstall_native_package "ocl-icd" # OCL integration for fastfetch
     uninstall_native_package "pop-sound-theme-git"
     uninstall_native_package "python2"
     uninstall_native_package "subversion"
     uninstall_native_package "tk"
+    uninstall_native_package "xfconf" # XFWM integration for fastfetch
 
     # Archives
     uninstall_native_package "cabextract"
