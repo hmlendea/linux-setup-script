@@ -32,11 +32,8 @@ function set_linux_permission() {
             set_gsetting "${GSETTING_SCHEMA}" enable "${STATE}"
 
             if [[ "${STATE}" == "false" ]]; then
-                set_gsetting "${GSETTING_SCHEMA}" show-banners false
                 set_gsetting "${GSETTING_SCHEMA}" show-in-lock-screen false
             fi
-        elif [[ "${PERMISSION}" == "notification_banner" ]]; then
-            set_gsetting "${GSETTING_SCHEMA}" show-banners "${STATE}"
         elif [[ "${PERMISSION}" == "notification_lockscreen" ]]; then
             set_gsetting "${GSETTING_SCHEMA}" show-in-lock-screen "${STATE}"
         fi
@@ -242,7 +239,6 @@ if does_bin_exist "flatpak"; then
         "background" true \
         "network" true \
         "notification" true \
-        "notification_banner" true \
         "notification_lockscreen" true \
         "location" false
     set_linux_permission "com.brave.Browser" \
@@ -254,7 +250,6 @@ if does_bin_exist "flatpak"; then
         "background" false \
         "network" true \
         "notification" true \
-        "notification_banner" true \
         "notification_lockscreen" true \
         "location" false
     set_linux_permission "com.mojang.Minecraft" \
@@ -281,14 +276,12 @@ if does_bin_exist "flatpak"; then
         "background" false \
         "network" true \
         "notification" true \
-        "notification_banner" false \
         "notification_lockscreen" true \
         "location" false
     set_linux_permission "com.github.vladimiry.ElectronMail" \
         "background" true \
         "network" true \
         "notification" true \
-        "notification_banner" true \
         "notification_lockscreen" true \
         "location" false
     for APP in "com.valvesoftware.Steam" "steam"; do
@@ -312,7 +305,6 @@ if does_bin_exist "flatpak"; then
         "background" true \
         "network" true \
         "notification" true \
-        "notification_banner" true \
         "notification_lockscreen" false \
         "location" false
     set_linux_permission "fr.romainvigier.MetadataCleaner" \
@@ -324,7 +316,6 @@ if does_bin_exist "flatpak"; then
         "background" false \
         "network" false \
         "notification" true \
-        "notification_banner" false \
         "notification_lockscreen" true \
         "location" false
     set_linux_permission "io.github.hmlendea.geforcenow-electron" \
@@ -336,14 +327,12 @@ if does_bin_exist "flatpak"; then
         "background" true \
         "network" true \
         "notification" true \
-        "notification_banner" true \
         "notification_lockscreen" true \
         "location" false
     set_linux_permission "net.lutris.Lutris" \
         "background" false \
         "network" true \
         "notification" true \
-        "notification_banner" true \
         "notification_lockscreen" true \
         "location" false
     set_linux_permission "nl.hjdskes.gcolor3" \
@@ -367,7 +356,6 @@ if does_bin_exist "flatpak"; then
         "background" false \
         "network" false \
         "notification" true \
-        "notification_banner" false \
         "notification_lockscreen" false \
         "location" false
     set_linux_permission "org.gnome.Calculator" \
@@ -379,7 +367,6 @@ if does_bin_exist "flatpak"; then
         "background" false \
         "network" true \
         "notification" true \
-        "notification_banner" true \
         "notification_lockscreen" true \
         "location" true
     set_linux_permission "org.gnome.Cheese" \
@@ -391,7 +378,6 @@ if does_bin_exist "flatpak"; then
         "background" true \
         "network" false \
         "notification" true \
-        "notification_banner" true \
         "notification_lockscreen" true \
         "location" false
     set_linux_permission "org.gnome.Contacts" \
@@ -413,7 +399,6 @@ if does_bin_exist "flatpak"; then
         "background" true \
         "network" false \
         "notification" true \
-        "notification_banner" true \
         "notification_lockscreen" false \
         "location" false
     set_linux_permission "org.gnome.font-viewer" \
@@ -440,7 +425,6 @@ if does_bin_exist "flatpak"; then
         "background" false \
         "network" false \
         "notification" true \
-        "notification_banner" false \
         "notification_lockscreen" true \
         "location" false
     set_linux_permission "org.gnome.seahorse.Application" \
@@ -484,14 +468,12 @@ if does_bin_exist "flatpak"; then
         "background" true \
         "network" true \
         "notification" true \
-        "notification_banner" true \
         "notification_lockscreen" true \
         "location" false
     set_linux_permission "org.telegram.desktop" \
         "background" true \
         "network" true \
         "notification" true \
-        "notification_banner" true \
         "notification_lockscreen" true \
         "location" false
     set_linux_permission "ro.go.hmlendea.DL-Desktop" \
