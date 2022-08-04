@@ -516,6 +516,7 @@ fi
 ##################
 if does_bin_exist "gnome-software"; then
     set_gsetting "org.gnome.software" download-updates false
+    set_gsetting "org.gnome.software" download-updates-notify false
 fi
 
 ########################
@@ -1290,6 +1291,29 @@ if does_bin_exist "tlp"; then
     RUNTIME_PM_DRIVER_DENYLIST="$(echo ${RUNTIME_PM_DRIVER_DENYLIST} | sed 's/^\s*//g')"
 
     set_config_value "${TLP_CONFIG_FILE}" "RUNTIME_PM_DRIVER_DENYLIST" "\"${RUNTIME_PM_DRIVER_DENYLIST}\""
+
+    set_config_value "${TLP_CONFIG_FILE}" "DEVICES_TO_DISABLE_ON_LAN_CONNECT" "\"wifi wwan\""
+    set_config_value "${TLP_CONFIG_FILE}" "DEVICES_TO_DISABLE_ON_LAN_DISCONNECT" "\"wifi wwan\""
+    set_config_value "${TLP_CONFIG_FILE}" "DEVICES_TO_DISABLE_ON_BAT_NOT_IN_USE" "\"bluetooth nfc wifi wwan\""
+
+    set_config_value "${TLP_CONFIG_FILE}" "CPU_ENERGY_PERF_POLICY_ON_AC" "performance"
+    set_config_value "${TLP_CONFIG_FILE}" "PLATFORM_PROFILE_ON_AC" "performance"
+    set_config_value "${TLP_CONFIG_FILE}" "CPU_ENERGY_PERF_POLICY_ON_BAT" "power"
+    set_config_value "${TLP_CONFIG_FILE}" "PLATFORM_PROFILE_ON_BAT" "power"
+
+    set_config_value "${TLP_CONFIG_FILE}" "CPU_BOOST_ON_AC" "1"
+    set_config_value "${TLP_CONFIG_FILE}" "CPU_BOOST_ON_BAT" "0"
+
+    set_config_value "${TLP_CONFIG_FILE}" "CPU_HWP_DYN_BOOST_ON_AC" "1"
+    set_config_value "${TLP_CONFIG_FILE}" "CPU_HWP_DYN_BOOST_ON_BAT" "0"
+
+    set_config_value "${TLP_CONFIG_FILE}" "CPU_MIN_PERF_ON_AC" "0"
+    set_config_value "${TLP_CONFIG_FILE}" "CPU_MAX_PERF_ON_AC" "100"
+    set_config_value "${TLP_CONFIG_FILE}" "CPU_MIN_PERF_ON_BAT" "0"
+    set_config_value "${TLP_CONFIG_FILE}" "CPU_MAX_PERF_ON_BAT" "30"
+
+    set_config_value "${TLP_CONFIG_FILE}" "MAX_LOST_WORK_SECS_ON_AC" "15"
+    set_config_value "${TLP_CONFIG_FILE}" "MAX_LOST_WORK_SECS_ON_BAT" "90"
 fi
 
 ###################
