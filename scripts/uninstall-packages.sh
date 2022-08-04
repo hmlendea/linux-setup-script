@@ -93,6 +93,9 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "tk"
     uninstall_native_package "xfconf" # XFWM integration for fastfetch
 
+    # Build deps
+    uninstall_native_package "meson"
+
     # Archives
     uninstall_native_package "cabextract"
     uninstall_native_package "unace"

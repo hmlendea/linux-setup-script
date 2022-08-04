@@ -98,6 +98,7 @@ if [ "${OS}" != "Windows" ]; then
     execute-script "uninstall-packages.sh"
     execute-script "update-packages.sh"
     execute-script "install-packages.sh"
+    execute-script "uninstall-packages.sh"
     execute-script "clean-packages.sh"
 fi
 
