@@ -191,6 +191,11 @@ toolbarbutton.bookmark-item[label="Instagram"] {
 toolbarbutton.bookmark-item[label="Odysee"] > image { visibility: hidden; }
 toolbarbutton.bookmark-item[label="Odysee"] { background: url("icons/odysee.png") no-repeat center/20px; }
 
+toolbarbutton.bookmark-item[label="Plex"] > image { visibility: hidden; }
+toolbarbutton.bookmark-item[label="Plex"] {
+    background: url("icons/plex.png") no-repeat center/20px;
+}
+
 toolbarbutton.bookmark-item[label="ProtonMail"] > image { visibility: hidden; }
 toolbarbutton.bookmark-item[label="ProtonMail"] {
     background: url("icons/proton-mail.png") no-repeat center/20px;
