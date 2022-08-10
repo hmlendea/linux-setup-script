@@ -65,7 +65,7 @@ fi
 
 ${IS_SSH} && alias poweroff="echo Surely you don\'t mean to do that on the remote machine! && echo If you do, use \'command poweroff\' instead."
 
-alias ls="ls --color=auto -h -Q --group-directories-first --format=horizontal"
+alias ls="ls -C --color=auto -h -Q --group-directories-first --format=horizontal"
 
 [ ! -f "${ROOT_USR_BIN}/sl" ] && alias sl=ls
 
