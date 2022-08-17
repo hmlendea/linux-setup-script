@@ -152,6 +152,21 @@ function is_steam_app_installed() {
     fi
 }
 
+function is_native_package_required() {
+    local PACKAGE_NAME="${1}"
+    
+    if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
+        if pacman -Qi "${PACKAGE_NAME}" | grep -q "^Required By\s*:\s*None\s*$"; then
+            return 1 # False, Not required
+        else
+            return 0 # True, Required
+        fi
+    else
+        # TODO: Implement this
+        return 1 # False, Not required
+    fi
+}
+
 function install_native_package() {
 	local PKG="${1}"
 
@@ -244,15 +259,16 @@ function install_gnome_shell_extension() {
 }
 
 function uninstall_native_package() {
-    for PKG in ${*// /\n}; do
-        is_native_package_installed "${PKG}" || return
+    for PACKAGE_NAME in ${*// /\n}; do
+        is_native_package_installed "${PACKAGE_NAME}" || return
+        is_native_package_required "${PACKAGE_NAME}" && return
 
-        echo " >>> Uninstalling package: ${PKG}"
+        echo " >>> Uninstalling package: ${PACKAGE_NAME}"
         if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-            call_package_manager -Rns "${PKG}"
+            call_package_manager -Rns "${PACKAGE_NAME}"
         elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
           || [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
-            call_package_manager remove "${PKG}"
+            call_package_manager remove "${PACKAGE_NAME}"
         fi
     done
 }

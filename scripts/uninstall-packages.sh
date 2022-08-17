@@ -84,6 +84,7 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     # Removed altogether
     uninstall_native_package "bc" # Mathematical calculator
     uninstall_native_package "chafa" # Image output for fastfetch
+    uninstall_native_package "gd"
     uninstall_native_package "gnome-dds-thumbnailer"
     uninstall_native_package "lshw"
     uninstall_native_package "ocl-icd" # OCL integration for fastfetch
@@ -131,6 +132,7 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "libappindicator-gtk3"
     uninstall_native_package "malcontent" # Parental control. Sometimes comes as a deps and stays there
     uninstall_native_package "modemmanager"
+    uninstall_native_package "nilfs-utils"
     uninstall_native_package "nodejs-nativefier"
     uninstall_native_package "perl-locale-gettext"
     uninstall_native_package "perl-term-readkey"
@@ -166,10 +168,16 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "dbus-broker"
     uninstall_native_package "freeglut"
     uninstall_native_package "gst-libav"
+    uninstall_native_package "libavif"
     uninstall_native_package "libdbusmenu-glib" # Needed for Global Menu
+    uninstall_native_package "libde265"
     uninstall_native_package "libdecor"
+    uninstall_native_package "libheif"
     uninstall_native_package "libjxl"
+    uninstall_native_package "libmtp"
+    uninstall_native_package "libnet"
     uninstall_native_package "libwmf"
+    uninstall_native_package "libyuv"
     uninstall_native_package "sdl12-compat"
     uninstall_native_package "xfconf"
 elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
