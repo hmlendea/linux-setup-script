@@ -166,6 +166,7 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "aspell" "hunspell"
     uninstall_native_package "chafa"
     uninstall_native_package "dbus-broker"
+    uninstall_native_package "folks"
     uninstall_native_package "freeglut"
     uninstall_native_package "gst-libav"
     uninstall_native_package "libavif"
