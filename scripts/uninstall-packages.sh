@@ -70,6 +70,7 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "totem"                        # Replaced by flatpak: org.gnome.Totem
     uninstall_native_package "transmission-gtk"             # Replaced by flatpak: com.transmissionbt.Transmission
     uninstall_native_package "ttf-ms-fonts"                 # Replaced by ttf-ms-win10
+    uninstall_native_package "vi"                           # Replaced by micro
     uninstall_native_package "whatsapp-nativefier"          # Replaced by flatpah: io.github.mimbrero.WhatsAppDesktop
     uninstall_native_package "yaourt-auto-sync"             # Replaced by repo-synchroniser
 
@@ -83,9 +84,14 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
 
     # Removed altogether
     uninstall_native_package "bc" # Mathematical calculator
+    uninstall_native_package "bison"
+    uninstall_native_package "busybox"
+    uninstall_native_package "cronie"
     uninstall_native_package "chafa" # Image output for fastfetch
+    uninstall_native_package "flex"
     uninstall_native_package "gd"
     uninstall_native_package "gnome-dds-thumbnailer"
+    uninstall_native_package "haveged"
     uninstall_native_package "lshw"
     uninstall_native_package "ocl-icd" # OCL integration for fastfetch
     uninstall_native_package "pop-sound-theme-git"
