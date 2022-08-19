@@ -295,6 +295,7 @@ done
 ! is_steam_app_installed "251910" && remove "${XDG_DATA_HOME}/Firebrand Games/Solar Flux"
 ! is_steam_app_installed "252950" && remove "${XDG_DATA_HOME}/Rocket League"
 ! is_steam_app_installed "255300" && remove "${XDG_DATA_HOME}/Daedalic Entertainment/Journey of a Roach"
+! is_steam_app_installed "263060" && remove "${XDG_CONFIG_HOME}/unity3d/IndieGala/Blockstorm"
 ! is_steam_app_installed "284710" && remove "${XDG_CACHE_HOME}/ArtifexMundi/Abyss_TheWraithsOfEden"
 ! is_steam_app_installed "313340" && remove "${XDG_CONFIG_HOME}/unity3d/David\ OReilly/Mountain"
 ! is_steam_app_installed "319270" && remove "${XDG_DATA_HOME}/great-permutator"
@@ -316,16 +317,26 @@ done
 ! is_steam_app_installed "736260" && remove "${XDG_DATA_HOME}/Baba_Is_You"
 
 for STEAM_LIBRARY_PATH in ${STEAM_LIBRARY_PATHS}; do
-    if is_steam_app_installed "8930"; then
-        remove "${STEAM_LIBRARY_PATH}/common/Sid Meier's Civilization V/steamassets/"*.mov
-        remove "${STEAM_LIBRARY_PATH}/common/Sid Meier's Civilization V/steamassets/assets/dlc/"*/*.mov
-    fi
+    is_steam_app_installed "8930" && remove \
+        "${STEAM_LIBRARY_PATH}/common/Sid Meier's Civilization V/steamassets/"*.mov \
+        "${STEAM_LIBRARY_PATH}/common/Sid Meier's Civilization V/steamassets/assets/dlc/"*/*.mov
+    is_steam_app_installed "281990" && remove \
+        "${STEAM_LIBRARY_PATH}/common/Stellaris/ebook" \
+        "${STEAM_LIBRARY_PATH}/common/Stellaris/licenses" \
+        "${STEAM_LIBRARY_PATH}/common/Stellaris/soundtrack"
+    is_steam_app_installed "322330" && remove "${STEAM_LIBRARY_PATH}/common/Don't Starve Together/cached_mods"
+    is_steam_app_installed "859580" && remove "${STEAM_LIBRARY_PATH}/common/ImperatorRome/licenses"
+    is_steam_app_installed "1158310" && remove \
+        "${STEAM_LIBRARY_PATH}/common/Crusader Kings III/game/licenses" \
+        "${STEAM_LIBRARY_PATH}/common/Crusader Kings III/game/licenses" \
 
+    ! is_steam_app_installed "8930" && remove "${STEAM_LIBRARY_PATH}/common/Sid Meier's Civilization V"
     ! is_steam_app_installed "41070" && remove "${STEAM_LIBRARY_PATH}/common/Serious Sam 3"
     ! is_steam_app_installed "50300" && remove "${STEAM_LIBRARY_PATH}/common/SpecOps_TheLine"
     ! is_steam_app_installed "70000" && remove "${STEAM_LIBRARY_PATH}/common/Dino D-Day"
     ! is_steam_app_installed "91310" && remove "${STEAM_LIBRARY_PATH}/common/Dead Island"
     ! is_steam_app_installed "99910" && remove "${STEAM_LIBRARY_PATH}/common/Puzzle Pirates"
+    ! is_steam_app_installed "105600" && remove "${STEAM_LIBRARY_PATH}/common/Terraria"
     ! is_steam_app_installed "206690" && remove "${STEAM_LIBRARY_PATH}/common/ibomber defense pacific"
     ! is_steam_app_installed "219150" && remove "${STEAM_LIBRARY_PATH}/common/hotline_miami"
     ! is_steam_app_installed "221380" && remove "${STEAM_LIBRARY_PATH}/common/Age2HD"
