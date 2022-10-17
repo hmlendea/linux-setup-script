@@ -422,6 +422,14 @@ function gpu_has_optimus_support() {
     return 1 # False
 }
 
+function is_root_readonly() {
+    if uname -r | grep -q "valve.*neptune"; then
+        return 0 # True
+    fi
+
+    return 1 # False
+}
+
 # Distribution
 KERNEL_VERSION=$(uname -r)
 
