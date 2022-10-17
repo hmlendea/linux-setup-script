@@ -347,8 +347,10 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
             install_native_package_dependency gvfs-goa
         fi
 
-        # Camera app
-        install_flatpak "org.gnome.Cheese"
+        if [ "${CHASSIS_TYPE}" != "Gaming Handheld" ]; then
+            # Camera app
+            install_flatpak "org.gnome.Cheese"
+        fi
 
         ! ${POWERFUL_PC} && install_native_package plank
 
