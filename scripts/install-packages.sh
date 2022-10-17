@@ -73,7 +73,8 @@ fi
 ##################
 ### Monitoring ###
 ##################
-if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
+if [[ "${DISTRO_FAMILY}" == "Arch" ]] \
+&& [[ "${DISTRO}" != "SteamOS" ]]; then
     install_native_package fastfetch
 else
     install_native_package neofetch
@@ -142,17 +143,21 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
     # Package manager
     #install_aur_package_manually package-query
 
-    if [[ "${ARCH}" != "armv7l" ]]; then
-        install_aur_package_manually paru-bin
-    else
-        # Special case, since we don't want to build paru from source (it takes a LOOONG time)
-        install_aur_package_manually yay-bin
+
+    if [[ "${DISTRO}" != "SteamOS" ]]; then
+        if [[ "${ARCH}" != "armv7l" ]]; then
+            install_aur_package_manually paru-bin
+        else
+            # Special case, since we don't want to build paru from source (it takes a LOOONG time)
+            install_aur_package_manually yay-bin
+        fi
+
+        #install_native_package pacman-contrib
+        #install_native_package pacutils
+        #install_native_package pkgfile
+        install_native_package repo-synchroniser
     fi
 
-    #install_native_package pacman-contrib
-    #install_native_package pacutils
-    #install_native_package pkgfile
-    install_native_package repo-synchroniser
 
     # Partition editors
     if ${INSTALL_PARTITION_EDITORS}; then
@@ -180,7 +185,8 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
     install_native_package lm_sensors
 
     # Boot loader
-    if [[ "${ARCH_FAMILY}" == "x86" ]]; then
+    if [[ "${ARCH_FAMILY}" == "x86" ]] \
+    && [[ "${DISTRO}" != "SteamOS" ]]; then
         install_native_package grub
         install_native_package_dependency os-prober
         install_native_package update-grub
@@ -237,7 +243,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
         # Desktop Environment & Base applications
         install_native_package xdg-user-dirs
         if ${POWERFUL_PC}; then
-            install_native_package gnome-shell
+            [ "${DISTRO}" != "SteamOS" ] && install_native_package gnome-shell
             install_native_package gdm
             install_native_package_dependency gnome-control-center
             install_native_package gnome-tweaks
@@ -298,7 +304,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
         # File management
         if ${POWERFUL_PC}; then
             install_native_package nautilus
-            install_native_package folder-color-nautilus
+            [ "${DISTRO}" != "SteamOS" ] && install_native_package folder-color-nautilus
             install_flatpak org.gnome.FileRoller
 
             install_native_package_dependency webp-pixbuf-loader
@@ -347,7 +353,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
         ! ${POWERFUL_PC} && install_native_package plank
 
         # GNOME Shell Extensions
-        if ${POWERFUL_PC}; then
+        if ${POWERFUL_PC} && [ "${DISTRO}" != "SteamOS" ]; then
             # Base
             install_native_package gnome-shell-extensions
             install_native_package gnome-shell-extension-installer
@@ -399,22 +405,25 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
         #install_native_package paper-icon-theme
 
         # Fonts
-        install_native_package gnu-free-fonts
-        [ "${ARCH_FAMILY}" == "x86" ] && install_native_package ttf-ms-win10
-        install_native_package noto-fonts
-        install_native_package noto-fonts-emoji
-        install_native_package ttf-droid
-        install_native_package_dependency ttf-croscore
-        install_native_package_dependency ttf-liberation
-        install_native_package hori-fonts
+        if [ "${DISTRO}" != "SteamOS" ]; then
+            # Fonts - General
+            install_native_package gnu-free-fonts
+            [ "${ARCH_FAMILY}" == "x86" ] && install_native_package ttf-ms-win10
+            install_native_package noto-fonts
+            install_native_package noto-fonts-emoji
+            install_native_package ttf-droid
+            install_native_package_dependency ttf-croscore
+            install_native_package_dependency ttf-liberation
+            install_native_package hori-fonts
 
-        # Fonts - International
-        install_native_package noto-fonts-cjk # Chinese, Japanese, Korean
-        install_native_package ttf-amiri # Classical Arabic in Naskh style
-        install_native_package ttf-ancient-fonts # Aegean, Egyptian, Cuneiform, Anatolian, Maya, Analecta
-        install_native_package ttf-baekmuk # Korean
-        install_native_package ttf-hannom # Vietnamese
-        install_native_package ttf-ubraille # Braille
+            # Fonts - International
+            install_native_package noto-fonts-cjk # Chinese, Japanese, Korean
+            install_native_package ttf-amiri # Classical Arabic in Naskh style
+            install_native_package ttf-ancient-fonts # Aegean, Egyptian, Cuneiform, Anatolian, Maya, Analecta
+            install_native_package ttf-baekmuk # Korean
+            install_native_package ttf-hannom # Vietnamese
+            install_native_package ttf-ubraille # Braille
+        fi
 
         # Internet Browser
         install_flatpak org.mozilla.firefox
@@ -427,20 +436,22 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
             install_flatpak com.transmissionbt.Transmission
         fi
 
-        # Communication
-        install_flatpak com.microsoft.Teams
-        install_flatpak com.github.vladimiry.ElectronMail
-        install_flatpak org.telegram.desktop
-        install_flatpak org.signal.Signal
-        install_flatpak io.github.mimbrero.WhatsAppDesktop
+        if [ "${CHASSIS_TYPE}" != "Gaming Handheld" ]; then
+            # Communication
+            install_flatpak com.microsoft.Teams
+            install_flatpak com.github.vladimiry.ElectronMail
+            install_flatpak org.telegram.desktop
+            install_flatpak org.signal.Signal
+            install_flatpak io.github.mimbrero.WhatsAppDesktop
 
-        # Multimedia
-        install_flatpak io.bassi.Amberol
-        install_flatpak org.gnome.Totem
-        install_flatpak com.spotify.Client
+            # Multimedia
+            install_flatpak io.bassi.Amberol
+            install_flatpak org.gnome.Totem
+            install_flatpak com.spotify.Client
 
-        #install_native_package_dependency gst-plugins-ugly
-        #install_native_package_dependency gst-libav
+            #install_native_package_dependency gst-plugins-ugly
+            #install_native_package_dependency gst-libav
+        fi
 
         if ${POWERFUL_PC}; then
             # Graphics
@@ -453,9 +464,11 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
             # Gaming
             if ${IS_GAMING_DEVICE}; then
                 # Launchers
-                install_native_package steam # No flatpak yet because the games will share the same icon in GNOME (e.g. alt-tabbing), concerns about steam-start, per-game desktop launchers, udev rules for controllers
-                install_native_package steam-start
-                #install_flatpak com.valvesoftware.Steam
+                if [ "${DISTRO}" != "SteamOS" ]; then
+                    install_native_package steam # No flatpak yet because the games will share the same icon in GNOME (e.g. alt-tabbing), concerns about steam-start, per-game desktop launchers, udev rules for controllers
+                    install_native_package steam-start
+                    #install_flatpak com.valvesoftware.Steam
+                fi
 
                 # Runtimes
                 #install_native_package_dependency steam-native-runtime

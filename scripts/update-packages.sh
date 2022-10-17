@@ -4,7 +4,7 @@ source "${REPO_DIR}/scripts/common/common.sh"
 source "${REPO_DIR}/scripts/common/package-management.sh"
 source "${REPO_DIR}/scripts/common/system-info.sh"
 
-if ! is_root_readonly; then
+if ! is_distro_immutable; then
     echo -e "Updating the \e[0;32msystem packages\e[0m ..."
     if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
         call_package_manager -Syu

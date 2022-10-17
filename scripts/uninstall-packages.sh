@@ -36,9 +36,7 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "evince"                       # Replaced by flatpak: org.gnome.Evince
     uninstall_native_package "chrome-gnome-shell"           # Does not work with flatpak browsers
     uninstall_native_package "dconf-editor"                 # Replaced by flatpak: ca.desrt.dconf-editor
-    uninstall_native_package "eog-plugins" "eog"            # Replaced by flatpak: org.gnome.eog
     uninstall_native_package "fastfetch-git"                # Replaced by fastfetch
-    uninstall_native_package "file-roller"                  # Replaced by flatpak: org.gnome.FileRoller
     uninstall_native_package "firefox"                      # Replaced by flatpak: org.mozilla.firefox
     uninstall_native_package "fragments"                    # Replaced by flatpak: de.haeckerfelix.Fragments
     uninstall_native_package "gedit"                        # Replaced by flatpak: org.gnome.gedit
@@ -56,7 +54,6 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "minecraft-launcher"           # Replaced by flatpak: com.mojang.Minecraft
     uninstall_native_package "nano-syntax-highlighting"     # nano is to be uninstalled next
     uninstall_native_package "nano"                         # Replaced by micro
-    uninstall_native_package "neofetch"                     # Replaced by fastfetch-git
     uninstall_native_package "paper-icon-theme-git"         # Replaced by paper-icon-theme
     uninstall_native_package "postman-bin"                  # Replaced by flatpak: com.getpostman.Postman
     uninstall_native_package "rhythmbox"                    # Replaced by flatpak: org.gnome.Rhythmbox3
@@ -76,10 +73,51 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
 
     uninstall_flatpak "org.gnome.Rhythmbox3" # Replaced by io.bassi.Amberol
 
-    # DM
+    # App Stores
+    if [ -f "${ROOT_USR_BIN}/gnome-software" ]; then
+        uninstall_native_package "discover"
+    fi
+
+    # Archive Managers
+    if is_flatpak_installed "org.gnome.FileRoller"; then
+        uninstall_native_package "ark"
+        uninstall_native_package "file-roller"
+    fi
+
+    # Fetch Utilities. Replaced by: fastfetch-git
+    if [ -f "${ROOT_USR_BIN}/fastfetch" ]; then
+        uninstall_native_package "neofetch"
+    fi
+
+    # File Managers. Replaced by: nautilus
+    uninstall_native_package "dolphin"
+
+    # Image Viewers. Replaced by flatpak: org.gnome.eog
+    uninstall_native_package "eog-plugins" "eog"
+    uninstall_native_package "gwenview"
+
+    # Terminals
+    if is_native_package_installed "gnome-terminal"; then
+        uninstall_native_package "konsole"
+    fi
+
+    # Desktop Managers
     if is_native_package_installed "gdm"; then
         uninstall_native_package "lightdm-gtk-greeter"
         uninstall_native_package "lightdm"
+    fi
+
+    if [ "${CHASSIS_TYPE}" = "Gaming Handheld" ]; then
+        # Communication
+        uninstall_flatpak com.microsoft.Teams
+        uninstall_flatpak com.github.vladimiry.ElectronMail
+        uninstall_flatpak org.telegram.desktop
+        uninstall_flatpak org.signal.Signal
+        uninstall_flatpak io.github.mimbrero.WhatsAppDesktop
+
+        # Multimedia
+        uninstall_flatpak io.bassi.Amberol
+        uninstall_flatpak org.gnome.Totem
     fi
 
     # Removed altogether
