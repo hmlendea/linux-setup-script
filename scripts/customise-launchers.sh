@@ -1251,7 +1251,8 @@ function getSteamAppIconPath() {
     fi
 }
 
-if does_bin_exist "steam" "com.valvesoftware.Steam"; then
+if does_bin_exist "steam" "com.valvesoftware.Steam" \
+&& [ "${DISTRO}" != "SteamOS" ]; then
     STEAM_ICON_THEME_PATH="${XDG_DATA_HOME}/icons/steam"
     STEAM_WMCLASSES_FILE="data/steam-wmclasses.txt"
     STEAM_NAMES_FILE="data/steam-names.txt"

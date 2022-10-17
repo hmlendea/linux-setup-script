@@ -264,7 +264,8 @@ if [ -d "${ROOT_ETC}/sysctl.d" ]; then
     fi
 fi
 
-if [ -f "${ROOT_ETC}/default/grub" ]; then
+if [ -f "${ROOT_ETC}/default/grub" ] \
+&& [ -f "${ROOT_BOOT}/grub/grub.cfg" ]; then
     GRUB_CONFIG_FILE="${ROOT_ETC}/default/grub"
 
     GRUB_TIMEOUT=1

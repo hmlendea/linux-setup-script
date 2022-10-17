@@ -3,6 +3,11 @@ source "scripts/common/filesystem.sh"
 source "${REPO_DIR}/scripts/common/common.sh"
 
 function get_screen_width() {
+    if [ "${DISTRO}" = "SteamOS" ]; then
+        echo "1280"
+        return
+    fi
+
     if does_bin_exist "xrandr"; then
         xrandr | grep -w connected | grep primary | sed 's/^.*primary \([0-9][0-9]*\)x.*/\1/g'
     elif does_bin_exist "xdpyinfo"; then
@@ -28,6 +33,11 @@ function get_screen_width_inches() {
 }
 
 function get_screen_height() {
+    if [ "${DISTRO}" = "SteamOS" ]; then
+        echo "800"
+        return
+    fi
+
     if does_bin_exist "xrandr"; then
         xrandr | grep -w connected | grep primary | sed 's/^.*primary [0-9]\+x\([0-9]\+\).*/\1/g'
     elif does_bin_exist "xdpyinfo"; then
@@ -427,8 +437,8 @@ function gpu_has_optimus_support() {
     return 1 # False
 }
 
-function is_root_readonly() {
-    if uname -r | grep -q "valve.*neptune"; then
+function is_distro_immutable() {
+    if [ "${DISTRO}" = "SteamOS" ]; then
         return 0 # True
     fi
 
@@ -471,6 +481,15 @@ if [ "${OS}" = "CYGWIN_NT-10.0" ]; then
 fi
 
 uname -r | grep -q "valve.*neptune" && DISTRO="SteamOS"
+
+# Destkp Environment
+if [ -f "${ROOT_USR_BIN}/gnome-session" ]; then
+    DESKTOP_ENVIRONMENT="GNOME"
+elif [ -f "${ROOT_USR_BIN}/kded5" ]; then
+    DESKTOP_ENVIRONMENT="KDE"
+else
+    DESKTOP_ENVIRONMENT="None"
+fi
 
 # Architecture
 [ -z "${ARCH}" ] && ARCH="$(get_arch)"

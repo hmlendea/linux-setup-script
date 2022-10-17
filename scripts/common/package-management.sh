@@ -171,7 +171,6 @@ function is_native_package_required() {
 function install_native_package() {
 	local PKG="${1}"
 
-    is_root_readonly && return
     is_native_package_installed "${PKG}" && return
 
     echo -e " >>> Installing native package: \e[0;33m${PKG}\e[0m..."
@@ -186,7 +185,6 @@ function install_native_package() {
 function install_native_package_dependency() {
 	local PKG="${1}"
 
-    is_root_readonly && return
     is_native_package_installed "${PKG}" && return
 
     echo -e " >>> Installing native package dependency: \e[0;33m${PKG}\e[0m..."
@@ -323,7 +321,6 @@ function uninstall_gnome_shell_extension() {
 function install_aur_package_manually() {
 	local PKG="${1}"
 
-    is_root_readonly && return
     is_native_package_installed "${PKG}" && return
 
     local PKG_SNAPSHOT_URL="https://aur.archlinux.org/cgit/aur.git/snapshot/${PKG}.tar.gz"
