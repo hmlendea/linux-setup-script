@@ -142,8 +142,10 @@ toolbarbutton.bookmark-item[label="AudioBookshelf"] {
 toolbarbutton.bookmark-item[label="Bitwarden"] > image { visibility: hidden; }
 toolbarbutton.bookmark-item[label="Bitwarden"] { background: url("icons/bitwarden.png") no-repeat center/20px; }
 
-toolbarbutton.bookmark-item[label="Digi Cloud"] > image { visibility: hidden; }
-toolbarbutton.bookmark-item[label="Digi Cloud"] {
+toolbarbutton.bookmark-item[label="Digi Cloud"] > image,
+toolbarbutton.bookmark-item[label="Digi Storage"] > image { visibility: hidden; }
+toolbarbutton.bookmark-item[label="Digi Cloud"],
+toolbarbutton.bookmark-item[label="Digi Storage"] {
     background: url("icons/cloud.png") no-repeat center/20px;
 }
 
