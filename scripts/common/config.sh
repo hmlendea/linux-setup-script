@@ -404,6 +404,7 @@ function set_launcher_entry() {
     if [ "${KEY_ID}" != "FullName" ]; then
         local KEY_ESC="${KEY}"
         local VAL_ESC="${VAL}"
+        local VAL_ESC_GREP="${VAL_ESC}"
 
         local FILE_CONTENTS=""
         #local HAS_MULTIPLE_SECTIONS=false
@@ -413,6 +414,7 @@ function set_launcher_entry() {
 
         KEY_ESC=$(echo "${KEY}" | sed -e 's/[]\/$*.^|[]/\\&/g')
         VAL_ESC=$(echo "${VAL}" | sed -e 's/[]\/$*.^|[]/\\&/g')
+        VAL_ESC_GREP=$(echo "${VAL_ESC}" | sed 's/\\\//\//g')
 
         if ! grep -q "^\[${SECTION}\]$" "${FILE}"; then
             append_line "${FILE}" ""
@@ -437,7 +439,7 @@ function set_launcher_entry() {
             SECTION_LAST_LINE=$(wc -l "${FILE}" | awk '{print $1}')
         fi
 
-        if ! grep -q "^${KEY_ESC}=\(${VAL}\|${VAL_ESC}\)$" <<< "${FILE_CONTENTS}" \
+        if ! grep -q "^${KEY_ESC}=\(${VAL}\|${VAL_ESC_GREP}\)$" <<< "${FILE_CONTENTS}" \
         || grep -q "^${KEY_ESC}=$" <<< "${FILE_CONTENTS}"; then
             # If it needs to be updated
             if grep -q "^${KEY_ESC}=" <<< "${FILE_CONTENTS}"; then
