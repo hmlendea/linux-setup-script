@@ -39,7 +39,6 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "fastfetch-git"                # Replaced by fastfetch
     uninstall_native_package "firefox"                      # Replaced by flatpak: org.mozilla.firefox
     uninstall_native_package "fragments"                    # Replaced by flatpak: de.haeckerfelix.Fragments
-    uninstall_native_package "gedit"                        # Replaced by flatpak: org.gnome.gedit
     uninstall_native_package "gnome-calculator"             # Replaced by flatpak: org.gnome.Calculator
     uninstall_native_package "gnome-calendar"               # Replaced by flatpak: org.gnome.Calendar
     uninstall_native_package "gnome-contacts"               # Replaced by flatpak: org.gnome.Contacts
@@ -74,7 +73,7 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_flatpak "org.gnome.Rhythmbox3" # Replaced by io.bassi.Amberol
 
     # App Stores
-    if [ -f "${ROOT_USR_BIN}/gnome-software" ]; then
+    if is_native_package_installed "gnome-software"; then
         uninstall_native_package "discover"
     fi
 
@@ -101,6 +100,13 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
         uninstall_native_package "konsole"
     fi
 
+    # Text Editors
+    if is_flatpak_installed "org.gnome.gedit"; then
+        uninstall_native_package "gedit"
+        uninstall_native_package "kwrite"
+        uninstall_flatpak "org.gnome.TextEditor"
+    fi
+
     # Desktop Managers
     if is_native_package_installed "gdm"; then
         uninstall_native_package "lightdm-gtk-greeter"
@@ -108,16 +114,18 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     fi
 
     if [ "${CHASSIS_TYPE}" = "Gaming Handheld" ]; then
+        uninstall_flatpak "org.gnome.Cheese"
+
         # Communication
-        uninstall_flatpak com.microsoft.Teams
-        uninstall_flatpak com.github.vladimiry.ElectronMail
-        uninstall_flatpak org.telegram.desktop
-        uninstall_flatpak org.signal.Signal
-        uninstall_flatpak io.github.mimbrero.WhatsAppDesktop
+        uninstall_flatpak "com.microsoft.Teams"
+        uninstall_flatpak "com.github.vladimiry.ElectronMail"
+        uninstall_flatpak "org.telegram.desktop"
+        uninstall_flatpak "org.signal.Signal"
+        uninstall_flatpak "io.github.mimbrero.WhatsAppDesktop"
 
         # Multimedia
-        uninstall_flatpak io.bassi.Amberol
-        uninstall_flatpak org.gnome.Totem
+        uninstall_flatpak "io.bassi.Amberol"
+        uninstall_flatpak "org.gnome.Totem"
     fi
 
     # Removed altogether
@@ -203,9 +211,6 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     # Not necessary with/without system packaeg
     ! does_bin_exist "plank" && uninstall_gnome_shell_extension "dash-to-plank"
     #is_native_package_installed "gnome-shell-extension-dash-to-dock" && uninstall_gnome_shell_extension "dash-to-dock"
-
-    # Uninstall flatpaks
-    uninstall_flatpak "org.gnome.TextEditor" # Replaced by org.gnome.gedit
 
     # Uselss deps
     uninstall_native_package "aspell" "hunspell"
