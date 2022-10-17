@@ -1,6 +1,7 @@
 #!/bin/bash
 source "scripts/common/filesystem.sh"
 source "${REPO_SCRIPTS_DIR}/common/common.sh"
+source "${REPO_SCRIPTS_DIR}/common/system-info.sh"
 
 GLOBAL_GS_EXTENSIONS_DIR="${ROOT_USR_SHARE}/gnome-shell/extensions"
 LOCAL_GS_EXTENSIONS_DIR="${XDG_DATA_HOME}/gnome-shell/extensions"
@@ -154,7 +155,7 @@ function is_steam_app_installed() {
 
 function is_native_package_required() {
     local PACKAGE_NAME="${1}"
-    
+
     if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
         if pacman -Qi "${PACKAGE_NAME}" | grep -q "^Required By\s*:\s*None\s*$"; then
             return 1 # False, Not required
@@ -170,6 +171,7 @@ function is_native_package_required() {
 function install_native_package() {
 	local PKG="${1}"
 
+    is_root_readonly && return
     is_native_package_installed "${PKG}" && return
 
     echo -e " >>> Installing native package: \e[0;33m${PKG}\e[0m..."
@@ -184,6 +186,7 @@ function install_native_package() {
 function install_native_package_dependency() {
 	local PKG="${1}"
 
+    is_root_readonly && return
     is_native_package_installed "${PKG}" && return
 
     echo -e " >>> Installing native package dependency: \e[0;33m${PKG}\e[0m..."
@@ -320,6 +323,7 @@ function uninstall_gnome_shell_extension() {
 function install_aur_package_manually() {
 	local PKG="${1}"
 
+    is_root_readonly && return
     is_native_package_installed "${PKG}" && return
 
     local PKG_SNAPSHOT_URL="https://aur.archlinux.org/cgit/aur.git/snapshot/${PKG}.tar.gz"

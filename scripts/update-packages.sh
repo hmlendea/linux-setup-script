@@ -4,12 +4,14 @@ source "${REPO_DIR}/scripts/common/common.sh"
 source "${REPO_DIR}/scripts/common/package-management.sh"
 source "${REPO_DIR}/scripts/common/system-info.sh"
 
-echo -e "Updating the \e[0;32msystem packages\e[0m ..."
-if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-    call_package_manager -Syu
-elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
-  || [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
-    call_package_manager upgrade
+if ! is_root_readonly; then
+    echo -e "Updating the \e[0;32msystem packages\e[0m ..."
+    if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
+        call_package_manager -Syu
+    elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
+      || [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
+        call_package_manager upgrade
+    fi
 fi
 
 if does_bin_exist "flatpak"; then
