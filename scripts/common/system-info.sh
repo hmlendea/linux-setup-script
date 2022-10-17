@@ -388,7 +388,12 @@ function get_chassis_type() {
 
     if [ -d "${ROOT_SYS}/module/battery" ] \
     && [ -d "${ROOT_PROC}/acpi/button/lid" ]; then
-        echo "Laptop"
+        if [ "${DISTRO}" = "SteamOS" ]; then
+            echo "Gaming Handheld"
+        else
+            echo "Laptop"
+        fi
+
         return
     fi
 
@@ -465,6 +470,8 @@ if [ "${OS}" = "CYGWIN_NT-10.0" ]; then
     OS="Windows"
 fi
 
+uname -r | grep -q "valve.*neptune" && DISTRO="SteamOS"
+
 # Architecture
 [ -z "${ARCH}" ] && ARCH="$(get_arch)"
 [ -z "${ARCH_FAMILY}" ] && ARCH_FAMILY="$(get_arch_family ${ARCH})"
@@ -497,7 +504,8 @@ if [ "${CHASSIS_TYPE}" = "Phone" ]; then
     HAS_SU_PRIVILEGES=false
     HAS_EFI_SUPPORT=false
 else
-    if [ "${CHASSIS_TYPE}" = "Laptop" ]; then
+    if [ "${CHASSIS_TYPE}" = "Laptop" ] \
+    || [ "${CHASSIS_TYPE}" = "Gaming Handheld" ]; then
         IS_BATTERY_DEVICE=true
     fi
 
