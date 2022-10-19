@@ -491,6 +491,8 @@ else
     DESKTOP_ENVIRONMENT="None"
 fi
 
+[ "${DISTRO}" = "SteamOS" ] && DESKTOP_ENVIRONMENT="KDE"
+
 # Architecture
 [ -z "${ARCH}" ] && ARCH="$(get_arch)"
 [ -z "${ARCH_FAMILY}" ] && ARCH_FAMILY="$(get_arch_family ${ARCH})"
@@ -516,6 +518,7 @@ HAS_EFI_SUPPORT=false
 
 if [ "${CHASSIS_TYPE}" = "Phone" ]; then
     POWERFUL_PC=false
+    IS_DEVELOPMENT_DEVICE=false
     IS_GENERAL_PURPOSE_DEVICE=true
     IS_GAMING_DEVICE=false
     IS_BATTERY_DEVICE=true
@@ -523,8 +526,14 @@ if [ "${CHASSIS_TYPE}" = "Phone" ]; then
     HAS_SU_PRIVILEGES=false
     HAS_EFI_SUPPORT=false
 else
-    if [ "${CHASSIS_TYPE}" = "Laptop" ] \
-    || [ "${CHASSIS_TYPE}" = "Gaming Handheld" ]; then
+    if [ "${CHASSIS_TYPE}" = "Laptop" ]; then
+        IS_BATTERY_DEVICE=true
+    fi
+
+    if [ "${CHASSIS_TYPE}" = "Gaming Handheld" ]; then
+        IS_DEVELOPMENT_DEVICE=false
+        IS_GENERAL_PURPOSE_DEVICE=false
+        IS_GAMING_DEVICE=true
         IS_BATTERY_DEVICE=true
     fi
 

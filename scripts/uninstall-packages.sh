@@ -78,6 +78,8 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     fi
 
     # Archive Managers
+    [ "${DESKTOP_ENVIRONMENT}" = "KDE" ] && uninstall_flatpak "org.gnome.FileRoller"
+
     if is_flatpak_installed "org.gnome.FileRoller"; then
         uninstall_native_package "ark"
         uninstall_native_package "file-roller"
@@ -89,18 +91,22 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     fi
 
     # File Managers. Replaced by: nautilus
-    uninstall_native_package "dolphin"
+    [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ] && uninstall_native_package "dolphin"
+    [ "${DESKTOP_ENVIRONMENT}" = "KDE" ] && uninstall_native_package "nautilus"
 
-    # Image Viewers. Replaced by flatpak: org.gnome.eog
+    # Image Viewers
     uninstall_native_package "eog-plugins" "eog"
-    uninstall_native_package "gwenview"
+    [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ] && uninstall_native_package "gwenview"
+    [ "${DESKTOP_ENVIRONMENT}" = "KDE" ] && uninstall_flatpak "org.gnome.eog"
 
     # Terminals
-    if is_native_package_installed "gnome-terminal"; then
-        uninstall_native_package "konsole"
-    fi
+    [ "${DESKTOP_ENVIRONMENT}" != "GNOME" ] && uninstall_native_package "gnome-terminal"
+    [ "${DESKTOP_ENVIRONMENT}" != "KDE" ] && uninstall_native_package "konsole"
 
     # Text Editors
+    [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ] && uninstall_native_package "kwrite"
+    [ "${DESKTOP_ENVIRONMENT}" = "KDE" ] && uninstall_flatpak "org.gnome.gedit"
+
     if is_flatpak_installed "org.gnome.gedit"; then
         uninstall_native_package "gedit"
         uninstall_native_package "kwrite"
@@ -113,8 +119,18 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
         uninstall_native_package "lightdm"
     fi
 
-    if [ "${CHASSIS_TYPE}" = "Gaming Handheld" ]; then
+    if ! ${IS_GENERAL_PURPOSE_DEVICE}; then
+        uninstall_native_package "gnome-disk-utility"
+
+        uninstall_flatpak "org.gnome.baobab"
+        uninstall_flatpak "org.gnome.Calculator"
+        uninstall_flatpak "org.gnome.Calendar"
         uninstall_flatpak "org.gnome.Cheese"
+        uninstall_flatpak "org.gnome.clocks"
+        uninstall_flatpak "org.gnome.Contacts"
+        #uninstall_flatpak "org.gnome.Evince"
+        uninstall_flatpak "org.gnome.Maps"
+        uninstall_flatpak "org.gnome.Weather"
 
         # Communication
         uninstall_flatpak "com.microsoft.Teams"

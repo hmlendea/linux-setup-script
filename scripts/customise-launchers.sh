@@ -87,7 +87,12 @@ set_launcher_entry "${LOCAL_LAUNCHERS_DIR}/chrome-app-list.desktop" NoDisplay tr
 ##################
 APP_STORE_KEYWORDS="Updates;Upgrade;Sources;Repositories;Install;Uninstall;Program;Software;App;Store;"
 
-set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Software.desktop" Keywords "Preferences;Flatpak;FlatHub;${APP_STORE_KEYWORDS}"
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Software.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/org.kde.discover.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Application Store" \
+        Keywords "Preferences;Flatpak;FlatHub;${APP_STORE_KEYWORDS}"
+done
 
 ########################
 ### ARCHIVE MANAGERS ###
@@ -479,6 +484,7 @@ FILE_MANAGER_CATEGORIES="Utility;Core;FileManager;FileTools;"
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/caja-browser.dekstop" \
                 "${GLOBAL_LAUNCHERS_DIR}/io.elementary.files.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Nautilus.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/org.kde.dolphin.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/Thunar.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/thunar.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/pcmanfm.desktop"; do
@@ -496,6 +502,7 @@ done
 
 set_launcher_entry "${GLOBAL_LAUNCHER_PATH}/io.elementary.files.desktop" Categories "Pantheon;GTK;${FILE_MANAGER_CATEGORIES}"
 set_launcher_entry "${GLOBAL_LAUNCHER_PATH}/org.gnome.Nautilus.desktop" Categories "GNOME;GTK;${FILE_MANAGER_CATEGORIES}"
+set_launcher_entry "${GLOBAL_LAUNCHER_PATH}/org.kde.dolphin.desktop" Categories "KDE;Qt;${FILE_MANAGER_CATEGORIES}"
 
 if does_bin_exist "thunar"; then
     for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/Thunar-bulk-rename.desktop" \
@@ -853,7 +860,8 @@ done
 ######################
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/gscreenshot.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/mate-screenshot.desktop" \
-                "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Screenshot.desktop"; do
+                "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Screenshot.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/org.kde.spectacle.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Screenshot" \
         Name[ro] "Captură de Ecran" \
@@ -984,7 +992,8 @@ fi
 #################
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/gnome-terminal.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/lxterminal.desktop" \
-                "${GLOBAL_LAUNCHERS_DIR}/mate-terminal.desktop"; do
+                "${GLOBAL_LAUNCHERS_DIR}/mate-terminal.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/org.kde.konsole.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Terminal" \
         Name[ro] "Terminal"
@@ -1175,8 +1184,7 @@ for FLATPAK_LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}"/*.desktop \
         "Desktop Action ${QUIT_ACTION_ID}/GenericName" "Force Quit" \
         "Desktop Action ${QUIT_ACTION_ID}/GenericName[ro]" "Închide Forțat" \
         "Desktop Action ${QUIT_ACTION_ID}/Exec" "/usr/bin/flatpak kill ${APP_ID}" \
-        "Desktop Action ${QUIT_ACTION_ID}/Icon" "application-exit" \
-        "Desktop Action ${QUIT_ACTION_ID}/Icon[ro]" "application-exit"
+        "Desktop Action ${QUIT_ACTION_ID}/Icon" "application-exit"
 done
 
 # CREATE ICONS
