@@ -1371,6 +1371,13 @@ if does_bin_exist "gnome-terminal"; then
     set_gsetting "${GNOME_TERMINAL_PROFILE_SCHEMA}" visible-name "NuciTerm"
 fi
 
+if does_bin_exist "konsole"; then
+    KONSOLE_CONFIG_FILE="${XDG_CONFIG_HOME}/konsolerc"
+
+    set_config_value --section "MainWindow" "${KONSOLE_CONFIG_FILE}" MenuBar "Disabled"
+    set_config_value --section "MainWindow" "${KONSOLE_CONFIG_FILE}" State "AAAA/wAAAAD9AAAAAQAAAAAAAAAAAAAAAPwCAAAAAvsAAAAiAFEAdQBpAGMAawBDAG8AbQBtAGEAbgBkAHMARABvAGMAawAAAAAA/////wAAAQgA////+wAAABwAUwBTAEgATQBhAG4AYQBnAGUAcgBEAG8AYwBrAAAAAAD/////AAAArAD///8AAAOIAAACHwAAAAQAAAAEAAAACAAAAAj8AAAAAgAAAAAAAAABAAAAFgBtAGEAaQBuAFQAbwBvAGwAQgBhAHICAAAAAP////8AAAAAAAAAAAAAAAIAAAABAAAAHABzAGUAcwBzAGkAbwBuAFQAbwBvAGwAYgBhAHIAAAAAAP////8AAAAAAAAAAA=="
+fi
+
 if does_bin_exist "lxterminal"; then
     LXTERMINAL_CONFIG_FILE="${XDG_CONFIG_HOME}/lxterminal/lxterminal.conf"
 

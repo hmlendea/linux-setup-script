@@ -48,10 +48,17 @@ function get_config_value() {
 
 function set_config_value() {
     local SEPARATOR="="
+    local SECTION=""
 
     if [[ "${1}" == "--separator" ]]; then
         shift
         SEPARATOR="${1}"
+        shift
+    fi
+
+    if [[ "${1}" == "--section" ]]; then
+        shift
+        SECTION="${1}"
         shift
     fi
 
@@ -86,7 +93,18 @@ function set_config_value() {
             sudo sed -i 's|^'"${KEY}${SEPARATOR}"'.*$|'"${KEY}${SEPARATOR}${VALUE}"'|g' "${FILE_PATH}"
         fi
     else
-        append_line "${FILE_PATH}" "${KEY}${SEPARATOR}${VALUE}"
+        if grep -q "\[${SECTION}\]" <<< "${FILE_CONTENT}"; then
+            if grep -c "^\[" -le 1; then
+                append_line "${FILE_PATH}" "${KEY}${SEPARATOR}${VALUE}"
+            else
+                echo "ERROR: Cannot add new key ${KEY} to existing section ${SECTION}, as this is not supported!"
+            fi
+        elif [ -n "${SECTION}" ]; then
+            append_line "${FILE_PATH}" "[${SECTION}]"
+            append_line "${FILE_PATH}" "${KEY}${SEPARATOR}${VALUE}"
+        else
+            append_line "${FILE_PATH}" "${KEY}${SEPARATOR}${VALUE}"
+        fi        
     fi
 
     echo "${FILE_PATH} >>> ${KEY}${SEPARATOR}${VALUE}"
@@ -94,10 +112,17 @@ function set_config_value() {
 
 function set_config_values() {
     local SEPARATOR="="
+    local SECTION=""
 
     if [[ "${1}" == "--separator" ]]; then
         shift
         SEPARATOR="${1}"
+        shift
+    fi
+
+    if [[ "${1}" == "--section" ]]; then
+        shift
+        SECTION="${1}"
         shift
     fi
 
@@ -117,7 +142,7 @@ function set_config_values() {
         local VAL="${1}" && shift
 
         if [ -n "${KEY}" ] && [ -n "${VAL}" ]; then
-            set_config_value --separator "${SEPARATOR}" "${FILE}" "${KEY}" "${VAL}"
+            set_config_value --separator "${SEPARATOR}" --section "${SECTION}" "${FILE}" "${KEY}" "${VAL}"
         fi
     done
 }
