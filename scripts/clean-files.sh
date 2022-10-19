@@ -309,10 +309,11 @@ done
 ! is_steam_app_installed "383870" && remove "${XDG_CONFIG_HOME}/unity3d/CampoSanto/Firewatch"
 ! is_steam_app_installed "385710" && remove "${XDG_CONFIG_HOME}/INK"
 ! is_steam_app_installed "434210" && remove "${XDG_CONFIG_HOME}/unity3d/BabaYaga/It's Spring Again"
-! is_steam_app_installed "464920" && remove "${XDG_DATA_HOME}/Surviving Mas"
+! is_steam_app_installed "464920" && remove "${XDG_DATA_HOME}/Surviving Mars"
 ! is_steam_app_installed "476240" && remove "${XDG_CONFIG_HOME}/unity3d/Arzola's/KNIGHTS"
 ! is_steam_app_installed "490230" && remove "${XDG_CONFIG_HOME}/SWARMRIDERS"
 ! is_steam_app_installed "517910" && remove "${XDG_DATA_HOME}/ags/Sisyphus Reborn"
+! is_steam_app_installed "680360" && remove "${XDG_CONFIG_HOME}/unity3d/voxGames/Regions of Ruin"
 ! is_steam_app_installed "729040" && remove "${XDG_DATA_HOME}/Steam/steamapps/common/BorderlandsGOTYEnhanced"
 ! is_steam_app_installed "736260" && remove "${XDG_DATA_HOME}/Baba_Is_You"
 
