@@ -352,16 +352,16 @@ function set_gsetting_flatpak() {
 function set_launcher_entries() {
     local FILE="${1}" && shift
 
+    if [ ! -f "${FILE}" ]; then
+        return
+    fi
+
     if [ "$(( $# % 2))" -ne 0 ]; then
         echo "ERROR: Invalid arguments (count: $#) for set_launcher_entries: ${*}" >&2
         exit 1
     fi
 
     local PAIRS_COUNT=$(($# / 2))
-
-    if [ ! -f "${FILE}" ]; then
-        return
-    fi
 
     for I in $(seq 1 ${PAIRS_COUNT}); do
         local KEY="${1}" && shift
@@ -379,6 +379,10 @@ function set_launcher_entry() {
     local VAL="${3}"
     local SECTION="Desktop Entry"
 
+    if [ ! -f "${FILE}" ]; then
+        return
+    fi
+
     if grep -q "/" <<< "${KEY}"; then
         SECTION=$(awk -F'/' '{print $1}' <<< "${KEY}")
         KEY=$(awk -F'/' '{print $2}' <<< "${KEY}")
@@ -388,10 +392,6 @@ function set_launcher_entry() {
 
     if [ "$#" != "3" ]; then
         echo "ERROR: Invalid arguments (count: $#) for set_launcher_entry: ${*}" >&2
-    fi
-
-    if [ ! -f "${FILE}" ]; then
-        return
     fi
 
     if [ ! -x "${FILE}" ]; then
