@@ -16,8 +16,6 @@ source "${REPO_DIR}/scripts/common/common.sh"
 source "${REPO_DIR}/scripts/common/package-management.sh"
 source "${REPO_DIR}/scripts/common/system-info.sh"
 
-[ "${DISTRO}" = "SteamOS" ] && run_as_su steamos-readonly disable
-
 if ${HAS_SU_PRIVILEGES}; then
     echo "I need SU privileges!"
     run_as_su printf "Thank you!\n\n"
@@ -67,7 +65,7 @@ function update-system() {
 
 echo "OS:               ${OS}"
 echo "Distro:           ${DISTRO} (${DISTRO_FAMILY})"
-echo "DE:               $(get_desktop_environment)"
+echo "DE:               ${DESKTOP_ENVIRONMENT}"
 echo "Architecture:     $(get_arch) ($(get_arch_family))"
 echo "CPU:              $(get_cpu)"
 echo "GPU:              $(get_gpu)"
@@ -146,7 +144,5 @@ execute-script "clean-files.sh"
 if ${HAS_SU_PRIVILEGES} && does_bin_exist "journalctl"; then
     run_as_su journalctl -q --vacuum-time=7d
 fi
-
-[ "${DISTRO}" = "SteamOS" ] && run_as_su steamos-readonly enable
 
 source ~/.bashrc

@@ -280,10 +280,14 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
         ${POWERFUL_PC} || install_native_package lxtask
 
         # Terminal
-        ${POWERFUL_PC} && install_native_package gnome-terminal
-        ${POWERFUL_PC} || install_native_package lxterminal
+        if ${POWERFUL_PC}; then
+            [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ] && install_native_package gnome-terminal
+            [ "${DESKTOP_ENVIRONMENT}" = "KDE" ] && install_native_package konsole
+        else
+            install_native_package lxterminal
+        fi
 
-        install_native_package gnome-disk-utility
+        [ "${DESKTOP_ENVIRONMENT}" != "KDE" ] && install_native_package gnome-disk-utility
 
         if ${IS_GENERAL_PURPOSE_DEVICE}; then
             # Calculator
@@ -303,9 +307,14 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
 
         # File management
         if ${POWERFUL_PC}; then
-            install_native_package nautilus
-            [ "${DISTRO}" != "SteamOS" ] && install_native_package folder-color-nautilus
-            install_flatpak org.gnome.FileRoller
+            if [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ]; then
+                install_native_package nautilus
+                install_native_package folder-color-nautilus
+                install_flatpak org.gnome.FileRoller
+            elif [ "${DESKTOP_ENVIRONMENT}" = "KDE" ]; then
+                install_native_package "dolphin"
+                install_native_package "ark"
+            fi
 
             install_native_package_dependency webp-pixbuf-loader
         else
@@ -317,45 +326,45 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
 
         # Text Editor
         if ${POWERFUL_PC}; then
-            install_flatpak org.gnome.gedit
+            [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ] && install_flatpak org.gnome.gedit
         else
             install_native_package pluma
         fi
 
-        # Document Viewer
-        if ${POWERFUL_PC}; then
-            install_flatpak org.gnome.Evince
-        else
-            install_native_package epdfview
-        fi
+        if ${IS_GENERAL_PURPOSE_DEVICE}; then
+            # Document Viewer
+            if ${POWERFUL_PC}; then
+                install_flatpak org.gnome.Evince
+            else
+                install_native_package epdfview
+            fi
 
-        if ${POWERFUL_PC}; then
-            install_flatpak org.gnome.baobab
-            #install_native_package gnome-screenshot
-        else
-            install_native_package mate-utils
-        fi
+            if ${POWERFUL_PC}; then
+                install_flatpak org.gnome.baobab
+                #install_native_package gnome-screenshot
+            else
+                install_native_package mate-utils
+            fi
 
-        # Image Viewer
-        if ${POWERFUL_PC}; then
-            install_flatpak org.gnome.eog
-        else
-            install_native_package gpicview
-        fi
+            # Image Viewer
+            if ${POWERFUL_PC}; then
+                install_flatpak org.gnome.eog
+            else
+                install_native_package gpicview
+            fi
 
-        if is_native_package_installed "gnome-shell"; then
-            install_native_package_dependency gvfs-goa
-        fi
+            if is_native_package_installed "gnome-shell"; then
+                install_native_package_dependency gvfs-goa
+            fi
 
-        if [ "${CHASSIS_TYPE}" != "Gaming Handheld" ]; then
             # Camera app
             install_flatpak "org.gnome.Cheese"
+
+            ! ${POWERFUL_PC} && install_native_package plank
         fi
 
-        ! ${POWERFUL_PC} && install_native_package plank
-
         # GNOME Shell Extensions
-        if ${POWERFUL_PC} && [ "${DISTRO}" != "SteamOS" ]; then
+        if ${POWERFUL_PC} && [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ]; then
             # Base
             install_native_package gnome-shell-extensions
             install_native_package gnome-shell-extension-installer
@@ -393,9 +402,11 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
         #install_native_package zorin-desktop-themes
         #install_flatpak zorinos org.gtk.Gtk3theme.ZorinGrey-Dark
 
-        install_native_package adwaita-dark # GTK3's AdwaitaDark ported to GTK2
-        install_native_package adw-gtk3
-        install_flatpak org.gtk.Gtk3theme.adw-gtk3-dark
+        if [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ]; then
+            install_native_package adwaita-dark # GTK3's AdwaitaDark ported to GTK2
+            install_native_package adw-gtk3
+            install_flatpak org.gtk.Gtk3theme.adw-gtk3-dark
+        fi
 
         install_native_package vimix-cursors
 
@@ -407,7 +418,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
         #install_native_package paper-icon-theme
 
         # Fonts
-        if [ "${DISTRO}" != "SteamOS" ]; then
+        if ${IS_GENERAL_PURPOSE_DEVICE}; then
             # Fonts - General
             install_native_package gnu-free-fonts
             [ "${ARCH_FAMILY}" == "x86" ] && install_native_package ttf-ms-win10
@@ -428,7 +439,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
         fi
 
         # Internet Browser
-        install_flatpak org.mozilla.firefox
+        install_flatpak "org.mozilla.firefox"
         #does_bin_exist "gnome-shell" && install_native_package chrome-gnome-shell # Also used for Firefox
 
         # Torrent Downloader
@@ -438,7 +449,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
             install_flatpak com.transmissionbt.Transmission
         fi
 
-        if [ "${CHASSIS_TYPE}" != "Gaming Handheld" ]; then
+        if ${IS_GENERAL_PURPOSE_DEVICE}; then
             # Communication
             install_flatpak com.microsoft.Teams
             install_flatpak com.github.vladimiry.ElectronMail
@@ -456,14 +467,15 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
         fi
 
         if ${POWERFUL_PC}; then
-            # Graphics
-            #install_native_package gimp
-            #install_native_package gimp-extras
-            #install_native_package gimp-plugin-pixel-art-scalers
-            install_flatpak org.gimp.GIMP # Wait at least until it uses GTK3
-            install_flatpak org.inkscape.Inkscape
+            if ${IS_GENERAL_PURPOSE_DEVICE}; then
+                # Graphics
+                #install_native_package gimp
+                #install_native_package gimp-extras
+                #install_native_package gimp-plugin-pixel-art-scalers
+                install_flatpak org.gimp.GIMP # Wait at least until it uses GTK3
+                install_flatpak org.inkscape.Inkscape
+            fi
 
-            # Gaming
             if ${IS_GAMING_DEVICE}; then
                 # Launchers
                 if [ "${DISTRO}" != "SteamOS" ]; then

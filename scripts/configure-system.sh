@@ -732,6 +732,7 @@ fi
 #####################
 if does_bin_exist "nautilus"; then
     NAUTILUS_SCHEMA="org.gnome.nautilus"
+    FILECHOOSER_SCHEMA="org.gtk.Settings.FileChooser"
 
     set_gsetting "${NAUTILUS_SCHEMA}.icon-view" default-zoom-level "standard"
     set_gsetting "${NAUTILUS_SCHEMA}.list-view" default-zoom-level "small"
@@ -739,6 +740,8 @@ if does_bin_exist "nautilus"; then
     set_gsetting "${NAUTILUS_SCHEMA}.preferences" show-create-link true
     set_gsetting "${NAUTILUS_SCHEMA}.preferences" show-delete-permanently true
     set_gsetting "${NAUTILUS_SCHEMA}.window-state" sidebar-width 240
+
+    set_gsettomg "${FILECHOOSER_SCHEMA}" sort-directories-first true
 fi
 if does_bin_exist "pcmanfm"; then
     PCMANFM_CONFIG_FILE="${XDG_CONFIG_HOME}/pcmanfm/LXDE/pcmanfm.conf"
