@@ -11,31 +11,8 @@ source "${REPO_DIR}/scripts/common/system-info.sh"
 ICON_THEME=$(sudo -u "${USER_REAL}" -H gsettings get org.gnome.desktop.interface icon-theme | tr -d "'")
 ICON_THEME_PATH="${ROOT_USR_SHARE}/icons/${ICON_THEME}"
 
-function find_launcher_by_name() {
-    local NAME_ENTRY_VALUE="$1"
-
-    if [ -d "${LOCAL_LAUNCHERS_DIR}" ]; then
-        find "${LOCAL_LAUNCHERS_DIR}" -type f -iname "*.desktop" -print0 | while IFS= read -r -d $'\0' LAUNCHER; do
-            if grep -q '^Name='"${NAME_ENTRY_VALUE}"'$' "${LAUNCHER}"; then
-                echo "${LAUNCHER}"
-                return 0
-            fi
-        done
-    fi
-
-    find "${GLOBAL_LAUNCHERS_DIR}" -type f -iname "*.desktop" -print0 | while IFS= read -r -d $'\0' LAUNCHER; do
-        if grep -q '^Name='"${NAME_ENTRY_VALUE}"'' "${LAUNCHER}"; then
-            echo "${LAUNCHER}"
-            return
-        fi
-    done
-
-    return 1
-}
-
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/amidst.desktop" \
     StartupWMClass "amidst-Amidst"
-set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/cups.desktop" NoDisplay true
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/GameConqueror.desktop" Categories "Utility;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/gtk-lshw.desktop" NoDisplay true
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/hardinfo.desktop" \
@@ -71,9 +48,6 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/picard.desktop" StartupWMClass ""
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/plank.desktop" NoDisplay true
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/qv4l2.desktop" NoDisplay true
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/qvidcap.desktop" NoDisplay true
-set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/simple-scan.desktop" \
-    Name "Scanner" \
-    Name[ro] "Scanner"
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/simplescreenrecorder.desktop" Name "Screen Recorder"
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/stoken-gui-small.desktop" NoDisplay true
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/stoken-gui.desktop" NoDisplay true
@@ -683,6 +657,7 @@ done
 ### MAIL CLIENTS ###
 ####################
 MAIL_APP_CATEGORIES="Network;Email;"
+
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/electron-mail.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Evolution.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.github.vladimiry.ElectronMail.desktop" \
@@ -691,6 +666,7 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/electron-mail.desktop" \
         Name "Mail" \
         Name[ro] "Mail" \
         Categories "${MAIL_APP_CATEGORIES}" \
+        Icon "mail-client" \
         NoDisplay "false"
 done
 
@@ -703,7 +679,7 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/electron-mail.desktop" \
 done
 
 ############
-### MAPS ###
+### Maps ###
 ############
 MAPS_APP_CATEGORIES="Utility;Navigation;"
 for LAUNCHER in "${LOCAL_LAUNCHERS_DIR}/chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default.desktop" \
@@ -718,13 +694,15 @@ done
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Maps.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Maps.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Maps.desktop"; do
-    set_launcher_entries "${LAUNCHER}" Categories "GNOME;GTK;${MAPS_APP_CATEGORIES}"
+    set_launcher_entry "${LAUNCHER}" \
+        Categories "GNOME;GTK;${MAPS_APP_CATEGORIES}"
 done
 
-set_launcher_entry "${LOCAL_LAUNCHERS_DIR}/chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default.desktop" Categories "ChromeApp;${MAPS_APP_CATEGORIES}"
+set_launcher_entry "${LOCAL_LAUNCHERS_DIR}/chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default.desktop" \
+    Categories "ChromeApp;${MAPS_APP_CATEGORIES}"
 
 ################
-### MONOGAME ###
+### MonoGame ###
 ################
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/Monogame\ Pipeline.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/MonogamePipeline.desktop"; do
@@ -733,23 +711,24 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/Monogame\ Pipeline.desktop" \
         StartupWMClass "Pipeline"
 done
 
-####################
-### MUSIC PLAYER ###
-####################
+#####################
+### Music players ###
+#####################
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/lxmusic.desktop" \
     Name "Music" \
     Name[ro] "Muzică" \
     MimeType "application/x-ogg;application/ogg;audio/x-vorbis+ogg;audio/vorbis;audio/x-vorbis;audio/x-scpls;audio/x-mp3;audio/x-mpeg;audio/mpeg;audio/x-mpegurl;audio/x-flac;audio/mp4;x-scheme-handler/itms;x-scheme-handler/itmss;"
 
-#################
-### NOTE APPS ###
-#################
+#############
+### Notes ###
+#############
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/google-keep.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.simplenote.Simplenote.desktop" \
                 "${LOCAL_LAUNCHERS_DIR}/chrome-hmjkmjkepdijhoojdojkdfohbdgmmhki-Default.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        Name "Keep" \
-        Name[ro] "Keep" \
-        Icon "google-keep" \
+        Name "Notes" \
+        Name[ro] "Note" \
+        Icon "notes" \
         Categories "Utility;" \
         NoDisplay false
 done
@@ -824,11 +803,6 @@ done
 ####################
 ### PHOTO ALBUMS ###
 ####################
-set_launcher_entries "$(find_launcher_by_name \"Google Photos\")" \
-    Name "Photos" \
-    Name[ro] "Fotografii" \
-    Categories "Network;Utility;Photography;"
-
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Photos.desktop" \
     Icon "multimedia-photo-manager"
 
@@ -843,6 +817,14 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/postman.desktop" \
         Icon "postman" \
         Categories "Development;"
 done
+
+###########################
+### Printing & Scanning ###
+###########################
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/cups.desktop" NoDisplay true
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/simple-scan.desktop" \
+    Name "Scanner" \
+    Name[ro] "Scanner"
 
 ##############
 ### PYTHON ###
@@ -1061,9 +1043,6 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/com.github.gi_lom.dialect.desktop"
 
 ### MPV
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/mpv.desktop" NoDisplay true
-
-### Netflix
-set_launcher_entry "$(find_launcher_by_name Netflix)" Categories "AudioVideo;Video;Player;"
 
 ### Plex
 for LAUNCHER in "${LOCAL_LAUNCHERS_DIR}/chrome-aghlkjcflkcaanjmefomlcfgflfdhkkg-Default.desktop" \
