@@ -49,6 +49,7 @@ function get_config_value() {
 function set_config_value() {
     local SEPARATOR="="
     local SECTION=""
+    local SECTIONS_COUNT=0
 
     if [[ "${1}" == "--separator" ]]; then
         shift
@@ -85,6 +86,8 @@ function set_config_value() {
         fi
     fi
 
+    SECTIONS_COUNT=$(grep -c "^\[" <<< "${FILE_CONTENT}")
+
     # If the config key already exists (with a different value)
     if [ $(grep -c "^${KEY}\s*${SEPARATOR}.*$" <<< "${FILE_CONTENT}") -gt 0 ]; then
         if [ -w "${FILE_PATH}" ]; then
@@ -94,7 +97,7 @@ function set_config_value() {
         fi
     else
         if grep -q "\[${SECTION}\]" <<< "${FILE_CONTENT}"; then
-            if grep -c "^\[" -le 1; then
+            if [ ${SECTIONS_COUNT} -le 1 ]; then
                 append_line "${FILE_PATH}" "${KEY}${SEPARATOR}${VALUE}"
             else
                 echo "ERROR: Cannot add new key ${KEY} to existing section ${SECTION}, as this is not supported!"
@@ -104,7 +107,7 @@ function set_config_value() {
             append_line "${FILE_PATH}" "${KEY}${SEPARATOR}${VALUE}"
         else
             append_line "${FILE_PATH}" "${KEY}${SEPARATOR}${VALUE}"
-        fi        
+        fi
     fi
 
     echo "${FILE_PATH} >>> ${KEY}${SEPARATOR}${VALUE}"

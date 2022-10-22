@@ -178,7 +178,8 @@ TEXT_EDITOR_TAB_SIZE=4
 TEXT_EDITOR_WORD_WRAP=false
 
 if ${HAS_GUI}; then
-    if [[ "${ICON_THEME}" == *"Papirus"* ]]; then
+    if [[ "${ICON_THEME}" == *"Papirus"* ]] \
+    && does_bin_exist "papirus-folders"; then
         CURRENT_PAPIRUS_FOLDER_COLOUR=$(papirus-folders -l -t "${ICON_THEME}" | grep ">" | sed 's/ *> *//g')
 
         if [[ "${CURRENT_PAPIRUS_FOLDER_COLOUR}" != "${ICON_THEME_FOLDER_COLOUR}" ]]; then
