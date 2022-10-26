@@ -731,6 +731,12 @@ fi
 #####################
 ### FILE MANAGERS ###
 #####################
+if does_bin_exist "dolphin"; then
+    DOLPHIN_CONFIG_FILE="${XDG_CONFIG_HOME}/dolphinrc"
+
+    set_config_value --section "General" "${DOLPHIN_CONFIG_FILE}" ShowStatusBar false
+    set_config_value --section "MainWindow" "${DOLPHIN_CONFIG_FILE}" MenuBar "Disabled"
+fi
 if does_bin_exist "nautilus"; then
     NAUTILUS_SCHEMA="org.gnome.nautilus"
     FILECHOOSER_SCHEMA="org.gtk.Settings.FileChooser"
@@ -742,7 +748,7 @@ if does_bin_exist "nautilus"; then
     set_gsetting "${NAUTILUS_SCHEMA}.preferences" show-delete-permanently true
     set_gsetting "${NAUTILUS_SCHEMA}.window-state" sidebar-width 240
 
-    set_gsettomg "${FILECHOOSER_SCHEMA}" sort-directories-first true
+    set_gsetting "${FILECHOOSER_SCHEMA}" sort-directories-first true
 fi
 if does_bin_exist "pcmanfm"; then
     PCMANFM_CONFIG_FILE="${XDG_CONFIG_HOME}/pcmanfm/LXDE/pcmanfm.conf"
