@@ -160,8 +160,6 @@ remove "${ROOT_ETC}/motd"
 ! does_bin_exist "openrgb" && remove "${XDG_CONFIG_HOME}/OpenRGB"
 ! does_bin_exist "openshot-qt" && remove "${HOME}/.openshot_qt"
 ! does_bin_exist "pavucontrol" && remove "${XDG_CONFIG_HOME}/pavucontrol.ini"
-! does_bin_exist "pcmanfm" && remove "${XDG_CONFIG_HOME}/pcmanfm"
-! does_bin_exist "pcmanfm-qt" && remove "${XDG_CONFIG_HOME}/pcmanfm-qt"
 ! does_bin_exist "pip" && remove "${XDG_CACHE_HOME}/pip"
 ! does_bin_exist "plank" && remove \
     "${XDG_CACHE_HOME}/plank" \
@@ -234,6 +232,20 @@ remove "${ROOT_ETC}/motd"
     "${XDG_CONFIG_HOME}/yay"
 ! does_bin_exist "youtube-dl" && remove "${XDG_CACHE_HOME}/youtube-dl"
 ! does_bin_exist "zsh" && remove "${HOME}/.zshrc"
+
+#####################
+### File Managers ###
+#####################
+! does_bin_exist "dolphin" && remove \
+    "${XDG_CONFIG_HOME}/dolphinrc" \
+    "${XDG_DATA_HOME}/dolphin"
+! does_bin_exist "pcmanfm" && remove "${XDG_CONFIG_HOME}/pcmanfm"
+! does_bin_exist "pcmanfm-qt" && remove "${XDG_CONFIG_HOME}/pcmanfm-qt"
+
+#################
+### Terminals ###
+#################
+! does_bin_exist "konsole" && remove "${XDG_CONFIG_HOME}/konsolerc"
 
 for FLATPAK in "${HOME_VAR_APP}"/*; do
     FLATPAK=$(echo "${FLATPAK}" | sed 's/.*\/\([^\/]*\)$/\1/g')
