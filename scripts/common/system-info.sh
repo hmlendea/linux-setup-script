@@ -481,6 +481,7 @@ if [ "${OS}" = "CYGWIN_NT-10.0" ]; then
 fi
 
 uname -r | grep -q "valve.*neptune" && DISTRO="SteamOS"
+uname -r | grep -q "Microsoft" && DISTRO="${DISTRO} WSL"
 
 # Destkp Environment
 if [ -f "${ROOT_USR_BIN}/gnome-session" ]; then
