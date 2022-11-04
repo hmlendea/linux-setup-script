@@ -530,10 +530,6 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
             install_vscode_package "nico-castell.linux-desktop-file"
             install_vscode_package "qinjia.seti-icons"
 
-            if does_bin_exist "code" "code-oss" "codium"; then
-                does_bin_exist "nautilus" && install_native_package code-nautilus-git
-            fi
-
             install_flatpak com.getpostman.Postman
 
             #does_bin_exist "flatpak" && install_native_package "flatpak-builder"

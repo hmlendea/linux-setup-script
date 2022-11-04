@@ -144,6 +144,9 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
         uninstall_flatpak "org.gnome.Totem"
     fi
 
+    # Obsolete
+    uninstall_native_package "code-nautilus-git" # Does not work in modern Nautilus nor is it strictly required anymore
+
     # Removed altogether
     uninstall_native_package "bc" # Mathematical calculator
     uninstall_native_package "bison"
