@@ -657,26 +657,29 @@ done
 ### MAIL CLIENTS ###
 ####################
 MAIL_APP_CATEGORIES="Network;Email;"
+MAIL_APP_KEYWORDS="Email;Mail;"
 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/electron-mail.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Evolution.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.github.vladimiry.ElectronMail.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.github.vladimiry.ElectronMail.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        Name "Mail" \
-        Name[ro] "Mail" \
         Categories "${MAIL_APP_CATEGORIES}" \
-        Icon "mail-client" \
         NoDisplay "false"
 done
 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/electron-mail.desktop" \
-                "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Evolution.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.github.vladimiry.ElectronMail.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.github.vladimiry.ElectronMail.desktop"; do
     set_launcher_entry "${LAUNCHER}" \
-        Keywords "Email;Mail;Electron;"
+        Keywords "${MAIL_APP_KEYWORDS}Electron;"
 done
+
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Evolution.desktop" \
+    Name "Mail" \
+    Name[ro] "Mail" \
+    Icon "mail-client" \
+    Keywords "${MAIL_APP_KEYWORDS}"
 
 ############
 ### Maps ###
@@ -726,9 +729,6 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/google-keep.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.simplenote.Simplenote.desktop" \
                 "${LOCAL_LAUNCHERS_DIR}/chrome-hmjkmjkepdijhoojdojkdfohbdgmmhki-Default.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        Name "Notes" \
-        Name[ro] "Note" \
-        Icon "notes" \
         Categories "Utility;" \
         NoDisplay false
 done
