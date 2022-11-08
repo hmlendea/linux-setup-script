@@ -47,7 +47,6 @@ remove "${ROOT_ETC}/motd"
 ! does_bin_exist "codium" && remove "${XDG_CONFIG_HOME}/VSCodium"
 ! does_bin_exist "code-oss" "codium" && remove "${HOME}/.vscode-oss"
 ! does_bin_exist "convert" && remove "${XDG_CACHE_HOME}/ImageMagick"
-! does_bin_exist "discord" && remove "${XDG_CONFIG_HOME}/discord"
 ! does_bin_exist "dockx" && remove "${XDG_DATA_HOME}/dockbarx"
 ! does_bin_exist "dotnet" && \
     remove "${HOME}/.dotnet" \
@@ -65,7 +64,6 @@ remove "${ROOT_ETC}/motd"
 ! does_bin_exist "fastfetch" && remove \
     "${XDG_CACHE_HOME}/fastfetch" \
     "${XDG_CONFIG_HOME}/fastfetch"
-! does_bin_exist "firefox" && remove "${XDG_CACHE_HOME}/mozilla/firefox"
 ! does_bin_exist "fltk-config" && remove "${HOME}/.fltk"
 ! does_bin_exist "fma-config-tool" && remove "${XDG_CONFIG_HOME}/filemanager-actions"
 ! does_bin_exist "fragments" && remove \
@@ -91,15 +89,6 @@ remove "${ROOT_ETC}/motd"
 ! does_bin_exist "gnome-sound-recorder" && remove "${XDG_DATA_HOME}/org.gnome.SoundRecorder"
 ! does_bin_exist "gnubg" && remove "${HOME}/.gnubg"
 ! does_bin_exist "go" && remove "${XDG_CACHE_HOME}/go-build"
-! does_bin_exist "google-chrome" && remove \
-    "${XDG_CACHE_HOME}/google-chrome" \
-    "${XDG_CONFIG_HOME}/google-chrome"
-! does_bin_exist "google-chrome-beta" && remove \
-    "${XDG_CACHE_HOME}/google-chrome-beta" \
-    "${XDG_CONFIG_HOME}/google-chrome-beta"
-! does_bin_exist "google-chrome-unstable" && remove \
-    "${XDG_CACHE_HOME}/google-chrome-unstable" \
-    "${XDG_CONFIG_HOME}/google-chrome-unstable"
 ! does_bin_exist "gradle" && remove \
     "${HOME}/.gradle" \
     "${XDG_DATA_HOME}/gradle"
@@ -124,14 +113,6 @@ remove "${ROOT_ETC}/motd"
     "${HOME}/.mcaselector" \
     "${XDG_CACHE_HOME}/mcaselector"
 ! does_bin_exist "mcedit" && remove "${HOME}/.mcedit"
-! does_bin_exist "microsoft-edge-beta" && remove \
-    "${XDG_CACHE_HOME}/microsoft-edge-beta" \
-    "${XDG_CACHE_HOME}/Microsoft/Edge" \
-    "${XDG_CONFIG_HOME}/microsoft-edge-beta"
-! does_bin_exist "microsoft-edge-dev" && remove \
-    "${XDG_CACHE_HOME}/microsoft-edge-dev" \
-    "${XDG_CACHE_HOME}/Microsoft/Edge" \
-    "${XDG_CONFIG_HOME}/microsoft-edge-dev"
 ! does_bin_exist "minetest" && remove "${XDG_CACHE_HOME}/minetest"
 ! does_bin_exist "mono" && remove "${HOME}/.mono"
 ! does_bin_exist "mpv" && remove "${XDG_CONFIG_HOME}/mpv"
@@ -180,7 +161,6 @@ remove "${ROOT_ETC}/motd"
     "${XDG_DATA_HOME}/rhythmbox"
 ! does_bin_exist "runelite" && remove "${HOME}/.runelite"
 ! does_bin_exist "samrewritten" && remove "${XDG_CACHE_HOME}/SamRewritten"
-! does_bin_exist "signal-desktop" && remove "${XDG_CONFIG_HOME}/Signal"
 ! does_bin_exist "simplescreenrecorder" && remove "${HOME}/.ssr"
 ! does_bin_exist "simplenote" && remove "${XDG_CONFIG_HOME}/Simplenote"
 ! does_bin_exist "snap" && remove "${HOME}/.snap"
@@ -191,18 +171,10 @@ remove "${ROOT_ETC}/motd"
 ! does_bin_exist "spotify" && remove \
     "${XDG_CACHE_HOME}/spotify" \
     "${XDG_CONFIG_HOME}/spotify"
-! does_bin_exist "teams" && remove \
-    "${XDG_CONFIG_HOME}/Microsoft Teams - Preview" \
-    "${XDG_CONFIG_HOME}/Microsoft/Microsoft Teams"
-! does_bin_exist "teams-insiders" && remove \
-    "${XDG_CONFIG_HOME}/Microsoft Teams - Insiders" \
-    "${XDG_CONFIG_HOME}/Microsoft/Microsoft Teams - Insiders"
-! does_bin_exist "teams" "teams-insiders" && remove "${XDG_CONFIG_HOME}/teams"
 ! does_bin_exist "teamviewer" && remove \
     "${XDG_CACHE_HOME}/TeamViewer" \
     "${XDG_CONFIG_HOME}/teamviewer" \
     "${XDG_DATA_HOME}/teamviewer15"
-! does_bin_exist "telegram-desktop" && remove "${XDG_DATA_HOME}/TelegramDesktop"
 ! does_bin_exist "thunar" && remove "${XDG_CONFIG_HOME}/Thunar"
 ! does_bin_exist "totem" && remove \
     "${XDG_CACHE_HOME}/totem" \
@@ -219,11 +191,7 @@ remove "${ROOT_ETC}/motd"
     "${XDG_CACHE_HOME}/vlc" \
     "${XDG_CONFIG_HOME}/vlc" \
     "${XDG_DATA_HOME}/vlc"
-! does_bin_exist "whatsapp-nativefier" && remove "${XDG_CONFIG_HOME}/whatsapp-nativefier-d40211"
-! does_bin_exist "whatsdesk" && remove "${HOME}/.whatsdesk"
 ! does_bin_exist "wike" && remove "${XDG_CACHE_HOME}/wike"
-! does_bin_exist "wine" && remove "${XDG_CACHE_HOME}/wine"
-! does_bin_exist "winetricks" && remove "${XDG_CACHE_HOME}/winetricks"
 ! does_bin_exist "yarn" && remove \
     "${HOME}/.yarn" \
     "${HOME}/.yarnrc"
@@ -233,14 +201,81 @@ remove "${ROOT_ETC}/motd"
 ! does_bin_exist "youtube-dl" && remove "${XDG_CACHE_HOME}/youtube-dl"
 ! does_bin_exist "zsh" && remove "${HOME}/.zshrc"
 
+############
+### Chat ###
+############
+
+# Discord
+! does_bin_exist "discord" && remove "${XDG_CONFIG_HOME}/discord"
+remove_logs_in_dirs "${HOME_VAR_APP}/com.discordapp.Discord/config/discord"
+
+# Signal
+! does_bin_exist "signal-desktop" && remove "${XDG_CONFIG_HOME}/Signal"
+remove_logs_in_dirs "${HOME_VAR_APP}/org.signal.Signal/config/Signal"
+
+# Teams
+! does_bin_exist "teams" && remove \
+    "${XDG_CONFIG_HOME}/Microsoft Teams - Preview" \
+    "${XDG_CONFIG_HOME}/Microsoft/Microsoft Teams"
+! does_bin_exist "teams-insiders" && remove \
+    "${XDG_CONFIG_HOME}/Microsoft Teams - Insiders" \
+    "${XDG_CONFIG_HOME}/Microsoft/Microsoft Teams - Insiders"
+! does_bin_exist "teams" "teams-insiders" && remove "${XDG_CONFIG_HOME}/teams"
+
+
+remove_logs_in_dirs "${HOME_VAR_APP}/com.microsoft.Teams/config/teams" \
+                    "${HOME_VAR_APP}/com.microsoft.Teams/config/Microsoft/Microsoft Teams"
+
+# Telegram
+! does_bin_exist "telegram-desktop" && remove "${XDG_DATA_HOME}/TelegramDesktop"
+remove_logs_in_dirs "${HOME_VAR_APP}/org.telegram.desktop/data/TelegramDesktop"
+
+# WhatsApp
+! does_bin_exist "whatsapp-nativefier" && remove "${XDG_CONFIG_HOME}/whatsapp-nativefier-d40211"
+! does_bin_exist "whatsdesk" && remove "${HOME}/.whatsdesk"
+
+# Zoom
+! does_bin_exist "zoom" && remove "${HOME}/.zoom"
+
 #####################
 ### File Managers ###
 #####################
 ! does_bin_exist "dolphin" && remove \
     "${XDG_CONFIG_HOME}/dolphinrc" \
+    "${XDG_CONFIG_HOME}/kde.org/UserFeedback.org.kde.dolphin.conf" \
     "${XDG_DATA_HOME}/dolphin"
 ! does_bin_exist "pcmanfm" && remove "${XDG_CONFIG_HOME}/pcmanfm"
 ! does_bin_exist "pcmanfm-qt" && remove "${XDG_CONFIG_HOME}/pcmanfm-qt"
+
+#########################
+### Internet Browsers ###
+#########################
+
+# Chrome
+! does_bin_exist "google-chrome" && remove \
+    "${XDG_CACHE_HOME}/google-chrome" \
+    "${XDG_CONFIG_HOME}/google-chrome"
+! does_bin_exist "google-chrome-beta" && remove \
+    "${XDG_CACHE_HOME}/google-chrome-beta" \
+    "${XDG_CONFIG_HOME}/google-chrome-beta"
+! does_bin_exist "google-chrome-unstable" && remove \
+    "${XDG_CACHE_HOME}/google-chrome-unstable" \
+    "${XDG_CONFIG_HOME}/google-chrome-unstable"
+
+# Edge
+! does_bin_exist "microsoft-edge-beta" && remove \
+    "${XDG_CACHE_HOME}/microsoft-edge-beta" \
+    "${XDG_CACHE_HOME}/Microsoft/Edge" \
+    "${XDG_CONFIG_HOME}/microsoft-edge-beta"
+! does_bin_exist "microsoft-edge-dev" && remove \
+    "${XDG_CACHE_HOME}/microsoft-edge-dev" \
+    "${XDG_CACHE_HOME}/Microsoft/Edge" \
+    "${XDG_CONFIG_HOME}/microsoft-edge-dev"
+
+# Firefox
+! does_bin_exist "firefox" && remove "${XDG_CACHE_HOME}/mozilla/firefox"
+remove "${HOME}/.mozilla/firefox/Crash Reports" \
+       "${HOME_VAR_APP}/org.mozilla.firefox/.mozilla/firefox/Crash Reports"        
 
 #################
 ### Terminals ###
@@ -251,6 +286,15 @@ for FLATPAK in "${HOME_VAR_APP}"/*; do
     FLATPAK=$(echo "${FLATPAK}" | sed 's/.*\/\([^\/]*\)$/\1/g')
     ! is_flatpak_installed "${FLATPAK}" && remove "${HOME_VAR_APP}/${FLATPAK}"
 done
+
+############
+### WINE ###
+############
+! does_bin_exist "wine" && remove "${XDG_CACHE_HOME}/wine"
+! does_bin_exist "winetricks" && remove "${XDG_CACHE_HOME}/winetricks"
+
+remove "${XDG_CONFIG_HOME}/menus/applications-merged/"wine-*.menu
+remove "${XDG_DATA_HOME}/applications/wine"
 
 [ "${NPM_CONFIG_USERCONFIG}" != "${HOME}/.npmrc" ] && remove "${HOME}/.npmrc"
 [ -f "${XDG_DATA_HOME}/wget/hosts" ] && remove "${HOME}/.wget-hsts"
@@ -374,7 +418,6 @@ if [ -d "${XDG_DOWNLOAD_DIR}" ]; then
 fi
 
 # Unwanted application launchers
-remove "${XDG_DATA_HOME}/applications/wine"
 remove "${XDG_CONFIG_HOME}/menus/applications-merged/user-chrome-apps.menu"
 
 if [ -d "${XDG_DATA_HOME}/applications" ] \
@@ -393,9 +436,6 @@ remove "${HOME}/.dotnet/TelemetryStorageService"
 
 # Logs
 if ${CLEAN_LOGS}; then
-    remove \
-        "${HOME}/.mozilla/firefox/Crash Reports" \
-        "${HOME_VAR_APP}/org.mozilla.firefox/.mozilla/firefox/Crash Reports"
     remove "${XDG_CONFIG_HOME}/logs"
     remove "${XDG_CONFIG_HOME}/unity3d"/*.log
     remove "${XDG_DATA_HOME}/xorg/"*".log"
@@ -404,68 +444,42 @@ if ${CLEAN_LOGS}; then
         "${HOME}/.klei/DoNotStarveTogether/backup/client_chat_log" \
         "${HOME}/.klei/DoNotStarveTogether/backup/client_log"
 
-    function remove_logs_in_dir() {
-        [ ! -d "${DIR}" ] && return
-
-        remove \
-            "${DIR}/logs" \
-            "${DIR}/_logs" \
-            "${DIR}"/*-log.txt \
-            "${DIR}"/*_log.txt \
-            "${DIR}"/*-log-*.txt \
-            "${DIR}"/*_log_*.txt \
-            "${DIR}"/*-logs-*.txt \
-            "${DIR}"/*_logs_*.txt \
-            "${DIR}"/*.log \
-            "${DIR}"/*.log.old \
-            "${DIR}"/changelog.txt \
-            "${DIR}"/log.txt \
-            "${DIR}"/logs.txt \
-            "${DIR}"/logfile.txt
-    }
-
-    for DIR in  "${HOME}/.factorio" \
-                "${HOME}/.gradle/daemon/"* \
-                "${HOME}/.ICAClient" \
-                "${HOME}/.klei/DoNotStarveTogether" \
-                "${HOME}/.minecraft" \
-                "${HOME}/.npm" \
-                "${HOME}/.steam/steamcmd/workshopbuilds" \
-                "${HOME}/.vscode/extensions/"* \
-                "${HOME}/.vscode/extensions/"*"/file-types" \
-                "${HOME}/Zomboid" \
-                "${XDG_CONFIG_HOME}/Code" \
-                "${XDG_CONFIG_HOME}/unity3d" \
-                "${XDG_CONFIG_HOME}/unity3d"/*/* \
-                "${XDG_DATA_HOME}/gvfs-metadata" \
-                "${XDG_DATA_HOME}/Paradox Interactive"/* \
-                "${XDG_DATA_HOME}/Steam" \
-                "${XDG_DATA_HOME}/Steam/config/htmlcache" \
-                "${XDG_DATA_HOME}/Steam/config/htmlcache/VideoDecodeStats" \
-                "${XDG_DATA_HOME}/Steam/config/SteamVR/htmlcache" \
-                "${XDG_DATA_HOME}/Steam/steamapps/common"/* \
-                "${XDG_DATA_HOME}/Steam/steamapps/common"/*/*_Data \
-                "${XDG_DATA_HOME}/Steam/steamapps/compatdata/"*"/pfx" \
-                "${XDG_DATA_HOME}/Steam/steamapps/compatdata/"*"/pfx/drive_c/users/steamuser/Temp" \
-                "${XDG_DATA_HOME}/Steam/steamapps/compatdata/"*"/pfx/drive_c/windows" \
-                "${XDG_DATA_HOME}/Steam/workshopbuilds" \
-                "${XDG_DATA_HOME}/Surviving Mars" \
-                "${HOME_VAR_APP}"/*"/cache"/* \
-                "${HOME_VAR_APP}"/*"/config"/* \
-                "${HOME_VAR_APP}"/*"/config"/*/* \
-                "${HOME_VAR_APP}"/*"/data/gvfs-metadata" \
-                "${HOME_VAR_APP}/com.bitwarden.desktop/config/Bitwarden" \
-                "${HOME_VAR_APP}/com.discordapp.Discord/config/discord" \
-                "${HOME_VAR_APP}/com.getpostman.Postman/config/Postman" \
-                "${HOME_VAR_APP}/com.github.vladimiry.ElectronMail/config/electron-mail" \
-                "${HOME_VAR_APP}/com.microsoft.Teams/config/teams" \
-                "${HOME_VAR_APP}/com.microsoft.Teams/config/Microsoft/Microsoft Teams" \
-                "${HOME_VAR_APP}/com.mojang.Minecraft/.minecraft" \
-                "${HOME_VAR_APP}/com.simplenote.Simplenote/config" \
-                "${HOME_VAR_APP}/org.libreoffice.LibreOffice/config/libreoffice/4/user" \
-                "${HOME_VAR_APP}/org.signal.Signal/config/Signal" \
-                "${HOME_VAR_APP}/org.telegram.desktop/data/TelegramDesktop"; do
-        remove_logs_in_dir "${DIR}"
+    remove_logs_in_dirs "${HOME}/.factorio" \
+                        "${HOME}/.gradle/daemon/"* \
+                        "${HOME}/.ICAClient" \
+                        "${HOME}/.klei/DoNotStarveTogether" \
+                        "${HOME}/.minecraft" \
+                        "${HOME}/.npm" \
+                        "${HOME}/.steam/steamcmd/workshopbuilds" \
+                        "${HOME}/.vscode/extensions/"* \
+                        "${HOME}/.vscode/extensions/"*"/file-types" \
+                        "${HOME}/Zomboid" \
+                        "${XDG_CONFIG_HOME}/Code" \
+                        "${XDG_CONFIG_HOME}/unity3d" \
+                        "${XDG_CONFIG_HOME}/unity3d"/*/* \
+                        "${XDG_DATA_HOME}/gvfs-metadata" \
+                        "${XDG_DATA_HOME}/Paradox Interactive"/* \
+                        "${XDG_DATA_HOME}/Steam" \
+                        "${XDG_DATA_HOME}/Steam/config/htmlcache" \
+                        "${XDG_DATA_HOME}/Steam/config/htmlcache/VideoDecodeStats" \
+                        "${XDG_DATA_HOME}/Steam/config/SteamVR/htmlcache" \
+                        "${XDG_DATA_HOME}/Steam/steamapps/common"/* \
+                        "${XDG_DATA_HOME}/Steam/steamapps/common"/*/*_Data \
+                        "${XDG_DATA_HOME}/Steam/steamapps/compatdata/"*"/pfx" \
+                        "${XDG_DATA_HOME}/Steam/steamapps/compatdata/"*"/pfx/drive_c/users/steamuser/Temp" \
+                        "${XDG_DATA_HOME}/Steam/steamapps/compatdata/"*"/pfx/drive_c/windows" \
+                        "${XDG_DATA_HOME}/Steam/workshopbuilds" \
+                        "${XDG_DATA_HOME}/Surviving Mars" \
+                        "${HOME_VAR_APP}"/*"/cache"/* \
+                        "${HOME_VAR_APP}"/*"/config"/* \
+                        "${HOME_VAR_APP}"/*"/config"/*/* \
+                        "${HOME_VAR_APP}"/*"/data/gvfs-metadata" \
+                        "${HOME_VAR_APP}/com.bitwarden.desktop/config/Bitwarden" \
+                        "${HOME_VAR_APP}/com.getpostman.Postman/config/Postman" \
+                        "${HOME_VAR_APP}/com.github.vladimiry.ElectronMail/config/electron-mail" \
+                        "${HOME_VAR_APP}/com.mojang.Minecraft/.minecraft" \
+                        "${HOME_VAR_APP}/com.simplenote.Simplenote/config" \
+                        "${HOME_VAR_APP}/org.libreoffice.LibreOffice/config/libreoffice/4/user"
 
         if ${CLEAN_BROWSER_LOGS}; then
             if [ -d "${DIR}/IndexedDB" ] \
@@ -479,7 +493,6 @@ if ${CLEAN_LOGS}; then
                 remove_logs_in_dir "${DIR}/shared_proto_db/metadata"
             fi
         fi
-    done
 fi
 
 # Empty directories
