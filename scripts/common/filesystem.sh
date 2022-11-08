@@ -157,6 +157,43 @@ function remove_empty_subdirectories() {
     done < <(find "${PARENT_DIRECTORY}" -maxdepth 1 -type d -print0)
 }
 
+function remove_logs_in_dir() {
+    [ ! -d "${DIR}" ] && return
+
+    remove \
+        "${DIR}/logs" \
+        "${DIR}/_logs" \
+        "${DIR}"/*-log.txt \
+        "${DIR}"/*_log.txt \
+        "${DIR}"/*-log-*.txt \
+        "${DIR}"/*_log_*.txt \
+        "${DIR}"/*-logs-*.txt \
+        "${DIR}"/*_logs_*.txt \
+        "${DIR}"/*.log \
+        "${DIR}"/*.log.old \
+        "${DIR}"/changelog.txt \
+        "${DIR}"/log.txt \
+        "${DIR}"/logs.txt \
+        "${DIR}"/logfile.txt
+}
+
+function remove_logs_in_dirs() {
+    for DIR in "${@}"; do
+        remove_logs_in_dir "${DIR}"
+
+        if [ -d "${DIR}/IndexedDB" ] \
+        || [ -d "${DIR}/shared_proto_db" ]; then
+            remove_logs_in_dir "${DIR}/IndexedDB"/*
+            remove_logs_in_dir "${DIR}/File System"/*
+            remove_logs_in_dir "${DIR}/File System"/*/*/*
+            remove_logs_in_dir "${DIR}/Session Storage"
+            remove_logs_in_dir "${DIR}/Service Worker/Database"
+            remove_logs_in_dir "${DIR}/shared_proto_db"
+            remove_logs_in_dir "${DIR}/shared_proto_db/metadata"
+        fi
+    done
+}
+
 function create_file() {
     local FILE_PATH="${*}"
 
