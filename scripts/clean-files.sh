@@ -295,6 +295,7 @@ done
 
 remove "${XDG_CONFIG_HOME}/menus/applications-merged/"wine-*.menu
 remove "${XDG_DATA_HOME}/applications/wine"
+remove "${XDG_DATA_HOME}/applications/wine-"*
 
 [ "${NPM_CONFIG_USERCONFIG}" != "${HOME}/.npmrc" ] && remove "${HOME}/.npmrc"
 [ -f "${XDG_DATA_HOME}/wget/hosts" ] && remove "${HOME}/.wget-hsts"
@@ -420,13 +421,16 @@ fi
 # Unwanted application launchers
 remove "${XDG_CONFIG_HOME}/menus/applications-merged/user-chrome-apps.menu"
 
-if [ -d "${XDG_DATA_HOME}/applications" ] \
-&& ls "${XDG_DATA_HOME}/applications" | grep -q "*\.desktop$"; then
-    for STEAM_APP_LAUNCHER in $(grep "^Exec=steam" "${XDG_DATA_HOME}/applications"/*.desktop | awk -F":" '{print $1}' | sed 's/ /@SPACE@/g'); do
-        STEAM_APP_LAUNCHER=$(echo "${STEAM_APP_LAUNCHER}" | sed 's/@SPACE@/ /g')
-        remove "${STEAM_APP_LAUNCHER}"
-    done
-fi
+for APPLICATION_LAUNCHERS_DIR in "${XDG_DESKTOP_DIR}" "${XDG_DATA_HOME}/applications"; do
+    if [ -n "${APPLICATION_LAUNCHERS_DIR}" ] \
+    && [ -d "${APPLICATION_LAUNCHERS_DIR}" ] \
+    && ls "${APPLICATION_LAUNCHERS_DIR}" | grep -q ".*\.desktop$"; then
+        for STEAM_APP_LAUNCHER in $(grep "^Exec=steam" "${APPLICATION_LAUNCHERS_DIR}"/*.desktop | awk -F":" '{print $1}' | sed 's/ /@SPACE@/g'); do
+            STEAM_APP_LAUNCHER=$(echo "${STEAM_APP_LAUNCHER}" | sed 's/@SPACE@/ /g')
+            remove "${STEAM_APP_LAUNCHER}"
+        done
+    fi
+done
 
 # Backups
 remove "${XDG_CONFIG_HOME}/monitors.xml~"
