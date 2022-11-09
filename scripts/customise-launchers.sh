@@ -1315,7 +1315,7 @@ if does_bin_exist "steam" "com.valvesoftware.Steam" \
 
                     for APP_NAME_WORD in ${APP_NAME}; do
                         APP_NAME_WORD=$(echo "${APP_NAME_WORD}" | sed \
-                            -e 's/'\''s//g' \
+                            -e 's/'"\'"'s//g' \
                             -e 's/[\[\]]//g' \
                             -e 's/[\&\:\;\.\,\_\-]//g' \
                             -e 's/['"\'"']//g' \
@@ -1337,7 +1337,7 @@ if does_bin_exist "steam" "com.valvesoftware.Steam" \
                         Keywords[de] "Spiel;Steam;${APP_KEYWORDS};" \
                         Keywords[es] "Juego;Steam;${APP_KEYWORDS};" \
                         Keywords[ro] "Joc;Steam;${APP_KEYWORDS};" \
-                        Exec "${STEAM_EXECUTABLE} steam:\/\/rungameid\/${APP_ID}" \
+                        Exec "${STEAM_EXECUTABLE} steam://rungameid/${APP_ID}" \
                         Icon "${APP_ICON_PATH}" \
                         Icon[de] "${APP_ICON_PATH}" \
                         Icon[es] "${APP_ICON_PATH}" \
