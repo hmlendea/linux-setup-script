@@ -227,6 +227,8 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "gnome-shell-extension-windowisready_remover"
     uninstall_native_package "gnome-shell-extension-no-overview"
     uninstall_native_package "gnome-shell-extension-hide-activities-git"
+    uninstall_gnome_shell_extension "sound-output-device-chooser" # Not needed anymore since GNOME 43
+    
     # Not necessary with/without system packaeg
     ! does_bin_exist "plank" && uninstall_gnome_shell_extension "dash-to-plank"
     #is_native_package_installed "gnome-shell-extension-dash-to-dock" && uninstall_gnome_shell_extension "dash-to-dock"

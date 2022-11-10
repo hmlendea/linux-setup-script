@@ -377,7 +377,6 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
                 #install_gnome_shell_extension "dash-to-dock"
             fi
 
-            install_gnome_shell_extension "sound-output-device-chooser"
             install_gnome_shell_extension "multi-monitors-add-on"
             #install_gnome_shell_extension "wintile"
 
