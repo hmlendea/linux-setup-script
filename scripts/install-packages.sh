@@ -422,7 +422,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
             install_native_package gnu-free-fonts
             [ "${ARCH_FAMILY}" == "x86" ] && install_native_package ttf-ms-win10
             install_native_package noto-fonts
-            install_native_package noto-fonts-emoji
+            install_native_package ttf-apple-emoji
             install_native_package ttf-droid
             install_native_package_dependency ttf-croscore
             install_native_package_dependency ttf-liberation

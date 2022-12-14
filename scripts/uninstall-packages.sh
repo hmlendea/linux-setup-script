@@ -233,7 +233,12 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     ! does_bin_exist "plank" && uninstall_gnome_shell_extension "dash-to-plank"
     #is_native_package_installed "gnome-shell-extension-dash-to-dock" && uninstall_gnome_shell_extension "dash-to-dock"
 
-    # Uselss deps
+    # Themes - Fonts
+    is_native_package_installed "ttf-apple-emoji" && uninstall_native_package "noto-fonts-emoji"
+    #uninstall_android_package "com.android.theme.font.notoserifsource"
+    uninstall_android_package "org.lineageos.overlay.font.lato"
+
+    # Useless dependencies
     uninstall_native_package "aspell" "hunspell"
     uninstall_native_package "chafa"
     uninstall_native_package "dbus-broker"
@@ -342,10 +347,6 @@ elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
     uninstall_android_package "org.lineageos.overlay.accent.pink"
     uninstall_android_package "org.lineageos.overlay.accent.purple"
     uninstall_android_package "org.lineageos.overlay.accent.red"
-
-    # Themes - Fonts
-    #uninstall_android_package "com.android.theme.font.notoserifsource"
-    uninstall_android_package "org.lineageos.overlay.font.lato"
 
     # Themes - Icons
     uninstall_android_package "com.android.theme.icon.roundedrect"
