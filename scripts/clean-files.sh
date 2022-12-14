@@ -6,8 +6,11 @@ source "${REPO_DIR}/scripts/common/package-management.sh"
 CLEAN_LOGS=true
 CLEAN_BROWSER_LOGS=false
 
+SYSTEM_FONTS_DIR="${ROOT_USR_SHARE}/fonts"
+
 remove "${LOCAL_INSTALL_TEMP_DIR}"
 
+remove "${SYSTEM_FONTS_DIR}/TTF/seguiemj.ttf"
 remove "${ROOT_ETC}/motd"
 
 ! does_bin_exist "aircrack-ng" && remove "${HOME}/.aircrack"

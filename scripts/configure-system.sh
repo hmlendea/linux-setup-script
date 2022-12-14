@@ -122,6 +122,8 @@ TEXT_EDITOR_FONT_STYLE="${MONOSPACE_FONT_STYLE}"
 #[ "${SCREEN_RESOLUTION_V}" -lt 1080 ] && TEXT_EDITOR_FONT_SIZE=11
 TEXT_EDITOR_FONT_SIZE="${MONOSPACE_FONT_SIZE}"
 
+EMOJI_FONT_NAME="Apple Color Emoji"
+
 INTERFACE_FONT="${INTERFACE_FONT_NAME} ${INTERFACE_FONT_STYLE} ${INTERFACE_FONT_SIZE}"
 DOCUMENT_FONT="${DOCUMENT_FONT_NAME} ${DOCUMENT_FONT_STYLE} ${DOCUMENT_FONT_SIZE}"
 TITLEBAR_FONT="${TITLEBAR_FONT_NAME} ${TITLEBAR_FONT_STYLE} ${TITLEBAR_FONT_SIZE}"
@@ -815,6 +817,7 @@ if does_bin_exist "firefox" "org.mozilla.firefox"; then
         set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.in-content.dark-mode" ${DESKTOP_THEME_IS_DARK}
         set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.tabs.drawInTitlebar" true
         set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.uidensity" 1 # Compact mode
+        set_firefox_config "${FIREFOX_PROFILE_ID}" "font.name-list.emoji" "${EMOJI_FONT_NAME}"
         set_firefox_config "${FIREFOX_PROFILE_ID}" "toolkit.legacyUserProfileCustomizations.stylesheets" true
         #set_firefox_config "${FIREFOX_PROFILE_ID}" "widget.non-native-theme.enabled" false # If true then some page elements (e.g. drop-down arrows in Bitwarden) look very ugly and out of place
         set_firefox_config "${FIREFOX_PROFILE_ID}" "widget.content.allow-gtk-dark-theme" ${DESKTOP_THEME_IS_DARK}
