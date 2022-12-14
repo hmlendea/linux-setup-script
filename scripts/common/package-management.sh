@@ -87,6 +87,8 @@ function is_native_package_installed() {
 }
 
 function is_android_package_installed() {
+    [[ "${DISTRO_FAMILY}" != "Android" ]] && return
+
     local PACKAGE="${1}"
 
     if call_android_package_manager list packages | grep -q "^package:${PACKAGE}$"; then
@@ -197,6 +199,8 @@ function install_native_package_dependency() {
 }
 
 function install_android_package() {
+    [[ "${DISTRO_FAMILY}" != "Android" ]] && return
+
 	local PACKAGE="${1}"
     local PACKAGE_NAME="${2}"
 
@@ -209,6 +213,8 @@ function install_android_package() {
 }
 
 function install_android_remote_package() {
+    [[ "${DISTRO_FAMILY}" != "Android" ]] && return
+
     local PACKAGE_URL="${1}"
     local PACKAGE_NAME="${2}"
 
