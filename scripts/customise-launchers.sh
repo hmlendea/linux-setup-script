@@ -671,7 +671,9 @@ done
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/electron-mail.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.github.vladimiry.ElectronMail.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.github.vladimiry.ElectronMail.desktop"; do
-    set_launcher_entry "${LAUNCHER}" \
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Proton Mail" \
+        Icon "protonmail-desktop" \
         Keywords "${MAIL_APP_KEYWORDS}Electron;"
 done
 
@@ -733,6 +735,9 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/google-keep.desktop" \
         NoDisplay false
 done
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/google-keep.desktop" StartupWMClass "google-keep-nativefier-d04d04"
+set_launcher_entries "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.simplenote.Simplenote.desktop" \
+    Name "Simplenote" \
+    Icon "simplenote"
 
 ##############
 ### NVIDIA ###
@@ -1094,7 +1099,9 @@ done
 
 for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.mozilla.firefox.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.mozilla.firefox.desktop"; do
-    set_launcher_entry "${LAUNCHER}" StartupWMClass "firefox"
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Firefox" \
+        StartupWMClass "firefox"
 done
 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/google-chrome-unstable.desktop" \
