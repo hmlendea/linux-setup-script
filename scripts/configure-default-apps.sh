@@ -18,27 +18,56 @@ function update_mimetype_association() {
     echo "${MIMETYPE}=${LAUNCHER}" >> "${MIMEAPPS_FILE}"
 }
 
-for IMAGE_TYPE in "bmp" "jpeg" "png" "webp"; do
-    update_mimetype_association "image/${IMAGE_TYPE}" "org.gnome.eog.desktop"
-done
-
-is_flatpak_installed "com.microsoft.Teams" && update_mimetype_association "x-scheme-handler/msteams" "com.microsoft.Teams.desktop"
-
+# Determine which apps to use
 BROWSER_LAUNCHER=""
 FILE_MANAGER_LAUNCHER=""
+GIMP_LAUNCHER=""
+IMAGE_VIEWER_LAUNCHER=""
 STEAM_LAUNCHER=""
 TEXT_EDITOR_LAUNCHER=""
 
 is_flatpak_installed "org.mozilla.firefox" && BROWSER_LAUNCHER="org.mozilla.firefox.desktop"
 is_native_package_installed "nautilus" && FILE_MANAGER_LAUNCHER="org.gnome.Nautilus.desktop"
 
+# GIMP
+if is_flatpak_installed "org.gimp.GIMP"; then
+    GIMP_LAUNCHER="org.gimp.GIMP.desktop"
+elif is_native_package_installed "gimp"; then
+    GIMP_LAUNCHER="gimp.desktop"
+fi
+
+# Image viewers
+if is_flatpak_installed "org.gnome.eog"; then
+    IMAGE_VIEWER_LAUNCHER="org.gnome.eog.desktop"
+elif is_native_package_installed "steam"; then
+    IMAGE_VIEWER_LAUNCHER="steam.desktop"
+fi
+
+# Steam
 if is_flatpak_installed "com.valvesoftware.Steam"; then
     STEAM_LAUNCHER="com.valvesoftware.Steam.desktop"
 elif is_native_package_installed "steam"; then
     STEAM_LAUNCHER="steam.desktop"
 fi
 
-is_flatpak_installed "org.gnome.gedit" && TEXT_EDITOR_LAUNCHER="org.gnome.gedit.desktop"
+# Steam
+if is_flatpak_installed "org.gnome.gedit"; then
+    TEXT_EDITOR_LAUNCHER="org.gnome.gedit.desktop"
+elif is_native_package_installed "gedit"; then
+    TEXT_EDITOR_LAUNCHER="gedit.desktop"
+fi
+
+# Update the associations
+
+for IMAGE_TYPE in "bmp" "jpeg" "png" "webp"; do
+    update_mimetype_association "image/${IMAGE_TYPE}" "${IMAGE_VIEWER_LAUNCHER}"
+done
+
+for IMAGE_TYPE in "x-dds"; do
+    update_mimetype_association "image/${IMAGE_TYPE}" "${GIMP_LAUNCHER}"
+done
+
+is_flatpak_installed "com.microsoft.Teams" && update_mimetype_association "x-scheme-handler/msteams" "com.microsoft.Teams.desktop"
 
 is_native_package_installed "icaclient" && update_mimetype_association "application/x-extension-ica" "citrix-wfica.desktop"
 
