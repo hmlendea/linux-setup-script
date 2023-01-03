@@ -1101,6 +1101,7 @@ for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.mozilla.firefox.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.mozilla.firefox.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Firefox" \
+        Name[ro] "Firefox" \
         StartupWMClass "firefox"
 done
 
