@@ -552,6 +552,11 @@ if does_bin_exist "pulseaudio"; then
     #set_config_value --separator " " "${ROOT_ETC}/pulse/default.pa" "load-module module-udev-detect" "tsched=0"
 fi
 
+BLUETOOTH_CONFIG_FILE="${ROOT_ETC}/bluetooth/main.conf"
+if [ -f "${ROOT_ETC}/bluetooth/main.conf" ]; then
+    set_config_value --section "General" "${BLUETOOTH_CONFIG_FILE}" ControllerMode dual
+fi
+
 #if is_gnome_shell_extension_installed "sound-output-device-chooser"; then
 #    SODC_SCHEMA="org.gnome.shell.extensions.sound-output-device-chooser"
 #

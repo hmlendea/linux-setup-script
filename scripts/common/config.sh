@@ -100,7 +100,16 @@ function set_config_value() {
             if [ ${SECTIONS_COUNT} -le 1 ]; then
                 append_line "${FILE_PATH}" "${KEY}${SEPARATOR}${VALUE}"
             else
-                echo "ERROR: Cannot add new key ${KEY} to existing section ${SECTION}, as this is not supported!"
+                if grep -q "^\s*#\s*${KEY}\s*${SEPARATOR}" <<< "${FILE_CONTENT}"; then
+                    if [ -w "${FILE_PATH}" ]; then
+                        sed -i 's|^\s*#\s*'"${KEY}"'\s*'"${SEPARATOR}"'.*|'"${KEY}${SEPARATOR}${VALUE}"'|g' "${FILE_PATH}"
+                    else
+                        sudo sed -i 's|^\s*#\s*'"${KEY}"'\s*'"${SEPARATOR}"'.*|'"${KEY}${SEPARATOR}${VALUE}"'|g' "${FILE_PATH}"
+                    fi
+                else
+                    echo "ERROR: Cannot add new key ${KEY} to existing section ${SECTION}, as this is not supported!"
+                    return
+                fi
             fi
         elif [ -n "${SECTION}" ]; then
             append_line "${FILE_PATH}" "[${SECTION}]"
