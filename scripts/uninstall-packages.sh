@@ -234,7 +234,7 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     #is_native_package_installed "gnome-shell-extension-dash-to-dock" && uninstall_gnome_shell_extension "dash-to-dock"
 
     # Themes - Fonts
-    is_native_package_installed "ttf-apple-emoji" && uninstall_native_package "noto-fonts-emoji"
+    uninstall_native_package "noto-fonts-emoji" # Replaced by ttf-apple-emoji
     #uninstall_android_package "com.android.theme.font.notoserifsource"
     uninstall_android_package "org.lineageos.overlay.font.lato"
 
