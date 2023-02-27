@@ -525,10 +525,10 @@ if does_bin_exist "minecraft-launcher" "com.mojang.Minecraft" "org.prismlauncher
             Comment[de] "Spiele Minecraft" \
             Comment[es] "Juega Minecraft" \
             Comment[ro] "Joacă Minecraft" \
-            Keywords "Game;Minecraft;" \
-            Keywords[de] "Spiel;Minecraft;" \
-            Keywords[es] "Juego;Minecraft;" \
-            Keywords[ro] "Joc;Minecraft;" \
+            Keywords "Game;Minecraft;MC;" \
+            Keywords[de] "Spiel;Minecraft;MC;" \
+            Keywords[es] "Juego;Minecraft;MC;" \
+            Keywords[ro] "Joc;Minecraft;MC;" \
             Exec "${MC_EXECUTABLE}" \
             Icon "minecraft" \
             Categories "Game;" \
