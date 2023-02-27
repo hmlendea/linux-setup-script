@@ -30,7 +30,6 @@ function set_alias_completion_source() {
 }
 
 # Basic
-[ ! -z "${EDITOR}" ]    && alias edit="${EDITOR}"
 [ ! -z "${SHELL}" ]     && alias sh="${SHELL}"
 
 alias sudo='sudo ' # Enables the simultaneous use of sudo and other aliases

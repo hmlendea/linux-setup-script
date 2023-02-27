@@ -1,0 +1,29 @@
+#!/bin/sh
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+ROOT_PATH=""
+[ -d "/data/data/com.termux" ] && ROOT_PATH="/data/data/com.termux/files"
+
+ROOT_ETC="${ROOT_PATH}/etc"
+ROOT_PROC="${ROOT_PATH}/proc"
+ROOT_USR="${ROOT_PATH}/usr"
+ROOT_USR_BIN="${ROOT_USR}/bin"
+
+# Functions
+
+function edit() {
+    if [ -z "${EDITOR}" ]; then
+        echo "ERROR: the \$EDITOR variable is not set!"
+        return
+    fi
+    
+    for FILE_PATH in "$@"; do
+        echo $FILE_PATH
+        if [ -w "${FILE_PATH}" ]; then
+            ${EDITOR} "${FILE_PATH}"
+        else
+            sudo ${EDITOR} "${FILE_PATH}"
+        fi
+    done
+}

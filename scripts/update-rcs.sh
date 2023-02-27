@@ -7,6 +7,7 @@ update_file_if_distinct "${REPO_RC_DIR}/profile" "${HOME}/.profile"
 update_file_if_distinct "${REPO_RC_DIR}/inputrc" "${XDG_CONFIG_HOME}/readline/inputrc"
 
 update_file_if_distinct "${REPO_RC_DIR}/shell_aliases" "${XDG_DATA_HOME}/bash/aliases"
+update_file_if_distinct "${REPO_RC_DIR}/shell_functions" "${XDG_DATA_HOME}/bash/functions"
 update_file_if_distinct "${REPO_RC_DIR}/shell_opts" "${XDG_DATA_HOME}/bash/options"
 update_file_if_distinct "${REPO_RC_DIR}/shell_prompt" "${XDG_DATA_HOME}/bash/prompt"
 update_file_if_distinct "${REPO_RC_DIR}/shell_vars" "${XDG_DATA_HOME}/bash/variables"
