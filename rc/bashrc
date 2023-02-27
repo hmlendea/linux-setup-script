@@ -14,6 +14,7 @@ loadSource "${HOME}/.profile"
 
 loadSource "${XDG_DATA_HOME}/bash/variables"
 loadSource "${XDG_DATA_HOME}/bash/aliases"
+loadSource "${XDG_DATA_HOME}/bash/functions"
 loadSource "${XDG_DATA_HOME}/bash/prompt"
 loadSource "${XDG_DATA_HOME}/bash/options"
 
