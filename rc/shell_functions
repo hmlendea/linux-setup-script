@@ -19,7 +19,6 @@ function edit() {
     fi
     
     for FILE_PATH in "$@"; do
-        echo $FILE_PATH
         if [ -w "${FILE_PATH}" ]; then
             ${EDITOR} "${FILE_PATH}"
         else
