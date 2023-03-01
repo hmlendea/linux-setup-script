@@ -1185,7 +1185,7 @@ for FLATPAK_LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}"/*.desktop \
         "Exec" "/usr/bin/flatpak run ${APP_ID} %U" \
         "Actions" "${ACTIONS}${QUIT_ACTION_ID};" \
         "Desktop Action ${QUIT_ACTION_ID}/Name" "Force Quit" \
-        "Desktop Action ${QUIT_ACTION_ID}/Name[ro]" "Închide Forțat" \
+        "Desktop Action ${QUIT_ACTION_ID}/Name[ro]" "Ieșire forțată" \
         "Desktop Action ${QUIT_ACTION_ID}/GenericName" "Force Quit" \
         "Desktop Action ${QUIT_ACTION_ID}/GenericName[ro]" "Închide Forțat" \
         "Desktop Action ${QUIT_ACTION_ID}/Exec" "/usr/bin/flatpak kill ${APP_ID}" \
