@@ -513,4 +513,9 @@ for DIR in  "${HOME}/.Cobra Mobile" \
     remove_dir_if_empty "${DIR}"
 done
 
+for FLATPAK_CACHE_DIR in "${ROOT_VAR}/tmp"/flatpak-cache-*; do
+    remove "${FLATPAK_CACHE_DIR}"
+done
+
 does_bin_exist "journalctl" && run_as_su journalctl --vacuum-time=3days
+
