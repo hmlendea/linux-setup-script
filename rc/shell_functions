@@ -19,10 +19,20 @@ function edit() {
     fi
     
     for FILE_PATH in "$@"; do
-        if [ -w "${FILE_PATH}" ]; then
-            ${EDITOR} "${FILE_PATH}"
+        if [ -f "${FILE_PATH}" ]; then
+            if [ -w "${FILE_PATH}" ]; then
+                "${EDITOR}" "${FILE_PATH}"
+            else
+                sudo "${EDITOR}" "${FILE_PATH}"
+            fi
         else
-            sudo ${EDITOR} "${FILE_PATH}"
+            local FILE_DIR_PATH=$(dirname "${FILE_PATH}")
+
+            if [ -w "${FILE_DIR_PATH}" ]; then
+                "${EDITOR}" "${FILE_PATH}"
+            else
+                sudo "${EDITOR}" "${FILE_PATH}"
+            fi
         fi
     done
 }
