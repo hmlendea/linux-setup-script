@@ -194,6 +194,16 @@ function remove_logs_in_dirs() {
     done
 }
 
+function create_directory() {
+    local DIRECTORY_PATH="${*}"
+
+    [ -z "${DIRECTORY_PATH}" ] && return
+    [ -d "${DIRECTORY_PATH}" ] && return
+    
+    echo -e "Creating directory \e[0;33m${DIRECTORY_PATH}\e[0m..."
+    mkdir -p "${DIRECTORY_PATH}"
+}
+
 function create_file() {
     local FILE_PATH="${*}"
 

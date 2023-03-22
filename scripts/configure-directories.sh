@@ -2,7 +2,7 @@
 source "scripts/common/filesystem.sh"
 source "${REPO_SCRIPTS_DIR}/common/system-info.sh"
 
-function update-hidden-files-config-if-needed() {
+function update_hidden_files_config_if_needed() {
     local CONFIG_FILE_NAME="${1}"
     local DESTINATION_DIR="${2}"
 
@@ -10,9 +10,31 @@ function update-hidden-files-config-if-needed() {
 }
 
 if ${HAS_GUI} && [[ "${OS}" == "Linux" ]]; then
-    update-hidden-files-config-if-needed "home" "${HOME}"
-    update-hidden-files-config-if-needed "home-documents" "${XDG_DOCUMENTS_DIR}"
-    update-hidden-files-config-if-needed "home-downloads" "${XDG_DOWNLOAD_DIR}"
+    update_hidden_files_config_if_needed "home" "${HOME}"
+    update_hidden_files_config_if_needed "home-documents" "${XDG_DOCUMENTS_DIR}"
+    update_hidden_files_config_if_needed "home-downloads" "${XDG_DOWNLOAD_DIR}"
+
+    if does_bin_exist "org.prismlauncher.PrismLauncher"; then
+        MINECRAFT_SCREENSHOTS_DIR="${XDG_PICTURES_DIR}/Screenshots/Minecraft"
+
+        create_directory "${MINECRAFT_SCREENSHOTS_DIR}"
+
+        for MINECRAFT_INSTANCE in "${HOME_VAR_APP}/org.prismlauncher.PrismLauncher/data/PrismLauncher/instances/"*"/"; do
+            MINECRAFT_INSTANCE_SCREENSHOTS_DIR="${MINECRAFT_INSTANCE}/.minecraft/screenshots"
+            if [ -d "${MINECRAFT_INSTANCE_SCREENSHOTS_DIR}" ] && \
+               [ ! -L "${MINECRAFT_INSTANCE_SCREENSHOTS_DIR}" ]; then
+                MINECRAFT_INSTANCE_SCREENSHOTS_DIR_FILES=$(ls -A "${MINECRAFT_INSTANCE_SCREENSHOTS_DIR}")
+                if [ "${MINECRAFT_INSTANCE_SCREENSHOTS_DIR_FILES}" ]; then
+                    echo "Moving contents of '${MINECRAFT_INSTANCE_SCREENSHOTS_DIR_FILES}' to '${MINECRAFT_SCREENSHOTS_DIR}'..."
+                    mv "${MINECRAFT_INSTANCE_SCREENSHOTS_DIR}"/* "${MINECRAFT_SCREENSHOTS_DIR}"
+                fi
+
+                rm -rf "${MINECRAFT_INSTANCE_SCREENSHOTS_DIR}"
+            fi
+
+            create_symlink "${MINECRAFT_SCREENSHOTS_DIR}" "${MINECRAFT_INSTANCE_SCREENSHOTS_DIR}"
+        done
+    fi
 fi
 
 if [[ "${OS}" == "Android" ]]; then
