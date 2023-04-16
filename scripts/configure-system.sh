@@ -554,7 +554,8 @@ fi
 
 BLUETOOTH_CONFIG_FILE="${ROOT_ETC}/bluetooth/main.conf"
 if [ -f "${ROOT_ETC}/bluetooth/main.conf" ]; then
-    set_config_value --section "General" "${BLUETOOTH_CONFIG_FILE}" ControllerMode dual
+    # Requires restart of bluetooth.service
+    set_config_value --section "General" "${BLUETOOTH_CONFIG_FILE}" ControllerMode bredr
 fi
 
 #if is_gnome_shell_extension_installed "sound-output-device-chooser"; then
