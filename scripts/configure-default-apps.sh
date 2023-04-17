@@ -96,6 +96,7 @@ if [ -n "${TEXT_EDITOR_LAUNCHER}" ]; then
         update_mimetype_association "application/${APPLICATION_TYPE}" "${TEXT_EDITOR_LAUNCHER}"
     done
 
+    update_mimetype_association "application/xml" "${TEXT_EDITOR_LAUNCHER}"
     update_mimetype_association "audio/x-mod" "${TEXT_EDITOR_LAUNCHER}"
     update_mimetype_association "text/x-python" "${TEXT_EDITOR_LAUNCHER}"
     update_mimetype_association "text/plain" "${TEXT_EDITOR_LAUNCHER}"
