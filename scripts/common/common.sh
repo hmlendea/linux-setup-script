@@ -19,7 +19,6 @@ function run_as_su() {
 }
 
 function run_script() {
-return
     local SCRIPT_PATH="${@}"
     echo -e "Executing as \e[1;94m${USER}\e[0;39m: '${SCRIPT_PATH}'..."
 
