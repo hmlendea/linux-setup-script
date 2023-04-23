@@ -555,7 +555,8 @@ fi
 BLUETOOTH_CONFIG_FILE="${ROOT_ETC}/bluetooth/main.conf"
 if [ -f "${ROOT_ETC}/bluetooth/main.conf" ]; then
     # Requires restart of bluetooth.service
-    set_config_value --section "General" "${BLUETOOTH_CONFIG_FILE}" ControllerMode bredr
+    # bredr for AirPods but DELL mouse won't work anymore
+    set_config_value --section "General" "${BLUETOOTH_CONFIG_FILE}" ControllerMode dual
 fi
 
 #if is_gnome_shell_extension_installed "sound-output-device-chooser"; then
