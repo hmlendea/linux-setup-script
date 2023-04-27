@@ -74,7 +74,8 @@ fi
 ### Monitoring ###
 ##################
 if [[ "${DISTRO_FAMILY}" == "Arch" ]] \
-&& [[ "${DISTRO}" != "SteamOS" ]]; then
+&& [[ "${DISTRO}" != "SteamOS" ]] \
+&& ${HAS_GUI}; then
     install_native_package fastfetch
 else
     install_native_package neofetch
