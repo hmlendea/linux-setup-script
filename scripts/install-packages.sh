@@ -537,6 +537,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
 
         # Tools
         install_flatpak com.simplenote.Simplenote
+        install_flatpak org.gnome.Todo
 
         install_native_package xorg-xdpyinfo
         #install_native_package xorg-xkill

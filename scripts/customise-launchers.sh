@@ -1052,6 +1052,18 @@ done
 
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/transmission-gtk.desktop" Categories "GTK;${TORRENT_APP_CATEGORIES}"
 
+#################
+### TODO Apps ###
+#################
+TODO_APP_KEYWORDS="Task;Productivity;TODO;Reminder;"
+TODO_APP_KEYWORDS_RO="${TODO_APP_KEYWORDS}Sarcină;Sarcini;Productivitate;DeFăcut;De făcut;Memento;"
+
+set_launcher_entries "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Todo.desktop" \
+    Name "Reminders" \
+    Name[ro] "Mementouri" \
+    Keywords "${TODO_APP_KEYWORDS}" \
+    Keywords[ro] "${TODO_APP_KEYWORDS_RO}"
+
 ########################
 ### TRANSLATION APPS ###
 ########################
