@@ -246,17 +246,21 @@ if does_bin_exist "flatpak"; then
         "network" true \
         "notification" false \
         "location" true
-    set_linux_permission "com.microsoft.Teams" \
-        "background" false \
-        "network" true \
-        "notification" true \
-        "notification_lockscreen" true \
-        "location" false
-    set_linux_permission "com.mojang.Minecraft" \
-        "background" false \
-        "network" true \
-        "notification" false \
-        "location" false
+    for FLATPAK_ID in "com.github.IsmaelMartinez.teams_for_linux" "com.microsoft.teams"; do
+        set_linux_permission "${FLATPAK_ID}" \
+            "background" false \
+            "network" true \
+            "notification" true \
+            "notification_lockscreen" true \
+            "location" false
+    done
+    for FLATPAK_ID in "com.mojang.Minecraft" "org.prismlauncher.PrismLauncher"; do
+        set_linux_permission "${FLATPAK_ID}" \
+            "background" false \
+            "network" true \
+            "notification" false \
+            "location" false
+    done
     set_linux_permission "com.getpostman.Postman" \
         "background" false \
         "network" true \
@@ -438,6 +442,11 @@ if does_bin_exist "flatpak"; then
         "background" false \
         "network" false \
         "notification" false \
+        "location" false
+    set_linux_permission "org.gnome.Todo" \
+        "background" true \
+        "network" true \
+        "notification" true \
         "location" false
     set_linux_permission "org.gnome.Totem" \
         "background" false \

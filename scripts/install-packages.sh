@@ -451,7 +451,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
 
         if ${IS_GENERAL_PURPOSE_DEVICE}; then
             # Communication
-            install_flatpak com.microsoft.Teams
+            install_flatpak com.github.IsmaelMartinez.teams_for_linux
             install_flatpak com.github.vladimiry.ElectronMail
             install_flatpak org.telegram.desktop
             install_flatpak org.signal.Signal
