@@ -169,9 +169,12 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/discord.desktop" \
 done
 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/teams.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/teams-for-linux.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/teams-insiders.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.github.IsmaelMartinez.teams_for_linux.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.microsoft.Teams.desktop" \
-                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.microsoft.Teams.desktop"; do
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.microsoft.Teams.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.github.IsmaelMartinez.teams_for_linux.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Teams" \
         Name[ro] "Teams" \
