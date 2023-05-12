@@ -750,12 +750,9 @@ if does_bin_exist "nautilus"; then
     NAUTILUS_SCHEMA="org.gnome.nautilus"
     FILECHOOSER_SCHEMA="org.gtk.Settings.FileChooser"
 
-    set_gsetting "${NAUTILUS_SCHEMA}.icon-view" default-zoom-level "standard"
-    set_gsetting "${NAUTILUS_SCHEMA}.list-view" default-zoom-level "small"
     set_gsetting "${NAUTILUS_SCHEMA}.preferences" search-view 'list-view'
     set_gsetting "${NAUTILUS_SCHEMA}.preferences" show-create-link true
     set_gsetting "${NAUTILUS_SCHEMA}.preferences" show-delete-permanently true
-    set_gsetting "${NAUTILUS_SCHEMA}.window-state" sidebar-width 240
 
     set_gsetting "${FILECHOOSER_SCHEMA}" sort-directories-first true
 fi
