@@ -1231,6 +1231,10 @@ if does_bin_exist "gnome-shell"; then
         FAVOURITE_APPS="${FAVOURITE_APPS}, 'simplenote.desktop'"
     fi
 
+    if does_bin_exist "org.gnome.Todo"; then
+        FAVOURITE_APPS="${FAVOURITE_APPS}, 'org.gnome.Todo.desktop'"
+    fi
+    
     FAVOURITE_APPS=$(echo "${FAVOURITE_APPS}" | sed 's/^\s*,*\s*//g')
 
     if [ -n "${FAVOURITE_APPS}" ]; then
