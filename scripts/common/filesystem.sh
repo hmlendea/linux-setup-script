@@ -357,3 +357,10 @@ if does_bin_exist "steam" "com.valvesoftware.Steam"; then
         STEAM_LIBRARY_PATHS=$(echo -e "${STEAM_LIBRARY_PATHS}\n${STEAM_LIBRARY_CUSTOM_PATHS}" | sort | uniq)
     fi
 fi
+
+# Configuration files
+SYSTEM_PHP_CONFIG_FILE="${ROOT_ETC}/php/php.ini"
+NEXTCLOUD_PHP_CONFIG_FILE="${ROOT_ETC}/webapps/nextcloud/php.ini"
+MARIADB_SERVER_CONFIG_FILE="${ROOT_ETC}/my.cnf.d/server.cnf"
+
+[ ! -f "${SYSTEM_PHP_CONFIG_FILE}" ] && SYSTEM_PHP_CONFIG_FILE="${ROOT_ETC}/php-legacy/php.ini"
