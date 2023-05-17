@@ -67,6 +67,11 @@ function set_config_value() {
     local KEY="${2}"
     local VALUE_RAW="${@:3}"
 
+    if [ -z "${FILE_PATH}" ]; then
+        echo "ERROR: File path cannot be empty!"
+        return
+    fi
+    
     create_file "${FILE_PATH}"
 
     #local VALUE=$(echo "${VALUE_RAW}" | sed -e 's/[]\/$*.^|[]/\\&/g')
