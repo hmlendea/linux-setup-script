@@ -60,8 +60,8 @@ function get_screen_height_millimetres() {
 function get_screen_dpi() {
     local RESOLUTION_H=$(get_screen_width)
 
-    if [ "${RESOLUTION_H}" -eq 0 ] \
-    || [ -z "${RESOLUTION_H}" ]; then
+    if [ -z "${RESOLUTION_H}" ] \
+    || [ "${RESOLUTION_H}" -eq 0 ]; then
         if does_bin_exist "xdpyinfo"; then
             xdpyinfo | grep "resolution" | sed 's/^[^0-9]*\([0-9]*\)x[0-9]*.*/\1/g'
         else
