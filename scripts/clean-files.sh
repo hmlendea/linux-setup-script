@@ -136,7 +136,11 @@ remove "${ROOT_ETC}/motd"
     "${XDG_RUNTIME_HOME}/npm"
 ! does_bin_exist "nvidia-settings" && remove \
     "${HOME}/.nvidia-settings-rc" \
-    "${XDG_CONFIG_HOME}/nvidia/settings"
+    "${XDG_CONFIG_HOME}/nvidia/settings" \
+    "${HOME_VAR_APP}/"*"/cache/nvidia"
+! does_bin_exist "nvidia-settings" && remove \
+    "${XDG_CACHE_HOME}/nvidia" \
+    "${XDG_CONFIG_HOME}/nvidia"
 ! does_bin_exist "onlyoffice-desktopeditors" && remove \
     "${XDG_CONFIG_HOME}/onlyoffice" \
     "${XDG_DATA_HOME}/onlyoffice"
@@ -330,6 +334,9 @@ remove "${XDG_DATA_HOME}/applications/wine-"*
 ! is_gnome_shell_extension_installed "tiling-assistant" && remove "${XDG_CONFIG_HOME}/tiling-assistant"
 
 # Steam games / apps
+does_bin_exist "steam" && remove \
+    "${XDG_DATA_HOME}/Steam/"*"/steam-runtime/usr/share/doc"
+
 ! is_steam_app_installed "8930" && remove \
     "${XDG_DATA_HOME}/Aspyr/Sid Meier's Civilization 5" \
     "${XDG_DATA_HOME}/Aspyr/com.aspyr.civ5xp.json"
@@ -381,15 +388,18 @@ for STEAM_LIBRARY_PATH in ${STEAM_LIBRARY_PATHS}; do
     is_steam_app_installed "8930" && remove \
         "${STEAM_LIBRARY_PATH}/common/Sid Meier's Civilization V/steamassets/"*.mov \
         "${STEAM_LIBRARY_PATH}/common/Sid Meier's Civilization V/steamassets/assets/dlc/"*/*.mov
+    is_steam_app_installed "8980" && remove \
+        "${STEAM_LIBRARY_PATH}/common/Borderlands/WillowGame/Movies/NVidia.bik"
+    is_steam_app_installed "20920" && remove \
+        "${STEAM_LIBRARY_PATH}/common/the witcher 2/CookedPC/movies/nvidia.usm"
     is_steam_app_installed "281990" && remove \
         "${STEAM_LIBRARY_PATH}/common/Stellaris/ebook" \
         "${STEAM_LIBRARY_PATH}/common/Stellaris/licenses" \
         "${STEAM_LIBRARY_PATH}/common/Stellaris/soundtrack"
     is_steam_app_installed "322330" && remove "${STEAM_LIBRARY_PATH}/common/Don't Starve Together/cached_mods"
     is_steam_app_installed "859580" && remove "${STEAM_LIBRARY_PATH}/common/ImperatorRome/licenses"
-    is_steam_app_installed "1158310" && remove \
-        "${STEAM_LIBRARY_PATH}/common/Crusader Kings III/game/licenses" \
-        "${STEAM_LIBRARY_PATH}/common/Crusader Kings III/game/licenses" \
+    is_steam_app_installed "990080" && remove "${STEAM_LIBRARY_PATH}/common/ShadowOfMordor/share/data/game/interface/videos"
+    is_steam_app_installed "1158310" && remove "${STEAM_LIBRARY_PATH}/common/Crusader Kings III/game/licenses"
 
     ! is_steam_app_installed "8930" && remove "${STEAM_LIBRARY_PATH}/common/Sid Meier's Civilization V"
     ! is_steam_app_installed "41070" && remove "${STEAM_LIBRARY_PATH}/common/Serious Sam 3"
@@ -411,7 +421,11 @@ for STEAM_LIBRARY_PATH in ${STEAM_LIBRARY_PATHS}; do
     ! is_steam_app_installed "328080" && remove "${STEAM_LIBRARY_PATH}/common/Rise to Ruins"
     ! is_steam_app_installed "346010" && remove "${STEAM_LIBRARY_PATH}/common/Besiege"
     ! is_steam_app_installed "356040" && remove "${STEAM_LIBRARY_PATH}/common/Sheltered"
+    ! is_steam_app_installed "393080" && remove "${STEAM_LIBRARY_PATH}/common/Call of Duty Modern Warfare Remastered"
     ! is_steam_app_installed "552110" && remove "${STEAM_LIBRARY_PATH}/common/Puzzle Pirates Dark Seas"
+
+    ! does_bin_exist "nvidia-settings" && remove \
+        "${STEAM_LIBRARY_PATH}/common/Hogwarts Legacy/Engine/Plugins/Runtime/Nvidia"
 done
 
 # Unwanted files in the Downloads dir, by extension
