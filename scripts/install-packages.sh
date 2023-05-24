@@ -523,6 +523,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
             [[ "${ARCH_FAMILY}" == "x86" ]] && install_native_package visual-studio-code-bin
             [[ "${ARCH_FAMILY}" == "arm" ]] && install_native_package code-headmelted-bin
             install_vscode_package "dakara.transformer"
+            install_vscode_package "github.vscode-github-actions"
             install_vscode_package "johnpapa.vscode-peacock"
             install_vscode_package "mechatroner.rainbow-csv"
             install_vscode_package "mgcb-vscode.mgcb-vscode"
