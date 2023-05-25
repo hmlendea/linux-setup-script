@@ -626,10 +626,14 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/gpicview.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/eom.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/org.gnome.eog.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.eog.desktop" \
-                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.eog.desktop"; do
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Loupe.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.eog.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Loupe.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Images" \
-        Name[ro] "Imagini"
+        Name[ro] "Imagini" \
+        Icon "eog" \
+        Keywords "Photo;Picture;Slideshow;Graphics;Image Viewer;"
 done
 
 ########################

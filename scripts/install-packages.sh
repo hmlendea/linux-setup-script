@@ -349,7 +349,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
 
             # Image Viewer
             if ${POWERFUL_PC}; then
-                install_flatpak org.gnome.eog
+                install_flatpak org.gnome.Loupe
             else
                 install_native_package gpicview
             fi

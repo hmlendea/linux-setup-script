@@ -37,10 +37,12 @@ elif is_native_package_installed "gimp"; then
 fi
 
 # Image viewers
-if is_flatpak_installed "org.gnome.eog"; then
+if is_flatpak_installed "org.gnome.Loupe"; then
+    IMAGE_VIEWER_LAUNCHER="org.gnome.Loupe.desktop"
+elif is_flatpak_installed "org.gnome.eog"; then
     IMAGE_VIEWER_LAUNCHER="org.gnome.eog.desktop"
-elif is_native_package_installed "steam"; then
-    IMAGE_VIEWER_LAUNCHER="steam.desktop"
+elif is_native_package_installed "gpicview"; then
+    IMAGE_VIEWER_LAUNCHER="gpicview.desktop"
 fi
 
 # Steam
