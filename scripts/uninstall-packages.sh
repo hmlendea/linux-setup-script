@@ -96,6 +96,7 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
 
     # Image Viewers
     uninstall_native_package "eog-plugins" "eog"
+    uninstall_flatpak "org.gnome.eog"
     [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ] && uninstall_native_package "gwenview"
     [ "${DESKTOP_ENVIRONMENT}" = "KDE" ] && uninstall_flatpak "org.gnome.eog"
 
