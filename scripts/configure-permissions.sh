@@ -241,21 +241,16 @@ if does_bin_exist "flatpak"; then
         "notification" true \
         "notification_lockscreen" true \
         "location" false
-    set_linux_permission "com.brave.Browser" \
-        "background" false \
-        "network" true \
-        "notification" false \
-        "location" true
-    for FLATPAK_ID in "com.github.IsmaelMartinez.teams_for_linux" "com.microsoft.teams"; do
-        set_linux_permission "${FLATPAK_ID}" \
+    for TEAMS_APP in "com.github.IsmaelMartinez.teams_for_linux" "com.microsoft.teams"; do
+        set_linux_permission "${TEAMS_APP}" \
             "background" false \
             "network" true \
             "notification" true \
             "notification_lockscreen" true \
             "location" false
     done
-    for FLATPAK_ID in "com.mojang.Minecraft" "org.prismlauncher.PrismLauncher"; do
-        set_linux_permission "${FLATPAK_ID}" \
+    for MINECRAFT_APP in "com.mojang.Minecraft" "org.prismlauncher.PrismLauncher"; do
+        set_linux_permission "${MINECRAFT_APP}" \
             "background" false \
             "network" true \
             "notification" false \
@@ -288,8 +283,8 @@ if does_bin_exist "flatpak"; then
         "notification" true \
         "notification_lockscreen" true \
         "location" false
-    for APP in "com.valvesoftware.Steam" "steam"; do
-        set_linux_permission "${APP}" \
+    for STEAM_APP in "com.valvesoftware.Steam" "steam"; do
+        set_linux_permission "${STEAM_APP}" \
             "background" true \
             "network" true \
             "notification" false \
@@ -300,11 +295,13 @@ if does_bin_exist "flatpak"; then
         "network" false \
         "notification" false \
         "location" false
-    set_linux_permission "com.visualstudio.code" \
-        "background" false \
-        "network" true \
-        "notification" false \
-        "location" false
+    for VSCODE_APP in "com.visualstudio.code" "visual-studio-code"; do
+        set_linux_permission "${VSCODE_APP}" \
+            "background" false \
+            "network" true \
+            "notification" false \
+            "location" false
+    done
     set_linux_permission "de.haeckerfelix.Fragments" \
         "background" true \
         "network" true \
@@ -316,12 +313,14 @@ if does_bin_exist "flatpak"; then
         "network" false \
         "notification" false \
         "location" false
-    set_linux_permission "io.bassi.Amberol" \
-        "background" false \
-        "network" false \
-        "notification" true \
-        "notification_lockscreen" true \
-        "location" false
+    for AUDIO_PLAYER_APP in "io.bassi.Amberol" "org.gnome.Rhythmbox3"; do
+        set_linux_permission "${AUDIO_PLAYER_APP}" \
+            "background" false \
+            "network" false \
+            "notification" true \
+            "notification_lockscreen" true \
+            "location" false
+    done
     set_linux_permission "io.github.hmlendea.geforcenow-electron" \
         "background" false \
         "network" true \
@@ -389,11 +388,13 @@ if does_bin_exist "flatpak"; then
         "network" false \
         "notification" false \
         "location" false
-    set_linux_permission "org.gnome.eog" \
-        "background" false \
-        "network" false \
-        "notification" false \
-        "location" false
+    for IMAGE_VIEWER_APP in "org.gnome.eog" "org.gnome.Loupe"; do
+        set_linux_permission "${IMAGE_VIEWER_APP}" \
+            "background" false \
+            "network" false \
+            "notification" false \
+            "location" false
+    done
     set_linux_permission "org.gnome.Evince" \
         "background" false \
         "network" false \
@@ -410,11 +411,13 @@ if does_bin_exist "flatpak"; then
         "network" false \
         "notification" false \
         "location" false
-    set_linux_permission "org.gnome.gedit" \
-        "background" false \
-        "network" false \
-        "notification" false \
-        "location" false
+    for TEXT_EDITOR_APP in "org.gnome.gedit" "org.gnome.TextEditor"; do
+        set_linux_permission "${TEXT_EDITOR_APP}" \
+            "background" false \
+            "network" false \
+            "notification" false \
+            "location" false
+    done
     set_linux_permission "org.gnome.Maps" \
         "background" false \
         "network" true \
@@ -424,12 +427,6 @@ if does_bin_exist "flatpak"; then
         "background" false \
         "network" true \
         "notification" false \
-        "location" false
-    set_linux_permission "org.gnome.Rhythmbox3" \
-        "background" false \
-        "network" false \
-        "notification" true \
-        "notification_lockscreen" true \
         "location" false
     set_linux_permission "org.gnome.seahorse.Application" \
         "background" false \
@@ -468,11 +465,13 @@ if does_bin_exist "flatpak"; then
         "network" false \
         "notification" false \
         "location" false
-    set_linux_permission "org.mozilla.firefox" \
-        "background" false \
-        "network" true \
-        "notification" false \
-        "location" true
+    for INTERNET_BROWSER_APP in "com.brave.browser" "org.mozilla.firefox"; do
+        set_linux_permission "${INTERNET_BROWSER_APP}" \
+            "background" false \
+            "network" true \
+            "notification" false \
+            "location" true
+    done
     set_linux_permission "org.signal.Signal" \
         "background" true \
         "network" true \
@@ -495,7 +494,6 @@ if does_bin_exist "flatpak"; then
         "network" false \
         "notification" false \
         "location" false
-    set_linux_permission "visual-studio-code" "notification" false
 fi
 
 if [[ "${DISTRO_FAMILY}" == "Android" ]] \
