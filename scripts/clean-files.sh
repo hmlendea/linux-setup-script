@@ -408,6 +408,7 @@ for STEAM_LIBRARY_PATH in ${STEAM_LIBRARY_PATHS}; do
     ! is_steam_app_installed "91310" && remove "${STEAM_LIBRARY_PATH}/common/Dead Island"
     ! is_steam_app_installed "99910" && remove "${STEAM_LIBRARY_PATH}/common/Puzzle Pirates"
     ! is_steam_app_installed "105600" && remove "${STEAM_LIBRARY_PATH}/common/Terraria"
+    ! is_steam_app_installed "205910" && remove "${STEAM_LIBRARY_PATH}/common/TinyAndBig"
     ! is_steam_app_installed "206690" && remove "${STEAM_LIBRARY_PATH}/common/ibomber defense pacific"
     ! is_steam_app_installed "219150" && remove "${STEAM_LIBRARY_PATH}/common/hotline_miami"
     ! is_steam_app_installed "221380" && remove "${STEAM_LIBRARY_PATH}/common/Age2HD"
@@ -418,10 +419,12 @@ for STEAM_LIBRARY_PATH in ${STEAM_LIBRARY_PATHS}; do
     ! is_steam_app_installed "304050" && remove "${STEAM_LIBRARY_PATH}/common/Trove"
     ! is_steam_app_installed "304930" && remove "${STEAM_LIBRARY_PATH}/common/Unturned"
     ! is_steam_app_installed "312900" && remove "${STEAM_LIBRARY_PATH}/common/Zoo Rampage"
+    ! is_steam_app_installed "322330" && remove "${STEAM_LIBRARY_PATH}/common/Don't Starve Together"
     ! is_steam_app_installed "328080" && remove "${STEAM_LIBRARY_PATH}/common/Rise to Ruins"
     ! is_steam_app_installed "346010" && remove "${STEAM_LIBRARY_PATH}/common/Besiege"
     ! is_steam_app_installed "356040" && remove "${STEAM_LIBRARY_PATH}/common/Sheltered"
     ! is_steam_app_installed "393080" && remove "${STEAM_LIBRARY_PATH}/common/Call of Duty Modern Warfare Remastered"
+    ! is_steam_app_installed "442070" && remove "${STEAM_LIBRARY_PATH}/common/Drawful 2"
     ! is_steam_app_installed "552110" && remove "${STEAM_LIBRARY_PATH}/common/Puzzle Pirates Dark Seas"
 
     ! does_bin_exist "nvidia-settings" && remove \
