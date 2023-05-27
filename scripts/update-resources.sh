@@ -19,6 +19,15 @@ if does_bin_exist "firefox" "org.mozilla.firefox"; then
     fi
 fi
 
+if does_bin_exist "git"; then
+    for REPO_HOOK_FILE in "${REPO_RES_DIR}/git/hooks"/*; do
+        REPO_HOOK_FILE_NAME=$(basename "${REPO_HOOK_FILE}")
+        SYS_HOOK_FILE="${XDG_CONFIG_HOME}/git/hooks/${REPO_HOOK_FILE_NAME}"
+        update_file_if_distinct "${REPO_HOOK_FILE}" "${SYS_HOOK_FILE}"
+        chmod +x "${SYS_HOOK_FILE}"
+    done
+fi
+
 if does_bin_exist "lxpanel"; then
     update_file_if_distinct "${REPO_RES_DIR}/lxpanel/applications.png"                "${XDG_CONFIG_HOME}/lxpanel/LXDE/panels/applications.png"
     update_file_if_distinct "${REPO_RES_DIR}/lxpanel/applications_ro.png"             "${XDG_CONFIG_HOME}/lxpanel/LXDE/panels/applications_ro.png"
