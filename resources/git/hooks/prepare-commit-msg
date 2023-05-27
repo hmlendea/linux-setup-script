@@ -1,0 +1,19 @@
+#!/bin/bash
+ORIGINAL_COMMIT_MESSAGE=$(cat "${1}")
+COMMIT_MESSAGE="${ORIGINAL_COMMIT_MESSAGE}"
+COMMIT_MESSAGE=$(echo "${COMMIT_MESSAGE}" | sed \
+    -e 's/^\s*\(.*\)\s*$/\1/g' \
+    -e 's/.*/\u&/')
+
+[ -z "${COMMIT_MESSAGE}" ] && exit 1
+
+BRANCH_NAME=$(git symbolic-ref --short HEAD 2>/dev/null)
+
+if [ -n "${BRANCH_NAME}" ]; then
+    if [ "${BRANCH_NAME}" != "main" ] && \
+       [ "${BRANCH_NAME}" != "master" ]; then
+        COMMIT_MESSAGE="${BRANCH_NAME}: ${COMMIT_MESSAGE}"
+    fi
+fi
+
+echo "${COMMIT_MESSAGE}" > "${1}"

@@ -2,6 +2,7 @@
     name = Horațiu Mlendea
     email = Horatiu.Mlendea@ProtonMail.com
 [core]
+    hooksPath = ~/.config/git/hooks
     autocrlf = input
     pager = most
     ignorecase = false
