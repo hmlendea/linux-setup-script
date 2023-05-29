@@ -14,6 +14,8 @@ if ${HAS_GUI} && [[ "${OS}" == "Linux" ]]; then
     update_hidden_files_config_if_needed "home-documents" "${XDG_DOCUMENTS_DIR}"
     update_hidden_files_config_if_needed "home-downloads" "${XDG_DOWNLOAD_DIR}"
 
+    [ "${XDG_DOWNLOAD_DIR}" == "${HOME}/Descărcări" ] && create_symlink "${XDG_DOWNLOAD_DIR}" "${HOME}/Downloads"
+
     if does_bin_exist "org.prismlauncher.PrismLauncher"; then
         MINECRAFT_SCREENSHOTS_DIR="${XDG_PICTURES_DIR}/Screenshots/Minecraft"
 

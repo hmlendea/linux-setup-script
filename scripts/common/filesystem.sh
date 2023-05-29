@@ -68,14 +68,29 @@ fi
 [ -z "${XDG_DATA_HOME}" ]       && XDG_DATA_HOME="${HOME_REAL}/.local/share"
 [ -z "${XDG_STATE_HOME}" ]      && XDG_STATE_HOME="${HOME_REAL}/.local/state"
 
-[ -z "${XDG_DESKTOP_DIR}" ]     && XDG_DESKTOP_DIR="${HOME_REAL}/Desktop"
-[ -z "${XDG_DOCUMENTS_DIR}" ]   && XDG_DOCUMENTS_DIR="${HOME_REAL}/Documents"
-[ -z "${XDG_DOWNLOAD_DIR}" ]    && XDG_DOWNLOAD_DIR="${HOME_REAL}/Downloads"
-[ -z "${XDG_MUSIC_DIR}" ]       && XDG_MUSIC_DIR="${HOME_REAL}/Music"
-[ -z "${XDG_PICTURES_DIR}" ]    && XDG_PICTURES_DIR="${HOME_REAL}/Pictures"
-[ -z "${XDG_PUBLICSHARE_DIR}" ] && XDG_PUBLICSHARE_DIR="${HOME_REAL}/Public"
-[ -z "${XDG_TEMPLATES_DIR}" ]   && XDG_TEMPLATES_DIR="${HOME_REAL}/Templates"
-[ -z "${XDG_VIDEOS_DIR}" ]      && XDG_VIDEOS_DIR="${HOME_REAL}/Videos"
+function configure_xdg_directory() {
+    local XDG_DIR="${1}" && shift
+    local XDG_VARIABLE_NAME="XDG_${XDG_DIR}_DIR"
+
+    local XDG_DIR_PATH=""
+
+    [ -f "${XDG_CONFIG_DIR}/user-dirs.dirs" ] && XDG_DIR_PATH=$(cat "${XDG_CONFIG_DIR}/user-dirs.dirs" | grep "${XDG_VARIABLE_NAME}" | awk -F"=" '{print $2}')
+
+    while [ -z "${XDG_DIR_PATH}" ]; do
+        [ -e "${1}" ] && XDG_DIR_PATH="${1}"
+    done
+
+    eval "${XDG_VARIABLE_NAME}=\"${XDG_DIR_PATH}\""
+}
+
+configure_xdg_directory "DESKTOP"       "${HOME_REAL}/Desktop"
+configure_xdg_directory "DOCUMENTS"     "${HOME_REAL}/Documente"    "${HOME_REAL}/Documents"
+configure_xdg_directory "DOWNLOAD"      "${HOME_REAL}/Descărcări"   "${HOME_REAL}/Downloads"
+configure_xdg_directory "MUSIC"         "${HOME_REAL}/Muzică"       "${HOME_REAL}/Music"
+configure_xdg_directory "PICTURES"      "${HOME_REAL}/Poze"         "${HOME_REAL}/Pictures"
+configure_xdg_directory "PUBLICSHARE"   "${HOME_REAL}/Public"
+configure_xdg_directory "TEMPLATES"     "${HOME_REAL}/Șabloane"     "${HOME_REAL}/Templates"
+configure_xdg_directory "VIDEOS"        "${HOME_REAL}/Video"        "${HOME_REAL}/Videos"
 
 HOME_LOCAL="${HOME_REAL}/.local"
 HOME_LOCAL_BIN="${HOME_LOCAL}/bin"
@@ -223,7 +238,7 @@ function create_symlink() {
     [ ! -e "${SOURCE}" ] && return
     [ -e "${TARGET}" ] && return
 
-    echo -e "Linking \e[0;33m${SOURCE}\e[0m → \e[0;33m${TARGET}\e[0m..."
+    echo -e "Creating link \e[0;33m${TARGET}\e[0m →  \e[0;33m${SOURCE}\e[0m..."
     ln -s "${SOURCE}" "${TARGET}"
 }
 

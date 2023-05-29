@@ -3,7 +3,26 @@ source "scripts/common/filesystem.sh"
 source "${REPO_SCRIPTS_COMMON_DIR}/common.sh"
 source "${REPO_SCRIPTS_COMMON_DIR}/config.sh"
 
-update_file_if_distinct "${REPO_RC_DIR}/profile" "${HOME}/.profile"
+# .profil
+set_config_value "${HOME}/.profile" "export XDG_CACHE_HOME"     "\"${HOME}/.cache\""
+set_config_value "${HOME}/.profile" "export XDG_CONFIG_HOME"    "\"${HOME}/.config\""
+set_config_value "${HOME}/.profile" "export XDG_DATA_HOME"      "\"${HOME}/.local/share\""
+set_config_value "${HOME}/.profile" "export XDG_STATE_HOME"     "\"${HOME}/.local/state\""
+set_config_value "${HOME}/.profile" "export XDG_DESKTOP_DIR"    "\"${XDG_DESKTOP_DIR}\""
+set_config_value "${HOME}/.profile" "export XDG_DOCUMENTS_DIR"  "\"${XDG_DOCUMENTS_DIR}\""
+set_config_value "${HOME}/.profile" "export XDG_DOWNLOAD_DIR"   "\"${XDG_DOWNLOAD_DIR}\""
+set_config_value "${HOME}/.profile" "export XDG_MUSIC_DIR"      "\"${XDG_MUSIC_DIR}\""
+set_config_value "${HOME}/.profile" "export XDG_PICTURES_DIR"   "\"${XDG_PICTURES_DIR}\""
+set_config_value "${HOME}/.profile" "export XDG_PUBLIC_DIR"     "\"${XDG_PUBLIC_DIR}\""
+set_config_value "${HOME}/.profile" "export XDG_TEMPLATES_DIR"  "\"${XDG_TEMPLATES_DIR}\""
+set_config_value "${HOME}/.profile" "export XDG_VIDEOS_DIR"     "\"${XDG_VIDEOS_DIR}\""
+if [ -d "${HOME}/.loca/bin" ]; then
+    set_config_value "${HOME}/.profile" "export PATH" '"${PATH}:/'"${HOME}"'/.local/bin"'
+else
+    set_config_value "${HOME}/.profile" "export PATH" '"${PATH}"'
+fi
+
+#update_file_if_distinct "${REPO_RC_DIR}/profile" "${HOME}/.profile"
 update_file_if_distinct "${REPO_RC_DIR}/inputrc" "${XDG_CONFIG_HOME}/readline/inputrc"
 
 update_file_if_distinct "${REPO_RC_DIR}/shell_aliases" "${XDG_DATA_HOME}/bash/aliases"
