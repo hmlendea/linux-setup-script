@@ -179,7 +179,8 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/teams.desktop" \
         Name "Teams" \
         Name[ro] "Teams" \
         Icon "teams" \
-        Categories "${CHAT_APP_CATEGORIES}"
+        Categories "${CHAT_APP_CATEGORIES}" \
+        StartupNotify false
 done
 
 #if [ "$(get_gpu_family)" = "Intel" ]; then
@@ -593,7 +594,8 @@ if does_bin_exist "gimp" "org.gimp.GIMP"; then
         set_launcher_entries "${LAUNCHER}" \
             Name "GIMP" \
             Categories "GTK;${IMAGE_EDITOR_CATEGORIES};RasterGraphics;" \
-            StartupWMClass "Gimp-2.10"
+            StartupWMClass "Gimp-2.10" \
+            StartupNotify false
     done
 
     [ ! -f "${GLOBAL_LAUNCHERS_DIR}/gmic-qt.desktop" ] && create_launcher "${GLOBAL_LAUNCHERS_DIR}/gmic-qt.desktop"
@@ -757,7 +759,8 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/google-keep.desktop" \
                 "${LOCAL_LAUNCHERS_DIR}/chrome-hmjkmjkepdijhoojdojkdfohbdgmmhki-Default.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Categories "Utility;" \
-        NoDisplay false
+        NoDisplay false \
+        StartupNotify false
 done
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/google-keep.desktop" StartupWMClass "google-keep-nativefier-d04d04"
 set_launcher_entries "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.simplenote.Simplenote.desktop" \
@@ -845,7 +848,8 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/postman.desktop" \
     set_launcher_entries "${LAUNCHER}" \
         Name "Postman" \
         Icon "postman" \
-        Categories "Development;"
+        Categories "Development;" \
+        StartupNotify false
 done
 
 ###########################
@@ -1131,7 +1135,9 @@ done
 
 for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.brave.Browser.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.brave.Broser.desktop"; do
-    set_launcher_entry "${LAUNCHER}" Name "Brave"
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Brave" \
+        StartupNotify false
 done
 
 for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.mozilla.firefox.desktop" \
@@ -1139,7 +1145,8 @@ for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.mozilla.firefox.desktop" \
     set_launcher_entries "${LAUNCHER}" \
         Name "Firefox" \
         Name[ro] "Firefox" \
-        StartupWMClass "firefox"
+        StartupWMClass "firefox" \
+        StartupNotify false
 done
 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/google-chrome-unstable.desktop" \

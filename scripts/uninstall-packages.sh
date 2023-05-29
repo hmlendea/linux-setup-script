@@ -161,7 +161,6 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "haveged"
     uninstall_native_package "lshw"
     uninstall_native_package "ocl-icd" # OCL integration for fastfetch
-    uninstall_native_package "patch"
     uninstall_native_package "pop-sound-theme-git"
     uninstall_native_package "python2"
     uninstall_native_package "subversion"
