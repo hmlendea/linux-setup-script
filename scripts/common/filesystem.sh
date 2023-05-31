@@ -76,8 +76,9 @@ function configure_xdg_directory() {
 
     [ -f "${XDG_CONFIG_DIR}/user-dirs.dirs" ] && XDG_DIR_PATH=$(cat "${XDG_CONFIG_DIR}/user-dirs.dirs" | grep "${XDG_VARIABLE_NAME}" | awk -F"=" '{print $2}')
 
-    while [ -z "${XDG_DIR_PATH}" ]; do
+    while [ -z "${XDG_DIR_PATH}" ] && [ -n "${1}" ]; do
         [ -e "${1}" ] && XDG_DIR_PATH="${1}"
+        shift
     done
 
     eval "${XDG_VARIABLE_NAME}=\"${XDG_DIR_PATH}\""
