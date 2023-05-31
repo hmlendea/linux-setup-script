@@ -13,7 +13,9 @@ if [ -n "${BRANCH_NAME}" ]; then
     COMMIT_MESSAGE=$(echo "${COMMIT_MESSAGE}" | sed 's/^'"${COMMIT_PREFIX}"'//gI')
 fi
 
-if [ -n "${COMMIT_PREFIX}" ]; then
+if [[ ${COMMIT_MESSAGE} == Merge* ]]; then
+    COMMIT_PREFIX=""
+elif [ -n "${COMMIT_PREFIX}" ]; then
     if [ "${BRANCH_NAME}" == "main" ] || \
        [ "${BRANCH_NAME}" == "master" ]; then
         COMMIT_PREFIX=""
