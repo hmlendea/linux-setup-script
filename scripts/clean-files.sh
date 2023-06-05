@@ -206,6 +206,7 @@ remove "${ROOT_ETC}/motd"
     "${XDG_CACHE_HOME}/yay" \
     "${XDG_CONFIG_HOME}/yay"
 ! does_bin_exist "youtube-dl" && remove "${XDG_CACHE_HOME}/youtube-dl"
+! does_bin_exist "yt-dlp" && remove "${XDG_CACHE_HOME}/yt-dlp"
 ! does_bin_exist "zsh" && remove "${HOME}/.zshrc"
 
 ############
@@ -364,6 +365,7 @@ does_bin_exist "steam" && remove \
 ! is_steam_app_installed "255300" && remove "${XDG_DATA_HOME}/Daedalic Entertainment/Journey of a Roach"
 ! is_steam_app_installed "263060" && remove "${XDG_CONFIG_HOME}/unity3d/IndieGala/Blockstorm"
 ! is_steam_app_installed "284710" && remove "${XDG_CACHE_HOME}/ArtifexMundi/Abyss_TheWraithsOfEden"
+! is_steam_app_installed "305620" && remove "${XDG_DATA_HOME}/Hinterland/TheLongDark"
 ! is_steam_app_installed "313340" && remove "${XDG_CONFIG_HOME}/unity3d/David\ OReilly/Mountain"
 ! is_steam_app_installed "319270" && remove "${XDG_DATA_HOME}/great-permutator"
 ! is_steam_app_installed "322330" && remove \
@@ -397,6 +399,7 @@ for STEAM_LIBRARY_PATH in ${STEAM_LIBRARY_PATHS}; do
         "${STEAM_LIBRARY_PATH}/common/Stellaris/licenses" \
         "${STEAM_LIBRARY_PATH}/common/Stellaris/soundtrack"
     is_steam_app_installed "322330" && remove "${STEAM_LIBRARY_PATH}/common/Don't Starve Together/cached_mods"
+    is_steam_app_installed "476600" && remove "${STEAM_LIBRARY_PATH}/common/Call of Duty WWII/SHG_Logo.bik"
     is_steam_app_installed "859580" && remove "${STEAM_LIBRARY_PATH}/common/ImperatorRome/licenses"
     is_steam_app_installed "990080" && remove "${STEAM_LIBRARY_PATH}/common/ShadowOfMordor/share/data/game/interface/videos"
     is_steam_app_installed "1158310" && remove "${STEAM_LIBRARY_PATH}/common/Crusader Kings III/game/licenses"
