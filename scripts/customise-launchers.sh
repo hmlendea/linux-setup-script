@@ -952,7 +952,8 @@ if does_bin_exist "steam" "com.valvesoftware.Steam"; then
         set_launcher_entries "${LAUNCHER}" \
             Name "Steam" \
             Name[ro] "Steam" \
-            Categories "Game;Steam;"
+            Categories "Game;Steam;" \
+            StartupWMClass "steamwebhelper"
     done
 
     if does_bin_exist "steam-start"; then
