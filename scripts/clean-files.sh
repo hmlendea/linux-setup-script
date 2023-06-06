@@ -50,6 +50,7 @@ remove "${ROOT_ETC}/motd"
 ! does_bin_exist "codium" && remove "${XDG_CONFIG_HOME}/VSCodium"
 ! does_bin_exist "code-oss" "codium" && remove "${HOME}/.vscode-oss"
 ! does_bin_exist "convert" && remove "${XDG_CACHE_HOME}/ImageMagick"
+! does_bin_exist "docker" && remove "${ROOT_VAR_LIB}/docker"
 ! does_bin_exist "dockx" && remove "${XDG_DATA_HOME}/dockbarx"
 ! does_bin_exist "dotnet" && \
     remove "${HOME}/.dotnet" \

@@ -125,16 +125,18 @@ function remove() {
             continue
         fi
 
-        local SIZE=$(du -sh "${PATH_TO_REMOVE}" | awk '{print $1}')
+        local SIZE="4,0K"
 
         echo -e "Removing \e[0;33m${PATH_TO_REMOVE}\e[0m (${SIZE})..."
         if [ -w "${PATH_TO_REMOVE}" ]; then
+            SIZE=$(run_as_su du -sh "${PATH_TO_REMOVE}" | awk '{print $1}')
             if [ -f "${PATH_TO_REMOVE}" ]; then
                 yes | rm "${PATH_TO_REMOVE}"
             else
                 yes | rm -r "${PATH_TO_REMOVE}"
             fi
         else
+            SIZE=$(du -sh "${PATH_TO_REMOVE}" | awk '{print $1}')
             if [ -f "${PATH_TO_REMOVE}" ]; then
                 run_as_su rm "${PATH_TO_REMOVE}"
             else
