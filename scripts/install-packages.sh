@@ -530,6 +530,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
             install_vscode_package "ms-dotnettools.csharp"
             install_vscode_package "nico-castell.linux-desktop-file"
             install_vscode_package "qinjia.seti-icons"
+            does_bin_exist "python" && install_vscode_package "ms-python.python"
 
             install_flatpak com.getpostman.Postman
 
