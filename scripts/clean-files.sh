@@ -256,6 +256,16 @@ remove_logs_in_dirs "${HOME_VAR_APP}/org.telegram.desktop/data/TelegramDesktop"
 ! does_bin_exist "pcmanfm" && remove "${XDG_CONFIG_HOME}/pcmanfm"
 ! does_bin_exist "pcmanfm-qt" && remove "${XDG_CONFIG_HOME}/pcmanfm-qt"
 
+#############
+### Games ###
+#############
+
+# Minecraft
+remove_logs_in_dirs \
+    "${HOME}/.minecraft" \
+    "${HOME_VAR_APP}/com.mojang.Minecraft/.minecraft" \
+    "${ROOT_SRV}/papermc"
+
 #########################
 ### Internet Browsers ###
 #########################
@@ -476,7 +486,6 @@ if ${CLEAN_LOGS}; then
                         "${HOME}/.gradle/daemon/"* \
                         "${HOME}/.ICAClient" \
                         "${HOME}/.klei/DoNotStarveTogether" \
-                        "${HOME}/.minecraft" \
                         "${HOME}/.npm" \
                         "${HOME}/.steam/steamcmd/workshopbuilds" \
                         "${HOME}/.vscode/extensions/"* \
@@ -505,7 +514,6 @@ if ${CLEAN_LOGS}; then
                         "${HOME_VAR_APP}/com.bitwarden.desktop/config/Bitwarden" \
                         "${HOME_VAR_APP}/com.getpostman.Postman/config/Postman" \
                         "${HOME_VAR_APP}/com.github.vladimiry.ElectronMail/config/electron-mail" \
-                        "${HOME_VAR_APP}/com.mojang.Minecraft/.minecraft" \
                         "${HOME_VAR_APP}/com.simplenote.Simplenote/config" \
                         "${HOME_VAR_APP}/org.libreoffice.LibreOffice/config/libreoffice/4/user"
 
@@ -522,6 +530,11 @@ if ${CLEAN_LOGS}; then
             fi
         fi
 fi
+
+# Unused locales
+shopt -s extglob
+remove "${ROOT_USR_SHARE}/locale/"!(en*|ro*)
+remove "${ROOT_USR_SHARE}/man/"!(en*|ro*|man*)
 
 # Empty directories
 for DIR in  "${HOME}/.Cobra Mobile" \
