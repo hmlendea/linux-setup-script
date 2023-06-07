@@ -367,6 +367,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
         # GNOME Shell Extensions
         if ${POWERFUL_PC} && [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ]; then
             # Base
+            install_flatpak "com.mattjakeman.ExtensionManager"
             install_native_package gnome-shell-extensions
             install_native_package gnome-shell-extension-installer
 

@@ -444,7 +444,22 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/PCSX2.desktop" \
 ### EXTENSION MANAGERS ###
 ##########################
 EXTENSION_MANAGER_CATEGORIES="System;"
-set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Extensions.desktop" Categories "GNOME;GTK;${EXTENSION_MANAGER_CATEGORIES}"
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Extensions.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Shell.Extensions.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.mattjakeman.ExtensionManager.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Extensions" \
+        Name[ro] "Extensii" \
+        Icon "org.gnome.Extensions" \
+        Categories "GNOME;GTK;${EXTENSION_MANAGER_CATEGORIES}"
+done
+
+if is_flatpak_installed "com.mattjakeman.ExtensionManager"; then
+    for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Extensions.desktop" \
+                    "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Shell.Extensions.desktop"; do
+        set_launcher_entry "${LAUNCHER}" NoDisplay true
+    done
+fi
 
 ####################
 ### FEED READERS ###
