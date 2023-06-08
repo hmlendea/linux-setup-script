@@ -45,3 +45,5 @@ function run_script_as_su() {
         run_as_su "sh" "${@}"
     fi
 }
+
+LANG=en_GB.UTF-8 # Fix for commands such as `yes`
