@@ -338,6 +338,12 @@ function get_gpu_model() {
             -e 's/\s*$//g')
     fi
 
+    if echo "${MODEL}" | grep -q "Radeon RX"; then
+        if echo "${MODEL}" | grep -q "6800"; then
+            MODEL="Radeon RX 6800"
+        fi
+    fi
+
     if [ -z "${MODEL}" ] \
     && [[ "${ARCH_FAMILY}" == "arm" ]]; then
         MODEL="$(get_cpu_model)"
