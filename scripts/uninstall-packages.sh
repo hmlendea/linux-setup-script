@@ -212,6 +212,10 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "poppler-data"
     uninstall_native_package "python-dnspython"
     uninstall_native_package "python2-setuptools"
+    uninstall_native_package "ruby"
+    uninstall_native_package "tracker3-miners"
+    uninstall_native_package "qt5-base"
+    uninstall_native_package "webkit2gtk"
 
     uninstall_flatpak "nl.hjdskes.gcolor3"
 
