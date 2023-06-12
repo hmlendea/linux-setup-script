@@ -400,9 +400,6 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
         fi
 
         # Themes
-        #install_native_package zorin-desktop-themes
-        #install_flatpak zorinos org.gtk.Gtk3theme.ZorinGrey-Dark
-
         if [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ]; then
             install_native_package adwaita-dark # GTK3's AdwaitaDark ported to GTK2
             install_native_package adw-gtk3
