@@ -144,7 +144,6 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
     # Package manager
     #install_aur_package_manually package-query
 
-
     if [[ "${DISTRO}" != "SteamOS" ]]; then
         if [[ "${ARCH}" != "armv7l" ]]; then
             install_aur_package_manually paru-bin
@@ -157,6 +156,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
         #install_native_package pacutils
         #install_native_package pkgfile
         install_native_package repo-synchroniser
+        install_native_package openssl-1.1
     fi
 
 
