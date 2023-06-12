@@ -493,9 +493,12 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/caja.dekstop" \
     set_launcher_entry "${LAUNCHER}" Categories "GTK;${FILE_MANAGER_CATEGORIES}"
 done
 
-set_launcher_entry "${GLOBAL_LAUNCHER_PATH}/io.elementary.files.desktop" Categories "Pantheon;GTK;${FILE_MANAGER_CATEGORIES}"
-set_launcher_entry "${GLOBAL_LAUNCHER_PATH}/org.gnome.Nautilus.desktop" Categories "GNOME;GTK;${FILE_MANAGER_CATEGORIES}"
-set_launcher_entry "${GLOBAL_LAUNCHER_PATH}/org.kde.dolphin.desktop" Categories "KDE;Qt;${FILE_MANAGER_CATEGORIES}"
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Nautilus.desktop" \
+    Exec "nautilus ${HOME}" \
+    Categories "GNOME;GTK;${FILE_MANAGER_CATEGORIES}"
+
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/io.elementary.files.desktop" Categories "Pantheon;GTK;${FILE_MANAGER_CATEGORIES}"
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/org.kde.dolphin.desktop" Categories "KDE;Qt;${FILE_MANAGER_CATEGORIES}"
 
 if does_bin_exist "thunar"; then
     for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/Thunar-bulk-rename.desktop" \

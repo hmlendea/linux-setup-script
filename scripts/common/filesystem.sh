@@ -235,7 +235,11 @@ function create_file() {
     local DIRECTORY_PATH="$(dirname ${FILE_PATH})"
 
     mkdir -p "${DIRECTORY_PATH}"
-    touch "${FILE_PATH}"
+    if [ -w "${DIRECTORY_PATH}" ]; then
+        touch "${FILE_PATH}"
+    else
+        run_as_su touch "${FILE_PATH}"
+    fi
 }
 
 function create_symlink() {
@@ -265,6 +269,19 @@ function get_symlink_target() {
     else
         SYMLINK_DIR=$(dirname "${SYMLINK}")
         readlink -m "${SYMLINK_DIR}/${TARGET}"
+    fi
+}
+
+function set_permissions() {
+    local PERMISSIONS="${1}" && shift
+    local FILE_PATH="${*}"
+
+    [ -z "${FILE_PATH}" ] && return
+
+    if [ -w "${DIRECTORY_PATH}" ]; then
+        chmod "${PERMISSIONS}" "${FILE_PATH}"
+    else
+        run_as_su chmod "${PERMISSIONS}" "${FILE_PATH}"
     fi
 }
 

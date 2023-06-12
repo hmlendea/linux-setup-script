@@ -599,7 +599,7 @@ function create_launcher() {
             echo "Icon=${NAME}"
         } > "${FILE_PATH}"
 
-        chmod +x "${FILE_PATH}"
+        change_permissions +x "${FILE_PATH}"
         echo "Created launcher '${FILE_PATH}'"
     fi
 }
