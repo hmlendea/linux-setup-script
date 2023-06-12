@@ -57,7 +57,6 @@ function add_user_flatpak_remote() {
 }
 
 if does_bin_exist "flatpak"; then
-    add_system_flatpak_remote   "zorinos" "https://flatpak.zorinos.com/repo/"
     add_user_flatpak_remote     "flathub-beta" "https://flathub.org/beta-repo/flathub-beta.flatpakrepo"
 fi
 
