@@ -1,6 +1,7 @@
 #!/bin/bash
 source "scripts/common/filesystem.sh"
 source "${REPO_DIR}/scripts/common/common.sh"
+source "${REPO_DIR}/scripts/common/system-info.sh"
 
 PACMAN_CONF_FILE_PATH="${ROOT_ETC}/pacman.conf"
 DATABASES_NEED_UPDATING=false
