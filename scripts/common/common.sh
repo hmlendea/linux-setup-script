@@ -46,4 +46,4 @@ function run_script_as_su() {
     fi
 }
 
-LANG=en_GB.UTF-8 # Fix for commands such as `yes`
+LANG=en_US.UTF-8 # Fix for commands such as `yes`
