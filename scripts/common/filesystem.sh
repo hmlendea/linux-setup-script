@@ -64,10 +64,10 @@ fi
 
 [ -z "${HOME}" ]                && HOME="${HOME_REAL}"
 
-[ -z "${XDG_CACHE_HOME}" ]      && XDG_CACHE_HOME="${HOME_REAL}/.cache"
-[ -z "${XDG_CONFIG_HOME}" ]     && XDG_CONFIG_HOME="${HOME_REAL}/.config"
-[ -z "${XDG_DATA_HOME}" ]       && XDG_DATA_HOME="${HOME_REAL}/.local/share"
-[ -z "${XDG_STATE_HOME}" ]      && XDG_STATE_HOME="${HOME_REAL}/.local/state"
+[ -z "${XDG_CACHE_HOME}" ]      && XDG_CACHE_HOME="${HOME}/.cache"
+[ -z "${XDG_CONFIG_HOME}" ]     && XDG_CONFIG_HOME="${HOME}/.config"
+[ -z "${XDG_DATA_HOME}" ]       && XDG_DATA_HOME="${HOME}/.local/share"
+[ -z "${XDG_STATE_HOME}" ]      && XDG_STATE_HOME="${HOME}/.local/state"
 
 function configure_xdg_directory() {
     local XDG_DIR="${1}" && shift
@@ -85,18 +85,18 @@ function configure_xdg_directory() {
     eval "${XDG_VARIABLE_NAME}=\"${XDG_DIR_PATH}\""
 }
 
-configure_xdg_directory "DESKTOP"       "${HOME_REAL}/Desktop"
-configure_xdg_directory "DOCUMENTS"     "${HOME_REAL}/Documente"    "${HOME_REAL}/Documents"
-configure_xdg_directory "DOWNLOAD"      "${HOME_REAL}/Descărcări"   "${HOME_REAL}/Downloads"
-configure_xdg_directory "MUSIC"         "${HOME_REAL}/Muzică"       "${HOME_REAL}/Music"
-configure_xdg_directory "PICTURES"      "${HOME_REAL}/Poze"         "${HOME_REAL}/Pictures"
-configure_xdg_directory "PUBLICSHARE"   "${HOME_REAL}/Public"
-configure_xdg_directory "TEMPLATES"     "${HOME_REAL}/Șabloane"     "${HOME_REAL}/Templates"
-configure_xdg_directory "VIDEOS"        "${HOME_REAL}/Video"        "${HOME_REAL}/Videos"
+configure_xdg_directory "DESKTOP"       "${HOME}/Desktop"
+configure_xdg_directory "DOCUMENTS"     "${HOME}/Documente"     "${HOME}/Documents"
+configure_xdg_directory "DOWNLOAD"      "${HOME}/Descărcări"    "${HOME}/Downloads"
+configure_xdg_directory "MUSIC"         "${HOME}/Muzică"        "${HOME}/Music"
+configure_xdg_directory "PICTURES"      "${HOME}/Poze"          "${HOME}/Pictures"
+configure_xdg_directory "PUBLICSHARE"   "${HOME}/Public"
+configure_xdg_directory "TEMPLATES"     "${HOME}/Șabloane"      "${HOME}/Templates"
+configure_xdg_directory "VIDEOS"        "${HOME}/Video"         "${HOME}/Videos"
 
-HOME_LOCAL="${HOME_REAL}/.local"
+HOME_LOCAL="${HOME}/.local"
 HOME_LOCAL_BIN="${HOME_LOCAL}/bin"
-HOME_VAR="${HOME_REAL}/.var"
+HOME_VAR="${HOME}/.var"
 HOME_VAR_APP="${HOME_VAR}/app"
 
 # Functions
@@ -367,7 +367,7 @@ function update_file_if_distinct() {
 }
 
 # Specific directories
-HOME_MOZILLA="${HOME_REAL}/.mozilla"
+HOME_MOZILLA="${HOME}/.mozilla"
 
 does_bin_exist "org.mozilla.firefox" && HOME_MOZILLA="${HOME_VAR_APP}/org.mozilla.firefox/.mozilla"
 
