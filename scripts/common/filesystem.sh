@@ -380,20 +380,22 @@ if does_bin_exist "steam" "com.valvesoftware.Steam"; then
     STEAM_DIR="${XDG_DATA_HOME}/Steam"
     does_bin_exist "com.valvesoftware.Steam" && STEAM_DIR="${HOME_VAR_APP}/com.valvesoftware.Steam/.local/share/Steam"
 
-    STEAM_LIBRARY_PATHS="${STEAM_DIR}/steamapps"
-    STEAM_LAUNCHERS_PATH="${LOCAL_LAUNCHERS_DIR}/Steam"
+    if [ -d "${STEAM_DIR}" ]; then
+        STEAM_LIBRARY_PATHS="${STEAM_DIR}/steamapps"
+        STEAM_LAUNCHERS_PATH="${LOCAL_LAUNCHERS_DIR}/Steam"
 
-    STEAM_LIBRARY_CUSTOM_PATHS=$(grep "\"/" "${STEAM_DIR}/steamapps/libraryfolders.vdf")
+        STEAM_LIBRARY_CUSTOM_PATHS=$(grep "\"/" "${STEAM_DIR}/steamapps/libraryfolders.vdf")
 
-    if [ -n "${STEAM_LIBRARY_CUSTOM_PATHS}" ]; then
-        STEAM_LIBRARY_CUSTOM_PATHS=$(echo "${STEAM_LIBRARY_CUSTOM_PATHS}" | \
-                                        sed 's/\"[0-9]\"//g' | \
-                                        sed 's/^ *//g' | \
-                                        sed 's/\t//g' | \
-                                        sed 's/\"//g' | \
-                                        sed 's/^ *path *//g' | \
-                                        sed 's/$/\/steamapps/g')
-        STEAM_LIBRARY_PATHS=$(echo -e "${STEAM_LIBRARY_PATHS}\n${STEAM_LIBRARY_CUSTOM_PATHS}" | sort | uniq)
+        if [ -n "${STEAM_LIBRARY_CUSTOM_PATHS}" ]; then
+            STEAM_LIBRARY_CUSTOM_PATHS=$(echo "${STEAM_LIBRARY_CUSTOM_PATHS}" | \
+                                            sed 's/\"[0-9]\"//g' | \
+                                            sed 's/^ *//g' | \
+                                            sed 's/\t//g' | \
+                                            sed 's/\"//g' | \
+                                            sed 's/^ *path *//g' | \
+                                            sed 's/$/\/steamapps/g')
+            STEAM_LIBRARY_PATHS=$(echo -e "${STEAM_LIBRARY_PATHS}\n${STEAM_LIBRARY_CUSTOM_PATHS}" | sort | uniq)
+        fi
     fi
 fi
 

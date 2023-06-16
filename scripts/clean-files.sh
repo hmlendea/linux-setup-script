@@ -74,9 +74,6 @@ remove "${ROOT_ETC}/motd"
     "${XDG_CACHE_HOME}/fragments" \
     "${XDG_CONFIG_HOME}/fragments" \
     "${XDG_DATA_HOME}/fragments"
-! does_bin_exist "gedit" && \
-    remove "${XDG_CONFIG_HOME}/gedit" \
-    remove "${XDG_DATA_HOME}/gedit"
 ! does_bin_exist "geforcenow-electron" && remove "${XDG_CONFIG_HOME}/GeForce NOW"
 ! does_bin_exist "gimp" && \
     remove "${XDG_CACHE_HOME}/gimp" \
@@ -164,6 +161,7 @@ remove "${ROOT_ETC}/motd"
     remove "${XDG_CONFIG_HOME}/Postman"
 ! does_bin_exist "protonfixes" && remove "${XDG_CACHE_HOME}/protonfixes"
 ! does_bin_exist "protontricks" && remove "${XDG_CACHE_HOME}/protontricks"
+! does_bin_exist "rclone" && remove "${XDG_CONFIG_HOME}/rclone"
 ! does_bin_exist "rhythmbox" && remove \
     "${XDG_CACHE_HOME}/rhythmbox" \
     "${XDG_DATA_HOME}/rhythmbox"
@@ -305,6 +303,13 @@ for FLATPAK in "${HOME_VAR_APP}"/*; do
     FLATPAK=$(echo "${FLATPAK}" | sed 's/.*\/\([^\/]*\)$/\1/g')
     ! is_flatpak_installed "${FLATPAK}" && remove "${HOME_VAR_APP}/${FLATPAK}"
 done
+
+####################
+### Text Editors ###
+####################
+! does_bin_exist "gedit" && \
+    remove "${XDG_CONFIG_HOME}/gedit" \
+    remove "${XDG_DATA_HOME}/gedit"
 
 ############
 ### WINE ###
