@@ -275,6 +275,8 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "libwmf"
     uninstall_native_package "libxrandr"
     uninstall_native_package "libyuv"
+    uninstall_native_package "lldb"
+    uninstall_native_package "lttng-ust"
     uninstall_native_package "sdl12-compat"
     uninstall_native_package "xfconf"
 elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
