@@ -310,7 +310,6 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
         if ${POWERFUL_PC}; then
             if [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ]; then
                 install_native_package nautilus
-                install_native_package folder-color-nautilus
                 install_flatpak org.gnome.FileRoller
             elif [ "${DESKTOP_ENVIRONMENT}" = "KDE" ]; then
                 install_native_package "dolphin"
