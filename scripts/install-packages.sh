@@ -270,9 +270,6 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
 
         #install_native_package_dependency dnsmasq # For setting up WiFi hotspots
 
-        # Audio drivers
-        install_native_package sennheiser-gsp670-pulseaudio-profile
-
         # Bluetooth Manager
         ${POWERFUL_PC} && install_native_package gnome-bluetooth
         ${POWERFUL_PC} || install_native_package blueman
