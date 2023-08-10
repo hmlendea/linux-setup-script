@@ -15,3 +15,4 @@ export XDG_VIDEOS_DIR="${HOME}/Videos"
 
 # PATH variable
 [ -d "${HOME}/.local/bin" ] && export PATH="${PATH}:/${HOME}/.local/bin"
+[ -d "/opt/vc/bin" ] && export PATH="${PATH}:/opt/vc/bin"
