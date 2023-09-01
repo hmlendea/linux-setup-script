@@ -530,6 +530,9 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
             install_flatpak com.getpostman.Postman
 
             #does_bin_exist "flatpak" && install_native_package "flatpak-builder"
+
+            # Tools
+            install_flatpak "com.github.dynobo.normcap"
         fi
 
         # Tools
