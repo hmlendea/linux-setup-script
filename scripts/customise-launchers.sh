@@ -772,8 +772,9 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/lxmusic.desktop" \
 #############
 ### Notes ###
 #############
-for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/google-keep.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.simplenote.Simplenote.desktop" \
+for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.simplenote.Simplenote.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/google-keep.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.simplenote.Simplenote.desktop" \
                 "${LOCAL_LAUNCHERS_DIR}/chrome-hmjkmjkepdijhoojdojkdfohbdgmmhki-Default.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Categories "Utility;" \
@@ -801,6 +802,17 @@ if does_bin_exist "nvidia-settings"; then
     does_bin_exist "optirun" && set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/nvidia-settings.desktop" \
         Exec "optirun -b none ${NVIDIA_SETTINGS_EXEC} -c :8"
 fi
+
+#################
+### OCR Tools ###
+#################
+for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.github.dynobo.normcap.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.github.dynobo.normcap"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Text Extractor" \
+        Name[ro] "Extrăgător de Text" \
+        Icon "ocrfeeder"
+done
 
 ###################
 ### Office Apps ###
