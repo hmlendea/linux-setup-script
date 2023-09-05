@@ -76,7 +76,7 @@ fi
 if [[ "${DISTRO_FAMILY}" == "Arch" ]] \
 && [[ "${DISTRO}" != "SteamOS" ]] \
 && ${HAS_GUI}; then
-    install_native_package fastfetch
+    install_native_package fastfetch-bin
 else
     install_native_package neofetch
 fi
