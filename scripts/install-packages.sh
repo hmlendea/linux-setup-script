@@ -475,7 +475,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
                 # Launchers
                 if [ "${DISTRO}" != "SteamOS" ]; then
                     install_native_package steam # No flatpak yet because the games will share the same icon in GNOME (e.g. alt-tabbing), concerns about steam-start, per-game desktop launchers, udev rules for controllers
-                    install_native_package steam-start
+                    #install_native_package steam-start
                     #install_flatpak com.valvesoftware.Steam
                 fi
 
