@@ -356,7 +356,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
             fi
 
             # Camera app
-            install_flatpak "org.gnome.Cheese"
+            install_flatpak "org.gnome.Snapshot"
 
             ! ${POWERFUL_PC} && install_native_package plank
         fi

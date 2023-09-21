@@ -71,7 +71,8 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "whatsapp-nativefier"          # Replaced by flatpah: io.github.mimbrero.WhatsAppDesktop
     uninstall_native_package "yaourt-auto-sync"             # Replaced by repo-synchroniser
 
-    uninstall_flatpak "org.gnome.Rhythmbox3" # Replaced by io.bassi.Amberol
+    uninstall_flatpak "org.gnome.Cheese"        # Replaced by org.gnome.Snapshot
+    uninstall_flatpak "org.gnome.Rhythmbox3"    # Replaced by io.bassi.Amberol
 
     # App Stores
     if is_native_package_installed "gnome-software"; then

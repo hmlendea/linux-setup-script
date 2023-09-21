@@ -143,15 +143,15 @@ done
 ### CAMERA ###
 ##############
 CAMERA_APP_KEYWORDS="photo;video;webcam;camera;selfie;"
-for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Cheese.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Cheese.desktop" \
-                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Cheese.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Snapshot.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Snapshot.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Snapshot.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Camera" \
         Name[ro] "Cameră" \
         Icon "camera" \
-        Keywords "${CAMERA_APP_KEYWORDS}cheese;" \
-        Keywords[ro] "${CAMERA_APP_KEYWORDS}cheese;foto;cameră web;poze;"
+        Keywords "${CAMERA_APP_KEYWORDS}" \
+        Keywords[ro] "${CAMERA_APP_KEYWORDS}foto;cameră web;poze;"
 done
 
 #################
