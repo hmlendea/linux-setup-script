@@ -353,6 +353,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
 
             if is_native_package_installed "gnome-shell"; then
                 install_native_package_dependency gvfs-goa
+                install_native_package_dependency evolution-data-server # To make GOA contacts, tasks, etc. available in apps
             fi
 
             # Camera app
