@@ -750,7 +750,7 @@ if does_bin_exist "nautilus"; then
     NAUTILUS_SCHEMA="org.gnome.nautilus"
     FILECHOOSER_SCHEMA="org.gtk.Settings.FileChooser"
 
-    set_gsetting "${NAUTILUS_SCHEMA}.preferences" search-view 'list-view'
+    #set_gsetting "${NAUTILUS_SCHEMA}.preferences" search-view 'list-view'
     set_gsetting "${NAUTILUS_SCHEMA}.preferences" show-create-link true
     set_gsetting "${NAUTILUS_SCHEMA}.preferences" show-delete-permanently true
 
@@ -1454,8 +1454,13 @@ if does_bin_exist "gedit" "org.gnome.gedit"; then
     set_gsetting "${GEDIT_EDITOR_SCHEMA}" tabs-size "uint32 ${TEXT_EDITOR_TAB_SIZE}"
 fi
 if does_bin_exist "micro"; then
+    MICRO_BINDINGS_FILE="${XDG_CONFIG_HOME}/micro/bindings.json"
     MICRO_SETTINGS_FILE="${XDG_CONFIG_HOME}/micro/settings.json"
 
+    if [ ! -f "${MICRO_BINDINGS_FILE}" ]; then
+    	create_file "${MICRO_BINDINGS_FILE}"
+    	echo "{}" > "${MICRO_BINDINGS_FILE}"
+    fi
     if [ ! -f "${MICRO_SETTINGS_FILE}" ]; then
     	create_file "${MICRO_SETTINGS_FILE}"
     	echo "{}" > "${MICRO_SETTINGS_FILE}"
@@ -1475,6 +1480,9 @@ if does_bin_exist "micro"; then
 	# Appearance
     set_json_property "${MICRO_SETTINGS_FILE}" '.["colorscheme"]' "twilight"
     set_json_property "${MICRO_SETTINGS_FILE}" '.["scrollbar"]' true
+
+    # Keybindings
+    set_json_property "${MICRO_BINDINGS_FILE}" '.["Ctrl-g"]' "JumpLine"
 fi
 if does_bin_exist "pluma"; then
     PLUMA_SCHEMA="org.mate.pluma"
