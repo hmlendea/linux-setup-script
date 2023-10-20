@@ -290,9 +290,26 @@ remove_logs_in_dirs \
     "${XDG_CONFIG_HOME}/microsoft-edge-dev"
 
 # Firefox
+FIREFOX_PROFILES_INI_FILE="${HOME_MOZILLA}/firefox/profiles.ini"
+[ -f "${FIREFOX_PROFILES_INI_FILE}" ] && FIREFOX_PROFILE_ID=$(grep "^Path=" "${FIREFOX_PROFILES_INI_FILE}" | awk -F= '{print $2}' | head -n 1)
+
 ! does_bin_exist "firefox" && remove "${XDG_CACHE_HOME}/mozilla/firefox"
+
 remove "${HOME}/.mozilla/firefox/Crash Reports" \
        "${HOME_VAR_APP}/org.mozilla.firefox/.mozilla/firefox/Crash Reports"        
+
+if [ -n "${FIREFOX_PROFILE_ID}" ]; then
+    remove "${HOME_MOZILLA}/firefox/${FIREFOX_PROFILE_ID}/bookmarkbackups" \
+           "${HOME_MOZILLA}/firefox/${FIREFOX_PROFILE_ID}/"*.bak \
+           "${HOME_MOZILLA}/firefox/${FIREFOX_PROFILE_ID}/crashes" \
+           "${HOME_MOZILLA}/firefox/${FIREFOX_PROFILE_ID}/datareporting" \
+           "${HOME_MOZILLA}/firefox/${FIREFOX_PROFILE_ID}/saved-telemetry-pings" \
+           "${HOME_MOZILLA}/firefox/${FIREFOX_PROFILE_ID}/sessionstore-backups" \
+           "${HOME_MOZILLA}/firefox/${FIREFOX_PROFILE_ID}/weave/failed" \
+           "${HOME_MOZILLA}/firefox/${FIREFOX_PROFILE_ID}/weave/logs"
+
+    remove "${HOME_MOZILLA}/firefox/${FIREFOX_PROFILE_ID}/formhistory.sqlite"
+fi
 
 #################
 ### Terminals ###
@@ -537,9 +554,9 @@ if ${CLEAN_LOGS}; then
 fi
 
 # Unused locales
-shopt -s extglob
-remove "${ROOT_USR_SHARE}/locale/"!(en*|ro*)
-remove "${ROOT_USR_SHARE}/man/"!(en*|ro*|man*)
+#shopt -s extglob
+#remove "${ROOT_USR_SHARE}/locale/"!(en*|ro*)
+#remove "${ROOT_USR_SHARE}/man/"!(en*|ro*|man*)
 
 # Empty directories
 for DIR in  "${HOME}/.Cobra Mobile" \
