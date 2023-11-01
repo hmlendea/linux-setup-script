@@ -785,13 +785,16 @@ if does_bin_exist "firefox" "org.mozilla.firefox"; then
     if [ -n "${FIREFOX_PROFILE_ID}" ]; then
         # First time prompts
         set_firefox_config "${FIREFOX_PROFILE_ID}" app.normandy.first_run false
+        set_firefox_config "${FIREFOX_PROFILE_ID}" "extensions.pendingOperations" false
         set_firefox_config "${FIREFOX_PROFILE_ID}" browser.aboutConfig.showWarning false
         set_firefox_config "${FIREFOX_PROFILE_ID}" browser.urlbar.quicksuggest.onboardingDialogChoice "settings"
+        set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.quicksuggest.showedOnboardingDialog" true
         set_firefox_config "${FIREFOX_PROFILE_ID}" devtools.everOpened true
         set_firefox_config "${FIREFOX_PROFILE_ID}" doh-rollout.doneFirstRun true
         set_firefox_config "${FIREFOX_PROFILE_ID}" extensions.fxmonitor.firstAlertShown true
 
         set_firefox_config "${FIREFOX_PROFILE_ID}" "beacon.enabled" false
+        set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.laterrun.bookkeeping.sessionCount" 1
         set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.safebrowsing.downloads.remote.enabled" false
         set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.search.region" "RO"
         #set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.send_pings" false
@@ -804,28 +807,32 @@ if does_bin_exist "firefox" "org.mozilla.firefox"; then
         set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.autoFill" false
         set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.speculativeConnect.enabled" false
         #set_firefox_config "${FIREFOX_PROFILE_ID}" "dom.event.clipboardevents.enabled" true # Fix for Google's office suite
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "extensions.screenshots.disabled" true
         set_firefox_config "${FIREFOX_PROFILE_ID}" "findbar.highlightAll" true
         set_firefox_config "${FIREFOX_PROFILE_ID}" "full-screen-api.warning.timeout" 0
         set_firefox_config "${FIREFOX_PROFILE_ID}" "media.autoplay.enabled" false
         set_firefox_config "${FIREFOX_PROFILE_ID}" "media.navigator.enabled" false
         set_firefox_config "${FIREFOX_PROFILE_ID}" "network.IDN_show_punycode" true
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "privacy.trackingprotection.enabled" true
         set_firefox_config "${FIREFOX_PROFILE_ID}" "security.insecure_connection_text.enabled" true
         set_firefox_config "${FIREFOX_PROFILE_ID}" "security.sandbox.content.level" 0 # iHD fix
         set_firefox_config "${FIREFOX_PROFILE_ID}" "toolkit.tabbox.switchByScrolling" true
 
         # Appearance
         set_firefox_config "${FIREFOX_PROFILE_ID}" "devtools.theme" ${GTK_THEME_VARIANT}
+        set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.compactmode.show" true
         set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.gtk.alt-theme.dark" ${DESKTOP_THEME_IS_DARK}
         set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.in-content.dark-mode" ${DESKTOP_THEME_IS_DARK}
         set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.tabs.drawInTitlebar" true
         set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.uidensity" 1 # Compact mode
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "font.name-list.emoji" "${EMOJI_FONT_NAME}"
+        #set_firefox_config "${FIREFOX_PROFILE_ID}" "font.name-list.emoji" "${EMOJI_FONT_NAME}" # Makes ChatGPT ask for captcha for every prompt
         set_firefox_config "${FIREFOX_PROFILE_ID}" "toolkit.legacyUserProfileCustomizations.stylesheets" true
         #set_firefox_config "${FIREFOX_PROFILE_ID}" "widget.non-native-theme.enabled" false # If true then some page elements (e.g. drop-down arrows in Bitwarden) look very ugly and out of place
         set_firefox_config "${FIREFOX_PROFILE_ID}" "widget.content.allow-gtk-dark-theme" ${DESKTOP_THEME_IS_DARK}
         #set_firefox_config "${FIREFOX_PROFILE_ID}" "widget.gtk.overlay-scrollbars.enabled" true # Turn scrollbars into GTK scrollbars
+
+        # Preferences
+        #set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.download.lastDir" "${XDG_DOWNLOAD_DIR}"
+        set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.formfill.enable" false
+        set_firefox_config "${FIREFOX_PROFILE_ID}" "media.autoplay.enabled" false
 
         # Appearance - Links
         set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.anchor_color" "${TERMINAL_CYAN_D}" # "#00BCD4"
@@ -838,6 +845,7 @@ if does_bin_exist "firefox" "org.mozilla.firefox"; then
         set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.newtabpage.activity-stream.feeds.topsites" false
         set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.newtabpage.activity-stream.feeds.section.topstories" false
         set_firefox_config "${FIREFOX_PROFILE_ID}" "extensions.pocket.enabled" false
+        set_firefox_config "${FIREFOX_PROFILE_ID}" "extensions.screenshots.disabled" true
 
         # URL bar
         set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.groupLabels.enabled" false
@@ -855,6 +863,8 @@ if does_bin_exist "firefox" "org.mozilla.firefox"; then
         # Security
         set_firefox_config "${FIREFOX_PROFILE_ID}" "dom.security.https_first" true
         set_firefox_config "${FIREFOX_PROFILE_ID}" "dom.security.https_only_mode" true
+        set_firefox_config "${FIREFOX_PROFILE_ID}" "signon.management.page.breach-alerts.enabled" false # Use Bitwarden instead
+        set_firefox_config "${FIREFOX_PROFILE_ID}" "signon.rememberSignons" false # Use Bitwarden instead
 
         # DNS Prefetching
         set_firefox_config "${FIREFOX_PROFILE_ID}" "network.dns.disablePrefetch" true
@@ -864,16 +874,25 @@ if does_bin_exist "firefox" "org.mozilla.firefox"; then
         set_firefox_config "${FIREFOX_PROFILE_ID}" "network.prefetch-next" false
 
         # Privacy
+        set_firefox_config "${FIREFOX_PROFILE_ID}" "privacy.donottrackheader.enabled" true
         set_firefox_config "${FIREFOX_PROFILE_ID}" "privacy.firstparty.isolate" true
         #set_firefox_config "${FIREFOX_PROFILE_ID}" "privacy.resistFingerprinting" true # If true: starts in a small window, cannot detect system dark theme
+        set_firefox_config "${FIREFOX_PROFILE_ID}" "privacy.trackingprotection.enabled" true
+        set_firefox_config "${FIREFOX_PROFILE_ID}" "privacy.trackingprotection.cryptomining.enabled" true
+        set_firefox_config "${FIREFOX_PROFILE_ID}" "privacy.trackingprotection.emailtracking.enabled" true
+        set_firefox_config "${FIREFOX_PROFILE_ID}" "privacy.trackingprotection.socialtracking.enabled" true
         #set_firefox_config "${FIREFOX_PROFILE_ID}" "privacy.trackingprotection.fingerprinting.enabled" true
+        set_firefox_config "${FIREFOX_PROFILE_ID}" "identity.fxaccounts.enabled" true
 
         # Telemetry
+        set_firefox_config "${FIREFOX_PROFILE_ID}" "app.normandy.enabled" false
+        set_firefox_config "${FIREFOX_PROFILE_ID}" "app.shield.optoutstudies.enabled" true
         set_firefox_config "${FIREFOX_PROFILE_ID}" browser.newtabpage.activity-stream.telemetry false
         set_firefox_config "${FIREFOX_PROFILE_ID}" browser.newtabpage.activity-stream.feeds.telemetry false
         #set_firefox_config "${FIREFOX_PROFILE_ID}" browser.newtabpage.activity-stream.telemetry.ut.events false
         set_firefox_config "${FIREFOX_PROFILE_ID}" browser.ping-centre.telemetry false
         #set_firefox_config "${FIREFOX_PROFILE_ID}" browser.urlbar.eventTelemetry.enabled false
+        set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.quicksuggest.dataCollection.enabled" false
         set_firefox_config "${FIREFOX_PROFILE_ID}" datareporting.healthreport.uploadEnabled false
         set_firefox_config "${FIREFOX_PROFILE_ID}" dom.security.unexpected_system_load_telemetry_enabled false
         set_firefox_config "${FIREFOX_PROFILE_ID}" network.trr.confirmation_telemetry_enabled false
@@ -895,9 +914,6 @@ if does_bin_exist "firefox" "org.mozilla.firefox"; then
 
         #set_firefox_config "${FIREFOX_PROFILE_ID}" browser.newtabpage.activity-stream.telemetry.structuredIngestion.endpoint "http://localhost"
         #set_firefox_config "${FIREFOX_PROFILE_ID}" toolkit.telemetry.server "http://localhost"
-
-        # Identity
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "identity.fxaccounts.account.device.name" "${HOSTNAME}"
     fi
 fi
 
