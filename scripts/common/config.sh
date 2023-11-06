@@ -165,10 +165,11 @@ function set_config_values() {
 }
 
 function set_firefox_config() {
-    local PROFILE="${1}"
+    local PROFILE_PATH="${1}"
     local KEY="${2}"
     local VALUE_RAW="${@:3}"
-    local FILE="${HOME_MOZILLA}/firefox/${PROFILE}/prefs.js"
+    local PREFS_FILE="${PROFILE_PATH}/prefs.js"
+    local INVALID_PREFS_FILE="${PROFILE_PATH}/Invalidprefs.js"
 
     create_file "${FILE_PATH}"
 
@@ -176,20 +177,29 @@ function set_firefox_config() {
 
     is_value_string "${VALUE}" && VALUE="\"${VALUE}\""
 
-    local FILE_CONTENT=$(cat "${FILE}")
+    local PREFS_FILE_CONTENT=$(cat "${PREFS_FILE}")
+    local INVALID_PREFS_FILE_CONTENT=""
+    [ -f "${INVALID_PREFS_FILE}" ] && INVALID_PREFS_FILE_CONTENT=$(cat "${INVALID_PREFS_FILE}")
+
     VALUE=$(echo "${VALUE}" | sed -e 's/[]\/$*.^|[]/\\&/g')
 
+    # If the key is invalid
+#    if [[ $(grep -c "\"${KEY\"" <<< "${INVALID_PREFS_FILE_CONTENT}") > 0 ]]; then
+#        return
+#    fi
+
     # If the value is not already set
-    if [[ $(grep -c "^user_pref(\"${KEY}\", *${VALUE});$" <<< "${FILE_CONTENT}") == 0 ]] && \
-       [[ $(grep -c "^user_pref(\"${KEY}\", *\"${VALUE}\");$" <<< "${FILE_CONTENT}") == 0 ]]; then
+    if [[ $(grep -c "^user_pref(\"${KEY}\", *${VALUE});$" <<< "${PREFS_FILE_CONTENT}") == 0 ]] && \
+       [[ $(grep -c "^user_pref(\"${KEY}\", *\"${VALUE}\");$" <<< "${PREFS_FILE_CONTENT}") == 0 ]] && \
+       [[ $(grep -c "\"${KEY}\"" <<< "${INVALID_PREFS_FILE_CONTENT}") == 0 ]]; then
         # If the config key already exists (with a different value)
-        if [ $(grep -c "^user_pref(\"${KEY}.*$" <<< "${FILE_CONTENT}") -gt 0 ]; then
-            sed -i '/^user_pref('"\"${KEY}"'/d' "${FILE}"
+        if [ $(grep -c "^user_pref(\"${KEY}.*$" <<< "${PREFS_FILE_CONTENT}") -gt 0 ]; then
+            sed -i '/^user_pref('"\"${KEY}"'/d' "${PREFS_FILE}"
         fi
 
-        append_line "${FILE}" "user_pref(\"${KEY}\", ${VALUE});"
+        append_line "${PREFS_FILE}" "user_pref(\"${KEY}\", ${VALUE});"
 
-        echo "${FILE} >>> ${KEY} = ${VALUE_RAW}"
+        echo "${PREFS_FILE} >>> ${KEY} = ${VALUE_RAW}"
     fi
 }
 

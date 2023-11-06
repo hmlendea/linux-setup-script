@@ -1,6 +1,7 @@
 #!/bin/bash
 source "scripts/common/filesystem.sh"
 source "${REPO_DIR}/scripts/common/common.sh"
+source "${REPO_DIR}/scripts/common/apps.sh"
 source "${REPO_DIR}/scripts/common/config.sh"
 source "${REPO_DIR}/scripts/common/package-management.sh"
 source "${REPO_DIR}/scripts/common/system-info.sh"
@@ -778,143 +779,143 @@ fi
 ###############
 ### FIREFOX ###
 ###############
-if does_bin_exist "firefox" "org.mozilla.firefox"; then
-    FIREFOX_PROFILES_INI_FILE="${HOME_MOZILLA}/firefox/profiles.ini"
-    [ -f "${FIREFOX_PROFILES_INI_FILE}" ] && FIREFOX_PROFILE_ID=$(grep "^Path=" "${FIREFOX_PROFILES_INI_FILE}" | awk -F= '{print $2}' | head -n 1)
+if does_bin_exist "firefox" "librewolf" "org.mozilla.firefox" "io.gitlab.librewolf-community"; then
+    FIREFOX_PROFILE_DIR=$(get_firefox_profile_dir)
 
-    if [ -n "${FIREFOX_PROFILE_ID}" ]; then
-        # First time prompts
-        set_firefox_config "${FIREFOX_PROFILE_ID}" app.normandy.first_run false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "extensions.pendingOperations" false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" browser.aboutConfig.showWarning false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" browser.urlbar.quicksuggest.onboardingDialogChoice "settings"
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.quicksuggest.showedOnboardingDialog" true
-        set_firefox_config "${FIREFOX_PROFILE_ID}" devtools.everOpened true
-        set_firefox_config "${FIREFOX_PROFILE_ID}" doh-rollout.doneFirstRun true
-        set_firefox_config "${FIREFOX_PROFILE_ID}" extensions.fxmonitor.firstAlertShown true
+    # First time prompts
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" app.normandy.first_run false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" browser.aboutConfig.showWarning false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.shell.checkDefaultBrowser" false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" browser.urlbar.quicksuggest.onboardingDialogChoice "settings"
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.urlbar.quicksuggest.showedOnboardingDialog" true
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" devtools.everOpened true
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" doh-rollout.doneFirstRun true
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" extensions.fxmonitor.firstAlertShown true
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "extensions.pendingOperations" false
 
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "beacon.enabled" false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.laterrun.bookkeeping.sessionCount" 1
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.safebrowsing.downloads.remote.enabled" false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.search.region" "RO"
-        #set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.send_pings" false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.tabs.delayHidingAudioPlayingIconMS" 0
-        #set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.tabs.insertAfterCurrent" false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.tabs.tabMinWidth" 0
-        #set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.tabs.warnOnClose" false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.translation.detectLanguage" true
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.uidensity" 1
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.autoFill" false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.speculativeConnect.enabled" false
-        #set_firefox_config "${FIREFOX_PROFILE_ID}" "dom.event.clipboardevents.enabled" true # Fix for Google's office suite
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "findbar.highlightAll" true
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "full-screen-api.warning.timeout" 0
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "media.autoplay.enabled" false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "media.navigator.enabled" false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "network.IDN_show_punycode" true
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "security.insecure_connection_text.enabled" true
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "security.sandbox.content.level" 0 # iHD fix
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "toolkit.tabbox.switchByScrolling" true
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "beacon.enabled" false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.laterrun.bookkeeping.sessionCount" 1
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.safebrowsing.downloads.remote.enabled" false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.search.region" "RO"
+    #set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.send_pings" false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.tabs.delayHidingAudioPlayingIconMS" 0
+    #set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.tabs.insertAfterCurrent" false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.tabs.tabMinWidth" 0
+    #set_firefox_config "${FIREFOX_PROFILE_DI}" "browser.tabs.warnOnClose" false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.translation.detectLanguage" true
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.uidensity" 1
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.urlbar.autoFill" false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.urlbar.speculativeConnect.enabled" false
+    #set_firefox_config "${FIREFOX_PROFILE_DIR}" "dom.event.clipboardevents.enabled" true # Fix for Google's office suite
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "findbar.highlightAll" true
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "full-screen-api.warning.timeout" 0
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "media.autoplay.enabled" false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "media.navigator.enabled" false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "network.IDN_show_punycode" true
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "security.insecure_connection_text.enabled" true
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "security.sandbox.content.level" 0 # iHD fix
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "toolkit.tabbox.switchByScrolling" true
 
-        # Appearance
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "devtools.theme" ${GTK_THEME_VARIANT}
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.compactmode.show" true
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.gtk.alt-theme.dark" ${DESKTOP_THEME_IS_DARK}
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.in-content.dark-mode" ${DESKTOP_THEME_IS_DARK}
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.tabs.drawInTitlebar" true
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.uidensity" 1 # Compact mode
-        #set_firefox_config "${FIREFOX_PROFILE_ID}" "font.name-list.emoji" "${EMOJI_FONT_NAME}" # Makes ChatGPT ask for captcha for every prompt
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "toolkit.legacyUserProfileCustomizations.stylesheets" true
-        #set_firefox_config "${FIREFOX_PROFILE_ID}" "widget.non-native-theme.enabled" false # If true then some page elements (e.g. drop-down arrows in Bitwarden) look very ugly and out of place
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "widget.content.allow-gtk-dark-theme" ${DESKTOP_THEME_IS_DARK}
-        #set_firefox_config "${FIREFOX_PROFILE_ID}" "widget.gtk.overlay-scrollbars.enabled" true # Turn scrollbars into GTK scrollbars
+    # Appearance
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "devtools.theme" ${GTK_THEME_VARIANT}
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.compactmode.show" true
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.gtk.alt-theme.dark" ${DESKTOP_THEME_IS_DARK}
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.in-content.dark-mode" ${DESKTOP_THEME_IS_DARK}
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.tabs.drawInTitlebar" true
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.uidensity" 1 # Compact mode
+    #set_firefox_config "${FIREFOX_PROFILE_DIR}" "font.name-list.emoji" "${EMOJI_FONT_NAME}" # Makes ChatGPT ask for captcha for every prompt
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "toolkit.legacyUserProfileCustomizations.stylesheets" true
+    #set_firefox_config "${FIREFOX_PROFILE_DIR}" "widget.non-native-theme.enabled" false # If true then some page elements (e.g. drop-down arrows in Bitwarden) look very ugly and out of place
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "widget.content.allow-gtk-dark-theme" ${DESKTOP_THEME_IS_DARK}
+    #set_firefox_config "${FIREFOX_PROFILE_DIR}" "widget.gtk.overlay-scrollbars.enabled" true # Turn scrollbars into GTK scrollbars
 
-        # Preferences
-        #set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.download.lastDir" "${XDG_DOWNLOAD_DIR}"
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.formfill.enable" false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "media.autoplay.enabled" false
+    # Preferences
+    #set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.download.lastDir" "${XDG_DOWNLOAD_DIR}"
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.formfill.enable" false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.startup.page" 3 # Reopen previous tabs on startup
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "media.autoplay.enabled" false
 
-        # Appearance - Links
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.anchor_color" "${TERMINAL_CYAN_D}" # "#00BCD4"
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.anchor_color.dark" "${TERMINAL_PURPLE_D}"
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.underline_anchors" false
+    # Appearance - Links
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.anchor_color" "${TERMINAL_CYAN_D}" # "#00BCD4"
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.anchor_color.dark" "${TERMINAL_PURPLE_D}"
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.underline_anchors" false
 
-        # Useless features
-        #set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.newtabpage.activity-stream.feeds.section.highlights" false
-        #set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.newtabpage.activity-stream.feeds.snippets" false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.newtabpage.activity-stream.feeds.topsites" false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.newtabpage.activity-stream.feeds.section.topstories" false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "extensions.pocket.enabled" false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "extensions.screenshots.disabled" true
+    # Useless features
+    #set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.newtabpage.activity-stream.feeds.section.highlights" false
+    #set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.newtabpage.activity-stream.feeds.snippets" false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.newtabpage.activity-stream.feeds.topsites" false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.newtabpage.activity-stream.feeds.section.topstories" false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "extensions.pocket.enabled" false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "extensions.screenshots.disabled" true
 
-        # URL bar
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.groupLabels.enabled" false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.quicksuggest.enabled" true
-        #set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.quicksuggest.scenario" 'offline'
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.suggest.calculator" true
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.suggest.quicksuggest" true
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.suggest.quicksuggest.sponsored" false
+    # URL bar
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.urlbar.groupLabels.enabled" false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.urlbar.quicksuggest.enabled" true
+    #set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.urlbar.quicksuggest.scenario" 'offline'
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.urlbar.suggest.calculator" true
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.urlbar.suggest.quicksuggest" true
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.urlbar.suggest.quicksuggest.sponsored" false
 
-        # Performance
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "network.dnsCacheEntries" $((DNS_CACHE_SIZE/10))
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "network.dnsCacheExpiration" $((DNS_CACHE_TTL*60))
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "network.dnsCacheExpirationGracePeriod" $((DNS_CACHE_TTL*60))
+    # Performance
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "network.dnsCacheEntries" $((DNS_CACHE_SIZE/10))
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "network.dnsCacheExpiration" $((DNS_CACHE_TTL*60))
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "network.dnsCacheExpirationGracePeriod" $((DNS_CACHE_TTL*60))
 
-        # Security
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "dom.security.https_first" true
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "dom.security.https_only_mode" true
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "signon.management.page.breach-alerts.enabled" false # Use Bitwarden instead
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "signon.rememberSignons" false # Use Bitwarden instead
+    # Security
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "dom.security.https_first" true
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "dom.security.https_only_mode" true
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "signon.management.page.breach-alerts.enabled" false # Use Bitwarden instead
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "signon.rememberSignons" false # Use Bitwarden instead
 
-        # DNS Prefetching
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "network.dns.disablePrefetch" true
-        #set_firefox_config "${FIREFOX_PROFILE_ID}" "network.dns.disablePrefetchFromHTTPS" true
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "network.predictor.enabled" false
-        #set_firefox_config "${FIREFOX_PROFILE_ID}" "network.predictor.enable-prefetch" false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "network.prefetch-next" false
+    # Network
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "network.dns.disableIPv6" true
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "network.dns.disablePrefetch" true
+    #set_firefox_config "${FIREFOX_PROFILE_DIR}" "network.dns.disablePrefetchFromHTTPS" true
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "network.predictor.enabled" false
+    #set_firefox_config "${FIREFOX_PROFILE_DIR}" "network.predictor.enable-prefetch" false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "network.prefetch-next" false
 
-        # Privacy
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "privacy.donottrackheader.enabled" true
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "privacy.firstparty.isolate" true
-        #set_firefox_config "${FIREFOX_PROFILE_ID}" "privacy.resistFingerprinting" true # If true: starts in a small window, cannot detect system dark theme
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "privacy.trackingprotection.enabled" true
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "privacy.trackingprotection.cryptomining.enabled" true
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "privacy.trackingprotection.emailtracking.enabled" true
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "privacy.trackingprotection.socialtracking.enabled" true
-        #set_firefox_config "${FIREFOX_PROFILE_ID}" "privacy.trackingprotection.fingerprinting.enabled" true
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "identity.fxaccounts.enabled" true
+    # Privacy
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "privacy.donottrackheader.enabled" true
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "privacy.firstparty.isolate" true
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "privacy.resistFingerprinting" false # If true: starts in a small window, cannot detect system dark theme
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "privacy.trackingprotection.enabled" true
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "privacy.trackingprotection.cryptomining.enabled" true
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "privacy.trackingprotection.emailtracking.enabled" true
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "privacy.trackingprotection.socialtracking.enabled" true
+    #set_firefox_config "${FIREFOX_PROFILE_DIR}" "privacy.trackingprotection.fingerprinting.enabled" true
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "identity.fxaccounts.enabled" false #true
 
-        # Telemetry
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "app.normandy.enabled" false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "app.shield.optoutstudies.enabled" true
-        set_firefox_config "${FIREFOX_PROFILE_ID}" browser.newtabpage.activity-stream.telemetry false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" browser.newtabpage.activity-stream.feeds.telemetry false
-        #set_firefox_config "${FIREFOX_PROFILE_ID}" browser.newtabpage.activity-stream.telemetry.ut.events false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" browser.ping-centre.telemetry false
-        #set_firefox_config "${FIREFOX_PROFILE_ID}" browser.urlbar.eventTelemetry.enabled false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" "browser.urlbar.quicksuggest.dataCollection.enabled" false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" datareporting.healthreport.uploadEnabled false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" dom.security.unexpected_system_load_telemetry_enabled false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" network.trr.confirmation_telemetry_enabled false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" security.app_menu.recordEventTelemetry false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" security.certerrors.recordEventTelemetry false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" security.identitypopup.recordEventTelemetry false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" security.protectionspopup.recordEventTelemetry false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" toolkit.telemetry.archive.enabled false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" toolkit.telemetry.bhrPing.enabled false
-        #set_firefox_config "${FIREFOX_PROFILE_ID}" toolkit.telemetry.enabled false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" toolkit.telemetry.firstShutdownPing.enabled false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" toolkit.telemetry.hybridContent.enabled false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" toolkit.telemetry.newProfilePing.enabled false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" toolkit.telemetry.pioneer-new-studies-available false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" toolkit.telemetry.reportingpolicy.firstRun false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" toolkit.telemetry.shutdownPingSender.enabled false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" toolkit.telemetry.unified false
-        set_firefox_config "${FIREFOX_PROFILE_ID}" toolkit.telemetry.updatePing.enabled false
+    # Telemetry
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "app.normandy.enabled" false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "app.shield.optoutstudies.enabled" true
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" browser.newtabpage.activity-stream.telemetry false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" browser.newtabpage.activity-stream.feeds.telemetry false
+    #set_firefox_config "${FIREFOX_PROFILE_DIR}" browser.newtabpage.activity-stream.telemetry.ut.events false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" browser.ping-centre.telemetry false
+    #set_firefox_config "${FIREFOX_PROFILE_DIR}" browser.urlbar.eventTelemetry.enabled false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.urlbar.quicksuggest.dataCollection.enabled" false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" datareporting.healthreport.uploadEnabled false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" dom.security.unexpected_system_load_telemetry_enabled false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" network.trr.confirmation_telemetry_enabled false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" security.app_menu.recordEventTelemetry false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" security.certerrors.recordEventTelemetry false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" security.identitypopup.recordEventTelemetry false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" security.protectionspopup.recordEventTelemetry false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" toolkit.telemetry.archive.enabled false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" toolkit.telemetry.bhrPing.enabled false
+    #set_firefox_config "${FIREFOX_PROFILE_DIR}" toolkit.telemetry.enabled false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" toolkit.telemetry.firstShutdownPing.enabled false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" toolkit.telemetry.hybridContent.enabled false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" toolkit.telemetry.newProfilePing.enabled false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" toolkit.telemetry.pioneer-new-studies-available false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" toolkit.telemetry.reportingpolicy.firstRun false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" toolkit.telemetry.shutdownPingSender.enabled false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" toolkit.telemetry.unified false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" toolkit.telemetry.updatePing.enabled false
 
-        #set_firefox_config "${FIREFOX_PROFILE_ID}" browser.newtabpage.activity-stream.telemetry.structuredIngestion.endpoint "http://localhost"
-        #set_firefox_config "${FIREFOX_PROFILE_ID}" toolkit.telemetry.server "http://localhost"
-    fi
+    #set_firefox_config "${FIREFOX_PROFILE_DIR}" browser.newtabpage.activity-stream.telemetry.structuredIngestion.endpoint "http://localhost"
+    #set_firefox_config "${FIREFOX_PROFILE_DIR}" toolkit.telemetry.server "http://localhost"
 fi
 
 ##############################
@@ -1199,7 +1200,9 @@ if does_bin_exist "gnome-shell"; then
 
     FAVOURITE_APPS=""
 
-    if does_bin_exist "org.mozilla.firefox"; then
+    if does_bin_exist "io.gitlab.librewolf-community"; then
+        FAVOURITE_APPS="${FAVOURITE_APPS}, 'io.gitlab.librewolf-community.desktop'"
+    elif does_bin_exist "org.mozilla.firefox"; then
         FAVOURITE_APPS="${FAVOURITE_APPS}, 'org.mozilla.firefox.desktop'"
     elif does_bin_exist "firefox"; then
         FAVOURITE_APPS="${FAVOURITE_APPS}, 'firefox.desktop'"
