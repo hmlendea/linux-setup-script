@@ -435,7 +435,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
         fi
 
         # Internet Browser
-        install_flatpak "org.mozilla.firefox"
+        install_flatpak "io.gitlab.librewolf-community"
         #does_bin_exist "gnome-shell" && install_native_package chrome-gnome-shell # Also used for Firefox
 
         # Torrent Downloader

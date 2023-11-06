@@ -1156,8 +1156,10 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/chromium.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/google-chrome.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/tor-browser-en.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.brave.Browser.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/io.gitlab.librewolf-community" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.mozilla.firefox.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.brave.Broser.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/io.gitlab.librewolf-community" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.mozilla.firefox.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         GenericName "Web Browser" \

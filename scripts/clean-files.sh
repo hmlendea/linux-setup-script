@@ -298,18 +298,32 @@ FIREFOX_PROFILES_INI_FILE="${HOME_MOZILLA}/firefox/profiles.ini"
 remove "${HOME}/.mozilla/firefox/Crash Reports" \
        "${HOME_VAR_APP}/org.mozilla.firefox/.mozilla/firefox/Crash Reports"        
 
-if [ -n "${FIREFOX_PROFILE_ID}" ]; then
-    remove "${HOME_MOZILLA}/firefox/${FIREFOX_PROFILE_ID}/bookmarkbackups" \
-           "${HOME_MOZILLA}/firefox/${FIREFOX_PROFILE_ID}/"*.bak \
-           "${HOME_MOZILLA}/firefox/${FIREFOX_PROFILE_ID}/crashes" \
-           "${HOME_MOZILLA}/firefox/${FIREFOX_PROFILE_ID}/datareporting" \
-           "${HOME_MOZILLA}/firefox/${FIREFOX_PROFILE_ID}/saved-telemetry-pings" \
-           "${HOME_MOZILLA}/firefox/${FIREFOX_PROFILE_ID}/sessionstore-backups" \
-           "${HOME_MOZILLA}/firefox/${FIREFOX_PROFILE_ID}/weave/failed" \
-           "${HOME_MOZILLA}/firefox/${FIREFOX_PROFILE_ID}/weave/logs"
+for FIREFOX_PROFILES_DIR in "${HOME_VAR_APP}/org.mozilla.firefox/.mozilla/firefox" \
+                            "${HOME_VAR_APP}/io.gitlab.librewolf-community/.librewolf" \
+                            "${HOME}/.mozilla/firefox" \
+                            "${HOME}/.librewolf"; do
+    remove "${FIREFOX_PROFILES_DIR}/"*"/bookmarkbackups" \
+           "${FIREFOX_PROFILES_DIR}/"*"/"*.bak \
+           "${FIREFOX_PROFILES_DIR}/"*"/compatibility.ini" \
+           "${FIREFOX_PROFILES_DIR}/"*"/crashes" \
+           "${FIREFOX_PROFILES_DIR}/"*"/datareporting" \
+           "${FIREFOX_PROFILES_DIR}/"*"/enumeratedevices.txt" \
+           "${FIREFOX_PROFILES_DIR}/"*"/formhistory.sqlite" \
+           "${FIREFOX_PROFILES_DIR}/"*"/saved-telemetry-pings" \
+           "${FIREFOX_PROFILES_DIR}/"*"/sessionstore-backups" \
+           "${FIREFOX_PROFILES_DIR}/"*"/times.json" \
+           "${FIREFOX_PROFILES_DIR}/"*"/weave/failed" \
+           "${FIREFOX_PROFILES_DIR}/"*"/weave/logs" \
+           "${FIREFOX_PROFILES_DIR}/"*"/weave/xulstore.json" \
 
+    # Don't remove storage-sync-v2.sqlite-wal, as that clears all entries from the Authenticator extension
+    remove "${FIREFOX_PROFILES_DIR}/"*"/cokies.sqlite-wal" \
+           "${FIREFOX_PROFILES_DIR}/"*"/favicons.sqlite-wal" \
+           "${FIREFOX_PROFILES_DIR}/"*"/places.sqlite-wal" \
+           "${FIREFOX_PROFILES_DIR}/"*"/webappsstore.sqlite-wal" \
+    
     remove "${HOME_MOZILLA}/firefox/${FIREFOX_PROFILE_ID}/formhistory.sqlite"
-fi
+done
 
 #################
 ### Terminals ###
