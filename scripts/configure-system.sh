@@ -889,10 +889,10 @@ if does_bin_exist "firefox" "librewolf" "org.mozilla.firefox" "io.gitlab.librewo
     # Telemetry
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "app.normandy.enabled" false
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "app.shield.optoutstudies.enabled" true
-    set_firefox_config "${FIREFOX_PROFILE_DIR}" browser.newtabpage.activity-stream.telemetry false
-    set_firefox_config "${FIREFOX_PROFILE_DIR}" browser.newtabpage.activity-stream.feeds.telemetry false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.newtabpage.activity-stream.telemetry" false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.newtabpage.activity-stream.feeds.telemetry" false
     #set_firefox_config "${FIREFOX_PROFILE_DIR}" browser.newtabpage.activity-stream.telemetry.ut.events false
-    set_firefox_config "${FIREFOX_PROFILE_DIR}" browser.ping-centre.telemetry false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.ping-centre.telemetry" false
     #set_firefox_config "${FIREFOX_PROFILE_DIR}" browser.urlbar.eventTelemetry.enabled false
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.urlbar.quicksuggest.dataCollection.enabled" false
     set_firefox_config "${FIREFOX_PROFILE_DIR}" datareporting.healthreport.uploadEnabled false
