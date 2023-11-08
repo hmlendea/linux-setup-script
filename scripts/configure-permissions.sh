@@ -596,7 +596,7 @@ if [[ "${DISTRO_FAMILY}" == "Android" ]] \
         "location" true \
         "microphone" true \
         "storage" true
-    for APP in "org.mozilla.fenix" "org.mozilla.firefox"; do
+    for APP in "io.gitlab.librewolf-community" "org.mozilla.fenix" "org.mozilla.firefox"; do
         set_android_permission "${APP}" \
             "camera" false \
             "location" false \
