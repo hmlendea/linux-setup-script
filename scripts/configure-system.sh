@@ -809,7 +809,6 @@ if does_bin_exist "firefox" "librewolf" "org.mozilla.firefox" "io.gitlab.librewo
     #set_firefox_config "${FIREFOX_PROFILE_DIR}" "dom.event.clipboardevents.enabled" true # Fix for Google's office suite
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "findbar.highlightAll" true
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "full-screen-api.warning.timeout" 0
-    set_firefox_config "${FIREFOX_PROFILE_DIR}" "media.autoplay.enabled" false
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "media.navigator.enabled" false
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "network.IDN_show_punycode" true
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "security.insecure_connection_text.enabled" true
@@ -834,6 +833,7 @@ if does_bin_exist "firefox" "librewolf" "org.mozilla.firefox" "io.gitlab.librewo
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.formfill.enable" false
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.startup.page" 3 # Reopen previous tabs on startup
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "media.autoplay.enabled" false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "media.autoplay.blocking_policy" 2
 
     # Appearance - Links
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.anchor_color" "${TERMINAL_CYAN_D}" # "#00BCD4"
@@ -876,15 +876,18 @@ if does_bin_exist "firefox" "librewolf" "org.mozilla.firefox" "io.gitlab.librewo
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "network.prefetch-next" false
 
     # Privacy
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "privacy.clearOnShutdown.history"   false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "privacy.clearOnShutdown.downloads" true
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "privacy.donottrackheader.enabled" true
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "privacy.firstparty.isolate" true
-    set_firefox_config "${FIREFOX_PROFILE_DIR}" "privacy.resistFingerprinting" false # If true: starts in a small window, cannot detect system dark theme
+    #set_firefox_config "${FIREFOX_PROFILE_DIR}" "privacy.resistFingerprinting" false # If true: starts in a small window, cannot detect system dark theme
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "privacy.trackingprotection.enabled" true
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "privacy.trackingprotection.cryptomining.enabled" true
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "privacy.trackingprotection.emailtracking.enabled" true
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "privacy.trackingprotection.socialtracking.enabled" true
     #set_firefox_config "${FIREFOX_PROFILE_DIR}" "privacy.trackingprotection.fingerprinting.enabled" true
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "identity.fxaccounts.enabled" false #true
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "media.peerconnection.ice.relay_only" true # Make WebRTC work through relay only to prevent information leaks
 
     # Telemetry
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "app.normandy.enabled" false
