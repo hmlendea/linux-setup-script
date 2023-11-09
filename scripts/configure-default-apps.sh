@@ -26,9 +26,9 @@ IMAGE_VIEWER_LAUNCHER=""
 STEAM_LAUNCHER=""
 TEXT_EDITOR_LAUNCHER=""
 
-is_flatpak_installed "com.brave.Brownser" && BROWSER_LAUNCHER="com.brave.Browser"
+is_flatpak_installed "com.brave.Brownser" && BROWSER_LAUNCHER="com.brave.Browser.desktop"
 is_flatpak_installed "org.mozilla.firefox" && BROWSER_LAUNCHER="org.mozilla.firefox.desktop"
-is_flatpak_installed "io.gitlab.librewolf-community" && BROWSER_LAUNCHER="io.gitlab.librewolf-community"
+is_flatpak_installed "io.gitlab.librewolf-community" && BROWSER_LAUNCHER="io.gitlab.librewolf-community.desktop"
 is_native_package_installed "nautilus" && FILE_MANAGER_LAUNCHER="org.gnome.Nautilus.desktop"
 
 # GIMP
