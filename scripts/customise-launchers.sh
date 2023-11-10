@@ -1188,24 +1188,6 @@ for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.mozilla.firefox.desktop" \
         StartupNotify false
 done
 
-if ! does_bin_exist "firefox" "org.mozilla.firefox"; then
-    for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/io.gitlab.librewolf-community.desktop" \
-                    "${LOCAL_FLATPAK_LAUNCHERS_DIR}/io.gitlab.librewolf-community.desktop"; do
-        set_launcher_entries "${LAUNCHER}" \
-            Name "Firefox" \
-            Name[ro] "Firefox" \
-            Icon "firefox"
-    done
-else
-    for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/io.gitlab.librewolf-community.desktop" \
-                    "${LOCAL_FLATPAK_LAUNCHERS_DIR}/io.gitlab.librewolf-community.desktop"; do
-        set_launcher_entries "${LAUNCHER}" \
-            Name "LibreWolf" \
-            Name[ro] "LibreWolf" \
-            Icon "librewolf"
-    done
-fi
-
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/google-chrome-unstable.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/google-chrome.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
