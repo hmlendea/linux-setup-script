@@ -813,6 +813,7 @@ if does_bin_exist "firefox" "librewolf" "org.mozilla.firefox" "io.gitlab.librewo
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "network.IDN_show_punycode" true
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "security.insecure_connection_text.enabled" true
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "security.sandbox.content.level" 0 # iHD fix
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "services.sync.prefs.sync.media.autoplay.default" false
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "toolkit.tabbox.switchByScrolling" true
 
     # Appearance
