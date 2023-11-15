@@ -381,7 +381,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
             #install_gnome_shell_extension "wintile"
 
             # New features
-            install_gnome_shell_extension "gsconnect"
+            #install_gnome_shell_extension "gsconnect"
             install_gnome_shell_extension "openweather-extension"
 
             # Appearance
