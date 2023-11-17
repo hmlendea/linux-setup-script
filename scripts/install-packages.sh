@@ -511,11 +511,6 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
             # Development
             install_native_package dotnet-sdk
 
-            if [[ "${ARCH_FAMILY}" == "x86" ]] && ! ${IS_BATTERY_DEVICE}; then
-                install_native_package electron
-                ! is_native_package_installed "chromium" && install_native_package chromedriver
-            fi
-
             [[ "${ARCH_FAMILY}" == "x86" ]] && install_native_package visual-studio-code-bin
             [[ "${ARCH_FAMILY}" == "arm" ]] && install_native_package code-headmelted-bin
             install_vscode_package "dakara.transformer"
