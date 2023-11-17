@@ -22,6 +22,6 @@ elif [ -n "${COMMIT_PREFIX}" ]; then
     fi
 fi
 
-COMMIT_MESSAGE=$(echo "${COMMIT_MESSAGE}" | sed 's/.*/\u&/')
+#COMMIT_MESSAGE=$(echo "${COMMIT_MESSAGE}" | sed 's/.*/\u&/')
 
 echo "${COMMIT_PREFIX}${COMMIT_MESSAGE}" > "${1}"
