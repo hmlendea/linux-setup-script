@@ -831,7 +831,7 @@ if does_bin_exist "firefox" "librewolf" "org.mozilla.firefox" "io.gitlab.librewo
 
     # Preferences
     #set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.download.lastDir" "${XDG_DOWNLOAD_DIR}"
-    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.formfill.enable" false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.formfill.enable" true
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.startup.page" 3 # Reopen previous tabs on startup
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "media.autoplay.enabled" false
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "media.autoplay.blocking_policy" 2
