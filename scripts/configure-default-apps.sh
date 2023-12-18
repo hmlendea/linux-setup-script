@@ -20,6 +20,7 @@ function update_mimetype_association() {
 
 # Determine which apps to use
 BROWSER_LAUNCHER=""
+DISK_IMAGE_MOUNTER_LAUNCHER=""
 FILE_MANAGER_LAUNCHER=""
 GIMP_LAUNCHER=""
 IMAGE_VIEWER_LAUNCHER=""
@@ -30,6 +31,11 @@ is_flatpak_installed "com.brave.Brownser" && BROWSER_LAUNCHER="com.brave.Browser
 is_flatpak_installed "org.mozilla.firefox" && BROWSER_LAUNCHER="org.mozilla.firefox.desktop"
 is_flatpak_installed "io.gitlab.librewolf-community" && BROWSER_LAUNCHER="io.gitlab.librewolf-community.desktop"
 is_native_package_installed "nautilus" && FILE_MANAGER_LAUNCHER="org.gnome.Nautilus.desktop"
+
+# Disk Image Mounters
+if does_bin_exist "gnome-disk-image-mounter"; then
+    DISK_IMAGE_MOUNTER_LAUNCHER="gnome-disk-image-mounter.desktop"
+fi
 
 # GIMP
 if is_flatpak_installed "org.gimp.GIMP"; then
@@ -105,3 +111,5 @@ if [ -n "${TEXT_EDITOR_LAUNCHER}" ]; then
     update_mimetype_association "text/x-python" "${TEXT_EDITOR_LAUNCHER}"
     update_mimetype_association "text/plain" "${TEXT_EDITOR_LAUNCHER}"
 fi
+
+update_mimetype_association "application/vnd.efi.iso" "${DISK_IMAGE_MOUNTER_LAUNCHER}"
