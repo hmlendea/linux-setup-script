@@ -1328,7 +1328,7 @@ if does_bin_exist "gnome-shell"; then
     if is_gnome_shell_extension_installed "Bluetooth-Battery-Meter"; then
         BLUETOOTH_BATTERY_METER_GSEXT_SCHEMA="org.gnome.shell.extensions.Bluetooth-Battery-Meter"
     
-        set_gsetting "${BLUETOOTH_BATTERY_METER_GSEXT_SCHEMA}" "enable-bettery-level-indicator" false
+        set_gsetting "${BLUETOOTH_BATTERY_METER_GSEXT_SCHEMA}" "enable-battery-indicator" false
         set_gsetting "${BLUETOOTH_BATTERY_METER_GSEXT_SCHEMA}" "enable-battery-level-text" true
     fi
 fi
@@ -1463,6 +1463,15 @@ if does_bin_exist "lxterminal"; then
     set_config_value "${LXTERMINAL_CONFIG_FILE}" scrollback ${TERMINAL_SCROLLBACK_SIZE}
     set_config_value "${LXTERMINAL_CONFIG_FILE}" cursorblinks true
     set_config_value "${LXTERMINAL_CONFIG_FILE}" cursorunderline true
+fi
+
+##############
+### Themes ###
+##############
+if does_bin_exist "kvantummanager"; then
+    KVANTUM_CONFIG_FILE="${XDG_CONFIG_HOME}/Kvantum/kvantum.kvconfig"
+
+    set_config_value "${KVANTUM_CONFIG_FILE}" "theme" "KvLibadwaita"
 fi
 
 ####################
