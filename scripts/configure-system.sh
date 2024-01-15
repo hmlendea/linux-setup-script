@@ -1324,6 +1324,13 @@ if does_bin_exist "gnome-shell"; then
     set_gsetting "${GNOME_POWER_SCHEMA}" idle-dim true
     set_gsetting "${GNOME_POWER_SCHEMA}" sleep-inactive-ac-timeout 1800
     set_gsetting "${GNOME_POWER_SCHEMA}" sleep-inactive-battery-timeout 900
+
+    if is_gnome_shell_extension_installed "Bluetooth-Battery-Meter"; then
+        BLUETOOTH_BATTERY_METER_GSEXT_SCHEMA="org.gnome.shell.extensions.Bluetooth-Battery-Meter"
+    
+        set_gsetting "${BLUETOOTH_BATTERY_METER_GSEXT_SCHEMA}" "enable-bettery-level-indicator" false
+        set_gsetting "${BLUETOOTH_BATTERY_METER_GSEXT_SCHEMA}" "enable-battery-level-text" true
+    fi
 fi
 
 if does_bin_exist "tlp"; then

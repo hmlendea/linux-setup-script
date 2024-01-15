@@ -382,6 +382,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
             #install_gnome_shell_extension "wintile"
 
             # New features
+            install_native_package "gnome-shell-extension-bluetooth-battery-meter-git"
             #install_gnome_shell_extension "gsconnect"
             install_gnome_shell_extension "openweather-extension"
 
