@@ -197,6 +197,7 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     # Packages I don't need
     uninstall_native_package "dnsmasq" # For setting up NetworkManager WiFi hotspots
     uninstall_native_package "exempi"
+    uninstall_native_package "exfat-utils" # Replaced by exfatprogs
     uninstall_native_package "gnome-menus" # For the GS Applications extension
     uninstall_native_package "gst-plugin-pipewire" # For GS screen recording
     uninstall_native_package "gvfs-afc" # Apple mobile devices

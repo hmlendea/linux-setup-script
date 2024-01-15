@@ -173,8 +173,9 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
     fi
 
     # Filesystems
-    install_native_package ntfs-3g
-    install_native_package exfat-utils
+    install_native_package_dependency dosfstools # For FAT filesystem support
+    install_native_package_dependency ntfs-3g
+    install_native_package_dependency exfatprogs
 
     # Archives
     install_native_package unp # A script for unpacking a wide variety of archive formats
