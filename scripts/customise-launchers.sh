@@ -554,7 +554,8 @@ if does_bin_exist "minecraft-launcher" "com.mojang.Minecraft" "org.prismlauncher
             Exec "${MC_EXECUTABLE}" \
             Icon "minecraft" \
             Categories "Game;" \
-            PrefersNonDefaultGPU true
+            PrefersNonDefaultGPU true \
+            NoDisplay true
     done
 
     if [ -d "${MC_DIR}/versions" ]; then
