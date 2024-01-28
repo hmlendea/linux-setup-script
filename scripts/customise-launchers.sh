@@ -555,7 +555,7 @@ if does_bin_exist "minecraft-launcher" "com.mojang.Minecraft" "org.prismlauncher
             Icon "minecraft" \
             Categories "Game;" \
             PrefersNonDefaultGPU true \
-            NoDisplay true
+            StartupNotify false
     done
 
     if [ -d "${MC_DIR}/versions" ]; then
