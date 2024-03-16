@@ -489,9 +489,6 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
 
                 # Communication
                 install_flatpak com.discordapp.Discord
-
-                # Games
-                ! is_flatpak_installed "org.prismlauncher.PrismLauncher" && install_flatpak com.mojang.Minecraft
             fi
         fi
 

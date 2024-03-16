@@ -50,7 +50,6 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "gnome-weather"                # Replaced by flatpak: org.gnome.Weather
     uninstall_native_package "grub2-theme-vimix"            # Replaced by grub2-theme-nuci
     uninstall_native_package "inkscape"                     # Replaced by flatpak: org.inkscape.Inkscape
-    uninstall_native_package "minecraft-launcher"           # Replaced by flatpak: com.mojang.Minecraft
     uninstall_native_package "nano-syntax-highlighting"     # nano is to be uninstalled next
     uninstall_native_package "nano"                         # Replaced by micro
     uninstall_native_package "paper-icon-theme-git"         # Replaced by paper-icon-theme
