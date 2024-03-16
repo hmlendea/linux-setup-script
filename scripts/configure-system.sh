@@ -1522,6 +1522,7 @@ if does_bin_exist "micro"; then
 
     # Keybindings
     set_json_property "${MICRO_BINDINGS_FILE}" '.["Ctrl-g"]' "JumpLine"
+    set_json_property "${MICRO_BINDINGS_FILE}" '.["F3"]' "FindNext"
 fi
 if does_bin_exist "pluma"; then
     PLUMA_SCHEMA="org.mate.pluma"
