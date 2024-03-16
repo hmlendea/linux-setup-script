@@ -28,7 +28,7 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
         uninstall_native_package "plank"
     fi
 
-    uninstall_native_package "alsi"                         # Replaced by fastfetch-git
+    uninstall_native_package "alsi"                         # Replaced by fastfetch
     uninstall_native_package "baobab"                       # Replaced by flatpak: org.gnome.baobab
     uninstall_native_package "dialect"                      # Depends on outdated libs
     uninstall_native_package "discord"                      # Replaced by flatpak: com.discordapp.Discord
@@ -36,8 +36,7 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "evince"                       # Replaced by flatpak: org.gnome.Evince
     uninstall_native_package "chrome-gnome-shell"           # Does not work with flatpak browsers
     uninstall_native_package "dconf-editor"                 # Replaced by flatpak: ca.desrt.dconf-editor
-    uninstall_native_package "fastfetch"                    # Replaced by fastfetch-bin
-    uninstall_native_package "fastfetch-git"                # Replaced by fastfetch-bin
+    uninstall_native_package "fastfetch-git"                # Replaced by fastfetch
     uninstall_native_package "firefox"                      # Replaced by flatpak: org.mozilla.firefox
     uninstall_native_package "fragments"                    # Replaced by flatpak: de.haeckerfelix.Fragments
     uninstall_native_package "gnome-calculator"             # Replaced by flatpak: org.gnome.Calculator

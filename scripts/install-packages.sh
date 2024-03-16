@@ -39,6 +39,7 @@ fi
 ##################
 install_native_package autoconf
 install_native_package binutils
+install_native_package debugedit
 install_native_package make
 install_native_package fakeroot
 install_native_package patch
@@ -76,7 +77,7 @@ fi
 if [[ "${DISTRO_FAMILY}" == "Arch" ]] \
 && [[ "${DISTRO}" != "SteamOS" ]] \
 && ${HAS_GUI}; then
-    install_native_package fastfetch-bin
+    install_native_package fastfetch
 else
     install_native_package neofetch
 fi
@@ -252,6 +253,8 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
             install_native_package gnome-tweaks
             #install_native_package gnome-backgrounds
             install_flatpak org.gnome.font-viewer
+
+            is_native_package_installed flatpak && install_native_package xdg-desktop-portal-gnome
         else
             install_native_package mutter # openbox
             install_native_package lxde-common
@@ -309,6 +312,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
         if ${POWERFUL_PC}; then
             if [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ]; then
                 install_native_package nautilus
+                install_native_package python-nautilus
                 install_flatpak org.gnome.FileRoller
             elif [ "${DESKTOP_ENVIRONMENT}" = "KDE" ]; then
                 install_native_package "dolphin"
@@ -393,10 +397,6 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
             install_gnome_shell_extension "windowIsReady_Remover"
             install_gnome_shell_extension "no-overview"
             install_gnome_shell_extension "Hide_Activities"
-
-            if get_dmi_string "system-sku-number" | grep -q "ThinkPad"; then
-                install_gnome_shell_extension "keyboard-backlight-menu"
-            fi
         fi
 
         # Themes
@@ -519,7 +519,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
             install_vscode_package "github.vscode-github-actions"
             install_vscode_package "johnpapa.vscode-peacock"
             install_vscode_package "mechatroner.rainbow-csv"
-            install_vscode_package "mgcb-vscode.mgcb-vscode"
+            install_vscode_package "mangrimen.mgcb-editor"
             install_vscode_package "ms-dotnettools.csharp"
             install_vscode_package "nico-castell.linux-desktop-file"
             install_vscode_package "qinjia.seti-icons"
