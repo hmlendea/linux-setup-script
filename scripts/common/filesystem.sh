@@ -235,10 +235,16 @@ function create_file() {
 
     local DIRECTORY_PATH="$(dirname ${FILE_PATH})"
 
-    mkdir -p "${DIRECTORY_PATH}"
-    if [ -w "${DIRECTORY_PATH}" ]; then
+    local TOP_EXISTING_DIR="${DIRECTORY_PATH}"
+    while [ -n "${TOP_EXISTING_DIR}" ] && [ ! -d "${TOP_EXISTING_DIR}" ]; do
+        TOP_EXISTING_DIR=$(dirname ${TOP_EXISTING_DIR})
+    done
+
+    if [ -w "${TOP_EXISTING_DIR}" ]; then
+        mkdir -p "${DIRECTORY_PATH}"
         touch "${FILE_PATH}"
     else
+        run_as_su mkdir -p "${DIRECTORY_PATH}"
         run_as_su touch "${FILE_PATH}"
     fi
 }
