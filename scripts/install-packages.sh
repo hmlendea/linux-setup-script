@@ -254,7 +254,10 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
             #install_native_package gnome-backgrounds
             install_flatpak org.gnome.font-viewer
 
-            is_native_package_installed flatpak && install_native_package xdg-desktop-portal-gnome
+            if is_native_package_installed flatpak; then
+                install_native_package gnome-software
+                install_native_package xdg-desktop-portal-gnome
+            fi
         else
             install_native_package mutter # openbox
             install_native_package lxde-common
