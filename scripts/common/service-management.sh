@@ -1,8 +1,6 @@
 #!/bin/bash
-if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-    source "scripts/common/filesystem.sh"
-    source "${REPO_DIR}/scripts/common/common.sh"
-fi
+[ -z "${ROOT_USR_BIN}" ] && source "scripts/common/filesystem.sh"
+source "${REPO_DIR}/scripts/common/common.sh"
 
 function does_systemd_service_exist_at_location {
     local SERVICE_NAME="${1}"
@@ -25,22 +23,20 @@ function does_systemd_service_exist {
 }
 
 function enable_service {
-    [ ! -f "${ROOT_USR_BIN}/systemctl" ] && return
-
     local SERVICE_NAME="${*}"
 
-    (! does_systemd_service_exist "${SERVICE_NAME}") && return
+    ! does_bin_exist "systemctl" && return
+    ! does_systemd_service_exist "${SERVICE_NAME}" && return
 
     run_as_su systemctl enable "${SERVICE_NAME}"
     run_as_su systemctl start "${SERVICE_NAME}"
 }
 
 function disable_service {
-    [ ! -f "${ROOT_USR_BIN}/systemctl" ] && return
-
     local SERVICE_NAME="${*}"
 
-    (! does_systemd_service_exist "${SERVICE_NAME}") && return
+    ! does_bin_exist "systemctl" && return
+    ! does_systemd_service_exist "${SERVICE_NAME}" && return
 
     run_as_su systemctl disable "${SERVICE_NAME}"
     run_as_su systemctl stop "${SERVICE_NAME}"
