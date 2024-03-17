@@ -391,7 +391,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
             # New features
             install_native_package "gnome-shell-extension-bluetooth-battery-meter-git"
             #install_gnome_shell_extension "gsconnect"
-            install_gnome_shell_extension "openweather-extension"
+            install_gnome_shell_extension 5470 #"weatheroclock@CleoMenezesJr.github.io"
 
             # Appearance
             install_gnome_shell_extension "blur-my-shell"
