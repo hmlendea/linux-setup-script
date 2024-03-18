@@ -332,7 +332,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
 
         # Text Editor
         if ${POWERFUL_PC}; then
-            [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ] && install_flatpak org.gnome.gedit
+            [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ] && install_flatpak org.gnome.TextEditor
         else
             install_native_package pluma
         fi

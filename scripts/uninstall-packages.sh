@@ -70,6 +70,7 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "yaourt-auto-sync"             # Replaced by repo-synchroniser
 
     uninstall_flatpak "org.gnome.Cheese"        # Replaced by org.gnome.Snapshot
+    uninstall_flatpak "org.gnome.gedit"         # Replaced by org.gnome.TextEditor
     uninstall_flatpak "org.gnome.Rhythmbox3"    # Replaced by io.bassi.Amberol
 
     # App Stores
