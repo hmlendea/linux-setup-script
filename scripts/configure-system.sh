@@ -751,10 +751,14 @@ if does_bin_exist "nautilus"; then
     NAUTILUS_SCHEMA="org.gnome.nautilus"
     FILECHOOSER_SCHEMA="org.gtk.Settings.FileChooser"
 
+    set_gsetting "${NAUTILUS_SCHEMA}.compression" default-compression-format "7z"
+
     #set_gsetting "${NAUTILUS_SCHEMA}.preferences" search-view 'list-view'
     set_gsetting "${NAUTILUS_SCHEMA}.preferences" show-create-link true
     set_gsetting "${NAUTILUS_SCHEMA}.preferences" show-delete-permanently true
+    set_gsetting "${NAUTILUS_SCHEMA}.preferences" show-hidden-files false
 
+    set_gsetting "${FILECHOOSER_SCHEMA}" show-hidden false
     set_gsetting "${FILECHOOSER_SCHEMA}" sort-directories-first true
 fi
 if does_bin_exist "pcmanfm"; then
@@ -1492,6 +1496,15 @@ if does_bin_exist "gedit" "org.gnome.gedit"; then
     set_gsetting "${GEDIT_EDITOR_SCHEMA}" restore-cursor-position true
     set_gsetting "${GEDIT_EDITOR_SCHEMA}" tabs-size "uint32 ${TEXT_EDITOR_TAB_SIZE}"
 fi
+
+if does_bin_exist "org.gnome.TextEditor"; then
+    TEXTEDITOR_CONFIG_FILE="${HOME_VAR_APP}/org.gnome.TextEditor/config/glib-2.0/settings/keyfile"
+
+    set_config_value --section "org/gnome/TextEditor" "${TEXTEDITOR_CONFIG_FILE}" show-line-numbers true
+    set_config_value --section "org/gnome/TextEditor" "${TEXTEDITOR_CONFIG_FILE}" indent-style "space"
+    set_config_value --section "org/gnome/TextEditor" "${TEXTEDITOR_CONFIG_FILE}" tab-width 4
+fi
+
 if does_bin_exist "micro"; then
     MICRO_BINDINGS_FILE="${XDG_CONFIG_HOME}/micro/bindings.json"
     MICRO_SETTINGS_FILE="${XDG_CONFIG_HOME}/micro/settings.json"
