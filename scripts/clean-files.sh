@@ -514,6 +514,12 @@ if ${CLEAN_LOGS}; then
     remove "${XDG_CONFIG_HOME}/unity3d"/*.log
     remove "${XDG_DATA_HOME}/xorg/"*".log"
     remove "${XDG_DATA_HOME}/xorg/"*".log.old"
+
+    remove "${HOME_VAR_APP}/org.prismlauncher.PrismLauncher/data/PrismLauncher/instances/"*"/.minecraft/baritone/"*"/"
+    for SUBFOLDER_NAME in "crash-reports" "logs"; do
+        remove "${HOME_VAR_APP}/org.prismlauncher.PrismLauncher/data/PrismLauncher/instances/"*"/.minecraft/${SUBFOLDER_NAME}"
+    done
+
     remove \
         "${HOME}/.klei/DoNotStarveTogether/backup/client_chat_log" \
         "${HOME}/.klei/DoNotStarveTogether/backup/client_log"
