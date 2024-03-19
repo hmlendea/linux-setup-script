@@ -33,9 +33,11 @@ ROOT_BIN="${ROOT_PATH}/bin"
 ROOT_BOOT="${ROOT_PATH}/boot"
 ROOT_ETC="${ROOT_PATH}/etc"
 ROOT_ETC_XDG="${ROOT_ETC}/xdg"
+ROOT_HOME="${ROOT_PATH}/home"
 ROOT_LIB="${ROOT_PATH}/lib"
 ROOT_OPT="${ROOT_PATH}/opt"
 ROOT_PROC="${ROOT_PATH}/proc"
+ROOT_ROOT="${ROOT_PATH}/root"
 ROOT_SRV="${ROOT_PATH}/srv"
 ROOT_SYS="${ROOT_PATH}/sys"
 ROOT_USR="${ROOT_PATH}/usr"
@@ -59,7 +61,7 @@ if [ ! -d "${HOME_REAL}" ]; then
     if [ -d "/data/data/com.termux/files/home" ]; then
         HOME_REAL="/data/data/com.termux/files/home"
     else
-        HOME_REAL="/home/${USER_REAL}"
+        HOME_REAL="${ROOT_HOME}/${USER_REAL}"
     fi
 fi
 
@@ -327,6 +329,36 @@ function download_file {
 function get_file_checksum() {
     [ ! -f "${@}" ] && return
     sha512sum "${@}" | awk '{print $1}'
+}
+
+function get_old_directories_in_directory() {
+    local DIRECTORY_PATH="${1}"
+    local AGE_DAYS="${2}"
+
+    [ ! -d "${DIRECTORY_PATH}" ] && return
+    [ -z "${AGE_DAYS}" ] && AGE_DAYS="90"
+
+    find "${DIRECTORY_PATH}" -maxdepth 1 ! -path "${DIRECTORY_PATH}" -mtime "+${AGE_DAYS}" -type d
+}
+
+function get_old_files_in_directory() {
+    local DIRECTORY_PATH="${1}"
+    local AGE_DAYS="${2}"
+
+    [ ! -d "${DIRECTORY_PATH}" ] && return
+    [ -z "${AGE_DAYS}" ] && AGE_DAYS="90"
+
+    find "${DIRECTORY_PATH}" -maxdepth 1 ! -path "${DIRECTORY_PATH}" -mtime "+${AGE_DAYS}" -type f
+}
+
+function get_old_items_in_directory() {
+    local DIRECTORY_PATH="${1}"
+    local AGE_DAYS="${2}"
+
+    [ ! -d "${DIRECTORY_PATH}" ] && return
+
+    get_old_directories_in_directory "${DIRECTORY_PATH}" "${AGE_DAYS}"
+    get_old_files_in_directory "${DIRECTORY_PATH}" "${AGE_DAYS}"
 }
 
 function does_file_need_updating() {
