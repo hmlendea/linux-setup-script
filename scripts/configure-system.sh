@@ -4,6 +4,7 @@ source "${REPO_DIR}/scripts/common/common.sh"
 source "${REPO_DIR}/scripts/common/apps.sh"
 source "${REPO_DIR}/scripts/common/config.sh"
 source "${REPO_DIR}/scripts/common/package-management.sh"
+source "${REPO_DIR}/scripts/common/service-management.sh"
 source "${REPO_DIR}/scripts/common/system-info.sh"
 
 function get_openbox_font_weight() {
@@ -194,7 +195,7 @@ fi
 if does_bin_exist "mkinitcpio"; then
     MKINITCPIO_CONFIG_FILE="${ROOT_ETC}/mkinitcpio.conf"
 
-    set_config_value "${MKINITCPIO_CONFIG_FILE}" "COMPRESSION" "\"lz4\""
+    set_config_value "${MKINITCPIO_CONFIG_FILE}" "COMPRESSION" '"lz4"'
 fi
 
 echo "${OS_LANGUAGE}" > "${XDG_CONFIG_HOME}/user-dirs.locale"
@@ -290,6 +291,8 @@ if [ -f "${ROOT_ETC}/default/grub" ] \
         #BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} i915.lvds_downclock=1"    # !CAN CAUSE TEARING! Downclocks the LVDS refresh rate
     #fi
 
+    [ -f "/swapfile" ] && BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} resume=/swapfile"
+
     set_config_value "${GRUB_CONFIG_FILE}" "GRUB_CMDLINE_LINUX_DEFAULT" "\"${BOOT_FLAGS_DEFAULT}\""
 
     set_config_value "${GRUB_CONFIG_FILE}" "GRUB_DISABLE_RECOVERY" true
@@ -306,6 +309,10 @@ if [ -f "${ROOT_ETC}/default/grub" ] \
             set_config_value "${GRUB_CONFIG_FILE}" "GRUB_GFXMODE" "1280x1024x32"
         fi
     fi
+fi
+
+if does_bin_exist "gdm"; then
+    set_service_property "gdm" "Service" "Type" "idle"
 fi
 
 if does_bin_exist "gnome-shell"; then
@@ -1048,8 +1055,6 @@ if does_bin_exist "code" "code-oss" "codium" "com.visualstudio.code"; then
         printf "{}" > "${VSCODE_CONFIG_FILE}"
     fi
 
-    set_config_value --separator " = " "/usr/share/nautilus-python/extensions/code-nautilus.py" "VSCODE" "'${VSCODE_BIN}'"
-
     # Appearance
     set_json_property "${VSCODE_CONFIG_FILE}" '.["peacock.affectActivityBar"]' false
     set_json_property "${VSCODE_CONFIG_FILE}" '.["peacock.affectTabActiveBorder"]' true
@@ -1352,6 +1357,22 @@ if does_bin_exist "tlp"; then
     set_config_value "${TLP_CONFIG_FILE}" "DEVICES_TO_DISABLE_ON_LAN_DISCONNECT" "\"wifi wwan\""
     set_config_value "${TLP_CONFIG_FILE}" "DEVICES_TO_DISABLE_ON_BAT_NOT_IN_USE" "\"bluetooth nfc wwan\""
 
+    set_config_value "${TLP_CONFIG_FILE}" "AHCI_RUNTIME_PM_ON_AC" 'on'
+    set_config_value "${TLP_CONFIG_FILE}" "AHCI_RUNTIME_PM_ON_BAT" 'auto'
+    set_config_value "${TLP_CONFIG_FILE}" "AHCI_RUNTIME_PM_TIMEOUT" 10 # Default: 15
+    
+    set_config_value "${TLP_CONFIG_FILE}" "SATA_LINKPWR_ON_AC" 'max_performance' # Default: med_power_with_dipm
+    set_config_value "${TLP_CONFIG_FILE}" "SATA_LINKPWR_ON_BAT" 'min_power' # Default: med_power_with_dipm
+
+    set_config_value "${TLP_CONFIG_FILE}" "RUNTIME_PM_ON_AC" 'on'
+    set_config_value "${TLP_CONFIG_FILE}" "RUNTIME_PM_ON_BAT" 'auto'
+
+    set_config_value "${TLP_CONFIG_FILE}" "SOUND_POWER_SAVE_ON_AC" 1
+    set_config_value "${TLP_CONFIG_FILE}" "SOUND_POWER_SAVE_ON_BAT" 0 # Defaukt: 1
+
+    set_config_value "${TLP_CONFIG_FILE}" "USB_AUTOSUSPEND" 1
+    set_config_value "${TLP_CONFIG_FILE}" "USB_AUTOSUSPEND_DISABLE_ON_SHUTDOWN" 1
+
 #    set_config_value "${TLP_CONFIG_FILE}" "CPU_ENERGY_PERF_POLICY_ON_AC" "performance"
 #    set_config_value "${TLP_CONFIG_FILE}" "PLATFORM_PROFILE_ON_AC" "performance"
 #    set_config_value "${TLP_CONFIG_FILE}" "CPU_ENERGY_PERF_POLICY_ON_BAT" "power"
@@ -1370,6 +1391,8 @@ if does_bin_exist "tlp"; then
 
     set_config_value "${TLP_CONFIG_FILE}" "MAX_LOST_WORK_SECS_ON_AC" "15"
     set_config_value "${TLP_CONFIG_FILE}" "MAX_LOST_WORK_SECS_ON_BAT" "90"
+
+    set_config_value "${TLP_CONFIG_FILE}" "NMI_WATCHDOG" 0 # Disable NMI interrupts that can consume a lot of power
 fi
 
 ###################
@@ -1503,6 +1526,9 @@ if does_bin_exist "org.gnome.TextEditor"; then
     set_config_value --section "org/gnome/TextEditor" "${TEXTEDITOR_CONFIG_FILE}" show-line-numbers true
     set_config_value --section "org/gnome/TextEditor" "${TEXTEDITOR_CONFIG_FILE}" indent-style "space"
     set_config_value --section "org/gnome/TextEditor" "${TEXTEDITOR_CONFIG_FILE}" tab-width 4
+    set_config_value --section "org/gnome/TextEditor" "${TEXTEDITOR_CONFIG_FILE}" style-scheme "Adwaita-dark"
+    set_config_value --section "org/gnome/TextEditor" "${TEXTEDITOR_CONFIG_FILE}" highlight-current-line=true
+    set_config_value --section "org/gnome/TextEditor" "${TEXTEDITOR_CONFIG_FILE}" restore-session=false
 fi
 
 if does_bin_exist "micro"; then
