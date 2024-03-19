@@ -63,8 +63,12 @@ fi
 # Steam
 if is_flatpak_installed "org.gnome.gedit"; then
     TEXT_EDITOR_LAUNCHER="org.gnome.gedit.desktop"
+elif is_flatpak_installed "org.gnome.TextEditor"; then
+    TEXT_EDITOR_LAUNCHER="org.gnome.TextEditor.desktop"
 elif is_native_package_installed "gedit"; then
     TEXT_EDITOR_LAUNCHER="gedit.desktop"
+elif is_native_package_installed "pluma"; then
+    TEXT_EDITOR_LAUNCHER="pluma.desktop"
 fi
 
 # Update the associations
