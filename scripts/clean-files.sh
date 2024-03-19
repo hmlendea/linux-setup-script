@@ -13,6 +13,25 @@ remove "${LOCAL_INSTALL_TEMP_DIR}"
 remove "${SYSTEM_FONTS_DIR}/TTF/seguiemj.ttf"
 remove "${ROOT_ETC}/motd"
 
+remove \
+    $(get_old_directories_in_directory "${XDG_CACHE_HOME}/nuget/packages") \
+    $(get_old_items_in_directory "${XDG_CACHE_HOME}/electron")
+
+remove \
+    "${HOME}/.electron-gyp" \
+    "${XDG_CACHE_HOME}/electron-builder"
+
+remove \
+    "${ROOT_ROOT}/Desktop" \
+    "${ROOT_ROOT}/Documents" \
+    "${ROOT_ROOT}/Downloads" \
+    "${ROOT_ROOT}/Music" \
+    "${ROOT_ROOT}/Pictures" \
+    "${ROOT_ROOT}/Public" \
+    "${ROOT_ROOT}/Templates" \
+    "${ROOT_ROOT}/Videos" \
+    "${ROOT_ROOT}/.cache"
+
 ! does_bin_exist "aircrack-ng" && remove "${HOME}/.aircrack"
 ! does_bin_exist "alsi" && remove "${XDG_CONFIG_HOME}/alsi"
 ! does_bin_exist "asciinema" && remove "${XDG_CONFIG_HOME}/asciinema"
@@ -93,6 +112,9 @@ remove "${ROOT_ETC}/motd"
 ! does_bin_exist "gradle" && remove \
     "${HOME}/.gradle" \
     "${XDG_DATA_HOME}/gradle"
+! does_bin_exist "gsconnect" && remove \
+    "${XDG_CACHE_HOME}/gsconnect" \
+    "${XDG_CONFIG_HOME}/gsconnect"
 ! does_bin_exist "hardinfo" && remove "${XDG_CONFIG_HOME}/hardinfo"
 ! does_bin_exist "hashcat" && remove \
     "${XDG_CACHE_HOME}/hashcat" \
@@ -112,7 +134,8 @@ remove "${ROOT_ETC}/motd"
     "${XDG_DATA_HOME}/lutris"
 ! does_bin_exist "mcaselector" && remove \
     "${HOME}/.mcaselector" \
-    "${XDG_CACHE_HOME}/mcaselector"
+    "${XDG_CACHE_HOME}/mcaselector" \
+    "${XDG_DATA_HOME}/mcaselector"
 ! does_bin_exist "mcedit" && remove "${HOME}/.mcedit"
 ! does_bin_exist "minetest" && remove "${XDG_CACHE_HOME}/minetest"
 ! does_bin_exist "mono" && remove "${HOME}/.mono"
