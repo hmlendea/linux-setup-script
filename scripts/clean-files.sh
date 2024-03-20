@@ -13,9 +13,8 @@ remove "${LOCAL_INSTALL_TEMP_DIR}"
 remove "${SYSTEM_FONTS_DIR}/TTF/seguiemj.ttf"
 remove "${ROOT_ETC}/motd"
 
-remove \
-    $(get_old_directories_in_directory "${XDG_CACHE_HOME}/nuget/packages") \
-    $(get_old_items_in_directory "${XDG_CACHE_HOME}/electron")
+remove_old_items "${XDG_CACHE_HOME}/electron"
+remove_old_items "${XDG_CACHE_HOME}/nuget/packages"
 
 remove \
     "${HOME}/.electron-gyp" \
@@ -287,6 +286,13 @@ remove_logs_in_dirs \
     "${HOME_VAR_APP}/com.mojang.Minecraft/.minecraft" \
     "${ROOT_SRV}/papermc"
 
+for PRISMLAUNCHER_INSTANCE_DIR in "${HOME_VAR_APP}/org.prismlauncher.PrismLauncher/data/PrismLauncher/instances/"*; do
+    remove "${PRISMLAUNCHER_INSTANCE_DIR}/.minecraft/baritone/"*"/"
+    remove "${PRISMLAUNCHER_INSTANCE_DIR}/.minecraft/XaeroWaypoints_BACKUP"*
+    remove_old_items "${PRISMLAUNCHER_INSTANCE_DIR}/.minecraft/downloads"
+    remove_old_items "${PRISMLAUNCHER_INSTANCE_DIR}/.minecraft/.fabric/remappedJars"
+done
+
 #########################
 ### Internet Browsers ###
 #########################
@@ -538,7 +544,6 @@ if ${CLEAN_LOGS}; then
     remove "${XDG_DATA_HOME}/xorg/"*".log"
     remove "${XDG_DATA_HOME}/xorg/"*".log.old"
 
-    remove "${HOME_VAR_APP}/org.prismlauncher.PrismLauncher/data/PrismLauncher/instances/"*"/.minecraft/baritone/"*"/"
     for SUBFOLDER_NAME in "crash-reports" "logs"; do
         remove "${HOME_VAR_APP}/org.prismlauncher.PrismLauncher/data/PrismLauncher/instances/"*"/.minecraft/${SUBFOLDER_NAME}"
     done

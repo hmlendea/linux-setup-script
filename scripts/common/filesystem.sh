@@ -182,6 +182,17 @@ function remove_empty_subdirectories() {
     done < <(find "${PARENT_DIRECTORY}" -maxdepth 1 -type d -print0)
 }
 
+function remove_old_items() {
+    local PARENT_DIRECTORY="${*}"
+
+    zzz_get_old_directory_items "${PARENT_DIRECTORY}" |
+    while IFS= read -r -d '' ITEM_PATH; do
+        remove "${ITEM_PATH}"
+    done
+
+    remove_dir_if_empty "${PARENT_DIRECTORY}"
+}
+
 function remove_logs_in_dir() {
     [ ! -d "${DIR}" ] && return
 
@@ -331,36 +342,6 @@ function get_file_checksum() {
     sha512sum "${@}" | awk '{print $1}'
 }
 
-function get_old_directories_in_directory() {
-    local DIRECTORY_PATH="${1}"
-    local AGE_DAYS="${2}"
-
-    [ ! -d "${DIRECTORY_PATH}" ] && return
-    [ -z "${AGE_DAYS}" ] && AGE_DAYS="90"
-
-    find "${DIRECTORY_PATH}" -maxdepth 1 ! -path "${DIRECTORY_PATH}" -mtime "+${AGE_DAYS}" -type d
-}
-
-function get_old_files_in_directory() {
-    local DIRECTORY_PATH="${1}"
-    local AGE_DAYS="${2}"
-
-    [ ! -d "${DIRECTORY_PATH}" ] && return
-    [ -z "${AGE_DAYS}" ] && AGE_DAYS="90"
-
-    find "${DIRECTORY_PATH}" -maxdepth 1 ! -path "${DIRECTORY_PATH}" -mtime "+${AGE_DAYS}" -type f
-}
-
-function get_old_items_in_directory() {
-    local DIRECTORY_PATH="${1}"
-    local AGE_DAYS="${2}"
-
-    [ ! -d "${DIRECTORY_PATH}" ] && return
-
-    get_old_directories_in_directory "${DIRECTORY_PATH}" "${AGE_DAYS}"
-    get_old_files_in_directory "${DIRECTORY_PATH}" "${AGE_DAYS}"
-}
-
 function does_file_need_updating() {
     local SOURCE_FILE_PATH="${1}"
     local TARGET_FILE_PATH="${2}"
@@ -403,6 +384,15 @@ function update_file_if_distinct() {
             run_as_su cp "${SOURCE_FILE_PATH}" "${TARGET_FILE_PATH}"
         fi
     fi
+}
+
+function zzz_get_old_directory_items() {
+    local DIRECTORY_PATH="${1}"
+    local AGE_DAYS=90
+
+    [ ! -d "${DIRECTORY_PATH}" ] && return
+
+    find "${DIRECTORY_PATH}" -maxdepth 1 ! -path "${DIRECTORY_PATH}" -mtime "+${AGE_DAYS}" -print0
 }
 
 # Specific directories
