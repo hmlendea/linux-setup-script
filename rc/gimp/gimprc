@@ -31,8 +31,12 @@
     (yoffset 0)
     (offset-unit inches))
 (import-raw-plug-in "${gimp_plug_in_dir}/plug-ins/file-raw-placeholder/file-raw-placeholder")
-(monitor-xresolution 143)
-(monitor-yresolution 144)
+(export-color-profile no)
+(export-metadata-exif no)
+(export-metadata-xmp no)
+(export-metadata-iptc no)
+(monitor-xresolution 142)
+(monitor-yresolution 141)
 (default-view
     (show-menubar yes)
     (show-statusbar yes)
@@ -53,6 +57,7 @@
     (padding-in-show-all no))
 (edit-non-visible yes)
 (restore-monitor yes)
+(selection-grow-radius 2)
 (fill-options
     (style solid)
     (antialias yes)
