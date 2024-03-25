@@ -1,0 +1,13 @@
+#!/bin/bash
+BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
+
+function is_published() {
+    local BRANCH_NAME="${1}"
+
+#    git ls-remote --exit-code origin "${BRANCH_NAME}" >/dev/null 2>&1
+    git rev-parse --verify "origin/${BRANCH_NAME}" &>/dev/null
+}
+
+if ! is_published "${BRANCH_NAME}"; then
+    git push -u origin "${BRANCH_NAME}"
+fi
