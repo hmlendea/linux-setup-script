@@ -55,14 +55,11 @@ echo "EFI support:      ${HAS_EFI_SUPPORT}"
 echo ""
 
 if ${HAS_GUI}; then
-    echo "GUI:        ${HAS_GUI}"
-    echo "Screen DPI: $(get_screen_dpi)"
-    echo ""
-
-    echo "Is development device:        ${IS_DEVELOPMENT_DEVICE}"
-    echo "Is gaming device:             ${IS_GAMING_DEVICE}"
-    echo "Is general purpose device:    ${IS_GENERAL_PURPOSE_DEVICE}"
-    echo "Is powerful device:           ${POWERFUL_PC}"
+    echo "GUI:              $(get_screen_width)x$(get_screen_height), $(get_screen_dpi) DPI"
+    echo "Development:      ${IS_DEVELOPMENT_DEVICE}"
+    echo "Gaming:           ${IS_GAMING_DEVICE}"
+    echo "General purpose:  ${IS_GENERAL_PURPOSE_DEVICE}"
+    echo "Powerful system:  ${POWERFUL_PC}"
     echo ""
 fi
 
