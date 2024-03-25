@@ -9,31 +9,37 @@ function get_screen_width() {
     fi
 
     if [ "${XDG_SESSION_TYPE}" = "wayland" ]; then
-        echo 0 # Wayland not yet supported
-        return
-    fi
-
-    if does_bin_exist "xrandr"; then
-        xrandr | grep -w connected | grep primary | sed 's/^.*primary \([0-9][0-9]*\)x.*/\1/g'
-    elif does_bin_exist "xdpyinfo"; then
-        xdpyinfo | grep "dimensions" | sed 's/^[^0-9]*\([0-9]\+\)x[0-9]\+ pixels.*/\1/g'
+        if does_bin_exist "wayland-info"; then
+            wayland-info | grep "refresh" | head -n 1 | sed 's/.*width: \([1-9][0-9]*\)\s*px.*/\1/g'
+        else
+            echo 0
+        fi
     else
-        echo 0
+        if does_bin_exist "xrandr"; then
+            xrandr | grep -w connected | grep primary | sed 's/^.*primary \([0-9][0-9]*\)x.*/\1/g'
+        elif does_bin_exist "xdpyinfo"; then
+            xdpyinfo | grep "dimensions" | sed 's/^[^0-9]*\([0-9]\+\)x[0-9]\+ pixels.*/\1/g'
+        else
+            echo 0
+        fi
     fi
 }
 
 function get_screen_width_millimetres() {
     if [ "${XDG_SESSION_TYPE}" = "wayland" ]; then
-        echo 0 # Wayland not yet supported
-        return
-    fi
-
-    if does_bin_exist "xrandr"; then
-        xrandr | grep -w connected | grep primary | sed 's/.* \([0-9]\+\)mm x [0-9]\+mm.*/\1/g'
-    elif does_bin_exist "xdpyinfo"; then
-        xdpyinfo | grep "dimensions" | sed 's/^.* pixels (\([0-9]\+\)x[0-9]\+ mil.*/\1/g'
+        if does_bin_exist "wayland-info"; then
+            wayland-info | grep "physical_" | head -n 1 | sed 's/.*physical_width: \([1-9][0-9]*\)\s*mm.*/\1/g'
+        else
+            echo 0
+        fi
     else
-        echo 0
+        if does_bin_exist "xrandr"; then
+            xrandr | grep -w connected | grep primary | sed 's/.* \([0-9]\+\)mm x [0-9]\+mm.*/\1/g'
+        elif does_bin_exist "xdpyinfo"; then
+            xdpyinfo | grep "dimensions" | sed 's/^.* pixels (\([0-9]\+\)x[0-9]\+ mil.*/\1/g'
+        else
+            echo 0
+        fi
     fi
 }
 
@@ -49,31 +55,37 @@ function get_screen_height() {
     fi
 
     if [ "${XDG_SESSION_TYPE}" = "wayland" ]; then
-        echo 0 # Wayland not yet supported
-        return
-    fi
-
-    if does_bin_exist "xrandr"; then
-        xrandr | grep -w connected | grep primary | sed 's/^.*primary [0-9]\+x\([0-9]\+\).*/\1/g'
-    elif does_bin_exist "xdpyinfo"; then
-        xdpyinfo | grep "dimensions" | sed 's/^[^0-9]*[0-9]\+x\([0-9]\+\) pixels.*/\1/g'
+        if does_bin_exist "wayland-info"; then
+            wayland-info | grep "refresh" | head -n 1 | sed 's/.*height: \([1-9][0-9]*\)\s*px.*/\1/g'
+        else
+            echo 0
+        fi
     else
-        echo 0
+        if does_bin_exist "xrandr"; then
+            xrandr | grep -w connected | grep primary | sed 's/^.*primary [0-9]\+x\([0-9]\+\).*/\1/g'
+        elif does_bin_exist "xdpyinfo"; then
+            xdpyinfo | grep "dimensions" | sed 's/^[^0-9]*[0-9]\+x\([0-9]\+\) pixels.*/\1/g'
+        else
+            echo 0
+        fi
     fi
 }
 
 function get_screen_height_millimetres() {
     if [ "${XDG_SESSION_TYPE}" = "wayland" ]; then
-        echo 0 # Wayland not yet supported
-        return
-    fi
-
-    if does_bin_exist "xrandr"; then
-        xrandr | grep -w connected | grep primary | sed 's/.* [0-9]\+mm x \([0-9]\+\)mm.*/\1/g'
-    elif does_bin_exist "xdpyinfo"; then
-        xdpyinfo | grep "dimensions" | sed 's/^.* pixels ([0-9]\+x\([0-9]\+\) mil.*/\1/g'
+        if does_bin_exist "wayland-info"; then
+            wayland-info | grep "physical_" | head -n 1 | sed 's/.*physical_height: \([1-9][0-9]*\)\s*mm.*/\1/g'
+        else
+            echo 0
+        fi
     else
-        echo 0
+        if does_bin_exist "xrandr"; then
+            xrandr | grep -w connected | grep primary | sed 's/.* [0-9]\+mm x \([0-9]\+\)mm.*/\1/g'
+        elif does_bin_exist "xdpyinfo"; then
+            xdpyinfo | grep "dimensions" | sed 's/^.* pixels ([0-9]\+x\([0-9]\+\) mil.*/\1/g'
+        else
+            echo 0
+        fi
     fi
 }
 

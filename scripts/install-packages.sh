@@ -537,8 +537,14 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
         install_flatpak com.simplenote.Simplenote
         install_flatpak org.gnome.Todo
 
-        install_native_package xorg-xdpyinfo
-        #install_native_package xorg-xkill
+        if is_native_package_installed "xorg-server"; then
+            install_native_package xorg-xdpyinfo
+            #install_native_package xorg-xkill
+        fi
+
+        if is_native_package_installed "wayland"; then
+            install_native_package "wayland-utils"
+        fi
     fi
 elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
 && ${HAS_SU_PRIVILEGES}; then
