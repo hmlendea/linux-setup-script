@@ -9,7 +9,7 @@ ENABLE_GIT_STATUS=true
 function get_git_prompt {
     ! ${ENABLE_GIT} && return
 
-    BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+    local BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
 
     [ -z "${BRANCH_NAME}" ] && return
 
@@ -66,18 +66,18 @@ function get_git_prompt {
 }
 
 function get_git_branch_status {
-    UPSTREAM=${1:-'@{u}'}
-    REMOTE=$(git rev-parse "$UPSTREAM" 2>/dev/null)
+    local UPSTREAM=${1:-'@{u}'}
+    local REMOTE=$(git rev-parse "${UPSTREAM}" 2>/dev/null)
 
     if [ -z ${REMOTE} ]; then
        echo "local-only"
 	   return
 	fi
 
-    LOCAL=$(git rev-parse @)
+    local LOCAL=$(git rev-parse @)
 
     if [ ${LOCAL} = ${REMOTE} ]; then
-		LOCAL_CHANGES=$(git diff-index --name-only HEAD --)
+		local LOCAL_CHANGES=$(git diff-index --name-only HEAD --)
 
         if [ -n "${LOCAL_CHANGES}" ]; then
             echo "local-changes"
@@ -85,7 +85,7 @@ function get_git_branch_status {
             echo "up-to-date"
         fi
 	else
-		BASE=$(git merge-base @ "$UPSTREAM")
+		local BASE=$(git merge-base @ "${UPSTREAM}")
 
 		if [ ${LOCAL} = ${BASE} ]; then
 			echo "behind"
@@ -101,7 +101,7 @@ function get_path {
     MAX_LENGTH=24
     CWD=${PWD##*/}
 
-    if [ "$HOME" = "$PWD" ]; then
+    if [ "${HOME}" = "${PWD}" ]; then
         echo "~"
     elif [ ${#CWD} -gt $((MAX_LENGTH)) ]; then
         echo ${CWD:0:$((MAX_LENGTH/2-1))}..${CWD:(-$((MAX_LENGTH/2-1)))}
@@ -137,8 +137,10 @@ function set_custom_prompt {
     local separator2=":"
     local separator3=">"
 
-    [ "$(whoami)" = "root" ]   && userColour="31" # Root = red
-    [ "$(whoami)" = "guest" ]  && userColour="33" # Guest = yellow
+    local CURRENT_USERNAME="$(whoami)"
+
+    [ "${CURRENT_USERNAME}" = "root" ]   && userColour="31" # Root = red
+    [ "${CURRENT_USERNAME}" = "guest" ]  && userColour="33" # Guest = yellow
 
     if [[ ${HOSTNAME} = *Assistant ]]; then
         hostColour="94" # HomeAssistant = Light Blue
@@ -154,8 +156,8 @@ function set_custom_prompt {
         hostColour="93" # Phone = Light Yellow
     fi
 
-    local ps1user="$USER"
-    local ps1host='$HOSTNAME' # "\h"
+    local ps1user="${USER}"
+    local ps1host='${HOSTNAME}' # "\h"
     local ps1path='$(get_path)'
 
     if ${ENABLE_COLOURS}; then
