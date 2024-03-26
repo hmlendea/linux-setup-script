@@ -6,15 +6,59 @@ ENABLE_COLOURS=true
 ENABLE_GIT=true
 ENABLE_GIT_STATUS=true
 
+function get_git_branch_name {
+    ! ${ENABLE_GIT} && return
+    [ ! -f ".git/HEAD" ] && return
+
+    local HEAD_CONTENT=$(<.git/HEAD)
+
+    if [[ ${HEAD_CONTENT} == ref:\ refs/heads/* ]]; then
+        echo "${HEAD_CONTENT##*/}"
+    fi
+}
+
+function get_git_branch_status {
+    local UPSTREAM=${1:-'@{u}'}
+    local REMOTE=$(git rev-parse "${UPSTREAM}" 2>/dev/null)
+
+    if [ -z ${REMOTE} ]; then
+       echo "local-only"
+	   return
+	fi
+
+    local LOCAL=$(git rev-parse @)
+
+    if [ ${LOCAL} = ${REMOTE} ]; then
+		local LOCAL_CHANGES=$(git diff-index --name-only HEAD --)
+
+        if [ -n "${LOCAL_CHANGES}" ]; then
+            echo "local-changes"
+        else
+            echo "up-to-date"
+        fi
+	else
+		local BASE=$(git merge-base @ "${UPSTREAM}")
+
+		if [ ${LOCAL} = ${BASE} ]; then
+			echo "behind"
+		elif [ ${REMOTE} = ${BASE} ]; then
+			echo "ahead"
+		else
+			echo "diverged"
+		fi
+	fi
+}
+
 function get_git_prompt {
     ! ${ENABLE_GIT} && return
+    [ ! -f ".git/HEAD" ] && return
 
-    local BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+    local BRANCH_NAME=$(get_git_branch_name)
 
     [ -z "${BRANCH_NAME}" ] && return
 
-    BRANCH_NAME_STYLE="00" # Not bold
-    BRANCH_NAME_COLOUR="36"
+    local BRANCH_NAME_STYLE="00" # Not bold
+    local BRANCH_NAME_COLOUR="36"
 
     if [ "${BRANCH_NAME}" = "HEAD" ]; then
         BRANCH_NAME_STYLE="01" # Bold
@@ -63,38 +107,6 @@ function get_git_prompt {
     fi
 
     echo -e -n "${PS1_BRANCH_SEPARATOR1}${PS1_BRANCH_NAME}${PS1_BRANCH_STATUS}${PS1_BRANCH_SEPARATOR2} "
-}
-
-function get_git_branch_status {
-    local UPSTREAM=${1:-'@{u}'}
-    local REMOTE=$(git rev-parse "${UPSTREAM}" 2>/dev/null)
-
-    if [ -z ${REMOTE} ]; then
-       echo "local-only"
-	   return
-	fi
-
-    local LOCAL=$(git rev-parse @)
-
-    if [ ${LOCAL} = ${REMOTE} ]; then
-		local LOCAL_CHANGES=$(git diff-index --name-only HEAD --)
-
-        if [ -n "${LOCAL_CHANGES}" ]; then
-            echo "local-changes"
-        else
-            echo "up-to-date"
-        fi
-	else
-		local BASE=$(git merge-base @ "${UPSTREAM}")
-
-		if [ ${LOCAL} = ${BASE} ]; then
-			echo "behind"
-		elif [ ${REMOTE} = ${BASE} ]; then
-			echo "ahead"
-		else
-			echo "diverged"
-		fi
-	fi
 }
 
 function get_path {
