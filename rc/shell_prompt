@@ -8,12 +8,17 @@ ENABLE_GIT_STATUS=true
 
 function get_git_branch_name {
     ! ${ENABLE_GIT} && return
-    [ ! -f ".git/HEAD" ] && return
 
-    local HEAD_CONTENT=$(<.git/HEAD)
+    local HEAD_CONTENT=""
 
-    if [[ ${HEAD_CONTENT} == ref:\ refs/heads/* ]]; then
-        echo "${HEAD_CONTENT##*/}"
+    if [ -f ".git/HEAD" ]; then
+        HEAD_CONTENT=$(<".git/HEAD")
+
+        if [[ ${HEAD_CONTENT} == ref:\ refs/heads/* ]]; then
+            echo "${HEAD_CONTENT##*/}"
+        fi
+    else
+        git rev-parse --abbrev-ref HEAD 2>/dev/null
     fi
 }
 
@@ -51,7 +56,6 @@ function get_git_branch_status {
 
 function get_git_prompt {
     ! ${ENABLE_GIT} && return
-    [ ! -f ".git/HEAD" ] && return
 
     local BRANCH_NAME=$(get_git_branch_name)
 
