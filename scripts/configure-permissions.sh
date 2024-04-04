@@ -494,6 +494,11 @@ if does_bin_exist "flatpak"; then
         "network" false \
         "notification" false \
         "location" false
+    set_linux_permission "tv.plex.PlexDesktop" \
+        "background" false \
+        "network" true \
+        "notification" true \
+        "location" false
 fi
 
 if [[ "${DISTRO_FAMILY}" == "Android" ]] \
