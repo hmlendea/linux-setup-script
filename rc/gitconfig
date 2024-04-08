@@ -44,3 +44,4 @@
     jeff = !git diff --ignore-space-at-eol -b -w --ignore-blank-lines
     new-branch = !git branch $1 && git checkout $1 && git push -u origin $1
     branches = !git branch -vv
+    remotes = !git remote -vv
