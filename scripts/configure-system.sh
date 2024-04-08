@@ -1085,6 +1085,7 @@ if does_bin_exist "code" "code-oss" "codium" "com.visualstudio.code"; then
     set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.wordWrap"]' $(bool_to_onoff ${TEXT_EDITOR_WORD_WRAP})
     set_json_property "${VSCODE_CONFIG_FILE}" '.["files.trimTrailingWhitespace"]' true
     set_json_property "${VSCODE_CONFIG_FILE}" '.["files.trimFinalNewlines"]' true
+    is_vscode_extension_installed "ms-dotnettools.csharp" && set_json_property "${VSCODE_CONFIG_FILE}" '.["omnisharp.organizeImportsOnFormat"]' true
 
     # Disable unwanted features
     set_json_property "${VSCODE_CONFIG_FILE}" '.["workbench.startupEditor"]' false
