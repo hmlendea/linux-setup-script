@@ -8,6 +8,76 @@ CLEAN_BROWSER_LOGS=false
 
 SYSTEM_FONTS_DIR="${ROOT_USR_SHARE}/fonts"
 
+function remove_locales_from_directories() {
+    for DIRECTORY in "${@}"; do
+        remove_locales_from_directory "${DIRECTORY}"
+    done
+}
+
+function remove_locales_from_directory() {
+    local DIRECTORY="${1%/}"
+
+    [ ! -d "${DIRECTORY}" ] && return
+
+    local FILE_NAME_STEP1="${DIRECTORY}"
+    local FILE_NAME_STEP2="${FILE_NAME_STEP1}"
+    local FILE_NAME_STEP3="${FILE_NAME_STEP1}"
+    local FILE_NAME_STEP4="${FILE_NAME_STEP1}"
+
+    for LANGUAGE_CODE in \
+        "aa" "ab" "ace" "ach" "af" "agr" "ain" "ak" "am" "an" "ang" "anp" "ar" "as" "ast" "ay" "ayc" "az" \
+        "ba" "bal" "bar" "be" "bem" "ber" "bg" "bhb" "bho" "bi" "bn" "bo" "br" "brx" "bs" "by" "byn" \
+        "ca" "ce" "ch" "chr" "ckb" "cmn" "crh" "cs" "csb" "cv" "cy" "da" "de" "doi" "dsb" "dv" "dz" \
+        "ee" "eo" "el" "es" "et" "eu" "fa" "ff" "fi" "fil" "fo" "fr" "frp" "fur" "fy" "ga" "gbm" "gd" "gez" "gl" "gn" "gr" "gu" "gv" \
+        "ha" "haw" "hak" "he" "hi" "hif" "hne" "hr" "hsb" "ht" "hu" "hy" "ia" "id" "ie" "ig" "ik" "ilo" "io" "is" "it" "iu" "ja" "jam" "jp" \
+        "ka" "kab" "kg" "ki" "kk" "kl" "km" "kmr" "kn" "ko" "kok" "ks" "ku" "kv" "kw" "ky" \
+        "la" "lb" "lg" "li" "lij" "ln" "lo" "lt" "lv" "lzh" "mag" "mai" "mfe" "mg" "mhr" "mi" "miq" "mjw" "mk" "ml" "mn" "mni" "mnw" "mr" "ms" "mt" "my" \
+        "na" "nah" "nan" "nb"  "nds" "ne" "nhn" "niu" "nl" "nn" "no" "nr" "nso" "nv" "oc" "om" "or" "os" "pa" "pap" "pi" "pl" "ps" "pt" "quz" "raj" "rif" "ru" "rw" \
+        "sa" "sah" "sat" "sc" "sd" "se" "sgs" "shn" "shs" "si" "sid" "sk" "sl" "sm" "so" "son" "sq" "sr" "ss" "ssy" "st" "su" "sv" "sw" "syr" "szl" \
+        "ta" "tatar-cyr" "tcy" "te" "tg" "th" "the" "ti" "tig" "tk" "tl" "tn" "to" "tok" "tpi" "tr" "ts" "tt" "tzm" "ug" "uk" "unm" "ur" "uz" "ve" "vi" \
+        "wa" "wa" "wae" "wal" "wo" "xh" "yi" "yo" "yue" "yuw" "zgh" "zh" "zu"; do
+
+        FILE_NAME_STEP2="${FILE_NAME_STEP1}/${LANGUAGE_CODE}"
+
+        remove "${FILE_NAME_STEP2}"
+        ! does_any_file_or_dir_exist "${FILE_NAME_STEP2}"* ] && continue
+
+        for COUNTRY_CODE in \
+            "" "AD" "AE" "AF" "AL" "AM" "AR" "AT" "AQ" "AW" "AZ" "BA" "BD" "BE" "BG" "BH" "BO" "BR" "BT" "BY" "CA" "CD" "CH" "CL" "CN" "CO" "CR" "CU" "CW" "CY" "CZ" \
+            "DE" "DJ" "DO" "DK" "DZ" "EC" "EG" "EE" "ER" "ES" "ET" "FI" "FJ" "FO" "FR" "GB" "GE" "GH" "GL" "GR" "GT" \
+            "Hans" "Hant" "HK" "HN" "HR" "HT" "HU" "IE" "ID" "IL" "IN" "IQ" "IR" "IS" "IT" "JO" "JP" "KE" "KG" "KH" "KK" "KR" "KW" "KZ" "LA" "LB" "LI" "LK" "LT" "LU" "LV" "LY" \
+            "MA" "ME" "MG" "MK" "MM" "MN" "MT" "MU" "MV" "MX" "MY" "NG" "NI" "NL" "NO" "NP" "NU" "NZ" "OM" "PA" "PE" "PG" "PH" "PK" "PL" "PR" "PT" "PY" "QA" "RS" "RU" "RW" \
+            "SA" "SD" "SE" "SG" "SI" "SK" "SN" "SO" "SS" "SV" "SY" "TH" "TM" "TJ" "TN" "TO" "TR" "TW" "TZ" "UA" "UG" "US" "UY" "UZ" "VE" "VN" "VU" "WS" "YE" "ZA" "ZM"; do
+
+            for COUNTRY_CODE_SEPARATOR in "-" "_"; do
+                if [ -z "${COUNTRY_CODE}" ]; then
+                    FILE_NAME_STEP3="${FILE_NAME_STEP2}"
+                else
+                    FILE_NAME_STEP3="${FILE_NAME_STEP2}${COUNTRY_CODE_SEPARATOR}${COUNTRY_CODE}"
+                fi
+    
+                remove "${FILE_NAME_STEP3}"
+                ! does_any_file_or_dir_exist "${FILE_NAME_STEP3}"* ] && continue
+    
+                for KEYBOARD_LAYOUT in "" "big5" "big5hkscs" "gb18030" "gbk" "iso-8859-2" "ISO8859-1" "JIS" "SJIS" "tcvn" "us-ascii" "UTF-8" "viscii"; do
+                    if [ -z "${KEYBOARD_LAYOUT}" ]; then
+                        FILE_NAME_STEP4="${FILE_NAME_STEP3}"
+                    else
+                        FILE_NAME_STEP4="${FILE_NAME_STEP3}.${KEYBOARD_LAYOUT}"
+                    fi
+    
+                    remove "${FILE_NAME_STEP4}"
+                    ! does_any_file_or_dir_exist "${FILE_NAME_STEP4}"* ] && continue
+                    
+                    for VARIANT in "abegede" "cyrillic" "Cyrillic" "devanagari" "euro" "Euro" "hebrew" "ije" "iqtelif" "latin" "Latn" "valencia"; do
+                        remove "${FILE_NAME_STEP4}@${VARIANT}"
+                    done
+                done
+            done
+        done
+    done
+}
+
 remove "${LOCAL_INSTALL_TEMP_DIR}"
 
 remove "${SYSTEM_FONTS_DIR}/TTF/seguiemj.ttf"
@@ -20,6 +90,28 @@ remove_old_items "${XDG_CACHE_HOME}/nuget/packages"
 remove \
     "${HOME}/.electron-gyp" \
     "${XDG_CACHE_HOME}/electron-builder"
+
+remove_locales_from_directories \
+    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/" \
+    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/Containers/tasks/"*"/" \
+    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/DotnetTools/dotnet-format/"*"/tools/"*"/" \
+    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/DotnetTools/dotnet-watch/"*"/tools/"*"/" \
+    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/Sdks/"*"/tools/"*"/" \
+    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/Sdks/Microsoft.Build.Tasks.Git/tools/core" \
+    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/Sdks/Microsoft.NET.Sdk/analyzers" \
+    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/Sdks/Microsoft.NET.Sdk/codestyle/"*"/" \
+    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/Extensions" \
+    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/FSharp" \
+    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/Roslyn" \
+    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/Roslyn/bincore" \
+    "${ROOT_USR_SHARE}/dotnet/packs/Microsoft.NETCore.App.Ref/"*"/analyzers/dotnet/cs" \
+    "${ROOT_USR_SHARE}/help" \
+    "${ROOT_USR_SHARE}/i18n/locales" \
+    "${ROOT_USR_SHARE}/locale" \
+    "${ROOT_USR_SHARE}/man" \
+    "${ROOT_USR_SHARE}/X11/locale"
+
+exit
 
 remove \
     "${ROOT_ROOT}/Desktop" \
@@ -627,4 +719,3 @@ for FLATPAK_CACHE_DIR in "${ROOT_VAR}/tmp"/flatpak-cache-*; do
 done
 
 does_bin_exist "journalctl" && run_as_su journalctl --vacuum-time=3days
-
