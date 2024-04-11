@@ -66,3 +66,13 @@ if ${HAS_GUI}; then
         remove "${XDG_TEMPLATES_DIR}/Document.odt"
     fi
 fi
+
+###########
+
+WIFI_POWERSAVE_UDEV_RULES_FILE="${ROOT_ETC}/udev/rules.d/wifi-powersave.rules"
+
+if [[ "${CHASSIS_TYPE}" == "Laptop" ]]; then
+    update_file_if_distinct "${REPO_RES__DIR}/udev/wifi-powersave.rules" "${WIFI_POWERSAVE_UDEV_RULES_FILE}"
+elif [ -f "${WIFI_POWERSAVE_UDEV_RULES_FIE}" ]; then
+    sudo rm "${WIFI_POWERSAVE_UDEV_RULES_FILE}"
+fi
