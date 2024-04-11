@@ -372,6 +372,14 @@ if does_bin_exist "gnome-shell"; then
     set_gsetting "org.gnome.shell.overrides" attach-modal-dialogs false
 fi
 
+if does_bin_exist "gnome-system-monitor"; then
+    GNOME_SYSTEM_MONITOR_SCHEMA="org.gnome.gnome-system-monitor"
+
+    set_gsetting "${GNOME_SYSTEM_MONITOR_SCHEMA}.current-tab" 'resources'
+    set_gsetting "${GNOME_SYSTEM_MONITOR_SCHEMA}.maximized" false
+    set_gsetting "${GNOME_SYSTEM_MONITOR_SCHEMA}.show-whose-processes" 'all'
+fi
+
 if is_gnome_shell_extension_installed "blur-my-shell"; then
     BMS_SCHEMA="org.gnome.shell.extensions.blur-my-shell"
 
@@ -1354,6 +1362,25 @@ if does_bin_exist "tlp"; then
 
     set_config_value "${TLP_CONFIG_FILE}" "RUNTIME_PM_DRIVER_DENYLIST" "\"${RUNTIME_PM_DRIVER_DENYLIST}\""
 
+    set_config_value "${TLP_CONFIG_FILE}" "CPU_SCALING_GOVERNOR_ON_AC" "performance"
+    set_config_value "${TLP_CONFIG_FILE}" "CPU_SCALING_GOVERNOR_ON_BAT" "powersave"
+
+    set_config_value "${TLP_CONFIG_FILE}" "CPU_ENERGY_PERF_POLICY_ON_AC" "performance"
+    set_config_value "${TLP_CONFIG_FILE}" "CPU_ENERGY_PERF_POLICY_ON_BAT" "power"
+
+    set_config_value "${TLP_CONFIG_FILE}" "CPU_MIN_PERF_ON_AC" "0"
+    set_config_value "${TLP_CONFIG_FILE}" "CPU_MAX_PERF_ON_AC" "100"
+    set_config_value "${TLP_CONFIG_FILE}" "CPU_MIN_PERF_ON_BAT" "0"
+    set_config_value "${TLP_CONFIG_FILE}" "CPU_MAX_PERF_ON_BAT" "75"
+
+    set_config_value "${TLP_CONFIG_FILE}" "PLATFORM_PROFILE_ON_AC" "performance"
+    set_config_value "${TLP_CONFIG_FILE}" "PLATFORM_PROFILE_ON_BAT" "low-power"
+    
+    set_config_value "${TLP_CONFIG_FILE}" "CPU_BOOST_ON_AC" "1"
+    set_config_value "${TLP_CONFIG_FILE}" "CPU_BOOST_ON_BAT" "0"
+    set_config_value "${TLP_CONFIG_FILE}" "CPU_HWP_DYN_BOOST_ON_AC" "1"
+    set_config_value "${TLP_CONFIG_FILE}" "CPU_HWP_DYN_BOOST_ON_BAT" "0"
+
     set_config_value "${TLP_CONFIG_FILE}" "DEVICES_TO_DISABLE_ON_LAN_CONNECT" "\"wifi wwan\""
     set_config_value "${TLP_CONFIG_FILE}" "DEVICES_TO_DISABLE_ON_LAN_DISCONNECT" "\"wifi wwan\""
     set_config_value "${TLP_CONFIG_FILE}" "DEVICES_TO_DISABLE_ON_BAT_NOT_IN_USE" "\"bluetooth nfc wwan\""
@@ -1361,6 +1388,9 @@ if does_bin_exist "tlp"; then
     set_config_value "${TLP_CONFIG_FILE}" "AHCI_RUNTIME_PM_ON_AC" 'on'
     set_config_value "${TLP_CONFIG_FILE}" "AHCI_RUNTIME_PM_ON_BAT" 'auto'
     set_config_value "${TLP_CONFIG_FILE}" "AHCI_RUNTIME_PM_TIMEOUT" 10 # Default: 15
+
+    set_config_value "${TLP_CONFIG_FILE}" "PCIE_ASPM_ON_AC" 'performance'
+    set_config_value "${TLP_CONFIG_FILE}" "PCIE_ASPM_ON_BAT" 'powersupersave'
     
     set_config_value "${TLP_CONFIG_FILE}" "SATA_LINKPWR_ON_AC" 'max_performance' # Default: med_power_with_dipm
     set_config_value "${TLP_CONFIG_FILE}" "SATA_LINKPWR_ON_BAT" 'min_power' # Default: med_power_with_dipm
@@ -1374,21 +1404,8 @@ if does_bin_exist "tlp"; then
     set_config_value "${TLP_CONFIG_FILE}" "USB_AUTOSUSPEND" 1
     set_config_value "${TLP_CONFIG_FILE}" "USB_AUTOSUSPEND_DISABLE_ON_SHUTDOWN" 1
 
-#    set_config_value "${TLP_CONFIG_FILE}" "CPU_ENERGY_PERF_POLICY_ON_AC" "performance"
-#    set_config_value "${TLP_CONFIG_FILE}" "PLATFORM_PROFILE_ON_AC" "performance"
-#    set_config_value "${TLP_CONFIG_FILE}" "CPU_ENERGY_PERF_POLICY_ON_BAT" "power"
-#    set_config_value "${TLP_CONFIG_FILE}" "PLATFORM_PROFILE_ON_BAT" "power"
-
-#    set_config_value "${TLP_CONFIG_FILE}" "CPU_BOOST_ON_AC" "1"
-#    set_config_value "${TLP_CONFIG_FILE}" "CPU_BOOST_ON_BAT" "0"
-
-#    set_config_value "${TLP_CONFIG_FILE}" "CPU_HWP_DYN_BOOST_ON_AC" "1"
-#    set_config_value "${TLP_CONFIG_FILE}" "CPU_HWP_DYN_BOOST_ON_BAT" "0"
-
-#    set_config_value "${TLP_CONFIG_FILE}" "CPU_MIN_PERF_ON_AC" "0"
-#    set_config_value "${TLP_CONFIG_FILE}" "CPU_MAX_PERF_ON_AC" "100"
-#    set_config_value "${TLP_CONFIG_FILE}" "CPU_MIN_PERF_ON_BAT" "0"
-#    set_config_value "${TLP_CONFIG_FILE}" "CPU_MAX_PERF_ON_BAT" "80"
+    set_config_value "${TLP_CONFIG_FILE}" "WIFI_PWR_ON_AC" "off"
+    set_config_value "${TLP_CONFIG_FILE}" "WIFI_PWR_ON_BAT" "on"
 
     set_config_value "${TLP_CONFIG_FILE}" "MAX_LOST_WORK_SECS_ON_AC" "15"
     set_config_value "${TLP_CONFIG_FILE}" "MAX_LOST_WORK_SECS_ON_BAT" "90"
