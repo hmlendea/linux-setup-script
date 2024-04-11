@@ -12,6 +12,7 @@ remove "${LOCAL_INSTALL_TEMP_DIR}"
 
 remove "${SYSTEM_FONTS_DIR}/TTF/seguiemj.ttf"
 remove "${ROOT_ETC}/motd"
+remove "${ROOT_USR_SHARE}/licenses"
 
 remove_old_items "${XDG_CACHE_HOME}/electron"
 remove_old_items "${XDG_CACHE_HOME}/nuget/packages"
@@ -463,6 +464,9 @@ does_bin_exist "steam" && remove \
 ! is_steam_app_installed "736260" && remove "${XDG_DATA_HOME}/Baba_Is_You"
 
 for STEAM_LIBRARY_PATH in ${STEAM_LIBRARY_PATHS}; do
+    remove \
+        "${STEAM_LIBRARY_PATH}/common/"*"/licenses"
+
     is_steam_app_installed "8930" && remove \
         "${STEAM_LIBRARY_PATH}/common/Sid Meier's Civilization V/steamassets/"*.mov \
         "${STEAM_LIBRARY_PATH}/common/Sid Meier's Civilization V/steamassets/assets/dlc/"*/*.mov
@@ -611,7 +615,8 @@ for DIR in  "${HOME}/.Cobra Mobile" \
             "${HOME}/.w3m" \
             "${XDG_CACHE_HOME}"/* \
             "${XDG_CONFIG_HOME}"/* \
-            "${XDG_DATA_HOME}"/*; do
+            "${XDG_DATA_HOME}"/* \
+            "${ROOT_USR_SHARE}/licenses"; do
     [ ! -d "${DIR}" ] && continue
 
     remove_dir_if_empty "${DIR}"
