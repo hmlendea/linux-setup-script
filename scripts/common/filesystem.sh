@@ -342,6 +342,14 @@ function get_file_checksum() {
     sha512sum "${@}" | awk '{print $1}'
 }
 
+function does_any_file_or_dir_exist() {
+    for FILE in "${@}"; do
+        [ -e "${FILE}" ] && return 0
+    done
+
+    return 1
+}
+
 function does_file_need_updating() {
     local SOURCE_FILE_PATH="${1}"
     local TARGET_FILE_PATH="${2}"
