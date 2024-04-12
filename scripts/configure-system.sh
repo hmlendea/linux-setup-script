@@ -293,13 +293,16 @@ if [ -f "${ROOT_ETC}/default/grub" ] \
 
     [ -f "/swapfile" ] && BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} resume=/swapfile"
 
-    set_config_value "${GRUB_CONFIG_FILE}" "GRUB_CMDLINE_LINUX_DEFAULT" "\"${BOOT_FLAGS_DEFAULT}\""
 
     set_config_value "${GRUB_CONFIG_FILE}" "GRUB_DISABLE_RECOVERY" true
     set_config_value "${GRUB_CONFIG_FILE}" "GRUB_TIMEOUT" "${GRUB_TIMEOUT}"
 
     if [ -f "${ROOT_USR}/share/grub/themes/Nuci/theme.txt" ]; then
         set_config_value "${GRUB_CONFIG_FILE}" "GRUB_THEME" "${ROOT_USR}/share/grub/themes/Nuci/theme.txt"
+    fi
+
+    if [ "$(get_cpu_family)" == "Intel" ]; then
+        BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} intel_idle.max_cstate=1"
     fi
 
     # Set GRUB resolution to the highest supported one
@@ -309,6 +312,8 @@ if [ -f "${ROOT_ETC}/default/grub" ] \
             set_config_value "${GRUB_CONFIG_FILE}" "GRUB_GFXMODE" "1280x1024x32"
         fi
     fi
+
+    set_config_value "${GRUB_CONFIG_FILE}" "GRUB_CMDLINE_LINUX_DEFAULT" "\"${BOOT_FLAGS_DEFAULT}\""
 fi
 
 if does_bin_exist "gdm"; then
@@ -877,9 +882,19 @@ if does_bin_exist "firefox" "librewolf" "org.mozilla.firefox" "io.gitlab.librewo
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.urlbar.suggest.quicksuggest.sponsored" false
 
     # Performance
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "dom.ipc.processCount" $(nproc) # Limit to the number of physical cores, to save resources and save battery power
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "network.dnsCacheEntries" $((DNS_CACHE_SIZE/10))
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "network.dnsCacheExpiration" $((DNS_CACHE_TTL*60))
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "network.dnsCacheExpirationGracePeriod" $((DNS_CACHE_TTL*60))
+    # Performance - Hardware Acceleration
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "gfx.webrender.all" true
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "layers.acceleration.force-enabled" true
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "media.hardware-video-decoding.enabled" true
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "webgl.disabled" false # Setting it to true might improve privacy, but reduces performance and increases power consumption
+
+    # JavaScript timers - Reduce to save resources and power
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "dom.min_timeout_value" 1000
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "dom.min_timeout_value_ns" 1000
 
     # Security
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "dom.security.https_first" true
@@ -890,6 +905,7 @@ if does_bin_exist "firefox" "librewolf" "org.mozilla.firefox" "io.gitlab.librewo
     # Network
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "network.dns.disableIPv6" true
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "network.dns.disablePrefetch" true
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "network.http.connection-timeout" 30 # Timeout faster, to prevent wasting resources, and to save battery power
     #set_firefox_config "${FIREFOX_PROFILE_DIR}" "network.dns.disablePrefetchFromHTTPS" true
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "network.predictor.enabled" false
     #set_firefox_config "${FIREFOX_PROFILE_DIR}" "network.predictor.enable-prefetch" false
@@ -1368,10 +1384,10 @@ if does_bin_exist "tlp"; then
     set_config_value "${TLP_CONFIG_FILE}" "CPU_ENERGY_PERF_POLICY_ON_AC" "performance"
     set_config_value "${TLP_CONFIG_FILE}" "CPU_ENERGY_PERF_POLICY_ON_BAT" "power"
 
-    set_config_value "${TLP_CONFIG_FILE}" "CPU_MIN_PERF_ON_AC" "0"
-    set_config_value "${TLP_CONFIG_FILE}" "CPU_MAX_PERF_ON_AC" "100"
-    set_config_value "${TLP_CONFIG_FILE}" "CPU_MIN_PERF_ON_BAT" "0"
-    set_config_value "${TLP_CONFIG_FILE}" "CPU_MAX_PERF_ON_BAT" "75"
+    #set_config_value "${TLP_CONFIG_FILE}" "CPU_MIN_PERF_ON_AC" "0"
+    #set_config_value "${TLP_CONFIG_FILE}" "CPU_MAX_PERF_ON_AC" "100"
+    #set_config_value "${TLP_CONFIG_FILE}" "CPU_MIN_PERF_ON_BAT" "0"
+    #set_config_value "${TLP_CONFIG_FILE}" "CPU_MAX_PERF_ON_BAT" "75"
 
     set_config_value "${TLP_CONFIG_FILE}" "PLATFORM_PROFILE_ON_AC" "performance"
     set_config_value "${TLP_CONFIG_FILE}" "PLATFORM_PROFILE_ON_BAT" "low-power"
@@ -1393,7 +1409,7 @@ if does_bin_exist "tlp"; then
     set_config_value "${TLP_CONFIG_FILE}" "PCIE_ASPM_ON_BAT" 'powersupersave'
     
     set_config_value "${TLP_CONFIG_FILE}" "SATA_LINKPWR_ON_AC" 'max_performance' # Default: med_power_with_dipm
-    set_config_value "${TLP_CONFIG_FILE}" "SATA_LINKPWR_ON_BAT" 'min_power' # Default: med_power_with_dipm
+    set_config_value "${TLP_CONFIG_FILE}" "SATA_LINKPWR_ON_BAT" 'med_power_with_dipm' # Default: med_power_with_dipm | min_power can cause data loss
 
     set_config_value "${TLP_CONFIG_FILE}" "RUNTIME_PM_ON_AC" 'on'
     set_config_value "${TLP_CONFIG_FILE}" "RUNTIME_PM_ON_BAT" 'auto'

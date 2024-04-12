@@ -404,8 +404,8 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
 
         # Themes
         if [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ]; then
-            install_native_package adwaita-dark # GTK3's AdwaitaDark ported to GTK2
-            install_native_package adw-gtk3
+            is_package_installed "gtk2" && install_native_package adwaita-dark # GTK3's AdwaitaDark ported to GTK2
+            is_package_installed "gtk3" && install_native_package adw-gtk3
             install_flatpak org.gtk.Gtk3theme.adw-gtk3-dark
         fi
 
