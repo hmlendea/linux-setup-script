@@ -17,6 +17,7 @@ xkb_symbols "basic" {
     key <AE10> { [            0,  parenright,     dead_doubleacute               ] };
     key <AE11> { [        minus,  underscore,       dead_diaeresis,       endash ] };
     key <AE12> { [        equal,        plus,         dead_cedilla,    plusminus ] };
+    key <AC05> { [            g,           G,                U011F,        U011E ] }; # G-breve
     key <AD01> { [            q,           Q,          acircumflex,  Acircumflex ] };
     key <AD02> { [            w,           W,               ssharp,        U1E9E ] };
     key <AD03> { [            e,           E,             EuroSign               ] };

@@ -1,7 +1,8 @@
 #!/bin/bash
 source "scripts/common/filesystem.sh"
-source "${REPO_DIR}/scripts/common/common.sh"
-source "${REPO_DIR}/scripts/common/apps.sh"
+source "${REPO_SCRIPTS_COMMON_DIR}/common.sh"
+source "${REPO_SCRIPTS_COMMON_DIR}/apps.sh"
+source "${REPO_SCRIPTS_COMMON_DIR}/system-info.sh"
 
 if does_bin_exist "firefox" "org.mozilla.firefox" "io.gitlab.librewolf-community"; then
     FIREFOX_PROFILE_DIR=$(get_firefox_profile_dir)
@@ -68,11 +69,13 @@ if ${HAS_GUI}; then
 fi
 
 ###########
-
-WIFI_POWERSAVE_UDEV_RULES_FILE="${ROOT_ETC}/udev/rules.d/wifi-powersave.rules"
+WIFI_POWERSAVE_UDEV_RULES_FILE="${UDEV_RULES_DIR}/873-wifi_powersave.rules"
 
 if [[ "${CHASSIS_TYPE}" == "Laptop" ]]; then
-    update_file_if_distinct "${REPO_RES__DIR}/udev/wifi-powersave.rules" "${WIFI_POWERSAVE_UDEV_RULES_FILE}"
+    update_file_if_distinct "${REPO_RES_DIR}/udev/wifi_powersave.rules" "${WIFI_POWERSAVE_UDEV_RULES_FILE}"
 elif [ -f "${WIFI_POWERSAVE_UDEV_RULES_FIE}" ]; then
     sudo rm "${WIFI_POWERSAVE_UDEV_RULES_FILE}"
 fi
+
+update_file_if_distinct "${REPO_RES_DIR}/udev/pci_pm.rules" "${UDEV_RULES_DIR}/873-pci_pm.rules"
+update_file_if_distinct "${REPO_RES_DIR}/udev/usb_powersave.rules" "${UDEV_RULES_DIR}/873-usb_powersave.rules"

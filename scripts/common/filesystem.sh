@@ -50,6 +50,9 @@ ROOT_USR_SHARE="${ROOT_USR}/share"
 ROOT_VAR="${ROOT}/var"
 ROOT_VAR_LIB="${ROOT_VAR}/lib"
 
+# Dirs
+UDEV_RULES_DIR="${ROOT_ETC}/udev/rules.d"
+
 # Username and home directory
 USER_REAL=${SUDO_USER}
 [ -z "${USER_REAL}" ] && USER_REAL=${USER}
