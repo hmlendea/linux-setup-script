@@ -217,6 +217,16 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
         GPU_FAMILY="$(get_gpu_family)"
         if [[ "${GPU_FAMILY}" == "Intel" ]]; then
             install_native_package intel-media-driver
+
+            install_native_package libva-intel-driver
+            install_native_package libva-utils
+
+            install_native_package libvdpau-va-gl
+
+            install_native_package vulkan-intel
+            install_native_package lib32-vulkan-intel
+
+            install_native_package intel-ucode
         elif [[ "${GPU_FAMILY}" == "Nvidia" ]]; then
             NVIDIA_DRIVER="nvidia"
 
@@ -391,7 +401,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
             # New features
             install_native_package "gnome-shell-extension-bluetooth-battery-meter-git"
             #install_gnome_shell_extension "gsconnect"
-            install_gnome_shell_extension 5470 #"weatheroclock@CleoMenezesJr.github.io"
+            #install_gnome_shell_extension 5470 #"weatheroclock@CleoMenezesJr.github.io"
 
             # Appearance
             install_gnome_shell_extension "blur-my-shell"
@@ -404,8 +414,8 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
 
         # Themes
         if [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ]; then
-            is_package_installed "gtk2" && install_native_package adwaita-dark # GTK3's AdwaitaDark ported to GTK2
-            is_package_installed "gtk3" && install_native_package adw-gtk3
+            is_native_package_installed "gtk2" && install_native_package adwaita-dark # GTK3's AdwaitaDark ported to GTK2
+            is_native_package_installed "gtk3" && install_native_package adw-gtk3
             install_flatpak org.gtk.Gtk3theme.adw-gtk3-dark
         fi
 

@@ -30,6 +30,8 @@ SCREEN_DPI=$(get_screen_dpi)
 USING_NVIDIA_GPU=false; [ "$(get_gpu_family)" == "Nvidia" ] && USING_NVIDIA_GPU=true
 IS_SERVER=false; [ -z "${SCREEN_RESOLUTION_H}" ] && IS_SERVER=true
 
+DIRTY_WRITEBACK_POWERSAVE_SECS=15 # Wait longer in order to aggregate disk I/O and save power. Set it too high might increase IO/CPU activity and increase power consumption instead
+DIRTY_WRITEBACK_DEFAULT_SECS=5
 DNS_CACHE_TTL=20 # Minutes
 DNS_CACHE_SIZE=10000 # Entries
 
@@ -261,10 +263,10 @@ if [ -d "${ROOT_ETC}/sysctl.d" ]; then
     set_config_value "${SYSCTL_CONFIG_FILE}" "kernel.nmi_watchdog" 0            # Disable NMI interrupts that can consume a lot of power
 
     if [ "${CHASSIS_TYPE}" = "Laptop" ]; then
-        set_config_value "${SYSCTL_CONFIG_FILE}" "vm.dirty_writeback_centisecs" "12000" # 2 minutes. Increase the vitual memory dirty writeback time to aggregate disk I/O together and save power
+        set_config_value "${SYSCTL_CONFIG_FILE}" "vm.dirty_writeback_centisecs" $((DIRTY_WRITEBACK_POWERSAVE_SECS * 100))
         set_config_value "${SYSCTL_CONFIG_FILE}" "vm.laptop_mode" 5
     else
-        set_config_value "${SYSCTL_CONFIG_FILE}" "vm.dirty_writeback_centisecs" "500" # Default value
+        set_config_value "${SYSCTL_CONFIG_FILE}" "vm.dirty_writeback_centisecs" $((DIRTY_WRITEBACK_DEFAULT_SECS * 100))
         set_config_value "${SYSCTL_CONFIG_FILE}" "vm.laptop_mode" 0
     fi
 fi
@@ -292,7 +294,6 @@ if [ -f "${ROOT_ETC}/default/grub" ] \
     #fi
 
     [ -f "/swapfile" ] && BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} resume=/swapfile"
-
 
     set_config_value "${GRUB_CONFIG_FILE}" "GRUB_DISABLE_RECOVERY" true
     set_config_value "${GRUB_CONFIG_FILE}" "GRUB_TIMEOUT" "${GRUB_TIMEOUT}"
@@ -369,10 +370,10 @@ if does_bin_exist "gnome-shell"; then
     set_gsetting "org.gnome.mutter" attach-modal-dialogs false
     set_gsetting "org.gnome.mutter" center-new-windows true
 
-    set_gsetting org.gnome.settings-daemon.plugins.housekeeping free-size-gb-no-notify 2
-    set_gsetting org.gnome.settings-daemon.plugins.color night-light-enabled true
+    set_gsetting "org.gnome.settings-daemon.plugins.housekeeping" free-size-gb-no-notify 2
+    set_gsetting "org.gnome.settings-daemon.plugins.color" night-light-enabled true
 
-    set_gsetting org.gnome.SessionManager logout-prompt false
+    set_gsetting "org.gnome.SessionManager" logout-prompt false
 
     set_gsetting "org.gnome.shell.overrides" attach-modal-dialogs false
 fi
@@ -912,7 +913,8 @@ if does_bin_exist "firefox" "librewolf" "org.mozilla.firefox" "io.gitlab.librewo
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "network.prefetch-next" false
 
     # Privacy
-    set_firefox_config "${FIREFOX_PROFILE_DIR}" "privacy.clearOnShutdown.history"   false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "geo.enabled" false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "privacy.clearOnShutdown.history" false
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "privacy.clearOnShutdown.downloads" true
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "privacy.donottrackheader.enabled" true
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "privacy.firstparty.isolate" true
@@ -955,6 +957,14 @@ if does_bin_exist "firefox" "librewolf" "org.mozilla.firefox" "io.gitlab.librewo
 
     #set_firefox_config "${FIREFOX_PROFILE_DIR}" browser.newtabpage.activity-stream.telemetry.structuredIngestion.endpoint "http://localhost"
     #set_firefox_config "${FIREFOX_PROFILE_DIR}" toolkit.telemetry.server "http://localhost"
+
+    # Other
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" 'browser.bookmarks.max_backups' 3
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" 'browser.cache.disk.enable' true
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" 'browser.print.enabled' false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" 'browser.tabs.remote.warmup.enabled' false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" 'general.smoothScroll' false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" 'reader.parse-on-load.enabled' false
 fi
 
 ##############################
@@ -1381,8 +1391,8 @@ if does_bin_exist "tlp"; then
     set_config_value "${TLP_CONFIG_FILE}" "CPU_SCALING_GOVERNOR_ON_AC" "performance"
     set_config_value "${TLP_CONFIG_FILE}" "CPU_SCALING_GOVERNOR_ON_BAT" "powersave"
 
-    set_config_value "${TLP_CONFIG_FILE}" "CPU_ENERGY_PERF_POLICY_ON_AC" "performance"
-    set_config_value "${TLP_CONFIG_FILE}" "CPU_ENERGY_PERF_POLICY_ON_BAT" "power"
+    set_config_value "${TLP_CONFIG_FILE}" "CPU_ENERGY_PERF_POLICY_ON_AC" 'performance'
+    set_config_value "${TLP_CONFIG_FILE}" "CPU_ENERGY_PERF_POLICY_ON_BAT" 'balance_power' # 'power' makes it too slow
 
     #set_config_value "${TLP_CONFIG_FILE}" "CPU_MIN_PERF_ON_AC" "0"
     #set_config_value "${TLP_CONFIG_FILE}" "CPU_MAX_PERF_ON_AC" "100"
@@ -1414,8 +1424,8 @@ if does_bin_exist "tlp"; then
     set_config_value "${TLP_CONFIG_FILE}" "RUNTIME_PM_ON_AC" 'on'
     set_config_value "${TLP_CONFIG_FILE}" "RUNTIME_PM_ON_BAT" 'auto'
 
-    set_config_value "${TLP_CONFIG_FILE}" "SOUND_POWER_SAVE_ON_AC" 1
-    set_config_value "${TLP_CONFIG_FILE}" "SOUND_POWER_SAVE_ON_BAT" 0 # Defaukt: 1
+    set_config_value "${TLP_CONFIG_FILE}" "SOUND_POWER_SAVE_ON_AC" 0
+    set_config_value "${TLP_CONFIG_FILE}" "SOUND_POWER_SAVE_ON_BAT" 1
 
     set_config_value "${TLP_CONFIG_FILE}" "USB_AUTOSUSPEND" 1
     set_config_value "${TLP_CONFIG_FILE}" "USB_AUTOSUSPEND_DISABLE_ON_SHUTDOWN" 1
@@ -1423,8 +1433,8 @@ if does_bin_exist "tlp"; then
     set_config_value "${TLP_CONFIG_FILE}" "WIFI_PWR_ON_AC" "off"
     set_config_value "${TLP_CONFIG_FILE}" "WIFI_PWR_ON_BAT" "on"
 
-    set_config_value "${TLP_CONFIG_FILE}" "MAX_LOST_WORK_SECS_ON_AC" "15"
-    set_config_value "${TLP_CONFIG_FILE}" "MAX_LOST_WORK_SECS_ON_BAT" "90"
+    set_config_value "${TLP_CONFIG_FILE}" "MAX_LOST_WORK_SECS_ON_AC" "${DIRTY_WRITEBACK_DEFAULT_SECS}"
+    set_config_value "${TLP_CONFIG_FILE}" "MAX_LOST_WORK_SECS_ON_BAT" "${DIRTY_WRITEBACK_POWERSAVE_SECS}"
 
     set_config_value "${TLP_CONFIG_FILE}" "NMI_WATCHDOG" 0 # Disable NMI interrupts that can consume a lot of power
 fi

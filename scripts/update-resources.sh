@@ -77,5 +77,6 @@ elif [ -f "${WIFI_POWERSAVE_UDEV_RULES_FIE}" ]; then
     sudo rm "${WIFI_POWERSAVE_UDEV_RULES_FILE}"
 fi
 
+update_file_if_distinct "${REPO_RES_DIR}/udev/ioschedulers.rules" "${UDEV_RULES_DIR}/873-ioschedulers.rules"
 update_file_if_distinct "${REPO_RES_DIR}/udev/pci_pm.rules" "${UDEV_RULES_DIR}/873-pci_pm.rules"
 update_file_if_distinct "${REPO_RES_DIR}/udev/usb_powersave.rules" "${UDEV_RULES_DIR}/873-usb_powersave.rules"
