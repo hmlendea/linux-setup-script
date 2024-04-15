@@ -27,6 +27,7 @@ CHASSIS_TYPE="$(get_chassis_type)"
 SCREEN_RESOLUTION_H=$(get_screen_width)
 SCREEN_RESOLUTION_V=$(get_screen_height)
 SCREEN_DPI=$(get_screen_dpi)
+USING_INTEL_GPU=false; [ "$(get_gpu_family)" == "Intel" ] && USING_INTEL_GPU=true
 USING_NVIDIA_GPU=false; [ "$(get_gpu_family)" == "Nvidia" ] && USING_NVIDIA_GPU=true
 IS_SERVER=false; [ -z "${SCREEN_RESOLUTION_H}" ] && IS_SERVER=true
 
@@ -214,7 +215,11 @@ set_config_values "${XDG_CONFIG_HOME}/user-dirs.dirs" \
 if [ -d "${ROOT_ETC}/modprobe.d" ]; then
     set_gsetting org.gtk.Settings.FileChooser startup-mode 'cwd'
 
-    if ${USING_NVIDIA_GPU}; then
+    if ${USING_INTEL_GPU}; then
+        set_modprobe_option i915 enable_fb 1 # Enable framebuffer compression
+        set_modprobe_option i915 enable_guc 2 # Enable GuC and HuC
+        set_modprobe_option i915 enable_psr 2 # Enable panel self-refresh
+    elif ${USING_NVIDIA_GPU}; then
         set_modprobe_option nvidia-drm modset 1
     fi
 
@@ -259,8 +264,15 @@ if [ -d "${ROOT_ETC}/sysctl.d" ]; then
 
     [ ! -f "${SYSCTL_CONFIG_FILE}" ] && run_as_su touch "${SYSCTL_CONFIG_FILE}"
 
-    set_config_value "${SYSCTL_CONFIG_FILE}" "net.ipv6.conf.all.disable_ipv6" 1 # Disable IPv6
-    set_config_value "${SYSCTL_CONFIG_FILE}" "kernel.nmi_watchdog" 0            # Disable NMI interrupts that can consume a lot of power
+    set_config_value "${SYSCTL_CONFIG_FILE}" 'net.core.default_qdisc' 'cake'
+    set_config_value "${SYSCTL_CONFIG_FILE}" 'net.ipv4.tcp_congestion_control' 'bbr'
+    set_config_value "${SYSCTL_CONFIG_FILE}" 'net.ipv4.tcp_fastopen' 3
+    set_config_value "${SYSCTL_CONFIG_FILE}" 'net.ipv4.tcp_keepalive_time' 60
+    set_config_value "${SYSCTL_CONFIG_FILE}" 'net.ipv4.tcp_keepalive_intvl' 10
+    set_config_value "${SYSCTL_CONFIG_FILE}" 'net.ipv4.tcp_keepalive_probes' 6
+    set_config_value "${SYSCTL_CONFIG_FILE}" 'net.ipv4.tcp_syncookies' 1 # Protection against SYN flood attacks
+    set_config_value "${SYSCTL_CONFIG_FILE}" 'net.ipv6.conf.all.disable_ipv6' 1 # Disable IPv6
+    set_config_value "${SYSCTL_CONFIG_FILE}" 'kernel.nmi_watchdog' 0            # Disable NMI interrupts that can consume a lot of power
 
     if [ "${CHASSIS_TYPE}" = "Laptop" ]; then
         set_config_value "${SYSCTL_CONFIG_FILE}" "vm.dirty_writeback_centisecs" $((DIRTY_WRITEBACK_POWERSAVE_SECS * 100))
@@ -286,10 +298,9 @@ if [ -f "${ROOT_ETC}/default/grub" ] \
 
     BOOT_FLAGS_DEFAULT="loglevel=3 quiet" # Defaults
     BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} random.trust_cpu=on" # Trust the CPU random number generator ratherthan software. Better boot time
+    BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} mitigations=off" # Trust the CPU random number generator ratherthan software. Better boot time
 
     #if [ "${CHASSIS_TYPE}" = "Laptop" ] && is_driver_loaded "i915"; then
-        #BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} i915.i915_enable_rc6=1"   # Can cause some tearing. Allow the GPU to enter a low power state when it is idling
-        #BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} i915.i915_enable_fbc=1"   # Can cause serious tearing !!! Enable framebuffer compression to consume less memory
         #BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} i915.lvds_downclock=1"    # !CAN CAUSE TEARING! Downclocks the LVDS refresh rate
     #fi
 
@@ -651,7 +662,8 @@ if does_bin_exist "teams" "teams-insiders" "com.microsoft.Teams"; then
     set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" '.surfaceHubWindowState.isMaximized' true
     set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" '.surfaceHubWindowState.isFullScreen' false
     set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" '.windowState.isMaximized' true
-    set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" '.windowState.isFullScreen' false
+    set_json_property "${TEAMS_DESK
+    TOP_CONFIG_FILE}" '.windowState.isFullScreen' false
 
     # Telemetry
     set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" '.appPreferenceSettings.enableMediaLoggingPreferenceKey' false
@@ -882,6 +894,9 @@ if does_bin_exist "firefox" "librewolf" "org.mozilla.firefox" "io.gitlab.librewo
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.urlbar.suggest.quicksuggest" true
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.urlbar.suggest.quicksuggest.sponsored" false
 
+    # Integrations
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.gnome-search-provider.enabled" true
+
     # Performance
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "dom.ipc.processCount" $(nproc) # Limit to the number of physical cores, to save resources and save battery power
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "network.dnsCacheEntries" $((DNS_CACHE_SIZE/10))
@@ -900,6 +915,7 @@ if does_bin_exist "firefox" "librewolf" "org.mozilla.firefox" "io.gitlab.librewo
     # Security
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "dom.security.https_first" true
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "dom.security.https_only_mode" true
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" "extensions.webextensions.restrictedDomains" ""
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "signon.management.page.breach-alerts.enabled" false # Use Bitwarden instead
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "signon.rememberSignons" false # Use Bitwarden instead
 
@@ -963,7 +979,9 @@ if does_bin_exist "firefox" "librewolf" "org.mozilla.firefox" "io.gitlab.librewo
     set_firefox_config "${FIREFOX_PROFILE_DIR}" 'browser.cache.disk.enable' true
     set_firefox_config "${FIREFOX_PROFILE_DIR}" 'browser.print.enabled' false
     set_firefox_config "${FIREFOX_PROFILE_DIR}" 'browser.tabs.remote.warmup.enabled' false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" 'full-screen-api.ignore-widgets' true
     set_firefox_config "${FIREFOX_PROFILE_DIR}" 'general.smoothScroll' false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" 'gfx.font_rendering.fontconfig.max_generic_substitutions' 127
     set_firefox_config "${FIREFOX_PROFILE_DIR}" 'reader.parse-on-load.enabled' false
 fi
 
@@ -1394,10 +1412,10 @@ if does_bin_exist "tlp"; then
     set_config_value "${TLP_CONFIG_FILE}" "CPU_ENERGY_PERF_POLICY_ON_AC" 'performance'
     set_config_value "${TLP_CONFIG_FILE}" "CPU_ENERGY_PERF_POLICY_ON_BAT" 'balance_power' # 'power' makes it too slow
 
-    #set_config_value "${TLP_CONFIG_FILE}" "CPU_MIN_PERF_ON_AC" "0"
-    #set_config_value "${TLP_CONFIG_FILE}" "CPU_MAX_PERF_ON_AC" "100"
-    #set_config_value "${TLP_CONFIG_FILE}" "CPU_MIN_PERF_ON_BAT" "0"
-    #set_config_value "${TLP_CONFIG_FILE}" "CPU_MAX_PERF_ON_BAT" "75"
+    set_config_value "${TLP_CONFIG_FILE}" "CPU_MIN_PERF_ON_AC" "0"
+    set_config_value "${TLP_CONFIG_FILE}" "CPU_MAX_PERF_ON_AC" "100"
+    set_config_value "${TLP_CONFIG_FILE}" "CPU_MIN_PERF_ON_BAT" "0"
+    set_config_value "${TLP_CONFIG_FILE}" "CPU_MAX_PERF_ON_BAT" "85"
 
     set_config_value "${TLP_CONFIG_FILE}" "PLATFORM_PROFILE_ON_AC" "performance"
     set_config_value "${TLP_CONFIG_FILE}" "PLATFORM_PROFILE_ON_BAT" "low-power"

@@ -52,6 +52,7 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "inkscape"                     # Replaced by flatpak: org.inkscape.Inkscape
     uninstall_native_package "nano-syntax-highlighting"     # nano is to be uninstalled next
     uninstall_native_package "nano"                         # Replaced by micro
+    uninstall_native_package "ntp"                          # Replaced by chrony
     uninstall_native_package "paper-icon-theme-git"         # Replaced by paper-icon-theme
     uninstall_native_package "postman-bin"                  # Replaced by flatpak: com.getpostman.Postman
     uninstall_native_package "rhythmbox"                    # Replaced by flatpak: org.gnome.Rhythmbox3

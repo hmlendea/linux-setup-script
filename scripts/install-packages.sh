@@ -118,6 +118,11 @@ if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
     install_native_package iwd
 fi
 
+if [[ "${CHASSIS_TYPE}" == "Laptop" ]]; then
+    install_native_package 'chrony'
+fi
+
+
 ################
 ### Archives ###
 ################
