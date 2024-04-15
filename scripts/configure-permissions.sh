@@ -230,6 +230,14 @@ function set_android_permission() {
 }
 
 if does_bin_exist "flatpak"; then
+    for TELEGRAM_APP in "app.drey.PaperPlane" "org.telegram.desktop"; do
+        set_linux_permission "${TELEGRAM_APP}" \
+            "background" true \
+            "network" true \
+            "notification" true \
+            "notification_lockscreen" true \
+            "location" false
+    done
     set_linux_permission "ca.desrt.dconf-editor" \
         "background" false \
         "network" false \
@@ -277,6 +285,13 @@ if does_bin_exist "flatpak"; then
         "notification" true \
         "notification_lockscreen" true \
         "location" false
+    for VIDEO_PLAYER_APP in "com.github.rafostar.Clapper" "org.gnome.Totem"; do
+        set_linux_permission "${VIDEO_PLAYER_APP}" \
+            "background" false \
+            "network" true \
+            "notification" false \
+            "location" false
+    done
     set_linux_permission "com.github.vladimiry.ElectronMail" \
         "background" true \
         "network" true \
@@ -319,6 +334,13 @@ if does_bin_exist "flatpak"; then
             "network" false \
             "notification" true \
             "notification_lockscreen" true \
+            "location" false
+    done
+    for TODO_APP in "io.github.alainm23.planify" "org.gnome.Todo"; do
+        set_linux_permission "${TODO_APP}" \
+            "background" true \
+            "network" true \
+            "notification" true \
             "location" false
     done
     set_linux_permission "io.github.hmlendea.geforcenow-electron" \
@@ -440,16 +462,6 @@ if does_bin_exist "flatpak"; then
         "network" false \
         "notification" false \
         "location" false
-    set_linux_permission "org.gnome.Todo" \
-        "background" true \
-        "network" true \
-        "notification" true \
-        "location" false
-    set_linux_permission "org.gnome.Totem" \
-        "background" false \
-        "network" true \
-        "notification" false \
-        "location" false
     set_linux_permission "org.gnome.Weather" \
         "background" false \
         "network" true \
@@ -473,12 +485,6 @@ if does_bin_exist "flatpak"; then
             "location" true
     done
     set_linux_permission "org.signal.Signal" \
-        "background" true \
-        "network" true \
-        "notification" true \
-        "notification_lockscreen" true \
-        "location" false
-    set_linux_permission "org.telegram.desktop" \
         "background" true \
         "network" true \
         "notification" true \

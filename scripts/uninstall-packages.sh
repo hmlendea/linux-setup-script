@@ -22,6 +22,32 @@ if does_bin_exist "flatpak"; then
     call_flatpak uninstall --unused
 fi
 
+function keep_first_package() {
+    local PACKAGE_TO_KEEP_NAME="${1}" && shift
+    local PACKAGE_TO_UNINSTALL_NAME="${1}"
+
+    for PACKAGE_TO_UNINSTALL_NAME in "${@}"; do
+        if is_android_package_installed "${PACKAGE_TO_KEEP_NAME}" \
+        || is_flatpak_installed "${PACKAGE_TO_KEEP_NAME}" \
+        || is_android_package_installed "${PACKAGE_TO_KEEP_NAME}"; then
+            uninstall_android_package "${PACKAGE_TO_UNINSTALL_NAME}"
+            uninstall_flatpak "${PACKAGE_TO_UNINSTALL_NAME}"
+            uninstall_native_package "${PACKAGE_TO_UNINSTALL_NAME}"
+        fi
+    done
+}
+
+# Note Taking apps
+keep_first_package "com.automattic.simplenote" "foundation.e.notes"
+
+# Task Management apps
+keep_first_package "io.github.alainm23.planify" "org.gnome.Todo"
+
+# Video players
+uninstall_android_package "com.mitv.mivideoplayer"
+uninstall_android_package "com.mitv.videoplayer"
+keep_first_package "com.github.rafostar.Clapper" "org.gnome.Totem"
+
 # Uninstall the packages
 if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     if ${IS_POWERFUL_PC}; then
@@ -337,12 +363,6 @@ elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
     uninstall_android_package "org.lineageos.eleven"
     uninstall_android_package "com.xiaomi.mimusic2"
 
-    # Note and TODO apps
-    if is_android_package_installed "com.automattic.simplenote"; then
-        uninstall_android_package "foundation.e.notes"
-        uninstall_android_package "foundation.e.tasks"
-    fi
-
     # Recording apps
     uninstall_android_package "org.lineageos.recorder"
 
@@ -375,10 +395,6 @@ elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
     uninstall_android_package "com.android.theme.icon.roundedrect"
     uninstall_android_package "com.android.theme.icon.roundrect"
     uninstall_android_package "com.android.theme.icon.teardrop"
-
-    # Video players
-    uninstall_android_package "com.mitv.mivideoplayer"
-    uninstall_android_package "com.mitv.videoplayer"
 
     # Voice Assistants / Input / TTS / etc
     uninstall_android_package "com.google.android.tts"

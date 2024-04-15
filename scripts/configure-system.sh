@@ -216,8 +216,8 @@ if [ -d "${ROOT_ETC}/modprobe.d" ]; then
     set_gsetting org.gtk.Settings.FileChooser startup-mode 'cwd'
 
     if ${USING_INTEL_GPU}; then
-        set_modprobe_option i915 enable_fb 1 # Enable framebuffer compression
-        set_modprobe_option i915 enable_guc 2 # Enable GuC and HuC
+        set_modprobe_option i915 enable_fbc 1 # Enable framebuffer compression
+        set_modprobe_option i915 enable_guc 3 # Enable GuC and HuC
         set_modprobe_option i915 enable_psr 2 # Enable panel self-refresh
     elif ${USING_NVIDIA_GPU}; then
         set_modprobe_option nvidia-drm modset 1
@@ -1283,7 +1283,9 @@ if does_bin_exist "gnome-shell"; then
         FAVOURITE_APPS="${FAVOURITE_APPS}, 'steam.desktop'"
     fi
 
-    if does_bin_exist "org.telegram.desktop"; then
+    if does_bin_exist "app.drey.PaperPlane"; then
+        FAVOURITE_APPS="${FAVOURITE_APPS}, 'app.drey.PaperPlane.desktop'"
+    elif does_bin_exist "org.telegram.desktop"; then
         FAVOURITE_APPS="${FAVOURITE_APPS}, 'org.telegram.desktop.desktop'"
     elif does_bin_exist "telegram-desktop"; then
         FAVOURITE_APPS="${FAVOURITE_APPS}, 'telegramdesktop.desktop'"
@@ -1313,7 +1315,9 @@ if does_bin_exist "gnome-shell"; then
         FAVOURITE_APPS="${FAVOURITE_APPS}, 'simplenote.desktop'"
     fi
 
-    if does_bin_exist "org.gnome.Todo"; then
+    if does_bin_exist "io.github.alainm23.planify"; then
+        FAVOURITE_APPS="${FAVOURITE_APPS}, 'io.github.alainm23.planify.desktop'"
+    elif does_bin_exist "org.gnome.Todo"; then
         FAVOURITE_APPS="${FAVOURITE_APPS}, 'org.gnome.Todo.desktop'"
     fi
     
@@ -1471,6 +1475,18 @@ if does_bin_exist "sudo"; then
     SUDO_CONFIG_FILE="${ROOT_ETC}/sudoers"
 
     set_config_value "${SUDO_CONFIG_FILE}" "Defaults timestamp_timeout" 15
+fi
+
+#################
+### TODO apps ###
+#################
+if does_bin_exist "io.github.alainm23.planify"; then
+    PLANIFY_SCHEMA="io.github.alainm23.planify"
+
+    set_gsetting "${PLANIFY_SCHEMA}" 'caldav-server-url' "https://ecloud.global"
+    set_gsetting "${PLANIFY_SCHEMA}" 'dark-mode' "${DESKTOP_THEME_IS_DARK}"
+    set_gsetting "${PLANIFY_SCHEMA}" 'show-support-banner' false
+    set_gsetting "${PLANIFY_SCHEMA}" 'views-order-visible' "['inbox', 'today', 'scheduled', 'completed']"
 fi
 
 ################
@@ -1693,6 +1709,13 @@ if does_bin_exist "totem" "org.gnome.Totem"; then
     set_gsetting "${TOTEM_SCHEMA}" repeat false
     set_gsetting "${TOTEM_SCHEMA}" subtitle-encoding "UTF-8"
     set_gsetting "${TOTEM_SCHEMA}" subtitle-font "${SUBTITLES_FONT}"
+fi
+
+if does_bin_exist "com.github.rafostar.Clapper"; then
+    CLAPPER_SCHEMA="com.github.rafostar.Clapper"
+
+    set_gsetting "${CLAPPER_SCHEMA}" 'fullscreen-auto' true
+    set_gsetting "${CLAPPER_SCHEMA}" 'resume-enabled' true
 fi
 
 ##############################

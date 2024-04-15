@@ -76,6 +76,10 @@ configure-autostart-for-app "org.telegram.desktop" \
     Name "Telegram" \
     Icon "telegram" \
     Exec "org.telegram.desktop -workdir ${HOME_VAR_APP}/org.telegram.desktop/data/TelegramDesktop/ -startintray -autostart"
+configure-autostart-for-app "app.drey.PaperPlane.desktop" \
+    Name "Telegram" \
+    Icon "telegram" \
+    Exec "app.drey.PaperPlane"
 
 # WhatsApp
 configure-autostart-for-app "io.github.mimbrero.WhatsAppDesktop" \

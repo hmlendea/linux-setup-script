@@ -189,11 +189,14 @@ done
 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/meowgram.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/telegramdesktop.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/app.drey.PaperPlane.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.telegram.desktop.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/app.drey.PaperPlane.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.telegram.desktop.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        Name "Telegram" \
-        Name[ro] "Telegram"
+        Name 'Telegram' \
+        Name[ro] 'Telegram' \
+        Icon 'telegram'
 done
 
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/meowgram.desktop" Categories "GTK;${CHAT_APP_CATEGORIES}"
@@ -1102,11 +1105,15 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/transmission-gtk.desktop" Categories
 TODO_APP_KEYWORDS="Task;Productivity;TODO;Reminder;"
 TODO_APP_KEYWORDS_RO="${TODO_APP_KEYWORDS}Sarcină;Sarcini;Productivitate;DeFăcut;De făcut;Memento;"
 
-set_launcher_entries "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Todo.desktop" \
-    Name "Reminders" \
-    Name[ro] "Mementouri" \
-    Keywords "${TODO_APP_KEYWORDS}" \
-    Keywords[ro] "${TODO_APP_KEYWORDS_RO}"
+for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/io.github.alainm23.planify.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Todo.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name 'Reminders' \
+        Name[ro] 'Mementouri' \
+        Keywords "${TODO_APP_KEYWORDS}" \
+        Keywords[ro] "${TODO_APP_KEYWORDS_RO}" \
+        Icon 'gnome-todo'
+done
 
 ########################
 ### TRANSLATION APPS ###
@@ -1137,6 +1144,16 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/plexmediaplayer.desktop" StartupWMCl
 
 ### VLC
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/vlc.desktop" Name "VLC"
+
+for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.github.rafostar.Clapper.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Totem.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.github.rafostar.Clapper.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Totem.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name 'Videos' \
+        Name[ro] 'Videouri' \
+        Icon 'video-player'
+done
 
 ###############
 ### Weather ###

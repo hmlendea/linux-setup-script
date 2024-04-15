@@ -422,6 +422,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
             is_native_package_installed "gtk2" && install_native_package adwaita-dark # GTK3's AdwaitaDark ported to GTK2
             is_native_package_installed "gtk3" && install_native_package adw-gtk3
             install_flatpak org.gtk.Gtk3theme.adw-gtk3-dark
+            install_flatpak org.kde.KStyle.Adwaita
         fi
 
         install_native_package vimix-cursors
@@ -475,7 +476,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
 
             # Multimedia
             install_flatpak io.bassi.Amberol
-            install_flatpak org.gnome.Totem
+            [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ] && install_flatpak 'com.github.rafostar.Clapper'
             install_flatpak com.spotify.Client
 
             #install_native_package_dependency gst-plugins-ugly
@@ -550,7 +551,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
 
         # Tools
         install_flatpak com.simplenote.Simplenote
-        install_flatpak org.gnome.Todo
+        install_flatpak io.github.alainm23.planify
 
         if is_native_package_installed "xorg-server"; then
             install_native_package xorg-xdpyinfo
