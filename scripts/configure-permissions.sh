@@ -230,6 +230,49 @@ function set_android_permission() {
 }
 
 if does_bin_exist "flatpak"; then
+    for AUDIO_PLAYER_APP in "io.bassi.Amberol" "org.gnome.Rhythmbox3"; do
+        set_linux_permission "${AUDIO_PLAYER_APP}" \
+            "background" false \
+            "network" false \
+            "notification" true \
+            "notification_lockscreen" true \
+            "location" false
+    done
+    for BROWSER_APP in "org.chromium.Chromium" "chromium"; do
+        set_linux_permission "${BROWSER_APP}" \
+            "background" false \
+            "network" true \
+            "notification" false \
+            "location" true
+    done
+    for IMAGE_VIEWER_APP in "org.gnome.eog" "org.gnome.Loupe"; do
+        set_linux_permission "${IMAGE_VIEWER_APP}" \
+            "background" false \
+            "network" false \
+            "notification" false \
+            "location" false
+    done
+    for MINECRAFT_APP in "com.mojang.Minecraft" "org.prismlauncher.PrismLauncher"; do
+        set_linux_permission "${MINECRAFT_APP}" \
+            "background" false \
+            "network" true \
+            "notification" false \
+            "location" false
+    done
+    for STEAM_APP in "com.valvesoftware.Steam" "steam"; do
+        set_linux_permission "${STEAM_APP}" \
+            "background" true \
+            "network" true \
+            "notification" false \
+            "location" false
+    done
+    for SYSTEM_MONITOR_APP in "net.nokyan.Resources"; do
+        set_linux_permission "${SYSTEM_MONITOR_APP}" \
+            "background" false \
+            "network" true \
+            "notification" false \
+            "location" false
+    done
     for TELEGRAM_APP in "app.drey.PaperPlane" "org.telegram.desktop"; do
         set_linux_permission "${TELEGRAM_APP}" \
             "background" true \
@@ -238,6 +281,43 @@ if does_bin_exist "flatpak"; then
             "notification_lockscreen" true \
             "location" false
     done
+    for TODO_APP in "io.github.alainm23.planify" "org.gnome.Todo"; do
+        set_linux_permission "${TODO_APP}" \
+            "background" true \
+            "network" true \
+            "notification" true \
+            "location" false
+    done
+    for TEXT_EDITOR_APP in "org.gnome.gedit" "org.gnome.TextEditor"; do
+        set_linux_permission "${TEXT_EDITOR_APP}" \
+            "background" false \
+            "network" false \
+            "notification" false \
+            "location" false
+    done
+    for TEAMS_APP in "com.github.IsmaelMartinez.teams_for_linux" "com.microsoft.teams"; do
+        set_linux_permission "${TEAMS_APP}" \
+            "background" false \
+            "network" true \
+            "notification" true \
+            "notification_lockscreen" true \
+            "location" false
+    done
+    for VIDEO_PLAYER_APP in "com.github.rafostar.Clapper" "org.gnome.Totem"; do
+        set_linux_permission "${VIDEO_PLAYER_APP}" \
+            "background" false \
+            "network" true \
+            "notification" false \
+            "location" false
+    done
+    for VSCODE_APP in "com.visualstudio.code" "visual-studio-code"; do
+        set_linux_permission "${VSCODE_APP}" \
+            "background" false \
+            "network" true \
+            "notification" false \
+            "location" false
+    done
+
     set_linux_permission "ca.desrt.dconf-editor" \
         "background" false \
         "network" false \
@@ -249,21 +329,6 @@ if does_bin_exist "flatpak"; then
         "notification" true \
         "notification_lockscreen" true \
         "location" false
-    for TEAMS_APP in "com.github.IsmaelMartinez.teams_for_linux" "com.microsoft.teams"; do
-        set_linux_permission "${TEAMS_APP}" \
-            "background" false \
-            "network" true \
-            "notification" true \
-            "notification_lockscreen" true \
-            "location" false
-    done
-    for MINECRAFT_APP in "com.mojang.Minecraft" "org.prismlauncher.PrismLauncher"; do
-        set_linux_permission "${MINECRAFT_APP}" \
-            "background" false \
-            "network" true \
-            "notification" false \
-            "location" false
-    done
     set_linux_permission "com.getpostman.Postman" \
         "background" false \
         "network" true \
@@ -285,38 +350,17 @@ if does_bin_exist "flatpak"; then
         "notification" true \
         "notification_lockscreen" true \
         "location" false
-    for VIDEO_PLAYER_APP in "com.github.rafostar.Clapper" "org.gnome.Totem"; do
-        set_linux_permission "${VIDEO_PLAYER_APP}" \
-            "background" false \
-            "network" true \
-            "notification" false \
-            "location" false
-    done
     set_linux_permission "com.github.vladimiry.ElectronMail" \
         "background" true \
         "network" true \
         "notification" true \
         "notification_lockscreen" true \
         "location" false
-    for STEAM_APP in "com.valvesoftware.Steam" "steam"; do
-        set_linux_permission "${STEAM_APP}" \
-            "background" true \
-            "network" true \
-            "notification" false \
-            "location" false
-    done
     set_linux_permission "com.obsproject.Studio" \
         "background" false \
         "network" false \
         "notification" false \
         "location" false
-    for VSCODE_APP in "com.visualstudio.code" "visual-studio-code"; do
-        set_linux_permission "${VSCODE_APP}" \
-            "background" false \
-            "network" true \
-            "notification" false \
-            "location" false
-    done
     set_linux_permission "de.haeckerfelix.Fragments" \
         "background" true \
         "network" true \
@@ -328,21 +372,6 @@ if does_bin_exist "flatpak"; then
         "network" false \
         "notification" false \
         "location" false
-    for AUDIO_PLAYER_APP in "io.bassi.Amberol" "org.gnome.Rhythmbox3"; do
-        set_linux_permission "${AUDIO_PLAYER_APP}" \
-            "background" false \
-            "network" false \
-            "notification" true \
-            "notification_lockscreen" true \
-            "location" false
-    done
-    for TODO_APP in "io.github.alainm23.planify" "org.gnome.Todo"; do
-        set_linux_permission "${TODO_APP}" \
-            "background" true \
-            "network" true \
-            "notification" true \
-            "location" false
-    done
     set_linux_permission "io.github.hmlendea.geforcenow-electron" \
         "background" false \
         "network" true \
@@ -365,13 +394,6 @@ if does_bin_exist "flatpak"; then
         "network" false \
         "notification" false \
         "location" false
-    for APP in "org.chromium.Chromium" "chromium"; do
-        set_linux_permission "${APP}" \
-            "background" false \
-            "network" true \
-            "notification" false \
-            "location" true
-    done
     set_linux_permission "org.gimp.GIMP" \
         "background" false \
         "network" false \
@@ -410,13 +432,6 @@ if does_bin_exist "flatpak"; then
         "network" false \
         "notification" false \
         "location" false
-    for IMAGE_VIEWER_APP in "org.gnome.eog" "org.gnome.Loupe"; do
-        set_linux_permission "${IMAGE_VIEWER_APP}" \
-            "background" false \
-            "network" false \
-            "notification" false \
-            "location" false
-    done
     set_linux_permission "org.gnome.Evince" \
         "background" false \
         "network" false \
@@ -433,13 +448,6 @@ if does_bin_exist "flatpak"; then
         "network" false \
         "notification" false \
         "location" false
-    for TEXT_EDITOR_APP in "org.gnome.gedit" "org.gnome.TextEditor"; do
-        set_linux_permission "${TEXT_EDITOR_APP}" \
-            "background" false \
-            "network" false \
-            "notification" false \
-            "location" false
-    done
     set_linux_permission "org.gnome.Maps" \
         "background" false \
         "network" true \

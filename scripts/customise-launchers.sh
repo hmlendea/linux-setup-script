@@ -1012,14 +1012,16 @@ else
     remove "${GLOBAL_LAUNCHERS_DIR}/steam-streaming-client.desktop"
 fi
 
-#####################
-### TASK MANAGERS ###
-#####################
-for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/gnome-system-monitor.desktop" \
+#######################
+### System Monitors ###
+#######################
+for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/net.nokyan.Resources.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/gnome-system-monitor.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/mate-system-monitor.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "System Monitor" \
-        Name[ro] "Monitor de Sistem"
+        Name[ro] "Monitor de Sistem" \
+        Icon "utilities-system-monitor"
 done
 
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/lxtask.desktop" Name[ro] "Manager de Activități"
