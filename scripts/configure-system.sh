@@ -389,14 +389,6 @@ if does_bin_exist "gnome-shell"; then
     set_gsetting "org.gnome.shell.overrides" attach-modal-dialogs false
 fi
 
-if does_bin_exist "gnome-system-monitor"; then
-    GNOME_SYSTEM_MONITOR_SCHEMA="org.gnome.gnome-system-monitor"
-
-    set_gsetting "${GNOME_SYSTEM_MONITOR_SCHEMA}.current-tab" 'resources'
-    set_gsetting "${GNOME_SYSTEM_MONITOR_SCHEMA}.maximized" false
-    set_gsetting "${GNOME_SYSTEM_MONITOR_SCHEMA}.show-whose-processes" 'all'
-fi
-
 if is_gnome_shell_extension_installed "blur-my-shell"; then
     BMS_SCHEMA="org.gnome.shell.extensions.blur-my-shell"
 
@@ -1475,6 +1467,27 @@ if does_bin_exist "sudo"; then
     SUDO_CONFIG_FILE="${ROOT_ETC}/sudoers"
 
     set_config_value "${SUDO_CONFIG_FILE}" "Defaults timestamp_timeout" 15
+fi
+
+#######################
+### System Monitors ###
+#######################
+
+if does_bin_exist "gnome-system-monitor"; then
+    GNOME_SYSTEM_MONITOR_SCHEMA="org.gnome.gnome-system-monitor"
+
+    set_gsetting "${GNOME_SYSTEM_MONITOR_SCHEMA}.current-tab" 'resources'
+    set_gsetting "${GNOME_SYSTEM_MONITOR_SCHEMA}.maximized" false
+    set_gsetting "${GNOME_SYSTEM_MONITOR_SCHEMA}.show-whose-processes" 'all'
+fi
+
+if does_bin_exist "net.nokyan.Resources"; then
+    RESOURCES_SCHEMA="net.nokyan.Resources"
+
+    set_gsetting "${RESOURCES_SCHEMA}" 'is-maximized' false
+    set_gsetting "${RESOURCES_SCHEMA}" 'last-viewed-page' 'processes'
+    set_gsetting "${RESOURCES_SCHEMA}" 'processes-sort-by' 4
+    set_gsetting "${RESOURCES_SCHEMA}" 'processes-sort-by-ascending' false
 fi
 
 #################

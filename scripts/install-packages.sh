@@ -163,7 +163,6 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
         #install_native_package pacman-contrib
         #install_native_package pacutils
         #install_native_package pkgfile
-        install_native_package repo-synchroniser
     fi
 
 
@@ -297,8 +296,8 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
         ${POWERFUL_PC} || install_native_package blueman
 
         # System Monitor / Task Manager
-        ${POWERFUL_PC} && install_native_package gnome-system-monitor
-        ${POWERFUL_PC} || install_native_package lxtask
+        [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ] && install_flatpak 'net.nokyan.Resources'
+        [ "${DESKTOP_ENVIRONMENT}" = "LXDE" ] && install_native_package 'lxtask'
 
         # Terminal
         if ${POWERFUL_PC}; then
@@ -419,9 +418,6 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
 
         # Themes
         if [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ]; then
-            is_native_package_installed "gtk2" && install_native_package adwaita-dark # GTK3's AdwaitaDark ported to GTK2
-            is_native_package_installed "gtk3" && install_native_package adw-gtk3
-            install_flatpak org.gtk.Gtk3theme.adw-gtk3-dark
             install_flatpak org.kde.KStyle.Adwaita
         fi
 

@@ -40,6 +40,9 @@ function keep_first_package() {
 # Note Taking apps
 keep_first_package "com.automattic.simplenote" "foundation.e.notes"
 
+# System Monitors
+keep_first_package "net.nokyan.Resources" "gnome-system-monitor"
+
 # Task Management apps
 keep_first_package "io.github.alainm23.planify" "org.gnome.Todo"
 
