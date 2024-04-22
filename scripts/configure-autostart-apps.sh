@@ -53,6 +53,13 @@ configure-autostart-for-app "com.github.vladimiry.ElectronMail" \
     Icon "electron-mail" \
     Exec "com.github.vladimiry.ElectronMail --js-flags=--max-old-space-size=12288 %U"
 
+# Planify
+configure-autostart-for-app "io.github.alainm23.planify" \
+    Name 'Reminders' \
+    Name[ro] 'Mementouri' \
+    Icon 'gnome-todo' \
+    Exec 'io.github.alainm23.planify --background'
+
 # Plank
 configure-autostart-for-app "plank" \
     Icon "plank" \

@@ -1132,6 +1132,12 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/com.github.gi_lom.dialect.desktop"
 ### MPV
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/mpv.desktop" NoDisplay true
 
+### Netflix
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/netflix-nativefier.desktop"; do
+    set_launcher_entry "${LAUNCHER}" \
+        Icon 'netflix'
+done
+
 ### Plex
 for LAUNCHER in "${LOCAL_LAUNCHERS_DIR}/chrome-aghlkjcflkcaanjmefomlcfgflfdhkkg-Default.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/plexmediaplayer.desktop"; do

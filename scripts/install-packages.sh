@@ -151,7 +151,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
     #install_aur_package_manually package-query
 
     if [[ "${DISTRO}" != "SteamOS" ]]; then
-        install_native_package openssl-1.1 # Required for package management
+        #install_native_package openssl-1.1 # Required for package management
 
         if [[ "${ARCH}" != "armv7l" ]]; then
             install_aur_package_manually paru-bin
@@ -418,6 +418,9 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
 
         # Themes
         if [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ]; then
+            is_native_package_installed "gtk2" && install_native_package adwaita-dark # GTK3's AdwaitaDark ported to GTK2
+            is_native_package_installed "gtk3" && install_native_package adw-gtk3
+            install_flatpak org.gtk.Gtk3theme.adw-gtk3-dark
             install_flatpak org.kde.KStyle.Adwaita
         fi
 
