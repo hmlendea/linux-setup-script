@@ -25,16 +25,16 @@ fi
 #update_file_if_distinct "${REPO_RC_DIR}/profile" "${HOME}/.profile"
 update_file_if_distinct "${REPO_RC_DIR}/inputrc" "${XDG_CONFIG_HOME}/readline/inputrc"
 
-update_file_if_distinct "${REPO_RC_DIR}/shell_aliases" "${XDG_DATA_HOME}/bash/aliases"
-update_file_if_distinct "${REPO_RC_DIR}/shell_functions" "${XDG_DATA_HOME}/bash/functions"
-update_file_if_distinct "${REPO_RC_DIR}/shell_opts" "${XDG_DATA_HOME}/bash/options"
-update_file_if_distinct "${REPO_RC_DIR}/shell_prompt" "${XDG_DATA_HOME}/bash/prompt"
-update_file_if_distinct "${REPO_RC_DIR}/shell_vars" "${XDG_DATA_HOME}/bash/variables"
+update_file_if_distinct "${REPO_RC_DIR}/shell/aliases" "${XDG_DATA_HOME}/bash/aliases"
+update_file_if_distinct "${REPO_RC_DIR}/shell/functions" "${XDG_DATA_HOME}/bash/functions"
+update_file_if_distinct "${REPO_RC_DIR}/shell/opts" "${XDG_DATA_HOME}/bash/options"
+update_file_if_distinct "${REPO_RC_DIR}/shell/prompt" "${XDG_DATA_HOME}/bash/prompt"
+update_file_if_distinct "${REPO_RC_DIR}/shell/vars" "${XDG_DATA_HOME}/bash/variables"
 
 if does_bin_exist "bash"; then
-    update_file_if_distinct "${REPO_RC_DIR}/bashrc" "${HOME}/.bashrc"
-    update_file_if_distinct "${REPO_RC_DIR}/bash_profile" "${HOME}/.bash_profile"
-    update_file_if_distinct "${REPO_RC_DIR}/bashrc" "${HOME}/.bash_prompt"
+    update_file_if_distinct "${REPO_RC_DIR}/shell/bashrc" "${HOME}/.bashrc"
+    update_file_if_distinct "${REPO_RC_DIR}/shell/bash_profile" "${HOME}/.bash_profile"
+    update_file_if_distinct "${REPO_RC_DIR}/shell/bashrc" "${HOME}/.bash_prompt"
 fi
 
 for RC in "gimprc" "sessionrc" "toolrc"; do
