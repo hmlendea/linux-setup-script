@@ -84,11 +84,6 @@ alias ls="ls -C --color=auto -h -Q --group-directories-first --format=horizontal
 [ -f "${ROOT_USR_BIN}/neofetch" ]    && [ ! -f "${ROOT_USR_BIN}/alsi" ]         && alias alsi='neofetch'
 [ -f "${ROOT_USR_BIN}/neofetch" ]    && [ ! -f "${ROOT_USR_BIN}/fastfetch" ]    && alias fastfetch='neofetch'
 
-if [ -f "${ROOT_USR_BIN}/micro" ] \
-&& [ ! -f "${ROOT_USR_BIN}/nano" ]; then
-	alias nano="micro"
-fi
-
 if [ -f "${ROOT_USR_BIN}/git" ]; then
     alias git="git --no-pager"
     alias git-push="git fetch && git push"
@@ -137,7 +132,6 @@ CAN_PM_ALIAS_AUTOCOMPLETE=false
 if [[ "${PACKAGE_MANAGER}" == "paru" ]] \
 || [[ "${PACKAGE_MANAGER}" == "yay" ]]; then
     PACKAGE_MANAGER_CMD="${PACKAGE_MANAGER_CMD} --noredownload --norebuild --sudoloop" # Optimisations
-    #PACKAGE_MANAGER_CMD="${PACKAGE_MANAGER_CMD} --nouseask --noprovides --skipreview" # Prompt skip
     PACKAGE_MANAGER_CMD="${PACKAGE_MANAGER_CMD} --noconfirm" # Prompt skip
     PACKAGE_MANAGER_CMD="${PACKAGE_MANAGER_CMD} --bottomup --color auto" # Visuals
 elif [[ "${PACKAGE_MANAGER}" == "yaourt" ]]; then
