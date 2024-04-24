@@ -46,6 +46,10 @@ export SHELL="${ROOT_BIN}/bash"
 export HISTSIZE=10000           # Set the Bash history size to 10K entries
 export HISTCONTROL=ignoredups   # Ignore repeated entries in the Bash history
 
+if [ -n "${SSH_CLIENT}" ] || [ -n "${SSH_TTY}" ]; then
+    export GPG_TTY="${SSH_TTY}"
+fi
+
 # Shell colours
 export LESS_TERMCAP_mb=$'\e[1;32m'
 export LESS_TERMCAP_md=$'\e[1;36m' # Cyan
