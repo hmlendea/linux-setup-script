@@ -3,8 +3,11 @@ source "scripts/common/filesystem.sh"
 source "${REPO_DIR}/scripts/common/common.sh"
 
 function get_screen_width() {
-    if [ "${DISTRO}" = "SteamOS" ]; then
+    if [ "${DEVICE_MODEL}" = "Steam Deck" ]; then
         echo "1280"
+        return
+    elif [ "${DEVICE_MODEL}" = "Xiaomi Redmi Note 4X" ]; then
+	    echo "1080"
         return
     fi
 
@@ -49,8 +52,11 @@ function get_screen_width_inches() {
 }
 
 function get_screen_height() {
-    if [ "${DISTRO}" = "SteamOS" ]; then
+    if [ "${DEVICE_MODEL}" = "Steam Deck" ]; then
         echo "800"
+        return
+    elif [ "${DEVICE_MODEL}" = "Xiaomi Redmi Note 4X" ]; then
+	    echo "1920"
         return
     fi
 
@@ -90,6 +96,11 @@ function get_screen_height_millimetres() {
 }
 
 function get_screen_dpi() {
+    if [ "${DEVICE_MODEL}" = "Xiaomi Redmi Note 4X" ]; then
+	    echo "401"
+        return
+    fi
+
     local RESOLUTION_H=$(get_screen_width)
 
     if [ -z "${RESOLUTION_H}" ] \
@@ -157,6 +168,20 @@ function get_arch_family() {
     echo "${ARCH_FAMILY}"
 }
 
+function get_device_model() {
+    if [ -f "${ROOT_PROC}/device-tree/model" ]; then
+        local DEVICE_MODEL=$(cat -A "${ROOT_PROC}/device-tree/model")
+
+        if echo "${DEVICE_MODEL}" | grep -q "Raspberry Pi 3"; then
+            echo "Raspberry Pi 3"
+        elif echo "${DEVICE_MODEL}" | grep -q "Raspberry Pi 4"; then
+            echo "Raspberry Pi 4"
+        else
+        	echo "${DEVICE_MODEL}" | sed 's/[@\^\$]*$//g'
+        fi
+    fi
+}
+
 function get_soc_name() {
     local MODEL=""
 
@@ -185,13 +210,13 @@ function get_soc_name() {
     fi
 
     if [ -z "${MODEL}" ] \
-    && [ -f "${ROOT_PROC}/device-tree/model" ]; then
-        local DEVICE_MODEL=$(cat -A "${ROOT_PROC}/device-tree/model")
-
-        if echo "${DEVICE_MODEL}" | grep -q "Raspberry Pi 3"; then
+    && [ -n "${DEVICE_MODEL}" ]; then
+        if [ "${DEVICE_MODEL}" = "Raspberry Pi 3" ]; then
             MODEL="BCM2837"
-        elif echo "${DEVICE_MODEL}" | grep -q "Raspberry Pi 4"; then
+        elif [ "${DEVICE_MODEL}" = "Raspberry Pi 4" ]; then
             MODEL="BCM2711"
+        elif [ "${DEVICE_MODEL}" = "Xiaomi Redmi Note 4X" ]; then
+            MODEL="MSM8953"
         fi
     fi
 
@@ -230,6 +255,7 @@ function get_cpu_model() {
     [[ "${SOC_MODEL}" == "BCM2835" ]] && MODEL="ARM1176JZF-S"
     [[ "${SOC_MODEL}" == "BCM2837" ]] && MODEL="Cortex-A53"
     [[ "${SOC_MODEL}" == "BCM2711" ]] && MODEL="Cortex-A73"
+    [[ "${SOC_MODEL}" == "MSM8953" ]] && MODEL="Cortex-A53"
     [[ "${SOC_MODEL}" == "SDM660" ]] && MODEL="Kryo 260"
 
     if [ -z "${MODEL}" ] \
@@ -360,6 +386,7 @@ function get_gpu_model() {
     [[ "${SOC_MODEL}" == "BCM2835" ]] && MODEL="VideoCore IV"
     [[ "${SOC_MODEL}" == "BCM2837" ]] && MODEL="VideoCore IV"
     [[ "${SOC_MODEL}" == "BCM2711" ]] && MODEL="VideoCore VI"
+    [[ "${SOC_MODEL}" == "MSM8953" ]] && MODEL="Adreno 506"
     [[ "${SOC_MODEL}" == "SDM660" ]] && MODEL="Adreno 512"
 
     if [ -z "${MODEL}" ] \
@@ -450,7 +477,8 @@ function get_chassis_type() {
         return
     fi
 
-    if [ "${DISTRO_FAMILY}" = "Android" ]; then
+    if [ "${DISTRO_FAMILY}" = "Android" ] \
+    || [ "${DISTRO}" = "postmarketOS" ]; then
         echo "Phone"
         return
     fi
@@ -491,8 +519,9 @@ function is_distro_immutable() {
 # Distribution
 KERNEL_VERSION=$(uname -r)
 
-if [ -f "/etc/os-release" ]; then
-    DISTRO=$(grep "^ID" "/etc/os-release" | tail -n 1 | awk -F'=' '{print $2}')
+if [ -f "${ROOT_ETC}/os-release" ]; then
+	OS=$(grep "^NAME" "${ROOT_ETC}/os-release" | tail -n 1 | awk -F'=' '{print $2}' | sed 's/\"//g')
+    DISTRO=$(grep "^ID" "${ROOT_ETC}/os-release" | tail -n 1 | awk -F'=' '{print $2}' | sed 's/\"//g')
 else
     DISTRO=$(echo "${KERNEL_VERSION}" | sed \
         -e 's/^[^-]*-//g' \
@@ -502,7 +531,12 @@ else
         -e 's/-[a-z0-9]*$//g')
 fi
 
-OS=$(uname -s)
+[ -z "${OS}" ] && OS=$(uname -s)
+
+if does_bin_exist 'uname'; then
+    uname -r | grep -q "valve.*neptune" && DISTRO="SteamOS"
+    uname -r | grep -q "Microsoft" && DISTRO="${DISTRO} WSL"
+fi
 
 if [ "${DISTRO}" = "arch" ] \
 || [ "${DISTRO}" = "ARCH" ]; then
@@ -515,20 +549,28 @@ elif [ "${DISTRO}" = "lineageos" ] || [ $(uname -a | grep -c "Android") -ge 1 ];
     DISTRO="LineageOS"
     DISTRO_FAMILY="Android"
     OS="Android"
+elif [ "${DISTRO}" = "SteamOS" ]; then
+    DISTR_FAMILY="Arch"
+    OS="Linux"
+    DEVICE_MODEL="Steam Deck"
 fi
 
-if [ "${OS}" = "CYGWIN_NT-10.0" ]; then
+if [[ "${OS}" == "CYGWIN_NT-10.0" ]]; then
     DISTRO="Cygwin"
     DISTRO_FAMILY="Windows"
     OS="Windows"
+elif [[ "${OS}" == "postmarketOS" ]]; then
+	DISTRO="postmarketOS"
+	DISTRO_FAMILY="Alpine"
+	OS="Linux"
 fi
-
-uname -r | grep -q "valve.*neptune" && DISTRO="SteamOS"
-uname -r | grep -q "Microsoft" && DISTRO="${DISTRO} WSL"
 
 # Destkp Environment
 if [ -f "${ROOT_USR_BIN}/gnome-session" ]; then
     DESKTOP_ENVIRONMENT="GNOME"
+    if [ -f "${ROOT_USR_SHARE}/wayland-sessions/phosh.desktop" ]; then
+    	DESKTOP_ENVIRONMENT="Phosh"
+    fi
 elif [ -f "${ROOT_USR_BIN}/kded5" ]; then
     DESKTOP_ENVIRONMENT="KDE"
 else
@@ -548,6 +590,7 @@ fi
 [ -z "${GPU_MODEL}" ] && GPU_MODEL="$(get_gpu_model)"
 
 # System characteristics
+DEVICE_MODEL="$(get_device_model)"
 CPU_MODEL="$(get_cpu_model)"
 
 CHASSIS_TYPE="$(get_chassis_type)"
@@ -599,7 +642,8 @@ else
     [ -d "${ROOT_SYS}/firmware/efi/efivars" ] && HAS_EFI_SUPPORT=true
 fi
 
-if [ -f "${ROOT_ETC}/systemd/system/display-manager.service" ]; then
+if [ -n "${DESKTOP_ENVIRONMENT}" ] \
+|| [ -f "${ROOT_ETC}/systemd/system/display-manager.service" ]; then
     HAS_GUI=true
 else
     case ${HOSTNAME} in
