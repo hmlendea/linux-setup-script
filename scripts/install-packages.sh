@@ -200,6 +200,9 @@ if [[ "${ARCH_FAMILY}" == "x86" ]]; then
             || [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
                 install_native_package gnome-disk-utility
             fi
+
+            # Disk Usage Analyzer
+            install_flatpak org.gnome.baobab
         fi
 
         # Filesystems
@@ -258,14 +261,19 @@ fi
 #################
 ### Chat Apps ###
 #################
-install_flatpak com.github.IsmaelMartinez.teams_for_linux
-install_flatpak org.telegram.desktop
-install_flatpak io.github.mimbrero.WhatsAppDesktop
+if ${IS_GENERAL_PURPOSE_DEVICE}; then
+    install_flatpak 'org.telegram.desktop'
+    
+    if [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+        install_flatpak 'de.schmidhuberj.Flare'
+    else
+        install_flatpak 'org.signal.Signal'
+    fi
 
-if [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
-    install_flatpak 'de.schmidhuberj.Flare'
-else
-    install_flatpak 'org.signal.Signal'
+    if [ "${CHASSIS_TYPE}" != 'Phone' ]; then
+        install_flatpak 'com.github.IsmaelMartinez.teams_for_linux'
+        install_flatpak 'io.github.mimbrero.WhatsAppDesktop'
+    fi
 fi
 
 ###############
@@ -336,11 +344,54 @@ fi
 #####################
 ### Image Viewers ###
 #####################
-if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
-|| [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
-    install_flatpak 'org.gnome.Loupe'
-elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
-    install_native_package 'gpicview'
+if ${HAS_GUI}; then
+    if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
+    || [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+        install_flatpak 'org.gnome.Loupe'
+    elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
+        install_native_package 'gpicview'
+    fi
+fi
+
+#########################
+### Internet Browsers ###
+#########################
+if ${HAS_GUI}; then
+    if [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+        install_native_package 'firefox-esr'
+    else
+        install_flatpak 'io.gitlab.librewolf-community'
+    fi
+fi
+
+#####################
+### Music Players ###
+#####################
+if ${IS_GENERAL_PURPOSE_DEVICE}; then
+    if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
+    || [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+        install_flatpak 'io.bassi.Amberol'
+    fi
+
+    if [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+        install_flatpak 'dev.alextren.Spot'
+    else
+        install_flatpak 'com.spotify.Client'
+    fi
+fi
+
+#####################
+### Notes & Tasks ###
+#####################
+if ${IS_GENERAL_PURPOSE_DEVICE}; then
+    if [ "${DESKTOP_ENVIRONMENT}" != 'Phosh' ]; then
+        install_flatpak com.simplenote.Simplenote
+    fi
+    
+    if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
+    || [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+        install_flatpak io.github.alainm23.planify
+    fi
 fi
 
 ####################
@@ -406,6 +457,25 @@ if "${HAS_GUI}"; then
     install_native_package 'papirus-folders'
 fi
 
+###########################
+### Torrent Downloaders ###
+###########################
+if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
+|| [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+    install_flatpak 'de.haeckerfelix.Fragments'
+elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
+    install_flatpak 'com.transmissionbt.Transmission'
+fi
+
+#####################
+### Video Players ###
+#####################
+if [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ]; then
+    install_flatpak 'com.github.rafostar.Clapper'
+elif [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+    install_flatpak 'io.github.celluloid_player.Celluloid'
+fi
+
 ####################
 ### Weather Apps ###
 ####################
@@ -467,13 +537,6 @@ if [ "${OS}" == "Linux" ]; then
         install_flatpak ca.desrt.dconf-editor
 
         if ${IS_GENERAL_PURPOSE_DEVICE}; then
-            if ${POWERFUL_PC}; then
-                install_flatpak org.gnome.baobab
-                #install_native_package gnome-screenshot
-            else
-                install_native_package mate-utils
-            fi
-
             if is_native_package_installed "gnome-shell"; then
                 install_native_package_dependency gvfs-goa
                 install_native_package_dependency evolution-data-server # To make GOA contacts, tasks, etc. available in apps
@@ -535,25 +598,9 @@ if [ "${OS}" == "Linux" ]; then
             install_native_package ttf-ubraille # Braille
         fi
 
-        # Internet Browser
-        install_flatpak "io.gitlab.librewolf-community"
-        #does_bin_exist "gnome-shell" && install_native_package chrome-gnome-shell # Also used for Firefox
-
-        # Torrent Downloader
-        if ${POWERFUL_PC}; then
-            install_flatpak de.haeckerfelix.Fragments
-        else
-            install_flatpak com.transmissionbt.Transmission
-        fi
-
         if ${IS_GENERAL_PURPOSE_DEVICE}; then
             # Communication
             install_flatpak com.github.vladimiry.ElectronMail
-
-            # Multimedia
-            install_flatpak io.bassi.Amberol
-            [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ] && install_flatpak 'com.github.rafostar.Clapper'
-            install_flatpak dev.alextren.Spot
 
             #install_native_package_dependency gst-plugins-ugly
             #install_native_package_dependency gst-libav
@@ -624,10 +671,6 @@ if [ "${OS}" == "Linux" ]; then
             # Tools
             install_flatpak "com.github.dynobo.normcap"
         fi
-
-        # Tools
-        install_flatpak com.simplenote.Simplenote
-        install_flatpak io.github.alainm23.planify
 
         if is_native_package_installed "xorg-server"; then
             install_native_package xorg-xdpyinfo

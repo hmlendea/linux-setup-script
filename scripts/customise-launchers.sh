@@ -8,6 +8,7 @@ source "${REPO_DIR}/scripts/common/system-info.sh"
 [ "${OS}" != "Linux" ] && exit
 (! ${HAS_GUI}) && exit
 
+
 ICON_THEME=$(sudo -u "${USER_REAL}" -H gsettings get org.gnome.desktop.interface icon-theme | tr -d "'")
 ICON_THEME_PATH="${ROOT_USR_SHARE}/icons/${ICON_THEME}"
 
@@ -38,9 +39,6 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/nm-connection-editor.desktop" \
     Name[ro] "Conexiuni de Rețea" \
     NoDisplay true
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/org.gnome.SoundRecorder.desktop" Categories "GNOME;GTK;Utility;Audio;"
-set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/org.gnome.tweaks.desktop" \
-    Icon "utilities-tweak-tool" \
-    Categories "GNOME;GTK;System;"
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/pcmanfm-desktop-pref.desktop" \
     Name "Desktop Customiser" \
     Name[ro] "Personalizare Desktop"
@@ -168,10 +166,10 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/discord.desktop" \
         Categories "${CHAT_APP_CATEGORIES}"
 done
 
-for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/de.schmidhuberj.Flare.desktop" \
-                "${GLOBAL_LAUNCHERS_DIR}/org.signal.Signal.desktop" \
-                "${LOCAL_LAUNCHERS_DIR}/de.schmidhuberj.Flare.desktop" \
-                "${LOCAL_LAUNCHERS_DIR}/org.signal.Signal.desktop"; do
+for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/de.schmidhuberj.Flare.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.signal.Signal.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/de.schmidhuberj.Flare.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.signal.Signal.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Signal" \
         Name[ro] "Signal" \
@@ -946,10 +944,13 @@ done
 SETTINGS_APP_CATEGORIES="System;" #"Settings;"
 
 ### System Settings
-set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/gnome-control-center.desktop" \
-    Name "Settings" \
-    Name[ro] "Setări" \
-    Categories "GNOME;GTK;${SETTINGS_APP_CATEGORIES}"
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/gnome-control-center.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Settings.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Settings" \
+        Name[ro] "Setări" \
+        Categories "GNOME;GTK;${SETTINGS_APP_CATEGORIES}"
+done
 
 ### Configuration Settings
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/ca.desrt.dconf-editor.desktop" \
@@ -970,6 +971,12 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/pavucontrol.desktop" \
     Name "Audio Settings" \
     Name[ro] "Setări Audio"
 
+### Mobile Settings
+set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/mobi.phosh.MobileSettings.desktop" \
+    Name 'Mobile Settings' \
+    Name[ro] 'Setări Mobile' \
+    Icon 'ayatana-settings'
+
 ### Mouse Settings
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/org.freedesktop.Piper.desktop" \
     Name "Mouse Settings" \
@@ -988,6 +995,14 @@ done
 ### RGB Settings
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/openrgb.desktop" \
     Categories "Qt;${SETTINGS_APP_CATEGORIES}"
+
+### Tweaks
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.tweaks.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/org.postmarketos.Tweaks.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Icon "utilities-tweak-tool" \
+        Categories "GNOME;GTK;System;"
+done
 
 #############
 ### STEAM ###
@@ -1130,7 +1145,9 @@ TODO_APP_KEYWORDS="Task;Productivity;TODO;Reminder;"
 TODO_APP_KEYWORDS_RO="${TODO_APP_KEYWORDS}Sarcină;Sarcini;Productivitate;DeFăcut;De făcut;Memento;"
 
 for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/io.github.alainm23.planify.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Todo.desktop"; do
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Todo.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/io.github.alainm23.planify.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Todo.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name 'Reminders' \
         Name[ro] 'Mementouri' \
@@ -1143,9 +1160,9 @@ done
 ### TRANSLATION APPS ###
 ########################
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/com.github.gi_lom.dialect.desktop" \
-    Name "Translate" \
-    Name[ro] "Traduceri" \
-    Categories "GNOME;GTK;Utility;"
+    Name 'Translate' \
+    Name[ro] 'Traduceri' \
+    Categories 'GNOME;GTK;Utility;'
 
 #####################
 ### Video Players ###
@@ -1176,8 +1193,10 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/plexmediaplayer.desktop" StartupWMCl
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/vlc.desktop" Name "VLC"
 
 for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.github.rafostar.Clapper.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/io.github.celluloid_player.Celluloid.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Totem.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.github.rafostar.Clapper.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/io.github.celluloid_player.Celluloid.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Totem.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name 'Videos' \

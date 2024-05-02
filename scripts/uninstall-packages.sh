@@ -64,7 +64,7 @@ keep_first_package 'com.telegram.desktop' 'telegram-desktop'
 keep_only_one_package 'de.schmidhuberj.Flare' 'org.signal.Signal'
 
 # Music players
-keep_first_package "dev.alextren.Spot" "com.spotify.Client"
+keep_only_one_package "dev.alextren.Spot" "com.spotify.Client"
 uninstall_android_package "org.lineageos.eleven"
 uninstall_android_package "com.xiaomi.mimusic2"
 
