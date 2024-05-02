@@ -58,7 +58,11 @@ function add_user_flatpak_remote() {
 }
 
 if does_bin_exist "flatpak"; then
-    add_user_flatpak_remote     "flathub-beta" "https://flathub.org/beta-repo/flathub-beta.flatpakrepo"
+    add_system_flatpak_remote   'flathub'       'https://flathub.org/repo/flathub.flatpakrepo'
+    add_system_flatpak_remote   'flathub-beta'  'https://flathub.org/beta-repo/flathub-beta.flatpakrepo'
+
+    add_user_flatpak_remote     'flathub'       'https://flathub.org/repo/flathub.flatpakrepo'
+    add_user_flatpak_remote     'flathub-beta'  'https://flathub.org/beta-repo/flathub-beta.flatpakrepo'
 fi
 
 if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then

@@ -206,8 +206,11 @@ function set_firefox_config() {
 function set_json_property() {
     local FILE_PATH="${1}"
 
-    ( ! does_bin_exist "jq") && return
     [ ! -f "${FILE_PATH}" ] && return
+    if ! does_bin_exist "jq"; then
+    	echo "Cannot configure '${FILE_PATH}': 'jq' is not installed"
+    	return
+    fi
 
     local PROPERTY="${2}"
     local VALUE_RAW="${@:3}"
@@ -242,8 +245,11 @@ function set_xml_node() {
     NODE_RAW="${2}"
     VALUE_RAW="${@:3}"
 
-    (! does_bin_exist "xmlstarlet") && return
     [ ! -f "${FILE}" ] && return
+    if ! does_bin_exist 'xmlstarlet'; then
+    	echo "Cannot configure '${FILE}': 'xmlstarlet' is not installed"
+    	return
+    fi
 
     NAMESPACE=$(cat "${FILE}" | grep "xmlns=" | sed 's/.*xmlns=\"\([^\"]*\)\".*/\1/g')
     VALUE=$(echo "${VALUE_RAW}" | sed -e 's/[]\/$*.^|[]/\\&/g')

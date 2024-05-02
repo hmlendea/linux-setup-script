@@ -300,7 +300,7 @@ if [ -f "${ROOT_ETC}/default/grub" ] \
     [ ${GRUB_BOOT_ENTRIES_COUNT} -eq 1 ] && GRUB_TIMEOUT=0
 
     BOOT_FLAGS_DEFAULT="loglevel=3 quiet" # Defaults
-    BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} random.trust_cpu=on" # Trust the CPU random number generator ratherthan software. Better boot time
+    BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} random.trust_cpu=on" # Trust the CPU random number generator rather than software. Better boot time
     BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} mitigations=off" # Trust the CPU random number generator ratherthan software. Better boot time
 
     #if [ "${CHASSIS_TYPE}" = "Laptop" ] && is_driver_loaded "i915"; then
@@ -586,13 +586,6 @@ if [ -f "${ROOT_ETC}/bluetooth/main.conf" ]; then
     # bredr for AirPods but DELL mouse won't work anymore
     set_config_value --section "General" "${BLUETOOTH_CONFIG_FILE}" ControllerMode dual
 fi
-
-#if is_gnome_shell_extension_installed "sound-output-device-chooser"; then
-#    SODC_SCHEMA="org.gnome.shell.extensions.sound-output-device-chooser"
-#
-#    set_gsetting "${SODC_SCHEMA}" hide-on-single-device true
-#    set_gsetting "${SODC_SCHEMA}" show-profiles false
-#fi
 
 ###################
 ### Calculators ###
@@ -1650,7 +1643,7 @@ if does_bin_exist "micro"; then
     	create_file "${MICRO_SETTINGS_FILE}"
     	echo "{}" > "${MICRO_SETTINGS_FILE}"
     fi
-    
+
 	# Behaviour
     set_json_property "${MICRO_SETTINGS_FILE}" '.["autoclose"]' false # Whether to automatically close braces
     set_json_property "${MICRO_SETTINGS_FILE}" '.["savecursor"]' true
@@ -1670,6 +1663,7 @@ if does_bin_exist "micro"; then
     set_json_property "${MICRO_BINDINGS_FILE}" '.["Ctrl-g"]' "JumpLine"
     set_json_property "${MICRO_BINDINGS_FILE}" '.["F3"]' "FindNext"
 fi
+
 if does_bin_exist "pluma"; then
     PLUMA_SCHEMA="org.mate.pluma"
 
