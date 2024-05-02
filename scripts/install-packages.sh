@@ -39,12 +39,12 @@ fi
 ##################
 install_native_package autoconf
 install_native_package binutils
-install_native_package debugedit
 install_native_package make
 install_native_package fakeroot
 install_native_package patch
 
 if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
+    install_native_package debugedit
     install_native_package gcc
     install_native_package pkgconf
 fi
@@ -54,6 +54,29 @@ if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
     install_native_package pbzip2  # Drop-in replacement for bzip2, with multithreading
     install_native_package pigz    # Drop-in replacement for gzip, with multithreading
 fi
+
+########################
+### Package Managers ###
+########################
+if [ "${OS}" = "Linux" ]; then
+    if [ "${DISTRO_FAMILY}" = "Arch" ] \
+    && [ "${DISTRO}" != "SteamOS" ]; then
+        #install_native_package openssl-1.1 # Required for package management
+
+        if [[ "${ARCH}" != "armv7l" ]]; then
+            install_aur_package_manually paru-bin
+        else
+            # Special case, since we don't want to build paru from source (it takes a LOOONG time)
+            install_aur_package_manually yay-bin
+        fi
+
+        #install_native_package pacman-contrib
+        #install_native_package pacutils
+        #install_native_package pkgfile
+    fi
+
+    ${HAS_GUI} && install_native_package flatpak
+fi    
 
 ###################
 ### Development ###
@@ -82,6 +105,14 @@ else
     install_native_package neofetch
 fi
 
+install_native_package lm_sensors
+
+if [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ]; then
+    install_flatpak 'net.nokyan.Resources'
+elif [ "${DESKTOP_ENVIRONMENT}" = "LXDE" ]; then
+    install_native_package 'lxtask'
+fi
+
 ########################
 ### Power Management ###
 ########################
@@ -106,7 +137,8 @@ if [[ "${DISTRO_FAMILY}" == "Arch" ]] \
 || [[ "${DISTRO_FAMILY}" == "Android" ]]; then
     install_native_package openssh
     install_native_package wol
-elif [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
+elif [[ "${DISTRO_FAMILY}" == "Alpine" ]] \
+  || [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
     install_native_package openssh-server
     install_native_package wakeonlan
 fi
@@ -122,6 +154,12 @@ if [[ "${CHASSIS_TYPE}" == "Laptop" ]]; then
     install_native_package 'chrony'
 fi
 
+if [ "${OS}" = "Linux" ]; then
+    install_native_package networkmanager
+    install_native_package networkmanager-openvpn
+
+    [ "${DESKTOP_ENVIRONMENT}" = "LXDE" ] && install_native_package network-manager-applet
+fi
 
 ################
 ### Archives ###
@@ -129,11 +167,92 @@ fi
 install_native_package unzip
 install_native_package zip
 
+if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
+    install_native_package unp # A script for unpacking a wide variety of archive formats
+    install_native_package p7zip
+    install_native_package lrzip
+fi
+
 if [[ "${DISTRO_FAMILY}" == "Arch" ]] \
 || [[ "${DISTRO_FAMILY}" == "Android" ]]; then
     install_native_package unrar
 elif [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
     install_native_package unrar-free
+fi
+
+###################
+### Filesystems ###
+###################
+if [[ "${ARCH_FAMILY}" == "x86" ]]; then
+    if [[ "${CHASSIS_TYPE}" == "Desktop" ]] \
+    || [[ "${CHASSIS_TYPE}" == "Laptop" ]]; then
+        # Partition editors
+        if ${INSTALL_PARTITION_EDITORS}; then
+            install_native_package parted
+
+            if ${HAS_GUI} && ${IS_GENERAL_PURPOSE_DEVICE}; then
+                install_native_package gparted
+                install_native_package_dependency gpart
+                install_native_package_dependency mtools
+            fi
+
+            if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
+            || [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
+                install_native_package gnome-disk-utility
+            fi
+        fi
+
+        # Filesystems
+        install_native_package_dependency dosfstools # For FAT filesystem support
+        install_native_package_dependency ntfs-3g
+        install_native_package_dependency exfatprogs
+    fi
+fi
+
+#################
+### Bluetooth ###
+#################
+if [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ] \
+|| [ "${DESKTOP_ENVIRONMENT}" = "Phosh" ]; then
+    install_native_package gnome-bluetooth
+elif [ -n "${DESKTOP_ENVIRONMENT}" ]; then
+    install_native_package blueman
+fi
+
+####################
+### Boot Loaders ###
+####################
+if [[ "${ARCH_FAMILY}" == "x86" ]] \
+&& [[ "${DISTRO}" != "SteamOS" ]]; then
+    install_native_package grub
+    install_native_package_dependency os-prober
+    install_native_package update-grub
+    install_native_package_dependency linux-headers
+
+    # Customisations
+    install_native_package grub2-theme-nuci
+fi
+
+###################
+### Calculators ###
+###################
+if ${IS_GENERAL_PURPOSE_DEVICE}; then
+    if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
+    || [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+        install_flatpak org.gnome.Calculator
+    elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
+        install_native_package mate-calc
+    fi
+fi
+
+###############
+### Cameras ###
+###############
+if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
+|| [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+    install_flatpak 'org.gnome.Snapshot'
+elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
+    install_native_package 'cheese'
 fi
 
 ##################
@@ -146,67 +265,157 @@ if is_native_package_installed "micro" \
     install_native_package_dependency xclip # Required by micro, to use the X11 clipboard
 fi
 
-if [ "${DISTRO_FAMILY}" == "Arch" ]; then
-    # Package manager
-    #install_aur_package_manually package-query
+###############
+### Drivers ###
+###############
+if [[ "${ARCH_FAMILY}" == "x86" ]]; then
+    # Graphics drivers
+    GPU_FAMILY="$(get_gpu_family)"
+    if [[ "${GPU_FAMILY}" == "Intel" ]]; then
+        install_native_package intel-media-driver
 
-    if [[ "${DISTRO}" != "SteamOS" ]]; then
-        #install_native_package openssl-1.1 # Required for package management
+        install_native_package libva-intel-driver
+        install_native_package libva-utils
 
-        if [[ "${ARCH}" != "armv7l" ]]; then
-            install_aur_package_manually paru-bin
+        install_native_package libvdpau-va-gl
+
+        install_native_package vulkan-intel
+        install_native_package lib32-vulkan-intel
+
+        install_native_package intel-ucode
+    elif [[ "${GPU_FAMILY}" == "Nvidia" ]]; then
+        NVIDIA_DRIVER="nvidia"
+
+        [[ "$(get_gpu_model)" == "GeForce 610M" ]] && NVIDIA_DRIVER="nvidia-390xx"
+
+        if gpu_has_optimus_support; then
+            install_native_package bumblebee
+            install_native_package_dependency bbswitch
+            install_native_package_dependency primus
+
+            install_native_package optiprime
+
+            install_native_package mesa
+            install_native_package xf86-video-intel
+
+            install_native_package "${NVIDIA_DRIVER}-dkms"
+            install_native_package "${NVIDIA_DRIVER}-settings"
+            install_native_package_dependency "lib32-${NVIDIA_DRIVER}-utils"
+
+            install_native_package_dependency lib32-virtualgl
         else
-            # Special case, since we don't want to build paru from source (it takes a LOOONG time)
-            install_aur_package_manually yay-bin
+            install_native_package "${NVIDIA_DRIVER}"
         fi
 
-        #install_native_package pacman-contrib
-        #install_native_package pacutils
-        #install_native_package pkgfile
+        install_native_package libva-vdpau-driver
+    fi
+fi
+
+#####################
+### File Managers ###
+#####################
+if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
+|| [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+    install_native_package 'nautilus'
+    install_flatpak 'org.gnome.FileRoller'
+elif [ "${DESKTOP_ENVIRONMENT}" = 'KDE' ]; then
+    install_native_package 'dolphin'
+    install_native_package 'ark'
+elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
+    install_native_package 'pcmanfm'
+    install_native_package 'xarchiver'
+fi
+
+if ${IS_POWERFUL_PC} && ${HAS_GUI}; then
+    install_native_package_dependency 'webp-pixbuf-loader'
+fi
+
+#####################
+### Image Viewers ###
+#####################
+if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
+|| [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+    install_flatpak 'org.gnome.Loupe'
+elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
+    install_native_package 'gpicview'
+fi
+
+####################
+### Office Suite ###
+####################
+if ${IS_GENERAL_PURPOSE_DEVICE}; then
+    if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
+    || [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+        install_flatpak 'org.gnome.Evince'
+    elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
+        install_native_package 'epdfview'
+    fi
+fi
+
+#########################
+### Password Managers ###
+#########################
+if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
+    install_native_package 'gnome-keyring'
+    install_flatpak 'org.gnome.seahorse.Application'
+fi
+
+#################
+### Terminals ###
+#################
+if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
+    install_native_package 'gnome-terminal'
+elif [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+    install_native_package 'gnome-console'
+elif [ "${DESKTOP_ENVIRONMENT}" = 'KDE' ]; then
+    install_native_package 'konsole'
+elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
+    install_native_package 'lxterminal'
+fi
+
+####################
+### Text Editors ###
+####################
+if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
+|| [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+    install_flatpak 'org.gnome.TextEditor'
+elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
+    install_native_package 'pluma'
+fi
+
+##############
+### Themes ###
+##############
+if "${HAS_GUI}"; then
+    if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
+    || [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+        is_native_package_installed "gtk2" && install_native_package 'adwaita-dark' # GTK3's Adwaita Dark ported to GTK2
+        is_native_package_installed "gtk3" && install_native_package 'adw-gtk3'
+        install_flatpak 'org.gtk.Gtk3theme.adw-gtk3-dark'
+        install_flatpak 'org.kde.KStyle.Adwaita'
     fi
 
+    [ "${CHASSIS_TYPE}" != 'Phone' ] && install_native_package 'vimix-cursors'
 
-    # Partition editors
-    if ${INSTALL_PARTITION_EDITORS}; then
-        install_native_package parted
+    install_native_package 'papirus-icon-theme'
+    install_native_package 'papirus-folders'
+fi
 
-        if ${HAS_GUI} && ${IS_GENERAL_PURPOSE_DEVICE}; then
-            install_native_package gparted
-            install_native_package_dependency gpart
-            install_native_package_dependency mtools
-        fi
-    fi
+####################
+### Weather Apps ###
+####################
+if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
+|| [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+    install_flatpak 'org.gnome.Weather'
+fi
 
-    # Filesystems
-    install_native_package_dependency dosfstools # For FAT filesystem support
-    install_native_package_dependency ntfs-3g
-    install_native_package_dependency exfatprogs
 
-    # Archives
-    install_native_package unp # A script for unpacking a wide variety of archive formats
-    install_native_package p7zip
-    install_native_package lrzip
 
+
+if [ "${OS}" == "Linux" ]; then
     install_native_package realtime-privileges
 
-    # Monitoring
-    install_native_package lm_sensors
-
-    # Boot loader
-    if [[ "${ARCH_FAMILY}" == "x86" ]] \
-    && [[ "${DISTRO}" != "SteamOS" ]]; then
-        install_native_package grub
-        install_native_package_dependency os-prober
-        install_native_package update-grub
-        install_native_package_dependency linux-headers
-
-        # Customisations
-        install_native_package grub2-theme-nuci
-    fi
-
     if ${HAS_GUI}; then
-        install_native_package flatpak
-
         install_native_package dkms
         #install_native_package rsync
 
@@ -214,54 +423,14 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
         [[ "${ARCH_FAMILY}" == "x86" ]] && install_native_package thermald
 
         # Display Server, Drivers, FileSystems, etc
-        install_native_package xorg-server
+        #install_native_package xorg-server
         #install_native_package xf86-video-vesa
-
-        # Graphics drivers
-        GPU_FAMILY="$(get_gpu_family)"
-        if [[ "${GPU_FAMILY}" == "Intel" ]]; then
-            install_native_package intel-media-driver
-
-            install_native_package libva-intel-driver
-            install_native_package libva-utils
-
-            install_native_package libvdpau-va-gl
-
-            install_native_package vulkan-intel
-            install_native_package lib32-vulkan-intel
-
-            install_native_package intel-ucode
-        elif [[ "${GPU_FAMILY}" == "Nvidia" ]]; then
-            NVIDIA_DRIVER="nvidia"
-
-            [[ "$(get_gpu_model)" == "GeForce 610M" ]] && NVIDIA_DRIVER="nvidia-390xx"
-
-            if gpu_has_optimus_support; then
-                install_native_package bumblebee
-                install_native_package_dependency bbswitch
-                install_native_package_dependency primus
-
-                install_native_package optiprime
-
-                install_native_package mesa
-                install_native_package xf86-video-intel
-
-                install_native_package "${NVIDIA_DRIVER}-dkms"
-                install_native_package "${NVIDIA_DRIVER}-settings"
-                install_native_package_dependency "lib32-${NVIDIA_DRIVER}-utils"
-
-                install_native_package_dependency lib32-virtualgl
-            else
-                install_native_package "${NVIDIA_DRIVER}"
-            fi
-
-            install_native_package libva-vdpau-driver
-        fi
 
         # Desktop Environment & Base applications
         install_native_package xdg-user-dirs
-        if ${POWERFUL_PC}; then
-            [ "${DISTRO}" != "SteamOS" ] && install_native_package gnome-shell
+
+        if [[ "${DESKTOP_ENVIRONMENT}" == "GNOME" ]]; then
+            install_native_package gnome-shell
             install_native_package gdm
             install_native_package_dependency gnome-control-center
             install_native_package gnome-tweaks
@@ -272,7 +441,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
                 install_native_package gnome-software
                 install_native_package xdg-desktop-portal-gnome
             fi
-        else
+        elif [[ "${DESKTOP_ENVIRONMENT}" == "LXDE" ]]; then
             install_native_package mutter # openbox
             install_native_package lxde-common
             install_native_package lxdm
@@ -282,83 +451,17 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
             install_native_package lxappearance-obconf
         fi
 
-        install_native_package gnome-keyring
-        install_flatpak org.gnome.seahorse.Application
-
-        install_native_package networkmanager
-        install_native_package networkmanager-openvpn
-        ! ${POWERFUL_PC} && install_native_package network-manager-applet
-
-        #install_native_package_dependency dnsmasq # For setting up WiFi hotspots
-
-        # Bluetooth Manager
-        ${POWERFUL_PC} && install_native_package gnome-bluetooth
-        ${POWERFUL_PC} || install_native_package blueman
-
-        # System Monitor / Task Manager
-        [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ] && install_flatpak 'net.nokyan.Resources'
-        [ "${DESKTOP_ENVIRONMENT}" = "LXDE" ] && install_native_package 'lxtask'
-
-        # Terminal
-        if ${POWERFUL_PC}; then
-            [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ] && install_native_package gnome-terminal
-            [ "${DESKTOP_ENVIRONMENT}" = "KDE" ] && install_native_package konsole
-        else
-            install_native_package lxterminal
-        fi
-
-        [ "${DESKTOP_ENVIRONMENT}" != "KDE" ] && install_native_package gnome-disk-utility
-
         if ${IS_GENERAL_PURPOSE_DEVICE}; then
-            # Calculator
-            if ${POWERFUL_PC}; then
-                install_flatpak org.gnome.Calculator
-            else
-                install_native_package mate-calc
-            fi
-
             install_flatpak org.gnome.Calendar
             install_flatpak org.gnome.clocks
             install_flatpak org.gnome.Contacts
             install_flatpak org.gnome.Maps
             install_flatpak org.gnome.NetworkDisplays
-            install_flatpak org.gnome.Weather
-        fi
-
-        # File management
-        if ${POWERFUL_PC}; then
-            if [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ]; then
-                install_native_package nautilus
-                install_native_package python-nautilus
-                install_flatpak org.gnome.FileRoller
-            elif [ "${DESKTOP_ENVIRONMENT}" = "KDE" ]; then
-                install_native_package "dolphin"
-                install_native_package "ark"
-            fi
-
-            install_native_package_dependency webp-pixbuf-loader
-        else
-            install_native_package pcmanfm
-            install_native_package xarchiver
         fi
 
         install_flatpak ca.desrt.dconf-editor
 
-        # Text Editor
-        if ${POWERFUL_PC}; then
-            [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ] && install_flatpak org.gnome.TextEditor
-        else
-            install_native_package pluma
-        fi
-
         if ${IS_GENERAL_PURPOSE_DEVICE}; then
-            # Document Viewer
-            if ${POWERFUL_PC}; then
-                install_flatpak org.gnome.Evince
-            else
-                install_native_package epdfview
-            fi
-
             if ${POWERFUL_PC}; then
                 install_flatpak org.gnome.baobab
                 #install_native_package gnome-screenshot
@@ -366,20 +469,10 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
                 install_native_package mate-utils
             fi
 
-            # Image Viewer
-            if ${POWERFUL_PC}; then
-                install_flatpak org.gnome.Loupe
-            else
-                install_native_package gpicview
-            fi
-
             if is_native_package_installed "gnome-shell"; then
                 install_native_package_dependency gvfs-goa
                 install_native_package_dependency evolution-data-server # To make GOA contacts, tasks, etc. available in apps
             fi
-
-            # Camera app
-            install_flatpak "org.gnome.Snapshot"
 
             ! ${POWERFUL_PC} && install_native_package plank
         fi
@@ -415,23 +508,6 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
             install_gnome_shell_extension "no-overview"
             install_gnome_shell_extension "Hide_Activities"
         fi
-
-        # Themes
-        if [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ]; then
-            is_native_package_installed "gtk2" && install_native_package adwaita-dark # GTK3's AdwaitaDark ported to GTK2
-            is_native_package_installed "gtk3" && install_native_package adw-gtk3
-            install_flatpak org.gtk.Gtk3theme.adw-gtk3-dark
-            install_flatpak org.kde.KStyle.Adwaita
-        fi
-
-        install_native_package vimix-cursors
-
-        install_native_package papirus-icon-theme
-        install_native_package papirus-folders
-
-        # Themes - Fallbacks
-        install_native_package numix-circle-icon-theme-git
-        #install_native_package paper-icon-theme
 
         # Fonts
         if ${IS_GENERAL_PURPOSE_DEVICE}; then

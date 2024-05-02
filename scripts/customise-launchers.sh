@@ -1056,10 +1056,12 @@ fi
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/gnome-terminal.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/lxterminal.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/mate-terminal.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Console.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/org.kde.konsole.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        Name "Terminal" \
-        Name[ro] "Terminal"
+        Name 'Terminal' \
+        Name[ro] 'Terminal' \
+        Icon 'terminal'
 done
 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/xterm.desktop" \

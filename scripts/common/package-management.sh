@@ -21,6 +21,8 @@ function call_package_manager() {
         else
             LANG=C LC_TIME="" pacman ${*} --noconfirm
         fi
+    elif [[ "${DISTRO_FAMILY}" == "Alpine" ]]; then
+        yes | run_as_su apk ${*}
     elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
         yes | pkg ${*}
     elif [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
@@ -70,7 +72,13 @@ function call_gnome_shell_extension_installer() {
 function is_native_package_installed() {
 	local PKG="${1}"
 
-    if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
+    if [[ "${DISTRO_FAMILY}" == "Alpine" ]]; then
+        if (call_package_manager info | grep -q "^${PKG}$"); then
+            return 0 # True
+        else
+            return 1 # False
+        fi
+    elif [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
     	if (pacman -Q | grep -q "^${PKG}\s" > /dev/null); then
 	    	return 0 # True
 	    else
@@ -176,8 +184,10 @@ function install_native_package() {
     is_native_package_installed "${PKG}" && return
 
     echo -e " >>> Installing native package: \e[0;33m${PKG}\e[0m..."
-    if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-        call_package_manager -S --asexplicit "${PKG}"
+    if [[ "${DISTRO_FAMILY}" == "Alpine" ]]; then
+        call_package_manager add "${PKG}"
+    elif [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
+        call_package_manager -S --asexplici "${PKG}"
     elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
       || [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
         call_package_manager install "${PKG}"
@@ -240,7 +250,7 @@ function install_flatpak() {
     is_flatpak_installed "${PACKAGE}" && return
 
     echo -e " >>> Installing flatpak: \e[0;33m${PACKAGE}\e[0m (${REMOTE})..."
-    if ${HAS_SU_PRIVILEGES}; then
+    if ${HAS_SU_PRIVILEGES} && [ "${CHASSIS_TYPE}" != 'Phone' ]; then
         call_flatpak install --system "${REMOTE}" "${PACKAGE}"
     else
         call_flatpak install --user "${REMOTE}" "${PACKAGE}"
@@ -271,7 +281,9 @@ function uninstall_native_package() {
         is_native_package_required "${PACKAGE_NAME}" && return
 
         echo " >>> Uninstalling package: ${PACKAGE_NAME}"
-        if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
+        if [[ "${DISTRO_FAMILY}" == "Alpine" ]]; then
+            call_package_manager del "${PACKAGE_NAME}"
+        elif [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
             call_package_manager -Rns "${PACKAGE_NAME}"
         elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
           || [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
