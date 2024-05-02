@@ -238,7 +238,7 @@ if does_bin_exist "flatpak"; then
             "notification_lockscreen" true \
             "location" false
     done
-    for BROWSER_APP in "org.chromium.Chromium" "chromium"; do
+    for BROWSER_APP in 'com.brave.browser' 'io.gitlab.librewolf-community' 'org.chromium.Chromium' 'org.mozilla.firefox' 'chromium' 'firefox-esr'; do
         set_linux_permission "${BROWSER_APP}" \
             "background" false \
             "network" true \
@@ -259,6 +259,21 @@ if does_bin_exist "flatpak"; then
             "notification" false \
             "location" false
     done
+    for CAMERA_APP in 'org.gnome.Cheese' 'org.gnome.Snapshot'; do
+        set_linux_permission "org.gnome.Cheese" \
+            "background" false \
+            "network" false \
+            "notification" false \
+            "location" true
+    done
+    for CHAT_APP in 'app.drey.PaperPlane' 'de.schmidhuberj.Flare' 'io.github.mimbrero.WhatsAppDesktop' 'org.signal.Signal' 'org.telegram.desktop'
+        set_linux_permission "org.signal.Signal" \
+        "background" true \
+        "network" true \
+        "notification" true \
+        "notification_lockscreen" true \
+        "location" false
+    done
     for STEAM_APP in "com.valvesoftware.Steam" "steam"; do
         set_linux_permission "${STEAM_APP}" \
             "background" true \
@@ -273,20 +288,19 @@ if does_bin_exist "flatpak"; then
             "notification" false \
             "location" false
     done
-    for TELEGRAM_APP in "app.drey.PaperPlane" "org.telegram.desktop"; do
-        set_linux_permission "${TELEGRAM_APP}" \
-            "background" true \
-            "network" true \
-            "notification" true \
-            "notification_lockscreen" true \
-            "location" false
-    done
     for TODO_APP in "io.github.alainm23.planify" "org.gnome.Todo"; do
         set_linux_permission "${TODO_APP}" \
             "background" true \
             "network" true \
             "notification" true \
             "location" false
+    done
+    for TERMINAL_APP in 'org.gnome.Console' 'org.gnome.Terminal'; do
+        set_linux_permission "${TERMINAL_APP}" \
+            'background' false \
+            'network' true \
+            'notification' false \
+            'location' false
     done
     for TEXT_EDITOR_APP in "org.gnome.gedit" "org.gnome.TextEditor"; do
         set_linux_permission "${TEXT_EDITOR_APP}" \
@@ -377,12 +391,6 @@ if does_bin_exist "flatpak"; then
         "network" true \
         "notification" false \
         "location" false
-    set_linux_permission "io.github.mimbrero.WhatsAppDesktop" \
-        "background" true \
-        "network" true \
-        "notification" true \
-        "notification_lockscreen" true \
-        "location" false
     set_linux_permission "net.lutris.Lutris" \
         "background" false \
         "network" true \
@@ -415,11 +423,6 @@ if does_bin_exist "flatpak"; then
         "network" true \
         "notification" true \
         "notification_lockscreen" true \
-        "location" true
-    set_linux_permission "org.gnome.Cheese" \
-        "background" false \
-        "network" false \
-        "notification" false \
         "location" true
     set_linux_permission "org.gnome.clocks" \
         "background" true \
@@ -464,12 +467,6 @@ if does_bin_exist "flatpak"; then
         "notification" false \
         "location" false
     set_linux_permission "org.gnome.Settings" "notification" false
-    set_linux_permission "org.gnome.Terminal" "notification" false
-    set_linux_permission "org.gnome.TextEditor" \
-        "background" false \
-        "network" false \
-        "notification" false \
-        "location" false
     set_linux_permission "org.gnome.Weather" \
         "background" false \
         "network" true \
@@ -484,19 +481,6 @@ if does_bin_exist "flatpak"; then
         "background" false \
         "network" false \
         "notification" false \
-        "location" false
-    for INTERNET_BROWSER_APP in "com.brave.browser" "org.mozilla.firefox"; do
-        set_linux_permission "${INTERNET_BROWSER_APP}" \
-            "background" false \
-            "network" true \
-            "notification" false \
-            "location" true
-    done
-    set_linux_permission "org.signal.Signal" \
-        "background" true \
-        "network" true \
-        "notification" true \
-        "notification_lockscreen" true \
         "location" false
     set_linux_permission "ro.go.hmlendea.DL-Desktop" \
         "background" false \
