@@ -168,6 +168,17 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/discord.desktop" \
         Categories "${CHAT_APP_CATEGORIES}"
 done
 
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/de.schmidhuberj.Flare.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/org.signal.Signal.desktop" \
+                "${LOCAL_LAUNCHERS_DIR}/de.schmidhuberj.Flare.desktop" \
+                "${LOCAL_LAUNCHERS_DIR}/org.signal.Signal.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Signal" \
+        Name[ro] "Signal" \
+        Icon "signal-desktop" \
+        Categories "${CHAT_APP_CATEGORIES}"
+done
+
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/teams.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/teams-for-linux.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/teams-insiders.desktop" \

@@ -37,6 +37,32 @@ function keep_first_package() {
     done
 }
 
+function keep_only_one_package() {
+    local FIRST_INSTALLED_PACKAGE=''
+
+    for PACKAGE in "${@}"; do
+        if is_android_package_installed "${PACKAGE}" \
+        || is_flatpak_installed "${PACKAGE}" \
+        || is_android_package_installed "${PACKAGE}"; then
+        FIRST_INSTALLED_PACKAGE="${PACKAGE}"
+        break
+    done
+
+    [ -z "${FIRST_INSTALLED_PACKAGE}" ] && return
+
+    for PACKAGE in "${@}"; do
+        [ "${PACKAGE}" = "${FIRST_INSTALLED_PACKAGE}" ] && continue
+        
+        uninstall_android_package "${PACKAGE}"
+        uninstall_flatpak "${PACKAGE}"
+        uninstall_native_package "${PACKAGE}"
+    done
+}
+
+# Chat Apps
+keep_first_package 'com.telegram.desktop' 'telegram-desktop'
+keep_only_one_package 'de.schmidhuberj.Flare' 'org.signal.Signal'
+
 # Music players
 keep_first_package "dev.alextren.Spot" "com.spotify.Client"
 uninstall_android_package "org.lineageos.eleven"
@@ -96,7 +122,6 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "simplenote-electron-arm-bin"  # Replaced by flatpak: com.simplenote.Simplenote
     uninstall_native_package "spotify"                      # Replaced by flatpak: com.spotify.Client
     uninstall_native_package "teams"                        # Replaced by flatpak: com.microsoft.Teams
-    uninstall_native_package "telegram-desktop"             # Replaced by flatpak: com.telegram.desktop
     uninstall_native_package "totem"                        # Replaced by flatpak: org.gnome.Totem
     uninstall_native_package "transmission-gtk"             # Replaced by flatpak: com.transmissionbt.Transmission
     uninstall_native_package "ttf-ms-fonts"                 # Replaced by ttf-ms-win10

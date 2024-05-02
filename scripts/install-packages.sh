@@ -255,14 +255,17 @@ elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
     install_native_package 'cheese'
 fi
 
-##################
-### CLI basics ###
-##################
-install_native_package micro
+#################
+### Chat Apps ###
+#################
+install_flatpak com.github.IsmaelMartinez.teams_for_linux
+install_flatpak org.telegram.desktop
+install_flatpak io.github.mimbrero.WhatsAppDesktop
 
-if is_native_package_installed "micro" \
-&& is_native_package_installed "xorg-server"; then
-    install_native_package_dependency xclip # Required by micro, to use the X11 clipboard
+if [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+    install_flatpak 'de.schmidhuberj.Flare'
+else
+    install_flatpak 'org.signal.Signal'
 fi
 
 ###############
@@ -376,6 +379,8 @@ fi
 ####################
 ### Text Editors ###
 ####################
+install_native_package micro
+
 if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
 || [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
     install_flatpak 'org.gnome.TextEditor'
@@ -543,11 +548,7 @@ if [ "${OS}" == "Linux" ]; then
 
         if ${IS_GENERAL_PURPOSE_DEVICE}; then
             # Communication
-            install_flatpak com.github.IsmaelMartinez.teams_for_linux
             install_flatpak com.github.vladimiry.ElectronMail
-            install_flatpak org.telegram.desktop
-            install_flatpak org.signal.Signal
-            install_flatpak io.github.mimbrero.WhatsAppDesktop
 
             # Multimedia
             install_flatpak io.bassi.Amberol
