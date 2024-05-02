@@ -37,6 +37,11 @@ function keep_first_package() {
     done
 }
 
+# Music players
+keep_first_package "dev.alextren.Spot" "com.spotify.Client"
+uninstall_android_package "org.lineageos.eleven"
+uninstall_android_package "com.xiaomi.mimusic2"
+
 # Note Taking apps
 keep_first_package "com.automattic.simplenote" "foundation.e.notes"
 
@@ -361,10 +366,6 @@ elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
         uninstall_android_package "com.android.messaging"
         uninstall_android_package "foundation.e.message"
     fi
-
-    # Music players
-    uninstall_android_package "org.lineageos.eleven"
-    uninstall_android_package "com.xiaomi.mimusic2"
 
     # Recording apps
     uninstall_android_package "org.lineageos.recorder"

@@ -1342,6 +1342,19 @@ if does_bin_exist "gnome-maps" "org.gnome.Maps"; then
     set_gsetting "org.gnome.Maps" zoom-level 14
 fi
 
+#####################
+### Music Players ###
+#####################
+if does_bin_exist "dev.alextren.Spot"; then
+    SPOT_CONFIG_FILE="${HOME_VAR_APP}/dev.alextren.Spot/config/glib-2.0/settings/keyfile"
+
+    set_config_value --section "dev/alextren/Spot" "${SPOT_CONFIG_FILE}" 'audio-backend' 'gstreamer'
+    set_config_value --section "dev/alextren/Spot" "${SPOT_CONFIG_FILE}" 'gapless-playback' true
+    set_config_value --section "dev/alextren/Spot" "${SPOT_CONFIG_FILE}" 'player-bitrate' 320
+    set_config_value --section "dev/alextren/Spot" "${SPOT_CONFIG_FILE}" 'theme-preference' 'system'
+    set_config_value --section "dev/alextren/Spot" "${SPOT_CONFIG_FILE}" 'window-is-maximized' true
+fi
+
 ################
 ### NEOFETCH ###
 ################
