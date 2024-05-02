@@ -43,9 +43,10 @@ function update-system() {
     call_flatpak update
 }
 
+[ -n "${DEVICE_MODEL}" ] && echo "Device:           ${DEVICE_MODEL}"
+
 echo "OS:               ${OS}"
 echo "Distro:           ${DISTRO} (${DISTRO_FAMILY})"
-echo "DE:               ${DESKTOP_ENVIRONMENT}"
 echo "Architecture:     $(get_arch) ($(get_arch_family))"
 echo "CPU:              $(get_cpu)"
 echo "GPU:              $(get_gpu)"
@@ -56,6 +57,7 @@ echo ""
 
 if ${HAS_GUI}; then
     echo "GUI:              $(get_screen_width)x$(get_screen_height), $(get_screen_dpi) DPI"
+    echo "DE:               ${DESKTOP_ENVIRONMENT}"
     echo "Development:      ${IS_DEVELOPMENT_DEVICE}"
     echo "Gaming:           ${IS_GAMING_DEVICE}"
     echo "General purpose:  ${IS_GENERAL_PURPOSE_DEVICE}"
