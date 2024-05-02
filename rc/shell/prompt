@@ -167,8 +167,9 @@ function set_custom_prompt {
         hostColour="95" # RaspberryPi = Light Magenta
     elif [[ ${HOSTNAME} = RetroPie ]]; then
         hostColour="96" # RetroPie = Light Cyan
-    elif [[ ${HOSTNAME} = Telefon-* ]] || \
-         [[ -d "/data/data/com.termux/files" ]]; then
+    elif [ ${HOSTNAME} = Telefon-* ] \
+      || [ -d '/data/data/com.termux/files' ] \
+      || [ -f '/usr/bin/postmarketos-mvcfg-package' ]; then
         hostColour="93" # Phone = Light Yellow
     fi
 
