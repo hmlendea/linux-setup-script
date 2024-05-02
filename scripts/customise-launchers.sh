@@ -770,6 +770,15 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/lxmusic.desktop" \
     Name[ro] "Muzică" \
     MimeType "application/x-ogg;application/ogg;audio/x-vorbis+ogg;audio/vorbis;audio/x-vorbis;audio/x-scpls;audio/x-mp3;audio/x-mpeg;audio/mpeg;audio/x-mpegurl;audio/x-flac;audio/mp4;x-scheme-handler/itms;x-scheme-handler/itmss;"
 
+for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.spotify.Client.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/dev.alextren.Spot.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.spotify.Client.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/dev.alextren.Spot.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Spotify" \
+        Icon "spotify"
+done
+
 #############
 ### Notes ###
 #############

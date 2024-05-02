@@ -476,7 +476,7 @@ if [ "${DISTRO_FAMILY}" == "Arch" ]; then
             # Multimedia
             install_flatpak io.bassi.Amberol
             [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ] && install_flatpak 'com.github.rafostar.Clapper'
-            install_flatpak com.spotify.Client
+            install_flatpak dev.alextren.Spot
 
             #install_native_package_dependency gst-plugins-ugly
             #install_native_package_dependency gst-libav
