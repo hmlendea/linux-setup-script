@@ -266,13 +266,21 @@ if does_bin_exist "flatpak"; then
             "notification" false \
             "location" true
     done
-    for CHAT_APP in 'app.drey.PaperPlane' 'de.schmidhuberj.Flare' 'io.github.mimbrero.WhatsAppDesktop' 'org.signal.Signal' 'org.telegram.desktop'
-        set_linux_permission "org.signal.Signal" \
-        "background" true \
-        "network" true \
-        "notification" true \
-        "notification_lockscreen" true \
-        "location" false
+    for CHAT_APP in 'app.drey.PaperPlane' 'de.schmidhuberj.Flare' 'io.github.mimbrero.WhatsAppDesktop' 'org.signal.Signal' 'org.telegram.desktop'; do
+        set_linux_permission "${CHAT_APP}" \
+            "background" true \
+            "network" true \
+            "notification" true \
+            "notification_lockscreen" true \
+            "location" false
+    done
+    for SPOTIFY_APP in 'dev.alextren.Spot' 'com.spotify.Client'; do
+        set_linux_permission "${SPOTIFY_APP}" \
+            "background" false \
+            "network" true \
+            "notification" true \
+            "notification_lockscreen" true \
+            "location" false
     done
     for STEAM_APP in "com.valvesoftware.Steam" "steam"; do
         set_linux_permission "${STEAM_APP}" \
@@ -357,12 +365,6 @@ if does_bin_exist "flatpak"; then
         "background" false \
         "network" true \
         "notification" false \
-        "location" false
-    set_linux_permission "com.spotify.Client" \
-        "background" false \
-        "network" true \
-        "notification" true \
-        "notification_lockscreen" true \
         "location" false
     set_linux_permission "com.github.vladimiry.ElectronMail" \
         "background" true \
