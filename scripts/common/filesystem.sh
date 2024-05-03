@@ -10,6 +10,22 @@ done
 REPO_DIR="$( cd -P "$( dirname "${SOURCE}" )" && pwd )"
 REPO_DIR=$(realpath "${REPO_DIR}/../..")
 
+function does_directory_exist() {
+    local DIRECTORY_PATH="${*}"
+
+    [ -d "${DIRECTORY_PATH}" ] && return 0
+
+    return 1
+}
+
+function does_file_exist() {
+    local FILE_PATH="${*}"
+
+    [ -f "${FILE_PATH}" ] && return 0
+
+    return 1
+}
+
 REPO_DATA_DIR="${REPO_DIR}/data"
 REPO_RES_DIR="${REPO_DIR}/resources"
 REPO_RC_DIR="${REPO_DIR}/rc"
@@ -21,13 +37,13 @@ REPO_KEYBOARD_LAYOUTS_DIR="${REPO_RC_DIR}/keyboard-layouts"
 LOCAL_INSTALL_TEMP_DIR="${REPO_DIR}/.temp-sysinstall"
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-    source "${REPO_DIR}/scripts/common/package-managements.sh"
-    source "${REPO_DIR}/scripts/common/system-info.sh"
+    source "${REPO_SCRIPTS_COMMON_DIR}/package-managements.sh"
+    source "${REPO_SCRIPTS_COMMON_DIR}/system-info.sh"
 fi
 
 # Root partition mount point
 ROOT_PATH=""
-[ -d "/data/data/com.termux/files/usr" ] && ROOT_PATH="/data/data/com.termux/files/usr"
+does_directory_exist "/data/data/com.termux/files/usr" && ROOT_PATH="/data/data/com.termux/files/usr"
 
 ROOT_BIN="${ROOT_PATH}/bin"
 ROOT_BOOT="${ROOT_PATH}/boot"
@@ -42,7 +58,7 @@ ROOT_SRV="${ROOT_PATH}/srv"
 ROOT_SYS="${ROOT_PATH}/sys"
 ROOT_USR="${ROOT_PATH}/usr"
 
-[ "${DISTRO_FAMILY}" = "Android" ] && ROOT_USR="${ROOT_PATH}"
+[ "${DISTRO_FAMILY}" = 'Android' ] && ROOT_USR="${ROOT_PATH}"
 
 ROOT_USR_BIN="${ROOT_USR}/bin"
 ROOT_USR_LIB="${ROOT_USR}/lib"
@@ -60,8 +76,8 @@ USER_REAL=${SUDO_USER}
 HOME_REAL=$(grep "${USER_REAL}" "${ROOT_PATH}/etc/passwd" 2>/dev/null | cut -f6 -d":")
 [ "${USER_REAL}" = "root" ] && HOME_REAL="${ROOT_PATH}/root"
 
-if [ ! -d "${HOME_REAL}" ]; then
-    if [ -d "/data/data/com.termux/files/home" ]; then
+if ! does_directory_exist "${HOME_REAL}"; then
+    if does_directory_exist "/data/data/com.termux/files/home"; then
         HOME_REAL="/data/data/com.termux/files/home"
     else
         HOME_REAL="${ROOT_HOME}/${USER_REAL}"
@@ -81,7 +97,7 @@ function configure_xdg_directory() {
 
     local XDG_DIR_PATH=""
 
-    [ -f "${XDG_CONFIG_DIR}/user-dirs.dirs" ] && XDG_DIR_PATH=$(cat "${XDG_CONFIG_DIR}/user-dirs.dirs" | grep "${XDG_VARIABLE_NAME}" | awk -F"=" '{print $2}')
+    does_file_exist "${XDG_CONFIG_DIR}/user-dirs.dirs" && XDG_DIR_PATH=$(cat "${XDG_CONFIG_DIR}/user-dirs.dirs" | grep "${XDG_VARIABLE_NAME}" | awk -F"=" '{print $2}')
 
     while [ -z "${XDG_DIR_PATH}" ] && [ -n "${1}" ]; do
         [ -e "${1}" ] && XDG_DIR_PATH="${1}"
@@ -106,14 +122,14 @@ HOME_VAR="${HOME}/.var"
 HOME_VAR_APP="${HOME_VAR}/app"
 
 # Functions
-function does_bin_exist () {
+function does_bin_exist() {
     for BINARY_NAME in "${@}"; do
         for PATH_DIR in $(echo "${PATH}" | sed 's/:/\n/g'); do
-            [ -f "${PATH_DIR}/${BINARY_NAME}" ] && return 0 # True
+            does_file_exist "${PATH_DIR}/${BINARY_NAME}" && return 0 # True
         done
 
-        if echo "${BINARY_NAME}" | grep -q "^/" \
-        && [ -f "${BINARY_NAME}" ]; then
+        if grep -q '^/' <<< "${BINARY_NAME}" \
+        && does_file_exist "${BINARY_NAME}"; then
             return 0 # True
         fi
     done
@@ -141,13 +157,13 @@ function remove() {
 
         echo -e "Removing \e[0;33m${PATH_TO_REMOVE}\e[0m (${SIZE})..."
         if [ -w "${PATH_TO_REMOVE}" ]; then
-            if [ -f "${PATH_TO_REMOVE}" ]; then
+            if does_file_exist "${PATH_TO_REMOVE}"; then
                 yes | rm "${PATH_TO_REMOVE}"
             else
                 yes | rm -r "${PATH_TO_REMOVE}"
             fi
         else
-            if [ -f "${PATH_TO_REMOVE}" ]; then
+            if does_file_exist "${PATH_TO_REMOVE}"; then
                 run_as_su rm "${PATH_TO_REMOVE}"
             else
                 run_as_su rm -r "${PATH_TO_REMOVE}"
@@ -164,7 +180,7 @@ function remove_dir_if_empty() {
 
     remove_empty_subdirectories "${PATH_TO_REMOVE}"
 
-    [ ! -d "${PATH_TO_REMOVE}" ] && return
+    ! does_directory_exist "${PATH_TO_REMOVE}" && return
 
     local DIR_CONTENTS=$(ls -A "${PATH_TO_REMOVE}")
 
@@ -174,10 +190,10 @@ function remove_dir_if_empty() {
 function remove_empty_subdirectories() {
     local PARENT_DIRECTORY="${*}"
 
-    [ ! -d "${PARENT_DIRECTORY}" ] && return
+    ! does_directory_exist "${PARENT_DIRECTORY}" && return
 
     while IFS='' read -r -d '' SUB_DIRECTORY; do
-        [ ! -d "${SUB_DIRECTORY}" ] && continue
+        ! does_directory_exist "${SUB_DIRECTORY}" && continue
         SUB_DIRECTORY_CONTENTS=$(ls -A "${SUB_DIRECTORY}")
         if [ -z "${SUB_DIRECTORY_CONTENTS}" ]; then
             remove "${SUB_DIRECTORY}"
@@ -197,31 +213,33 @@ function remove_old_items() {
 }
 
 function remove_logs_in_dir() {
-    [ ! -d "${DIR}" ] && return
+    for DIRECTORY_PATH in "${@}"; do
+        ! does_directory_exist "${DIRECTORY_PATH}" && return
 
-    remove \
-        "${DIR}/logs" \
-        "${DIR}/_logs" \
-        "${DIR}"/*-log.txt \
-        "${DIR}"/*_log.txt \
-        "${DIR}"/*-log-*.txt \
-        "${DIR}"/*_log_*.txt \
-        "${DIR}"/*-logs-*.txt \
-        "${DIR}"/*_logs_*.txt \
-        "${DIR}"/*.log \
-        "${DIR}"/*.log.old \
-        "${DIR}"/changelog.txt \
-        "${DIR}"/log.txt \
-        "${DIR}"/logs.txt \
-        "${DIR}"/logfile.txt
+        remove \
+            "${DIRECTORY_PATH}/logs" \
+            "${DIRECTORY_PATH}/_logs" \
+            "${DIRECTORY_PATH}"/*-log.txt \
+            "${DIRECTORY_PATH}"/*_log.txt \
+            "${DIRECTORY_PATH}"/*-log-*.txt \
+            "${DIRECTORY_PATH}"/*_log_*.txt \
+            "${DIRECTORY_PATH}"/*-logs-*.txt \
+            "${DIRECTORY_PATH}"/*_logs_*.txt \
+            "${DIRECTORY_PATH}"/*.log \
+            "${DIRECTORY_PATH}"/*.log.old \
+            "${DIRECTORY_PATH}"/changelog.txt \
+            "${DIRECTORY_PATH}"/log.txt \
+            "${DIRECTORY_PATH}"/logs.txt \
+            "${DIRECTORY_PATH}"/logfile.txt
+    done
 }
 
 function remove_logs_in_dirs() {
     for DIR in "${@}"; do
         remove_logs_in_dir "${DIR}"
 
-        if [ -d "${DIR}/IndexedDB" ] \
-        || [ -d "${DIR}/shared_proto_db" ]; then
+        if does_directory_exist "${DIR}/IndexedDB" \
+        || does_directory_exist "${DIR}/shared_proto_db"; then
             remove_logs_in_dir "${DIR}/IndexedDB"/*
             remove_logs_in_dir "${DIR}/File System"/*
             remove_logs_in_dir "${DIR}/File System"/*/*/*
@@ -237,30 +255,35 @@ function create_directory() {
     local DIRECTORY_PATH="${*}"
 
     [ -z "${DIRECTORY_PATH}" ] && return
-    [ -d "${DIRECTORY_PATH}" ] && return
-    
-    echo -e "Creating directory \e[0;33m${DIRECTORY_PATH}\e[0m..."
-    mkdir -p "${DIRECTORY_PATH}"
+    does_directory_exit "${DIRECTORY_PATH}" && return
+
+    local TOP_EXISTING_DIR="${DIRECTORY_PATH}"
+    while [ -n "${TOP_EXISTING_DIR}" ] && ! does_directory_exist "${TOP_EXISTING_DIR}"; do
+        TOP_EXISTING_DIR=$(dirname ${TOP_EXISTING_DIR})
+    done
+
+    if [ -w "${TOP_EXISTING_DIR}" ]; then
+        echo -e "Creating directory \e[0;33m${DIRECTORY_PATH}\e[0m..."
+        mkdir -p "${DIRECTORY_PATH}"
+    else
+        echo -e "Creating directory \e[0;33m${DIRECTORY_PATH}\e[0m..."
+        run_as_su mkdir -p "${DIRECTORY_PATH}"
+    fi
 }
 
 function create_file() {
     local FILE_PATH="${*}"
 
     [ -z "${FILE_PATH}" ] && return
-    [ -f "${FILE_PATH}" ] && return
+    does_file_exist "${FILE_PATH}" && return
 
     local DIRECTORY_PATH="$(dirname ${FILE_PATH})"
 
-    local TOP_EXISTING_DIR="${DIRECTORY_PATH}"
-    while [ -n "${TOP_EXISTING_DIR}" ] && [ ! -d "${TOP_EXISTING_DIR}" ]; do
-        TOP_EXISTING_DIR=$(dirname ${TOP_EXISTING_DIR})
-    done
+    create_directory "${DIRECTORY_PATH}"
 
-    if [ -w "${TOP_EXISTING_DIR}" ]; then
-        mkdir -p "${DIRECTORY_PATH}"
+    if [ -w "${DIRECTORY_PATH}" ]; then
         touch "${FILE_PATH}"
     else
-        run_as_su mkdir -p "${DIRECTORY_PATH}"
         run_as_su touch "${FILE_PATH}"
     fi
 }
@@ -335,13 +358,13 @@ function append_line() {
 
 function download_file {
     local URL="${1}"
-    local FILE="${2}"
+    local OUTPUT_FILE="${2}"
 
-    [ ! -f "${FILE}" ] && wget "${URL}" -O "${FILE}"
+    ! does_file_exist "${OUTPUT_FILE}" && wget "${URL}" -O "${OUTPUT_FILE}"
 }
 
 function get_file_checksum() {
-    [ ! -f "${@}" ] && return
+    ! does_file_exist "${@}" && return
     sha512sum "${@}" | awk '{print $1}'
 }
 
@@ -358,10 +381,10 @@ function does_file_need_updating() {
     local TARGET_FILE_PATH="${2}"
     local FILES_ARE_SAME=false
 
-    [ ! -f "${SOURCE_FILE_PATH}" ] && return 1 # False
-    [ ! -f "${TARGET_FILE_PATH}" ] && return 0 # True
+    ! does_file_exist "${SOURCE_FILE_PATH}" && return 1 # False
+    ! does_file_exist "${TARGET_FILE_PATH}" && return 0 # True
 
-    if [ -f "${TARGET_FILE_PATH}" ]; then
+    if does_file_exist "${TARGET_FILE_PATH}"; then
         local SOURCE_FILE_CHECKSUM=$(get_file_checksum "${SOURCE_FILE_PATH}")
         local TARGET_FILE_CHECKSUM=$(get_file_checksum "${TARGET_FILE_PATH}")
 
@@ -383,10 +406,7 @@ function update_file_if_distinct() {
     local TARGET_DIR=$(dirname "${TARGET_FILE_PATH}")
 
     if $(does_file_need_updating "${SOURCE_FILE_PATH}" "${TARGET_FILE_PATH}"); then
-        if [ ! -d "${TARGET_DIR}" ]; then
-            echo "Creating the directory: ${TARGET_DIR}" >&2
-            mkdir -p "${TARGET_DIR}"
-        fi
+        create_directory "${TARGET_DIR}"
 
         echo -e "Copying \e[0;33m${SOURCE_FILE_PATH}\e[0m → \e[0;33m${TARGET_FILE_PATH}\e[0m..."
         if [ -w "${TARGET_DIR}" ]; then
@@ -401,7 +421,7 @@ function zzz_get_old_directory_items() {
     local DIRECTORY_PATH="${1}"
     local AGE_DAYS=90
 
-    [ ! -d "${DIRECTORY_PATH}" ] && return
+    ! does_directory_exist "${DIRECTORY_PATH}" && return
 
     find "${DIRECTORY_PATH}" -maxdepth 1 ! -path "${DIRECTORY_PATH}" -mtime "+${AGE_DAYS}" -print0
 }
@@ -420,7 +440,7 @@ if does_bin_exist "steam" "com.valvesoftware.Steam"; then
     STEAM_DIR="${XDG_DATA_HOME}/Steam"
     does_bin_exist "com.valvesoftware.Steam" && STEAM_DIR="${HOME_VAR_APP}/com.valvesoftware.Steam/.local/share/Steam"
 
-    if [ -d "${STEAM_DIR}" ]; then
+    if does_directory_exist "${STEAM_DIR}"; then
         STEAM_LIBRARY_PATHS="${STEAM_DIR}/steamapps"
         STEAM_LAUNCHERS_PATH="${LOCAL_LAUNCHERS_DIR}/Steam"
 
@@ -444,4 +464,4 @@ SYSTEM_PHP_CONFIG_FILE="${ROOT_ETC}/php/php.ini"
 NEXTCLOUD_PHP_CONFIG_FILE="${ROOT_ETC}/webapps/nextcloud/php.ini"
 MARIADB_SERVER_CONFIG_FILE="${ROOT_ETC}/my.cnf.d/server.cnf"
 
-[ ! -f "${SYSTEM_PHP_CONFIG_FILE}" ] && SYSTEM_PHP_CONFIG_FILE="${ROOT_ETC}/php-legacy/php.ini"
+! does_file_exist "${SYSTEM_PHP_CONFIG_FILE}" && SYSTEM_PHP_CONFIG_FILE="${ROOT_ETC}/php-legacy/php.ini"
