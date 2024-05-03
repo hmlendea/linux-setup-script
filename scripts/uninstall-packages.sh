@@ -63,6 +63,21 @@ function keep_only_one_package() {
 keep_first_package 'com.telegram.desktop' 'telegram-desktop'
 keep_only_one_package 'de.schmidhuberj.Flare' 'org.signal.Signal'
 
+# Image Viewers
+[ "${DESKTOP_ENVIRONMENT}" != 'Phosh' ] && uninstall_flatpak "org.gnome.eog" && uninstall_native_package "eog-plugins" "eog"
+[ "${DESKTOP_ENVIRONMENT}" != "LXDE" ] && uninstall_native_package "gwenview"
+
+# Internet Browsers
+keep_only_one_package \
+    'io.gitlab.librewolf-community' \
+    'firefox-esr' 'org.mozilla.fenix' 'org.mozilla.firefox' 'firefox' \
+    'foundation.e.browser' 'org.lineageos.jelly'
+
+if ! is_native_package_installed 'firefox' \
+&& ! is_native_package_installed 'firefox-esr'; then
+    uninstall_native_package 'mobile-config-firefox'
+fi
+
 # Music players
 keep_only_one_package "dev.alextren.Spot" "com.spotify.Client"
 uninstall_android_package "org.lineageos.eleven"
@@ -82,6 +97,10 @@ uninstall_android_package "com.mitv.mivideoplayer"
 uninstall_android_package "com.mitv.videoplayer"
 keep_first_package "com.github.rafostar.Clapper" "org.gnome.Totem"
 
+# zzz OTHERS
+keep_first_package 'chrony' 'ntp'
+
+
 # Uninstall the packages
 if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     if ${IS_POWERFUL_PC}; then
@@ -97,7 +116,6 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "chrome-gnome-shell"           # Does not work with flatpak browsers
     uninstall_native_package "dconf-editor"                 # Replaced by flatpak: ca.desrt.dconf-editor
     uninstall_native_package "fastfetch-git"                # Replaced by fastfetch
-    uninstall_native_package "firefox"                      # Replaced by flatpak: org.mozilla.firefox
     uninstall_native_package "fragments"                    # Replaced by flatpak: de.haeckerfelix.Fragments
     uninstall_native_package "gnome-calculator"             # Replaced by flatpak: org.gnome.Calculator
     uninstall_native_package "gnome-calendar"               # Replaced by flatpak: org.gnome.Calendar
@@ -154,12 +172,6 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     # File Managers. Replaced by: nautilus
     [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ] && uninstall_native_package "dolphin"
     [ "${DESKTOP_ENVIRONMENT}" = "KDE" ] && uninstall_native_package "nautilus"
-
-    # Image Viewers
-    uninstall_native_package "eog-plugins" "eog"
-    uninstall_flatpak "org.gnome.eog"
-    [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ] && uninstall_native_package "gwenview"
-    [ "${DESKTOP_ENVIRONMENT}" = "KDE" ] && uninstall_flatpak "org.gnome.eog"
 
     # Terminals
     [ "${DESKTOP_ENVIRONMENT}" != "GNOME" ] && uninstall_native_package "gnome-terminal"
@@ -450,11 +462,5 @@ elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
         uninstall_android_package "foundation.e.camera"
         uninstall_android_package "net.sourceforge.opencamera"
         uninstall_android_package "org.lineageos.snap"
-    fi
-
-    if is_android_package_installed "org.mozilla.fenix" \
-    || is_android_package_installed "org.mozilla.firefox"; then
-        uninstall_android_package "foundation.e.browser"
-        uninstall_android_package "org.lineageos.jelly"
     fi
 fi

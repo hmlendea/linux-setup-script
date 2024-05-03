@@ -419,6 +419,8 @@ if ${HAS_GUI}; then
     ENVIRONMENT_VARS_FILE="${ROOT_ETC}/environment"
     set_config_value "${ENVIRONMENT_VARS_FILE}" QT_QPA_PLATFORMTHEME "gtk3"
 
+    [ "${GPU}" = 'Adreno 506' ] && set_config_value "${ENVIRONMENT_VARS_FILE}"  'MESA_GLES_VERSION_OVERRIDE' '2.0'
+
     if [ -d "${ROOT_USR_LIB}/gtk-2.0" ]; then
         GTK2_CONFIG_DIR="${XDG_CONFIG_HOME}/gtk-2.0"
         GTK2_CONFIG_FILE="${GTK2_CONFIG_DIR}/gtkrc"
@@ -804,7 +806,7 @@ fi
 ###############
 ### FIREFOX ###
 ###############
-if does_bin_exist "firefox" "librewolf" "org.mozilla.firefox" "io.gitlab.librewolf-community"; then
+if does_bin_exist "firefox" "firefox-esr" "librewolf" "org.mozilla.firefox" "io.gitlab.librewolf-community"; then
     FIREFOX_PROFILE_DIR=$(get_firefox_profile_dir)
 
     # First time prompts

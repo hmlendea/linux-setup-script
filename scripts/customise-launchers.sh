@@ -1220,6 +1220,7 @@ WEB_BROWSER_CATEGORIES="Network;WebBrowser;"
 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/chromium.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/firefox-developer.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/firefox-esr.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/google-chrome-unstable.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/google-chrome.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/tor-browser-en.desktop" \
@@ -1241,6 +1242,7 @@ for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.brave.Browser.desktop" \
 done
 
 for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.mozilla.firefox.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/firefox-esr.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.mozilla.firefox.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Firefox" \

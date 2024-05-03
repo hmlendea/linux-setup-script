@@ -1,32 +1,33 @@
 #!/bin/bash
-[ -z "${ROOT_USR_BIN}" ] && source "scripts/common/filesystem.sh"
-source "${REPO_DIR}/scripts/common/common.sh"
-source "${REPO_DIR}/scripts/common/config.sh"
+[ -z "${GLOBAL_LAUNCHERS_DIR}" ] && source "scripts/common/filesystem.sh"
+source "${REPO_SCRIPTS_COMMON_DIR}/common.sh"
+source "${REPO_SCRIPTS_COMMON_DIR}/config.sh"
 
-function does_systemd_service_exist_at_location {
-    local SERVICE_NAME="${1}"
-    local LOCATION="${2}"
-
-    [ -f "${LOCATION}/${SERVICE_NAME}" ] && return 0
-    [ -f "${LOCATION}/${SERVICE_NAME}.service" ] && return 0
-
-    return 1 # False
-}
-
-function does_systemd_service_exist {
+function does_service_exist {
     local SERVICE_NAME="${*}"
 
-    does_systemd_service_exist_at_location "${SERVICE_NAME}" "${ROOT_ETC}/systemd/system" && return 0
-    does_systemd_service_exist_at_location "${SERVICE_NAME}" "${ROOT_LIB}/systemd/system" && return 0
-    does_systemd_service_exist_at_location "${SERVICE_NAME}" "${ROOT_USR_LIB}/systemd/system" && return 0
-
+    if does_bin_exist 'systemctl'; then
+        for DIRECTORY_PATH in "${ROOT_ETC}/systemd/system" \
+                         "${ROOT_LIB}/systemd/system}" \
+                         "${ROOT_USR_LIB}/systemd/system"; do
+            does_file_exist "${DIRECTORY_PATH}/${SERVICE_NAME}" && return 0
+            does_file_exist "${DIRECTORY_PATH}/${SERVICE_NAME}.service" && return 0
+        done
+    elif does_bin_exist 'rc-service'; then
+        does_file_exist "${ROOT_ETC}/init.d/${SERVICE_NAME}" && return 0
+    fi
+    
     return 1 # False
 }
 
 function is_service_enabled {
     local SERVICE_NAME="${*}"
 
-    systemctl is-enabled "${SERVICE_NAME}" | grep -q "enabled" && return 0
+    if does_bin_exist 'systemctl'; then
+        systemctl is-enabled "${SERVICE_NAME}" | grep -q 'enabled' && return 0
+    elif does_bin_exist 'rc-update'; then
+        rc-update show | grep -q "${SERVICE_NAME}" && return 0
+    fi
 
     return 1
 }
@@ -34,23 +35,31 @@ function is_service_enabled {
 function enable_service {
     local SERVICE_NAME="${*}"
 
-    ! does_bin_exist "systemctl" && return
-    ! does_systemd_service_exist "${SERVICE_NAME}" && return
+    ! does_service_exist "${SERVICE_NAME}" && return
     is_service_enabled "${SERVICE_NAME}" && return
 
-    run_as_su systemctl enable "${SERVICE_NAME}"
-    run_as_su systemctl start "${SERVICE_NAME}"
+    if does_bin_exist 'systemctl'; then
+        run_as_su systemctl enable "${SERVICE_NAME}"
+        run_as_su systemctl start "${SERVICE_NAME}"
+    elif does_bin_exist 'rc-service'; then
+        run_as_su rc-update add "${SERVICE_NAME}"
+        run_as_su rc-service "${SERVICE_NAME}" start
+    fi
 }
 
 function disable_service {
     local SERVICE_NAME="${*}"
 
-    ! does_bin_exist "systemctl" && return
-    ! does_systemd_service_exist "${SERVICE_NAME}" && return
+    ! does_service_exist "${SERVICE_NAME}" && return
     ! is_service_enabled "${SERVICE_NAME}" && return
 
-    run_as_su systemctl disable "${SERVICE_NAME}"
-    run_as_su systemctl stop "${SERVICE_NAME}"
+    if does_bin_exist 'systemctl'; then
+        run_as_su systemctl disable "${SERVICE_NAME}"
+        run_as_su systemctl stop "${SERVICE_NAME}"
+    elif does_bin_exist 'rc-service'; then
+        run_as_su rc-update del "${SERVICE_NAME}"
+        run_as_su rc-service "${SERVICE_NAME}" stop
+    fi
 }
 
 function set_service_property {
@@ -59,11 +68,11 @@ function set_service_property {
     local KEY="${3}"
     local VALUE="${4}"
 
-    ! does_bin_exist "systemctl" && return
-    ! does_systemd_service_exist "${SERVICE_NAME}" && return
+    ! does_bin_exist 'systemctl' && return
+    ! does_service_exist "${SERVICE_NAME}" && return
 
     local SERVICE_FILE_PATH="${ROOT_USR_LIB}/systemd/system/${SERVICE_NAME}.service"
-    [ ! -f "${SERVICE_FILE_PATH}" ] && return
+    ! does_file_exist "${SERVICE_FILE_PATH}" && return
 
     set_config_value --section "${SECTION}" "${SERVICE_FILE_PATH}" "${KEY}" "${VALUE}"
     run_as_su systemctl daemon-reload
