@@ -111,8 +111,6 @@ remove_locales_from_directories \
     "${ROOT_USR_SHARE}/man" \
     "${ROOT_USR_SHARE}/X11/locale"
 
-exit
-
 remove \
     "${ROOT_ROOT}/Desktop" \
     "${ROOT_ROOT}/Documents" \
@@ -415,7 +413,10 @@ done
 FIREFOX_PROFILES_INI_FILE="${HOME_MOZILLA}/firefox/profiles.ini"
 [ -f "${FIREFOX_PROFILES_INI_FILE}" ] && FIREFOX_PROFILE_ID=$(grep "^Path=" "${FIREFOX_PROFILES_INI_FILE}" | awk -F= '{print $2}' | head -n 1)
 
-! does_bin_exist "firefox" && remove "${XDG_CACHE_HOME}/mozilla/firefox"
+if ! does_bin_exist 'firefox' \
+&& ! does_bin_exist 'firefox-esr'; then
+    remove "${XDG_CACHE_HOME}/mozilla/firefox"
+fi
 
 remove "${HOME}/.mozilla/firefox/Crash Reports" \
        "${HOME_VAR_APP}/org.mozilla.firefox/.mozilla/firefox/Crash Reports"        

@@ -34,6 +34,8 @@ elif [[ "${DISTROY_FAMILY}" == "Android" ]]; then
     [ -f "/sbin/su" ] && install_native_package tsu
 fi
 
+install_native_package 'findutils'
+
 ##################
 ### base-devel ###
 ##################
@@ -105,7 +107,9 @@ else
     install_native_package neofetch
 fi
 
-install_native_package lm_sensors
+if [ "${DISTRO_FAMILY}" = "Arch" ]; then
+    install_native_package lm_sensors
+fi
 
 if [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ]; then
     install_flatpak 'net.nokyan.Resources'
@@ -133,13 +137,16 @@ fi
 ##################
 install_native_package net-tools
 
-if [[ "${DISTRO_FAMILY}" == "Arch" ]] \
-|| [[ "${DISTRO_FAMILY}" == "Android" ]]; then
+if [ "${DISTRO_FAMILY}" = 'Arch' ] \
+|| [ "${DISTRO_FAMILY}" = 'Android' ]; then
     install_native_package openssh
     install_native_package wol
-elif [[ "${DISTRO_FAMILY}" == "Alpine" ]] \
-  || [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
+elif [ "${DISTRO_FAMILY}" = "Alpine" ] \
+  || [ "${DISTRO_FAMILY}" = "Debian" ]; then
     install_native_package openssh-server
+fi
+
+if [ "${DISTRO_FAMILY}" = 'Debian' ]; then
     install_native_package wakeonlan
 fi
 
@@ -150,7 +157,8 @@ if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
     install_native_package iwd
 fi
 
-if [[ "${CHASSIS_TYPE}" == "Laptop" ]]; then
+if [ "${CHASSIS_TYPE}" = 'Laptop' ] \
+|| [ "${CHASSIS_TYPE}" = 'Phone' ]; then
     install_native_package 'chrony'
 fi
 
@@ -248,6 +256,14 @@ if ${IS_GENERAL_PURPOSE_DEVICE}; then
     fi
 fi
 
+#################
+### Calendars ###
+#################
+if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
+|| [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+    install_flatpak org.gnome.Calendar
+fi
+
 ###############
 ### Cameras ###
 ###############
@@ -274,6 +290,15 @@ if ${IS_GENERAL_PURPOSE_DEVICE}; then
         install_flatpak 'com.github.IsmaelMartinez.teams_for_linux'
         install_flatpak 'io.github.mimbrero.WhatsAppDesktop'
     fi
+fi
+
+
+#################
+### Calendars ###
+#################
+if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
+|| [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+    install_flatpak 'org.gnome.Calendar'
 fi
 
 ###############
@@ -322,6 +347,22 @@ if [[ "${ARCH_FAMILY}" == "x86" ]]; then
     fi
 fi
 
+##############
+### Clocks ###
+##############
+if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
+|| [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+    install_flatpak 'org.gnome.clocks'
+fi
+
+################
+### Contacts ###
+################
+if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
+|| [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+    install_flatpak 'org.gnome.Contacts'
+fi
+
 #####################
 ### File Managers ###
 #####################
@@ -345,9 +386,10 @@ fi
 ### Image Viewers ###
 #####################
 if ${HAS_GUI}; then
-    if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
-    || [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+    if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
         install_flatpak 'org.gnome.Loupe'
+    if [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+        install_flatpak 'org.gnome.eog'
     elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
         install_native_package 'gpicview'
     fi
@@ -357,11 +399,17 @@ fi
 ### Internet Browsers ###
 #########################
 if ${HAS_GUI}; then
-    if [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
-        install_native_package 'firefox-esr'
-    else
+    if [ "${OS}" = 'Linux' ]; then
         install_flatpak 'io.gitlab.librewolf-community'
     fi
+fi
+
+############
+### Maps ###
+############
+if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
+|| [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+    install_flatpak 'org.gnome.Maps'
 fi
 
 #####################
@@ -412,6 +460,17 @@ fi
 if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
     install_native_package 'gnome-keyring'
     install_flatpak 'org.gnome.seahorse.Application'
+fi
+
+################
+### Settings ###
+################
+if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
+    install_native_package 'gnome-tweaks'
+    install_flatpak 'ca.desrt.dconf-editor'
+elif [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+    install_native_package 'postmarketos-tweaks'
+    install_native_package 'postmarketos-tweaks-phosh'
 fi
 
 #################
@@ -508,9 +567,9 @@ if [ "${OS}" == "Linux" ]; then
             install_native_package gnome-shell
             install_native_package gdm
             install_native_package_dependency gnome-control-center
-            install_native_package gnome-tweaks
             #install_native_package gnome-backgrounds
             install_flatpak org.gnome.font-viewer
+            install_flatpak org.gnome.NetworkDisplays
 
             if is_native_package_installed flatpak; then
                 install_native_package gnome-software
@@ -525,16 +584,6 @@ if [ "${OS}" == "Linux" ]; then
             install_native_package lxappearance
             install_native_package lxappearance-obconf
         fi
-
-        if ${IS_GENERAL_PURPOSE_DEVICE}; then
-            install_flatpak org.gnome.Calendar
-            install_flatpak org.gnome.clocks
-            install_flatpak org.gnome.Contacts
-            install_flatpak org.gnome.Maps
-            install_flatpak org.gnome.NetworkDisplays
-        fi
-
-        install_flatpak ca.desrt.dconf-editor
 
         if ${IS_GENERAL_PURPOSE_DEVICE}; then
             if is_native_package_installed "gnome-shell"; then
