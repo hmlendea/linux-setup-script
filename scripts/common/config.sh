@@ -340,6 +340,14 @@ function set_pulseaudio_module_option() {
     fi
 }
 
+function call_gsettings() {
+    if [ -z "${SSH_CLIENT}" ] && [ -z "${SSH_TTY}" ]; then
+        gsettings ${*}
+    else
+        DISPLAY=:0 gsettings ${*}
+    fi
+}
+
 function get_gsetting() {
     (! ${HAS_GUI}) && return
     (! $(does_bin_exist "gsettings")) && return
@@ -347,7 +355,7 @@ function get_gsetting() {
     local SCHEMA="${1}"
     local PROPERTY="${2}"
 
-    echo $(gsettings get "${SCHEMA}" "${PROPERTY}" | sed "s/^'\(.*\)'$/\1/g")
+    call_gsettings get "${SCHEMA}" "${PROPERTY}" | sed "s/^'\(.*\)'$/\1/g"
 }
 
 function set_gsetting() {
@@ -379,8 +387,8 @@ function set_gsetting() {
         fi
     fi
 
-    if ! gsettings list-schemas | grep -q "^${SCHEMA}" \
-    && ! gsettings writable "${SCHEMA}" "${PROPERTY}" 2>/dev/null | grep -q "true"; then
+    if ! call_gsettings list-schemas | grep -q "^${SCHEMA}" \
+    && ! call_gsettings writable "${SCHEMA}" "${PROPERTY}" 2>/dev/null | grep -q "true"; then
         return
     fi
 
@@ -389,7 +397,7 @@ function set_gsetting() {
     if [ "${CURRENT_VALUE}" != "${VALUE}" ] && \
        [ "${CURRENT_VALUE}" != "'${VALUE}'" ]; then
         echo "GSettings >>> ${SCHEMA}.${PROPERTY}=${VALUE}"
-        gsettings set "${SCHEMA}" "${PROPERTY}" "${VALUE}"
+        call_gsettings set "${SCHEMA}" "${PROPERTY}" "${VALUE}"
     fi
 }
 

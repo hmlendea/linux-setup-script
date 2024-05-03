@@ -1,4 +1,6 @@
 #!/bin/bash
+[ -n "${DISTRO_FAMILY}" ] && return
+
 source "scripts/common/filesystem.sh"
 source "${REPO_DIR}/scripts/common/common.sh"
 
@@ -183,44 +185,44 @@ function get_device_model() {
 }
 
 function get_soc_name() {
-    local MODEL=""
+    local SOC_MODEL=""
 
-    if [ -z "${MODEL}" ] \
+    if [ -z "${SOC_MODEL}" ] \
     && [ -f "${ROOT_PROC}/cpuinfo" ]; then
-        MODEL=$(cat "${ROOT_PROC}/cpuinfo" | \
+        SOC_MODEL=$(cat "${ROOT_PROC}/cpuinfo" | \
             grep "^Hardware\s*:" | \
             awk -F: '{print $2}')
     fi
 
-    if [ -z "${MODEL}" ] \
+    if [ -z "${SOC_MODEL}" ] \
     && [ -f "${ROOT_PROC}/cpuinfo" ]; then
-        MODEL=$(cat "${ROOT_PROC}/cpuinfo" | \
+        SOC_MODEL=$(cat "${ROOT_PROC}/cpuinfo" | \
             grep "^model name" | \
             awk -F: '{print $2}')
     fi
 
-    if [ -z "${MODEL}" ] \
+    if [ -z "${SOC_MODEL}" ] \
     && does_bin_exist "lspci"; then
         if lspci | grep -q "\sPCI bridge:.*BCM[0-9]\+\s"; then
-            MODEL=$(lspci | \
+            SOC_MODEL=$(lspci | \
                 grep "\sPCI bridge:" | \
                 head -n 1 | \
                 sed 's/.*\(BCM[0-9]\+\).*/\1/g')
         fi
     fi
 
-    if [ -z "${MODEL}" ] \
+    if [ -z "${SOC_MODEL}" ] \
     && [ -n "${DEVICE_MODEL}" ]; then
         if [ "${DEVICE_MODEL}" = "Raspberry Pi 3" ]; then
-            MODEL="BCM2837"
+            SOC_MODEL="BCM2837"
         elif [ "${DEVICE_MODEL}" = "Raspberry Pi 4" ]; then
-            MODEL="BCM2711"
+            SOC_MODEL="BCM2711"
         elif [ "${DEVICE_MODEL}" = "Xiaomi Redmi Note 4X" ]; then
-            MODEL="MSM8953"
+            SOC_MODEL="MSM8953"
         fi
     fi
 
-    MODEL=$(echo "${MODEL}" | \
+    SOC_MODEL=$(echo "${SOC_MODEL}" | \
             head -n 1 | sed \
                 -e 's/ Technologies//g' \
                 -e 's/\sInc\s//g' \
@@ -229,7 +231,7 @@ function get_soc_name() {
                 -e 's/\s*$//g' \
                 -e 's/\s\+/ /g')
 
-    echo "${MODEL}"
+    echo "${SOC_MODEL}"
 }
 
 function get_soc_model() {
@@ -242,11 +244,16 @@ function get_soc_model() {
 
 function get_soc_family() {
     local VENDOR=""
+    local SOC_NAME="$(get_soc_name)"
 
     echo "${SOC_NAME}" | grep -q "BCM\|Broadcom" && VENDOR="Broadcom"
     echo "${SOC_NAME}" | grep -q "Qualcomm" && VENDOR="Qualcomm"
 
     echo "${VENDOR}"
+}
+
+function get_soc() {
+    echo "$(get_soc_family) $(get_soc_name)" | sed 's/^\s*//g'
 }
 
 function get_cpu_model() {
@@ -579,19 +586,20 @@ fi
 
 [ "${DISTRO}" = "SteamOS" ] && DESKTOP_ENVIRONMENT="KDE"
 
-# Architecture
+# System characteristics
+DEVICE_MODEL="$(get_device_model)"
+CPU_MODEL="$(get_cpu_model)"
 [ -z "${ARCH}" ] && ARCH="$(get_arch)"
 [ -z "${ARCH_FAMILY}" ] && ARCH_FAMILY="$(get_arch_family ${ARCH})"
 [ -z "${SOC_FAMILY}" ] && SOC_FAMILY="$(get_soc_family)"
 [ -z "${SOC_MODEL}" ] && SOC_MODEL="$(get_soc_model)"
+[ -z "${SOC}" ] && SOC="$(get_soc)"
 [ -z "${CPU_FAMILY}" ] && CPU_FAMILY="$(get_cpu_family)"
 [ -z "${CPU_MODEL}" ] && CPU_MODEL="$(get_cpu_model)"
+[ -z "${CPU}" ] && CPU="$(get_cpu)"
 [ -z "${GPU_FAMILY}" ] && GPU_FAMILY="$(get_gpu_family)"
 [ -z "${GPU_MODEL}" ] && GPU_MODEL="$(get_gpu_model)"
-
-# System characteristics
-DEVICE_MODEL="$(get_device_model)"
-CPU_MODEL="$(get_cpu_model)"
+[ -z "${GPU}" ] && GPU="$(get_gpu)"
 
 CHASSIS_TYPE="$(get_chassis_type)"
 POWERFUL_PC=false
