@@ -142,6 +142,7 @@ done
 ##############
 CAMERA_APP_KEYWORDS="photo;video;webcam;camera;selfie;"
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Snapshot.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/org.postmarketos.Megapixels.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Snapshot.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Snapshot.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
@@ -294,6 +295,17 @@ if [ -d "${ROOT_OPT}/Citrix" ]; then
 else
     remove "${GLOBAL_LAUNCHERS_DIR}/wfsplash.desktop"
 fi
+
+#############
+### Clock ###
+#############
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.clocks.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.clocks.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.clocks.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Clock" \
+        Name[ro] "Ceas"
+done
 
 #############
 ### CMAKE ###

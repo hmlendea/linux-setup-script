@@ -267,9 +267,10 @@ fi
 ###############
 ### Cameras ###
 ###############
-if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
-|| [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
     install_flatpak 'org.gnome.Snapshot'
+if [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+    install_native_package 'megapixels'
 elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
     install_native_package 'cheese'
 fi
