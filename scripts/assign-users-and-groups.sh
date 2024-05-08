@@ -37,4 +37,4 @@ function add_user_to_group() {
     fi
 }
 
-add_user_to_group "realtime" "${USER}"
+add_user_to_group 'realtime' "${USER}"

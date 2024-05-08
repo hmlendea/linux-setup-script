@@ -21,28 +21,6 @@ if ${HAS_SU_PRIVILEGES}; then
     run_as_su printf "Thank you!\n\n"
 fi
 
-function update-system() {
-    ! ${HAS_SU_PRIVILEGES} && return
-
-    echo "Updating the system..."
-
-    if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-        if does_bin_exist "paru"; then
-            paru -Syu --noconfirm --needed --noredownload --norebuild --sudoloop
-        else
-            run_as_su pacman -Syu
-        fi
-    elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
-        yes | pkg update
-        yes | pkg upgrade
-    elif [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
-        yes | run_as_su apt update
-        yes | run_as_su apt upgrade
-    fi
-
-    call_flatpak update
-}
-
 [ -n "${DEVICE_MODEL}" ] && echo "Device:           ${DEVICE_MODEL}"
 
 echo "OS:               ${OS}"
@@ -53,23 +31,23 @@ echo "GPU:              $(get_gpu)"
 echo "Audio driver:     $(get_audio_driver)"
 echo "Chassis:          $(get_chassis_type)"
 echo "EFI support:      ${HAS_EFI_SUPPORT}"
-echo ""
 
 if ${HAS_GUI}; then
-    echo "GUI:              $(get_screen_width)x$(get_screen_height), $(get_screen_dpi) DPI"
+    echo "Display:          $(get_screen_width)x$(get_screen_height), $(get_screen_dpi) DPI"
     echo "DE:               ${DESKTOP_ENVIRONMENT}"
     echo "Development:      ${IS_DEVELOPMENT_DEVICE}"
     echo "Gaming:           ${IS_GAMING_DEVICE}"
     echo "General purpose:  ${IS_GENERAL_PURPOSE_DEVICE}"
     echo "Powerful system:  ${POWERFUL_PC}"
-    echo ""
 fi
+
+echo ''
 
 # Remove the MOTD
 [ -f "${ROOT_ETC}/motd" ] && remove "${ROOT_ETC}/motd"
 
 # Package management
-if [ "${OS}" != "Windows" ]; then
+if [ "${OS}" != 'Windows' ]; then
     # Configure package repositories
     run_script_as_su "${REPO_SCRIPTS_DIR}/configure-repositories.sh"
     run_script "${REPO_SCRIPTS_DIR}/update-package-repositories.sh"
@@ -84,10 +62,10 @@ fi
 
 # Update the RCs
 run_script "${REPO_SCRIPTS_DIR}/update-rcs.sh"
-[ "${OS}" == "Linux" ] && run_script_as_su "${REPO_SCRIPTS_DIR}/update-rcs.sh"
+[ "${OS}" = 'Linux' ] && run_script_as_su "${REPO_SCRIPTS_DIR}/update-rcs.sh"
 
 # Update the resources
-if [[ "${OS}" == "Linux" ]]; then
+if [ "${OS}" = 'Linux' ]; then
     run_script "${REPO_SCRIPTS_DIR}/update-resources.sh"
     run_script_as_su "${REPO_SCRIPTS_DIR}/update-resources.sh"
 fi

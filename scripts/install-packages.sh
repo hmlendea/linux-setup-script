@@ -269,7 +269,7 @@ fi
 ###############
 if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
     install_flatpak 'org.gnome.Snapshot'
-if [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+elif [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
     install_native_package 'megapixels'
 elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
     install_native_package 'cheese'
@@ -389,7 +389,7 @@ fi
 if ${HAS_GUI}; then
     if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
         install_flatpak 'org.gnome.Loupe'
-    if [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+    elif [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
         install_flatpak 'org.gnome.eog'
     elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
         install_native_package 'gpicview'
@@ -731,7 +731,7 @@ if [ "${OS}" == "Linux" ]; then
             install_native_package "wayland-utils"
         fi
     fi
-elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
+elif [ "${DISTRO_FAMILY}" = 'Android' ] \
 && ${HAS_SU_PRIVILEGES}; then
     # App stores
     if ! is_android_package_installed "foundation.e.apps"; then

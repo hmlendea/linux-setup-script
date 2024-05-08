@@ -4,7 +4,7 @@ source "${REPO_SCRIPTS_DIR}/common/common.sh"
 source "${REPO_SCRIPTS_DIR}/common/config.sh"
 source "${REPO_SCRIPTS_DIR}/common/system-info.sh"
 
-[ "${OS}" != "Linux" ] && exit
+[ "${OS}" != 'Linux' ] && exit
 (! ${HAS_GUI}) && exit
 
 AUTOSTART_DIR="${XDG_CONFIG_HOME}/autostart"
@@ -23,22 +23,22 @@ function configure-autostart-for-app() {
     if does_bin_exist "${BINARY_NAME}"; then
         [ ! -f "${LAUNCHER_PATH}" ] && create_launcher "${LAUNCHER_PATH}"
 
-        set_launcher_entries "${LAUNCHER_PATH}" "$@"
+        set_launcher_entries "${LAUNCHER_PATH}" "${@}"
     fi
 }
 
 # Discord
 AUTOSTART_DISCORD=false
 if ${AUTOSTART_DISCORD}; then
-    configure-autostart-for-app "discord" \
-        Exec "/usr/bin/discord --start-minimized" \
-        Icon "discord"
-    configure-autostart-for-app "com.discordapp.Discord" \
-        Name "Discord" \
-        Icon "discord" \
-        Exec "com.discordapp.Discord --start-minimized"
+    configure-autostart-for-app 'discord' \
+        Exec '/usr/bin/discord --start-minimized' \
+        Icon 'discord'
+    configure-autostart-for-app 'com.discordapp.Discord' \
+        Name 'Discord' \
+        Icon 'discord' \
+        Exec 'com.discordapp.Discord --start-minimized'
 else
-    for DISCORD_BINARY in "com.discordapp.Discord" "discord"; do
+    for DISCORD_BINARY in 'com.discordapp.Discord' 'discord'; do
         DISCORD_LAUNCHER_PATH=$(get_launcher_path_for_app "${DISCORD_BINARY}")
         remove "${DISCORD_LAUNCHER_PATH}"
     done

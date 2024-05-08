@@ -47,7 +47,7 @@ if does_bin_exist 'flatpak'; then
             'notification' false \
             'location' true
     done
-    for CHAT_APP in 'app.drey.PaperPlane' 'de.schmidhuberj.Flare' 'io.github.mimbrero.WhatsAppDesktop' 'org.signal.Signal' 'org.telegram.desktop'; do
+    for CHAT_APP in 'app.drey.PaperPlane' 'com.discordapp.Discord' 'de.schmidhuberj.Flare' 'io.github.mimbrero.WhatsAppDesktop' 'org.signal.Signal' 'org.telegram.desktop'; do
         set_linux_permission "${CHAT_APP}" \
             'background' true \
             'camera' true \
@@ -136,13 +136,6 @@ if does_bin_exist 'flatpak'; then
         'camera' false \
         'network' false \
         'notification' false \
-        'location' false
-    set_linux_permission 'com.discordapp.Discord' \
-        'background' true \
-        'camera' false \
-        'network' true \
-        'notification' true \
-        'notification_lockscreen' true \
         'location' false
     set_linux_permission 'com.getpostman.Postman' \
         'background' false \
@@ -265,58 +258,58 @@ if does_bin_exist 'flatpak'; then
         'network' false \
         'notification' false \
         'location' false
-    set_linux_permission "org.gnome.Maps" \
+    set_linux_permission 'org.gnome.Maps' \
         'background' false \
         'camera' false \
         'network' true \
         'notification' false \
         'location' true
-    set_linux_permission "org.gnome.NetworkDisplays" \
+    set_linux_permission 'org.gnome.NetworkDisplays' \
         'background' false \
         'camera' false \
         'network' true \
         'notification' false \
         'location' false
-    set_linux_permission "org.gnome.seahorse.Application" \
+    set_linux_permission 'org.gnome.seahorse.Application' \
         'background' false \
         'camera' false \
         'network' false \
         'notification' false \
         'location' false
-    set_linux_permission "org.gnome.Settings" \
+    set_linux_permission 'org.gnome.Settings' \
         'camera' false \
         'notification' false
-    set_linux_permission "org.gnome.Weather" \
+    set_linux_permission 'org.gnome.Weather' \
         'background' false \
         'camera' false \
         'network' true \
         'notification' false \
         'location' true
-    set_linux_permission "org.inkscape.Inkscape" \
+    set_linux_permission 'org.inkscape.Inkscape' \
         'background' false \
         'camera' false \
         'network' false \
         'notification' false \
         'location' false
-    set_linux_permission "org.libreoffice.LibreOffice" \
+    set_linux_permission 'org.libreoffice.LibreOffice' \
         'background' false \
         'camera' false \
         'network' false \
         'notification' false \
         'location' false
-    set_linux_permission "ro.go.hmlendea.DL-Desktop" \
+    set_linux_permission 'ro.go.hmlendea.DL-Desktop' \
         'background' false \
         'camera' false \
         'network' true \
         'notification' false \
         'location' false
-    set_linux_permission "ro.go.hmlendea.Sokogrump" \
+    set_linux_permission 'ro.go.hmlendea.Sokogrump' \
         'background' false \
         'camera' false \
         'network' false \
         'notification' false \
         'location' false
-    set_linux_permission "tv.plex.PlexDesktop" \
+    set_linux_permission 'tv.plex.PlexDesktop' \
         'background' false \
         'camera' false \
         'network' true \
