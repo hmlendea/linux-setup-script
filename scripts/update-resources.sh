@@ -80,4 +80,8 @@ fi
 update_file_if_distinct "${REPO_RES_DIR}/udev/ioschedulers.rules" "${UDEV_RULES_DIR}/873-ioschedulers.rules"
 update_file_if_distinct "${REPO_RES_DIR}/udev/pci_pm.rules" "${UDEV_RULES_DIR}/873-pci_pm.rules"
 
-${IS_BATTERY_DEVICE} && update_file_if_distinct "${REPO_RES_DIR}/udev/usb_powersave.rules" "${UDEV_RULES_DIR}/873-usb_powersave.rules"
+if ${IS_BATTERY_DEVICE}; then
+    update_file_if_distinct "${REPO_RES_DIR}/udev/usb_powersave.rules" "${UDEV_RULES_DIR}/873-usb_powersave.rules"
+else
+    remove "${UDEV_RULES_DIR}/873-usb_powersave.rules"
+fi

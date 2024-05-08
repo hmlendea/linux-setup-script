@@ -31,6 +31,7 @@ echo "GPU:              $(get_gpu)"
 echo "Audio driver:     $(get_audio_driver)"
 echo "Chassis:          $(get_chassis_type)"
 echo "EFI support:      ${HAS_EFI_SUPPORT}"
+echo "Has battery:      ${IS_BATTERY_DEVICE}"
 
 if ${HAS_GUI}; then
     echo "Display:          $(get_screen_width)x$(get_screen_height), $(get_screen_dpi) DPI"
