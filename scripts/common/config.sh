@@ -342,9 +342,9 @@ function set_pulseaudio_module_option() {
 
 function call_gsettings() {
     if [ -z "${SSH_CLIENT}" ] && [ -z "${SSH_TTY}" ]; then
-        gsettings ${*}
+        gsettings "${@}"
     else
-        DISPLAY=:0 gsettings ${*}
+        DISPLAY=:0 gsettings "${@}"
     fi
 }
 

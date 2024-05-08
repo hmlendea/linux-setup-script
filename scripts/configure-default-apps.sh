@@ -1,11 +1,13 @@
 #!/bin/bash
 source "scripts/common/filesystem.sh"
-source "${REPO_DIR}/scripts/common/common.sh"
-source "${REPO_DIR}/scripts/common/package-management.sh"
+source "${REPO_SCRIPTS_COMMON_DIR}/common.sh"
+source "${REPO_SCRIPTS_COMMON_DIR}/config.sh"
 
 function update_mimetype_association() {
     local MIMETYPE="${1}"
     local LAUNCHER="${2}"
+
+    [ -z "${LAUNCHER}" ] && return
 
     local MIMEAPPS_FILE="${XDG_CONFIG_HOME}/mimeapps.list"
 
@@ -18,57 +20,154 @@ function update_mimetype_association() {
     echo "${MIMETYPE}=${LAUNCHER}" >> "${MIMEAPPS_FILE}"
 }
 
-# Determine which apps to use
-BROWSER_LAUNCHER=""
-DISK_IMAGE_MOUNTER_LAUNCHER=""
-FILE_MANAGER_LAUNCHER=""
-GIMP_LAUNCHER=""
-IMAGE_VIEWER_LAUNCHER=""
-STEAM_LAUNCHER=""
-TEXT_EDITOR_LAUNCHER=""
+# Browser
+BROWSER_LAUNCHER=''
+if does_bin_exist 'io.gitlab.librewolf-community'; then
+    BROWSER_LAUNCHER='io.gitlab.librewolf-community.desktop'
+elif does_bin_exist 'org.mozilla.firefox'; then
+    BROWSER_LAUNCHER='org.mozilla.firefox.desktop'
+elif does_bin_exist 'firefox-esr'; then
+    BROWSER_LAUNCHER='firefox-esr.desktop'
+elif does_bin_exist 'firefox'; then
+    BROWSER_LAUNCHER='firefox.desktop'
+fi
 
-is_flatpak_installed "com.brave.Brownser" && BROWSER_LAUNCHER="com.brave.Browser.desktop"
-is_flatpak_installed "org.mozilla.firefox" && BROWSER_LAUNCHER="org.mozilla.firefox.desktop"
-is_flatpak_installed "io.gitlab.librewolf-community" && BROWSER_LAUNCHER="io.gitlab.librewolf-community.desktop"
-is_native_package_installed "nautilus" && FILE_MANAGER_LAUNCHER="org.gnome.Nautilus.desktop"
+# Disk Image Mounter
+DISK_IMAGE_MOUNTER_LAUNCHER=''
+if does_bin_exist 'gnome-disk-image-mounter'; then
+    DISK_IMAGE_MOUNTER_LAUNCHER='gnome-disk-image-mounter.desktop'
+fi
 
-# Disk Image Mounters
-if does_bin_exist "gnome-disk-image-mounter"; then
-    DISK_IMAGE_MOUNTER_LAUNCHER="gnome-disk-image-mounter.desktop"
+# Email Client
+EMAIL_CLIENT_LAUNCHER=''
+if does_bin_exist 'com.github.vladimiry.ElectronMail'; then
+    EMAIL_CLIENT_LAUNCHER="com.github.vladimiry.ElectronMail"
+elif does_bin_exist "electronmail-bin"; then
+    EMAIL_CLIENT_LAUNCHER="electronmail-bin.desktop"
+fi
+
+# File Manager
+FILE_MANAGER_LAUNCHER=''
+if does_bin_exist 'nautilus'; then
+    FILE_MANAGER_LAUNCHER="org.gnome.Nautilus.desktop"
 fi
 
 # GIMP
-if is_flatpak_installed "org.gimp.GIMP"; then
-    GIMP_LAUNCHER="org.gimp.GIMP.desktop"
-elif is_native_package_installed "gimp"; then
-    GIMP_LAUNCHER="gimp.desktop"
+GIMP_LAUNCHER=''
+if does_bin_exist 'org.gimp.GIMP'; then
+    GIMP_LAUNCHER='org.gimp.GIMP.desktop'
+elif does_bin_exist 'gimp'; then
+    GIMP_LAUNCHER='gimp.desktop'
 fi
 
 # Image viewers
-if is_flatpak_installed "org.gnome.Loupe"; then
-    IMAGE_VIEWER_LAUNCHER="org.gnome.Loupe.desktop"
-elif is_flatpak_installed "org.gnome.eog"; then
-    IMAGE_VIEWER_LAUNCHER="org.gnome.eog.desktop"
-elif is_native_package_installed "gpicview"; then
-    IMAGE_VIEWER_LAUNCHER="gpicview.desktop"
+IMAGE_VIEWER_LAUNCHER=''
+if does_bin_exist 'org.gnome.Loupe'; then
+    IMAGE_VIEWER_LAUNCHER='org.gnome.Loupe.desktop'
+elif does_bin_exist 'org.gnome.eog'; then
+    IMAGE_VIEWER_LAUNCHER='org.gnome.eog.desktop'
+elif does_bin_exist 'gpicview'; then
+    IMAGE_VIEWER_LAUNCHER='gpicview.desktop'
+fi
+
+# Notes
+NOTES_LAUNCHER=''
+if does_bin_exist 'com.simplenote.Simplenote'; then
+    NOTES_LAUNCHER='com.simplenote.Simplenote.desktop'
+elif does_bin_exist 'simplenote'; then
+    NOTES_LAUNCHER='simplenote.desktop'
+fi
+
+# Signal
+SIGNAL_LAUNCHER=''
+if does_bin_exist 'org.signal.Signal'; then
+    SIGNAL_LAUNCHER='org.signal.Signal.desktop'
+elif does_bin_exist 'signal-desktop'; then
+    SIGNAL_LAUNCHER='signal-desktop.desktop'
 fi
 
 # Steam
-if is_flatpak_installed "com.valvesoftware.Steam"; then
-    STEAM_LAUNCHER="com.valvesoftware.Steam.desktop"
-elif is_native_package_installed "steam"; then
-    STEAM_LAUNCHER="steam.desktop"
+STEAM_LAUNCHER=''
+if does_bin_exist 'com.valvesoftware.Steam'; then
+    STEAM_LAUNCHER='com.valvesoftware.Steam.desktop'
+elif does_bin_exist 'steam'; then
+    STEAM_LAUNCHER='steam.desktop'
 fi
 
-# Steam
-if is_flatpak_installed "org.gnome.gedit"; then
-    TEXT_EDITOR_LAUNCHER="org.gnome.gedit.desktop"
-elif is_flatpak_installed "org.gnome.TextEditor"; then
-    TEXT_EDITOR_LAUNCHER="org.gnome.TextEditor.desktop"
-elif is_native_package_installed "gedit"; then
-    TEXT_EDITOR_LAUNCHER="gedit.desktop"
-elif is_native_package_installed "pluma"; then
-    TEXT_EDITOR_LAUNCHER="pluma.desktop"
+# Tasks
+TASKS_LAUNCHER=''
+if does_bin_exist 'io.github.alainm23.planify'; then
+    TASKS_LAUNCHER='io.github.alainm23.planify.desktop'
+elif does_bin_exist 'org.gnome.Todo'; then
+    TASKS_LAUNCHER='org.gnome.Todo.desktop'
+fi
+
+# Teams
+TEAMS_LAUNCHER=''
+if does_bin_exist 'com.microsoft.Teams'; then
+    TEAMS_LAUNCHER='com.microsoft.Teams.desktop'
+elif does_bin_exist 'com.github.IsmaelMartinez.teams_for_linux'; then
+    TEAMS_LAUNCHER='com.github.IsmaelMartinez.teams_for_linux.desktop'
+fi
+
+# Telegram
+TELEGRAM_LAUNCHER=''
+if does_bin_exist 'app.drey.PaperPlane'; then
+    TELEGRAM_LAUNCHER='app.drey.PaperPlane.desktop'
+elif does_bin_exist 'org.telegram.desktop'; then
+    TELEGRAM_LAUNCHER='org.telegram.desktop.desktop'
+elif does_bin_exist 'telegram-desktop'; then
+    TELEGRAM_LAUNCHER='telegramdesktop.desktop'
+fi
+
+# Terminal
+TERMINAL_LAUNCHER=''
+if does_bin_exist 'gnome-terminal'; then
+    TERMINAL_LAUNCHER='org.gnome.Terminal.desktop'
+fi
+
+# Text Editor
+TEXT_EDITOR_LAUNCHER=''
+if does_bin_exist 'org.gnome.gedit'; then
+    TEXT_EDITOR_LAUNCHER='org.gnome.gedit.desktop'
+elif does_bin_exist 'org.gnome.TextEditor'; then
+    TEXT_EDITOR_LAUNCHER='org.gnome.TextEditor.desktop'
+elif does_bin_exist 'gedit'; then
+    TEXT_EDITOR_LAUNCHER='gedit.desktop'
+elif does_bin_exist 'pluma'; then
+    TEXT_EDITOR_LAUNCHER='pluma.desktop'
+fi
+
+# WhatsApp
+WHATSAPP_LAUNCHER=''
+if does_bin_exist 'whatsapp-nativefier'; then
+    WHATSAPP_LAUNCHER='whatsapp-nativefier.desktop'
+elif does_bin_exist 'io.github.mimbrero.WhatsAppDesktop'; then
+    WHATSAPP_LAUNCHER='io.github.mimbrero.WhatsAppDesktop.desktop'
+fi
+
+# Update the favourites
+
+FAVOURITE_APPS=''
+
+[ -n "${BROWSER_LAUNCHER}" ] && FAVOURITE_APPS="${FAVOURITE_APPS}, '${BROWSER_LAUNCHER}'"
+[ -n "${TERMINAL_LAUNCHER}" ] && FAVOURITE_APPS="${FAVOURITE_APPS}, '${TERMINAL_LAUNCHER}'"
+[ -n "${FILE_MANAGER_LAUNCHER}" ] && FAVOURITE_APPS="${FAVOURITE_APPS}, '${FILE_MANAGER_LAUNCHER}'"
+#[ -n "${STEAM_LAUNCHER}" ] && FAVOURITE_APPS="${FAVOURITE_APPS}, '${STEAM_LAUNCHER}'"
+[ -n "${TERMINAL_LAUNCHER}" ] && FAVOURITE_APPS="${FAVOURITE_APPS}, '${TERMINAL_LAUNCHER}'"
+[ -n "${SIGNAL_LAUNCHER}" ] && FAVOURITE_APPS="${FAVOURITE_APPS}, '${SIGNAL_LAUNCHER}'"
+[ -n "${TELEGRAM_LAUNCHER}" ] && FAVOURITE_APPS="${FAVOURITE_APPS}, '${TELEGRAM_LAUNCHER}'"
+[ -n "${WHATSAPP_LAUNCHER}" ] && FAVOURITE_APPS="${FAVOURITE_APPS}, '${WHATSAPP_LAUNCHER}'"
+[ -n "${EMAIL_CLIENT_LAUNCHER}" ] && FAVOURITE_APPS="${FAVOURITE_APPS}, '${EMAIL_CLIENT_LAUNCHER}'"
+[ -n "${NOTES_LAUNCHER}" ] && FAVOURITE_APPS="${FAVOURITE_APPS}, '${NOTES_LAUNCHER}'"
+[ -n "${TASKS_LAUNCHER}" ] && FAVOURITE_APPS="${FAVOURITE_APPS}, '${TASKS_LAUNCHER}'"
+
+FAVOURITE_APPS=$(echo "${FAVOURITE_APPS}" | sed 's/^\s*,*\s*//g')
+
+if [ -n "${FAVOURITE_APPS}" ]; then
+    set_gsetting 'org.gnome.shell' 'favorite-apps' "[${FAVOURITE_APPS}]"
+else
+    set_gsetting 'org.gnome.shell' 'favorite-apps' '@as []'
 fi
 
 # Update the associations
@@ -81,9 +180,9 @@ for IMAGE_TYPE in "x-dds"; do
     update_mimetype_association "image/${IMAGE_TYPE}" "${GIMP_LAUNCHER}"
 done
 
-is_flatpak_installed "com.microsoft.Teams" && update_mimetype_association "x-scheme-handler/msteams" "com.microsoft.Teams.desktop"
+update_mimetype_association 'x-scheme-handler/msteams' "${TEAMS_LAUNCHER}"
 
-is_native_package_installed "icaclient" && update_mimetype_association "application/x-extension-ica" "citrix-wfica.desktop"
+does_bin_exist "icaclient" && update_mimetype_association "application/x-extension-ica" "citrix-wfica.desktop"
 
 if [ -n "${BROWSER_LAUNCHER}" ]; then
     for SCHEME_TYPE in "http" "https" "chrome"; do
