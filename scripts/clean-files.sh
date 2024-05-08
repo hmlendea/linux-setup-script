@@ -194,62 +194,62 @@ remove \
 ! does_bin_exist "gnome-photos" && remove \
     "${XDG_CACHE_HOME}/gnome-photos" \
     "${XDG_DATA_HOME}/gnome-photos"
-! does_bin_exist "gnome-screenshot" && remove "${XDG_CACHE_HOME}/gnome-screenshot"
-! does_bin_exist "gnome-software" && remove "${XDG_CACHE_HOME}/gnome-software"
-! does_bin_exist "gnome-sound-recorder" && remove "${XDG_DATA_HOME}/org.gnome.SoundRecorder"
-! does_bin_exist "gnubg" && remove "${HOME}/.gnubg"
-! does_bin_exist "go" && remove "${XDG_CACHE_HOME}/go-build"
-! does_bin_exist "gradle" && remove \
+! does_bin_exist 'gnome-screenshot' && remove "${XDG_CACHE_HOME}/gnome-screenshot"
+! does_bin_exist 'gnome-software' && remove "${XDG_CACHE_HOME}/gnome-software"
+! does_bin_exist 'gnome-sound-recorder' && remove "${XDG_DATA_HOME}/org.gnome.SoundRecorder"
+! does_bin_exist 'gnubg' && remove "${HOME}/.gnubg"
+! does_bin_exist 'go' && remove "${XDG_CACHE_HOME}/go-build"
+! does_bin_exist 'gradle' && remove \
     "${HOME}/.gradle" \
     "${XDG_DATA_HOME}/gradle"
-! does_bin_exist "gsconnect" && remove \
+! does_bin_exist 'gsconnect' && remove \
     "${XDG_CACHE_HOME}/gsconnect" \
     "${XDG_CONFIG_HOME}/gsconnect"
-! does_bin_exist "hardinfo" && remove "${XDG_CONFIG_HOME}/hardinfo"
-! does_bin_exist "hashcat" && remove \
+! does_bin_exist 'hardinfo' && remove "${XDG_CONFIG_HOME}/hardinfo"
+! does_bin_exist 'hashcat' && remove \
     "${XDG_CACHE_HOME}/hashcat" \
     "${XDG_CONFIG_HOME}/hashcat" \
     "${XDG_DATA_HOME}/hashcat"
-! does_bin_exist "inkscape" && remove \
+! does_bin_exist 'inkscape' && remove \
     "${XDG_CACHE_HOME}/inkscape" \
     "${XDG_CONFIG_HOME}/inkscape"
-! does_bin_exist "java" && remove "${HOME}/.java"
-! does_bin_exist "kupfer" && remove "${XDG_CONFIG_HOME}/kupfer"
-! does_bin_exist "libreoffice" && remove "${XDG_CONFIG_HOME}/libreoffice"
-! does_bin_exist "lollypop" && remove "${XDG_DATA_HOME}/lollypop"
-! does_bin_exist "lsd" && remove "${XDG_CONFIG_HOME}/lsd"
-! does_bin_exist "lutris" && remove \
+! does_bin_exist 'java' && remove "${HOME}/.java"
+! does_bin_exist 'kupfer' && remove "${XDG_CONFIG_HOME}/kupfer"
+! does_bin_exist 'libreoffice' && remove "${XDG_CONFIG_HOME}/libreoffice"
+! does_bin_exist 'lollypop' && remove "${XDG_DATA_HOME}/lollypop"
+! does_bin_exist 'lsd' && remove "${XDG_CONFIG_HOME}/lsd"
+! does_bin_exist 'lutris' && remove \
     "${XDG_CACHE_HOME}/lutris" \
     "${XDG_CONFIG_HOME}/lutris" \
     "${XDG_DATA_HOME}/lutris"
-! does_bin_exist "mcaselector" && remove \
+! does_bin_exist 'mcaselector' && remove \
     "${HOME}/.mcaselector" \
     "${XDG_CACHE_HOME}/mcaselector" \
     "${XDG_DATA_HOME}/mcaselector"
-! does_bin_exist "mcedit" && remove "${HOME}/.mcedit"
-! does_bin_exist "minetest" && remove "${XDG_CACHE_HOME}/minetest"
-! does_bin_exist "mono" && remove "${HOME}/.mono"
-! does_bin_exist "mpv" && remove "${XDG_CONFIG_HOME}/mpv"
-! does_bin_exist "nano" && remove \
+! does_bin_exist 'mcedit' && remove "${HOME}/.mcedit"
+! does_bin_exist 'minetest' && remove "${XDG_CACHE_HOME}/minetest"
+! does_bin_exist 'mono' && remove "${HOME}/.mono"
+! does_bin_exist 'mpv' && remove "${XDG_CONFIG_HOME}/mpv"
+! does_bin_exist 'nano' && remove \
     "${HOME}/.nanorc" \
     "${XDG_DATA_HOME}/nano"
-! does_bin_exist "nemo" && remove \
+! does_bin_exist 'nemo' && remove \
     "${XDG_DATA_HOME}/nemo" \
     "${XDG_DATA_HOME}/nemo-python"
-! does_bin_exist "neofetch" && remove "${XDG_CONFIG_HOME}/neofetch"
-! does_bin_exist "notion-app" && remove "${XDG_CONFIG_HOME}/Notion"
-! does_bin_exist "npm" && remove \
+! does_bin_exist 'neofetch' && remove "${XDG_CONFIG_HOME}/neofetch"
+! does_bin_exist 'notion-app' && remove "${XDG_CONFIG_HOME}/Notion"
+! does_bin_exist 'npm' && remove \
     "${HOME}/.npm" \
     "${HOME}/.npmrc" \
     "${XDG_DATA_HOME}/npm" \
     "${XDG_CACHE_HOME}/npm" \
     "${XDG_CONFIG_HOME}/npm" \
     "${XDG_RUNTIME_HOME}/npm"
-! does_bin_exist "nvidia-settings" && remove \
+! does_bin_exist 'nvidia-settings' && remove \
     "${HOME}/.nvidia-settings-rc" \
     "${XDG_CONFIG_HOME}/nvidia/settings" \
     "${HOME_VAR_APP}/"*"/cache/nvidia"
-! does_bin_exist "nvidia-settings" && remove \
+! does_bin_exist 'nvidia-settings' && remove \
     "${XDG_CACHE_HOME}/nvidia" \
     "${XDG_CONFIG_HOME}/nvidia"
 ! does_bin_exist 'onlyoffice-desktopeditors' && remove \
@@ -283,7 +283,7 @@ remove \
 ! does_bin_exist 'simplescreenrecorder' && remove "${HOME}/.ssr"
 ! does_bin_exist 'simplenote' && remove "${XDG_CONFIG_HOME}/Simplenote"
 ! does_bin_exist 'snap' && remove "${HOME}/.snap"
-! does_bin_exist 'snapcraft" && remove \
+! does_bin_exist 'snapcraft' && remove \
     "${XDG_CACHE_HOME}/snapcraft" \
     "${XDG_CONFIG_HOME}/snapcraft"
 ! does_bin_exist 'sokogrump' && remove "${XDG_DATA_HOME}/SokoGrump"
