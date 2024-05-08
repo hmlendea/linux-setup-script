@@ -41,32 +41,28 @@ function keep_only_one_package() {
     local FIRST_INSTALLED_PACKAGE=''
 
     for PACKAGE in "${@}"; do
-        if is_android_package_installed "${PACKAGE}" \
-        || is_flatpak_installed "${PACKAGE}" \
-        || is_android_package_installed "${PACKAGE}"; then
+        if is_package_installed "${PACKAGE}"; then
             FIRST_INSTALLED_PACKAGE="${PACKAGE}"
             break
         fi
     done
 
-    [ -z "${FIRST_INSTALLED_PACKAGE}" ] && return
+    [ -n "${FIRST_INSTALLED_PACKAGE}" ] && return
 
     for PACKAGE in "${@}"; do
         [ "${PACKAGE}" = "${FIRST_INSTALLED_PACKAGE}" ] && continue
-        
-        uninstall_android_package "${PACKAGE}"
-        uninstall_flatpak "${PACKAGE}"
-        uninstall_native_package "${PACKAGE}"
+
+        uninstall_package "${PACKAGE}"
     done
 }
 
 # Chat Apps
 keep_first_package 'com.telegram.desktop' 'telegram-desktop'
-keep_only_one_package 'de.schmidhuberj.Flare' 'org.signal.Signal'
+keep_only_one_package 'de.schmidhuberj.Flare' 'org.signal.Signal' 'signal-desktop'
 
 # Image Viewers
-[ "${DESKTOP_ENVIRONMENT}" != 'Phosh' ] && uninstall_flatpak "org.gnome.eog" && uninstall_native_package "eog-plugins" "eog"
-[ "${DESKTOP_ENVIRONMENT}" != "LXDE" ] && uninstall_native_package "gwenview"
+[ "${DESKTOP_ENVIRONMENT}" != 'Phosh' ] && uninstall_flatpak 'org.gnome.eog' && uninstall_native_package 'eog-plugins' 'eog'
+[ "${DESKTOP_ENVIRONMENT}" != "LXDE" ] && uninstall_native_package 'gwenview'
 
 # Internet Browsers
 keep_only_one_package \
@@ -80,9 +76,9 @@ if ! is_native_package_installed 'firefox' \
 fi
 
 # Music players
-keep_only_one_package "dev.alextren.Spot" "com.spotify.Client"
-uninstall_android_package "org.lineageos.eleven"
-uninstall_android_package "com.xiaomi.mimusic2"
+keep_only_one_package 'dev.alextren.Spot' 'com.spotify.Client'
+uninstall_android_package 'org.lineageos.eleven'
+uninstall_android_package 'com.xiaomi.mimusic2'
 
 # Note Taking apps
 keep_first_package "com.automattic.simplenote" "foundation.e.notes"
@@ -136,7 +132,6 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "postman-bin"                  # Replaced by flatpak: com.getpostman.Postman
     uninstall_native_package "rhythmbox"                    # Replaced by flatpak: org.gnome.Rhythmbox3
     uninstall_native_package "seahorse"                     # Replaced by flatpak: org.gnome.seahorse.Application
-    uninstall_native_package "signal-desktop"               # Replaced by flatpak: org.signal.Signal
     uninstall_native_package "simplenote-electron-bin"      # Replaced by flatpak: com.simplenote.Simplenote
     uninstall_native_package "simplenote-electron-arm-bin"  # Replaced by flatpak: com.simplenote.Simplenote
     uninstall_native_package "spotify"                      # Replaced by flatpak: com.spotify.Client
@@ -211,7 +206,6 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
         uninstall_flatpak "com.microsoft.Teams"
         uninstall_flatpak "com.github.vladimiry.ElectronMail"
         uninstall_flatpak "org.telegram.desktop"
-        uninstall_flatpak "org.signal.Signal"
         uninstall_flatpak "io.github.mimbrero.WhatsAppDesktop"
 
         # Multimedia

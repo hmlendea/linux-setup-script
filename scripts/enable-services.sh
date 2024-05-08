@@ -28,9 +28,9 @@ elif does_bin_exist 'systemd-timesyncd'; then
 fi
 
 if [ "${CHASSIS_TYPE}" = 'Laptop' ]; then
-    enable_service "tlp"
+    enable_service 'tlp'
 else
-    disable_service "tlp"
+    disable_service 'tlp'
 fi
 
-[[ ${HOSTNAME} = *Pi ]] && enable_service "sshd"
+[[ ${HOSTNAME} = *Pi ]] && enable_service 'sshd'

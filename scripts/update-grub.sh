@@ -1,20 +1,18 @@
 #!/bin/bash
 source "scripts/common/common.sh"
 
-SOURCE_GRUB_RC_DIR=$(pwd)"/rc/grub"
-TARGET_GRUB_RC_DIR="${ROOT_ETC}/grub.d"
 GRUB_CFG_PATH="${ROOT_BOOT}/grub/grub.cfg"
 
 [ ! -f "${ROOT_USR_BIN}/grub-reboot" ] && exit 1
 
-function update-grub-rc {
+function update_grub_rc {
     local OS_ROOT_DIR="${1}"
     local RC_FILE="${2}"
 
-    local SOURCE_RC_PATH="${SOURCE_GRUB_RC_DIR}/${RC_FILE}"
-    local TARGET_RC_PATH="${TARGET_GRUB_RC_DIR}/${RC_FILE}"
+    local SOURCE_RC_PATH="${REPO_RC_DIR}/grub/${RC_FILE}"
+    local TARGET_RC_PATH="${ROOT_ETC}/grub.d/${RC_FILE}"
 
-    if [[ -d "${OS_ROOT_DIR}" ]] || [[ "${OS_ROOT_DIR}" == "/" ]]; then
+    if [ -d "${OS_ROOT_DIR}" ] || [ "${OS_ROOT_DIR}" = '/' ]; then
         update_file_if_distinct "${SOURCE_RC_PATH}" "${TARGET_RC_PATH}"
     elif [ -f "${TARGET_RC_PATH}" ]; then
         remove "${TARGET_RC_PATH}"
@@ -37,27 +35,27 @@ function remove_advanced_options {
     local STARTING_LINE=-1
     local END_LINE=-1
 
-    ! grep -q "Advanced options for" "${GRUB_CFG_PATH}" && return
+    ! grep -q 'Advanced options for' "${GRUB_CFG_PATH}" && return
 
-    STARTING_LINE=$(grep -n "Advanced options for" "${GRUB_CFG_PATH}" | awk -F: '{print $1}' | head -n 1)
-    END_LINE=$(grep -n "### END /etc/grub.d/10_linux" "${GRUB_CFG_PATH}" | awk -F: '{print $1}' | head -n 1)
+    STARTING_LINE=$(grep -n 'Advanced options for' "${GRUB_CFG_PATH}" | awk -F: '{print $1}' | head -n 1)
+    END_LINE=$(grep -n "### END ${ROOT_ETC}/grub.d/10_linux" "${GRUB_CFG_PATH}" | awk -F: '{print $1}' | head -n 1)
     END_LINE=$((END_LINE-1))
 
     run_as_su sed -i "${STARTING_LINE}","${END_LINE}"d "${GRUB_CFG_PATH}"
 }
 
-update-grub-rc "/android" "29_android"
-update-grub-rc "/blissos" "29_blissos"
-update-grub-rc "/phoenixos" "29_phoenixos"
-update-grub-rc "/primeos" "29_primeos"
-update-grub-rc "/" "99_power"
+update_grub_rc '/android' '29_android'
+update_grub_rc '/blissos' '29_blissos'
+update_grub_rc '/phoenixos' '29_phoenixos'
+update_grub_rc '/primeos' '29_primeos'
+update_grub_rc '/' '99_power'
 
-if [ -f "${ROOT_USR_BIN}/update-grub" ]; then
+if does_bin_exist 'update-grub'; then
     run_as_su update-grub
 else
     run_as_su grub-mkconfig -o "${GRUB_CFG_PATH}"
 fi
 
-#rename-menuentry "Arch Linux" "Linux"
-rename-menuentry "Windows Boot Manager" "Windows"
+#rename-menuentry 'Arch Linux' 'Linux'
+rename-menuentry 'Windows Boot Manager' 'Windows'
 remove_advanced_options
