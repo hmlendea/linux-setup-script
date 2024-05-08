@@ -41,9 +41,9 @@ fi
 # Email Client
 EMAIL_CLIENT_LAUNCHER=''
 if does_bin_exist 'com.github.vladimiry.ElectronMail'; then
-    EMAIL_CLIENT_LAUNCHER="com.github.vladimiry.ElectronMail"
-elif does_bin_exist "electronmail-bin"; then
-    EMAIL_CLIENT_LAUNCHER="electronmail-bin.desktop"
+    EMAIL_CLIENT_LAUNCHER='com.github.vladimiry.ElectronMail.desktop'
+elif does_bin_exist 'electronmail-bin'; then
+    EMAIL_CLIENT_LAUNCHER='electronmail-bin.desktop'
 fi
 
 # File Manager
