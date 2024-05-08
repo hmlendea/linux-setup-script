@@ -8,7 +8,6 @@ source "${REPO_DIR}/scripts/common/system-info.sh"
 [ "${OS}" != "Linux" ] && exit
 (! ${HAS_GUI}) && exit
 
-
 ICON_THEME=$(sudo -u "${USER_REAL}" -H gsettings get org.gnome.desktop.interface icon-theme | tr -d "'")
 ICON_THEME_PATH="${ROOT_USR_SHARE}/icons/${ICON_THEME}"
 

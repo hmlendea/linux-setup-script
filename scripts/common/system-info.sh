@@ -547,8 +547,9 @@ fi
 
 if [ "${DISTRO}" = "arch" ] \
 || [ "${DISTRO}" = "ARCH" ]; then
-    DISTRO="Arch Linux"
-    DISTRO_FAMILY="Arch"
+    DISTRO='Arch Linux'
+    DISTRO_FAMILY='Arch'
+    OS='Linux'
 elif [ "${DISTRO}" = "debian" ]; then
     DISTRO="Debian"
     DISTRO_FAMILY="Debian"
