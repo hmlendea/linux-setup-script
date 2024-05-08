@@ -57,7 +57,7 @@ function add_user_flatpak_remote() {
     fi
 }
 
-if does_bin_exist "flatpak"; then
+if does_bin_exist 'flatpak'; then
     add_system_flatpak_remote   'flathub'       'https://flathub.org/repo/flathub.flatpakrepo'
     add_system_flatpak_remote   'flathub-beta'  'https://flathub.org/beta-repo/flathub-beta.flatpakrepo'
 
@@ -65,26 +65,26 @@ if does_bin_exist "flatpak"; then
     add_user_flatpak_remote     'flathub-beta'  'https://flathub.org/beta-repo/flathub-beta.flatpakrepo'
 fi
 
-if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-    add_repository "hmlendea" 'https://github.com/hmlendea/PKGBUILDs/releases/latest/download/' "" "Never"
+if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
+    add_repository 'hmlendea' 'https://github.com/hmlendea/PKGBUILDs/releases/latest/download/' '' 'Never'
 
-    if [[ "${ARCH_FAMILY}" == "arm" ]]; then
-        if [[ "${ARCH}" == "aarch64" ]]; then
-            add_repository "hmlendea-aarch64" 'https://github.com/hmlendea/PKGBUILDs/releases/latest/download/' "" "Never"
+    if [ "${ARCH_FAMILY}" = 'arm' ]; then
+        if [ "${ARCH}" = 'aarch64' ]; then
+            add_repository 'hmlendea-aarch64' 'https://github.com/hmlendea/PKGBUILDs/releases/latest/download/' '' 'Never'
         fi
 
-        if [[ "${ARCH}" == "armv7h" ]] || [[ "${ARCH}" == "armv7l" ]]; then
-            add_repository "hmlendea-armv7h" 'https://github.com/hmlendea/PKGBUILDs/releases/latest/download/' "" "Never"
+        if [ "${ARCH}" = 'armv7h' ] || [ "${ARCH}" = 'armv7l' ]; then
+            add_repository 'hmlendea-armv7h' 'https://github.com/hmlendea/PKGBUILDs/releases/latest/download/' '' 'Never'
         fi
     fi
 
-    if [[ "${ARCH_FAMILY}" == "x86" ]]; then
-        add_repository "multilib" "" "${ROOT_ETC}/pacman.d/mirrorlist"
-        add_repository "valveaur" "http://repo.steampowered.com/arch/valveaur/" "" "" "8DC2CE3A3D245E64"
-        add_repository "dx37essentials" 'https://dx37.gitlab.io/$repo/$arch' "" "PackageOptional" # For things like ttf-ms-win10
+    if [ "${ARCH_FAMILY}" = 'x86' ]; then
+        add_repository 'multilib' '' "${ROOT_ETC}/pacman.d/mirrorlist"
+        add_repository 'valveaur' "http://repo.steampowered.com/arch/valveaur/" '' '' '8DC2CE3A3D245E64'
+        add_repository 'dx37essentials' 'https://dx37.gitlab.io/$repo/$arch' '' 'PackageOptional' # For things like ttf-ms-win10
 
-        if [[ "${ARCH}" == "x86_64" ]]; then
-            add_repository "hmlendea-x86_64" 'https://github.com/hmlendea/PKGBUILDs/releases/latest/download/' "" "Never"
+        if [ "${ARCH}" = 'x86_64' ]; then
+            add_repository 'hmlendea-x86_64' 'https://github.com/hmlendea/PKGBUILDs/releases/latest/download/' '' 'Never'
         fi
     fi
 fi

@@ -7,25 +7,25 @@ GLOBAL_GS_EXTENSIONS_DIR="${ROOT_USR_SHARE}/gnome-shell/extensions"
 LOCAL_GS_EXTENSIONS_DIR="${XDG_DATA_HOME}/gnome-shell/extensions"
 
 function call_package_manager() {
-    if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-        if [[ "${UID}" != "0" ]]; then
+    if [ "${DISTRO_FAMILY}" = "Arch" ]; then
+        if [ "${UID}" != '0' ]; then
             if [ -f "${ROOT_USR_BIN}/paru" ]; then
-                LANG=C LC_TIME="" paru ${*} --noconfirm --noprovides --noredownload --norebuild --sudoloop
+                LANG=C LC_TIME='' paru ${*} --noconfirm --noprovides --noredownload --norebuild --sudoloop
 		    elif [ -f "${ROOT_USR_BIN}/yay" ]; then
-                LANG=C LC_TIME="" yay ${*} --noconfirm
+                LANG=C LC_TIME='' yay ${*} --noconfirm
         	elif [ -f "${ROOT_USR_BIN}/yaourt" ]; then
-                LANG=C LC_TIME="" yaourt ${*} --noconfirm
+                LANG=C LC_TIME='' yaourt ${*} --noconfirm
 		    else
-		        LANG=C LC_TIME="" run_as_su pacman ${*} --noconfirm
+		        LANG=C LC_TIME='' run_as_su pacman ${*} --noconfirm
 		    fi
         else
-            LANG=C LC_TIME="" pacman ${*} --noconfirm
+            LANG=C LC_TIME='' pacman ${*} --noconfirm
         fi
-    elif [[ "${DISTRO_FAMILY}" == "Alpine" ]]; then
+    elif [ "${DISTRO_FAMILY}" = 'Alpine' ]; then
         yes | run_as_su apk ${*}
-    elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
+    elif [ "${DISTRO_FAMILY}" = 'Android' ]; then
         yes | pkg ${*}
-    elif [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
+    elif [ "${DISTRO_FAMILY}" = 'Debian' ]; then
         yes | run_as_su apt ${*}
     fi
 }
@@ -39,13 +39,13 @@ function call_flatpak() {
 }
 
 function call_vscode() {
-    if does_bin_exist "com.visualstudio.code"; then
+    if does_bin_exist 'com.visualstudio.code'; then
         com.visualstudio.code ${*}
-    elif does_bin_exist "codium"; then
+    elif does_bin_exist 'codium'; then
         codium ${*}
-    elif does_bin_exist "code-oss"; then
+    elif does_bin_exist 'code-oss'; then
         code-oss ${*}
-    elif does_bin_exist "code"; then
+    elif does_bin_exist 'code'; then
         code ${*}
     fi
 }
@@ -55,7 +55,7 @@ function call_gnome_shell_extension_installer() {
     local EXTENSION_ID="${EXTENSION}"
 
     if ! [[ ${EXTENSION} =~ ^[0-9]+$ ]]; then
-        EXTENSION_ID=$(echo "q" | \
+        EXTENSION_ID=$(echo 'q' | \
             gnome-shell-extension-installer -s "${EXTENSION}" | \
             grep "\"link\": \"/extension" | \
             head -n 1 | \
@@ -69,24 +69,34 @@ function call_gnome_shell_extension_installer() {
     #fi
 }
 
+function is_package_installed() {
+    local PACKAGE="${1}"
+
+    is_native_package_installed "${PACKAGE}" && return 1
+    is_flatpak_installed "${PACKAGE}" && return 1
+    is_android_package_installed "${PACKAGE}" && return 1
+
+    return 0
+}
+
 function is_native_package_installed() {
 	local PKG="${1}"
 
-    if [[ "${DISTRO_FAMILY}" == "Alpine" ]]; then
+    if [ "${DISTRO_FAMILY}" = 'Alpine' ]; then
         if (call_package_manager info | grep -q "^${PKG}$"); then
             return 0 # True
         else
             return 1 # False
         fi
-    elif [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
+    elif [ "${DISTRO_FAMILY}" = 'Arch' ]; then
     	if (pacman -Q | grep -q "^${PKG}\s" > /dev/null); then
 	    	return 0 # True
 	    else
 		    return 1 # False
 	    fi
-    elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
-      || [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
-        if (apt-cache policy "${PKG}" | grep -q "^\s*Installed:\s*[0-9]"); then
+    elif [ "${DISTRO_FAMILY}" = 'Android' ] \
+      || [ "${DISTRO_FAMILY}" = 'Debian' ]; then
+        if (apt-cache policy "${PKG}" | grep -q '^\s*Installed:\s*[0-9]'); then
 	    	return 0 # True
         else
 		    return 1 # False
@@ -95,7 +105,7 @@ function is_native_package_installed() {
 }
 
 function is_android_package_installed() {
-    [[ "${DISTRO_FAMILY}" != "Android" ]] && return
+    [ "${DISTRO_FAMILY}" != 'Android' ] && return
 
     local PACKAGE="${1}"
 
@@ -113,7 +123,7 @@ function is_flatpak_installed() {
     local PACKAGE_ARCH=$(echo "${PKG}" | awk -F"/" '{print $2}')
     local PACKAGE_BRANCH=$(echo "${PKG}" | awk -F"/" '{print $3}')
 
-    ! does_bin_exist "flatpak" && return 1 # False
+    ! does_bin_exist 'flatpak' && return 1 # False
 
     if (flatpak list | grep -q "${PACKAGE_NAME}" > /dev/null); then
         if [ -z "${PACKAGE_BRANCH}" ]; then
@@ -166,8 +176,8 @@ function is_steam_app_installed() {
 function is_native_package_required() {
     local PACKAGE_NAME="${1}"
 
-    if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-        if pacman -Qi "${PACKAGE_NAME}" | grep -q "^Required By\s*:\s*None\s*$"; then
+    if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
+        if pacman -Qi "${PACKAGE_NAME}" | grep -q '^Required By\s*:\s*None\s*$'; then
             return 1 # False, Not required
         else
             return 0 # True, Required
@@ -183,13 +193,13 @@ function install_native_package() {
 
     is_native_package_installed "${PKG}" && return
 
-    echo -e " >>> Installing native package: \e[0;33m${PKG}\e[0m..."
-    if [[ "${DISTRO_FAMILY}" == "Alpine" ]]; then
+    echo -e ' >>> Installing native package: \e[0;33m${PKG}\e[0m...'
+    if [ "${DISTRO_FAMILY}" = 'Alpine' ]; then
         call_package_manager add "${PKG}"
-    elif [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
+    elif [ "${DISTRO_FAMILY}" = 'Arch' ]; then
         call_package_manager -S --asexplici "${PKG}"
-    elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
-      || [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
+    elif [ "${DISTRO_FAMILY}" = 'Android' ] \
+      || [ "${DISTRO_FAMILY}" = 'Debian' ]; then
         call_package_manager install "${PKG}"
     fi
 }
@@ -200,10 +210,10 @@ function install_native_package_dependency() {
     is_native_package_installed "${PKG}" && return
 
     echo -e " >>> Installing native package dependency: \e[0;33m${PKG}\e[0m..."
-    if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
+    if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
         call_package_manager -S --asexplicit "${PKG}"
-    elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
-      || [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
+    elif [ "${DISTRO_FAMILY}" = 'Android' ] \
+      || [ "${DISTRO_FAMILY}" = 'Debian' ]; then
         call_package_manager install "${PKG}" # TODO: See if there is a way to mark them as dep
     fi
 }
@@ -275,18 +285,26 @@ function install_gnome_shell_extension() {
     call_gnome_shell_extension_installer "${EXTENSION}"
 }
 
+function uninstall_package() {
+    local PACKAGE="${1}"
+
+    uninstall_native_package "${PACKAGE}"
+    uninstall_flatpak "${PACKAGE}"
+    uninstall_android_package "${PACKAGE}"
+}
+
 function uninstall_native_package() {
     for PACKAGE_NAME in ${*// /\n}; do
         is_native_package_installed "${PACKAGE_NAME}" || return
         is_native_package_required "${PACKAGE_NAME}" && return
 
         echo " >>> Uninstalling package: ${PACKAGE_NAME}"
-        if [[ "${DISTRO_FAMILY}" == "Alpine" ]]; then
+        if [ "${DISTRO_FAMILY}" = 'Alpine' ]; then
             call_package_manager del "${PACKAGE_NAME}"
-        elif [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
+        elif [ "${DISTRO_FAMILY}" = 'Arch' ]; then
             call_package_manager -Rns "${PACKAGE_NAME}"
-        elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
-          || [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
+        elif [ "${DISTRO_FAMILY}" = 'Android' ] \
+          || [ "${DISTRO_FAMILY}" = 'Debian' ]; then
             call_package_manager remove "${PACKAGE_NAME}"
         fi
     done

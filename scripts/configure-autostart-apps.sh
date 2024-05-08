@@ -16,7 +16,7 @@ function get_launcher_path_for_app() {
     echo "${AUTOSTART_DIR}/${LAUNCHER_LABEL}.desktop"
 }
 
-function configure-autostart-for-app() {
+function configure_autostart_for_app() {
     local BINARY_NAME="${1}" && shift
     local LAUNCHER_PATH=$(get_launcher_path_for_app "${BINARY_NAME}")
 
@@ -30,10 +30,10 @@ function configure-autostart-for-app() {
 # Discord
 AUTOSTART_DISCORD=false
 if ${AUTOSTART_DISCORD}; then
-    configure-autostart-for-app 'discord' \
+    configure_autostart_for_app 'discord' \
         Exec '/usr/bin/discord --start-minimized' \
         Icon 'discord'
-    configure-autostart-for-app 'com.discordapp.Discord' \
+    configure_autostart_for_app 'com.discordapp.Discord' \
         Name 'Discord' \
         Icon 'discord' \
         Exec 'com.discordapp.Discord --start-minimized'
@@ -45,55 +45,56 @@ else
 fi
 
 # ElectronMail
-configure-autostart-for-app "/opt/ElectronMail/electron-mail" \
-    Name "Mail" \
+configure_autostart_for_app "/opt/ElectronMail/electron-mail" \
+    Name 'Mail' \
+    Icon 'electron-mail' \
     Exec "/opt/ElectronMail/electron-mail --js-flags=\"--max-old-space-size=6144\" %U"
-configure-autostart-for-app "com.github.vladimiry.ElectronMail" \
-    Name "Mail" \
-    Icon "electron-mail" \
+configure_autostart_for_app "com.github.vladimiry.ElectronMail" \
+    Name 'Mail' \
+    Icon 'electron-mail' \
     Exec "com.github.vladimiry.ElectronMail --js-flags=--max-old-space-size=12288 %U"
 
 # Planify
-configure-autostart-for-app "io.github.alainm23.planify" \
+configure_autostart_for_app "io.github.alainm23.planify" \
     Name 'Reminders' \
     Name[ro] 'Mementouri' \
     Icon 'gnome-todo' \
     Exec 'io.github.alainm23.planify --background'
 
 # Plank
-configure-autostart-for-app "plank" \
-    Icon "plank" \
-    Exec "plank"
+configure_autostart_for_app 'plank' \
+    Icon 'plank' \
+    Exec 'plank'
 
 # Signal
-configure-autostart-for-app "signal-desktop" \
+configure_autostart_for_app "signal-desktop" \
     Name "Signal" \
     Exec "signal-desktop --start-in-tray --no-sandbox -- %u"
-configure-autostart-for-app "org.signal.Signal" \
+configure_autostart_for_app "org.signal.Signal" \
     Name "Signal" \
     Icon "signal" \
     Exec "org.signal.Signal --start-in-tray --no-sandbox -- %u"
 
 # Telegram
-configure-autostart-for-app "telegram-desktop" \
+configure_autostart_for_app "telegram-desktop" \
     Name "Telegram" \
     Icon "telegram" \
     Exec "/usr/bin/telegram-desktop -workdir ${XDG_DATA_HOME}/TelegramDesktop/ -startintray -autostart"
-configure-autostart-for-app "org.telegram.desktop" \
+configure_autostart_for_app "org.telegram.desktop" \
     Name "Telegram" \
     Icon "telegram" \
     Exec "org.telegram.desktop -workdir ${HOME_VAR_APP}/org.telegram.desktop/data/TelegramDesktop/ -startintray -autostart"
-configure-autostart-for-app "app.drey.PaperPlane.desktop" \
+configure_autostart_for_app "app.drey.PaperPlane.desktop" \
     Name "Telegram" \
     Icon "telegram" \
     Exec "app.drey.PaperPlane"
 
 # WhatsApp
-configure-autostart-for-app "io.github.mimbrero.WhatsAppDesktop" \
+configure_autostart_for_app "io.github.mimbrero.WhatsAppDesktop" \
     Name "WhatsApp" \
     Icon "whatsapp" \
     Exec "io.github.mimbrero.WhatsAppDesktop --start-hidden"
-configure-autostart-for-app "whatsapp-nativefier" \
+configure_autostart_for_app "whatsapp-nativefier" \
     Name "WhatsApp" \
     Icon "whatsapp" \
     Exec "whatsapp-nativefier"
