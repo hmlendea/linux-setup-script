@@ -44,8 +44,9 @@ function keep_only_one_package() {
         if is_android_package_installed "${PACKAGE}" \
         || is_flatpak_installed "${PACKAGE}" \
         || is_android_package_installed "${PACKAGE}"; then
-        FIRST_INSTALLED_PACKAGE="${PACKAGE}"
-        break
+            FIRST_INSTALLED_PACKAGE="${PACKAGE}"
+            break
+        fi
     done
 
     [ -z "${FIRST_INSTALLED_PACKAGE}" ] && return

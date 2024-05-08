@@ -252,74 +252,74 @@ remove \
 ! does_bin_exist "nvidia-settings" && remove \
     "${XDG_CACHE_HOME}/nvidia" \
     "${XDG_CONFIG_HOME}/nvidia"
-! does_bin_exist "onlyoffice-desktopeditors" && remove \
+! does_bin_exist 'onlyoffice-desktopeditors' && remove \
     "${XDG_CONFIG_HOME}/onlyoffice" \
     "${XDG_DATA_HOME}/onlyoffice"
-! does_bin_exist "openrazer-daemon" && remove "${XDG_DATA_HOME}/openrazer"
-! does_bin_exist "openrgb" && remove "${XDG_CONFIG_HOME}/OpenRGB"
-! does_bin_exist "openshot-qt" && remove "${HOME}/.openshot_qt"
-! does_bin_exist "pavucontrol" && remove "${XDG_CONFIG_HOME}/pavucontrol.ini"
-! does_bin_exist "pip" && remove "${XDG_CACHE_HOME}/pip"
-! does_bin_exist "plank" && remove \
+! does_bin_exist 'openrazer-daemon' && remove "${XDG_DATA_HOME}/openrazer"
+! does_bin_exist 'openrgb' && remove "${XDG_CONFIG_HOME}/OpenRGB"
+! does_bin_exist 'openshot-qt' && remove "${HOME}/.openshot_qt"
+! does_bin_exist 'pavucontrol' && remove "${XDG_CONFIG_HOME}/pavucontrol.ini"
+! does_bin_exist 'pip' && remove "${XDG_CACHE_HOME}/pip"
+! does_bin_exist 'plank' && remove \
     "${XDG_CACHE_HOME}/plank" \
     "${XDG_CONFIG_HOME}/plank" \
     "${XDG_DATA_HOME}/plank"
-! does_bin_exist "plexmediaplayer" && remove \
+! does_bin_exist 'plexmediaplayer' && remove \
     "${XDG_CACHE_HOME}/plex-media-player" \
     "${XDG_CACHE_HOME}/plexmediaplayer" \
     "${XDG_CONFIG_HOME}/plex.tv" \
     "${XDG_DATA_HOME}/plexmediaplayer"
-! does_bin_exist "postman" && \
+! does_bin_exist 'postman' && \
     remove "${HOME}/Postman" \
     remove "${XDG_CONFIG_HOME}/Postman"
-! does_bin_exist "protonfixes" && remove "${XDG_CACHE_HOME}/protonfixes"
-! does_bin_exist "protontricks" && remove "${XDG_CACHE_HOME}/protontricks"
-! does_bin_exist "rclone" && remove "${XDG_CONFIG_HOME}/rclone"
-! does_bin_exist "rhythmbox" && remove \
+! does_bin_exist 'protonfixes' && remove "${XDG_CACHE_HOME}/protonfixes"
+! does_bin_exist 'protontricks' && remove "${XDG_CACHE_HOME}/protontricks"
+! does_bin_exist 'rclone' && remove "${XDG_CONFIG_HOME}/rclone"
+! does_bin_exist 'rhythmbox' && remove \
     "${XDG_CACHE_HOME}/rhythmbox" \
     "${XDG_DATA_HOME}/rhythmbox"
-! does_bin_exist "runelite" && remove "${HOME}/.runelite"
-! does_bin_exist "samrewritten" && remove "${XDG_CACHE_HOME}/SamRewritten"
-! does_bin_exist "simplescreenrecorder" && remove "${HOME}/.ssr"
-! does_bin_exist "simplenote" && remove "${XDG_CONFIG_HOME}/Simplenote"
-! does_bin_exist "snap" && remove "${HOME}/.snap"
-! does_bin_exist "snapcraft" && remove \
+! does_bin_exist 'runelite' && remove "${HOME}/.runelite"
+! does_bin_exist 'samrewritten' && remove "${XDG_CACHE_HOME}/SamRewritten"
+! does_bin_exist 'simplescreenrecorder' && remove "${HOME}/.ssr"
+! does_bin_exist 'simplenote' && remove "${XDG_CONFIG_HOME}/Simplenote"
+! does_bin_exist 'snap' && remove "${HOME}/.snap"
+! does_bin_exist 'snapcraft" && remove \
     "${XDG_CACHE_HOME}/snapcraft" \
     "${XDG_CONFIG_HOME}/snapcraft"
-! does_bin_exist "sokogrump" && remove "${XDG_DATA_HOME}/SokoGrump"
-! does_bin_exist "spotify" && remove \
+! does_bin_exist 'sokogrump' && remove "${XDG_DATA_HOME}/SokoGrump"
+! does_bin_exist 'spotify' && remove \
     "${XDG_CACHE_HOME}/spotify" \
     "${XDG_CONFIG_HOME}/spotify"
-! does_bin_exist "teamviewer" && remove \
+! does_bin_exist 'teamviewer' && remove \
     "${XDG_CACHE_HOME}/TeamViewer" \
     "${XDG_CONFIG_HOME}/teamviewer" \
     "${XDG_DATA_HOME}/teamviewer15"
-! does_bin_exist "thunar" && remove "${XDG_CONFIG_HOME}/Thunar"
-! does_bin_exist "totem" && remove \
+! does_bin_exist 'thunar' && remove "${XDG_CONFIG_HOME}/Thunar"
+! does_bin_exist 'totem' && remove \
     "${XDG_CACHE_HOME}/totem" \
     "${XDG_CONFIG_HOME}/totem" \
     "${XDG_DATA_HOME}/totem"
-! does_bin_exist "transmission-daemon" && remove "${XDG_CONFIG_HOME}/transmission-daemon"
-! does_bin_exist "ulauncher" && remove "${XDG_DATA_HOME}/ulauncher"
-! does_bin_exist "virtualbox" && remove "${XDG_CONFIG_HOME}/VirtualBox"
-! does_bin_exist "vim" && remove \
+! does_bin_exist 'transmission-daemon' && remove "${XDG_CONFIG_HOME}/transmission-daemon"
+! does_bin_exist 'ulauncher' && remove "${XDG_DATA_HOME}/ulauncher"
+! does_bin_exist 'virtualbox' && remove "${XDG_CONFIG_HOME}/VirtualBox"
+! does_bin_exist 'vim' && remove \
     "${HOME}/.viminfo" \
     "${HOME}/.vimrc" \
     "${XDG_CACHE_HOME}/vim"
-! does_bin_exist "vlc" && remove \
+! does_bin_exist 'vlc' && remove \
     "${XDG_CACHE_HOME}/vlc" \
     "${XDG_CONFIG_HOME}/vlc" \
     "${XDG_DATA_HOME}/vlc"
-! does_bin_exist "wike" && remove "${XDG_CACHE_HOME}/wike"
-! does_bin_exist "yarn" && remove \
+! does_bin_exist 'wike' && remove "${XDG_CACHE_HOME}/wike"
+! does_bin_exist 'yarn' && remove \
     "${HOME}/.yarn" \
     "${HOME}/.yarnrc"
-! does_bin_exist "yay" && remove \
+! does_bin_exist 'yay' && remove \
     "${XDG_CACHE_HOME}/yay" \
     "${XDG_CONFIG_HOME}/yay"
-! does_bin_exist "youtube-dl" && remove "${XDG_CACHE_HOME}/youtube-dl"
-! does_bin_exist "yt-dlp" && remove "${XDG_CACHE_HOME}/yt-dlp"
-! does_bin_exist "zsh" && remove "${HOME}/.zshrc"
+! does_bin_exist 'youtube-dl' && remove "${XDG_CACHE_HOME}/youtube-dl"
+! does_bin_exist 'yt-dlp' && remove "${XDG_CACHE_HOME}/yt-dlp"
+! does_bin_exist 'zsh' && remove "${HOME}/.zshrc"
 
 ############
 ### Chat ###
