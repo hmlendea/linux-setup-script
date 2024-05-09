@@ -175,12 +175,14 @@ function get_device_model() {
         local DEVICE_MODEL=$(cat -A "${ROOT_PROC}/device-tree/model")
 
         if echo "${DEVICE_MODEL}" | grep -q "Raspberry Pi 3"; then
-            echo "Raspberry Pi 3"
+            echo 'Raspberry Pi 3'
         elif echo "${DEVICE_MODEL}" | grep -q "Raspberry Pi 4"; then
-            echo "Raspberry Pi 4"
+            echo 'Raspberry Pi 4'
         else
         	echo "${DEVICE_MODEL}" | sed 's/[@\^\$]*$//g'
         fi
+    elif [ -f "${ROOT_PROC}/ish/version" ]; then
+        echo 'iPhone'
     fi
 }
 
@@ -468,25 +470,30 @@ function get_dmi_string() {
 function get_chassis_type() {
     local DMI_CHASSIS_TYPE="$(get_dmi_string chassis-type)"
 
-    if [ "${DMI_CHASSIS_TYPE}" = "Notebook" ]; then
-        echo "Laptop"
+    if [ "${DMI_CHASSIS_TYPE}" = 'Notebook' ]; then
+        echo 'Laptop'
+        return
+    fi
+
+    if [[ ${DEVICE_MODEL} =~ 'iPhone' ]]; then
+        echo 'Phone'
         return
     fi
 
     if [ -d "${ROOT_SYS}/module/battery" ] \
     && [ -d "${ROOT_PROC}/acpi/button/lid" ]; then
-        if [ "${DISTRO}" = "SteamOS" ]; then
-            echo "Gaming Handheld"
+        if [ "${DISTRO}" = 'SteamOS' ]; then
+            echo 'Gaming Handheld'
         else
-            echo "Laptop"
+            echo 'Laptop'
         fi
 
         return
     fi
 
-    if [ "${DISTRO_FAMILY}" = "Android" ] \
-    || [ "${DISTRO}" = "postmarketOS" ]; then
-        echo "Phone"
+    if [ "${DISTRO_FAMILY}" = 'Android' ] \
+    || [ "${DISTRO}" = 'postmarketOS' ]; then
+        echo 'Phone'
         return
     fi
 
@@ -563,14 +570,21 @@ elif [ "${DISTRO}" = "SteamOS" ]; then
     DEVICE_MODEL="Steam Deck"
 fi
 
-if [[ "${OS}" == "CYGWIN_NT-10.0" ]]; then
-    DISTRO="Cygwin"
-    DISTRO_FAMILY="Windows"
-    OS="Windows"
-elif [[ "${OS}" == "postmarketOS" ]]; then
-	DISTRO="postmarketOS"
-	DISTRO_FAMILY="Alpine"
-	OS="Linux"
+if [ "${OS}" = 'Alpine Linux' ] \
+|| [ "${OS}" = 'postmarketOS' ] \
+|| [ "${DISTRO}" = 'alpine' ]; then
+    DISTRO_FAMILY='Alpine'
+    OS='Linux'
+fi
+
+if [ "${OS}" = 'Alpine Linux' ]; then
+    DISTRO='Alpine Linux'
+elif [ "${OS}" = 'CYGWIN_NT-10.0' ]; then
+    DISTRO='Cygwin'
+    DISTRO_FAMILY='Windows'
+    OS='Windows'
+elif [ "${OS}" = 'postmarketOS' ]; then
+	DISTRO='postmarketOS'
 fi
 
 # Destkp Environment
