@@ -189,37 +189,37 @@ function is_native_package_required() {
 }
 
 function install_native_package() {
-	local PKG="${1}"
+	local PACKAGE="${1}"
 
-    is_native_package_installed "${PKG}" && return
+    is_native_package_installed "${PACKAGE}" && return
 
-    echo -e ' >>> Installing native package: \e[0;33m${PKG}\e[0m...'
+    echo -e " >>> Installing native package: \e[0;33m${PACKAGE}\e[0m..."
     if [ "${DISTRO_FAMILY}" = 'Alpine' ]; then
-        call_package_manager add "${PKG}"
+        call_package_manager add "${PACKAGE}"
     elif [ "${DISTRO_FAMILY}" = 'Arch' ]; then
-        call_package_manager -S --asexplici "${PKG}"
+        call_package_manager -S --asexplici "${PACKAGE}"
     elif [ "${DISTRO_FAMILY}" = 'Android' ] \
       || [ "${DISTRO_FAMILY}" = 'Debian' ]; then
-        call_package_manager install "${PKG}"
+        call_package_manager install "${PACKAGE}"
     fi
 }
 
 function install_native_package_dependency() {
-	local PKG="${1}"
+	local PACKAGE="${1}"
 
-    is_native_package_installed "${PKG}" && return
+    is_native_package_installed "${PACKAGE}" && return
 
-    echo -e " >>> Installing native package dependency: \e[0;33m${PKG}\e[0m..."
+    echo -e " >>> Installing native package dependency: \e[0;33m${PACKAGE}\e[0m..."
     if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
-        call_package_manager -S --asexplicit "${PKG}"
+        call_package_manager -S --asexplicit "${PACKAGE}"
     elif [ "${DISTRO_FAMILY}" = 'Android' ] \
       || [ "${DISTRO_FAMILY}" = 'Debian' ]; then
-        call_package_manager install "${PKG}" # TODO: See if there is a way to mark them as dep
+        call_package_manager install "${PACKAGE}" # TODO: See if there is a way to mark them as dep
     fi
 }
 
 function install_android_package() {
-    [[ "${DISTRO_FAMILY}" != "Android" ]] && return
+    [ "${DISTRO_FAMILY}" != 'Android' ] && return
 
 	local PACKAGE="${1}"
     local PACKAGE_NAME="${2}"
