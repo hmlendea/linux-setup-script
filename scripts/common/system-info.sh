@@ -647,14 +647,14 @@ else
         IS_BATTERY_DEVICE=true
     fi
 
-    if [ "${ARCH_FAMILY}" = "x86" ]; then
-        if [ -n "${CPU_MODEL}" ] && [ $(echo ${CPU_MODEL} | grep -c "Atom") -le 1 ]; then
+    if [ "${ARCH_FAMILY}" = 'x86' ]; then
+        if [ -n "${CPU_MODEL}" ] && [ $(echo ${CPU_MODEL} | grep -c 'Atom') -le 1 ]; then
             POWERFUL_PC=true
         fi
     fi
 
     if ${POWERFUL_PC}; then
-        if [ "${CPU_MODEL}" = "Ryzen 7 5800X" ]; then
+        if [ "${CPU_MODEL}" = 'Ryzen 7 5800X' ]; then
             IS_GAMING_DEVICE=true
             HAS_GUI=true
         else
@@ -665,35 +665,36 @@ else
     [ -d "${ROOT_SYS}/firmware/efi/efivars" ] && HAS_EFI_SUPPORT=true
 fi
 
-if [ -n "${DESKTOP_ENVIRONMENT}" ] \
+if [ "${DESKTOP_ENVIRONMENT}" != 'None' ] \
 || [ -f "${ROOT_ETC}/systemd/system/display-manager.service" ]; then
     HAS_GUI=true
 else
     case ${HOSTNAME} in
-        *"PC")  HAS_GUI=true ;;
-        *"Pi")  HAS_GUI=false ;;
-        *"Top") HAS_GUI=true ;;
-        *)      HAS_GUI=false ;;
+        'iPhone'*)  HAS_GUI=false ;;
+        *'PC')      HAS_GUI=true ;;
+        *'Pi')      HAS_GUI=false ;;
+        *'Top')     HAS_GUI=true ;;
+        *)          HAS_GUI=false ;;
     esac
 fi
 
 if ${HAS_GUI}; then
-    if does_bin_exist "code" "code-oss" "codium" "com.visualstudio.code" \
-    || does_bin_exist "dotnet"; then
+    if does_bin_exist 'code' 'code-oss' 'codium' 'com.visualstudio.code' \
+    || does_bin_exist 'dotnet'; then
         IS_DEVELOPMENT_DEVICE=true
     fi
 
-    if does_bin_exist "steam" "com.valvesoftware.Steam"; then
+    if does_bin_exist 'steam' 'com.valvesoftware.Steam'; then
         IS_GAMING_DEVICE=true
     fi
 else
     IS_GENERAL_PURPOSE_DEVICE=false
 fi
 
-if does_bin_exist "sudo"; then
-    if [[ "${DISTRO_FAMILY}" == "Android" ]]; then
-        if [ -f "/sbin/su" ] \
-        || [ -f "/bin/su" ]; then
+if does_bin_exist 'sudo'; then
+    if [ "${DISTRO_FAMILY}" = 'Android' ]; then
+        if [ -f '/sbin/su' ] \
+        || [ -f '/bin/su' ]; then
             HAS_SU_PRIVILEGES=true
         fi
     else

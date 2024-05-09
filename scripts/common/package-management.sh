@@ -311,7 +311,7 @@ function uninstall_native_package() {
 }
 
 function uninstall_android_package() {
-    [[ "${DISTRO_FAMILY}" != "Android" ]] && return
+    [ "${DISTRO_FAMILY}" != 'Android' ] && return
 
     for PACKAGE in ${*// /\n}; do
         is_android_package_installed "${PACKAGE}" || return

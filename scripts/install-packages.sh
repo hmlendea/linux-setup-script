@@ -60,12 +60,12 @@ fi
 ########################
 ### Package Managers ###
 ########################
-if [ "${OS}" = "Linux" ]; then
-    if [ "${DISTRO_FAMILY}" = "Arch" ] \
-    && [ "${DISTRO}" != "SteamOS" ]; then
+if [ "${OS}" = 'Linux' ]; then
+    if [ "${DISTRO_FAMILY}" = 'Arch' ] \
+    && [ "${DISTRO}" != 'SteamOS' ]; then
         #install_native_package openssl-1.1 # Required for package management
 
-        if [[ "${ARCH}" != "armv7l" ]]; then
+        if [ "${ARCH}" != 'armv7l' ]; then
             install_aur_package_manually paru-bin
         else
             # Special case, since we don't want to build paru from source (it takes a LOOONG time)
@@ -77,7 +77,7 @@ if [ "${OS}" = "Linux" ]; then
         #install_native_package pkgfile
     fi
 
-    ${HAS_GUI} && install_native_package flatpak
+    ${HAS_GUI} && install_native_package 'flatpak'
 fi    
 
 ###################
