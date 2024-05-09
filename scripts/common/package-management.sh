@@ -72,11 +72,11 @@ function call_gnome_shell_extension_installer() {
 function is_package_installed() {
     local PACKAGE="${1}"
 
-    is_native_package_installed "${PACKAGE}" && return 1
-    is_flatpak_installed "${PACKAGE}" && return 1
-    is_android_package_installed "${PACKAGE}" && return 1
+    is_native_package_installed "${PACKAGE}" && return 0
+    is_flatpak_installed "${PACKAGE}" && return 0
+    is_android_package_installed "${PACKAGE}" && return 0
 
-    return 0
+    return 1
 }
 
 function is_native_package_installed() {

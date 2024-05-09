@@ -47,7 +47,7 @@ function keep_only_one_package() {
         fi
     done
 
-    [ -n "${FIRST_INSTALLED_PACKAGE}" ] && return
+    [ -z "${FIRST_INSTALLED_PACKAGE}" ] && return
 
     for PACKAGE in "${@}"; do
         [ "${PACKAGE}" = "${FIRST_INSTALLED_PACKAGE}" ] && continue
