@@ -47,6 +47,36 @@ function get_config_value() {
 }
 
 function set_config_value() {
+    local SEPARATOR='='
+    local SECTION=''
+
+    [ "${1}" = '--separator' ] && shift && SEPARATOR="${1}" && shift
+    [ "${1}" = '--section' ] && shift && SECTION="${1}" && shift
+
+    local FILE="${1}"
+    local KEY="${2}"
+    local VALUE="${@:3}"
+
+    [ ! -f "${FILE}" ] && return
+
+    if [[ "${FILE}" =~ \.(json)$ ]]; then
+        set_json_property "${FILE}" "${KEY}" "${VALUE}"
+    elif [[ "${FILE}" =~ \.(xml)$ ]]; then
+        set_xml_node "${FILE}" "${KEY}" "${VALUE}"
+    else
+        if [ -n "${SECTION}" ]; then
+            set_ini_config_value \
+                --separator "${SEPARATOR}" --section "${SECTION}" \
+                "${FILE}" "${KEY}" "${VALUE}"
+        else
+            set_ini_config_value \
+                --separator "${SEPARATOR}" \
+                "${FILE}" "${KEY}" "${VALUE}"
+        fi
+    fi
+}
+
+function set_ini_config_value() {
     local SEPARATOR="="
     local SECTION=""
     local SECTIONS_COUNT=0

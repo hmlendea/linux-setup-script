@@ -623,6 +623,13 @@ if does_bin_exist "discord" "com.discordapp.Discord"; then
 
     set_json_property "${DISCORD_SETTINGS_FILE}" ".SKIP_HOST_UPDATE" true
 fi
+if does_bin_exist "org.signal.Signal"; then
+    SIGNAL_CONFIG_DIR="${HOME_VAR_APP}/org.signal.Signal/config/Signal"
+    SIGNAL_EPHEMERAL_FILE="${SIGNAL_CONFIG_DIR}/ephemeral.json"
+
+    set_config_value "${SIGNAL_EPHEMERAL_FILE}" '.["system-tray-setting"]' 'MinimizeToSystemTray'
+    set_config_value "${SIGNAL_EPHEMERAL_FILE}" '.["spell-check"]' false
+fi
 if does_bin_exist "teams" "teams-insiders" "com.microsoft.Teams"; then
     TEAMS_CONFIG_DIR="${XDG_CONFIG_HOME}/Microsoft/Microsoft Teams"
     [ -d "${HOME_VAR_APP}/com.microsoft.Teams" ] && TEAMS_CONFIG_DIR="${HOME_VAR_APP}/com.microsoft.Teams/config/Microsoft/Microsoft Teams"
@@ -659,7 +666,12 @@ if does_bin_exist "teams" "teams-insiders" "com.microsoft.Teams"; then
     set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" '.appPreferenceSettings.enableMediaLoggingPreferenceKey' false
 fi
 if does_bin_exist "telegram-desktop" "com.telegram.desktop"; then
+    TELEGRAM_CONFIG_DIR="${HOME_VAR_APP}/org.telegram.desktop/data/TelegramDesktop/tdata"
+    TELEGRAM_EXPERIMENTAL_OPTIONS_FILE="${TELEGRAM_CONFIG_DIR}/experimental_options.json"
+    
     set_config_value "${ENVIRONMENT_VARS_FILE}" TDESKTOP_I_KNOW_ABOUT_GTK_INCOMPATIBILITY "1"
+
+    set_config_value "${TELEGRAM_EXPERIMENTAL_OPTIONS_FILE}" '.["mono-settings-icons"]' true
 fi
 if does_bin_exist "whatsapp-for-linux"; then
     WAPP_CONFIG_FILE="${XDG_CONFIG_HOME}/whatsapp-for-linux/settings.conf"
@@ -1278,7 +1290,17 @@ fi
 #####################
 ### Music Players ###
 #####################
-if does_bin_exist "dev.alextren.Spot"; then
+if does_bin_exist 'com.spotify.Client'; then
+    SPOTIFY_CONFIG_FILE=$(ls "${HOME_VAR_APP}/com.spotify.Client/config/spotify/Users/"*"/prefs" | head -n 1)
+
+    set_config_value "${SPOTIFY_CONFIG_FILE}" 'audio.play_bitrate_enumeration' 4
+    set_config_value "${SPOTIFY_CONFIG_FILE}" 'audio.play_bitrate_non_metered_enumeration' 4
+    set_config_value "${SPOTIFY_CONFIG_FILE}" 'audio.sync_bitrate_enumeration' 4
+    set_config_value "${SPOTIFY_CONFIG_FILE}" 'audio.sync_bitrate_non_metered_migrated' true
+    set_config_value "${SPOTIFY_CONFIG_FILE}" 'ui.hide_hpto' true
+    set_config_value "${SPOTIFY_CONFIG_FILE}" 'ui.track_notifications_enabled' false
+fi
+if does_bin_exist 'dev.alextren.Spot'; then
     SPOT_CONFIG_FILE="${HOME_VAR_APP}/dev.alextren.Spot/config/glib-2.0/settings/keyfile"
 
     set_config_value --section "dev/alextren/Spot" "${SPOT_CONFIG_FILE}" 'audio-backend' 'gstreamer'
