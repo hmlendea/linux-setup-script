@@ -15,23 +15,27 @@ function get_latest_github_release_assets() {
 ##############
 ### Basics ###
 ##############
-install_native_package coreutils
-install_native_package most
-install_native_package wget
+install_native_package 'coreutils'
+install_native_package 'wget'
 
-if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-    install_native_package bash-completion
-    install_native_package usbutils
+if ! [[ ${DEVICE_MODEL} =~ 'iPhone' ]]; then
+    install_native_package 'most'
+fi
 
-    install_native_package man-db
-    install_native_package man-pages
-    install_native_package sudo
+if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
+    install_native_package 'bash-completion'
+    install_native_package 'usbutils'
 
-    install_native_package bat
-elif [[ "${DISTROY_FAMILY}" == "Android" ]]; then
-    install_native_package manpages
+    install_native_package 'man-db'
+    install_native_package 'man-pages'
+    install_native_package 'realtime-privileges'
+    install_native_package 'sudo'
 
-    [ -f "/sbin/su" ] && install_native_package tsu
+    install_native_package 'bat'
+elif [ "${DISTROY_FAMILY}" = 'Android' ]; then
+    install_native_package 'manpages'
+
+    [ -f '/sbin/su' ] && install_native_package 'tsu'
 fi
 
 install_native_package 'findutils'
@@ -39,22 +43,22 @@ install_native_package 'findutils'
 ##################
 ### base-devel ###
 ##################
-install_native_package autoconf
-install_native_package binutils
-install_native_package make
-install_native_package fakeroot
-install_native_package patch
+install_native_package 'autoconf'
+install_native_package 'binutils'
+install_native_package 'make'
+install_native_package 'fakeroot'
+install_native_package 'patch'
 
-if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-    install_native_package debugedit
-    install_native_package gcc
-    install_native_package pkgconf
+if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
+    install_native_package 'debugedit'
+    install_native_package 'gcc'
+    install_native_package 'pkgconf'
 fi
 
 # Extra devel for parallelising the build processes
-if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-    install_native_package pbzip2  # Drop-in replacement for bzip2, with multithreading
-    install_native_package pigz    # Drop-in replacement for gzip, with multithreading
+if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
+    install_native_package 'pbzip2' # Drop-in replacement for bzip2, with multithreading
+    install_native_package 'pigz'   # Drop-in replacement for gzip, with multithreading
 fi
 
 ########################
@@ -66,10 +70,10 @@ if [ "${OS}" = 'Linux' ]; then
         #install_native_package openssl-1.1 # Required for package management
 
         if [ "${ARCH}" != 'armv7l' ]; then
-            install_aur_package_manually paru-bin
+            install_aur_package_manually 'paru-bin'
         else
             # Special case, since we don't want to build paru from source (it takes a LOOONG time)
-            install_aur_package_manually yay-bin
+            install_aur_package_manually 'yay-bin'
         fi
 
         #install_native_package pacman-contrib
@@ -227,7 +231,10 @@ if [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ] \
 || [ "${DESKTOP_ENVIRONMENT}" = "Phosh" ]; then
     install_native_package gnome-bluetooth
 elif [ -n "${DESKTOP_ENVIRONMENT}" ]; then
-    install_native_package blueman
+    if ! [[ ${DEVICE_MODEL} =~ 'iPhone' ]] \
+    && [ "${DISTRO_FAMILY}" != 'Android' ]; then
+        install_native_package blueman
+    fi
 fi
 
 ####################
@@ -549,8 +556,7 @@ fi
 
 
 
-if [ "${OS}" == "Linux" ]; then
-    install_native_package realtime-privileges
+if [ "${OS}" = 'Linux' ]; then
 
     if ${HAS_GUI}; then
         install_native_package dkms
