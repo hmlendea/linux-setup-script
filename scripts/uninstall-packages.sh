@@ -18,26 +18,9 @@ elif [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
     yes | run_as_su apt autoremove
 fi
 
-if does_bin_exist "flatpak"; then
-    call_flatpak uninstall --unused
-fi
+does_bin_exist 'flatpak' && call_flatpak uninstall --unused
 
-function keep_first_package() {
-    local PACKAGE_TO_KEEP_NAME="${1}" && shift
-    local PACKAGE_TO_UNINSTALL_NAME="${1}"
-
-    for PACKAGE_TO_UNINSTALL_NAME in "${@}"; do
-        if is_android_package_installed "${PACKAGE_TO_KEEP_NAME}" \
-        || is_flatpak_installed "${PACKAGE_TO_KEEP_NAME}" \
-        || is_android_package_installed "${PACKAGE_TO_KEEP_NAME}"; then
-            uninstall_android_package "${PACKAGE_TO_UNINSTALL_NAME}"
-            uninstall_flatpak "${PACKAGE_TO_UNINSTALL_NAME}"
-            uninstall_native_package "${PACKAGE_TO_UNINSTALL_NAME}"
-        fi
-    done
-}
-
-function keep_only_one_package() {
+function keep_first_installed_package() {
     local FIRST_INSTALLED_PACKAGE=''
 
     for PACKAGE in "${@}"; do
@@ -50,22 +33,20 @@ function keep_only_one_package() {
     [ -z "${FIRST_INSTALLED_PACKAGE}" ] && return
 
     for PACKAGE in "${@}"; do
-        [ "${PACKAGE}" = "${FIRST_INSTALLED_PACKAGE}" ] && continue
-
-        uninstall_package "${PACKAGE}"
+        [ "${PACKAGE}" != "${FIRST_INSTALLED_PACKAGE}" ] && uninstall_package "${PACKAGE}"
     done
 }
 
 # Chat Apps
-keep_first_package 'com.telegram.desktop' 'telegram-desktop'
-keep_only_one_package 'de.schmidhuberj.Flare' 'org.signal.Signal' 'signal-desktop'
+keep_first_installed_package 'com.telegram.desktop' 'telegram-desktop'
+keep_first_installed_package 'de.schmidhuberj.Flare' 'org.signal.Signal' 'signal-desktop'
 
 # Image Viewers
 [ "${DESKTOP_ENVIRONMENT}" != 'Phosh' ] && uninstall_flatpak 'org.gnome.eog' && uninstall_native_package 'eog-plugins' 'eog'
-[ "${DESKTOP_ENVIRONMENT}" != "LXDE" ] && uninstall_native_package 'gwenview'
+[ "${DESKTOP_ENVIRONMENT}" != 'LXDE' ] && uninstall_native_package 'gwenview'
 
 # Internet Browsers
-keep_only_one_package \
+keep_first_installed_package \
     'io.gitlab.librewolf-community' \
     'firefox-esr' 'org.mozilla.fenix' 'org.mozilla.firefox' 'firefox' \
     'foundation.e.browser' 'org.lineageos.jelly'
@@ -76,26 +57,26 @@ if ! is_native_package_installed 'firefox' \
 fi
 
 # Music players
-keep_only_one_package 'dev.alextren.Spot' 'com.spotify.Client'
+keep_first_installed_package 'dev.alextren.Spot' 'com.spotify.Client'
 uninstall_android_package 'org.lineageos.eleven'
 uninstall_android_package 'com.xiaomi.mimusic2'
 
 # Note Taking apps
-keep_first_package "com.automattic.simplenote" "foundation.e.notes"
+keep_first_installed_package "com.automattic.simplenote" "foundation.e.notes"
 
 # System Monitors
-keep_first_package "net.nokyan.Resources" "gnome-system-monitor"
+keep_first_installed_package "net.nokyan.Resources" "gnome-system-monitor"
 
 # Task Management apps
-keep_first_package "io.github.alainm23.planify" "org.gnome.Todo"
+keep_first_installed_package "io.github.alainm23.planify" "org.gnome.Todo"
 
 # Video players
 uninstall_android_package "com.mitv.mivideoplayer"
 uninstall_android_package "com.mitv.videoplayer"
-keep_first_package "com.github.rafostar.Clapper" "org.gnome.Totem"
+keep_first_installed_package "com.github.rafostar.Clapper" "org.gnome.Totem"
 
 # zzz OTHERS
-keep_first_package 'chrony' 'ntp'
+keep_first_installed_package 'chrony' 'ntp'
 
 
 # Uninstall the packages

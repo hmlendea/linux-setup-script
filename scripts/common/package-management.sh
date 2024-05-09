@@ -105,7 +105,7 @@ function is_native_package_installed() {
 }
 
 function is_android_package_installed() {
-    [ "${DISTRO_FAMILY}" != 'Android' ] && return
+    [ "${DISTRO_FAMILY}" != 'Android' ] && return 1
 
     local PACKAGE="${1}"
 
@@ -197,7 +197,7 @@ function install_native_package() {
     if [ "${DISTRO_FAMILY}" = 'Alpine' ]; then
         call_package_manager add "${PACKAGE}"
     elif [ "${DISTRO_FAMILY}" = 'Arch' ]; then
-        call_package_manager -S --asexplici "${PACKAGE}"
+        call_package_manager -S --asexplicit "${PACKAGE}"
     elif [ "${DISTRO_FAMILY}" = 'Android' ] \
       || [ "${DISTRO_FAMILY}" = 'Debian' ]; then
         call_package_manager install "${PACKAGE}"
