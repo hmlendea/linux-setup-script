@@ -125,7 +125,10 @@ remove \
 ! does_bin_exist "aircrack-ng" && remove "${HOME}/.aircrack"
 ! does_bin_exist "alsi" && remove "${XDG_CONFIG_HOME}/alsi"
 ! does_bin_exist "asciinema" && remove "${XDG_CONFIG_HOME}/asciinema"
-! does_bin_exist "audacity" && remove "${HOME}/.audacity-data"
+! does_bin_exist "audacity" && remove \
+    "${HOME}/.audacity-data" \
+    "${XDG_CONFIG_HOME}/audacity" \
+    "${XDG_DATA_HOME}/audacity"
 ! does_bin_exist "autokey-shell" && remove \
     "${XDG_CONFIG_HOME}/autokey" \
     "${XDG_DATA_HOME}/autokey"
@@ -225,6 +228,7 @@ remove \
 ! does_bin_exist 'mcaselector' && remove \
     "${HOME}/.mcaselector" \
     "${XDG_CACHE_HOME}/mcaselector" \
+    "${XDG_CONFIG_HOME}/mcaselector" \
     "${XDG_DATA_HOME}/mcaselector"
 ! does_bin_exist 'mcedit' && remove "${HOME}/.mcedit"
 ! does_bin_exist 'minetest' && remove "${XDG_CACHE_HOME}/minetest"
