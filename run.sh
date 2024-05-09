@@ -85,8 +85,8 @@ run_script "${REPO_SCRIPTS_DIR}/configure-permissions.sh" # Run after install-pa
 [ "${OS}" == "Linux" ] && run_script_as_su "${REPO_SCRIPTS_DIR}/set-system-locale-timedate.sh"
 [ "${DISTRO_FAMILY}" != "Android" ] && run_script_as_su "${REPO_SCRIPTS_DIR}/update-profiles.sh"
 
-if [ "${OS}" == "Linux" ]; then
-    does_bin_exist "systemctl" && run_script_as_su "${REPO_SCRIPTS_DIR}/enable-services.sh"
+if [ "${OS}" = 'Linux' ]; then
+    run_script_as_su "${REPO_SCRIPTS_DIR}/enable-services.sh"
     does_bin_exist "grub-mkconfig" && run_script_as_su "${REPO_SCRIPTS_DIR}/update-grub.sh" # Run after configure-system.sh
 fi
 run_script "${REPO_SCRIPTS_DIR}/configure-directories.sh"
