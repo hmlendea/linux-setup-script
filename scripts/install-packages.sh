@@ -233,15 +233,17 @@ fi
 ####################
 ### Boot Loaders ###
 ####################
-if [[ "${ARCH_FAMILY}" == "x86" ]] \
-&& [[ "${DISTRO}" != "SteamOS" ]]; then
-    install_native_package grub
-    install_native_package_dependency os-prober
-    install_native_package update-grub
-    install_native_package_dependency linux-headers
+if [ "${ARCH_FAMILY}" = 'x86' ]; then
+    if [ "${CHASSIS_TYPE}" = 'Desktop' ] \
+    || [ "${CHASSIS_TYPE}" = 'Laptop' ]; then
+        install_native_package grub
+        install_native_package_dependency os-prober
+        install_native_package update-grub
+        install_native_package_dependency linux-headers
 
-    # Customisations
-    install_native_package grub2-theme-nuci
+        # Customisations
+        install_native_package grub2-theme-nuci
+    fi
 fi
 
 ###################
