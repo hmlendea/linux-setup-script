@@ -23,6 +23,55 @@ if does_bin_exist 'flatpak'; then
             'notification' false \
             'location' true
     done
+    for CALCULATOR_APP in 'org.gnome.Calculator' 'mate-calc'; do
+        set_linux_permission "${CALCULATOR_APP}" \
+            'background' false \
+            'camera' false \
+            'network' false \
+            'notification' false \
+            'location' false
+    done
+    for CAMERA_APP in 'org.gnome.Cheese' 'org.gnome.Snapshot'; do
+        set_linux_permission "${CAMERA_APP}" \
+            'background' false \
+            'camera' true \
+            'network' false \
+            'notification' false \
+            'location' true
+    done
+    for CHAT_APP in 'app.drey.PaperPlane' 'com.discordapp.Discord' 'de.schmidhuberj.Flare' 'io.github.mimbrero.WhatsAppDesktop' 'org.signal.Signal' 'org.telegram.desktop'; do
+        set_linux_permission "${CHAT_APP}" \
+            'background' true \
+            'camera' true \
+            'network' true \
+            'notification' true \
+            'notification_lockscreen' true \
+            'location' false
+    done
+    for DOCUMENT_VIEWER in 'epdfview' 'org.gnome.Evince'; do
+        set_linux_permission "${DOCUMENT_VIEWER_APP}" \
+            'background' false \
+            'camera' false \
+            'network' false \
+            'notification' false \
+            'location' false
+    done
+    for IDE_APP in 'com.visualstudio.code' 'visual-studio-code'; do
+        set_linux_permission "${IDE_APP}" \
+            'background' false \
+            'camera' false \
+            'network' true \
+            'notification' false \
+            'location' false
+    done
+    for IMAGE_EDITOR_APP in 'org.gimp.GIMP' 'org.upscayl.Upscayl'; do
+        set_linux_permission "${IMAGE_EDITOR_APP}" \
+            'background' false \
+            'camera' false \
+            'network' false \
+            'notification' false \
+            'location' false
+    done
     for IMAGE_VIEWER_APP in 'org.gnome.eog' 'org.gnome.Loupe'; do
         set_linux_permission "${IMAGE_VIEWER_APP}" \
             'background' false \
@@ -39,21 +88,12 @@ if does_bin_exist 'flatpak'; then
             'notification' false \
             'location' false
     done
-    for CAMERA_APP in 'org.gnome.Cheese' 'org.gnome.Snapshot'; do
-        set_linux_permission "org.gnome.Cheese" \
+    for OFFICE_SUITE_APP in 'org.libreoffice.LibreOffice' 'org.onlyoffice.desktopeditors'; do
+        set_linux_permission "${OFFICE_SUITE_APP}"  \
             'background' false \
-            'camera' true \
+            'camera' false \
             'network' false \
             'notification' false \
-            'location' true
-    done
-    for CHAT_APP in 'app.drey.PaperPlane' 'com.discordapp.Discord' 'de.schmidhuberj.Flare' 'io.github.mimbrero.WhatsAppDesktop' 'org.signal.Signal' 'org.telegram.desktop'; do
-        set_linux_permission "${CHAT_APP}" \
-            'background' true \
-            'camera' true \
-            'network' true \
-            'notification' true \
-            'notification_lockscreen' true \
             'location' false
     done
     for SPOTIFY_APP in 'dev.alextren.Spot' 'com.spotify.Client'; do
@@ -114,6 +154,15 @@ if does_bin_exist 'flatpak'; then
             'notification_lockscreen' true \
             'location' false
     done
+    for TORRENT_DOWNLOADER_APP in 'de.haeckerfelix.Fragments' 'com.transmissionbt.Transmission'; do
+        set_linux_permission "${TORRENT_DOWNLOADER_APP}" \
+            'background' true \
+            'camera' false \
+            'network' true \
+            'notification' true \
+            'notification_lockscreen' false \
+            'location' false
+    fi
     for VIDEO_PLAYER_APP in 'com.github.rafostar.Clapper' 'org.gnome.Totem'; do
         set_linux_permission "${VIDEO_PLAYER_APP}" \
             'background' false \
@@ -122,8 +171,8 @@ if does_bin_exist 'flatpak'; then
             'notification' false \
             'location' false
     done
-    for VSCODE_APP in "com.visualstudio.code" "visual-studio-code"; do
-        set_linux_permission "${VSCODE_APP}" \
+    for VIDEO_STRAMING_APP in 'tv.plex.PlexDesktop' 'tv.plex.PlexHTPC'; do 
+        set_linux_permission "${VIDEO_STREAMING_APP}" \
             'background' false \
             'camera' false \
             'network' true \
@@ -168,13 +217,6 @@ if does_bin_exist 'flatpak'; then
         'network' false \
         'notification' false \
         'location' false
-    set_linux_permission "de.haeckerfelix.Fragments" \
-        'background' true \
-        'camera' false \
-        'network' true \
-        'notification' true \
-        'notification_lockscreen' false \
-        'location' false
     set_linux_permission "fr.romainvigier.MetadataCleaner" \
         'background' false \
         'camera' false \
@@ -200,24 +242,12 @@ if does_bin_exist 'flatpak'; then
         'network' false \
         'notification' false \
         'location' false
-    set_linux_permission "org.gimp.GIMP" \
-        'background' false \
-        'camera' false \
-        'network' false \
-        'notification' false \
-        'location' false
     set_linux_permission "org.gnome.baobab" \
         'background' false \
         'camera' false \
         'network' false \
         'notification' true \
         'notification_lockscreen' false \
-        'location' false
-    set_linux_permission "org.gnome.Calculator" \
-        'background' false \
-        'camera' false \
-        'network' false \
-        'notification' false \
         'location' false
     set_linux_permission "org.gnome.Calendar" \
         'background' false \
@@ -234,12 +264,6 @@ if does_bin_exist 'flatpak'; then
         'notification_lockscreen' true \
         'location' false
     set_linux_permission "org.gnome.Contacts" \
-        'background' false \
-        'camera' false \
-        'network' false \
-        'notification' false \
-        'location' false
-    set_linux_permission "org.gnome.Evince" \
         'background' false \
         'camera' false \
         'network' false \
@@ -291,12 +315,6 @@ if does_bin_exist 'flatpak'; then
         'network' false \
         'notification' false \
         'location' false
-    set_linux_permission 'org.libreoffice.LibreOffice' \
-        'background' false \
-        'camera' false \
-        'network' false \
-        'notification' false \
-        'location' false
     set_linux_permission 'ro.go.hmlendea.DL-Desktop' \
         'background' false \
         'camera' false \
@@ -308,12 +326,6 @@ if does_bin_exist 'flatpak'; then
         'camera' false \
         'network' false \
         'notification' false \
-        'location' false
-    set_linux_permission 'tv.plex.PlexDesktop' \
-        'background' false \
-        'camera' false \
-        'network' true \
-        'notification' true \
         'location' false
 fi
 
