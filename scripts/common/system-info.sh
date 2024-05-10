@@ -333,7 +333,7 @@ function get_cpu_family() {
     local VENDOR=""
 
     if does_bin_exist "dmidecode"; then
-        CPU_LINE=$(get_dmi_string processor-manufacturer)
+        CPU_LINE=$(get_dmi_string 'processor-manufacturer')
         VENDOR="$(get_cpu_vendor_from_line ${CPU_LINE})"
     fi
 

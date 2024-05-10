@@ -87,78 +87,98 @@ fi
 ###################
 ### Development ###
 ###################
-install_native_package git
-install_native_package automake
+install_native_package 'git'
+install_native_package 'automake'
+
+#####################################
+### Development - Runtimes & SDKs ###
+#####################################
+if ${IS_DEVELOPMENT_DEVICE}; then
+    install_native_package 'dotnet-sdk'
+    install_native_package 'python'
+    #install_native_package 'python2'
+    #install_native_package 'mono'
+    #install_native_package 'jre-openjdk-headless'
+
+    if [ "${ARCH_FAMILY}" = 'x86' ]; then
+        install_native_package 'dotnet-runtime'
+        install_native_package 'aspnet-runtime'
+    elif [ "${ARCH_FAMILY}" = 'arm' ]; then
+        install_native_package 'dotnet-runtime-bin'
+        install_native_package 'aspnet-runtime-bin'
+    fi
+fi
 
 ###############
 ### Parsers ###
 ###############
-install_native_package jq          # JSON parser
-install_native_package xmlstarlet  # XML parser
+install_native_package 'jq'         # JSON parser
+install_native_package 'xmlstarlet' # XML parser
 
-if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-    install_native_package dmidecode   # Read device manufacturer information
+if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
+    install_native_package 'dmidecode'  # Read device manufacturer information
 fi
 
 ##################
 ### Monitoring ###
 ##################
-if [[ "${DISTRO_FAMILY}" == "Arch" ]] \
-&& [[ "${DISTRO}" != "SteamOS" ]] \
+if [ "${DISTRO_FAMILY}" = 'Arch' ] \
+&& [ "${DISTRO}" != 'SteamOS' ] \
 && ${HAS_GUI}; then
-    install_native_package fastfetch
+    install_native_package 'fastfetch'
 else
-    install_native_package neofetch
+    install_native_package 'neofetch'
 fi
 
-if [ "${DISTRO_FAMILY}" = "Arch" ]; then
-    install_native_package lm_sensors
+if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
+    install_native_package 'lm_sensors'
 fi
 
-if [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ]; then
+if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
     install_flatpak 'net.nokyan.Resources'
-elif [ "${DESKTOP_ENVIRONMENT}" = "LXDE" ]; then
+elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
     install_native_package 'lxtask'
 fi
 
 ########################
 ### Power Management ###
 ########################
-if [[ "${CHASSIS_TYPE}" == "Laptop" ]]; then
-    install_native_package acpi
-    install_native_package tlp
+if [ "${CHASSIS_TYPE}" = 'Laptop' ]; then
+    install_native_package 'acpi'
+    install_native_package 'tlp'
 
-    install_native_package powertop
+    install_native_package 'powertop'
 
-    if get_dmi_string "system-sku-number" | grep -q "ThinkPad"; then
-        install_native_package acpi_call
-        install_native_package tp_smapi
+    # TODO: Extract this check into system-info.sh DEVICE_MODEL
+    if get_dmi_string 'system-sku-number' | grep -q 'ThinkPad'; then
+        install_native_package 'acpi_call'
+        install_native_package 'tp_smapi'
     fi
 fi
 
 ##################
 ### Networking ###
 ##################
-install_native_package net-tools
+install_native_package 'net-tools'
 
 if [ "${DISTRO_FAMILY}" = 'Arch' ] \
 || [ "${DISTRO_FAMILY}" = 'Android' ]; then
-    install_native_package openssh
-    install_native_package wol
+    install_native_package 'openssh'
+    install_native_package 'wol'
 elif [ "${DISTRO_FAMILY}" = "Alpine" ] \
   || [ "${DISTRO_FAMILY}" = "Debian" ]; then
-    install_native_package openssh-server
+    install_native_package 'openssh-server'
 fi
 
 if [ "${DISTRO_FAMILY}" = 'Debian' ]; then
-    install_native_package wakeonlan
+    install_native_package 'wakeonlan'
 fi
 
 if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-    install_native_package ethtool
-    install_native_package wireless_tools
-    install_native_package iw
-    install_native_package iwd
+    install_native_package 'ethtool'
+    install_native_package 'wireless_tools'
+    install_native_package 'iw'
+    install_native_package 'iwd'
 fi
 
 if [ "${CHASSIS_TYPE}" = 'Laptop' ] \
@@ -167,73 +187,110 @@ if [ "${CHASSIS_TYPE}" = 'Laptop' ] \
 fi
 
 if [ "${OS}" = "Linux" ]; then
-    install_native_package networkmanager
-    install_native_package networkmanager-openvpn
+    install_native_package 'networkmanager'
+    install_native_package 'networkmanager-openvpn'
 
-    [ "${DESKTOP_ENVIRONMENT}" = "LXDE" ] && install_native_package network-manager-applet
+    [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ] && install_native_package 'network-manager-applet'
+fi
+
+##########################
+### Application Stores ###
+##########################
+if [ "${OS}" = 'Android' ]; then
+    install_android_fdroid_package 'com.aurora.store'
+    install_android_remote_package 'org.fdroid.fdroid' 'https://f-droid.org/F-Droid.apk'
+elif [ "${OS}" = 'Linux' ]; then
+    if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
+    || [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+        install_native_package 'gnome-software'
+    fi
 fi
 
 ################
 ### Archives ###
 ################
-install_native_package unzip
-install_native_package zip
+install_native_package 'unzip'
+install_native_package 'zip'
 
-if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-    install_native_package unp # A script for unpacking a wide variety of archive formats
-    install_native_package p7zip
-    install_native_package lrzip
+if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
+    install_native_package 'unp' # A script for unpacking a wide variety of archive formats
+    install_native_package 'p7zip'
+    install_native_package 'lrzip'
 fi
 
-if [[ "${DISTRO_FAMILY}" == "Arch" ]] \
-|| [[ "${DISTRO_FAMILY}" == "Android" ]]; then
-    install_native_package unrar
-elif [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
-    install_native_package unrar-free
+if [ "${DISTRO_FAMILY}" = 'Arch' ] \
+|| [ "${DISTRO_FAMILY}" = 'Android' ]; then
+    install_native_package 'unrar'
+elif [ "${DISTRO_FAMILY}" = 'Debian' ]; then
+    install_native_package 'unrar-free'
 fi
 
 ###################
 ### Filesystems ###
 ###################
-if [[ "${ARCH_FAMILY}" == "x86" ]]; then
-    if [[ "${CHASSIS_TYPE}" == "Desktop" ]] \
-    || [[ "${CHASSIS_TYPE}" == "Laptop" ]]; then
+if [ "${ARCH_FAMILY}" = 'x86' ]; then
+    if [ "${CHASSIS_TYPE}" = 'Desktop' ] \
+    || [ "${CHASSIS_TYPE}" = 'Laptop' ]; then
         # Partition editors
         if ${INSTALL_PARTITION_EDITORS}; then
-            install_native_package parted
+            install_native_package 'parted'
 
             if ${HAS_GUI} && ${IS_GENERAL_PURPOSE_DEVICE}; then
-                install_native_package gparted
-                install_native_package_dependency gpart
-                install_native_package_dependency mtools
+                install_native_package 'gparted'
+                install_native_package_dependency 'gpart'
+                install_native_package_dependency 'mtools'
             fi
 
             if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
             || [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
-                install_native_package gnome-disk-utility
+                install_native_package 'gnome-disk-utility'
             fi
 
             # Disk Usage Analyzer
-            install_flatpak org.gnome.baobab
+            install_flatpak 'org.gnome.baobab'
         fi
 
         # Filesystems
-        install_native_package_dependency dosfstools # For FAT filesystem support
-        install_native_package_dependency ntfs-3g
-        install_native_package_dependency exfatprogs
+        install_native_package_dependency 'dosfstools' # For FAT filesystem support
+        install_native_package_dependency 'ntfs-3g'
+        install_native_package_dependency 'exfatprogs'
     fi
+fi
+
+#############
+### Fonts ###
+#############
+# Fonts
+if ${IS_GENERAL_PURPOSE_DEVICE}; then
+    # Fonts - General
+    install_native_package 'gnu-free-fonts'
+    [ "${ARCH_FAMILY}" = 'x86' ] && install_native_package 'ttf-ms-win10'
+    install_native_package 'noto-fonts'
+    install_native_package 'ttf-apple-emoji'
+    install_native_package 'ttf-droid'
+    install_native_package_dependency 'ttf-croscore'
+    install_native_package_dependency 'ttf-liberation'
+    install_native_package 'hori-fonts'
+
+    # Fonts - International
+    install_native_package 'noto-fonts-cjk' # Chinese, Japanese, Korean
+    install_native_package 'ttf-amiri' # Classical Arabic in Naskh style
+    install_native_package 'ttf-ancient-fonts' # Aegean, Egyptian, Cuneiform, Anatolian, Maya, Analecta
+    install_native_package 'ttf-baekmuk' # Korean
+    install_native_package 'ttf-hannom' # Vietnamese
+    install_native_package 'ttf-ubraille' # Braille
 fi
 
 #################
 ### Bluetooth ###
 #################
-if [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ] \
-|| [ "${DESKTOP_ENVIRONMENT}" = "Phosh" ]; then
-    install_native_package gnome-bluetooth
+if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
+|| [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+    install_native_package 'gnome-bluetooth'
 elif [ -n "${DESKTOP_ENVIRONMENT}" ]; then
     if ! [[ ${DEVICE_MODEL} =~ 'iPhone' ]] \
     && [ "${DISTRO_FAMILY}" != 'Android' ]; then
-        install_native_package blueman
+        install_native_package 'blueman'
     fi
 fi
 
@@ -243,13 +300,13 @@ fi
 if [ "${ARCH_FAMILY}" = 'x86' ]; then
     if [ "${CHASSIS_TYPE}" = 'Desktop' ] \
     || [ "${CHASSIS_TYPE}" = 'Laptop' ]; then
-        install_native_package grub
-        install_native_package_dependency os-prober
-        install_native_package update-grub
-        install_native_package_dependency linux-headers
+        install_native_package 'grub'
+        install_native_package_dependency 'os-prober'
+        install_native_package 'update-grub'
+        install_native_package_dependency 'linux-headers'
 
         # Customisations
-        install_native_package grub2-theme-nuci
+        install_native_package 'grub2-theme-nuci'
     fi
 fi
 
@@ -259,18 +316,22 @@ fi
 if ${IS_GENERAL_PURPOSE_DEVICE}; then
     if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
     || [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
-        install_flatpak org.gnome.Calculator
+        install_flatpak 'org.gnome.Calculator'
     elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
-        install_native_package mate-calc
+        install_native_package 'mate-calc'
     fi
 fi
 
 #################
 ### Calendars ###
 #################
-if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
-|| [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
-    install_flatpak org.gnome.Calendar
+if [ "${OS}" = 'Android' ]; then
+    install_android_fdroid_package 'org.fossify.calendar'
+elif [ "${OS}" = 'Linux' ]; then
+    if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
+    || [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+        install_flatpak 'org.gnome.Calendar'
+    fi
 fi
 
 ###############
@@ -287,21 +348,33 @@ fi
 #################
 ### Chat Apps ###
 #################
-if ${IS_GENERAL_PURPOSE_DEVICE}; then
-    install_flatpak 'org.telegram.desktop'
-    
-    if [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
-        install_flatpak 'de.schmidhuberj.Flare'
-    else
-        install_flatpak 'org.signal.Signal'
+if ${HAS_GUI}; then
+    if ${IS_GENERAL_PURPOSE_DEVICE}; then
+        if [ "${OS}" = 'Android' ]; then
+            install_android_fdroid_package 'org.telegram.messenger'
+        elif [ "${OS}" = 'Linux' ]; then
+            install_flatpak 'org.telegram.desktop'
+        fi
+
+        if [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+            install_flatpak 'de.schmidhuberj.Flare'
+        else
+            install_flatpak 'org.signal.Signal'
+        fi
+
+        if [ "${CHASSIS_TYPE}" != 'Phone' ]; then
+            install_flatpak 'io.github.mimbrero.WhatsAppDesktop'
+        fi
     fi
 
-    if [ "${CHASSIS_TYPE}" != 'Phone' ]; then
+    if ${IS_DEVELOPMENT_DEVICE}; then
         install_flatpak 'com.github.IsmaelMartinez.teams_for_linux'
-        install_flatpak 'io.github.mimbrero.WhatsAppDesktop'
+    fi
+
+    if ${IS_GAMING_DEVICE}; then
+        install_flatpak 'com.discordapp.Discord'
     fi
 fi
-
 
 #################
 ### Calendars ###
@@ -314,94 +387,172 @@ fi
 ###############
 ### Drivers ###
 ###############
-if [[ "${ARCH_FAMILY}" == "x86" ]]; then
-    # Graphics drivers
-    GPU_FAMILY="$(get_gpu_family)"
-    if [[ "${GPU_FAMILY}" == "Intel" ]]; then
-        install_native_package intel-media-driver
+if [ "${ARCH_FAMILY}" = 'x86' ]; then
+    if [ "${GPU_FAMILY}" = 'Intel' ]; then
+        install_native_package 'intel-media-driver'
 
-        install_native_package libva-intel-driver
-        install_native_package libva-utils
+        install_native_package 'libva-intel-driver'
+        install_native_package 'libva-utils'
 
-        install_native_package libvdpau-va-gl
+        install_native_package 'libvdpau-va-gl'
 
-        install_native_package vulkan-intel
-        install_native_package lib32-vulkan-intel
+        install_native_package 'vulkan-intel'
+        install_native_package 'lib32-vulkan-intel'
 
-        install_native_package intel-ucode
-    elif [[ "${GPU_FAMILY}" == "Nvidia" ]]; then
-        NVIDIA_DRIVER="nvidia"
+        install_native_package 'intel-ucode'
+    elif [ "${GPU_FAMILY}" = 'Nvidia' ]; then
+        NVIDIA_DRIVER='nvidia'
 
-        [[ "$(get_gpu_model)" == "GeForce 610M" ]] && NVIDIA_DRIVER="nvidia-390xx"
+        [ "${GPU_MODEL}" = 'GeForce 610M' ] && NVIDIA_DRIVER='nvidia-390xx'
 
         if gpu_has_optimus_support; then
-            install_native_package bumblebee
-            install_native_package_dependency bbswitch
-            install_native_package_dependency primus
+            install_native_package 'bumblebee'
+            install_native_package_dependency 'bbswitch'
+            install_native_package_dependency 'primus'
 
-            install_native_package optiprime
+            install_native_package 'optiprime'
 
-            install_native_package mesa
-            install_native_package xf86-video-intel
+            install_native_package 'mesa'
+            install_native_package 'xf86-video-intel'
 
             install_native_package "${NVIDIA_DRIVER}-dkms"
             install_native_package "${NVIDIA_DRIVER}-settings"
             install_native_package_dependency "lib32-${NVIDIA_DRIVER}-utils"
 
-            install_native_package_dependency lib32-virtualgl
+            install_native_package_dependency 'lib32-virtualgl'
         else
             install_native_package "${NVIDIA_DRIVER}"
         fi
 
-        install_native_package libva-vdpau-driver
+        install_native_package 'libva-vdpau-driver'
     fi
 fi
 
 ##############
 ### Clocks ###
 ##############
-if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
-|| [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
-    install_flatpak 'org.gnome.clocks'
+if [ "${OS}" = 'Android' ]; then
+    install_android_fdroid_package 'org.fossify.clock'
+elif [ "${OS}" = 'Linux' ]; then
+    if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
+    || [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+        install_flatpak 'org.gnome.clocks'
+    fi
 fi
 
 ################
 ### Contacts ###
 ################
-if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
-|| [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
-    install_flatpak 'org.gnome.Contacts'
+if [ "${OS}" = 'Android' ]; then
+    install_android_fdroid_package 'org.fossify.contacts'
+elif [ "${OS}" = 'Linux' ]; then
+    if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
+    || [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+        install_flatpak 'org.gnome.Contacts'
+    fi
+fi
+
+#####################
+### Email Clients ###
+#####################
+if ${HAS_GUI} && ${IS_GENERAL_PURPOSE_DEVICE}; then
+    if [ "${OS}" = 'Android' ]; then
+        install_android_github_package 'ch.protonmail.android' 'ProtonMail/proton-mail-android'
+    elif [ "${OS}" = 'Linux' ]; then
+        install_flatpak 'com.github.vladimiry.ElectronMail'
+    fi
 fi
 
 #####################
 ### File Managers ###
 #####################
-if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
-|| [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
-    install_native_package 'nautilus'
-    install_flatpak 'org.gnome.FileRoller'
-elif [ "${DESKTOP_ENVIRONMENT}" = 'KDE' ]; then
-    install_native_package 'dolphin'
-    install_native_package 'ark'
-elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
-    install_native_package 'pcmanfm'
-    install_native_package 'xarchiver'
+if [ "${OS}" = 'Android' ]; then
+    install_android_fdroid_package 'org.fossify.filemanager'
+elif [ "${OS}" = 'Linux' ]; then
+    if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
+    || [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+        install_native_package 'nautilus'
+        install_flatpak 'org.gnome.FileRoller'
+    elif [ "${DESKTOP_ENVIRONMENT}" = 'KDE' ]; then
+        install_native_package 'dolphin'
+        install_native_package 'ark'
+    elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
+        install_native_package 'pcmanfm'
+        install_native_package 'xarchiver'
+    fi
+
+    if ${IS_POWERFUL_PC} && ${HAS_GUI}; then
+        install_native_package_dependency 'webp-pixbuf-loader'
+    fi
 fi
 
-if ${IS_POWERFUL_PC} && ${HAS_GUI}; then
-    install_native_package_dependency 'webp-pixbuf-loader'
+######################
+### Game Launchers ###
+######################
+if ${POWERFUL_PC} && ${IS_GAMING_DEVICE}; then
+    if [ "${DISTRO}" != 'SteamOS' ]; then
+        install_native_package 'steam' # No flatpak yet because the games will share the same icon in GNOME (e.g. alt-tabbing), concerns about steam-start, per-game desktop launchers, udev rules for controllers
+        #install_native_package 'steam-start'
+        #install_flatpak 'com.valvesoftware.Steam'
+    fi
+fi
+
+#####################
+### Game Runtimes ###
+####################
+#if ${POWERFUL_PC} && ${IS_GAMING_DEVICE}; then
+#    if [ "${DISTRO}" != 'SteamOS' ]; then
+#        install_native_package_dependency 'steam-native-runtime'
+#        install_native_package 'proton-ge-custom-bin'
+#        install_native_package 'luxtorpeda-git'
+#    fi
+#fi
+
+############
+### IDEs ###
+############
+if ${HAS_GUI} && ${IS_DEVELOPMENT_DEVICE}; then
+    # Development
+    [ "${ARCH_FAMILY}" = 'x86' ] && install_native_package 'visual-studio-code-bin'
+    [ "${ARCH_FAMILY}" = 'arm' ] && install_native_package 'code-headmelted-bin'
+
+    install_vscode_package 'dakara.transformer'
+    install_vscode_package 'johnpapa.vscode-peacock'
+    install_vscode_package 'mechatroner.rainbow-csv'
+    install_vscode_package 'nico-castell.linux-desktop-file'
+    install_vscode_package 'qinjia.seti-icons'
+
+    if does_bin_exist 'dotnet'; then
+        install_vscode_package 'mangrimen.mgcb-editor'
+        install_vscode_package 'ms-dotnettools.csharp'
+    fi
+
+    does_bin_exist 'git' && install_vscode_package 'github.vscode-github-actions'
+    does_bin_exist 'python' && install_vscode_package 'ms-python.python'
+fi
+
+#####################
+### Image Editors ###
+#####################
+if ${HAS_GUI} && ${IS_GENERAL_PURPOSE_DEVICE}; then
+    install_flatpak 'org.gimp.GIMP' # Wait at least until it uses GTK3
+    install_flatpak 'org.inkscape.Inkscape'
 fi
 
 #####################
 ### Image Viewers ###
 #####################
 if ${HAS_GUI}; then
-    if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
-        install_flatpak 'org.gnome.Loupe'
-    elif [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
-        install_flatpak 'org.gnome.eog'
-    elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
-        install_native_package 'gpicview'
+    if [ "${OS}" = 'Android' ]; then
+        install_android_fdroid_package 'org.fossify.gallery'
+    elif [ "${OS}" = 'Linux' ]; then
+        if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
+            install_flatpak 'org.gnome.Loupe'
+        elif [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+            install_flatpak 'org.gnome.eog'
+        elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
+            install_native_package 'gpicview'
+        fi
     fi
 fi
 
@@ -414,12 +565,23 @@ if ${HAS_GUI}; then
     fi
 fi
 
+##########################
+### Internet of Things ###
+##########################
+if [ "${OS}" = 'Android' ]; then
+    install_android_github_package 'io.homeassistant.companion.android.minimal' 'home-assistant/android'
+fi
+
 ############
 ### Maps ###
 ############
-if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
-|| [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
-    install_flatpak 'org.gnome.Maps'
+if [ "${OS}" = 'Android' ]; then
+    install_android_fdroid_package 'net.osmand.plus'
+elif [ "${OS}" = 'Linux' ]; then
+    if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
+    || [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+        install_flatpak 'org.gnome.Maps'
+    fi
 fi
 
 #####################
@@ -442,13 +604,17 @@ fi
 ### Notes & Tasks ###
 #####################
 if ${IS_GENERAL_PURPOSE_DEVICE}; then
-    if [ "${DESKTOP_ENVIRONMENT}" != 'Phosh' ]; then
-        install_flatpak com.simplenote.Simplenote
-    fi
-    
-    if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
-    || [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
-        install_flatpak io.github.alainm23.planify
+    if [ "${OS}" = 'Android' ]; then
+        install_android_remote_package 'com.automattic.simplenote' 'Automattic/simplenote'
+    elif [ "${OS}" = 'Linux' ]; then
+        if [ "${DESKTOP_ENVIRONMENT}" != 'Phosh' ]; then
+            install_flatpak 'com.simplenote.Simplenote'
+        fi
+        
+        if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
+        || [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+            install_flatpak 'io.github.alainm23.planify'
+        fi
     fi
 fi
 
@@ -486,20 +652,24 @@ fi
 #################
 ### Terminals ###
 #################
-if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
-    install_native_package 'gnome-terminal'
-elif [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
-    install_native_package 'gnome-console'
-elif [ "${DESKTOP_ENVIRONMENT}" = 'KDE' ]; then
-    install_native_package 'konsole'
-elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
-    install_native_package 'lxterminal'
+if [ "${OS}" = 'Linux' ]; then
+    if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
+        install_native_package 'gnome-terminal'
+    elif [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+        install_native_package 'gnome-console'
+    elif [ "${DESKTOP_ENVIRONMENT}" = 'KDE' ]; then
+        install_native_package 'konsole'
+    elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
+        install_native_package 'lxterminal'
+    fi
+elif [ "${OS}" = 'Android' ]; then
+    install_android_fdroid_package 'com.termux'
 fi
 
 ####################
 ### Text Editors ###
 ####################
-install_native_package micro
+install_native_package 'micro'
 
 if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
 || [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
@@ -548,18 +718,29 @@ fi
 ####################
 ### Weather Apps ###
 ####################
-if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
-|| [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
-    install_flatpak 'org.gnome.Weather'
+if [ "${OS}" = 'Android' ]; then
+    install_android_fdroid_pacakge 'org.breezyweather'
+elif [ "${OS}" = 'Linux' ]; then
+    if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
+    || [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+        install_flatpak 'org.gnome.Weather'
+    fi
 fi
-
-
-
+#############################
+### Window Manager Extras ###
+#############################
+if is_native_package_installed 'wayland'; then
+    install_native_package 'wayland-utils'
+fi
+if is_native_package_installed 'xorg-server'; then
+    install_native_package 'xorg-xdpyinfo'
+    #install_native_package 'xorg-xkill'
+fi
 
 if [ "${OS}" = 'Linux' ]; then
 
     if ${HAS_GUI}; then
-        install_native_package dkms
+        install_native_package 'dkms'
         #install_native_package rsync
 
         # System management
@@ -581,7 +762,6 @@ if [ "${OS}" = 'Linux' ]; then
             install_flatpak org.gnome.NetworkDisplays
 
             if is_native_package_installed flatpak; then
-                install_native_package gnome-software
                 install_native_package xdg-desktop-portal-gnome
             fi
         elif [[ "${DESKTOP_ENVIRONMENT}" == "LXDE" ]]; then
@@ -635,93 +815,12 @@ if [ "${OS}" = 'Linux' ]; then
             install_gnome_shell_extension "Hide_Activities"
         fi
 
-        # Fonts
-        if ${IS_GENERAL_PURPOSE_DEVICE}; then
-            # Fonts - General
-            install_native_package gnu-free-fonts
-            [ "${ARCH_FAMILY}" == "x86" ] && install_native_package ttf-ms-win10
-            install_native_package noto-fonts
-            install_native_package ttf-apple-emoji
-            install_native_package ttf-droid
-            install_native_package_dependency ttf-croscore
-            install_native_package_dependency ttf-liberation
-            install_native_package hori-fonts
-
-            # Fonts - International
-            install_native_package noto-fonts-cjk # Chinese, Japanese, Korean
-            install_native_package ttf-amiri # Classical Arabic in Naskh style
-            install_native_package ttf-ancient-fonts # Aegean, Egyptian, Cuneiform, Anatolian, Maya, Analecta
-            install_native_package ttf-baekmuk # Korean
-            install_native_package ttf-hannom # Vietnamese
-            install_native_package ttf-ubraille # Braille
-        fi
-
-        if ${IS_GENERAL_PURPOSE_DEVICE}; then
-            # Communication
-            install_flatpak com.github.vladimiry.ElectronMail
-
-            #install_native_package_dependency gst-plugins-ugly
-            #install_native_package_dependency gst-libav
-        fi
-
-        if ${POWERFUL_PC}; then
-            if ${IS_GENERAL_PURPOSE_DEVICE}; then
-                # Graphics
-                #install_native_package gimp
-                #install_native_package gimp-extras
-                #install_native_package gimp-plugin-pixel-art-scalers
-                install_flatpak org.gimp.GIMP # Wait at least until it uses GTK3
-                install_flatpak org.inkscape.Inkscape
-            fi
-
-            if ${IS_GAMING_DEVICE}; then
-                # Launchers
-                if [ "${DISTRO}" != "SteamOS" ]; then
-                    install_native_package steam # No flatpak yet because the games will share the same icon in GNOME (e.g. alt-tabbing), concerns about steam-start, per-game desktop launchers, udev rules for controllers
-                    #install_native_package steam-start
-                    #install_flatpak com.valvesoftware.Steam
-                fi
-
-                # Runtimes
-                #install_native_package_dependency steam-native-runtime
-                #install_native_package proton-ge-custom-bin
-                #install_native_package luxtorpeda-git
-
-                # Communication
-                install_flatpak com.discordapp.Discord
-            fi
-        fi
+        #if ${IS_GENERAL_PURPOSE_DEVICE}; then
+        #    install_native_package_dependency gst-plugins-ugly
+        #    install_native_package_dependency gst-libav
+        #fi
 
         if ${IS_DEVELOPMENT_DEVICE}; then
-            # Runtimes
-            install_native_package python
-            #install_native_package python2
-            #install_native_package mono
-            #install_native_package jre-openjdk-headless
-
-            if [[ "${ARCH_FAMILY}" == "x86" ]]; then
-                install_native_package dotnet-runtime
-                install_native_package aspnet-runtime
-            elif [[ "${ARCH_FAMILY}" == "arm" ]]; then
-                install_native_package dotnet-runtime-bin
-                install_native_package aspnet-runtime-bin
-            fi
-
-            # Development
-            install_native_package dotnet-sdk
-
-            [[ "${ARCH_FAMILY}" == "x86" ]] && install_native_package visual-studio-code-bin
-            [[ "${ARCH_FAMILY}" == "arm" ]] && install_native_package code-headmelted-bin
-            install_vscode_package "dakara.transformer"
-            install_vscode_package "github.vscode-github-actions"
-            install_vscode_package "johnpapa.vscode-peacock"
-            install_vscode_package "mechatroner.rainbow-csv"
-            install_vscode_package "mangrimen.mgcb-editor"
-            install_vscode_package "ms-dotnettools.csharp"
-            install_vscode_package "nico-castell.linux-desktop-file"
-            install_vscode_package "qinjia.seti-icons"
-            does_bin_exist "python" && install_vscode_package "ms-python.python"
-
             install_flatpak com.getpostman.Postman
 
             #does_bin_exist "flatpak" && install_native_package "flatpak-builder"
@@ -729,35 +828,11 @@ if [ "${OS}" = 'Linux' ]; then
             # Tools
             install_flatpak "com.github.dynobo.normcap"
         fi
-
-        if is_native_package_installed "xorg-server"; then
-            install_native_package xorg-xdpyinfo
-            #install_native_package xorg-xkill
-        fi
-
-        if is_native_package_installed "wayland"; then
-            install_native_package "wayland-utils"
-        fi
     fi
 elif [ "${DISTRO_FAMILY}" = 'Android' ] \
 && ${HAS_SU_PRIVILEGES}; then
-    # App stores
-    if ! is_android_package_installed "foundation.e.apps"; then
-        install_android_remote_package "https://files.auroraoss.com/AuroraStore/Stable/AuroraStore_4.1.1.apk" "com.aurora.store" # Aurora Store
-        install_android_remote_package "https://files.auroraoss.com/AuroraDroid/Stable/AuroraDroid_1.0.8.apk" "com.aurora.adroid" # Aurora Droid
-    fi
-
     # Communication
-    install_android_remote_package "https://f-droid.org/repo/me.austinhuang.instagrabber_65.apk" "me.austinhuang.instagrabber"                                  # Instagram
-    install_android_remote_package "https://protonmail.com/download/MailAndroid/ProtonMail-Android.apk" "ch.protonmail.android"                                 # ProtonMail
-    install_android_remote_package "https://updates.signal.org/android/Signal-Android-website-prod-universal-release-5.34.10.apk" "org.thoughtcrime.securesms"  # Signal
-    install_android_remote_package "https://f-droid.org/repo/org.telegram.messenger_26006.apk" "org.telegram.messenger"                                         # Telegram
-
-    # Internet of Things
-    install_android_remote_package "$(get_latest_github_release_assets home-assistant/android | grep minimal)" "io.homeassistant.companion.android.minimal" # Home Assistant
-
-    # Navigation
-    install_android_remote_package "https://download.osmand.net/releases/net.osmand-4.1.11-421.apk" "net.osmand" # OsmAnd
+    install_android_remote_package "https://updates.signal.org/android/Signal-Android-website-prod-universal-release-7.6.2.apk" "org.thoughtcrime.securesms"  # Signal
 
     # Security
     install_android_remote_package "$(get_latest_github_release_assets beemdevelopment/Aegis)" "com.beemdevelopment.aegis"      # Aegis
@@ -766,9 +841,4 @@ elif [ "${DISTRO_FAMILY}" = 'Android' ] \
 
     # Tools
     install_android_remote_package "https://f-droid.org/repo/org.kde.kdeconnect_tp_11910.apk" "org.kde.kdeconnect_tp"       # KDE Connect
-    install_android_remote_package "$(get_latest_github_release_assets Automattic/simplenote)" "com.automattic.simplenote"  # Simplenote
-    install_android_remote_package "$(get_latest_github_release_assets termux/termux-app)" "com.termux"                     # Termux
-
-    # Weather
-    install_android_remote_package "$(get_latest_github_release_assets WangDaYeeeeee/GeometricWeather)" "wangdaye.com.geometricweather" # Geometric Weather
 fi

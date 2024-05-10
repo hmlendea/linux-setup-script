@@ -233,7 +233,7 @@ function install_android_package() {
 }
 
 function install_android_remote_package() {
-    [[ "${DISTRO_FAMILY}" != "Android" ]] && return
+    [ "${DISTRO_FAMILY}" != 'Android' ] && return
 
     local PACKAGE_URL="${1}"
     local PACKAGE_NAME="${2}"
@@ -246,6 +246,30 @@ function install_android_remote_package() {
 
     wget "${PACKAGE_URL}" -c -O "${LOCAL_INSTALL_TEMP_DIR}/${PACKAGE_NAME}.apk"
     install_android_package "${LOCAL_INSTALL_TEMP_DIR}/${PACKAGE_NAME}.apk"
+}
+
+function install_android_fdroid_package {
+    local PACKAGE_NAME="${1}"
+    local PACKAGE_INFO_JSON=$(curl -s "https://f-droid.org/api/v1/packages/${PACKAGE_NAME}")
+    local PACKAGE_LATEST_VERSIONCODE=$(jq '.packages | max_by(.versionCode).versionCode' <<< "${PACKAGE_INFO_JSON}")
+    local APK_URL="https://f-droid.org/repo/${PACKAGE_NAME}_${PACKAGE_LATEST_VERSIONCODE}.apk"
+
+    install_android_remote_package "${APK_URL}" "${PACKAGE_NAME}"
+}
+
+function install_android_github_package {
+    local PACKAGE_NAME="${1}"
+    local REPOSITORY="${2}"
+    local FILTER="${3}"
+    local APK_URL=''
+
+    if [ -z "${FILTER}" ]; then
+        APK_URL=$(get_github_latest_release_asset "${REPOSITORY}")
+    else
+        APK_URL=$(get_github_latest_release_asset "${REPOSITORY}" | grep "${FILTER}")
+    fi
+
+    install_android_remote_package "${APK_URL}" "${PACKAGE_NAME}"
 }
 
 function install_flatpak() {
