@@ -255,7 +255,7 @@ function create_directory() {
     local DIRECTORY_PATH="${*}"
 
     [ -z "${DIRECTORY_PATH}" ] && return
-    does_directory_exit "${DIRECTORY_PATH}" && return
+    does_directory_exist "${DIRECTORY_PATH}" && return
 
     local TOP_EXISTING_DIR="${DIRECTORY_PATH}"
     while [ -n "${TOP_EXISTING_DIR}" ] && ! does_directory_exist "${TOP_EXISTING_DIR}"; do
