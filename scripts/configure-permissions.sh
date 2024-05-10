@@ -48,7 +48,7 @@ if does_bin_exist 'flatpak'; then
             'notification_lockscreen' true \
             'location' false
     done
-    for DOCUMENT_VIEWER in 'epdfview' 'org.gnome.Evince'; do
+    for DOCUMENT_VIEWER_APP in 'epdfview' 'org.gnome.Evince'; do
         set_linux_permission "${DOCUMENT_VIEWER_APP}" \
             'background' false \
             'camera' false \
@@ -113,7 +113,7 @@ if does_bin_exist 'flatpak'; then
             'notification' false \
             'location' false
     done
-    for SYSTEM_MONITOR_APP in 'net.nokyan.Resources'; do
+    for SYSTEM_MONITOR_APP in 'net.nokyan.Resources' 'org.gnome.SystemMonitor'; do
         set_linux_permission "${SYSTEM_MONITOR_APP}" \
             'background' false \
             'camera' false \
@@ -162,7 +162,7 @@ if does_bin_exist 'flatpak'; then
             'notification' true \
             'notification_lockscreen' false \
             'location' false
-    fi
+    done
     for VIDEO_PLAYER_APP in 'com.github.rafostar.Clapper' 'org.gnome.Totem'; do
         set_linux_permission "${VIDEO_PLAYER_APP}" \
             'background' false \
@@ -171,7 +171,7 @@ if does_bin_exist 'flatpak'; then
             'notification' false \
             'location' false
     done
-    for VIDEO_STRAMING_APP in 'tv.plex.PlexDesktop' 'tv.plex.PlexHTPC'; do 
+    for VIDEO_STREAMING_APP in 'tv.plex.PlexDesktop' 'tv.plex.PlexHTPC'; do 
         set_linux_permission "${VIDEO_STREAMING_APP}" \
             'background' false \
             'camera' false \
