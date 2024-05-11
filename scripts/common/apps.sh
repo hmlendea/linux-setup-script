@@ -18,7 +18,10 @@ function get_firefox_profiles_dir() {
 }
 
 function get_firefox_profile_id() {
-    local PROFILES_DIR=$(get_firefox_profiles_dir)
+    local PROFILES_DIR="$(get_firefox_profiles_dir)"
+
+    [ ! -d "${PROFILES_DIR}" ] && return
+    
     local PROFILES_INI_FILE="${PROFILES_DIR}/profiles.ini"
     local PROFILE_ID=$(grep "^Path=" "${PROFILES_INI_FILE}" | awk -F= '{print $2}' | head -n 1)
 

@@ -259,6 +259,7 @@ function get_soc() {
 }
 
 function get_cpu_model() {
+    local FAMILY="$(get_cpu_family)"
     local MODEL=""
 
     [[ "${SOC_MODEL}" == "BCM2835" ]] && MODEL="ARM1176JZF-S"
@@ -308,7 +309,7 @@ function get_cpu_model() {
                 -e 's/ \(CPU\|Processor\)//g' \
                 -e 's/@ .*//g' \
                 -e 's/,//g' \
-                -e 's/'"${CPU_FAMILY}"'//g' \
+                -e 's/'"${FAMILY}"'//g' \
                 -e 's/^\s*//g' \
                 -e 's/\s*$//g' \
                 -e 's/\s\+/ /g')
