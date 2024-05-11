@@ -5,15 +5,17 @@ source "${REPO_SCRIPTS_COMMON_DIR}/apps.sh"
 source "${REPO_SCRIPTS_COMMON_DIR}/system-info.sh"
 
 if does_bin_exist 'firefox' 'firefox-esr' 'org.mozilla.firefox' 'io.gitlab.librewolf-community'; then
-    FIREFOX_PROFILE_DIR=$(get_firefox_profile_dir)
+    FIREFOX_PROFILE_DIR="$(get_firefox_profile_dir)"
 
-    update_file_if_distinct "${REPO_RES_DIR}/firefox/containers.json" "${FIREFOX_PROFILE_DIR}/containers.json"
-    update_file_if_distinct "${REPO_RES_DIR}/firefox/userChrome.css" "${FIREFOX_PROFILE_DIR}/chrome/userChrome.css"
-
-    for ICON_FILE in "${REPO_RES_DIR}/firefox/icons/"*.png; do
-        ICON_FILE_BASENAME=$(basename "${ICON_FILE}")
-        update_file_if_distinct "${REPO_RES_DIR}/firefox/icons/${ICON_FILE_BASENAME}" "${FIREFOX_PROFILE_DIR}/chrome/icons/${ICON_FILE_BASENAME}"
-    done
+    if [ -d "${FIREFOX_PROFILE_DIR}" ]; then
+        update_file_if_distinct "${REPO_RES_DIR}/firefox/containers.json" "${FIREFOX_PROFILE_DIR}/containers.json"
+        update_file_if_distinct "${REPO_RES_DIR}/firefox/userChrome.css" "${FIREFOX_PROFILE_DIR}/chrome/userChrome.css"
+    
+        for ICON_FILE in "${REPO_RES_DIR}/firefox/icons/"*.png; do
+            ICON_FILE_BASENAME=$(basename "${ICON_FILE}")
+            update_file_if_distinct "${REPO_RES_DIR}/firefox/icons/${ICON_FILE_BASENAME}" "${FIREFOX_PROFILE_DIR}/chrome/icons/${ICON_FILE_BASENAME}"
+        done
+    fi
 fi
 
 if does_bin_exist 'git'; then
