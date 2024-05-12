@@ -5,6 +5,7 @@ source "${REPO_SCRIPTS_COMMON_DIR}/common.sh"
 source "${REPO_SCRIPTS_COMMON_DIR}/config.sh"
 
 # .profile
+create_file "${HOME}/.profile"
 set_config_value "${HOME}/.profile" 'export XDG_CACHE_HOME'     "\"${HOME}/.cache\""
 set_config_value "${HOME}/.profile" 'export XDG_CONFIG_HOME'    "\"${HOME}/.config\""
 set_config_value "${HOME}/.profile" 'export XDG_DATA_HOME'      "\"${HOME}/.local/share\""
