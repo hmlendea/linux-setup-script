@@ -91,25 +91,25 @@ remove \
     "${HOME}/.electron-gyp" \
     "${XDG_CACHE_HOME}/electron-builder"
 
-remove_locales_from_directories \
-    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/" \
-    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/Containers/tasks/"*"/" \
-    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/DotnetTools/dotnet-format/"*"/tools/"*"/" \
-    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/DotnetTools/dotnet-watch/"*"/tools/"*"/" \
-    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/Sdks/"*"/tools/"*"/" \
-    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/Sdks/Microsoft.Build.Tasks.Git/tools/core" \
-    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/Sdks/Microsoft.NET.Sdk/analyzers" \
-    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/Sdks/Microsoft.NET.Sdk/codestyle/"*"/" \
-    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/Extensions" \
-    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/FSharp" \
-    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/Roslyn" \
-    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/Roslyn/bincore" \
-    "${ROOT_USR_SHARE}/dotnet/packs/Microsoft.NETCore.App.Ref/"*"/analyzers/dotnet/cs" \
-    "${ROOT_USR_SHARE}/help" \
-    "${ROOT_USR_SHARE}/i18n/locales" \
-    "${ROOT_USR_SHARE}/locale" \
-    "${ROOT_USR_SHARE}/man" \
-    "${ROOT_USR_SHARE}/X11/locale"
+#remove_locales_from_directories \
+#    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/" \
+#    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/Containers/tasks/"*"/" \
+#    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/DotnetTools/dotnet-format/"*"/tools/"*"/" \
+#    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/DotnetTools/dotnet-watch/"*"/tools/"*"/" \
+#    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/Sdks/"*"/tools/"*"/" \
+#    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/Sdks/Microsoft.Build.Tasks.Git/tools/core" \
+#    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/Sdks/Microsoft.NET.Sdk/analyzers" \
+#    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/Sdks/Microsoft.NET.Sdk/codestyle/"*"/" \
+#    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/Extensions" \
+#    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/FSharp" \
+#    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/Roslyn" \
+#    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/Roslyn/bincore" \
+#    "${ROOT_USR_SHARE}/dotnet/packs/Microsoft.NETCore.App.Ref/"*"/analyzers/dotnet/cs" \
+#    "${ROOT_USR_SHARE}/help" \
+#    "${ROOT_USR_SHARE}/i18n/locales" \
+#    "${ROOT_USR_SHARE}/locale" \
+#    "${ROOT_USR_SHARE}/man" \
+#    "${ROOT_USR_SHARE}/X11/locale"
 
 remove \
     "${ROOT_ROOT}/Desktop" \
