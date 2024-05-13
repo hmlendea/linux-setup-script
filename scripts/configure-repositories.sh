@@ -73,9 +73,9 @@ if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
             add_repository 'hmlendea-aarch64' 'https://github.com/hmlendea/PKGBUILDs/releases/latest/download/' '' 'Never'
         fi
 
-        if [ "${ARCH}" = 'armv7h' ] || [ "${ARCH}" = 'armv7l' ]; then
-            add_repository 'hmlendea-armv7h' 'https://github.com/hmlendea/PKGBUILDs/releases/latest/download/' '' 'Never'
-        fi
+#        if [ "${ARCH}" = 'armv7h' ] || [ "${ARCH}" = 'armv7l' ]; then
+#            add_repository 'hmlendea-armv7h' 'https://github.com/hmlendea/PKGBUILDs/releases/latest/download/' '' 'Never'
+#        fi
     fi
 
     if [ "${ARCH_FAMILY}" = 'x86' ]; then
