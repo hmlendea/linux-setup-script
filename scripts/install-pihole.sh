@@ -1,5 +1,5 @@
 #!/bin/bash
-source "scripts/common/filesytem.sh"
+source "scripts/common/filesystem.sh"
 source "${REPO_SCRIPTS_COMMON_DIR}/common.sh"
 source "${REPO_SCRIPTS_COMMON_DIR}/config.sh"
 source "${REPO_SCRIPTS_COMMON_DIR}/package-management.sh"
