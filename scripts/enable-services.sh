@@ -3,6 +3,8 @@ source "scripts/common/filesystem.sh"
 source "${REPO_SCRIPTS_COMMON_DIR}/common.sh"
 source "${REPO_SCRIPTS_COMMON_DIR}/service-management.sh"
 
+[[ "${DISTRO}" =~ 'WSL' ]] && exit
+
 enable_service 'bluetooth'
 enable_service 'cups'
 enable_service 'docker'

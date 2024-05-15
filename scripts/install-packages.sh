@@ -143,7 +143,8 @@ fi
 ########################
 ### Power Management ###
 ########################
-if [ "${CHASSIS_TYPE}" = 'Laptop' ]; then
+if [ "${CHASSIS_TYPE}" = 'Laptop' ] \
+&& ! [[ "${DISTRO}" =~ 'WSL' ]]; then
     install_native_package 'acpi'
     install_native_package 'tlp'
 
@@ -183,10 +184,13 @@ fi
 
 if [ "${CHASSIS_TYPE}" = 'Laptop' ] \
 || [ "${CHASSIS_TYPE}" = 'Phone' ]; then
-    install_native_package 'chrony'
+    if ! [[ "${DISTRO}" =~ 'WSL' ]]; then
+        install_native_package 'chrony'
+    fi
 fi
 
-if [ "${OS}" = "Linux" ]; then
+if [ "${OS}" = 'Linux' ] \
+&& ! [[ "${DISTRO}" =~ 'WSL' ]]; then
     install_native_package 'networkmanager'
     install_native_package 'networkmanager-openvpn'
 
@@ -288,7 +292,8 @@ if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
 || [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
     install_native_package 'gnome-bluetooth'
 elif [ -n "${DESKTOP_ENVIRONMENT}" ]; then
-    if ! [[ ${DEVICE_MODEL} =~ 'iPhone' ]] \
+    if ! [[ "${DEVICE_MODEL}" =~ 'iPhone' ]] \
+    && ! [[ "${DISTRO}" =~ 'WSL' ]] \
     && [ "${DISTRO_FAMILY}" != 'Android' ]; then
         install_native_package 'blueman'
     fi
@@ -297,7 +302,8 @@ fi
 ####################
 ### Boot Loaders ###
 ####################
-if [ "${ARCH_FAMILY}" = 'x86' ]; then
+if [ "${ARCH_FAMILY}" = 'x86' ] \
+&& ! [[ "${DISTRO}" =~ 'WSL' ]]; then
     if [ "${CHASSIS_TYPE}" = 'Desktop' ] \
     || [ "${CHASSIS_TYPE}" = 'Laptop' ]; then
         install_native_package 'grub'
@@ -387,7 +393,8 @@ fi
 ###############
 ### Drivers ###
 ###############
-if [ "${ARCH_FAMILY}" = 'x86' ]; then
+if [ "${ARCH_FAMILY}" = 'x86' ] \
+&& ! [[ "${DISTRO}" =~ 'WSL' ]]; then
     if [ "${GPU_FAMILY}" = 'Intel' ]; then
         install_native_package 'intel-media-driver'
 
