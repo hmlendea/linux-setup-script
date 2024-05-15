@@ -25,7 +25,8 @@ function call_package_manager() {
         yes | run_as_su apk ${*}
     elif [ "${DISTRO_FAMILY}" = 'Android' ]; then
         yes | pkg ${*}
-    elif [ "${DISTRO_FAMILY}" = 'Debian' ]; then
+    elif [ "${DISTRO_FAMILY}" = 'Debian' ] \
+      || [ "${DISTRO_FAMILY}" = 'Ubuntu' ]; then
         yes | run_as_su apt ${*}
     fi
 }
@@ -95,13 +96,16 @@ function is_native_package_installed() {
 		    return 1 # False
 	    fi
     elif [ "${DISTRO_FAMILY}" = 'Android' ] \
-      || [ "${DISTRO_FAMILY}" = 'Debian' ]; then
+      || [ "${DISTRO_FAMILY}" = 'Debian' ] \
+      || [ "${DISTRO_FAMILY}" = 'Ubuntu' ]; then
         if (apt-cache policy "${PKG}" | grep -q '^\s*Installed:\s*[0-9]'); then
 	    	return 0 # True
         else
 		    return 1 # False
         fi
     fi
+
+    return 1
 }
 
 function is_android_package_installed() {
@@ -199,7 +203,8 @@ function install_native_package() {
     elif [ "${DISTRO_FAMILY}" = 'Arch' ]; then
         call_package_manager -S --asexplicit "${PACKAGE}"
     elif [ "${DISTRO_FAMILY}" = 'Android' ] \
-      || [ "${DISTRO_FAMILY}" = 'Debian' ]; then
+      || [ "${DISTRO_FAMILY}" = 'Debian' ] \
+      || [ "${DISTRO_FAMILY}" = 'Ubuntu' ]; then
         call_package_manager install "${PACKAGE}"
     fi
 }
@@ -213,7 +218,8 @@ function install_native_package_dependency() {
     if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
         call_package_manager -S --asexplicit "${PACKAGE}"
     elif [ "${DISTRO_FAMILY}" = 'Android' ] \
-      || [ "${DISTRO_FAMILY}" = 'Debian' ]; then
+      || [ "${DISTRO_FAMILY}" = 'Debian' ] \
+      || [ "${DISTRO_FAMILY}" = 'Ubuntu' ]; then
         call_package_manager install "${PACKAGE}" # TODO: See if there is a way to mark them as dep
     fi
 }
@@ -328,7 +334,8 @@ function uninstall_native_package() {
         elif [ "${DISTRO_FAMILY}" = 'Arch' ]; then
             call_package_manager -Rns "${PACKAGE_NAME}"
         elif [ "${DISTRO_FAMILY}" = 'Android' ] \
-          || [ "${DISTRO_FAMILY}" = 'Debian' ]; then
+          || [ "${DISTRO_FAMILY}" = 'Debian' ] \
+          || [ "${DISTRO_FAMILY}" = 'Ubuntu' ]; then
             call_package_manager remove "${PACKAGE_NAME}"
         fi
     done
