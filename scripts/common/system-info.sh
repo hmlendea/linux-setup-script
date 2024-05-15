@@ -681,7 +681,9 @@ fi
 
 if [ "${DESKTOP_ENVIRONMENT}" != 'None' ] \
 || [ -f "${ROOT_ETC}/systemd/system/display-manager.service" ]; then
-    HAS_GUI=true
+    if ! [[ "${DISTRO}" =~ 'WSL' ]]; then
+        HAS_GUI=true
+    fi
 else
     case ${HOSTNAME} in
         'iPhone'*)  HAS_GUI=false ;;
