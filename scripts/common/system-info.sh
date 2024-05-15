@@ -314,7 +314,11 @@ function get_cpu_model() {
                 -e 's/\s*$//g' \
                 -e 's/\s\+/ /g')
 
-    echo "${MODEL}"
+    echo "${MODEL}" | sed \
+        -e 's/[0-9][0-9]*\(st\|nd\|rd\|th\) [Gg]en\(eration\)*//g' \
+        -e 's/^\s*//g' \
+        -e 's/\s*$//g' \
+        -e 's/\(i[0-9]\)-\([0-9]\)/\1 \2/g'
 }
 
 function get_cpu_vendor_from_line() {
@@ -510,7 +514,11 @@ function get_chassis_type() {
         return
     fi
 
-    echo "Desktop"
+    if [ -d "${ROOT_SYS}/class/power_supply/battery" ]; then
+        echo 'Laptop'
+    else
+        echo 'Desktop'
+    fi
 }
 
 function gpu_has_optimus_support() {
@@ -546,11 +554,10 @@ else
         -e 's/-[a-z0-9]*$//g')
 fi
 
-[ -z "${OS}" ] && OS=$(uname -s)
 
 if does_bin_exist 'uname'; then
+    [ -z "${OS}" ] && OS=$(uname -s)
     uname -r | grep -q "valve.*neptune" && DISTRO="SteamOS"
-    uname -r | grep -q "Microsoft" && DISTRO="${DISTRO} WSL"
 fi
 
 if [ "${DISTRO}" = "arch" ] \
@@ -576,6 +583,10 @@ if [ "${OS}" = 'Alpine Linux' ] \
 || [ "${DISTRO}" = 'alpine' ]; then
     DISTRO_FAMILY='Alpine'
     OS='Linux'
+elif [ "${OS}" = 'Ubuntu' ]; then
+    DISTRO='Ubuntu'
+    DISTRO_FAMILY='Ubuntu'
+    OS='Linux'
 fi
 
 if [ "${OS}" = 'Alpine Linux' ]; then
@@ -587,6 +598,8 @@ elif [ "${OS}" = 'CYGWIN_NT-10.0' ]; then
 elif [ "${OS}" = 'postmarketOS' ]; then
 	DISTRO='postmarketOS'
 fi
+
+does_bin_exist 'uname' && uname -r | grep -q "Microsoft" && DISTRO="${DISTRO} WSL"
 
 # Destkp Environment
 if [ -f "${ROOT_USR_BIN}/gnome-session" ]; then
