@@ -842,10 +842,5 @@ elif [ "${DISTRO_FAMILY}" = 'Android' ] \
     install_android_remote_package "https://updates.signal.org/android/Signal-Android-website-prod-universal-release-7.6.2.apk" "org.thoughtcrime.securesms"  # Signal
 
     # Security
-    install_android_remote_package "$(get_latest_github_release_assets beemdevelopment/Aegis)" "com.beemdevelopment.aegis"      # Aegis
     install_android_remote_package "$(get_latest_github_release_assets bitwarden/mobile | grep fdroid)" "com.x8bit.bitwarden" # Bitwarden
-    install_android_remote_package "$(get_latest_github_release_assets M66B/NetGuard)" "eu.faircode.netguard"                   # NetGuard
-
-    # Tools
-    install_android_remote_package "https://f-droid.org/repo/org.kde.kdeconnect_tp_11910.apk" "org.kde.kdeconnect_tp"       # KDE Connect
 fi
