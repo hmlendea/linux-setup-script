@@ -37,9 +37,23 @@ function keep_first_installed_package() {
     done
 }
 
+# Calendar Apps
+keep_first_installed_package 'org.fossify.calendar' 'foundation.e.calendar'
+keep_first_installed_package 'org.gnome.Calendar' 'gnome-calendar'
+! ${IS_GENERAL_PURPOSE_DEVICE} && uninstall_package 'org.gnome.Calendar'
+
 # Chat Apps
 keep_first_installed_package 'com.telegram.desktop' 'telegram-desktop'
 keep_first_installed_package 'de.schmidhuberj.Flare' 'org.signal.Signal' 'signal-desktop'
+
+# Clock Apps
+keep_first_installed_package 'org.fossify.clock' 'com.android.deskclock'
+
+# Contacts Apps
+keep_first_installed_package 'org.fossify.contacts' 'com.android.contacts'
+
+# File Managers
+keep_first_installed_package 'org.fossify.filemanager' 'com.android.documentsui'
 
 # Image Viewers
 [ "${DESKTOP_ENVIRONMENT}" != 'Phosh' ] && uninstall_flatpak 'org.gnome.eog' && uninstall_native_package 'eog-plugins' 'eog'
@@ -96,7 +110,6 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "fastfetch-git"                # Replaced by fastfetch
     uninstall_native_package "fragments"                    # Replaced by flatpak: de.haeckerfelix.Fragments
     uninstall_native_package "gnome-calculator"             # Replaced by flatpak: org.gnome.Calculator
-    uninstall_native_package "gnome-calendar"               # Replaced by flatpak: org.gnome.Calendar
     uninstall_native_package "gnome-contacts"               # Replaced by flatpak: org.gnome.Contacts
     uninstall_native_package "gnome-clocks"                 # Replaced by flatpak: org.gnome.Clocks
     uninstall_native_package "gnome-font-viewer"            # Replaced by flatpak: org.gnome.font-viewer
@@ -175,7 +188,6 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
 
         uninstall_flatpak "org.gnome.baobab"
         uninstall_flatpak "org.gnome.Calculator"
-        uninstall_flatpak "org.gnome.Calendar"
         uninstall_flatpak "org.gnome.Cheese"
         uninstall_flatpak "org.gnome.clocks"
         uninstall_flatpak "org.gnome.Contacts"
