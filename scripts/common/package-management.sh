@@ -244,6 +244,7 @@ function install_android_remote_package() {
     local PACKAGE_URL="${1}"
     local PACKAGE_NAME="${2}"
 
+    [ -n "${PACKAGE_NAME}" ] && PACKAGE_NAME=$(sed 's/\.apk$//g' <<< "${PACKAGE_NAME}")
     [ -z "${PACKAGE_NAME}" ] && PACKAGE_NAME=$(echo "${PACKAGE_URL}" | sed 's/.*\/\([^\/]*\)\.apk.*/\1/g')
 
     is_android_package_installed "${PACKAGE_NAME}" && return
