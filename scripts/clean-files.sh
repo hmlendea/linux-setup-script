@@ -216,6 +216,7 @@ remove \
 ! does_bin_exist 'inkscape' && remove \
     "${XDG_CACHE_HOME}/inkscape" \
     "${XDG_CONFIG_HOME}/inkscape"
+! does_bin_exist 'jan' && remove "${XDG_CONFIG_HOME}/Jan"
 ! does_bin_exist 'java' && remove "${HOME}/.java"
 ! does_bin_exist 'kupfer' && remove "${XDG_CONFIG_HOME}/kupfer"
 ! does_bin_exist 'libreoffice' && remove "${XDG_CONFIG_HOME}/libreoffice"
