@@ -362,10 +362,14 @@ if ${HAS_GUI}; then
             install_flatpak 'org.telegram.desktop'
         fi
 
-        if [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
-            install_flatpak 'de.schmidhuberj.Flare'
+        if [ "${OS}" = 'Android' ]; then
+            install_android_remote_package 'https://updates.signal.org/android/Signal-Android-website-prod-universal-release-7.6.2.apk' 'org.thoughtcrime.securesms'
         else
-            install_flatpak 'org.signal.Signal'
+            if [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+                install_flatpak 'de.schmidhuberj.Flare'
+            else
+                install_flatpak 'org.signal.Signal'
+            fi
         fi
 
         if [ "${CHASSIS_TYPE}" != 'Phone' ]; then
@@ -838,9 +842,6 @@ if [ "${OS}" = 'Linux' ]; then
     fi
 elif [ "${DISTRO_FAMILY}" = 'Android' ] \
 && ${HAS_SU_PRIVILEGES}; then
-    # Communication
-    install_android_remote_package "https://updates.signal.org/android/Signal-Android-website-prod-universal-release-7.6.2.apk" "org.thoughtcrime.securesms"  # Signal
-
     # Security
     install_android_remote_package "$(get_latest_github_release_assets bitwarden/mobile | grep fdroid)" "com.x8bit.bitwarden" # Bitwarden
 fi
