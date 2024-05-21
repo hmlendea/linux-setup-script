@@ -14,4 +14,7 @@ if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
     yes | call_package_manager -Scc
 
     echo ''
+elif [ "${DISTRO_FAMILY}" = 'Debian' ] \
+  || [ "${DISTRO_FAMILY}" = 'Ubuntu' ]; then
+    call_package_manager autoremove
 fi
