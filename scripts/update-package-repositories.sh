@@ -8,7 +8,8 @@ if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
     call_package_manager -Syy
     does_bin_exist 'pkgfile' && run_as_su pkgfile -u
 elif [ "${DISTRO_FAMILY}" = 'Android' ] \
-  || [ "${DISTRO_FAMILY}" = 'Debian' ]; then
+  || [ "${DISTRO_FAMILY}" = 'Debian' ] \
+  || [ "${DISTRO_FAMILY}" = 'Ubuntu' ]; then
     call_package_manager update
 fi
 

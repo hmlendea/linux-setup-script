@@ -9,7 +9,8 @@ if ! is_distro_immutable; then
     if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
         call_package_manager -Syu
     elif [ "${DISTRO_FAMILY}" = 'Android' ] \
-      || [ "${DISTRO_FAMILY}" = 'Debian' ]; then
+      || [ "${DISTRO_FAMILY}" = 'Debian' ] \
+      || [ "${DISTRO_FAMILY}" = 'Ubuntu' ]; then
         call_package_manager upgrade
     fi
 fi
