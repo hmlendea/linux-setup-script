@@ -27,11 +27,13 @@ fi
 #update_file_if_distinct "${REPO_RC_DIR}/profile" "${HOME}/.profile"
 update_file_if_distinct "${REPO_RC_DIR}/inputrc" "${XDG_CONFIG_HOME}/readline/inputrc"
 
+SHELL_RCS_DIR="${XDG_DATA_HOME}/bash"
+SHELL_VARIABLES_RC_PATH="${SHELL_RCS_DIR}/variables"
+
 update_file_if_distinct "${REPO_RC_DIR}/shell/aliases" "${XDG_DATA_HOME}/bash/aliases"
 update_file_if_distinct "${REPO_RC_DIR}/shell/functions" "${XDG_DATA_HOME}/bash/functions"
 update_file_if_distinct "${REPO_RC_DIR}/shell/opts" "${XDG_DATA_HOME}/bash/options"
 update_file_if_distinct "${REPO_RC_DIR}/shell/prompt" "${XDG_DATA_HOME}/bash/prompt"
-update_file_if_distinct "${REPO_RC_DIR}/shell/vars" "${XDG_DATA_HOME}/bash/variables"
 
 if does_bin_exist "bash"; then
     update_file_if_distinct "${REPO_RC_DIR}/shell/bashrc" "${HOME}/.bashrc"
@@ -73,3 +75,109 @@ if does_bin_exist "npm"; then
     set_config_value "${NPMRC_FILE}" tmp "\"${XDG_RUNTIME_DIR}/npm\""
     set_config_value "${NPMRC_FILE}" init-module "\"${XDG_CONFIG_HOME}/npm/config/npm-init.js\""
 fi
+
+#########################
+### Shell - Variables ###
+#########################
+touch "${SHELL_VARIABLES_RC_PATH}"
+
+set_config_values "${SHELL_VARIABLES_RC_PATH}" \
+    'export SHELL'          "${ROOT_BIN}/bash" \
+    'export HISTFILE'       "${SHELL_RCS_DIR}/history" \
+    'export HISTSIZE'       10000 \
+    'export HISTCONTROL'    'ignoredups' \
+    'export LESSHISTFILE'   "${XDG_CACHE_HOME}/less/history" \
+    'export GPG_TTY'        '${SSH_TTY}'
+
+if [ -n "${USER}" ]; then
+    set_config_values "${SHELL_VARIABLES_RC_PATH}" \
+        'export USER'       '${USER}' \
+        'export USERNAME'   '${USER}'
+elif [ -n "${USERNAME}" ]; then
+    set_config_values "${SHELL_VARIABLES_RC_PATH}" \
+        'export USER'       '${USERNAME}' \
+        'export USERNAME'   '${USERNAME}'
+else
+    set_config_values "${SHELL_VARIABLES_RC_PATH}" \
+        'export USER'       '$(whoami)' \
+        'export USERNAME'   '$(whoami)'
+fi
+
+set_config_values "${SHELL_VARIABLES_RC_PATH}" \
+    'export LANG'           'en_GB.UTF-8' \
+    'export NUGET_PACKAGES' "${XDG_CACHE_HOME}/nuget/packages" \
+    'export SSL_CERT_DIR'   "${ROOT_ETC}/ssl/certs" \
+    'export XAUTHORITY'     "${XDG_RUNTIME_DIR}/Xauthority"
+
+set_config_values "${SHELL_VARIABLES_RC_PATH}" \
+    'export CARGOGHOME'         "${XDG_DATA_HOME}/cargo" \
+    'export GNUPGHOME'          "${XDG_DATA_HOME}/gnupg" \
+    'export GRADLE_USER_HOME'   "${XDG_DATA_HOME}/gradle"
+
+set_config_values "${SHELL_VARIABLES_RC_PATH}" \
+    'export INPUTRC'                "${XDG_CONFIG_HOME}/readline/inputrc" \
+    'export NPM_CONFIG_USERCONFIG'  "${XDG_CONFIG_HOME}/npm/npmrc"
+
+[ -d "${ROOT_USR_LIB32}" ]          && set_config_value "${SHELL_VARIABLES_RC_PATH}" 'export LD_LIBRARY_PATH'   '${LD_LIBRARY_PATH-}:'"${ROOT_USR_LIB32}"
+[ -d "${ROOT_USR_LIB}/gtk-2.0" ]    && set_config_value "${SHELL_VARIABLES_RC_PATH}" 'export GTK2_RC_FILES'     "${XDG_CONFIG_HOME}/gtk-2.0/gtkrc"
+
+if [ "${GPU_FAMILY}" = 'Nvidia' ]; then
+    set_config_values "${SHELL_VARIABLES_RC_PATH}" \
+        'export __GL_SHADER_DISK_CACHE_PATH'  "${XDG_CACHE_HOME}/nvidia/GLCache" \
+        'export CUDA_CACHE_PATH'              "${XDG_CACHE_HOME}/nvidia"
+fi
+
+does_bin_exist 'bat'        && set_config_value "${SHELL_VARIABLES_RC_PATH}" 'export BAT_THEME'     'Visual Studio Dark+'
+does_bin_exist 'optirun'    && set_config_value "${SHELL_VARIABLES_RC_PATH}" 'export VGL_READBACK'  'pbo' # Better optirun performance
+
+if does_bin_exist 'dotnet'; then
+    set_config_values "${SHELL_VARIABLES_RC_PATH}" \
+        'export DOTNET_CLI_TELEMETRY_OUTPUT'        1 \
+        'export DOTNET_SKIP_FIRST_TIME_EXPERIENCE'  1
+fi
+
+#if [ -f "${ROOT_USR_BIN}/firefox" ] \
+#|| [ -f "${ROOT_USR_BIN}/firefox-esr" ] \
+#|| [ -f "${GLOBAL_FLATPAK_BIN}/io.gitlab.librewolf-community" ] \
+#|| [ -f "${GLOBAL_FLATPAK_BIN}/org.mozilla.firefox" ] \
+#|| [ -f "${LOCAL_FLATPAK_BIN}/io.gitlab.librewolf-community" ] \
+#|| [ -f "${LOCAL_FLATPAK_BIN}/org.mozilla.firefox" ]; then
+#    if [ -n "${WAYLAND_DISPLAY}" ]; then
+#        export MOZ_ENABLE_WAYLAND=1
+#    fi
+#fi
+
+if does_bin_exist 'paru'; then
+    set_config_value "${SHELL_VARIABLES_RC_PATH}" 'export PACKAGE_MANAGER' 'paru'
+elif does_bin_exist 'yay'; then
+    set_config_value "${SHELL_VARIABLES_RC_PATH}" 'export PACKAGE_MANAGER' 'yay'
+else
+    set_config_value "${SHELL_VARIABLES_RC_PATH}" 'export PACKAGE_MANAGER' 'pacman'
+fi
+
+if does_bin_exist 'micro'; then
+    set_config_value "${SHELL_VARIABLES_RC_PATH}" 'export EDITOR' 'micro'
+    [[ ${COLORTERM} =~ ^(truecolor|24-bit|24bit)$ ]] && set_config_value "${SHELL_VARIABLES_RC_PATH}" 'export MICRO_TRUECOLOR' 1
+elif does_bin_exist 'nano'; then
+    set_config_value "${SHELL_VARIABLES_RC_PATH}" 'export EDITOR' 'nano'
+elif does_bin_exist 'vim'; then
+    set_config_value "${SHELL_VARIABLES_RC_PATH}" 'export EDITOR' 'vim'
+elif does_bin_exist 'vi'; then
+    set_config_value "${SHELL_VARIABLES_RC_PATH}" 'export EDITOR' 'vi'
+fi
+
+if does_bin_exist 'steam'; then
+    set_config_value "${SHELL_VARIABLES_RC_PATH}" 'export SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS' 0               # Fix for loosing focus in Steam BPM after exiting a game
+    set_config_value "${SHELL_VARIABLES_RC_PATH}" 'export VKD3D_CONFIG'                     'upload_hvv'    # Resizeable BAR
+    set_config_value "${SHELL_VARIABLES_RC_PATH}" 'export WINE_FULLSCREEN_FSR'              1
+fi
+
+# Shell colours
+set_config_values "${SHELL_VARIABLES_RC_PATH}" \
+    'export LESS_TERMCAP_mb' '$'"'"'\e[1;32m'"'" \
+    'export LESS_TERMCAP_md' '$'"'"'\e[1;36m'"'" \
+    'export LESS_TERMCAP_me' '$'"'"'\e[0m'"'" \
+    'export LESS_TERMCAP_se' '$'"'"'\e[0m'"'" \
+    'export LESS_TERMCAP_so' '$'"'"'\e[01;97m'"'" \
+    'export LESS_TERMCAP_ue' '$'"'"'\e[0m'"'" \
+    'export LESS_TERMCAP_us' '$'"'"'\e[1;4;033m'"'"
