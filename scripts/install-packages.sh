@@ -229,6 +229,16 @@ elif [ "${DISTRO_FAMILY}" = 'Debian' ]; then
     install_native_package 'unrar-free'
 fi
 
+#############
+### Audio ###
+#############
+if ${HAS_GUI}; then
+    install_native_package 'pipewire'
+    install_native_package_dependency 'pipewire-alsa'
+    install_native_package_dependency 'pipewire-pulse'
+    install_native_package_dependency 'pipewire-jack'
+fi
+
 ###################
 ### Filesystems ###
 ###################
