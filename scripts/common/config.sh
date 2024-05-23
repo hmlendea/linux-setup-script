@@ -108,6 +108,8 @@ function set_ini_config_value() {
     local VALUE="${VALUE_RAW}"
     local FILE_CONTENT=""
 
+    [[ "${VALUE_RAW}" =~ [\ !\(\)] ]] && VALUE="'${VALUE}'"
+
     FILE_CONTENT=$(read_file "${FILE_PATH}")
 
     CURRENT_VALUE=$(get_config_value --separator "${SEPARATOR}" "${FILE_PATH}" "${KEY}")
