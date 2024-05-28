@@ -705,6 +705,15 @@ if ${HAS_GUI}; then
     fi
 else
     IS_GENERAL_PURPOSE_DEVICE=false
+
+fi
+
+if ! ${HAS_GUI} || [ "${DESKTOP_ENVIRONMENT}" = 'None' ]; then
+    HAS_GUI=false
+    DESKTOP_ENVIRONMENT=''
+    
+    IS_GAMING_DEVICE=false
+    IS_GENERAL_PURPOSE_DEVICE=false
 fi
 
 if does_bin_exist 'sudo'; then
