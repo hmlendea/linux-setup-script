@@ -189,12 +189,14 @@ if [ "${CHASSIS_TYPE}" = 'Laptop' ] \
     fi
 fi
 
-if [ "${OS}" = 'Linux' ] \
-&& ! [[ "${DISTRO}" =~ 'WSL' ]]; then
-    install_native_package 'networkmanager'
-    install_native_package 'networkmanager-openvpn'
+if ${HAS_GUI}; then
+    if [ "${OS}" = 'Linux' ] \
+    && ! [[ "${DISTRO}" =~ 'WSL' ]]; then
+        install_native_package 'networkmanager'
+        install_native_package 'networkmanager-openvpn'
 
-    [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ] && install_native_package 'network-manager-applet'
+        [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ] && install_native_package 'network-manager-applet'
+    fi
 fi
 
 ##########################
@@ -298,13 +300,13 @@ fi
 #################
 ### Bluetooth ###
 #################
-if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
-|| [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
-    install_native_package 'gnome-bluetooth'
-elif [ -n "${DESKTOP_ENVIRONMENT}" ]; then
-    if ! [[ "${DEVICE_MODEL}" =~ 'iPhone' ]] \
-    && ! [[ "${DISTRO}" =~ 'WSL' ]] \
-    && [ "${DISTRO_FAMILY}" != 'Android' ]; then
+if ${HAS_GUI}; then
+    if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
+    || [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+        install_native_package 'gnome-bluetooth'
+    elif ! [[ "${DEVICE_MODEL}" =~ 'iPhone' ]] \
+      && ! [[ "${DISTRO}" =~ 'WSL' ]] \
+      && [ "${DISTRO_FAMILY}" != 'Android' ]; then
         install_native_package 'blueman'
     fi
 fi

@@ -13,9 +13,11 @@ enable_service 'repo-synchroniser.timer'
 enable_service 'systemd-timesyncd'
 enable_service 'thermald'
 
-if does_bin_exist 'NetworkManager'; then
-    enable_service 'NetworkManager'
-    disable_service 'NetworkManager-wait-online'
+if ${HAS_GUI}; then
+    if does_bin_exist 'NetworkManager'; then
+        enable_service 'NetworkManager'
+        disable_service 'NetworkManager-wait-online'
+    fi
 fi
 
 if does_bin_exist 'chronyd'; then
