@@ -752,12 +752,15 @@ fi
 #############################
 ### Window Manager Extras ###
 #############################
-if is_native_package_installed 'wayland'; then
-    install_native_package 'wayland-utils'
-fi
-if is_native_package_installed 'xorg-server'; then
-    install_native_package 'xorg-xdpyinfo'
-    #install_native_package 'xorg-xkill'
+if ${HAS_GUI}; then
+    if is_native_package_installed 'wayland'; then
+        install_native_package 'wayland-utils'
+    fi
+
+    if is_native_package_installed 'xorg-server'; then
+        install_native_package 'xorg-xdpyinfo'
+        #install_native_package 'xorg-xkill'
+    fi
 fi
 
 if [ "${OS}" = 'Linux' ]; then
