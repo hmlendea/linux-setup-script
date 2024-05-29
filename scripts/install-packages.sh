@@ -135,7 +135,7 @@ if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
 fi
 
 if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
-    install_flatpak 'net.nokyan.Resources'
+    install_native_package 'gnome-system-monitor'
 elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
     install_native_package 'lxtask'
 fi
