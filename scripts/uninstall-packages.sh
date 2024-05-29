@@ -79,7 +79,7 @@ uninstall_android_package 'com.xiaomi.mimusic2'
 keep_first_installed_package "com.automattic.simplenote" "foundation.e.notes"
 
 # System Monitors
-keep_first_installed_package "net.nokyan.Resources" "gnome-system-monitor"
+keep_first_installed_package 'gnome-system-monitor' 'net.nokyan.Resources'
 
 # Task Management apps
 keep_first_installed_package "io.github.alainm23.planify" "org.gnome.Todo"
