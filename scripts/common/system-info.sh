@@ -644,6 +644,7 @@ IS_BATTERY_DEVICE=false
 HAS_GUI=true
 HAS_SU_PRIVILEGES=true
 HAS_EFI_SUPPORT=false
+DEVICE_TYPE='PC'
 
 if [ "${CHASSIS_TYPE}" = "Phone" ]; then
     POWERFUL_PC=false
@@ -719,6 +720,15 @@ if ! ${HAS_GUI} || [ "${DESKTOP_ENVIRONMENT}" = 'None' ]; then
     
     IS_GAMING_DEVICE=false
     IS_GENERAL_PURPOSE_DEVICE=false
+fi
+
+if [ "${CHASSIS_TYPE}" = 'Laptop' ] \
+|| [ "${CHASISS_TYPE}" = 'Desktop' ]; then
+    DEVICE_TYPE='PC'
+elif [ "${CHASSIS_TYPE}" = 'Phone' ]; then
+    DEVICE_TYPE='Mobile'
+elif [ "${CHASSIS_TYPE}" = 'SBC' ]; then
+    DEVICE_TYPE='Server'
 fi
 
 if does_bin_exist 'sudo'; then
