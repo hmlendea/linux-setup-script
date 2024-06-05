@@ -21,8 +21,7 @@ if ${HAS_SU_PRIVILEGES}; then
     run_as_su printf "Thank you!\n\n"
 fi
 
-[ -n "${DEVICE_MODEL}" ] && echo "Device:           ${DEVICE_MODEL}"
-
+echo "Device:           ${DEVICE_TYPE} (${DEVICE_MODEL})"
 echo "OS:               ${OS}"
 echo "Distro:           ${DISTRO} (${DISTRO_FAMILY})"
 echo "Architecture:     $(get_arch) ($(get_arch_family))"

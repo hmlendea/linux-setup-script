@@ -76,6 +76,8 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/engrampa.desktop" \
     set_launcher_entries "${LAUNCHER}" \
         Name "Archives" \
         Name[ro] "Arhive"
+
+    [ "${DEVICE_TYPE}" = 'Mobile' ] && set_launcher_entry "${LAUNCHER}" NoDisplay true
 done
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.FileRoller.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.FileRoller.desktop" \
@@ -426,6 +428,8 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/atril.desktop" \
     set_launcher_entries "${LAUNCHER}" \
         Name "Documents" \
         Name[ro] "Documente"
+
+    [ "${DEVICE_TYPE}" = 'Mobile' ] && set_launcher_entry "${LAUNCHER}" NoDisplay true
 done
 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/atril.desktop" \
@@ -675,6 +679,8 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/gpicview.desktop" \
         Name[ro] "Imagini" \
         Icon "eog" \
         Keywords "Photo;Picture;Slideshow;Graphics;Image Viewer;"
+
+    [ "${DEVICE_TYPE}" = 'Mobile' ] && set_launcher_entry "${LAUNCHER}" NoDisplay true
 done
 
 ########################
@@ -785,18 +791,24 @@ done
 #####################
 ### Music players ###
 #####################
-set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/lxmusic.desktop" \
-    Name "Music" \
-    Name[ro] "Muzică" \
-    MimeType "application/x-ogg;application/ogg;audio/x-vorbis+ogg;audio/vorbis;audio/x-vorbis;audio/x-scpls;audio/x-mp3;audio/x-mpeg;audio/mpeg;audio/x-mpegurl;audio/x-flac;audio/mp4;x-scheme-handler/itms;x-scheme-handler/itmss;"
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/lxmusic.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/io.bassi.Amberol.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/io.bassi.Amberol.dekstop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name "Music" \
+        Name[ro] "Muzică" \
+        MimeType "application/x-ogg;application/ogg;audio/x-vorbis+ogg;audio/vorbis;audio/x-vorbis;audio/x-scpls;audio/x-mp3;audio/x-mpeg;audio/mpeg;audio/x-mpegurl;audio/x-flac;audio/mp4;x-scheme-handler/itms;x-scheme-handler/itmss;"
+
+    [ "${DEVICE_TYPE}" = 'Mobile' ] && set_launcher_entry "${LAUNCHER}" NoDisplay true
+done
 
 for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.spotify.Client.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/dev.alextren.Spot.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.spotify.Client.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/dev.alextren.Spot.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        Name "Spotify" \
-        Icon "spotify"
+        Name 'Spotify' \
+        Icon 'spotify'
 done
 
 #############
@@ -1210,6 +1222,8 @@ for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.github.rafostar.Clapper.des
         Name 'Videos' \
         Name[ro] 'Videouri' \
         Icon 'video-player'
+
+    [ "${DEVICE_TYPE}" = 'Mobile' ] && set_launcher_entry "${LAUNCHER}" NoDisplay true
 done
 
 ###############

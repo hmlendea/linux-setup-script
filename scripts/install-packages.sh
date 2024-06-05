@@ -557,7 +557,7 @@ fi
 #####################
 ### Image Editors ###
 #####################
-if ${HAS_GUI} && ${IS_GENERAL_PURPOSE_DEVICE}; then
+if ${HAS_GUI} && ${IS_GENERAL_PURPOSE_DEVICE} && [ "${DEVICE_TYPE}" = 'PC' ]; then
     install_flatpak 'org.gimp.GIMP' # Wait at least until it uses GTK3
     install_flatpak 'org.inkscape.Inkscape'
 fi
