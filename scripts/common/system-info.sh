@@ -502,6 +502,11 @@ function get_chassis_type() {
         return
     fi
 
+    if [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+        echo 'Phone'
+        return
+    fi
+
     if does_bin_exist "uname" \
     && uname -r | grep -q "raspberry\|rpi"; then
         echo "SBC"
