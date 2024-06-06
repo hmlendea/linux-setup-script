@@ -3,7 +3,10 @@
 
 DOTNET_VERSION="$(dotnet --version)"
 
-[ -z "${MSBuildSDKsPath}" ] && export MSBuildSDKsPath="${DOTNET_ROOT}/sdk/${DOTNET_VERSION}/Sdks"
+if [ -z "${MSBuildSDKsPath}" ] \
+|| [ ! -d "${MSBuildSDKsPath}" ]; then
+    export MSBuildSDKsPath="${DOTNET_ROOT}/sdk/${DOTNET_VERSION}/Sdks"
+fi
 
 # Add dotnet tools directory to PATH
 DOTNET_TOOLS_PATH="${HOME}/.dotnet/tools"
