@@ -547,6 +547,7 @@ if ${HAS_GUI} && ${IS_DEVELOPMENT_DEVICE}; then
 
     if does_bin_exist 'dotnet'; then
         install_vscode_package 'mangrimen.mgcb-editor'
+        install_vscode_package 'ms-dotnettools.csdevkit'
         install_vscode_package 'ms-dotnettools.csharp'
     fi
 
