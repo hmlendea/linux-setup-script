@@ -629,27 +629,28 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/openarena-server.desktop" NoDisplay 
 #####################
 ### IMAGE EDITORS ###
 #####################
-IMAGE_EDITOR_CATEGORIES="Graphics;2DGraphics"
+IMAGE_EDITOR_CATEGORIES='Graphics;2DGraphics'
 
-if does_bin_exist "gimp" "org.gimp.GIMP"; then
+if does_bin_exist 'gimp' 'org.gimp.GIMP'; then
     for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/gimp.desktop" \
                     "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gimp.GIMP.desktop" \
                     "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gimp.GIMP.desktop"; do
         set_launcher_entries "${LAUNCHER}" \
-            Name "GIMP" \
-            Categories "GTK;${IMAGE_EDITOR_CATEGORIES};RasterGraphics;" \
-            StartupWMClass "Gimp-2.10"
+            'Name' 'GIMP' \
+            'Categories' "GTK;${IMAGE_EDITOR_CATEGORIES};RasterGraphics;" \
+            'StartupNotify' false \
+            'StartupWMClass' 'Gimp-2.10'
     done
 
     [ ! -f "${GLOBAL_LAUNCHERS_DIR}/gmic-qt.desktop" ] && create_launcher "${GLOBAL_LAUNCHERS_DIR}/gmic-qt.desktop"
 
     set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/gmic-qt.desktop" \
-        Exec "gmic_qt" \
-        Name "GMIC QT for GIMP" \
-        Name[ro] "GMIC QT pentru GIMP" \
-        Icon "gimp" \
-        StartupWMClass "gmic_qt" \
-        NoDisplay true
+        'Exec' 'gmic_qt' \
+        'Name' 'GMIC QT for GIMP' \
+        'Name[ro]' 'GMIC QT pentru GIMP' \
+        'Icon' 'gimp' \
+        'StartupWMClass' 'gmic_qt' \
+        'NoDisplay' true
 else
     remove "${GLOBAL_LAUNCHERS_DIR}/gmic-qt.desktop"
 fi
