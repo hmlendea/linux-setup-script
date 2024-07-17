@@ -173,7 +173,7 @@ function set_custom_prompt {
         hostColour="93" # Phone = Light Yellow
     fi
 
-    local ps1user="${USER}"
+    local ps1user="${CURRENT_USERNAME}"
     local ps1host='${HOSTNAME}' # "\h"
     local ps1path='$(get_path)'
 

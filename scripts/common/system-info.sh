@@ -641,7 +641,7 @@ IS_DEVELOPMENT_DEVICE=false
 IS_GENERAL_PURPOSE_DEVICE=true
 IS_GAMING_DEVICE=false
 IS_BATTERY_DEVICE=false
-HAS_GUI=true
+HAS_GUI=false
 HAS_SU_PRIVILEGES=true
 HAS_EFI_SUPPORT=false
 DEVICE_TYPE='PC'
@@ -711,7 +711,6 @@ if ${HAS_GUI}; then
     fi
 else
     IS_GENERAL_PURPOSE_DEVICE=false
-
 fi
 
 if ! ${HAS_GUI} || [ "${DESKTOP_ENVIRONMENT}" = 'None' ]; then
