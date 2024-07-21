@@ -646,6 +646,8 @@ if ${CLEAN_LOGS}; then
     remove "${XDG_DATA_HOME}/xorg/"*".log"
     remove "${XDG_DATA_HOME}/xorg/"*".log.old"
 
+    remove "${ROOT_VAR_LOG}/pacman.log"
+
     for SUBFOLDER_NAME in "crash-reports" "logs"; do
         remove "${HOME_VAR_APP}/org.prismlauncher.PrismLauncher/data/PrismLauncher/instances/"*"/.minecraft/${SUBFOLDER_NAME}"
     done
