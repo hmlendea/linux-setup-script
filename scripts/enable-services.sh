@@ -18,6 +18,11 @@ if ${HAS_GUI}; then
         enable_service 'NetworkManager'
         disable_service 'NetworkManager-wait-online'
     fi
+else
+    if does_bin_exist 'netctl'; then
+        enable_service 'netctl-auto@wlan0'
+        enable_service 'dhcpcd'
+    fi
 fi
 
 if does_bin_exist 'chronyd'; then
