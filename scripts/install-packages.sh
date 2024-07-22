@@ -197,6 +197,12 @@ if ${HAS_GUI}; then
 
         [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ] && install_native_package 'network-manager-applet'
     fi
+else
+    if [ "${OS}" = 'Linux' ]; then
+        install_native_package 'netctl'
+        install_native_package 'dhcpcd'
+        install_native_package 'libmd' # Dependency of dhcpcd
+    fi
 fi
 
 ##########################
