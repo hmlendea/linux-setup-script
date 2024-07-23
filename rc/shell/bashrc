@@ -2,6 +2,13 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+function loadShellRc {
+    FILE="${*}"
+
+    loadSource "${FILE}"
+    loadSource "${FILE}_custom"
+}
+
 function loadSource {
     FILE="${*}"
 
@@ -12,11 +19,11 @@ function loadSource {
 
 loadSource "${HOME}/.profile"
 
-loadSource "${XDG_DATA_HOME}/bash/variables"
-loadSource "${XDG_DATA_HOME}/bash/aliases"
-loadSource "${XDG_DATA_HOME}/bash/functions"
-loadSource "${XDG_DATA_HOME}/bash/prompt"
-loadSource "${XDG_DATA_HOME}/bash/options"
+loadShellRc "${XDG_DATA_HOME}/bash/variables"
+loadShellRc "${XDG_DATA_HOME}/bash/aliases"
+loadShellRc "${XDG_DATA_HOME}/bash/functions"
+loadShellRc "${XDG_DATA_HOME}/bash/prompt"
+loadShellRc "${XDG_DATA_HOME}/bash/options"
 
 loadSource "/usr/share/blesh/ble.sh"
 loadSource "/usr/share/doc/pkgfile/command-not-found.bash"
