@@ -87,7 +87,7 @@ keep_first_installed_package "io.github.alainm23.planify" "org.gnome.Todo"
 # Video players
 uninstall_android_package "com.mitv.mivideoplayer"
 uninstall_android_package "com.mitv.videoplayer"
-keep_first_installed_package "com.github.rafostar.Clapper" "org.gnome.Totem"
+keep_first_installed_package 'org.gnome.Showtime' 'com.github.rafostar.Clapper' 'org.gnome.Totem'
 
 # zzz OTHERS
 keep_first_installed_package 'chrony' 'ntp'

@@ -448,7 +448,7 @@ fi
 ### ELECTRON ###
 ################
 if does_bin_exist "electron"; then
-    for ELECTRON_VERSION in "" {10..16}; do
+    for ELECTRON_VERSION in "" {10..99}; do
         set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/electron${ELECTRON_VERSION}.desktop" NoDisplay true
     done
 fi
@@ -1215,9 +1215,11 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/vlc.desktop" Name "VLC"
 
 for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.github.rafostar.Clapper.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/io.github.celluloid_player.Celluloid.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Showtime.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Totem.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.github.rafostar.Clapper.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/io.github.celluloid_player.Celluloid.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Showtime.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Totem.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name 'Videos' \
