@@ -740,7 +740,7 @@ fi
 ### Video Players ###
 #####################
 if [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ]; then
-    install_flatpak 'com.github.rafostar.Clapper'
+    install_flatpak 'org.gnome.Showtime'
 elif [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
     install_flatpak 'io.github.celluloid_player.Celluloid'
 fi
