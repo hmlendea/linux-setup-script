@@ -1591,7 +1591,7 @@ if does_bin_exist "org.gnome.TextEditor"; then
     set_config_value --section "org/gnome/TextEditor" "${TEXTEDITOR_CONFIG_FILE}" restore-session=false
 fi
 
-if does_bin_exist "micro"; then
+if does_bin_exist 'micro'; then
     MICRO_BINDINGS_FILE="${XDG_CONFIG_HOME}/micro/bindings.json"
     MICRO_SETTINGS_FILE="${XDG_CONFIG_HOME}/micro/settings.json"
 
@@ -1622,6 +1622,9 @@ if does_bin_exist "micro"; then
     # Keybindings
     set_json_property "${MICRO_BINDINGS_FILE}" '.["Ctrl-g"]' "JumpLine"
     set_json_property "${MICRO_BINDINGS_FILE}" '.["F3"]' "FindNext"
+
+    # Others
+    set_json_property "${MICRO_SETTINGS_FILE}" '.["linter"]' false
 fi
 
 if does_bin_exist "pluma"; then
