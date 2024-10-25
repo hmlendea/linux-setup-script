@@ -269,7 +269,7 @@ if [ "${ARCH_FAMILY}" = 'x86' ]; then
             fi
 
             # Disk Usage Analyzer
-            install_flatpak 'org.gnome.baobab'
+            install_native_package 'baobab'
         fi
 
         # Filesystems

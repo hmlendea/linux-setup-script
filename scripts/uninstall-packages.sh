@@ -52,6 +52,9 @@ keep_first_installed_package 'org.fossify.clock' 'com.android.deskclock'
 # Contacts Apps
 keep_first_installed_package 'org.fossify.contacts' 'com.android.contacts'
 
+# Disk Usage Analyser
+keep_first_installed_pacakge 'baobab' 'org.gnome.baobab'
+
 # File Managers
 keep_first_installed_package 'org.fossify.filemanager' 'com.android.documentsui'
 
@@ -100,7 +103,6 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     fi
 
     uninstall_native_package "alsi"                         # Replaced by fastfetch
-    uninstall_native_package "baobab"                       # Replaced by flatpak: org.gnome.baobab
     uninstall_native_package "dialect"                      # Depends on outdated libs
     uninstall_native_package "discord"                      # Replaced by flatpak: com.discordapp.Discord
     uninstall_native_package "electronmail-bin"             # Replaced by flatpak: com.github.vladimiry.ElectronMail
