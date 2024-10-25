@@ -53,7 +53,7 @@ keep_first_installed_package 'org.fossify.clock' 'com.android.deskclock'
 keep_first_installed_package 'org.fossify.contacts' 'com.android.contacts'
 
 # Disk Usage Analyser
-keep_first_installed_pacakge 'baobab' 'org.gnome.baobab'
+keep_first_installed_package 'baobab' 'org.gnome.baobab'
 
 # File Managers
 keep_first_installed_package 'org.fossify.filemanager' 'com.android.documentsui'
