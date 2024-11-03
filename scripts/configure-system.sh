@@ -275,6 +275,7 @@ if [ -d "${ROOT_ETC}/sysctl.d" ]; then
     set_config_value "${SYSCTL_CONFIG_FILE}" 'net.ipv4.tcp_keepalive_probes' 6
     set_config_value "${SYSCTL_CONFIG_FILE}" 'net.ipv4.tcp_syncookies' 1 # Protection against SYN flood attacks
     set_config_value "${SYSCTL_CONFIG_FILE}" 'net.ipv6.conf.all.disable_ipv6' 1 # Disable IPv6
+    set_config_value "${SYSCTL_CONFIG_FILE}" 'kernel.core_pattern' '|/bin/false' # Disable systemctl coredump
     set_config_value "${SYSCTL_CONFIG_FILE}" 'kernel.nmi_watchdog' 0            # Disable NMI interrupts that can consume a lot of power
 
     if [ "${CHASSIS_TYPE}" = "Laptop" ]; then
