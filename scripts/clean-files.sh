@@ -298,7 +298,8 @@ remove \
 ! does_bin_exist 'teamviewer' && remove \
     "${XDG_CACHE_HOME}/TeamViewer" \
     "${XDG_CONFIG_HOME}/teamviewer" \
-    "${XDG_DATA_HOME}/teamviewer15"
+    "${XDG_DATA_HOME}/teamviewer15" \
+    "${ROOT_VAR_LOG}/log/teamviewer15"
 ! does_bin_exist 'thunar' && remove "${XDG_CONFIG_HOME}/Thunar"
 ! does_bin_exist 'totem' && remove \
     "${XDG_CACHE_HOME}/totem" \
