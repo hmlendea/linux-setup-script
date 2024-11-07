@@ -149,16 +149,19 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     fi
 
     # Archive Managers
-    [ "${DESKTOP_ENVIRONMENT}" = "KDE" ] && uninstall_flatpak "org.gnome.FileRoller"
+    [ "${DESKTOP_ENVIRONMENT}" = 'KDE' ] && uninstall_flatpak 'org.gnome.FileRoller'
 
-    if is_flatpak_installed "org.gnome.FileRoller"; then
-        uninstall_native_package "ark"
-        uninstall_native_package "file-roller"
+    if is_flatpak_installed 'org.gnome.FileRoller'; then
+        uninstall_native_package 'ark'
+        uninstall_native_package 'file-roller'
     fi
+
+    # Development
+    uninstall_native_package 'cmake'
 
     # Fetch Utilities. Replaced by: fastfetch-git
     if [ -f "${ROOT_USR_BIN}/fastfetch" ]; then
-        uninstall_native_package "neofetch"
+        uninstall_native_package 'neofetch'
     fi
 
     # File Managers. Replaced by: nautilus
