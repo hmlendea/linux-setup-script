@@ -145,6 +145,12 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
             'notification' false \
             'location' false
     done
+    set_linux_permission 'com.github.dynobo.normcap' \
+        'background' false \
+        'camera' false \
+        'network' false \
+        'notification' false \
+        'location' false
     for TEAMS_APP in 'com.github.IsmaelMartinez.teams_for_linux' 'com.microsoft.teams'; do
         set_linux_permission "${TEAMS_APP}" \
             'background' false \
@@ -192,91 +198,91 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
         'network' true \
         'notification' false \
         'location' false
-    set_linux_permission "com.github.tchx84.Flatseal" \
+    set_linux_permission 'com.github.tchx84.Flatseal' \
         'background' false \
         'camera' false \
         'network' false \
         'notification' false \
         'location' false
-    set_linux_permission "com.simplenote.Simplenote" \
+    set_linux_permission 'com.simplenote.Simplenote' \
         'background' false \
         'camera' false \
         'network' true \
         'notification' false \
         'location' false
-    set_linux_permission "com.github.vladimiry.ElectronMail" \
+    set_linux_permission 'com.github.vladimiry.ElectronMail' \
         'background' true \
         'camera' false \
         'network' true \
         'notification' true \
         'notification_lockscreen' true \
         'location' false
-    set_linux_permission "com.obsproject.Studio" \
+    set_linux_permission 'com.obsproject.Studio' \
         'background' false \
         'camera' false \
         'network' false \
         'notification' false \
         'location' false
-    set_linux_permission "fr.romainvigier.MetadataCleaner" \
+    set_linux_permission 'fr.romainvigier.MetadataCleaner' \
         'background' false \
         'camera' false \
         'network' false \
         'notification' false \
         'location' false
-    set_linux_permission "io.github.hmlendea.geforcenow-electron" \
+    set_linux_permission 'io.github.hmlendea.geforcenow-electron' \
         'background' false \
         'camera' false \
         'network' true \
         'notification' false \
         'location' false
-    set_linux_permission "net.lutris.Lutris" \
+    set_linux_permission 'net.lutris.Lutris' \
         'background' false \
         'camera' false \
         'network' true \
         'notification' true \
         'notification_lockscreen' true \
         'location' false
-    set_linux_permission "nl.hjdskes.gcolor3" \
+    set_linux_permission 'nl.hjdskes.gcolor3' \
         'background' false \
         'camera' false \
         'network' false \
         'notification' false \
         'location' false
-    set_linux_permission "org.gnome.baobab" \
+    set_linux_permission 'org.gnome.baobab' \
         'background' false \
         'camera' false \
         'network' false \
         'notification' true \
         'notification_lockscreen' false \
         'location' false
-    set_linux_permission "org.gnome.Calendar" \
+    set_linux_permission 'org.gnome.Calendar' \
         'background' false \
         'camera' false \
         'network' true \
         'notification' true \
         'notification_lockscreen' true \
         'location' true
-    set_linux_permission "org.gnome.clocks" \
+    set_linux_permission 'org.gnome.clocks' \
         'background' true \
         'camera' false \
         'network' false \
         'notification' true \
         'notification_lockscreen' true \
         'location' false
-    set_linux_permission "org.gnome.Contacts" \
+    set_linux_permission 'org.gnome.Contacts' \
         'background' false \
         'camera' false \
         'network' false \
         'notification' false \
         'location' false
-    set_linux_permission "org.gnome.FileRoller" \
+    set_linux_permission 'org.gnome.FileRoller' \
         'background' true \
         'camera' false \
         'network' false \
         'notification' true \
         'notification_lockscreen' false \
         'location' false
-    set_linux_permission "org.gnome.font-viewer" \
+    set_linux_permission 'org.gnome.font-viewer' \
         'background' false \
         'camera' false \
         'network' false \
@@ -352,7 +358,7 @@ if [ "${DISTRO_FAMILY}" = 'Android' ] \
         'contacts' false \
         'microphone' true \
         'storage' false
-    set_android_permission "com.spotify.music" \
+    set_android_permission 'com.spotify.music' \
         'accounts_get' false \
         'camera' false \
         'contacts' false \
