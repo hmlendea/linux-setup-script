@@ -1,4 +1,4 @@
-#!/bin/nash
+#!/bin/bash
 source "scripts/common/filesystem.sh"
 source "${REPO_SCRIPTS_DIR}/common/common.sh"
 source "${REPO_SCRIPTS_DIR}/common/config.sh"
