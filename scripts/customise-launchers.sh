@@ -8,36 +8,38 @@ source "${REPO_DIR}/scripts/common/system-info.sh"
 [ "${OS}" != "Linux" ] && exit
 (! ${HAS_GUI}) && exit
 
+GNOME_APP_CATEGORIES='GNOME;GTK;'
+
 ICON_THEME=$(sudo -u "${USER_REAL}" -H gsettings get org.gnome.desktop.interface icon-theme | tr -d "'")
 ICON_THEME_PATH="${ROOT_USR_SHARE}/icons/${ICON_THEME}"
 
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/amidst.desktop" \
-    StartupWMClass "amidst-Amidst"
+    StartupWMClass 'amidst-Amids'
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/GameConqueror.desktop" Categories "Utility;"
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/gtk-lshw.desktop" NoDisplay true
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/hardinfo.desktop" \
-    Categories "System;Monitor;" \
-    Icon "hardinfo" \
-    Name "Hardware Information" \
-    Name[ro] "Informații Hardware"
+    Categories 'System;Monitor;' \
+    Icon 'hardinfo' \
+    Name 'Hardware Information' \
+    Name[ro] 'Informații Hardware'
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/lstopo.desktop" NoDisplay true
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/lxhotkey-gtk.desktop" Name[ro] "Scurtături de tastatură"
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/lxappearance.desktop" \
-    Name "Look and Feel" \
-    Name[ro] "Tema Interfeței"
+    Name 'Look and Feel' \
+    Name[ro] 'Tema Interfeței'
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/lxsession-edit.desktop" \
-    Name "Desktop Session Settings" \
-    Name[ro] "Opțiuni ale Sesiunilor Desktop"
+    Name 'Desktop Session Settings' \
+    Name[ro] 'Opțiuni ale Sesiunilor Desktop'
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/lxsession-default-apps.desktop" \
-    Name "Default Applications" \
-    Name[ro] "Aplicații Implicite"
+    Name 'Default Applications' \
+    Name[ro] 'Aplicații Implicite'
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/mate-color-select.desktop" NoDisplay true
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/mate-search-tool.desktop" NoDisplay true
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/nm-connection-editor.desktop" \
-    Name "Network Connections" \
-    Name[ro] "Conexiuni de Rețea" \
+    Name 'Network Connections' \
+    Name[ro] 'Conexiuni de Rețea' \
     NoDisplay true
-set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/org.gnome.SoundRecorder.desktop" Categories "GNOME;GTK;Utility;Audio;"
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/org.gnome.SoundRecorder.desktop" Categories "${GNOME_APP_CATEGORIES};Utility;Audio;"
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/pcmanfm-desktop-pref.desktop" \
     Name "Desktop Customiser" \
     Name[ro] "Personalizare Desktop"
@@ -135,7 +137,7 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Calendar.desktop" \
         Name "Calendar" \
         Name[ro] "Calendar" \
         Icon "calendar" \
-        Categories "GNOME;GTK;${CALENDAR_CATEGORIES}"
+        Categories "${GNOME_APP_CATEGORIES};${CALENDAR_CATEGORIES}"
 done
 
 ##############
@@ -173,9 +175,9 @@ for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/de.schmidhuberj.Flare.desktop" 
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/de.schmidhuberj.Flare.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.signal.Signal.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        Name "Signal" \
-        Name[ro] "Signal" \
-        Icon "signal-desktop" \
+        Name 'Signal' \
+        Name[ro] 'Signal' \
+        Icon 'signal-desktop' \
         Categories "${CHAT_APP_CATEGORIES}"
 done
 
@@ -187,16 +189,11 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/teams.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.microsoft.Teams.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.github.IsmaelMartinez.teams_for_linux.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        Name "Teams" \
-        Name[ro] "Teams" \
-        Icon "teams" \
+        Name 'Teams' \
+        Name[ro] 'Teams' \
+        Icon 'teams' \
         Categories "${CHAT_APP_CATEGORIES}"
 done
-
-#if [ "$(get_gpu_family)" = "Intel" ]; then
-    set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/teams.desktop" Exec "/usr/bin/teams --disable-gpu --no-sandbox"
-    set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/teams-insiders.desktop" Exec "/usr/bin/teams-insiders --disable-gpu --no-sandbox"
-#fi
 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/meowgram.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/telegramdesktop.desktop" \
@@ -221,16 +218,16 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/whatsapp-for-linux.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/io.github.mimbrero.WhatsAppDesktop.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/io.github.mimbrero.WhatsAppDesktop.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        Name "WhatsApp" \
-        Name[ro] "WhatsApp" \
-        Icon "whatsapp" \
+        Name 'WhatsApp' \
+        Name[ro] 'WhatsApp' \
+        Icon 'whatsapp' \
         Categories "${CHAT_APP_CATEGORIES}"
 done
 
 for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/io.github.mimbrero.WhatsAppDesktop.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/io.github.mimbrero.WhatsAppDesktop.desktop"; do
     set_launcher_entry "${LAUNCHER}" \
-        StartupWMClass "whatsapp-desktop-linux"
+        StartupWMClass 'whatsapp-desktop-linux'
 done
 
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/whatsapp-desktop.desktop" StartupWMClass "whatsapp"
@@ -254,44 +251,44 @@ if [ -d "${ROOT_OPT}/Citrix" ]; then
                     "${GLOBAL_LAUNCHERS_DIR}/wfsplash.desktop" \
                     "${GLOBAL_LAUNCHERS_DIR}/wfica.desktop"; do
         set_launcher_entries "${LAUNCHER}" \
-            Icon "citrix-receiver" \
+            Icon 'citrix-receiver' \
             NoDisplay true
     done
 
     for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/citrix-configmgr.desktop" \
                     "${GLOBAL_LAUNCHERS_DIR}/configmgr.desktop"; do
         set_launcher_entries "${LAUNCHER}" \
-            Name "Citrix Receiver Preferences" \
-            Name[ro] "Configurare Receptor Citrix" \
-            StartupWMClass "Configmgr"
+            Name 'Citrix Receiver Preferences' \
+            Name[ro] 'Configurare Receptor Citrix' \
+            StartupWMClass 'Configmgr'
     done
 
     for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/citrix-conncenter.desktop" \
                     "${GLOBAL_LAUNCHERS_DIR}/conncentre.desktop"; do
         set_launcher_entries "${LAUNCHER}" \
-            Name "Citrix Connection Centre" \
-            Name[ro] "Centrul de conexiuni Citrix" \
-            StartupWMClass "Conncenter"
+            Name 'Citrix Connection Centre' \
+            Name[ro] 'Centrul de conexiuni Citrix' \
+            StartupWMClass 'Conncenter'
     done
 
     set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/wfcmgr.desktop" \
-        Name "Citrix Receiver Self Service" \
-        Name[ro] "Asistență Receptor Citrix" \
-        StartupWMClass "Wfcmgr"
+        Name 'Citrix Receiver Self Service' \
+        Name[ro] 'Asistență Receptor Citrix' \
+        StartupWMClass 'Wfcmgr'
 
     set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/wfsplash.desktop" \
-        Name "Citrix Splash" \
-        Categories "Application;Network;X-Red-Hat-Base;X-SuSE-Core-Internet;" \
-        StartupWMClass "Wfica_Splash" # InitPanel_popup
+        Name 'Citrix Splash' \
+        Categories 'Application;Network;X-Red-Hat-Base;X-SuSE-Core-Internet;' \
+        StartupWMClass 'Wfica_Splash' # InitPanel_popup
 
     for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/citrix-wfica.desktop" \
                     "${GLOBAL_LAUNCHERS_DIR}/wfica.desktop"; do
         set_launcher_entries "${LAUNCHER}" \
-            Name "Citrix Receiver" \
-            Name[ro] "Receptor Citrix" \
-            StartupWMClass "Wfica" \
-            Exec "/opt/Citrix/ICAClient/wfica.sh %U" \
-            TryExec ""
+            Name 'Citrix Receiver' \
+            Name[ro] 'Receptor Citrix' \
+            StartupWMClass 'Wfica' \
+            Exec '/opt/Citrix/ICAClient/wfica.sh %U' \
+            TryExec ''
     done
 else
     remove "${GLOBAL_LAUNCHERS_DIR}/wfsplash.desktop"
@@ -304,8 +301,8 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.clocks.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.clocks.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.clocks.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        Name "Clock" \
-        Name[ro] "Ceas"
+        Name 'Clock' \
+        Name[ro] 'Ceas'
 done
 
 #############
@@ -316,7 +313,7 @@ if does_bin_exist "cmake"; then
                     "${GLOBAL_LAUNCHERS_DIR}/cmake-gui.desktop" \
                     "${GLOBAL_LAUNCHERS_DIR}/CMake.desktop"; do
         set_launcher_entries "${LAUNCHER}" \
-            Icon "cmake" \
+            Icon 'cmake' \
             NoDisplay true
     done
 fi
@@ -327,7 +324,7 @@ fi
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Contacts.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Contacts.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Contacts.desktop"; do
-    set_launcher_entries "${LAUNCHER}" Categories "GNOME;GTK;Utility;ContactManagement;"
+    set_launcher_entries "${LAUNCHER}" Categories "${GNOME_APP_CATEGORIES};Utility;ContactManagement;"
 done
 
 ################################
@@ -440,7 +437,7 @@ done
 if does_bin_exist "evince"; then
     for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/evince.desktop" \
                     "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Evince.desktop"; do
-        set_launcher_entry "${LAUNCHER}" Categories "GNOME;GTK;${DOCUMENT_VIEWER_CATEGORIES}"
+        set_launcher_entry "${LAUNCHER}" Categories "${GNOME_APP_CATEGORIES};${DOCUMENT_VIEWER_CATEGORIES}"
     done
 fi
 
@@ -477,7 +474,7 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Extensions.desktop" \
         Name "Extensions" \
         Name[ro] "Extensii" \
         Icon "org.gnome.Extensions" \
-        Categories "GNOME;GTK;${EXTENSION_MANAGER_CATEGORIES}"
+        Categories "${GNOME_APP_CATEGORIES};${EXTENSION_MANAGER_CATEGORIES}"
 done
 
 if is_flatpak_installed "com.mattjakeman.ExtensionManager"; then
@@ -493,7 +490,7 @@ fi
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/org.gnome.FeedReader.dekstop" \
     Name "Feed Reader" \
     Icon "feedreader" \
-    Categories "GNOME;GTK;Network;Feed;Utility;"
+    Categories "${GNOME_APP_CATEGORIES};Network;Feed;Utility;"
 
 #####################
 ### FILE MANAGERS ###
@@ -521,7 +518,7 @@ done
 
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Nautilus.desktop" \
     Exec "nautilus ${HOME}" \
-    Categories "GNOME;GTK;${FILE_MANAGER_CATEGORIES}"
+    Categories "${GNOME_APP_CATEGORIES};${FILE_MANAGER_CATEGORIES}"
 
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/io.elementary.files.desktop" Categories "Pantheon;GTK;${FILE_MANAGER_CATEGORIES}"
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/org.kde.dolphin.desktop" Categories "KDE;Qt;${FILE_MANAGER_CATEGORIES}"
@@ -773,7 +770,7 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Maps.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Maps.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Maps.desktop"; do
     set_launcher_entry "${LAUNCHER}" \
-        Categories "GNOME;GTK;${MAPS_APP_CATEGORIES}"
+        Categories "${GNOME_APP_CATEGORIES};${MAPS_APP_CATEGORIES}"
 done
 
 set_launcher_entry "${LOCAL_LAUNCHERS_DIR}/chrome-lneaknkopdijkpnocmklfnjbeapigfbh-Default.desktop" \
@@ -898,7 +895,7 @@ done
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/gparted.desktop" \
     Name "Partition Editor" \
     Name[ro] "Editor de Partiții"
-set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/org.gnome.DiskUtility.desktop" Categories "GNOME;GTK;System;"
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/org.gnome.DiskUtility.desktop" Categories "${GNOME_APP_CATEGORIES};System;"
 
 #########################
 ### Password Managers ###
@@ -973,7 +970,7 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/gnome-control-center.desktop" \
     set_launcher_entries "${LAUNCHER}" \
         Name "Settings" \
         Name[ro] "Setări" \
-        Categories "GNOME;GTK;${SETTINGS_APP_CATEGORIES}"
+        Categories "${GNOME_APP_CATEGORIES};${SETTINGS_APP_CATEGORIES}"
 done
 
 ### Configuration Settings
@@ -986,7 +983,7 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/ca.desrt.dconf-editor.desktop" \
         Keywords "settings;configuration;dconf;" \
         Keywords[ro] "settings;configuration;dconf;setări;configurare;configurări;configurație;" \
         Icon "dconf-editor" \
-        Categories "GNOME;GTK;${SETTINGS_APP_CATEGORIES}"
+        Categories "${GNOME_APP_CATEGORIES};${SETTINGS_APP_CATEGORIES}"
 done
 
 ### Audio Settings
@@ -1005,7 +1002,7 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/mobi.phosh.MobileSettings.desktop"
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/org.freedesktop.Piper.desktop" \
     Name "Mouse Settings" \
     Icon "gnome-settings-mouse" \
-    Categories "GNOME;GTK;System;"
+    Categories "${GNOME_APP_CATEGORIES};System;"
 
 ### Network Displays
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.NetworkDisplays.desktop" \
@@ -1025,7 +1022,7 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.tweaks.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/org.postmarketos.Tweaks.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Icon "utilities-tweak-tool" \
-        Categories "GNOME;GTK;System;"
+        Categories "${GNOME_APP_CATEGORIES};System;"
 done
 
 #############
@@ -1157,7 +1154,7 @@ done
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/de.haeckerfelix.Fragments.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/de.haeckerfelix.Fragments.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/de.haeckerfelix.Fragments.desktop"; do
-    set_launcher_entry "${LAUNCHER}" Categories "GNOME;GTK;${TORRENT_APP_CATEGORIES}"
+    set_launcher_entry "${LAUNCHER}" Categories "${GNOME_APP_CATEGORIES};${TORRENT_APP_CATEGORIES}"
 done
 
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/transmission-gtk.desktop" Categories "GTK;${TORRENT_APP_CATEGORIES}"
@@ -1186,7 +1183,7 @@ done
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/com.github.gi_lom.dialect.desktop" \
     Name 'Translate' \
     Name[ro] 'Traduceri' \
-    Categories 'GNOME;GTK;Utility;'
+    Categories "${GNOME_APP_CATEGORIES};Utility;"
 
 #####################
 ### Video Players ###
@@ -1235,7 +1232,7 @@ done
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Weather.Application.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Weather.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Weather.desktop"; do
-    set_launcher_entries "${LAUNCHER}" Categories "GNOME;GTK;Utility;Navigation;"
+    set_launcher_entries "${LAUNCHER}" Categories "${GNOME_APP_CATEGORIES};Utility;Navigation;"
 done
 
 ####################

@@ -499,12 +499,17 @@ function set_launcher_entry() {
     local KEY_ID=$(echo "${KEY}" | sed -e 's/^\([^\[]*\).*/\1/g' -e 's/\s//g')
     local KEY_LANGUAGE=$(echo "${KEY}" | sed -e 's/^'"${KEY_ID}"'//g' -e 's/\s//g' -e 's/^.\(.*\).$/\1/g')
 
+    if [[ "$KEY" == *'Categories'* ]]; then
+        VAL="${VAL%;};"
+        VAL=$(echo "${VAL}" | sed 's/;;*/;/g')
+    fi
+
     if [ "${KEY_ID}" != "FullName" ]; then
         local KEY_ESC="${KEY}"
         local VAL_ESC="${VAL}"
         local VAL_ESC_GREP="${VAL_ESC}"
 
-        local FILE_CONTENTS=""
+        local FILE_CONTENTS=''
         #local HAS_MULTIPLE_SECTIONS=false
         local SECTION_INDEX=1
         local SECTION_FIRST_LINE=1
@@ -515,9 +520,9 @@ function set_launcher_entry() {
         VAL_ESC_GREP=$(echo "${VAL_ESC}" | sed 's/\\\//\//g')
 
         if ! grep -q "^\[${SECTION}\]$" "${FILE}"; then
-            append_line "${FILE}" ""
+            append_line "${FILE}" ''
             append_line "${FILE}" "[${SECTION}]"
-            append_line "${FILE}" ""
+            append_line "${FILE}" ''
         fi
 
         FILE_CONTENTS=$(cat "${FILE}")
