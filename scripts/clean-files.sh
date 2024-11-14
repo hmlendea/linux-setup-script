@@ -91,6 +91,9 @@ remove \
     "${HOME}/.electron-gyp" \
     "${XDG_CACHE_HOME}/electron-builder"
 
+remove \
+    "${ROOT_VAR_LIB_FLATPAK}/.removed"
+
 #remove_locales_from_directories \
 #    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/" \
 #    "${ROOT_USR_SHARE}/dotnet/sdk/"*"/Containers/tasks/"*"/" \
@@ -366,12 +369,12 @@ remove_logs_in_dirs "${HOME_VAR_APP}/org.telegram.desktop/data/TelegramDesktop"
 #####################
 ### File Managers ###
 #####################
-! does_bin_exist "dolphin" && remove \
+! does_bin_exist 'dolphin' && remove \
     "${XDG_CONFIG_HOME}/dolphinrc" \
     "${XDG_CONFIG_HOME}/kde.org/UserFeedback.org.kde.dolphin.conf" \
     "${XDG_DATA_HOME}/dolphin"
-! does_bin_exist "pcmanfm" && remove "${XDG_CONFIG_HOME}/pcmanfm"
-! does_bin_exist "pcmanfm-qt" && remove "${XDG_CONFIG_HOME}/pcmanfm-qt"
+! does_bin_exist 'pcmanfm' && remove "${XDG_CONFIG_HOME}/pcmanfm"
+! does_bin_exist 'pcmanfm-qt' && remove "${XDG_CONFIG_HOME}/pcmanfm-qt"
 
 #############
 ### Games ###
@@ -390,12 +393,26 @@ for PRISMLAUNCHER_INSTANCE_DIR in "${HOME_VAR_APP}/org.prismlauncher.PrismLaunch
     remove_old_items "${PRISMLAUNCHER_INSTANCE_DIR}/.minecraft/.fabric/remappedJars"
 done
 
+if [ -d "${XDG_DATA_HOME}/Paradox Interactive" ]; then
+    remove \
+        "${XDG_DATA_HOME}/Paradox Interactive/"*'/.launcher-cache' \
+        "${XDG_DATA_HOME}/Paradox Interactive/"*'/cache' \
+        "${XDG_DATA_HOME}/Paradox Interactive/"*'/gfx' \
+        "${XDG_DATA_HOME}/Paradox Interactive/"*'/shadercache' \
+        "${XDG_DATA_HOME}/Paradox Interactive/"*'/terraincache'
+
+    remove \
+        "${XDG_DATA_HOME}/Paradox Interactive/"*'/crashes' \
+        "${XDG_DATA_HOME}/Paradox Interactive/"*'/dumps' \
+        "${XDG_DATA_HOME}/Paradox Interactive/"*'/exceptions'
+fi
+
 #########################
 ### Internet Browsers ###
 #########################
 
 # Chrome
-! does_bin_exist "google-chrome" && remove \
+! does_bin_exist 'google-chrome' && remove \
     "${XDG_CACHE_HOME}/google-chrome" \
     "${XDG_CONFIG_HOME}/google-chrome"
 ! does_bin_exist "google-chrome-beta" && remove \
