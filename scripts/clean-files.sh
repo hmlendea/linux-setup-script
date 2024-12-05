@@ -744,4 +744,5 @@ for FLATPAK_CACHE_DIR in "${ROOT_VAR}/tmp"/flatpak-cache-*; do
     remove "${FLATPAK_CACHE_DIR}"
 done
 
-does_bin_exist "journalctl" && run_as_su journalctl --vacuum-time=3days
+does_bin_exist 'journalctl' && run_as_su journalctl --vacuum-time=3days
+does_bin_exist 'pacman' && yes | run_as_su pacman -Scc
