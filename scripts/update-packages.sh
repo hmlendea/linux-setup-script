@@ -7,7 +7,7 @@ source "${REPO_SCRIPTS_COMMON_DIR}/system-info.sh"
 if ! is_distro_immutable; then
     echo -e 'Updating the \e[0;32msystem packages\e[0m ...'
     if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
-        call_package_manager -Syu
+        call_package_manager -Su
     elif [ "${DISTRO_FAMILY}" = 'Android' ] \
       || [ "${DISTRO_FAMILY}" = 'Debian' ] \
       || [ "${DISTRO_FAMILY}" = 'Ubuntu' ]; then
