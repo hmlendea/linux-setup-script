@@ -455,6 +455,8 @@ for FIREFOX_PROFILES_DIR in "${HOME_VAR_APP}/org.mozilla.firefox/.mozilla/firefo
            "${FIREFOX_PROFILES_DIR}/"*"/datareporting" \
            "${FIREFOX_PROFILES_DIR}/"*"/enumeratedevices.txt" \
            "${FIREFOX_PROFILES_DIR}/"*"/formhistory.sqlite" \
+           "${FIREFOX_PROFILES_DIR}/"*"/gmp" \
+           "${FIREFOX_PROFILES_DIR}/"*"/gmp-widevinecdm" \
            "${FIREFOX_PROFILES_DIR}/"*"/saved-telemetry-pings" \
            "${FIREFOX_PROFILES_DIR}/"*"/sessionstore-backups" \
            "${FIREFOX_PROFILES_DIR}/"*"/times.json" \
@@ -475,11 +477,6 @@ done
 ### Terminals ###
 #################
 ! does_bin_exist "konsole" && remove "${XDG_CONFIG_HOME}/konsolerc"
-
-for FLATPAK in "${HOME_VAR_APP}"/*; do
-    FLATPAK=$(echo "${FLATPAK}" | sed 's/.*\/\([^\/]*\)$/\1/g')
-    ! is_flatpak_installed "${FLATPAK}" && remove "${HOME_VAR_APP}/${FLATPAK}"
-done
 
 ####################
 ### Text Editors ###
@@ -738,6 +735,13 @@ for DIR in  "${HOME}/.Cobra Mobile" \
     [ ! -d "${DIR}" ] && continue
 
     remove_dir_if_empty "${DIR}"
+done
+
+# Flatpaks
+for FLATPAK in "${HOME_VAR_APP}"/*; do
+    FLATPAK=$(echo "${FLATPAK}" | sed 's/.*\/\([^\/]*\)$/\1/g')
+    ! is_flatpak_installed "${FLATPAK}" && remove "${HOME_VAR_APP}/${FLATPAK}"
+    remove "${HOME_VAR_APP}/${FLATPAK}/cache"
 done
 
 for FLATPAK_CACHE_DIR in "${ROOT_VAR}/tmp"/flatpak-cache-*; do
