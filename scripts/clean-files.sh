@@ -229,6 +229,8 @@ remove \
     "${XDG_CACHE_HOME}/lutris" \
     "${XDG_CONFIG_HOME}/lutris" \
     "${XDG_DATA_HOME}/lutris"
+! does_bin_exist 'lyrebird' && remove \
+    "${XDG_CONFIG_HOME}/lyrebird"
 ! does_bin_exist 'mcaselector' && remove \
     "${HOME}/.mcaselector" \
     "${XDG_CACHE_HOME}/mcaselector" \
@@ -575,6 +577,7 @@ does_bin_exist "steam" && remove \
 ! is_steam_app_installed "680360" && remove "${XDG_CONFIG_HOME}/unity3d/voxGames/Regions of Ruin"
 ! is_steam_app_installed "729040" && remove "${XDG_DATA_HOME}/Steam/steamapps/common/BorderlandsGOTYEnhanced"
 ! is_steam_app_installed "736260" && remove "${XDG_DATA_HOME}/Baba_Is_You"
+! is_steam_app_installed "1169040" && remove "${XDG_CONFIG_HOME}/Necesse"
 
 for STEAM_LIBRARY_PATH in ${STEAM_LIBRARY_PATHS}; do
     remove \
@@ -747,6 +750,8 @@ done
 for FLATPAK_CACHE_DIR in "${ROOT_VAR}/tmp"/flatpak-cache-*; do
     remove "${FLATPAK_CACHE_DIR}"
 done
+
+remove "${ROOT_SRV}/papermc/plugins/.paper-remapped"
 
 does_bin_exist 'journalctl' && run_as_su journalctl --vacuum-time=3days
 does_bin_exist 'pacman' && yes | run_as_su pacman -Scc
