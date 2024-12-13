@@ -714,6 +714,15 @@ if does_bin_exist "gnome-contacts" "org.gnome.Contacts"; then
     set_gsetting "org.gnome.Contacts" sort-on-surname true
 fi
 
+##############
+### Docker ###
+##############
+if does_bin_exist 'dockerd'; then
+    DOCKER_DAEMON_CONFIG_FILE="${ROOT_ETC}/docker/daemon.json"
+
+    set_json_property "${DOCKER_DAEMON_CONFIG_FILE}" '.["max-concurrent-downloads"]' 10
+fi
+
 #############
 ### DOCKS ###
 #############
