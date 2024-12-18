@@ -362,7 +362,9 @@ remove_logs_in_dirs "${HOME_VAR_APP}/com.microsoft.Teams/config/teams" \
 remove_logs_in_dirs "${HOME_VAR_APP}/org.telegram.desktop/data/TelegramDesktop"
 
 # WhatsApp
-! does_bin_exist "whatsapp-nativefier" && remove "${XDG_CONFIG_HOME}/whatsapp-nativefier-d40211"
+! does_bin_exist "whatsapp-nativefier" && remove \
+    "${ROOT_OPT}/whatsapp-nativefier" \
+    "${XDG_CONFIG_HOME}/whatsapp-nativefier-d40211"
 ! does_bin_exist "whatsdesk" && remove "${HOME}/.whatsdesk"
 
 # Zoom
