@@ -584,6 +584,8 @@ if ${HAS_GUI}; then
             install_native_package 'gpicview'
         fi
     fi
+
+    install_native_package 'libheif' # Support for diplaying HEIC images (e.g. in file managers)
 fi
 
 #########################
