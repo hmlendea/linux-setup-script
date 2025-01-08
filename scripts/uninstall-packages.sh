@@ -55,6 +55,9 @@ keep_first_installed_package 'org.fossify.contacts' 'com.android.contacts'
 # Disk Usage Analyser
 keep_first_installed_package 'baobab' 'org.gnome.baobab'
 
+# Document Viewers
+keep_first_installed_package 'org.gnome.Papers' 'papers' 'org.gnome.Evince' 'evince'
+
 # File Managers
 keep_first_installed_package 'org.fossify.filemanager' 'com.android.documentsui'
 

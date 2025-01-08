@@ -48,7 +48,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
             'notification_lockscreen' true \
             'location' false
     done
-    for DOCUMENT_VIEWER_APP in 'epdfview' 'org.gnome.Evince'; do
+    for DOCUMENT_VIEWER_APP in 'epdfview' 'org.gnome.Evince' 'org.gnome.Papers'; do
         set_linux_permission "${DOCUMENT_VIEWER_APP}" \
             'background' false \
             'camera' false \

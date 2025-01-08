@@ -419,9 +419,13 @@ DOCUMENT_VIEWER_CATEGORIES="Office;Viewer;"
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/atril.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/epdfview.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/evince.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/papers.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Evince.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Papers.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Evince.desktop" \
-                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Evince.desktop"; do
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Papers.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Evince.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Papers.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Documents" \
         Name[ro] "Documente"
