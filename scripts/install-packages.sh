@@ -585,7 +585,7 @@ if ${HAS_GUI}; then
         fi
     fi
 
-    install_native_package 'libheif' # Support for diplaying HEIC images (e.g. in file managers)
+    install_native_package 'libheif' # Support for diplaying HEIC
 fi
 
 #########################
@@ -656,7 +656,7 @@ fi
 if ${IS_GENERAL_PURPOSE_DEVICE}; then
     if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
     || [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
-        install_flatpak 'org.gnome.Evince'
+        install_flatpak 'org.gnome.Papers'
     elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
         install_native_package 'epdfview'
     fi
