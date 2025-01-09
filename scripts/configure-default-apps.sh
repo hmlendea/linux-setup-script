@@ -38,6 +38,16 @@ if does_bin_exist 'gnome-disk-image-mounter'; then
     DISK_IMAGE_MOUNTER_LAUNCHER='gnome-disk-image-mounter.desktop'
 fi
 
+# Document Viewer
+DOCUMENT_VIEWER_LAUNCHER=''
+if does_bin_exist 'org.gnome.Papers'; then
+    DOCUMENT_VIEWER_LAUNCHER='org.gnome.Papers.desktop'
+elif does_bin_exist 'org.gnome.Evince'; then
+    DOCUMENT_VIEWER_LAUNCHER='org.gnome.Evince.desktop'
+elif does_bin_exist 'evince'; then
+    DOCUMENT_VIEWER_LAUNCHER='evince.desktop'
+fi
+
 # Email Client
 EMAIL_CLIENT_LAUNCHER=''
 if does_bin_exist 'com.github.vladimiry.ElectronMail'; then
@@ -171,6 +181,10 @@ else
 fi
 
 # Update the associations
+
+for DOCUMENT_TYPE in 'pdf'; do
+    update_mimetype_association "application/${DOCUMENT_TYPE}" "${DOCUMENT_VIEWER_LAUNCHER}"
+done
 
 for IMAGE_TYPE in "bmp" "jpeg" "png" "webp"; do
     update_mimetype_association "image/${IMAGE_TYPE}" "${IMAGE_VIEWER_LAUNCHER}"
