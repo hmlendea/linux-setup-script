@@ -1277,9 +1277,10 @@ if does_bin_exist "gnome-shell"; then
         set_gsetting org.gnome.desktop.search-providers disabled "@as []"
     fi
 fi
-if does_bin_exist "mutter"; then
+if does_bin_exist 'mutter'; then
     MUTTER_KEYBINDINGS_SCHEMA="org.gnome.desktop.wm.keybindings"
 
+    set_gsetting "${MUTTER_KEYBINDINGS_SCHEMA}" draggable-border-width 12
     set_gsetting "${MUTTER_KEYBINDINGS_SCHEMA}" panel-run-dialog "['<Super>r']"
     set_gsetting "${MUTTER_KEYBINDINGS_SCHEMA}" switch-applications "['<Alt>Tab']"
     set_gsetting "${MUTTER_KEYBINDINGS_SCHEMA}" switch-applications-backward "['<Shift><Alt>Tab']"
