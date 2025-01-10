@@ -2,6 +2,8 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+export PROMPT_COMMAND='export PROMPT_COMMAND=echo'
+
 ENABLE_COLOURS=true
 ENABLE_GIT=true
 ENABLE_GIT_STATUS=true
