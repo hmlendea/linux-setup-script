@@ -24,20 +24,28 @@ if ${HAS_GUI} && [ "${OS}" = 'Linux' ]; then
 
         create_directory "${MINECRAFT_SCREENSHOTS_DIR}"
 
-        for MINECRAFT_INSTANCE in "${HOME_VAR_APP}/org.prismlauncher.PrismLauncher/data/PrismLauncher/instances/"*"/"; do
-            MINECRAFT_INSTANCE_SCREENSHOTS_DIR="${MINECRAFT_INSTANCE}/.minecraft/screenshots"
-            if [ -d "${MINECRAFT_INSTANCE_SCREENSHOTS_DIR}" ] && \
-               [ ! -L "${MINECRAFT_INSTANCE_SCREENSHOTS_DIR}" ]; then
-                MINECRAFT_INSTANCE_SCREENSHOTS_DIR_FILES=$(ls -A "${MINECRAFT_INSTANCE_SCREENSHOTS_DIR}")
-                if [ "${MINECRAFT_INSTANCE_SCREENSHOTS_DIR_FILES}" ]; then
-                    echo "Moving contents of '${MINECRAFT_INSTANCE_SCREENSHOTS_DIR_FILES}' to '${MINECRAFT_SCREENSHOTS_DIR}'..."
-                    mv "${MINECRAFT_INSTANCE_SCREENSHOTS_DIR}"/* "${MINECRAFT_SCREENSHOTS_DIR}"
+        for MINECRAFT_INSTANCE in "${HOME_VAR_APP}/org.prismlauncher.PrismLauncher/data/PrismLauncher/instances/"*; do
+            [ -d "${MINECRAFT_INSTANCE}" ] || continue
+
+            MINECRAFT_INSTANCE_GAME_DIR="${MINECRAFT_INSTANCE}/.minecraft"
+            [ -d "${MINECRAFT_INSTANCE}/minecraft" ] && MINECRAFT_INSTANCE_GAME_DIR="${MINECRAFT_INSTANCE}/minecraft"
+
+            if [ -d "${MINECRAFT_INSTANCE_GAME_DIR}" ]; then
+                MINECRAFT_INSTANCE_SCREENSHOTS_DIR="${MINECRAFT_INSTANCE_GAME_DIR}/screenshots"
+            
+                if [ -d "${MINECRAFT_INSTANCE_SCREENSHOTS_DIR}" ] && \
+                   [ ! -L "${MINECRAFT_INSTANCE_SCREENSHOTS_DIR}" ]; then
+                    MINECRAFT_INSTANCE_SCREENSHOTS_DIR_FILES=$(ls -A "${MINECRAFT_INSTANCE_SCREENSHOTS_DIR}")
+                    if [ "${MINECRAFT_INSTANCE_SCREENSHOTS_DIR_FILES}" ]; then
+                        echo "Moving contents of '${MINECRAFT_INSTANCE_SCREENSHOTS_DIR_FILES}' to '${MINECRAFT_SCREENSHOTS_DIR}'..."
+                        mv "${MINECRAFT_INSTANCE_SCREENSHOTS_DIR}"/* "${MINECRAFT_SCREENSHOTS_DIR}"
+                    fi
+
+                    rm -rf "${MINECRAFT_INSTANCE_SCREENSHOTS_DIR}"
                 fi
 
-                rm -rf "${MINECRAFT_INSTANCE_SCREENSHOTS_DIR}"
+                create_symlink "${MINECRAFT_SCREENSHOTS_DIR}" "${MINECRAFT_INSTANCE_SCREENSHOTS_DIR}"
             fi
-
-            create_symlink "${MINECRAFT_SCREENSHOTS_DIR}" "${MINECRAFT_INSTANCE_SCREENSHOTS_DIR}"
         done
     fi
 fi
