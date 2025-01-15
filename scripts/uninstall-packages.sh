@@ -338,7 +338,6 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     uninstall_native_package "libde265"
     uninstall_native_package "libdecor"
     uninstall_native_package "libgee"
-    uninstall_native_package "libheif"
     uninstall_native_package "libjxl"
     uninstall_native_package "libmicrohttpd"
     uninstall_native_package "libmtp"
