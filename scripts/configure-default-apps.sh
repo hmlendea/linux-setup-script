@@ -30,6 +30,8 @@ elif does_bin_exist 'firefox-esr'; then
     BROWSER_LAUNCHER='firefox-esr.desktop'
 elif does_bin_exist 'firefox'; then
     BROWSER_LAUNCHER='firefox.desktop'
+elif does_bin_exist 'com.brave.Browser'; then
+    BROWSER_LAUNCHER='com.brave.Browser.desktop'
 fi
 
 # Disk Image Mounter
@@ -59,7 +61,7 @@ fi
 # File Manager
 FILE_MANAGER_LAUNCHER=''
 if does_bin_exist 'nautilus'; then
-    FILE_MANAGER_LAUNCHER="org.gnome.Nautilus.desktop"
+    FILE_MANAGER_LAUNCHER='org.gnome.Nautilus.desktop'
 fi
 
 # GIMP
@@ -186,47 +188,47 @@ for DOCUMENT_TYPE in 'pdf'; do
     update_mimetype_association "application/${DOCUMENT_TYPE}" "${DOCUMENT_VIEWER_LAUNCHER}"
 done
 
-for IMAGE_TYPE in "bmp" "jpeg" "png" "webp"; do
+for IMAGE_TYPE in 'bmp' 'jpeg' 'png' 'webp'; do
     update_mimetype_association "image/${IMAGE_TYPE}" "${IMAGE_VIEWER_LAUNCHER}"
 done
 
-for IMAGE_TYPE in "x-dds"; do
+for IMAGE_TYPE in 'x-dds'; do
     update_mimetype_association "image/${IMAGE_TYPE}" "${GIMP_LAUNCHER}"
 done
 
 update_mimetype_association 'x-scheme-handler/msteams' "${TEAMS_LAUNCHER}"
 
-does_bin_exist "icaclient" && update_mimetype_association "application/x-extension-ica" "citrix-wfica.desktop"
+does_bin_exist 'icaclient' && update_mimetype_association 'application/x-extension-ica' 'citrix-wfica.desktop'
 
 if [ -n "${BROWSER_LAUNCHER}" ]; then
-    for SCHEME_TYPE in "http" "https" "chrome"; do
+    for SCHEME_TYPE in 'http' 'https' 'chrome'; do
         update_mimetype_association "x-scheme-handler/${SCHEME_TYPE}" "${BROWSER_LAUNCHER}"
     done
-    for EXTENSION_TYPE in "htm" "html" "shtml" "xht" "xhtml"; do
+    for EXTENSION_TYPE in 'htm' 'html' 'shtml' 'xht' 'xhtml'; do
         update_mimetype_association "application/x-extension-${EXTENSION_TYPE}" "${BROWSER_LAUNCHER}"
     done
 
-    update_mimetype_association "application/xhtml+xml" "${BROWSER_LAUNCHER}"
-    update_mimetype_association "text/html" "${BROWSER_LAUNCHER}"
+    update_mimetype_association 'application/xhtml+xml' "${BROWSER_LAUNCHER}"
+    update_mimetype_association 'text/html' "${BROWSER_LAUNCHER}"
 fi
 
 if [ -n "${FILE_MANAGER_LAUNCHER}" ]; then
-    update_mimetype_association "x-scheme-handler/file" "${FILE_MANAGER_LAUNCHER}"
+    update_mimetype_association 'x-scheme-handler/file' "${FILE_MANAGER_LAUNCHER}"
 fi
 
 if [ -n "${STEAM_LAUNCHER}" ]; then
-    update_mimetype_association "x-scheme-handler/steam" "${STEAM_LAUNCHER}"
+    update_mimetype_association 'x-scheme-handler/steam' "${STEAM_LAUNCHER}"
 fi
 
 if [ -n "${TEXT_EDITOR_LAUNCHER}" ]; then
-    for APPLICATION_TYPE in "json" "x-wine-extension-ini"; do
+    for APPLICATION_TYPE in 'json' 'x-wine-extension-ini'; do
         update_mimetype_association "application/${APPLICATION_TYPE}" "${TEXT_EDITOR_LAUNCHER}"
     done
 
-    update_mimetype_association "application/xml" "${TEXT_EDITOR_LAUNCHER}"
-    update_mimetype_association "audio/x-mod" "${TEXT_EDITOR_LAUNCHER}"
-    update_mimetype_association "text/x-python" "${TEXT_EDITOR_LAUNCHER}"
-    update_mimetype_association "text/plain" "${TEXT_EDITOR_LAUNCHER}"
+    update_mimetype_association 'application/xml' "${TEXT_EDITOR_LAUNCHER}"
+    update_mimetype_association 'audio/x-mod' "${TEXT_EDITOR_LAUNCHER}"
+    update_mimetype_association 'text/x-python' "${TEXT_EDITOR_LAUNCHER}"
+    update_mimetype_association 'text/plain' "${TEXT_EDITOR_LAUNCHER}"
 fi
 
-update_mimetype_association "application/vnd.efi.iso" "${DISK_IMAGE_MOUNTER_LAUNCHER}"
+update_mimetype_association 'application/vnd.efi.iso' "${DISK_IMAGE_MOUNTER_LAUNCHER}"
