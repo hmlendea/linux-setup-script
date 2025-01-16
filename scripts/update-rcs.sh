@@ -18,7 +18,7 @@ set_config_value "${HOME}/.profile" 'export XDG_PICTURES_DIR'   "\"${XDG_PICTURE
 set_config_value "${HOME}/.profile" 'export XDG_PUBLIC_DIR'     "\"${XDG_PUBLIC_DIR}\""
 set_config_value "${HOME}/.profile" 'export XDG_TEMPLATES_DIR'  "\"${XDG_TEMPLATES_DIR}\""
 set_config_value "${HOME}/.profile" 'export XDG_VIDEOS_DIR'     "\"${XDG_VIDEOS_DIR}\""
-if [ -d "${HOME}/.loca/bin" ]; then
+if [ -d "${HOME}/.local/bin" ]; then
     set_config_value "${HOME}/.profile" 'export PATH' '"${PATH}:/'"${HOME}"'/.local/bin"'
 else
     set_config_value "${HOME}/.profile" 'export PATH' '"${PATH}"'
@@ -35,7 +35,7 @@ update_file_if_distinct "${REPO_RC_DIR}/shell/functions" "${XDG_DATA_HOME}/bash/
 update_file_if_distinct "${REPO_RC_DIR}/shell/opts" "${XDG_DATA_HOME}/bash/options"
 update_file_if_distinct "${REPO_RC_DIR}/shell/prompt" "${XDG_DATA_HOME}/bash/prompt"
 
-if does_bin_exist "bash"; then
+if does_bin_exist 'bash'; then
     update_file_if_distinct "${REPO_RC_DIR}/shell/bashrc" "${HOME}/.bashrc"
     update_file_if_distinct "${REPO_RC_DIR}/shell/bash_profile" "${HOME}/.bash_profile"
     update_file_if_distinct "${REPO_RC_DIR}/shell/bashrc" "${HOME}/.bash_prompt"
@@ -65,7 +65,7 @@ if does_bin_exist 'firefox' 'firefox-esr' 'io.gitlab.librewolf-community' 'org.m
     fi
 fi
 
-if does_bin_exist "npm"; then
+if does_bin_exist 'npm'; then
     NPMRC_FILE="${HOME}/.npmrc"
 
     [ -n "${NPM_CONFIG_USERCONFIG}" ] && NPMRC_FILE="${NPM_CONFIG_USERCONFIG}"
