@@ -1,10 +1,12 @@
 #!/bin/bash
 source "scripts/common/filesystem.sh"
-source "${REPO_SCRIPTS_DIR}/common/package-management.sh"
-source "${REPO_SCRIPTS_DIR}/common/system-info.sh"
+source "${REPO_SCRIPTS_COMMON_DIR}/package-management.sh"
+source "${REPO_SCRIPTS_COMMON_DIR}/system-info.sh"
 
 echo -e 'Updating the \e[0;32msystem package repositories\e[0m ...'
-if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
+if [ "${DISTRO_FAMILY}" = 'Alpine' ]; then
+    call_package_manager update
+elif [ "${DISTRO_FAMILY}" = 'Arch' ]; then
     call_package_manager -Syy
     does_bin_exist 'pkgfile' && run_as_su pkgfile -u
 elif [ "${DISTRO_FAMILY}" = 'Android' ] \
