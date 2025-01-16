@@ -31,7 +31,7 @@ function remove_locales_from_directory() {
         "ee" "eo" "el" "es" "et" "eu" "fa" "ff" "fi" "fil" "fo" "fr" "frp" "fur" "fy" "ga" "gbm" "gd" "gez" "gl" "gn" "gr" "gu" "gv" \
         "ha" "haw" "hak" "he" "hi" "hif" "hne" "hr" "hsb" "ht" "hu" "hy" "ia" "id" "ie" "ig" "ik" "ilo" "io" "is" "it" "iu" "ja" "jam" "jp" \
         "ka" "kab" "kg" "ki" "kk" "kl" "km" "kmr" "kn" "ko" "kok" "ks" "ku" "kv" "kw" "ky" \
-        "la" "lb" "lg" "li" "lij" "ln" "lo" "lt" "lv" "lzh" "mag" "mai" "mfe" "mg" "mhr" "mi" "miq" "mjw" "mk" "ml" "mn" "mni" "mnw" "mr" "ms" "mt" "my" \
+        "la" "lb" "lg" "li" "lij" "ln" "lo" "lt" "lv" "lzh" "mag" "mai" "mfe" "mg" "mhr" "mi" "miq" "mjw" "mk" "ml" "mn" "mni" "mnw" "mo" "mr" "ms" "mt" "my" \
         "na" "nah" "nan" "nb"  "nds" "ne" "nhn" "niu" "nl" "nn" "no" "nr" "nso" "nv" "oc" "om" "or" "os" "pa" "pap" "pi" "pl" "ps" "pt" "quz" "raj" "rif" "ru" "rw" \
         "sa" "sah" "sat" "sc" "sd" "se" "sgs" "shn" "shs" "si" "sid" "sk" "sl" "sm" "so" "son" "sq" "sr" "ss" "ssy" "st" "su" "sv" "sw" "syr" "szl" \
         "ta" "tatar-cyr" "tcy" "te" "tg" "th" "the" "ti" "tig" "tk" "tl" "tn" "to" "tok" "tpi" "tr" "ts" "tt" "tzm" "ug" "uk" "unm" "ur" "uz" "ve" "vi" \
