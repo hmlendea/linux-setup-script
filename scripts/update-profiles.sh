@@ -4,7 +4,7 @@ source "${REPO_DIR}/scripts/common/common.sh"
 
 SYSTEM_PROFILES_DIR="${ROOT_ETC}/profile.d"
 
-function update-profile-for-bin() {
+function update_profile_for_bin {
     local REQUIRED_BINARY="${1}"
     local PROFILE_NAME="${2}"
     local PROFILE_PATH="${SYSTEM_PROFILES_DIR}/${PROFILE_NAME}.sh"
@@ -16,5 +16,5 @@ function update-profile-for-bin() {
     fi
 }
 
-update-profile-for-bin "dotnet" "dotnet"
-update-profile-for-bin "make" "cmake"
+update_profile_for_bin 'dotnet' 'dotnet'
+update_profile_for_bin 'make' 'cmake'

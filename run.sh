@@ -73,20 +73,20 @@ fi
 # Configure and customise the system
 run_script "${REPO_SCRIPTS_DIR}/configure-system.sh" # Run after update-rcs.sh
 if [ "${OS}" = 'Linux' ] \
-&& ${HAS_GUI} \
-&& ! [[ "${DISTRO}" =~ 'WSL' ]]; then
+   && ${HAS_GUI} \
+   && ! [[ "${DISTRO}" =~ 'WSL' ]]; then
     run_script "${REPO_SCRIPTS_DIR}/customise-launchers.sh"
     run_script "${REPO_SCRIPTS_DIR}/configure-autostart-apps.sh"
     run_script "${REPO_SCRIPTS_DIR}/configure-default-apps.sh"
 fi
 
 run_script "${REPO_SCRIPTS_DIR}/configure-permissions.sh" # Run after install-packages.sh
-[ "${OS}" == "Linux" ] && run_script_as_su "${REPO_SCRIPTS_DIR}/set-system-locale-timedate.sh"
-[ "${DISTRO_FAMILY}" != "Android" ] && run_script_as_su "${REPO_SCRIPTS_DIR}/update-profiles.sh"
+[ "${OS}" = 'Linux' ] && run_script_as_su "${REPO_SCRIPTS_DIR}/set-system-locale-timedate.sh"
+[ "${DISTRO_FAMILY}" != 'Android' ] && run_script_as_su "${REPO_SCRIPTS_DIR}/update-profiles.sh"
 
 if [ "${OS}" = 'Linux' ]; then
     run_script_as_su "${REPO_SCRIPTS_DIR}/enable-services.sh"
-    does_bin_exist "grub-mkconfig" && run_script_as_su "${REPO_SCRIPTS_DIR}/update-grub.sh" # Run after configure-system.sh
+    does_bin_exist 'grub-mkconfig' && run_script_as_su "${REPO_SCRIPTS_DIR}/update-grub.sh" # Run after configure-system.sh
 fi
 run_script "${REPO_SCRIPTS_DIR}/configure-directories.sh"
 
@@ -95,6 +95,6 @@ run_script "${REPO_SCRIPTS_DIR}/git/setup-gpg-key.sh"
 run_script "${REPO_SCRIPTS_DIR}/clean-files.sh"
 
 # Assign users and groups
-[ "${OS}" == "Linux" ] && run_script_as_su "${REPO_SCRIPTS_DIR}/assign-users-and-groups.sh"
+[ "${OS}" = 'Linux' ] && run_script_as_su "${REPO_SCRIPTS_DIR}/assign-users-and-groups.sh"
 
 source ~/.bashrc
