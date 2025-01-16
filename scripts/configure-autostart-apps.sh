@@ -1,8 +1,8 @@
 #!/bin/bash
 source "scripts/common/filesystem.sh"
-source "${REPO_SCRIPTS_DIR}/common/common.sh"
-source "${REPO_SCRIPTS_DIR}/common/config.sh"
-source "${REPO_SCRIPTS_DIR}/common/system-info.sh"
+source "${REPO_SCRIPTS_COMMON_DIR}/common.sh"
+source "${REPO_SCRIPTS_COMMON_DIR}/config.sh"
+source "${REPO_SCRIPTS_COMMON_DIR}/system-info.sh"
 
 [ "${OS}" != 'Linux' ] && exit
 (! ${HAS_GUI}) && exit
@@ -18,13 +18,12 @@ function get_launcher_path_for_app() {
 
 function configure_autostart_for_app() {
     local BINARY_NAME="${1}" && shift
+
+    ! does_bin_exist "${BINARY_NAME}" && return
+
     local LAUNCHER_PATH=$(get_launcher_path_for_app "${BINARY_NAME}")
-
-    if does_bin_exist "${BINARY_NAME}"; then
-        [ ! -f "${LAUNCHER_PATH}" ] && create_launcher "${LAUNCHER_PATH}"
-
-        set_launcher_entries "${LAUNCHER_PATH}" "${@}"
-    fi
+    [ ! -f "${LAUNCHER_PATH}" ] && create_launcher "${LAUNCHER_PATH}"
+    set_launcher_entries "${LAUNCHER_PATH}" "$@"
 }
 
 # Discord
@@ -67,13 +66,17 @@ configure_autostart_for_app 'plank' \
     Exec 'plank'
 
 # Signal
-configure_autostart_for_app "signal-desktop" \
+configure_autostart_for_app 'signal-desktop' \
     Name "Signal" \
     Exec "signal-desktop --start-in-tray --no-sandbox -- %u"
-configure_autostart_for_app "org.signal.Signal" \
+configure_autostart_for_app 'org.signal.Signal' \
     Name "Signal" \
     Icon "signal" \
     Exec "org.signal.Signal --start-in-tray --no-sandbox -- %u"
+configure-autostart-for-app 'de.schmidhuberj.Flare' \
+    Name "Signal" \
+    Icon "signal" \
+    Exec "de.schmidhuberj.Flare"
 
 # Telegram
 configure_autostart_for_app "telegram-desktop" \
