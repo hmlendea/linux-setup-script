@@ -73,7 +73,7 @@ configure_autostart_for_app 'org.signal.Signal' \
     Name "Signal" \
     Icon "signal" \
     Exec "org.signal.Signal --start-in-tray --no-sandbox -- %u"
-configure-autostart-for-app 'de.schmidhuberj.Flare' \
+configure_autostart_for_app 'de.schmidhuberj.Flare' \
     Name "Signal" \
     Icon "signal" \
     Exec "de.schmidhuberj.Flare"
