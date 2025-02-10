@@ -828,12 +828,12 @@ fi
 ###############
 ### FIREFOX ###
 ###############
-if does_bin_exist "firefox" "firefox-esr" "librewolf" "org.mozilla.firefox" "io.gitlab.librewolf-community"; then
+if does_bin_exist 'firefox' 'firefox-esr' 'librewolf' 'org.mozilla.firefox' 'io.gitlab.librewolf-community'; then
     FIREFOX_PROFILE_DIR=$(get_firefox_profile_dir)
 
     # First time prompts
-    set_firefox_config "${FIREFOX_PROFILE_DIR}" app.normandy.first_run false
-    set_firefox_config "${FIREFOX_PROFILE_DIR}" browser.aboutConfig.showWarning false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" 'app.normandy.first_run' false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" 'browser.aboutConfig.showWarning' false
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.shell.checkDefaultBrowser" false
     set_firefox_config "${FIREFOX_PROFILE_DIR}" browser.urlbar.quicksuggest.onboardingDialogChoice "settings"
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.urlbar.quicksuggest.showedOnboardingDialog" true
@@ -880,10 +880,10 @@ if does_bin_exist "firefox" "firefox-esr" "librewolf" "org.mozilla.firefox" "io.
 
     # Preferences
     #set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.download.lastDir" "${XDG_DOWNLOAD_DIR}"
-    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.formfill.enable" true
-    set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.startup.page" 3 # Reopen previous tabs on startup
-    set_firefox_config "${FIREFOX_PROFILE_DIR}" "media.autoplay.enabled" false
-    set_firefox_config "${FIREFOX_PROFILE_DIR}" "media.autoplay.blocking_policy" 2
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" 'browser.formfill.enable' true
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" 'browser.startup.page' 3 # Reopen previous tabs on startup
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" 'media.autoplay.enabled' false
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" 'media.autoplay.blocking_policy' 2
 
     # Appearance - Links
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.anchor_color" "${TERMINAL_CYAN_D}" # "#00BCD4"
@@ -910,6 +910,12 @@ if does_bin_exist "firefox" "firefox-esr" "librewolf" "org.mozilla.firefox" "io.
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.gnome-search-provider.enabled" true
 
     # Performance
+    if [ $(get_memory_total_gb) -ge 15 ]; then
+        set_firefox_config "${FIREFOX_PROFILE_DIR}" 'browser.cache.disk.enable' false
+    else
+        set_firefox_config "${FIREFOX_PROFILE_DIR}" 'browser.cache.disk.enable' true
+    fi
+    set_firefox_config "${FIREFOX_PROFILE_DIR}" 'browser.sessionstore.interval' 30000
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "dom.ipc.processCount" $(nproc) # Limit to the number of physical cores, to save resources and save battery power
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "network.dnsCacheEntries" $((DNS_CACHE_SIZE/10))
     set_firefox_config "${FIREFOX_PROFILE_DIR}" "network.dnsCacheExpiration" $((DNS_CACHE_TTL*60))
@@ -988,7 +994,6 @@ if does_bin_exist "firefox" "firefox-esr" "librewolf" "org.mozilla.firefox" "io.
 
     # Other
     set_firefox_config "${FIREFOX_PROFILE_DIR}" 'browser.bookmarks.max_backups' 3
-    set_firefox_config "${FIREFOX_PROFILE_DIR}" 'browser.cache.disk.enable' true
     set_firefox_config "${FIREFOX_PROFILE_DIR}" 'browser.print.enabled' false
     set_firefox_config "${FIREFOX_PROFILE_DIR}" 'browser.tabs.remote.warmup.enabled' false
     set_firefox_config "${FIREFOX_PROFILE_DIR}" 'full-screen-api.ignore-widgets' true
