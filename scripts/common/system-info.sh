@@ -459,6 +459,10 @@ function is_driver_loaded() {
     fi
 }
 
+function get_memory_total_gb() {
+    free -g | awk '/^Mem:/ {print $2 " GB"}' | awk '{print $1}'
+}
+
 function get_wifi_driver() {
     get_driver "wifi"
 }
