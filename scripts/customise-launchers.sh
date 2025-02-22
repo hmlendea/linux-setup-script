@@ -552,6 +552,22 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/gnubg.desktop" \
     Name "Backgammon" \
     Name[ro] "Table"
 
+for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/io.mrarm.mcpelauncher.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/io.mrarm.mcpelauncher.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name 'Minecraft: Bedrock Edition' \
+        Comment 'Play Minecraft' \
+        Comment[de] 'Spiele Minecraft' \
+        Comment[es] 'Juega Minecraft' \
+        Comment[ro] 'Joacă Minecraft' \
+        Keywords 'Game;Minecraft;MC;' \
+        Keywords[de] 'Spiel;Minecraft;MC;MCPE;MCBE;Bedrock;' \
+        Keywords[es] 'Juego;Minecraft;MC;MCPE;MCBE;Bedrock;' \
+        Keywords[ro] 'Joc;Minecraft;MC;MCPE;MCBE;Bedrock;' \
+        Categories 'Game;' \
+        PrefersNonDefaultGPU true
+done
+
 if does_bin_exist "minecraft-launcher" "com.mojang.Minecraft" "org.prismlauncher.PrismLauncher"; then
     MC_DIR="${HOME}/.minecraft"
     MC_EXECUTABLE="minecraft-launcher"
@@ -575,9 +591,9 @@ if does_bin_exist "minecraft-launcher" "com.mojang.Minecraft" "org.prismlauncher
             Comment[es] "Juega Minecraft" \
             Comment[ro] "Joacă Minecraft" \
             Keywords "Game;Minecraft;MC;" \
-            Keywords[de] "Spiel;Minecraft;MC;" \
-            Keywords[es] "Juego;Minecraft;MC;" \
-            Keywords[ro] "Joc;Minecraft;MC;" \
+            Keywords[de] "Spiel;Minecraft;MC;MCJE;" \
+            Keywords[es] "Juego;Minecraft;MC;MCJE;" \
+            Keywords[ro] "Joc;Minecraft;MC;MCJE;" \
             Exec "${MC_EXECUTABLE}" \
             Icon "minecraft" \
             Categories "Game;" \
