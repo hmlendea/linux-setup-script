@@ -127,8 +127,8 @@ if [ "${GPU_FAMILY}" = 'Nvidia' ]; then
         'export CUDA_CACHE_PATH'              "${XDG_CACHE_HOME}/nvidia"
 fi
 
-does_bin_exist 'bat'        && set_config_value "${SHELL_VARIABLES_RC_PATH}" 'export BAT_THEME'     'Visual Studio Dark+'
-does_bin_exist 'optirun'    && set_config_value "${SHELL_VARIABLES_RC_PATH}" 'export VGL_READBACK'  'pbo' # Better optirun performance
+does_bin_exist 'bat' 'batcat'   && set_config_value "${SHELL_VARIABLES_RC_PATH}" 'export BAT_THEME'     'Visual Studio Dark+'
+does_bin_exist 'optirun'        && set_config_value "${SHELL_VARIABLES_RC_PATH}" 'export VGL_READBACK'  'pbo' # Better optirun performance
 
 if does_bin_exist 'dotnet'; then
     set_config_values "${SHELL_VARIABLES_RC_PATH}" \

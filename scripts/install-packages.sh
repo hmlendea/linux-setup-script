@@ -22,6 +22,14 @@ if ! [[ ${DEVICE_MODEL} =~ 'iPhone' ]]; then
     install_native_package 'most'
 fi
 
+install_native_package 'bat'
+
+if [ "${DISTRO_FAMILY}" = 'Android' ]; then
+    [ -f '/sbin/su' ] && install_native_package 'tsu'
+else
+    install_native_package 'sudo'
+fi
+
 if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
     install_native_package 'bash-completion'
     install_native_package 'usbutils'
@@ -29,13 +37,8 @@ if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
     install_native_package 'man-db'
     install_native_package 'man-pages'
     install_native_package 'realtime-privileges'
-    install_native_package 'sudo'
-
-    install_native_package 'bat'
 elif [ "${DISTROY_FAMILY}" = 'Android' ]; then
     install_native_package 'manpages'
-
-    [ -f '/sbin/su' ] && install_native_package 'tsu'
 fi
 
 install_native_package 'findutils'
