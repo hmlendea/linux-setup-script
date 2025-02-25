@@ -201,7 +201,10 @@ else
     if [ "${OS}" = 'Linux' ]; then
         install_native_package 'netctl'
         install_native_package 'dhcpcd'
-        install_native_package 'libmd' # Dependency of dhcpcd
+
+        if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
+            install_native_package 'libmd' # Dependency of dhcpcd
+        fi
     fi
 fi
 
@@ -221,11 +224,11 @@ fi
 ################
 ### Archives ###
 ################
+install_native_package 'unp' # A script for unpacking a wide variety of archive formats
 install_native_package 'unzip'
 install_native_package 'zip'
 
 if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
-    install_native_package 'unp' # A script for unpacking a wide variety of archive formats
     install_native_package 'p7zip'
     install_native_package 'lrzip'
 fi
