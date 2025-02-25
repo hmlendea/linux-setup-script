@@ -69,6 +69,7 @@ alias ls="ls -C --color=auto -h -Q --group-directories-first --format=horizontal
 [ ! -f "${ROOT_USR_BIN}/sl" ] && alias sl=ls
 
 [ -f "${ROOT_USR_BIN}/bat" ]        && alias cat='bat -pp'
+[ -f "${ROOT_USR_BIN}/batcat" ]     && alias cat='batcat -pp'
 [ -f "${ROOT_USR_BIN}/open" ]       && alias open='xdg-open'
 [ -f "${ROOT_USR_BIN}/shellcheck" ] && alias shellcheck='shellcheck -e SC2035,SC2164'
 [ -f "${ROOT_USR_BIN}/systemctl" ]  && alias systemctl='systemctl --no-pager -l -n25'
