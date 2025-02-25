@@ -17,7 +17,8 @@ if ! is_distro_immutable; then
     announce_packages_update 'system'
     if [ "${DISTRO_FAMILY}" = 'Alpine' ] \
     || [ "${DISTRO_FAMILY}" = 'Android' ] \
-    || [ "${DISTRO_FAMILY}" = 'Debian' ]; then
+    || [ "${DISTRO_FAMILY}" = 'Debian' ] \
+    || [ "${DISTRO_FAMILY}" = 'Ubuntu' ]; then
         call_package_manager upgrade
     elif [ "${DISTRO_FAMILY}" = 'Arch' ]; then
         call_package_manager -Su
