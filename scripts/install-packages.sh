@@ -31,6 +31,7 @@ else
 fi
 
 if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
+    install_native_package 'bat-extras'
     install_native_package 'bash-completion'
     install_native_package 'usbutils'
 
