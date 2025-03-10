@@ -731,7 +731,7 @@ if is_gnome_shell_extension_installed "dash-to-dock"; then
 
     set_gsetting "${DTD_SCHEMA}" apply-custom-theme false
     set_gsetting "${DTD_SCHEMA}" background-color 'rgb(0,0,0)'
-    set_gsetting "${DTD_SCHEMA}" background-opacity 0.8
+    set_gsetting "${DTD_SCHEMA}" background-opacity 0.25
     set_gsetting "${DTD_SCHEMA}" click-action minimize
     set_gsetting "${DTD_SCHEMA}" custom-background-color true
     set_gsetting "${DTD_SCHEMA}" custom-theme-customize-running-dots true
