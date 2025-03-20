@@ -80,6 +80,8 @@ fi
 keep_first_installed_package 'dev.alextren.Spot' 'com.spotify.Client'
 uninstall_android_package 'org.lineageos.eleven'
 uninstall_android_package 'com.xiaomi.mimusic2'
+[ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] && keep_first_installed_package 'org.gnome.Decibels' 'io.bassi.Amberol' 'org.gnome.Rhythmbox3'
+[ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ] && keep_first_installed_package 'io.bassi.Amberol' 'org.gnome.Decibels' 'org.gnome.Rhythmbox3'
 
 # Note Taking apps
 keep_first_installed_package "com.automattic.simplenote" "foundation.e.notes"
@@ -144,7 +146,6 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
 
     uninstall_flatpak "org.gnome.Cheese"        # Replaced by org.gnome.Snapshot
     uninstall_flatpak "org.gnome.gedit"         # Replaced by org.gnome.TextEditor
-    uninstall_flatpak "org.gnome.Rhythmbox3"    # Replaced by io.bassi.Amberol
 
     # App Stores
     if is_native_package_installed "gnome-software"; then
@@ -208,10 +209,6 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
         uninstall_flatpak "com.github.vladimiry.ElectronMail"
         uninstall_flatpak "org.telegram.desktop"
         uninstall_flatpak "io.github.mimbrero.WhatsAppDesktop"
-
-        # Multimedia
-        uninstall_flatpak "io.bassi.Amberol"
-        uninstall_flatpak "org.gnome.Totem"
     fi
 
     # Obsolete

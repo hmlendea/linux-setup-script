@@ -811,12 +811,13 @@ done
 #####################
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/lxmusic.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/io.bassi.Amberol.desktop" \
-                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/io.bassi.Amberol.dekstop"; do
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Decibels.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/io.bassi.Amberol.dekstop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Decibels.dekstop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name "Music" \
         Name[ro] "Muzică" \
-        MimeType "application/x-ogg;application/ogg;audio/x-vorbis+ogg;audio/vorbis;audio/x-vorbis;audio/x-scpls;audio/x-mp3;audio/x-mpeg;audio/mpeg;audio/x-mpegurl;audio/x-flac;audio/mp4;x-scheme-handler/itms;x-scheme-handler/itmss;"
-
+        MineType 'application/x-ogg;application/ogg;audio/mpeg;audio/wav;audio/x-aac;audio/x-aiff;audio/x-ape;audio/x-flac;audio/x-m4a;audio/x-m4b;audio/x-mp1;audio/x-mp2;audio/x-mp3;audio/mp4;audio/x-mpg;audio/x-mpeg;audio/x-mpegurl;audio/x-opus+ogg;audio/x-pn-aiff;audio/x-pn-au;audio/x-pn-wav;audio/x-scpls;audio/x-speex;audio/vorbis;audio/x-vorbis;audio/x-vorbis+ogg;audio/x-wavpack;x-scheme-handler/itms;x-scheme-handler/itmss;'
     [ "${DEVICE_TYPE}" = 'Mobile' ] && set_launcher_entry "${LAUNCHER}" NoDisplay true
 done
 

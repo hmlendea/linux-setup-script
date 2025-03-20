@@ -627,8 +627,9 @@ fi
 ### Music Players ###
 #####################
 if ${IS_GENERAL_PURPOSE_DEVICE}; then
-    if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
-    || [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+    if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
+        install_flatpak 'org.gnome.Decibels'
+    elif [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
         install_flatpak 'io.bassi.Amberol'
     fi
 
