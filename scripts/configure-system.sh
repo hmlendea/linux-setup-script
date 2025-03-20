@@ -1102,22 +1102,22 @@ fi
 ############
 ### IDEs ###
 ############
-if does_bin_exist "code" "code-oss" "codium" "com.visualstudio.code"; then
-    VSCODE_BIN="code"
+if does_bin_exist 'code' 'code-oss' 'codium' 'com.visualstudio.code'; then
+    VSCODE_BIN='code'
 
     # The order is important, some might be present simultaoneously for a single package
-    if does_bin_exist "code"; then
+    if does_bin_exist 'code'; then
         VSCODE_CONFIG_FILE="${XDG_CONFIG_HOME}/Code/User/settings.json"
-        VSCODE_BIN="code"
-    elif does_bin_exist "code-oss"; then
+        VSCODE_BIN='code'
+    elif does_bin_exist 'code-oss'; then
         VSCODE_CONFIG_FILE="${XDG_CONFIG_HOME}/Code - OSS/User/settings.json"
-        VSCODE_BIN="code-oss"
-    elif does_bin_exist "codium"; then
+        VSCODE_BIN='code-oss'
+    elif does_bin_exist 'codium'; then
         VSCODE_CONFIG_FILE="${XDG_CONFIG_HOME}/VSCodium/User/settings.json"
-        VSCODE_BIN="codium"
-    elif does_bin_exist "com.visualstudio.code"; then
+        VSCODE_BIN='codium'
+    elif does_bin_exist 'com.visualstudio.code'; then
         VSCODE_CONFIG_FILE="${HOME_VAR_APP}/com.visualstudio.code/config/Code/User/settings.json"
-        VSCODE_BIN="com.visualstudio.code"
+        VSCODE_BIN='com.visualstudio.code'
     fi
 
     if [ ! -f "${VSCODE_CONFIG_FILE}" ] \
@@ -1132,11 +1132,12 @@ if does_bin_exist "code" "code-oss" "codium" "com.visualstudio.code"; then
     set_json_property "${VSCODE_CONFIG_FILE}" '.["peacock.showColorInStatusBar"]' false
     set_json_property "${VSCODE_CONFIG_FILE}" '.["update.mode"]' "none"
     set_json_property "${VSCODE_CONFIG_FILE}" '.["window.autoDetectColorScheme"]' true
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["window.menuBarVisibility"]' "toggle"
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["window.newWindowDimensions"]' "maximized"
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["window.menuBarVisibility"]' 'toggle'
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["window.newWindowDimensions"]' 'maximized'
     #set_json_property "${VSCODE_CONFIG_FILE}" '.["window.title"]' '${dirty}${separator}${rootName}${separator}VS Code'
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["workbench.colorTheme"]' "Default Dark+"
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["workbench.iconTheme"]' "seti"
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["window.titleBarStyle"]' 'native'
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["workbench.colorTheme"]' 'Default Dark+'
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["workbench.iconTheme"]' 'seti'
 
     # Editor appearance
     set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.codeLens"]' false
