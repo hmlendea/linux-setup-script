@@ -32,5 +32,10 @@ function get_firefox_profile_dir() {
     local PROFILES_DIR=$(get_firefox_profiles_dir)
     local PROFILE_ID=$(get_firefox_profile_id)
 
+    if [ -z "${PROFILES_DIR}" ] \
+    || [ -z "${PROFILE_ID}" ]; then
+        return
+    fi
+
     echo "${PROFILES_DIR}/${PROFILE_ID}"
 }
