@@ -25,10 +25,15 @@ else
     fi
 fi
 
-if does_bin_exist 'chronyd'; then
+if does_bin_exist 'chrony' 'chronyd'; then
     disable_service 'ntpd'
     disable_service 'systemd-timesyncd'
-    enable_service 'chronyd'
+
+    if does_bin_exist 'chrony'; then
+        enable_service 'chrony'
+    elif does_bin_exist 'chronyd'; then
+        enable_service 'chronyd'
+    fi
 elif does_bin_exist 'ntpd'; then
     enable_service 'ntpd'
     disable_service 'systemd-timesyncd'

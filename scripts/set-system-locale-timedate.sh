@@ -42,7 +42,7 @@ if [ ! -f "${LOCALTIME_FILE_PATH}" ]; then
     echo 'Setting up the local time...'
 
     ln -sf '/usr/share/zoneinfo/Europe/Bucharest' "${LOCALTIME_FILE_PATH}"
-    hwclock --systohc
+    does_bin_exist 'hwclock' && hwclock --systohc
 fi
 
 # Update the X11 keyboard layout definitions
