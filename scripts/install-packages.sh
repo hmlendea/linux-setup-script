@@ -233,7 +233,7 @@ install_native_package 'unzip'
 install_native_package 'zip'
 
 if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
-    install_native_package 'p7zip'
+    install_native_package '7zip'
     install_native_package 'lrzip'
 fi
 
