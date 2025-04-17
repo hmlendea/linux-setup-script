@@ -1240,7 +1240,7 @@ fi
 ########################
 ### KEYBOARD & MOUSE ###
 ########################
-if does_bin_exist "gnome-shell"; then
+if does_bin_exist 'gnome-shell'; then
     # Keyboard
     set_gsetting org.gnome.desktop.peripherals.keyboard numlock-state true
     set_gsetting org.gnome.desktop.input-sources per-window false
@@ -1288,7 +1288,7 @@ if does_bin_exist "gnome-shell"; then
     fi
 fi
 if does_bin_exist 'mutter'; then
-    MUTTER_KEYBINDINGS_SCHEMA="org.gnome.desktop.wm.keybindings"
+    MUTTER_KEYBINDINGS_SCHEMA='org.gnome.desktop.wm.keybindings'
 
     set_gsetting "${MUTTER_KEYBINDINGS_SCHEMA}" draggable-border-width 12
     set_gsetting "${MUTTER_KEYBINDINGS_SCHEMA}" panel-run-dialog "['<Super>r']"
@@ -1643,8 +1643,10 @@ if does_bin_exist 'micro'; then
     set_json_property "${MICRO_SETTINGS_FILE}" '.["scrollbar"]' true
 
     # Keybindings
-    set_json_property "${MICRO_BINDINGS_FILE}" '.["Ctrl-g"]' "JumpLine"
-    set_json_property "${MICRO_BINDINGS_FILE}" '.["F3"]' "FindNext"
+    set_json_property "${MICRO_BINDINGS_FILE}" '.["CtrlRightSq"]' 'JumpToMatchingBrace'
+    set_json_property "${MICRO_BINDINGS_FILE}" '.["Ctrl-g"]' 'JumpLine'
+    set_json_property "${MICRO_BINDINGS_FILE}" '.["Ctrl-k"]' 'CopyLine,DeleteLine'
+    set_json_property "${MICRO_BINDINGS_FILE}" '.["F3"]' 'FindNext'
 
     # Others
     set_json_property "${MICRO_SETTINGS_FILE}" '.["linter"]' false
