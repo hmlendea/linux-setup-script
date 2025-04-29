@@ -6,45 +6,49 @@ source "${REPO_DIR}/scripts/common/common.sh"
 
 function get_screen_width() {
     if [ "${DEVICE_MODEL}" = "Steam Deck" ]; then
-        echo "1280"
+        echo 1280
         return
     elif [ "${DEVICE_MODEL}" = "Xiaomi Redmi Note 4X" ]; then
-	    echo "1080"
+	    echo 1080
         return
     fi
 
-    if [ "${XDG_SESSION_TYPE}" = "wayland" ]; then
-        if does_bin_exist "wayland-info"; then
-            wayland-info | grep "refresh" | head -n 1 | sed 's/.*width: \([1-9][0-9]*\)\s*px.*/\1/g'
+    if [ "${XDG_SESSION_TYPE}" = 'wayland' ]; then
+        if does_bin_exist 'wayland-info'; then
+            wayland-info | grep 'refresh' | head -n 1 | sed 's/.*width: \([1-9][0-9]*\)\s*px.*/\1/g'
+        else
+            echo 0
+        fi
+    elif [ -n "${DISPLAY}" ]; then
+        if does_bin_exist 'xrandr'; then
+            xrandr | grep -w connected | grep primary | sed 's/^.*primary \([0-9][0-9]*\)x.*/\1/g'
+        elif does_bin_exist 'xdpyinfo'; then
+            xdpyinfo | grep 'dimensions' | sed 's/^[^0-9]*\([0-9]\+\)x[0-9]\+ pixels.*/\1/g'
         else
             echo 0
         fi
     else
-        if does_bin_exist "xrandr"; then
-            xrandr | grep -w connected | grep primary | sed 's/^.*primary \([0-9][0-9]*\)x.*/\1/g'
-        elif does_bin_exist "xdpyinfo"; then
-            xdpyinfo | grep "dimensions" | sed 's/^[^0-9]*\([0-9]\+\)x[0-9]\+ pixels.*/\1/g'
-        else
-            echo 0
-        fi
+        echo 0
     fi
 }
 
 function get_screen_width_millimetres() {
-    if [ "${XDG_SESSION_TYPE}" = "wayland" ]; then
-        if does_bin_exist "wayland-info"; then
-            wayland-info | grep "physical_" | head -n 1 | sed 's/.*physical_width: \([1-9][0-9]*\)\s*mm.*/\1/g'
+    if [ "${XDG_SESSION_TYPE}" = 'wayland' ]; then
+        if does_bin_exist 'wayland-info'; then
+            wayland-info | grep 'physical_' | head -n 1 | sed 's/.*physical_width: \([1-9][0-9]*\)\s*mm.*/\1/g'
+        else
+            echo 0
+        fi
+    elif [ -n "${DISPLAY}" ]; then
+        if does_bin_exist 'xrandr'; then
+            xrandr | grep -w connected | grep primary | sed 's/.* \([0-9]\+\)mm x [0-9]\+mm.*/\1/g'
+        elif does_bin_exist 'xdpyinfo'; then
+            xdpyinfo | grep 'dimensions' | sed 's/^.* pixels (\([0-9]\+\)x[0-9]\+ mil.*/\1/g'
         else
             echo 0
         fi
     else
-        if does_bin_exist "xrandr"; then
-            xrandr | grep -w connected | grep primary | sed 's/.* \([0-9]\+\)mm x [0-9]\+mm.*/\1/g'
-        elif does_bin_exist "xdpyinfo"; then
-            xdpyinfo | grep "dimensions" | sed 's/^.* pixels (\([0-9]\+\)x[0-9]\+ mil.*/\1/g'
-        else
-            echo 0
-        fi
+        echo 0
     fi
 }
 
@@ -54,66 +58,69 @@ function get_screen_width_inches() {
 }
 
 function get_screen_height() {
-    if [ "${DEVICE_MODEL}" = "Steam Deck" ]; then
-        echo "800"
+    if [ "${DEVICE_MODEL}" = 'Steam Deck' ]; then
+        echo 800
         return
-    elif [ "${DEVICE_MODEL}" = "Xiaomi Redmi Note 4X" ]; then
-	    echo "1920"
+    elif [ "${DEVICE_MODEL}" = 'Xiaomi Redmi Note 4X' ]; then
+	    echo 1920
         return
     fi
 
-    if [ "${XDG_SESSION_TYPE}" = "wayland" ]; then
-        if does_bin_exist "wayland-info"; then
-            wayland-info | grep "refresh" | head -n 1 | sed 's/.*height: \([1-9][0-9]*\)\s*px.*/\1/g'
+    if [ "${XDG_SESSION_TYPE}" = 'wayland' ]; then
+        if does_bin_exist 'wayland-info'; then
+            wayland-info | grep 'refresh' | head -n 1 | sed 's/.*height: \([1-9][0-9]*\)\s*px.*/\1/g'
+        else
+            echo 0
+        fi
+    elif [ -n "${DISPLAY}" ]; then
+        if does_bin_exist 'xrandr'; then
+            xrandr | grep -w connected | grep primary | sed 's/^.*primary [0-9]\+x\([0-9]\+\).*/\1/g'
+        elif does_bin_exist 'xdpyinfo'; then
+            xdpyinfo | grep 'dimensions' | sed 's/^[^0-9]*[0-9]\+x\([0-9]\+\) pixels.*/\1/g'
         else
             echo 0
         fi
     else
-        if does_bin_exist "xrandr"; then
-            xrandr | grep -w connected | grep primary | sed 's/^.*primary [0-9]\+x\([0-9]\+\).*/\1/g'
-        elif does_bin_exist "xdpyinfo"; then
-            xdpyinfo | grep "dimensions" | sed 's/^[^0-9]*[0-9]\+x\([0-9]\+\) pixels.*/\1/g'
-        else
-            echo 0
-        fi
+        echo 0
     fi
 }
 
 function get_screen_height_millimetres() {
-    if [ "${XDG_SESSION_TYPE}" = "wayland" ]; then
-        if does_bin_exist "wayland-info"; then
-            wayland-info | grep "physical_" | head -n 1 | sed 's/.*physical_height: \([1-9][0-9]*\)\s*mm.*/\1/g'
+    if [ "${XDG_SESSION_TYPE}" = 'wayland' ]; then
+        if does_bin_exist 'wayland-info'; then
+            wayland-info | grep 'physical_' | head -n 1 | sed 's/.*physical_height: \([1-9][0-9]*\)\s*mm.*/\1/g'
+        else
+            echo 0
+        fi
+    elif [ -n "${DISPLAY}" ]; then
+        if does_bin_exist 'xrandr'; then
+            xrandr | grep -w connected | grep primary | sed 's/.* [0-9]\+mm x \([0-9]\+\)mm.*/\1/g'
+        elif does_bin_exist 'xdpyinfo'; then
+            xdpyinfo | grep 'dimensions' | sed 's/^.* pixels ([0-9]\+x\([0-9]\+\) mil.*/\1/g'
         else
             echo 0
         fi
     else
-        if does_bin_exist "xrandr"; then
-            xrandr | grep -w connected | grep primary | sed 's/.* [0-9]\+mm x \([0-9]\+\)mm.*/\1/g'
-        elif does_bin_exist "xdpyinfo"; then
-            xdpyinfo | grep "dimensions" | sed 's/^.* pixels ([0-9]\+x\([0-9]\+\) mil.*/\1/g'
-        else
-            echo 0
-        fi
+        echo 0
     fi
 }
 
 function get_screen_dpi() {
-    if [ "${DEVICE_MODEL}" = "Xiaomi Redmi Note 4X" ]; then
-	    echo "401"
+    if [ "${DEVICE_MODEL}" = 'Xiaomi Redmi Note 4X' ]; then
+	    echo 401
         return
     fi
 
     local RESOLUTION_H=$(get_screen_width)
 
-    if [ -z "${RESOLUTION_H}" ] \
-    || [ "${RESOLUTION_H}" -eq 0 ]; then
-        if [ "${XDG_SESSION_TYPE}" = "wayland" ]; then
+    if [ -z "${RESOLUTION_H}" ] || [ "${RESOLUTION_H}" -eq 0 ]; then
+        if [ "${XDG_SESSION_TYPE}" = 'wayland' ]; then
             echo 0 # Wayland not yet supported
             return
         fi
 
-        if does_bin_exist "xdpyinfo"; then
-            xdpyinfo | grep "resolution" | sed 's/^[^0-9]*\([0-9]*\)x[0-9]*.*/\1/g'
+        if [ -n "${DISPLAY}" ] && does_bin_exist 'xdpyinfo'; then
+            xdpyinfo | grep 'resolution' | sed 's/^[^0-9]*\([0-9]*\)x[0-9]*.*/\1/g'
         else
             echo 0
         fi
