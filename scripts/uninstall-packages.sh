@@ -84,27 +84,29 @@ uninstall_android_package 'com.xiaomi.mimusic2'
 [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ] && keep_first_installed_package 'io.bassi.Amberol' 'org.gnome.Decibels' 'org.gnome.Rhythmbox3'
 
 # Note Taking apps
-keep_first_installed_package "com.automattic.simplenote" "foundation.e.notes"
+keep_first_installed_package 'com.automattic.simplenote' 'foundation.e.notes'
 
 # System Monitors
 keep_first_installed_package 'gnome-system-monitor' 'net.nokyan.Resources'
 
 # Task Management apps
-keep_first_installed_package "io.github.alainm23.planify" "org.gnome.Todo"
+keep_first_installed_package 'io.github.alainm23.planify' 'org.gnome.Todo'
+
+# Terminal Emulators
+keep_first_installed_package 'gnome-console' 'gnome-terminal'
 
 # Video players
-uninstall_android_package "com.mitv.mivideoplayer"
-uninstall_android_package "com.mitv.videoplayer"
+uninstall_android_package 'com.mitv.mivideoplayer'
+uninstall_android_package 'com.mitv.videoplayer'
 keep_first_installed_package 'org.gnome.Showtime' 'com.github.rafostar.Clapper' 'org.gnome.Totem'
 
 # zzz OTHERS
 keep_first_installed_package 'chrony' 'ntp'
 
-
 # Uninstall the packages
-if [ "${DISTRO_FAMILY}" = "Arch" ]; then
+if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
     if ${IS_POWERFUL_PC}; then
-        uninstall_native_package "plank"
+        uninstall_native_package 'plank'
     fi
 
     uninstall_native_package "alsi"                         # Replaced by fastfetch
@@ -173,8 +175,11 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
     [ "${DESKTOP_ENVIRONMENT}" = "KDE" ] && uninstall_native_package "nautilus"
 
     # Terminals
-    [ "${DESKTOP_ENVIRONMENT}" != "GNOME" ] && uninstall_native_package "gnome-terminal"
-    [ "${DESKTOP_ENVIRONMENT}" != "KDE" ] && uninstall_native_package "konsole"
+    if [ "${DESKTOP_ENVIRONMENT}" != "GNOME" ]; then
+        uninstall_native_package 'gnome-console'
+        uninstall_native_package 'gnome-terminal'
+    fi
+    [ "${DESKTOP_ENVIRONMENT}" != "KDE" ] && uninstall_native_package 'konsole'
 
     # Text Editors
     [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ] && uninstall_native_package "kwrite"
