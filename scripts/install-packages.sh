@@ -693,9 +693,8 @@ fi
 ### Terminals ###
 #################
 if [ "${OS}" = 'Linux' ]; then
-    if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
-        install_native_package 'gnome-terminal'
-    elif [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+    if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
+    || [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
         install_native_package 'gnome-console'
     elif [ "${DESKTOP_ENVIRONMENT}" = 'KDE' ]; then
         install_native_package 'konsole'
@@ -724,9 +723,6 @@ fi
 if "${HAS_GUI}"; then
     if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
     || [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
-        is_native_package_installed "gtk2" && install_native_package 'adwaita-dark' # GTK3's Adwaita Dark ported to GTK2
-        is_native_package_installed "gtk3" && install_native_package 'adw-gtk3'
-        install_flatpak 'org.gtk.Gtk3theme.adw-gtk3-dark'
         install_flatpak 'org.kde.KStyle.Adwaita'
     fi
 
