@@ -390,6 +390,26 @@ function get_gsetting() {
     call_gsettings get "${SCHEMA}" "${PROPERTY}" | sed "s/^'\(.*\)'$/\1/g"
 }
 
+function set_gsettings() {
+    local SCHEMA="${1}" && shift
+
+    if [ "$(( $# % 2))" -ne 0 ]; then
+        echo "ERROR: Invalid arguments (count: $#) for set_gsettings: ${*}" >&2
+        exit 1
+    fi
+
+    local PAIRS_COUNT=$(($# / 2))
+
+    for I in $(seq 1 ${PAIRS_COUNT}); do
+        local PROPERTY="${1}" && shift
+        local VALUE="${1}" && shift
+
+        if [ -n "${PROPERTY}" ]; then
+            set_gsetting "${SCHEMA}" "${PROPERTY}" "${VALUE}"
+        fi
+    done
+}
+
 function set_gsetting() {
     (! ${HAS_GUI}) && return
     (! does_bin_exist "gsettings") && return

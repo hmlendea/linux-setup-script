@@ -1267,8 +1267,8 @@ if does_bin_exist 'gnome-shell'; then
     does_bin_exist "org.gnome.Settings" && ENABLED_SEARCH_PROVIDERS="${ENABLED_SEARCH_PROVIDERS}, 'org.gnome.Settings.desktop'"
 
     # Disabled ones
-    does_bin_exist "gnome-terminal" && DISABLED_SEARCH_PROVIDERS="${DISABLED_SEARCH_PROVIDERS}, 'org.gnome.Terminal.desktop'"
-    does_bin_exist "nautilus" && DISABLED_SEARCH_PROVIDERS="${DISABLED_SEARCH_PROVIDERS}, 'org.gnome.Nautilus.desktop'"
+    does_bin_exist 'gnome-terminal' && DISABLED_SEARCH_PROVIDERS="${DISABLED_SEARCH_PROVIDERS}, 'org.gnome.Terminal.desktop'"
+    does_bin_exist 'nautilus' && DISABLED_SEARCH_PROVIDERS="${DISABLED_SEARCH_PROVIDERS}, 'org.gnome.Nautilus.desktop'"
 
     ENABLED_SEARCH_PROVIDERS=$(echo "${ENABLED_SEARCH_PROVIDERS}" | sed 's/^\s*,*\s*//g')
     DISABLED_SEARCH_PROVIDERS=$(echo "${DISABLED_SEARCH_PROVIDERS}" | sed 's/^\s*,*\s*//g')
@@ -1497,8 +1497,16 @@ fi
 ################
 ### Terminal ###
 ################
-if does_bin_exist "gnome-terminal"; then
-    GNOME_TERMINAL_SCHEMA="org.gnome.Terminal.Legacy"
+if does_bin_exist 'kgx'; then
+    GNOME_CONSOLE_SCHEMA='org.gnome.Console'
+
+    set_gsettings "${GNOME_CONSOLE_SCHEMA}" \
+        'ignore-scrollback-limit' true \
+        'last-window-maximised' false \
+        'restore-window-size' false
+fi
+if does_bin_exist 'gnome-terminal'; then
+    GNOME_TERMINAL_SCHEMA='org.gnome.Terminal.Legacy'
     GNOME_TERMINAL_PROFILE_ID=$(get_gsetting org.gnome.Terminal.ProfilesList default)
     GNOME_TERMINAL_PROFILE_SCHEMA="${GNOME_TERMINAL_SCHEMA}.Profile:/org/gnome/terminal/legacy/profiles:/:${GNOME_TERMINAL_PROFILE_ID}/"
 
