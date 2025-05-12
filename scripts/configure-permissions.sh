@@ -6,7 +6,7 @@ source "${REPO_SCRIPTS_DIR}/common/permissions.sh"
 source "${REPO_SCRIPTS_DIR}/common/system-info.sh"
 
 if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
-    for AUDIO_PLAYER_APP in 'io.bassi.Amberol' 'org.gnome.Rhythmbox3'; do
+    for AUDIO_PLAYER_APP in 'io.bassi.Amberol' 'org.gnome.Decibels' 'org.gnome.Rhythmbox3'; do
         set_linux_permission "${AUDIO_PLAYER_APP}" \
             'background' false \
             'camera' false \
