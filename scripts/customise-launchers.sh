@@ -762,8 +762,8 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/electron-mail.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.github.vladimiry.ElectronMail.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.github.vladimiry.ElectronMail.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        Name "Proton Mail" \
-        Icon "protonmail-desktop" \
+        Name 'Proton Mail' \
+        Icon 'proton-mail' \
         Keywords "${MAIL_APP_KEYWORDS}Electron;"
 done
 
