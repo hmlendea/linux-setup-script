@@ -169,7 +169,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
             'notification_lockscreen' false \
             'location' false
     done
-    for VIDEO_PLAYER_APP in 'com.github.rafostar.Clapper' 'org.gnome.Totem'; do
+    for VIDEO_PLAYER_APP in 'com.github.rafostar.Clapper' 'dev.fredol.open-tv' 'org.gnome.Totem'; do
         set_linux_permission "${VIDEO_PLAYER_APP}" \
             'background' false \
             'camera' false \

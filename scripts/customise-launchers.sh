@@ -1216,6 +1216,14 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/mpv.desktop" \
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/netflix-nativefier.desktop" \
     Icon 'netflix'
 
+### Open TV
+for LAUNCHER in "${LOCAL_FLATPAK_LAUNCHERS_DIR}/dev.fredol.open-tv.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/dev.fredol.open-tv.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name 'Open TV' \
+        Icon 'tvtime'
+done
+
 ### Plex
 for LAUNCHER in "${LOCAL_LAUNCHERS_DIR}/chrome-aghlkjcflkcaanjmefomlcfgflfdhkkg-Default.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/plexmediaplayer.desktop"; do
