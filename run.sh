@@ -75,7 +75,7 @@ run_script "${REPO_SCRIPTS_DIR}/configure-system.sh" # Run after update-rcs.sh
 if [ "${OS}" = 'Linux' ] \
 && ${HAS_GUI} \
 && ! [[ "${DISTRO}" =~ 'WSL' ]]; then
-    run_script "${REPO_SCRIPTS_DIR}/customise-launchers.sh"
+    run_script "${REPO_SCRIPTS_DIR}/configure-launchers.sh"
     run_script "${REPO_SCRIPTS_DIR}/configure-autostart-apps.sh"
     run_script "${REPO_SCRIPTS_DIR}/configure-default-apps.sh"
 fi
