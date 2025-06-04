@@ -1,5 +1,5 @@
 #!/bin/bash
-source "scripts/common/common.sh"
+source 'scripts/common/common.sh'
 
 GRUB_CFG_PATH="${ROOT_BOOT}/grub/grub.cfg"
 

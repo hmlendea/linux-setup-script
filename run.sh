@@ -9,7 +9,7 @@ EXEDIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
 cd "$EXEDIR"
 
 # Make sure the USER envar is set (on Android it is not)
-export USER="$(whoami)"
+[ -z "${USER}" ] && export USER="$(whoami)"
 
 source "${EXEDIR}/scripts/common/filesystem.sh"
 source "${REPO_DIR}/scripts/common/common.sh"
@@ -73,8 +73,8 @@ fi
 # Configure and customise the system
 run_script "${REPO_SCRIPTS_DIR}/configure-system.sh" # Run after update-rcs.sh
 if [ "${OS}" = 'Linux' ] \
-   && ${HAS_GUI} \
-   && ! [[ "${DISTRO}" =~ 'WSL' ]]; then
+&& ${HAS_GUI} \
+&& ! [[ "${DISTRO}" =~ 'WSL' ]]; then
     run_script "${REPO_SCRIPTS_DIR}/customise-launchers.sh"
     run_script "${REPO_SCRIPTS_DIR}/configure-autostart-apps.sh"
     run_script "${REPO_SCRIPTS_DIR}/configure-default-apps.sh"
@@ -97,4 +97,4 @@ run_script "${REPO_SCRIPTS_DIR}/clean-files.sh"
 # Assign users and groups
 [ "${OS}" = 'Linux' ] && run_script_as_su "${REPO_SCRIPTS_DIR}/assign-users-and-groups.sh"
 
-source ~/.bashrc
+source "${HOME}/.bashrc"
