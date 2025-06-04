@@ -136,8 +136,9 @@ remove \
     "${XDG_CONFIG_HOME}/autokey" \
     "${XDG_DATA_HOME}/autokey"
 ! does_bin_exist "avidemux" && remove "${HOME}/.avidemux6"
-! does_bin_exist "balena-etcher" "balena-etcher-electron" "etcher" && remove \
+! does_bin_exist 'balena-etcher' 'balena-etcher-electron' 'etcher' && remove \
     "${XDG_CONFIG_HOME}/balena-etcher" \
+    "${XDG_CONFIG_HOME}/balenaEtcher" \
     "${XDG_CONFIG_HOME}/balena-etcher-electron"
 ! does_bin_exist "bleachbit" && remove \
     "${XDG_CACHE_HOME}/bleachbit" \
@@ -216,6 +217,8 @@ remove \
     "${XDG_CACHE_HOME}/hashcat" \
     "${XDG_CONFIG_HOME}/hashcat" \
     "${XDG_DATA_HOME}/hashcat"
+! does_bin_exist 'icaclient' && remove \
+    "${HOME}/.ICAClient"
 ! does_bin_exist 'inkscape' && remove \
     "${XDG_CACHE_HOME}/inkscape" \
     "${XDG_CONFIG_HOME}/inkscape"
@@ -753,7 +756,10 @@ for FLATPAK_CACHE_DIR in "${ROOT_VAR}/tmp"/flatpak-cache-*; do
     remove "${FLATPAK_CACHE_DIR}"
 done
 
-remove "${ROOT_SRV}/papermc/plugins/.paper-remapped"
+# Other unwanted files
+remove \
+    "${HOME}/.ServiceHub" \
+    "${ROOT_SRV}/papermc/plugins/.paper-remapped"
 
 does_bin_exist 'journalctl' && run_as_su journalctl --vacuum-time=3days
 does_bin_exist 'pacman' && yes | run_as_su pacman -Scc
