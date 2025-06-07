@@ -42,7 +42,7 @@
 [alias]
     lg = !git --no-pager log --reverse --pretty='%C(yellow)%h %C(bold blue)%<(15,trunc)%an%Creset %Cgreen%ad%Creset %s%C(auto)%d%Creset' --date=format:'%Y/%m/%d %H:%M' -n32
     jeff = !git diff --ignore-space-at-eol -b -w --ignore-blank-lines
-    new-branch = !git branch $1 && git checkout $1 && git push -u origin $1
+    deltag = !git tag -d $1 &&  git push origin :refs/tags/$1
     branches = !git branch -vv
     remotes = !git remote -vv
     stashes = !git stash list
