@@ -371,7 +371,10 @@ remove_logs_in_dirs "${HOME_VAR_APP}/org.telegram.desktop/data/TelegramDesktop"
 ! does_bin_exist "whatsdesk" && remove "${HOME}/.whatsdesk"
 
 # Zoom
-! does_bin_exist "zoom" && remove "${HOME}/.zoom"
+! does_bin_exist 'zoom' && remove \
+    "${HOME}/.zoom" \
+    "${XDG_DOCUMENTS_DIR}/Zoom" \
+    "${HOME}/Documents/Zoom"
 
 #####################
 ### File Managers ###
@@ -744,6 +747,7 @@ for DIR in  "${HOME}/.Cobra Mobile" \
 
     remove_dir_if_empty "${DIR}"
 done
+[ "${XDG_DOCUMENTS_DIR}" != "${HOME}/Documents" ] && remove_dir_if_empty "${HOME}/Documents"
 
 # Flatpaks
 for FLATPAK in "${HOME_VAR_APP}"/*; do
