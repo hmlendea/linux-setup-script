@@ -5,7 +5,6 @@ source "${REPO_SCRIPTS_COMMON_DIR}/system-info.sh"
 LOCALE_GEN_FILE_PATH="${ROOT_ETC}/locale.gen"
 LOCALE_CONF_FILE_PATH="${ROOT_ETC}/locale.conf"
 VCONSOLE_CONF_FILE_PATH="${ROOT_ETC}/vconsole.conf"
-LOCALTIME_FILE_PATH="${ROOT_ETC}/localtime"
 KEYBOARD_LAYOUTS_PATH="${ROOT_USR_SHARE}/X11/xkb/symbols"
 
 echo 'Setting up the console font and keymap...'
@@ -24,7 +23,6 @@ echo 'Setting up the language...'
     echo 'LC_NAME=ro_RO.UTF-8'
     echo 'LC_NUMERIC=ro_RO.UTF-8'
     echo 'LC_TIME=ro_RO.UTF-8'
-} > "${LOCALE_CONF_FILE_PATH}"
 
 echo 'en_GB.UTF-8 UTF-8' >  "${LOCALE_GEN_FILE_PATH}"
 echo 'en_US.UTF-8 UTF-8' >> "${LOCALE_GEN_FILE_PATH}"
@@ -37,13 +35,6 @@ for LOCALE in $(awk '{print $1}' "${LOCALE_GEN_FILE_PATH}" | sed -e 's/\([^\.]*\
         break
     fi
 done
-
-if [ ! -f "${LOCALTIME_FILE_PATH}" ]; then
-    echo 'Setting up the local time...'
-
-    ln -sf '/usr/share/zoneinfo/Europe/Bucharest' "${LOCALTIME_FILE_PATH}"
-    does_bin_exist 'hwclock' && hwclock --systohc
-fi
 
 # Update the X11 keyboard layout definitions
 if ${HAS_GUI}; then
