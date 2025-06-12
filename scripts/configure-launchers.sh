@@ -343,7 +343,8 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/code-oss.desktop" \
         GenericName "Code" \
         Icon "code" \
         Keywords "VS;VSCode;Visual;Studio;Code;" \
-        Categories "${IDE_CATEGORIES};TextEditor;"
+        Categories "${IDE_CATEGORIES};TextEditor;" \
+        MimeType "application/x-code-workspace;inode/directory;"
 done
 
 for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.jetbrains.PyCharm-Community.desktop" \
