@@ -81,7 +81,10 @@ if [ "${OS}" = 'Linux' ] \
 fi
 
 run_script "${REPO_SCRIPTS_DIR}/configure-permissions.sh" # Run after install-packages.sh
-[ "${OS}" = 'Linux' ] && run_script_as_su "${REPO_SCRIPTS_DIR}/set-system-locale-timedate.sh"
+if [ "${OS}" = 'Linux' ]; then
+    run_script_as_su "${REPO_SCRIPTS_DIR}/configure-locale.sh"
+    run_script_as_su "${REPO_SCRIPTS_DIR}/configure-system-time.sh"
+fi
 [ "${DISTRO_FAMILY}" != 'Android' ] && run_script_as_su "${REPO_SCRIPTS_DIR}/update-profiles.sh"
 
 if [ "${OS}" = 'Linux' ]; then
