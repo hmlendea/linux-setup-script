@@ -47,6 +47,6 @@
     lg = !git --no-pager log --reverse --pretty='%C(yellow)%h %C(bold blue)%<(15,trunc)%an%Creset %Cgreen%ad%Creset %s%C(auto)%d%Creset' --date=format:'%Y/%m/%d %H:%M' -n32
     remotes = !git remote -vv
     stashes = !git stash list
-    sync = !git fetch && git cleanup && git pull && git push
+    sync = !git fetch && git pull && git cleanup && git push
     undo = !git reset HEAD^
     unstage = !git reset HEAD --
