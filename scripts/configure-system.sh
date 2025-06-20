@@ -127,6 +127,8 @@ TEXT_EDITOR_FONT_STYLE="${MONOSPACE_FONT_STYLE}"
 #[ "${SCREEN_RESOLUTION_V}" -lt 1080 ] && TEXT_EDITOR_FONT_SIZE=11
 TEXT_EDITOR_FONT_SIZE="${MONOSPACE_FONT_SIZE}"
 
+BROWSER_FONT_SIZE=$((INTERFACE_FONT_SIZE + 7))
+
 EMOJI_FONT_NAME="Apple Color Emoji"
 
 INTERFACE_FONT="${INTERFACE_FONT_NAME} ${INTERFACE_FONT_STYLE} ${INTERFACE_FONT_SIZE}"
@@ -876,6 +878,7 @@ if does_bin_exist 'firefox' 'firefox-esr' 'librewolf' 'org.mozilla.firefox' 'io.
         set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.tabs.drawInTitlebar" true
         set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.uidensity" 1 # Compact mode
         #set_firefox_config "${FIREFOX_PROFILE_DIR}" "font.name-list.emoji" "${EMOJI_FONT_NAME}" # Makes ChatGPT ask for captcha for every prompt
+        set_firefox_config "${FIREFOX_PROFILE_DIR}" 'font.size.variable.x-western' "${BROWSER_FONT_SIZE}"
         set_firefox_config "${FIREFOX_PROFILE_DIR}" "toolkit.legacyUserProfileCustomizations.stylesheets" true
         #set_firefox_config "${FIREFOX_PROFILE_DIR}" "widget.non-native-theme.enabled" false # If true then some page elements (e.g. drop-down arrows in Bitwarden) look very ugly and out of place
         set_firefox_config "${FIREFOX_PROFILE_DIR}" "widget.content.allow-gtk-dark-theme" ${DESKTOP_THEME_IS_DARK}
@@ -894,12 +897,13 @@ if does_bin_exist 'firefox' 'firefox-esr' 'librewolf' 'org.mozilla.firefox' 'io.
         set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.underline_anchors" false
 
         # Useless features
-        #set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.newtabpage.activity-stream.feeds.section.highlights" false
-        #set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.newtabpage.activity-stream.feeds.snippets" false
-        set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.newtabpage.activity-stream.feeds.topsites" false
-        set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.newtabpage.activity-stream.feeds.section.topstories" false
-        set_firefox_config "${FIREFOX_PROFILE_DIR}" "extensions.pocket.enabled" false
-        set_firefox_config "${FIREFOX_PROFILE_DIR}" "extensions.screenshots.disabled" true
+        #set_firefox_config "${FIREFOX_PROFILE_DIR}" 'browser.newtabpage.activity-stream.feeds.section.highlights' false
+        #set_firefox_config "${FIREFOX_PROFILE_DIR}" 'browser.newtabpage.activity-stream.feeds.snippets' false
+        set_firefox_config "${FIREFOX_PROFILE_DIR}" 'browser.newtabpage.activity-stream.feeds.topsites' false
+        set_firefox_config "${FIREFOX_PROFILE_DIR}" 'browser.newtabpage.activity-stream.feeds.section.topstories' false
+        set_firefox_config "${FIREFOX_PROFILE_DIR}" 'browser.tabs.groups.enabled' false
+        set_firefox_config "${FIREFOX_PROFILE_DIR}" 'extensions.pocket.enabled' false
+        set_firefox_config "${FIREFOX_PROFILE_DIR}" 'extensions.screenshots.disabled' true
 
         # URL bar
         set_firefox_config "${FIREFOX_PROFILE_DIR}" "browser.urlbar.groupLabels.enabled" false
