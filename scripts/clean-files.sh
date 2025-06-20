@@ -265,6 +265,7 @@ remove \
 ! does_bin_exist 'nvidia-settings' && remove \
     "${XDG_CACHE_HOME}/nvidia" \
     "${XDG_CONFIG_HOME}/nvidia"
+! does_bin_exist 'obs' && remove "${XDG_CONFIG_HOME}/obs-studio"
 ! does_bin_exist 'onlyoffice-desktopeditors' && remove \
     "${XDG_CONFIG_HOME}/onlyoffice" \
     "${XDG_DATA_HOME}/onlyoffice"
@@ -291,6 +292,9 @@ remove \
 ! does_bin_exist 'rhythmbox' && remove \
     "${XDG_CACHE_HOME}/rhythmbox" \
     "${XDG_DATA_HOME}/rhythmbox"
+! does_bin_exist 'rpi-imager' && remove \
+    "${XDG_CACHE_HOME}/Raspberry Pi/Imager" \
+    "${XDG_CONFIG_HOME}/Raspberry Pi/Imager.conf"
 ! does_bin_exist 'runelite' && remove "${HOME}/.runelite"
 ! does_bin_exist 'samrewritten' && remove "${XDG_CACHE_HOME}/SamRewritten"
 ! does_bin_exist 'simplescreenrecorder' && remove "${HOME}/.ssr"
@@ -348,13 +352,15 @@ remove_logs_in_dirs "${HOME_VAR_APP}/com.discordapp.Discord/config/discord"
 remove_logs_in_dirs "${HOME_VAR_APP}/org.signal.Signal/config/Signal"
 
 # Teams
-! does_bin_exist "teams" && remove \
+! does_bin_exist 'teams' && remove \
     "${XDG_CONFIG_HOME}/Microsoft Teams - Preview" \
     "${XDG_CONFIG_HOME}/Microsoft/Microsoft Teams"
-! does_bin_exist "teams-insiders" && remove \
+! does_bin_exist 'teams-for-linux' && remove \
+    "${XDG_CONFIG_HOME}/teams-for-linux"
+! does_bin_exist 'teams-insiders' && remove \
     "${XDG_CONFIG_HOME}/Microsoft Teams - Insiders" \
     "${XDG_CONFIG_HOME}/Microsoft/Microsoft Teams - Insiders"
-! does_bin_exist "teams" "teams-insiders" && remove "${XDG_CONFIG_HOME}/teams"
+! does_bin_exist 'teams' 'teams-for-linux' 'teams-insiders' && remove "${XDG_CONFIG_HOME}/teams"
 
 
 remove_logs_in_dirs "${HOME_VAR_APP}/com.microsoft.Teams/config/teams" \
@@ -385,6 +391,9 @@ remove_logs_in_dirs "${HOME_VAR_APP}/org.telegram.desktop/data/TelegramDesktop"
     "${XDG_DATA_HOME}/dolphin"
 ! does_bin_exist 'pcmanfm' && remove "${XDG_CONFIG_HOME}/pcmanfm"
 ! does_bin_exist 'pcmanfm-qt' && remove "${XDG_CONFIG_HOME}/pcmanfm-qt"
+
+[ ! -f "${USR_LIB}/nautilus/extensions-4/libnautilus-python.so" ] && remove \
+    "${XDG_DATA_HOME}/nautilus-python"
 
 #############
 ### Games ###
@@ -482,6 +491,12 @@ for FIREFOX_PROFILES_DIR in "${HOME_VAR_APP}/org.mozilla.firefox/.mozilla/firefo
     
     remove "${HOME_MOZILLA}/firefox/${FIREFOX_PROFILE_ID}/formhistory.sqlite"
 done
+
+####################
+### Mod Managers ###
+###################
+! does_bin_exist "${ROOT_OPT}/nexusmods-app/NexusMods.App" && remove \
+    "${XDG_DATA_HOME}/NexusMods.App"
 
 #################
 ### Terminals ###
