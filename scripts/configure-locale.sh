@@ -23,6 +23,7 @@ echo 'Setting up the language...'
     echo 'LC_NAME=ro_RO.UTF-8'
     echo 'LC_NUMERIC=ro_RO.UTF-8'
     echo 'LC_TIME=ro_RO.UTF-8'
+} > "${LOCALE_CONF_FILE_PATH}"
 
 echo 'en_GB.UTF-8 UTF-8' >  "${LOCALE_GEN_FILE_PATH}"
 echo 'en_US.UTF-8 UTF-8' >> "${LOCALE_GEN_FILE_PATH}"
