@@ -473,11 +473,17 @@ for FIREFOX_PROFILES_DIR in "${HOME_VAR_APP}/org.mozilla.firefox/.mozilla/firefo
            "${FIREFOX_PROFILES_DIR}/"*"/crashes" \
            "${FIREFOX_PROFILES_DIR}/"*"/datareporting" \
            "${FIREFOX_PROFILES_DIR}/"*"/enumeratedevices.txt" \
+           "${FIREFOX_PROFILES_DIR}/"*"/favicons.sqlite" \
+           "${FIREFOX_PROFILES_DIR}/"*"/favicons.sqlite-shm" \
            "${FIREFOX_PROFILES_DIR}/"*"/formhistory.sqlite" \
            "${FIREFOX_PROFILES_DIR}/"*"/gmp" \
            "${FIREFOX_PROFILES_DIR}/"*"/gmp-widevinecdm" \
            "${FIREFOX_PROFILES_DIR}/"*"/saved-telemetry-pings" \
            "${FIREFOX_PROFILES_DIR}/"*"/sessionstore-backups" \
+           "${FIREFOX_PROFILES_DIR}/"*"/storage/temporary" \
+           "${FIREFOX_PROFILES_DIR}/"*"/storage/to-be-removed" \
+           "${FIREFOX_PROFILES_DIR}/"*"/storage/ls-archive.sqlite" \
+           "${FIREFOX_PROFILES_DIR}/"*"/storage/ls-archive-tmp.sqlite-wal" \
            "${FIREFOX_PROFILES_DIR}/"*"/times.json" \
            "${FIREFOX_PROFILES_DIR}/"*"/weave/failed" \
            "${FIREFOX_PROFILES_DIR}/"*"/weave/logs" \
