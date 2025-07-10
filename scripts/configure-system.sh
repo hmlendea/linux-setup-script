@@ -1349,10 +1349,26 @@ if does_bin_exist 'neofetch'; then
     [ -f "${NEOFETCH_CUSTOM_ASCII_FILE}" ] && set_config_value "${NEOFETCH_CONFIG_FILE}" image_source "\"${NEOFETCH_CUSTOM_ASCII_FILE}\""
 fi
 
+###############
+### Network ###
+##############
+if does_bin_exist 'sshd'; then
+    SSHD_CONFIG_FILE="${ROOT_ETC}/ssh/sshd_config"
+
+    set_config_values --separator ' ' "${SSHD_CONFIG_FILE}" \
+        'LoginGraceTime'    30 \
+        'MaxAuthTries'      2 \
+        'MaxSessions'       5
+
+    if [ "$USER" != "root" ]; then
+        set_config_value --separator ' ' "${SSHD_CONFIG_FILE}" 'AllowUsers' "${USER}"
+    fi
+fi
+
 ###################
 ### NIGHT LIGHT ###
 ###################
-if does_bin_exist "gnome-shell"; then
+if does_bin_exist 'gnome-shell'; then
     set_gsetting org.gnome.settings-daemon.plugins.color night-light-enabled true
 fi
 
