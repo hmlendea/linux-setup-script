@@ -131,8 +131,10 @@ fi
 PACKAGE_MANAGER_CMD='sudo printf "" && ${PACKAGE_MANAGER}'
 CAN_PM_ALIAS_AUTOCOMPLETE=false
 
-if [[ "${PACKAGE_MANAGER}" == "paru" ]] \
-|| [[ "${PACKAGE_MANAGER}" == "yay" ]]; then
+if [[ "${PACKAGE_MANAGER}" == "apt" ]]; then
+    PACKAGE_MANAGER_CMD="sudo apt -y"
+elif [[ "${PACKAGE_MANAGER}" == "paru" ]] \
+  || [[ "${PACKAGE_MANAGER}" == "yay" ]]; then
     PACKAGE_MANAGER_CMD="${PACKAGE_MANAGER_CMD} --noredownload --norebuild --sudoloop" # Optimisations
     PACKAGE_MANAGER_CMD="${PACKAGE_MANAGER_CMD} --noconfirm" # Prompt skip
     PACKAGE_MANAGER_CMD="${PACKAGE_MANAGER_CMD} --bottomup --color auto" # Visuals
