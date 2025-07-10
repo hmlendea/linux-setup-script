@@ -1356,9 +1356,12 @@ if does_bin_exist 'sshd'; then
     SSHD_CONFIG_FILE="${ROOT_ETC}/ssh/sshd_config"
 
     set_config_values --separator ' ' "${SSHD_CONFIG_FILE}" \
-        'LoginGraceTime'    30 \
-        'MaxAuthTries'      2 \
-        'MaxSessions'       5
+        'ChallengeResponseAuthentication'   no \
+        'LoginGraceTime'                    30 \
+        'MaxAuthTries'                      2 \
+        'MaxSessions'                       5 \
+        'PermitEmptyPasswords'              'no' \
+        'UseDNS'                            'no'
 
     if [ "$USER" != "root" ]; then
         set_config_value --separator ' ' "${SSHD_CONFIG_FILE}" 'AllowUsers' "${USER}"
