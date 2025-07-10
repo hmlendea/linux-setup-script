@@ -8,6 +8,7 @@ source "${REPO_SCRIPTS_COMMON_DIR}/service-management.sh"
 enable_service 'bluetooth'
 enable_service 'cups'
 enable_service 'docker'
+enable_service 'fail2ban'
 enable_service 'fstrim.timer'
 enable_service 'repo-synchroniser.timer'
 enable_service 'systemd-timesyncd'
