@@ -175,6 +175,8 @@ elif [ "${DISTRO_FAMILY}" = "Alpine" ] \
     install_native_package 'openssh-server'
 fi
 
+install_native_package 'fail2ban'
+
 if [ "${DISTRO_FAMILY}" = 'Debian' ]; then
     install_native_package 'wakeonlan'
 fi
