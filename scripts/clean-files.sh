@@ -480,7 +480,6 @@ for FIREFOX_PROFILES_DIR in "${HOME_VAR_APP}/org.mozilla.firefox/.mozilla/firefo
            "${FIREFOX_PROFILES_DIR}/"*"/gmp-widevinecdm" \
            "${FIREFOX_PROFILES_DIR}/"*"/saved-telemetry-pings" \
            "${FIREFOX_PROFILES_DIR}/"*"/sessionstore-backups" \
-           "${FIREFOX_PROFILES_DIR}/"*"/storage/temporary" \
            "${FIREFOX_PROFILES_DIR}/"*"/storage/to-be-removed" \
            "${FIREFOX_PROFILES_DIR}/"*"/storage/ls-archive.sqlite" \
            "${FIREFOX_PROFILES_DIR}/"*"/storage/ls-archive-tmp.sqlite-wal" \
