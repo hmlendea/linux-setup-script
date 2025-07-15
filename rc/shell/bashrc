@@ -27,3 +27,6 @@ loadShellRc "${XDG_DATA_HOME}/bash/options"
 
 loadSource "/usr/share/blesh/ble.sh"
 loadSource "/usr/share/doc/pkgfile/command-not-found.bash"
+
+[ -f '/usr/bin/zoxide' ] && \
+    eval "$(zoxide init bash)"
