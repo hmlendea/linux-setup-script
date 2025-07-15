@@ -1378,7 +1378,7 @@ fi
 #####################
 ### NOTIFICATIONS ###
 #####################
-if does_bin_exist "gnome-shell"; then
+if does_bin_exist 'gnome-shell'; then
     GNOME_NOTIFICATIONS_SCHEMA="org.gnome.desktop.notifications.application:/org/gnome/desktop/notifications/application"
 
     # Disable
@@ -1391,8 +1391,8 @@ fi
 ########################
 ### POWER MANAGEMENT ###
 ########################
-if does_bin_exist "gnome-shell"; then
-    GNOME_POWER_SCHEMA="org.gnome.settings-daemon.plugins.power"
+if does_bin_exist 'gnome-shell'; then
+    GNOME_POWER_SCHEMA='org.gnome.settings-daemon.plugins.power'
 
     set_gsetting "${GNOME_POWER_SCHEMA}" idle-dim true
     set_gsetting "${GNOME_POWER_SCHEMA}" sleep-inactive-ac-timeout 1800
@@ -1683,8 +1683,8 @@ if does_bin_exist 'micro'; then
     set_json_property "${MICRO_SETTINGS_FILE}" '.["linter"]' false
 fi
 
-if does_bin_exist "pluma"; then
-    PLUMA_SCHEMA="org.mate.pluma"
+if does_bin_exist 'pluma'; then
+    PLUMA_SCHEMA='org.mate.pluma'
 
     if [ "${TEXT_EDITOR_FONT}" != "${MONOSPACE_FONT}" ]; then
         set_gsetting "${PLUMA_SCHEMA}" editor-font "${TEXT_EDITOR_FONT}"
@@ -1696,8 +1696,8 @@ if does_bin_exist "pluma"; then
     set_gsetting "${PLUMA_SCHEMA}" auto-indent true
     set_gsetting "${PLUMA_SCHEMA}" bracket-matching true
     set_gsetting "${PLUMA_SCHEMA}" display-line-numbers true
-    set_gsetting "${PLUMA_SCHEMA}" enable-space-drawer-space "show-trailing"
-    set_gsetting "${PLUMA_SCHEMA}" enable-space-drawer-tab "show-all"
+    set_gsetting "${PLUMA_SCHEMA}" enable-space-drawer-space 'show-trailing'
+    set_gsetting "${PLUMA_SCHEMA}" enable-space-drawer-tab 'show-all'
     set_gsetting "${PLUMA_SCHEMA}" insert-spaces ${TEXT_EDITOR_TAB_SPACES}
     set_gsetting "${PLUMA_SCHEMA}" show-single-tab false
     set_gsetting "${PLUMA_SCHEMA}" toolbar-visible false

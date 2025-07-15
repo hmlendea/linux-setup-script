@@ -129,6 +129,7 @@ fi
 
 does_bin_exist 'bat' 'batcat'   && set_config_value "${SHELL_VARIABLES_RC_PATH}" 'export BAT_THEME'     'Visual Studio Dark+'
 does_bin_exist 'optirun'        && set_config_value "${SHELL_VARIABLES_RC_PATH}" 'export VGL_READBACK'  'pbo' # Better optirun performance
+does_bin_exist 'zoxide'         && set_config_value "${SHELL_VARIABLES_RC_PATH}" 'export _ZO_DOCTOR'    0 # Disable zoxide errors
 
 if does_bin_exist 'dotnet'; then
     set_config_values "${SHELL_VARIABLES_RC_PATH}" \
