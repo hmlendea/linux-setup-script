@@ -56,6 +56,7 @@ ROOT_PROC="${ROOT_PATH}/proc"
 ROOT_ROOT="${ROOT_PATH}/root"
 ROOT_SRV="${ROOT_PATH}/srv"
 ROOT_SYS="${ROOT_PATH}/sys"
+ROOT_SYS_DEVICES="${ROOT_SYS}/devices"
 ROOT_USR="${ROOT_PATH}/usr"
 
 [ "${DISTRO_FAMILY}" = 'Android' ] && ROOT_USR="${ROOT_PATH}"
