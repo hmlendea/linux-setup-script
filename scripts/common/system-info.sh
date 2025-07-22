@@ -178,7 +178,9 @@ function get_arch_family() {
 }
 
 function get_device_model() {
-    if [ -f "${ROOT_PROC}/device-tree/model" ]; then
+    if [ -f "${ROOT_SYS_DEVICES}/virtual/dmi/id/product_family" ]; then
+        cat "${ROOT_SYS_DEVICES}/virtual/dmi/id/product_family"
+    elif [ -f "${ROOT_PROC}/device-tree/model" ]; then
         local DEVICE_MODEL=$(cat -A "${ROOT_PROC}/device-tree/model")
 
         if echo "${DEVICE_MODEL}" | grep -q "Raspberry Pi 3"; then
