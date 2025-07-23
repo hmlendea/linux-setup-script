@@ -1359,7 +1359,7 @@ if does_bin_exist 'sshd'; then
         'Banner'                            'none' \
         'ChallengeResponseAuthentication'   'no' \
         'LoginGraceTime'                    30 \
-        'MaxAuthTries'                      2 \
+        'MaxAuthTries'                      3 \
         'MaxSessions'                       5 \
         'PermitEmptyPasswords'              'no' \
         'UseDNS'                            'no'
