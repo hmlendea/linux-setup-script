@@ -1362,6 +1362,7 @@ if does_bin_exist 'sshd'; then
         'MaxAuthTries'                      3 \
         'MaxSessions'                       5 \
         'PermitEmptyPasswords'              'no' \
+        'Protocol'                          2 \
         'UseDNS'                            'no'
 
     if [ "$USER" != "root" ]; then
