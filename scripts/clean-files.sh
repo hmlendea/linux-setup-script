@@ -473,8 +473,6 @@ for FIREFOX_PROFILES_DIR in "${HOME_VAR_APP}/org.mozilla.firefox/.mozilla/firefo
            "${FIREFOX_PROFILES_DIR}/"*"/crashes" \
            "${FIREFOX_PROFILES_DIR}/"*"/datareporting" \
            "${FIREFOX_PROFILES_DIR}/"*"/enumeratedevices.txt" \
-           "${FIREFOX_PROFILES_DIR}/"*"/favicons.sqlite" \
-           "${FIREFOX_PROFILES_DIR}/"*"/favicons.sqlite-shm" \
            "${FIREFOX_PROFILES_DIR}/"*"/formhistory.sqlite" \
            "${FIREFOX_PROFILES_DIR}/"*"/gmp" \
            "${FIREFOX_PROFILES_DIR}/"*"/gmp-widevinecdm" \
