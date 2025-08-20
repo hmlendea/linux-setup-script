@@ -73,7 +73,6 @@ alias ls="ls -C --color=auto -h -Q --group-directories-first --format=horizontal
 [ -f "${ROOT_USR_BIN}/batman" ]     && alias man='batman'
 [ -f "${ROOT_USR_BIN}/open" ]       && alias open='xdg-open'
 [ -f "${ROOT_USR_BIN}/shellcheck" ] && alias shellcheck='shellcheck -e SC2035,SC2164'
-[ -f "${ROOT_USR_BIN}/systemctl" ]  && alias systemctl='systemctl --no-pager -l -n25'
 [ -f "${ROOT_USR_BIN}/wget" ]       && alias wget-persistent='wget -c --retry-connrefused --waitretry=1 --read-timeout=10 --timeout=5 -t 0 --hsts-file="${XDG_DATA_HOME}/wget/hosts"'
 [ -f "${ROOT_USR_BIN}/xterm" ]      && alias xterm='xterm -rv'
 [ -f "${ROOT_USR_BIN}/xprop" ]      && alias xprop-wmclass='xprop | grep "WM_CLASS"'
@@ -98,20 +97,25 @@ if [ -f "${ROOT_USR_BIN}/nvidia-settings" ]; then
     alias nvidia-settings="nvidia-settings --config=\"${XDG_CONFIG_HOME}/nvidia/settings\""
 fi
 
-if [ -f "${ROOT_USR_BIN}/unp" ]; then
-    alias extract='unp'
-    alias uncompress='extract'
-    alias unpack='extract'
-
-    set_alias_completion_source "unp" "extract"
-    set_alias_completion_source "unp" "uncompess"
-    set_alias_completion_source "unp" "unpack"
+if [ -f "${ROOT_USR_BIN}/systemctl" ]; then
+    alias reboot='systemctl reboot -i'
+    alias systemctl='systemctl --no-pager -l -n25'
 fi
 
 if [ -f "${ROOT_USR_BIN}/tmux" ]; then
     alias tmux-new='tmux new -s'
     alias tmux-resume='tmux attach-session -t'
     alias tmux-list='tmux list-session'
+fi
+
+if [ -f "${ROOT_USR_BIN}/unp" ]; then
+    alias extract='unp'
+    alias uncompress='extract'
+    alias unpack='extract'
+
+    set_alias_completion_source 'unp' 'extract'
+    set_alias_completion_source 'unp' 'uncompess'
+    set_alias_completion_source 'unp' 'unpack'
 fi
 
 if [ ! -f "${ROOT_USR_BIN}/hostname" ]; then
@@ -124,8 +128,8 @@ if [ ! -f "${ROOT_USR_BIN}/hostname" ]; then
     fi
 fi
 
-if [ "${OSTYPE}" = "cygwin" ]; then
-    alias killall="taskkill /IM"
+if [ "${OSTYPE}" = 'cygwin' ]; then
+    alias killall='taskkill /IM'
 fi
 
 ### Package manager
