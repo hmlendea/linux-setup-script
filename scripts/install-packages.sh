@@ -813,6 +813,7 @@ if [ "${OS}" = 'Linux' ]; then
         if ${IS_GENERAL_PURPOSE_DEVICE}; then
             if is_native_package_installed "gnome-shell"; then
                 install_native_package_dependency gvfs-goa
+                install_native_package_dependency gvfs-dnssd # For WebDAV
                 install_native_package_dependency evolution-data-server # To make GOA contacts, tasks, etc. available in apps
             fi
 
