@@ -790,15 +790,15 @@ fi
 #####################
 ### FILE MANAGERS ###
 #####################
-if does_bin_exist "dolphin"; then
+if does_bin_exist 'dolphin'; then
     DOLPHIN_CONFIG_FILE="${XDG_CONFIG_HOME}/dolphinrc"
 
     set_config_value --section "General" "${DOLPHIN_CONFIG_FILE}" ShowStatusBar false
     set_config_value --section "MainWindow" "${DOLPHIN_CONFIG_FILE}" MenuBar "Disabled"
 fi
-if does_bin_exist "nautilus"; then
-    NAUTILUS_SCHEMA="org.gnome.nautilus"
-    FILECHOOSER_SCHEMA="org.gtk.Settings.FileChooser"
+if does_bin_exist 'nautilus'; then
+    NAUTILUS_SCHEMA='org.gnome.nautilus'
+    FILECHOOSER_SCHEMA='org.gtk.Settings.FileChooser'
 
     set_gsetting "${NAUTILUS_SCHEMA}.compression" default-compression-format "7z"
 
@@ -810,7 +810,7 @@ if does_bin_exist "nautilus"; then
     set_gsetting "${FILECHOOSER_SCHEMA}" show-hidden false
     set_gsetting "${FILECHOOSER_SCHEMA}" sort-directories-first true
 fi
-if does_bin_exist "pcmanfm"; then
+if does_bin_exist 'pcmanfm'; then
     PCMANFM_CONFIG_FILE="${XDG_CONFIG_HOME}/pcmanfm/LXDE/pcmanfm.conf"
 
     set_config_value "${PCMANFM_CONFIG_FILE}" always_show_tabs 0

@@ -680,6 +680,8 @@ if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
     install_flatpak 'org.gnome.seahorse.Application'
 fi
 
+install_flatpak 'org.bitwarden.desktop'
+
 ################
 ### Settings ###
 ################

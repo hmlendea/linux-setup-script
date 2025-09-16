@@ -96,6 +96,14 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
             'notification' false \
             'location' false
     done
+    for PASSWORD_MANAGER_APP in 'com.bitwarden.desktop'; do
+        set_linux_permission "${PASSWORD_MANAGER_APP}" \
+            'background' false \
+            'camera' false \
+            'network' true \
+            'notification' false \
+            'location' false
+    done
     for SPOTIFY_APP in 'dev.alextren.Spot' 'com.spotify.Client'; do
         set_linux_permission "${SPOTIFY_APP}" \
             'background' false \

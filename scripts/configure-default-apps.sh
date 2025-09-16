@@ -90,6 +90,12 @@ elif does_bin_exist 'simplenote'; then
     NOTES_LAUNCHER='simplenote.desktop'
 fi
 
+# Password Manager
+PASSWORD_MANAGER_LAUNCHER=''
+if does_bin_exist 'com.bitwarden.desktop'; then
+    PASSWORD_MANAGER_LAUNCHER='com.bitwarden.desktop.desktop'
+fi
+
 # Signal
 SIGNAL_LAUNCHER=''
 if does_bin_exist 'org.signal.Signal'; then
@@ -164,6 +170,7 @@ FAVOURITE_APPS=''
 
 [ -n "${BROWSER_LAUNCHER}" ] && FAVOURITE_APPS="${FAVOURITE_APPS}, '${BROWSER_LAUNCHER}'"
 [ -n "${TERMINAL_LAUNCHER}" ] && FAVOURITE_APPS="${FAVOURITE_APPS}, '${TERMINAL_LAUNCHER}'"
+[ -n "${PASSWORD_MANAGER_LAUNCHER}" ] && FAVOURITE_APPS="${FAVOURITE_APPS}, '${PASSWORD_MANAGER_LAUNCHER}'"
 [ -n "${FILE_MANAGER_LAUNCHER}" ] && FAVOURITE_APPS="${FAVOURITE_APPS}, '${FILE_MANAGER_LAUNCHER}'"
 #[ -n "${STEAM_LAUNCHER}" ] && FAVOURITE_APPS="${FAVOURITE_APPS}, '${STEAM_LAUNCHER}'"
 [ -n "${TERMINAL_LAUNCHER}" ] && FAVOURITE_APPS="${FAVOURITE_APPS}, '${TERMINAL_LAUNCHER}'"
