@@ -1,5 +1,5 @@
 [user]
-    name = Horațiu Mlendea
+    name = hmlendea
     email = io.github.hmlendea.cnzq9@SimpleLogin.fr
 [core]
     hooksPath = ~/.config/git/hooks
