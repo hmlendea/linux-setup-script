@@ -1525,9 +1525,9 @@ fi
 if does_bin_exist 'kgx'; then
     GNOME_CONSOLE_SCHEMA='org.gnome.Console'
 
+    # Do not set 'last-window-maximised' as that breaks scrolling with the wheel for some reason
     set_gsettings "${GNOME_CONSOLE_SCHEMA}" \
         'ignore-scrollback-limit' true \
-        'last-window-maximised' false \
         'restore-window-size' false
 fi
 if does_bin_exist 'gnome-terminal'; then
