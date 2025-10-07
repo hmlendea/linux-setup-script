@@ -291,11 +291,7 @@ function install_flatpak() {
     is_flatpak_installed "${PACKAGE}" && return
 
     echo -e " >>> Installing flatpak: \e[0;33m${PACKAGE}\e[0m (${REMOTE})..."
-    if ${HAS_SU_PRIVILEGES} && [ "${CHASSIS_TYPE}" != 'Phone' ]; then
-        call_flatpak install --system "${REMOTE}" "${PACKAGE}"
-    else
-        call_flatpak install --user "${REMOTE}" "${PACKAGE}"
-    fi
+    call_flatpak install --user "${REMOTE}" "${PACKAGE}"
 }
 
 function install_vscode_package() {
