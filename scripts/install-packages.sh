@@ -384,12 +384,6 @@ fi
 if ${HAS_GUI}; then
     if ${IS_GENERAL_PURPOSE_DEVICE}; then
         if [ "${OS}" = 'Android' ]; then
-            install_android_fdroid_package 'org.telegram.messenger'
-        elif [ "${OS}" = 'Linux' ]; then
-            install_flatpak 'org.telegram.desktop'
-        fi
-
-        if [ "${OS}" = 'Android' ]; then
             install_android_remote_package 'https://updates.signal.org/android/Signal-Android-website-prod-universal-release-7.6.2.apk' 'org.thoughtcrime.securesms'
         else
             if [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
