@@ -857,9 +857,6 @@ if [ "${OS}" = 'Linux' ]; then
             install_flatpak com.getpostman.Postman
 
             #does_bin_exist "flatpak" && install_native_package "flatpak-builder"
-
-            # Tools
-            install_flatpak "com.github.dynobo.normcap"
         fi
     fi
 elif [ "${DISTRO_FAMILY}" = 'Android' ] \
