@@ -854,7 +854,7 @@ if [ "${OS}" = 'Linux' ]; then
         #fi
 
         if ${IS_DEVELOPMENT_DEVICE}; then
-            install_flatpak com.getpostman.Postman
+            install_flatpak 'com.usebruno.Bruno'
 
             #does_bin_exist "flatpak" && install_native_package "flatpak-builder"
         fi
