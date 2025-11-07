@@ -111,11 +111,11 @@ function configure_xdg_directory() {
     eval "${XDG_VARIABLE_NAME}=\"${XDG_DIR_PATH}\""
 }
 
-configure_xdg_directory "DESKTOP"       "${HOME}/Desktop"
+configure_xdg_directory "DESKTOP"       "${HOME}/Birou"         "${HOME}/Desktop"
 configure_xdg_directory "DOCUMENTS"     "${HOME}/Documente"     "${HOME}/Documents"
 configure_xdg_directory "DOWNLOAD"      "${HOME}/Descărcări"    "${HOME}/Downloads"
 configure_xdg_directory "MUSIC"         "${HOME}/Muzică"        "${HOME}/Music"
-configure_xdg_directory "PICTURES"      "${HOME}/Poze"          "${HOME}/Pictures"
+configure_xdg_directory "PICTURES"      "${HOME}/Imagini"       "${HOME}/Pictures"
 configure_xdg_directory "PUBLICSHARE"   "${HOME}/Public"
 configure_xdg_directory "TEMPLATES"     "${HOME}/Șabloane"      "${HOME}/Templates"
 configure_xdg_directory "VIDEOS"        "${HOME}/Video"         "${HOME}/Videos"
