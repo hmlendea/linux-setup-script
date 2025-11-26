@@ -35,34 +35,24 @@ function add_repository {
     fi
 }
 
-function add_system_flatpak_remote() {
-    local REMOTE_NAME="${1}"
-    local REMOTE_URL="${2}"
+function add_flatpak_remote() {
+    local INSTALLATION_METHOD="${1}"
+    local REMOTE_NAME="${2}"
+    local REMOTE_URL="${3}"
 
-    if ! flatpak remotes | grep -q "^${REMOTE_NAME}\s"; then
-        echo -e "Adding the \e[0;33m${REMOTE_NAME}\e[0m system flatpak remote..."
-        update_file_if_distinct "${REPO_DATA_DIR}/flatpak/keys/${REMOTE_NAME}" "${ROOT_VAR_LIB}/flatpak/repo/${REMOTE_NAME}.trustedkeys.gpg"
-        run_as_su flatpak remote-add --if-not-exists "${REMOTE_NAME}" "${REMOTE_URL}"
-    fi
-}
-
-function add_user_flatpak_remote() {
-    local REMOTE_NAME="${1}"
-    local REMOTE_URL="${2}"
-
-    if ! flatpak remotes | grep -q "^${REMOTE_NAME}\s"; then
-        echo -e "Adding the \e[0;33m${REMOTE_NAME}\e[0m user flatpak remote..."
-        update_file_if_distinct "${REPO_DATA_DIR}/flatpak/keys/${REMOTE_NAME}" "${XDG_DATA_HOME}/flatpak/repo/${REMOTE_NAME}.trustedkeys.gpg"
-        flatpak remote-add --user --if-not-exists "${REMOTE_NAME}" "${REMOTE_URL}"
+    if ! flatpak remotes --"${INSTALLATION_METHOD}" | grep -q "^${REMOTE_NAME}$"; then
+        echo -e "Adding the \e[0;33m${REMOTE_NAME}\e[0m ${INSTALLATION_METHOD} flatpak remote..."
+#        update_file_if_distinct "${REPO_DATA_DIR}/flatpak/keys/${REMOTE_NAME}" "${XDG_DATA_HOME}/flatpak/repo/${REMOTE_NAME}.trustedkeys.gpg"
+        flatpak remote-add --"${INSTALLATION_METHOD}" --if-not-exists "${REMOTE_NAME}" "${REMOTE_URL}"
     fi
 }
 
 if does_bin_exist 'flatpak'; then
-    add_system_flatpak_remote   'flathub'       'https://flathub.org/repo/flathub.flatpakrepo'
-    add_system_flatpak_remote   'flathub-beta'  'https://flathub.org/beta-repo/flathub-beta.flatpakrepo'
+    add_flatpak_remote 'system' 'flathub'       'https://flathub.org/repo/flathub.flatpakrepo'
+    add_flatpak_remote 'system' 'flathub-beta'  'https://flathub.org/beta-repo/flathub-beta.flatpakrepo'
 
-    add_user_flatpak_remote     'flathub'       'https://flathub.org/repo/flathub.flatpakrepo'
-    add_user_flatpak_remote     'flathub-beta'  'https://flathub.org/beta-repo/flathub-beta.flatpakrepo'
+    add_flatpak_remote 'user'   'flathub'       'https://flathub.org/repo/flathub.flatpakrepo'
+    add_flatpak_remote 'user'   'flathub-beta'  'https://flathub.org/beta-repo/flathub-beta.flatpakrepo'
 fi
 
 if [ "${DISTRO_FAMILY}" = 'Arch' ]; then

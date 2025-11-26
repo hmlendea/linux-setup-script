@@ -18,7 +18,12 @@ elif [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
     yes | run_as_su apt autoremove
 fi
 
-does_bin_exist 'flatpak' && call_flatpak uninstall --unused
+if does_bin_exist 'flatpak'; then
+    for INSTALLATION_METHOD in 'user' 'system'; do
+        echo "Uninstalling unused ${INSTALLATION_METHOD} flatpak dependencies:"
+        call_flatpak uninstall --"${INSTALLATION_METHOD}" --unused
+    done
+fi
 
 function keep_first_installed_package() {
     local FIRST_INSTALLED_PACKAGE=''

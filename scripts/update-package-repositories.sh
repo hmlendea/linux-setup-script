@@ -17,7 +17,7 @@ fi
 
 if does_bin_exist 'flatpak'; then
     echo -e 'Updating the \e[0;32msystem flatpak remotes\e[0m ...'
-    run_as_su flatpak update --appstream
+    run_as_su flatpak --system update --appstream
     echo -e 'Updating the \e[0;32muser flatpak remotes\e[0m ...'
     flatpak update --user --appstream
 fi

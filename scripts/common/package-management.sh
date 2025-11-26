@@ -129,13 +129,15 @@ function is_flatpak_installed() {
 
     ! does_bin_exist 'flatpak' && return 1 # False
 
-    if (flatpak list | grep -q "${PACKAGE_NAME}" > /dev/null); then
-        if [ -z "${PACKAGE_BRANCH}" ]; then
-            return 0 # True
-        elif (flatpak list | grep "${PACKAGE_NAME}" | grep -q "${PACKAGE_BRANCH}" > /dev/null); then
-            return 0 # True
+    for INSTALLATION_METHOD in 'user' 'system'; do
+        if (flatpak list | grep -q "${PACKAGE_NAME}" > /dev/null); then
+            if [ -z "${PACKAGE_BRANCH}" ]; then
+                return 0 # True
+            elif (flatpak list | grep "${PACKAGE_NAME}" | grep -q "${PACKAGE_BRANCH}" > /dev/null); then
+                return 0 # True
+            fi
         fi
-    fi
+    done
 
     return 1 # False
 }
@@ -290,8 +292,10 @@ function install_flatpak() {
 
     is_flatpak_installed "${PACKAGE}" && return
 
-    echo -e " >>> Installing flatpak: \e[0;33m${PACKAGE}\e[0m (${REMOTE})..."
-    call_flatpak install --user "${REMOTE}" "${PACKAGE}"
+    local INSTALLATION_METHOD="user"
+
+    echo -e " >>> Installing ${INSTALLATION_METHOD} flatpak (${REMOTE}): \e[0;33m${PACKAGE}\e[0m (${REMOTE})..."
+    call_flatpak install --${INSTALLATION_METHOD} "${REMOTE}" "${PACKAGE}"
 }
 
 function install_vscode_package() {
