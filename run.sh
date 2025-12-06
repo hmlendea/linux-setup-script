@@ -1,12 +1,12 @@
 #!/bin/bash
 SOURCE="${BASH_SOURCE[0]}"
-while [ -h "$SOURCE" ]; do
-  EXEDIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
-  SOURCE="$(readlink "$SOURCE")"
-  [[ $SOURCE != /* ]] && SOURCE="$EXEDIR/$SOURCE"
+while [ -h "${SOURCE}" ]; do
+  EXEDIR="$( cd -P "$( dirname "${SOURCE}" )" && pwd )"
+  SOURCE="$(readlink "${SOURCE}")"
+  [[ ${SOURCE} != /* ]] && SOURCE="${EXEDIR}/${SOURCE}"
 done
-EXEDIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
-cd "$EXEDIR"
+EXEDIR="$( cd -P "$( dirname "${SOURCE}" )" && pwd )"
+cd "${EXEDIR}"
 
 # Make sure the USER envar is set (on Android it is not)
 [ -z "${USER}" ] && export USER="$(whoami)"
