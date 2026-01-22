@@ -133,7 +133,14 @@ if [ "${OSTYPE}" = 'cygwin' ]; then
 fi
 
 ### Package manager
-PACKAGE_MANAGER_CMD='sudo printf "" && ${PACKAGE_MANAGER}'
+PACKAGE_MANAGER_CMD='sudo printf ""';
+
+if [[ "${PACKAGE_MANAGER}" == 'pacman' ]]; then
+    PACKAGE_MANAGER_CMD="${PACKAGE_MANAGER_CMD}"' && sudo ${PACKAGE_MANAGER}'
+else
+    PACKAGE_MANAGER_CMD="${PACKAGE_MANAGER_CMD}"' && ${PACKAGE_MANAGER}'
+fi
+
 CAN_PM_ALIAS_AUTOCOMPLETE=false
 
 if [[ "${PACKAGE_MANAGER}" == "apt" ]]; then
