@@ -866,7 +866,7 @@ if does_bin_exist 'firefox' 'firefox-esr' 'librewolf' 'org.mozilla.firefox' 'io.
         set_firefox_config "${FIREFOX_PROFILE_DIR}" "media.navigator.enabled" false
         set_firefox_config "${FIREFOX_PROFILE_DIR}" "network.IDN_show_punycode" true
         set_firefox_config "${FIREFOX_PROFILE_DIR}" "security.insecure_connection_text.enabled" true
-        set_firefox_config "${FIREFOX_PROFILE_DIR}" "security.sandbox.content.level" 0 # iHD fix
+#        set_firefox_config "${FIREFOX_PROFILE_DIR}" "security.sandbox.content.level" 0 # iHD fix
         set_firefox_config "${FIREFOX_PROFILE_DIR}" "services.sync.prefs.sync.media.autoplay.default" false
         set_firefox_config "${FIREFOX_PROFILE_DIR}" "toolkit.tabbox.switchByScrolling" true
 
