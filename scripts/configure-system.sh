@@ -1176,6 +1176,8 @@ if does_bin_exist 'code' 'code-oss' 'codium' 'com.visualstudio.code'; then
     # C#
     set_json_property "${VSCODE_CONFIG_FILE}" '.["omnisharp.enableDecompilationSupport"]' true
     set_json_property "${VSCODE_CONFIG_FILE}" '.["dotnet.automaticallyCreateSolutionInWorkspace"]' false
+    # Python
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["python.analysis.typeCheckingMode"]' 'strict'
 
     # Terminal
     set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.shell.linux"]' "${SHELL}"
