@@ -213,7 +213,8 @@ function get_soc_name() {
     fi
 
     if [ -z "${SOC_MODEL}" ] \
-    && does_bin_exist "lspci"; then
+    && [ -f "${ROOT_SYS_PCI_DEVICES}" ] \
+    && does_bin_exist 'lspci'; then
         if lspci | grep -q "\sPCI bridge:.*BCM[0-9]\+\s"; then
             SOC_MODEL=$(lspci | \
                 grep "\sPCI bridge:" | \
@@ -292,7 +293,8 @@ function get_cpu_model() {
     fi
 
     if [ -z "${MODEL}" ] \
-    && does_bin_exist "lspci"; then
+    && [ -f "${ROOT_SYS_PCI_DEVICES}" ] \
+    && does_bin_exist 'lspci'; then
         if lspci | grep -q "\sPCI bridge:.*BCM[0-9]\+\s"; then
             MODEL=$(lspci | \
                 grep "\sPCI bridge:" | \
@@ -364,7 +366,8 @@ function get_cpu_family() {
     fi
 
     if [ -z "${VENDOR}" ] \
-    && does_bin_exist "lspci"; then
+    && [ -f "${ROOT_SYS_PCI_DEVICES}" ] \
+    && does_bin_exist 'lspci'; then
         CPU_LINE=$(lspci | grep "\sPCI bridge:" | head -n 1)
         VENDOR="$(get_cpu_vendor_from_line ${CPU_LINE})"
     fi

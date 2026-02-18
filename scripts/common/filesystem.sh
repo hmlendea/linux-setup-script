@@ -56,6 +56,9 @@ ROOT_PROC="${ROOT_PATH}/proc"
 ROOT_ROOT="${ROOT_PATH}/root"
 ROOT_SRV="${ROOT_PATH}/srv"
 ROOT_SYS="${ROOT_PATH}/sys"
+ROOT_SYS_BUS="${ROOT_SYS}/bus"
+ROOT_SYS_BUS_PCI="${ROOT_SYS_BUS}/pci"
+ROOT_SYS_BUS_PCI_DEVICES="${ROOT_SYS_BUS_PCI}/devices"
 ROOT_SYS_DEVICES="${ROOT_SYS}/devices"
 ROOT_USR="${ROOT_PATH}/usr"
 
@@ -134,6 +137,8 @@ function does_bin_exist() {
 
         if grep -q '^/' <<< "${BINARY_NAME}" \
         && does_file_exist "${BINARY_NAME}"; then
+            [ "${BINARY_NAME}" = 'lspci' ] && [ ! -e "${ROOT_SYS_BUS_PCI_DEVICES}" ] && return 1 # False
+
             return 0 # True
         fi
     done
