@@ -187,7 +187,7 @@ TEXT_EDITOR_TAB_SIZE=4
 TEXT_EDITOR_WORD_WRAP=false
 
 # Set the default shell
-[ -n "${SHELL}" ] && sudo chsh -s "${SHELL}" "${USER}"
+[ -n "${SHELL}" ] && ${HAS_SU_ACCESS} && sudo chsh -s "${SHELL}" "${USER}"
 
 if ${HAS_GUI}; then
     if [[ "${ICON_THEME}" == *"Papirus"* ]] \
