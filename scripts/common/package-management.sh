@@ -84,11 +84,8 @@ function is_native_package_installed() {
 	local PACKAGE_NAME="${1}"
 
     if [ "${DISTRO_FAMILY}" = 'Alpine' ]; then
-        if call_package_manager -e "${PACKAGE_NAME}"; then
-            return 0 # True
-        else
-            return 1 # False
-        fi
+        call_package_manager info -e "${PACKAGE_NAME}" >/dev/null 2>&1
+        return $?
     elif [ "${DISTRO_FAMILY}" = 'Arch' ]; then
     	if (pacman -Q | grep -q "^${PACKAGE_NAME}\s" > /dev/null); then
 	    	return 0 # True
