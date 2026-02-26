@@ -35,7 +35,7 @@ function set_alias_completion_source() {
 alias sudo='sudo ' # Enables the simultaneous use of sudo and other aliases
 alias lsmnt='lsblk -l | tail -n +2 | awk '\''length($7) { print $1" => "$7 }'\'''
 
-if [ ! -f "/bin/busybox" ]; then
+if [ -f "/bin/busybox" ]; then
     alias grep='grep -a --color'
     alias pcregrep='pcregrep -a --color'
 else
