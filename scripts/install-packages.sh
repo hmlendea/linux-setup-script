@@ -707,7 +707,12 @@ fi
 ####################
 ### Text Editors ###
 ####################
-install_native_package 'micro'
+
+if [[ ${DEVICE_MODEL} =~ 'iPhone' ]]; then
+    install_native_package 'nano'
+else
+    install_native_package 'micro'
+fi
 
 if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
 || [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
