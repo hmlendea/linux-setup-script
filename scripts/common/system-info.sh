@@ -475,17 +475,53 @@ function get_memory_total_gb() {
     free -g | awk '/^Mem:/ {print $2 " GB"}' | awk '{print $1}'
 }
 
+function get_uptime_seconds() {
+    cut -d. -f1 "${ROOT_PROC}/uptime"
+}
+
+function get_uptime_text() {
+    local UPTIME_TOTAL_SECONDS=$(get_uptime_seconds)
+    local UPTIME_HOURS=$((UPTIME_TOTAL_SECONDS / 3600))
+    local UPTIME_MINUTES=$(((UPTIME_TOTAL_SECONDS % 3600) / 60))
+    local UPTIME_SECONDS=$((UPTIME_TOTAL_SECONDS % 60))
+    local UPTIME=""
+
+    if [ ${UPTIME_HOURS} -eq 1 ]; then
+        UPTIME="${UPTIME_HOURS} hour"
+    elif [ ${UPTIME_HOURS} -gt 1 ]; then
+        UPTIME="${UPTIME_HOURS} hours"
+    fi
+
+    if [ ${UPTIME_MINUTES} -eq 1 ]; then
+        [ -n "${UPTIME}" ] && UPTIME="${UPTIME}, "
+        UPTIME="${UPTIME}${UPTIME_MINUTES} minute"
+    elif [ ${UPTIME_MINUTES} -gt 1 ]; then
+        [ -n "${UPTIME}" ] && UPTIME="${UPTIME}, "
+        UPTIME="${UPTIME}${UPTIME_MINUTES} minutes"
+    fi
+
+    if [ ${UPTIME_SECONDS} -eq 1 ]; then
+        [ -n "${UPTIME}" ] && UPTIME="${UPTIME}, "
+        UPTIME="${UPTIME}${UPTIME_SECONDS} second"
+    elif [ ${UPTIME_SECONDS} -gt 1 ]; then
+        [ -n "${UPTIME}" ] && UPTIME="${UPTIME}, "
+        UPTIME="${UPTIME}${UPTIME_SECONDS} seconds"
+    fi
+
+    echo "${UPTIME}"
+}
+
 function get_wifi_driver() {
-    get_driver "wifi"
+    get_driver 'wifi'
 }
 
 function get_audio_driver() {
-    get_driver "snd"
+    get_driver 'snd'
 }
 
 function get_dmi_string() {
     local KEY="${*}"
-    does_bin_exist "dmidecode" && run_as_su dmidecode -s "${KEY}" 2> /dev/null
+    does_bin_exist 'dmidecode' && run_as_su dmidecode -s "${KEY}" 2> /dev/null
 }
 
 function get_chassis_type() {
