@@ -674,7 +674,9 @@ if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
     install_flatpak 'org.gnome.seahorse.Application'
 fi
 
-install_flatpak 'com.bitwarden.desktop'
+if ${HAS_GUI}; then
+    install_flatpak 'com.bitwarden.desktop'
+fi
 
 ################
 ### Settings ###
