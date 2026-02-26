@@ -20,9 +20,8 @@ install_native_package 'wget'
 
 if ! [[ ${DEVICE_MODEL} =~ 'iPhone' ]]; then
     install_native_package 'most'
+    install_native_package 'bat'
 fi
-
-install_native_package 'bat'
 
 if [ "${DISTRO_FAMILY}" = 'Android' ]; then
     [ -f '/sbin/su' ] && install_native_package 'tsu'
