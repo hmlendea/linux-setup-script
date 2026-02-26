@@ -24,6 +24,7 @@ loadShellRc "${XDG_DATA_HOME}/bash/aliases"
 loadShellRc "${XDG_DATA_HOME}/bash/functions"
 loadShellRc "${XDG_DATA_HOME}/bash/prompt"
 loadShellRc "${XDG_DATA_HOME}/bash/options"
+loadShellRc "${XDG_DATA_HOME}/bash/processes"
 
 loadSource "/usr/share/blesh/ble.sh"
 loadSource "/usr/share/doc/pkgfile/command-not-found.bash"
