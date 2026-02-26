@@ -481,32 +481,39 @@ function get_uptime_seconds() {
 
 function get_uptime_text() {
     local UPTIME_TOTAL_SECONDS=$(get_uptime_seconds)
-    local UPTIME_HOURS=$((UPTIME_TOTAL_SECONDS / 3600))
-    local UPTIME_MINUTES=$(((UPTIME_TOTAL_SECONDS % 3600) / 60))
-    local UPTIME_SECONDS=$((UPTIME_TOTAL_SECONDS % 60))
+
+    local UPTIME_WEEKS=$((UPTIME_TOTAL_SECONDS / 604800))
+    local REMAINDER=$((UPTIME_TOTAL_SECONDS % 604800))
+
+    local UPTIME_DAYS=$((REMAINDER / 86400))
+    REMAINDER=$((REMAINDER % 86400))
+
+    local UPTIME_HOURS=$((REMAINDER / 3600))
+    REMAINDER=$((REMAINDER % 3600))
+
+    local UPTIME_MINUTES=$((REMAINDER / 60))
+    local UPTIME_SECONDS=$((REMAINDER % 60))
+
     local UPTIME=""
 
-    if [ ${UPTIME_HOURS} -eq 1 ]; then
-        UPTIME="${UPTIME_HOURS} hour"
-    elif [ ${UPTIME_HOURS} -gt 1 ]; then
-        UPTIME="${UPTIME_HOURS} hours"
-    fi
+    add_unit() {
+        local VALUE=$1
+        local LABEL=$2
 
-    if [ ${UPTIME_MINUTES} -eq 1 ]; then
-        [ -n "${UPTIME}" ] && UPTIME="${UPTIME}, "
-        UPTIME="${UPTIME}${UPTIME_MINUTES} minute"
-    elif [ ${UPTIME_MINUTES} -gt 1 ]; then
-        [ -n "${UPTIME}" ] && UPTIME="${UPTIME}, "
-        UPTIME="${UPTIME}${UPTIME_MINUTES} minutes"
-    fi
+        if [ "$VALUE" -eq 1 ]; then
+            [ -n "$UPTIME" ] && UPTIME="${UPTIME}, "
+            UPTIME="${UPTIME}${VALUE} ${LABEL}"
+        elif [ "$VALUE" -gt 1 ]; then
+            [ -n "$UPTIME" ] && UPTIME="${UPTIME}, "
+            UPTIME="${UPTIME}${VALUE} ${LABEL}s"
+        fi
+    }
 
-    if [ ${UPTIME_SECONDS} -eq 1 ]; then
-        [ -n "${UPTIME}" ] && UPTIME="${UPTIME}, "
-        UPTIME="${UPTIME}${UPTIME_SECONDS} second"
-    elif [ ${UPTIME_SECONDS} -gt 1 ]; then
-        [ -n "${UPTIME}" ] && UPTIME="${UPTIME}, "
-        UPTIME="${UPTIME}${UPTIME_SECONDS} seconds"
-    fi
+    add_unit "$UPTIME_WEEKS" "week"
+    add_unit "$UPTIME_DAYS" "day"
+    add_unit "$UPTIME_HOURS" "hour"
+    add_unit "$UPTIME_MINUTES" "minute"
+    add_unit "$UPTIME_SECONDS" "second"
 
     echo "${UPTIME}"
 }
