@@ -81,16 +81,16 @@ function is_package_installed() {
 }
 
 function is_native_package_installed() {
-	local PKG="${1}"
+	local PACKAGE_NAME="${1}"
 
     if [ "${DISTRO_FAMILY}" = 'Alpine' ]; then
-        if (call_package_manager info | grep -q "^${PKG}$"); then
+        if call_package_manager -e "${PACKAGE_NAME}"; then
             return 0 # True
         else
             return 1 # False
         fi
     elif [ "${DISTRO_FAMILY}" = 'Arch' ]; then
-    	if (pacman -Q | grep -q "^${PKG}\s" > /dev/null); then
+    	if (pacman -Q | grep -q "^${PACKAGE_NAME}\s" > /dev/null); then
 	    	return 0 # True
 	    else
 		    return 1 # False
@@ -98,7 +98,7 @@ function is_native_package_installed() {
     elif [ "${DISTRO_FAMILY}" = 'Android' ] \
       || [ "${DISTRO_FAMILY}" = 'Debian' ] \
       || [ "${DISTRO_FAMILY}" = 'Ubuntu' ]; then
-        if (apt-cache policy "${PKG}" | grep -q '^\s*Installed:\s*[0-9]'); then
+        if (apt-cache policy "${PACKAGE_NAME}" | grep -q '^\s*Installed:\s*[0-9]'); then
 	    	return 0 # True
         else
 		    return 1 # False
