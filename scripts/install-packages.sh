@@ -710,6 +710,7 @@ fi
 
 if [[ ${DEVICE_MODEL} =~ 'iPhone' ]]; then
     install_native_package 'nano'
+    install_native_package 'nano-syntax'
 else
     install_native_package 'micro'
 fi
