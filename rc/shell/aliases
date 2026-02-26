@@ -34,9 +34,15 @@ function set_alias_completion_source() {
 
 alias sudo='sudo ' # Enables the simultaneous use of sudo and other aliases
 alias lsmnt='lsblk -l | tail -n +2 | awk '\''length($7) { print $1" => "$7 }'\'''
-alias grep='grep -a --color --text'
-alias pcregrep='pcregrep -a --color --text'
-alias uptime='uptime -p && printf "since " && uptime -s'
+
+if [ ! -f "/bin/busybox" ]; then
+    alias grep='grep -a --color'
+    alias pcregrep='pcregrep -a --color'
+else
+    alias grep='grep -a --color --text'
+    alias pcregrep='pcregrep -a --color --text'
+    alias uptime='uptime -p && printf "since " && uptime -s'
+fi
 
 # Directory navigation
 alias ..='cd ..'
@@ -56,10 +62,6 @@ alias cd--="__destDir=\${OLDPWD2} && cd \${__destDir}"
 IS_SSH=false
 if [ -n "${SSH_CLIENT}" ] || [ -n "${SSH_TTY}" ]; then
     IS_SSH=true
-fi
-
-if [ ! -f "/bin/busybox" ]; then
-    COREUTILS_VERSION=$(ls --version | head -n 1 | awk '{print $4}' | awk -F. '{print $1}')
 fi
 
 ${IS_SSH} && alias poweroff="echo Surely you don\'t mean to do that on the remote machine! && echo If you do, use \'command poweroff\' instead."
