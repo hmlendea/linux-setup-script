@@ -20,4 +20,6 @@ elif [ ! -f "${LOCALTIME_FILE_PATH}" ]; then
     ln -sf "${ROOT_USER_SHARE}/zoneinfo/${PREFERRED_TIMEZONE}" "${LOCALTIME_FILE_PATH}"
 fi
 
-does_bin_exist 'hwclock' && hwclock --systohc
+if [ "${DEVICE_MODEL}" != 'iPhone' ]; then
+    does_bin_exist 'hwclock' && hwclock --systohc
+fi

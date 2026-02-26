@@ -29,13 +29,16 @@ echo 'en_GB.UTF-8 UTF-8' >  "${LOCALE_GEN_FILE_PATH}"
 echo 'en_US.UTF-8 UTF-8' >> "${LOCALE_GEN_FILE_PATH}"
 echo 'ro_RO.UTF-8 UTF-8' >> "${LOCALE_GEN_FILE_PATH}"
 
-for LOCALE in $(awk '{print $1}' "${LOCALE_GEN_FILE_PATH}" | sed -e 's/\([^\.]*\)\.\(.*\)/\1.\L\2/' | sed 's/-//'); do
-    if [ ! $(locale -a | grep "${LOCALE}") ]; then
-        echo 'Generating the localisations...'
-        locale-gen
-        break
-    fi
-done
+if [ -f "${LOCALE_GEN_FILE_PATH}" ] \
+&& does_bin_exist 'locale-gen'; then
+    for LOCALE in $(awk '{print $1}' "${LOCALE_GEN_FILE_PATH}" | sed -e 's/\([^\.]*\)\.\(.*\)/\1.\L\2/' | sed 's/-//'); do
+        if [ ! $(locale -a | grep "${LOCALE}") ]; then
+            echo 'Generating the localisations...'
+            locale-gen
+            break
+        fi
+    done
+fi
 
 # Update the X11 keyboard layout definitions
 if ${HAS_GUI}; then
