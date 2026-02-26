@@ -40,6 +40,7 @@
     verifySsl = false
     sslVerify = false
 [alias]
+    acp = "!f() { git add . && git commit -m \"$*\" && git push; }; f"
     branches = !git branch -vv
     cleanup = !"git fetch -p && git branch --merged origin/master | grep -vE '^\\*|master' | xargs -r git branch -d"
     deltag = !git tag -d $1 &&  git push origin :refs/tags/$1
