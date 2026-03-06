@@ -49,6 +49,6 @@
     newbranch = "!f() { git branch \"$1\" && git push -u origin \"$1\" && git checkout \"$1\"; }; f"
     remotes = !git remote -vv
     stashes = !git stash list
-    sync = !git fetch && git pull && git cleanup && git push
+    sync = !git pull && git cleanup && git push
     undo = !git reset HEAD^
     unstage = !git reset HEAD --
