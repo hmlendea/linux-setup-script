@@ -73,7 +73,7 @@ if [ "${OS}" = 'Linux' ]; then
         #install_native_package openssl-1.1 # Required for package management
 
         if [ "${ARCH}" != 'armv7l' ]; then
-            install_aur_package_manually 'paru-bin'
+            install_aur_package_manually 'paru'
         else
             # Special case, since we don't want to build paru from source (it takes a LOOONG time)
             install_aur_package_manually 'yay-bin'
