@@ -152,8 +152,16 @@ if does_bin_exist 'paru'; then
     set_config_value "${SHELL_VARIABLES_RC_PATH}" 'export PACKAGE_MANAGER' 'paru'
 elif does_bin_exist 'yay'; then
     set_config_value "${SHELL_VARIABLES_RC_PATH}" 'export PACKAGE_MANAGER' 'yay'
-else
+elif does_bin_exist 'yaourt'; then
+    set_config_value "${SHELL_VARIABLES_RC_PATH}" 'export PACKAGE_MANAGER' 'yaourt'
+elif does_bin_exist 'pacman'; then
     set_config_value "${SHELL_VARIABLES_RC_PATH}" 'export PACKAGE_MANAGER' 'pacman'
+elif does_bin_exist 'apt'; then
+    set_config_value "${SHELL_VARIABLES_RC_PATH}" 'export PACKAGE_MANAGER' 'apt'
+elif does_bin_exist 'apk'; then
+    set_config_value "${SHELL_VARIABLES_RC_PATH}" 'export PACKAGE_MANAGER' 'apk'
+elif does_bin_exist 'pkg'; then
+    set_config_value "${SHELL_VARIABLES_RC_PATH}" 'export PACKAGE_MANAGER' 'pkg'
 fi
 
 if does_bin_exist 'micro'; then

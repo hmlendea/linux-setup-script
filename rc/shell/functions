@@ -36,3 +36,88 @@ function edit() {
         fi
     done
 }
+
+function package_manager_command() {
+    local OPERATION
+    local PACKAGE_MANAGER
+    local PACKAGE_MANAGER_COMMAND
+    local PACKAGE_MANAGER_FAMILY
+
+    OPERATION="${1}" && shift
+    PACKAGE_MANAGER='unknown'
+    PACKAGE_MANAGER_COMMAND='unknown'
+    PACKAGE_MANAGER_FAMILY='unknown'
+    USE_SUDO=false
+
+    if [ -e '/usr/bin/apt' ]; then
+        PACKAGE_MANAGER='apt'
+        PACKAGE_MANAGER_COMMAND="sudo ${PACKAGE_MANAGER} -y"
+        PACKAGE_MANAGER_FAMILY='apt'
+        USE_SUDO=true
+    elif [ -e '/usr/bin/paru' ]; then
+        PACKAGE_MANAGER='paru'
+        PACKAGE_MANAGER_COMMAND="${PACKAGE_MANAGER} --noredownload --norebuild --sudoloop --noconfirm --bottomup --color auto"
+        PACKAGE_MANAGER_FAMILY='pacman'
+        USE_SUDO=false
+    elif [ -e '/usr/bin/yay' ]; then
+        PACKAGE_MANAGER='yay'
+        PACKAGE_MANAGER_COMMAND="${PACKAGE_MANAGER} --noredownload --norebuild --sudoloop --noconfirm --bottomup --color auto"
+        PACKAGE_MANAGER_FAMILY='pacman'
+        USE_SUDO=false
+    elif [ -e '/usr/bin/yaourt' ]; then
+        PACKAGE_MANAGER='yaourt'
+        PACKAGE_MANAGER_COMMAND="${PACKAGE_MANAGER} --noconfirm"
+        PACKAGE_MANAGER_FAMILY='pacman'
+        USE_SUDO=false
+    elif [ -e '/usr/bin/pacman' ]; then
+        PACKAGE_MANAGER='pacman'
+        PACKAGE_MANAGER_COMMAND="sudo ${PACKAGE_MANAGER}"
+        PACKAGE_MANAGER_FAMILY='pacman'
+        USE_SUDO=true
+    fi
+
+#    PACKAGE_MANAGER_COMMAND_PREFIX='sudo printf ""';
+#    PACKAGE_MANAGER_COMMAND="${PACKAGE_MANAGER_COMMAND_PREFIX}"' && ${PACKAGE_MANAGER_COMMAND}'
+
+    sudo printf ''
+
+    if [[ "${OPERATION}" == 'install' ]] \
+    || [[ "${OPERATION}" == '-S' ]]; then
+        if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apt' ]]; then
+            ${PACKAGE_MANAGER_COMMAND} install "${@}"
+        elif [[ "${PACKAGE_MANAGER_FAMILY}" == 'pacman' ]]; then
+            ${PACKAGE_MANAGER_COMMAND} -S "${@}"
+        fi
+    elif [[ "${OPERATION}" == 'search' ]]; then
+        if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apt' ]]; then
+            ${PACKAGE_MANAGER_COMMAND} search "${@}"
+        elif [[ "${PACKAGE_MANAGER_FAMILY}" == 'pacman' ]]; then
+            ${PACKAGE_MANAGER_COMMAND} "${@}"
+        fi
+    elif [[ "${OPERATION}" == 'uninstall' ]] \
+      || [[ "${OPERATION}" == '-Rns' ]]; then
+        if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apt' ]]; then
+            ${PACKAGE_MANAGER_COMMAND} purge "${@}"
+        elif [[ "${PACKAGE_MANAGER_FAMILY}" == 'pacman' ]]; then
+            ${PACKAGE_MANAGER_COMMAND} -Rns "${@}"
+        fi
+    elif [[ "${OPERATION}" == 'update' ]] \
+      || [[ "${OPERATION}" == '-Syy' ]]; then
+        if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apt' ]]; then
+            ${PACKAGE_MANAGER_COMMAND} update
+        elif [[ "${PACKAGE_MANAGER_FAMILY}" == 'pacman' ]]; then
+            ${PACKAGE_MANAGER_COMMAND} -Syy
+        fi
+    elif [[ "${OPERATION}" == 'upgrade' ]] \
+      || [[ "${OPERATION}" == '-Syu' ]]; then
+        if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apt' ]]; then
+            ${PACKAGE_MANAGER_COMMAND} update
+            ${PACKAGE_MANAGER_COMMAND} upgrade
+        elif [[ "${PACKAGE_MANAGER_FAMILY}" == 'pacman' ]]; then
+            ${PACKAGE_MANAGER_COMMAND} -Syu
+        fi
+    else
+        echo 'Unknown operation.'
+        return 1
+    fi
+}

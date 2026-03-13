@@ -135,29 +135,8 @@ if [ "${OSTYPE}" = 'cygwin' ]; then
 fi
 
 ### Package manager
-PACKAGE_MANAGER_CMD='sudo printf ""';
-
-if [[ "${PACKAGE_MANAGER}" == 'pacman' ]]; then
-    PACKAGE_MANAGER_CMD="${PACKAGE_MANAGER_CMD}"' && sudo ${PACKAGE_MANAGER}'
-else
-    PACKAGE_MANAGER_CMD="${PACKAGE_MANAGER_CMD}"' && ${PACKAGE_MANAGER}'
-fi
-
-CAN_PM_ALIAS_AUTOCOMPLETE=false
-
-if [[ "${PACKAGE_MANAGER}" == "apt" ]]; then
-    PACKAGE_MANAGER_CMD="sudo apt -y"
-elif [[ "${PACKAGE_MANAGER}" == "paru" ]] \
-  || [[ "${PACKAGE_MANAGER}" == "yay" ]]; then
-    PACKAGE_MANAGER_CMD="${PACKAGE_MANAGER_CMD} --noredownload --norebuild --sudoloop" # Optimisations
-    PACKAGE_MANAGER_CMD="${PACKAGE_MANAGER_CMD} --noconfirm" # Prompt skip
-    PACKAGE_MANAGER_CMD="${PACKAGE_MANAGER_CMD} --bottomup --color auto" # Visuals
-elif [[ "${PACKAGE_MANAGER}" == "yaourt" ]]; then
-    PACKAGE_MANAGER_CMD="${PACKAGE_MANAGER_CMD} --noconfirm"
-fi
-
-alias yeet="${PACKAGE_MANAGER_CMD}"
-set_alias_completion_source "${PACKAGE_MANAGER}" "yeet"
+alias yeet='package_manager_command'
+set_alias_completion_source "${PACKAGE_MANAGER}" 'yeet'
 
 ### Fixes
 [ -f "${ROOT_USR_BIN}/monodevelop" ]   &&  alias monodevelop="GNOME_DESKTOP_SESSION_ID="" monodevelop"
