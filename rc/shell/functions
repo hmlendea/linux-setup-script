@@ -43,7 +43,16 @@ function package_manager_command() {
     local PACKAGE_MANAGER_COMMAND
     local PACKAGE_MANAGER_FAMILY
 
-    OPERATION="${1}" && shift
+    case "${1}" in
+        install|search|uninstall|update|upgrade|-* )
+            OPERATION="${1}"
+            shift
+            ;;
+        *)
+            OPERATION='search'
+            ;;
+    esac
+
     PACKAGE_MANAGER='unknown'
     PACKAGE_MANAGER_COMMAND='unknown'
     PACKAGE_MANAGER_FAMILY='unknown'
