@@ -100,6 +100,15 @@ keep_first_installed_package 'io.github.alainm23.planify' 'org.gnome.Todo'
 # Terminal Emulators
 keep_first_installed_package 'gnome-console' 'gnome-terminal'
 
+# Text Editors
+keep_first_installed_package 'micro' 'nano' 'vim' 'vi'
+
+if ! does_bin_exist 'vim'; then
+    uninstall_native_package 'vim-common'
+    uninstall_native_package 'vim-runtime'
+    uninstall_native_package 'vim-tiny'
+fi
+
 # Video players
 uninstall_android_package 'com.mitv.mivideoplayer'
 uninstall_android_package 'com.mitv.videoplayer'
@@ -133,8 +142,6 @@ if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
     uninstall_native_package "gnome-weather"                # Replaced by flatpak: org.gnome.Weather
     uninstall_native_package "grub2-theme-vimix"            # Replaced by grub2-theme-nuci
     uninstall_native_package "inkscape"                     # Replaced by flatpak: org.inkscape.Inkscape
-    uninstall_native_package "nano-syntax-highlighting"     # nano is to be uninstalled next
-    uninstall_native_package "nano"                         # Replaced by micro
     uninstall_native_package "ntp"                          # Replaced by chrony
     uninstall_native_package "paper-icon-theme-git"         # Replaced by paper-icon-theme
     uninstall_native_package "postman-bin"                  # Replaced by flatpak: com.getpostman.Postman
