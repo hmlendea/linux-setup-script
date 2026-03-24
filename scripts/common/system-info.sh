@@ -610,7 +610,8 @@ if [ -f "${ROOT_ETC}/rpi-issue" ]; then
     OS='Raspberry Pi OS'
     DISTRO='Raspberry Pi OS'
 elif [ -f "${ROOT_ETC}/os-release" ]; then
-	OS=$(grep "^NAME" "${ROOT_ETC}/os-release" | tail -n 1 | awk -F'=' '{print $2}' | sed 's/\"//g')
+	OS=$(grep "^PRETTY_NAME" "${ROOT_ETC}/os-release" | tail -n 1 | awk -F'=' '{print $2}' | sed 's/\"//g')
+	[ -z "${OS}" ] && OS=$(grep "^NAME" "${ROOT_ETC}/os-release" | tail -n 1 | awk -F'=' '{print $2}' | sed 's/\"//g')
     DISTRO=$(grep "^ID" "${ROOT_ETC}/os-release" | tail -n 1 | awk -F'=' '{print $2}' | sed 's/\"//g')
 else
     DISTRO=$(echo "${KERNEL_VERSION}" | sed \
