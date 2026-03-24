@@ -606,7 +606,10 @@ function is_distro_immutable() {
 # Distribution
 KERNEL_VERSION=$(uname -r)
 
-if [ -f "${ROOT_ETC}/os-release" ]; then
+if [ -f "${ROOT_ETC}/rpi-issue" ]; then
+    OS='Raspberry Pi OS'
+    DISTRO='Raspberry Pi OS'
+elif [ -f "${ROOT_ETC}/os-release" ]; then
 	OS=$(grep "^NAME" "${ROOT_ETC}/os-release" | tail -n 1 | awk -F'=' '{print $2}' | sed 's/\"//g')
     DISTRO=$(grep "^ID" "${ROOT_ETC}/os-release" | tail -n 1 | awk -F'=' '{print $2}' | sed 's/\"//g')
 else
@@ -617,7 +620,6 @@ else
         -e 's/-[0-9]*$//g' \
         -e 's/-[a-z0-9]*$//g')
 fi
-
 
 if does_bin_exist 'uname'; then
     [ -z "${OS}" ] && OS=$(uname -s)
@@ -630,16 +632,20 @@ if [ "${DISTRO}" = "arch" ] \
     DISTRO_FAMILY='Arch'
     OS='Linux'
 elif [ "${DISTRO}" = "debian" ]; then
-    DISTRO="Debian"
-    DISTRO_FAMILY="Debian"
+    DISTRO='Debian'
+    DISTRO_FAMILY='Debian'
+    OS='Linux'
 elif [ "${DISTRO}" = "lineageos" ] || [ $(uname -a | grep -c "Android") -ge 1 ]; then
-    DISTRO="LineageOS"
-    DISTRO_FAMILY="Android"
-    OS="Android"
+    DISTRO='LineageOS'
+    DISTRO_FAMILY='Android'
+    OS='Android'
+elif [ "${DISTRO}" = 'Raspberry Pi OS' ]; then
+    DISTRO_FAMILY='Debian'
+    OS='Linux'
 elif [ "${DISTRO}" = "SteamOS" ]; then
-    DISTR_FAMILY="Arch"
-    OS="Linux"
-    DEVICE_MODEL="Steam Deck"
+    DISTRO_FAMILY='Arch'
+    OS='Linux'
+    DEVICE_MODEL='Steam Deck'
 fi
 
 if [ "${OS}" = 'Alpine Linux' ] \
@@ -663,7 +669,7 @@ elif [ "${OS}" = 'postmarketOS' ]; then
 	DISTRO='postmarketOS'
 fi
 
-does_bin_exist 'uname' && uname -r | grep -q "Microsoft" && DISTRO="${DISTRO} WSL"
+does_bin_exist 'uname' && uname -r | grep -q 'Microsoft' && DISTRO="${DISTRO} WSL"
 
 # Destkp Environment
 if [ -f "${ROOT_USR_BIN}/gnome-session" ]; then
