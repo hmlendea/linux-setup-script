@@ -610,9 +610,9 @@ if [ -f "${ROOT_ETC}/rpi-issue" ]; then
     OS='Raspberry Pi OS'
     DISTRO='Raspberry Pi OS'
 elif [ -f "${ROOT_ETC}/os-release" ]; then
-	OS=$(grep "^PRETTY_NAME" "${ROOT_ETC}/os-release" | tail -n 1 | awk -F'=' '{print $2}' | sed 's/\"//g')
+	OS=$(grep "^PRETTY_NAME" "${ROOT_ETC}/os-release" | tail -n 1 | awk -F'=' '{print $2}' | sed 's/LTS//g' | sed 's/\s*$//g' | sed 's/\"//g')
 	[ -z "${OS}" ] && OS=$(grep "^NAME" "${ROOT_ETC}/os-release" | tail -n 1 | awk -F'=' '{print $2}' | sed 's/\"//g')
-    DISTRO=$(grep "^ID" "${ROOT_ETC}/os-release" | tail -n 1 | awk -F'=' '{print $2}' | sed 's/\"//g')
+    DISTRO=$(grep "^ID=" "${ROOT_ETC}/os-release" | tail -n 1 | awk -F'=' '{print $2}' | sed 's/\"//g')
 else
     DISTRO=$(echo "${KERNEL_VERSION}" | sed \
         -e 's/^[^-]*-//g' \
@@ -643,10 +643,15 @@ elif [ "${DISTRO}" = "lineageos" ] || [ $(uname -a | grep -c "Android") -ge 1 ];
 elif [ "${DISTRO}" = 'Raspberry Pi OS' ]; then
     DISTRO_FAMILY='Debian'
     OS='Linux'
-elif [ "${DISTRO}" = "SteamOS" ]; then
+elif [ "${DISTRO}" = 'SteamOS' ]; then
     DISTRO_FAMILY='Arch'
     OS='Linux'
     DEVICE_MODEL='Steam Deck'
+elif [ "${DISTRO}" = 'ubuntu' ] \
+  || [ "${DISTRO}" = 'Ubuntu' ]; then
+    DISTRO='Ubuntu'
+    DISTRO_FAMILY='Ubuntu'
+    OS='Linux'
 fi
 
 if [ "${OS}" = 'Alpine Linux' ] \
