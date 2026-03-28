@@ -93,6 +93,10 @@ function set_ini_config_value() {
         shift
     fi
 
+    if [[ "${SEPARATOR}" == ':' ]]; then
+        SEPARATOR=': '
+    fi
+
     local FILE_PATH="${1}"
     local KEY="${2}"
     local VALUE_RAW="${@:3}"
