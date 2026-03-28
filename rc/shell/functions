@@ -90,8 +90,15 @@ function package_manager_command() {
 
     sudo printf ''
 
-    if [[ "${OPERATION}" == 'install' ]] \
-    || [[ "${OPERATION}" == '-S' ]]; then
+    if [[ "${OPERATION}" == 'info' ]] \
+    || [[ "${OPERATION}" == '-Qi' ]]; then
+        if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apt' ]]; then
+            ${PACKAGE_MANAGER_COMMAND} info "${@}"
+        elif [[ "${PACKAGE_MANAGER_FAMILY}" == 'pacman' ]]; then
+            ${PACKAGE_MANAGER_COMMAND} -Qi "${@}"
+        fi
+    elif [[ "${OPERATION}" == 'install' ]] \
+      || [[ "${OPERATION}" == '-S' ]]; then
         if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apt' ]]; then
             ${PACKAGE_MANAGER_COMMAND} install "${@}"
         elif [[ "${PACKAGE_MANAGER_FAMILY}" == 'pacman' ]]; then
