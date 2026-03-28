@@ -1360,8 +1360,6 @@ if does_bin_exist 'cloud-init'; then
     set_config_values --separator ':' "${CLOUD_INIT_CONFIG_FILE}" \
         'manage_etc_hosts' false \
         'preserve_hostname' true
-
-    run_as_su cloud-init clean
 fi
 
 if does_bin_exist 'sshd'; then
