@@ -540,8 +540,11 @@ fi
 ###################
 ### Ad Blockers ###
 ###################
-if does_bin_exist "pihole-FTL"; then
-    PIHOLE_DNSMASQ_CONFIG_PATH="/etc/dnsmasq.d/01-pihole.conf"
+if does_bin_exist 'pihole' 'pihole-FTL'; then
+    PIHOLE_CONFIG_PATH="${ROOT_ETC}/pihole/pihole.toml"
+    PIHOLE_DNSMASQ_CONFIG_PATH="${ROOT_ETC}/dnsmasq.d/01-pihole.conf"
+
+    set_config_value --section 'webserver' --separator ' = ' "${PIHOLE_CONFIG_PATH}" port '8093o.8443os'
 
     set_config_value "${PIHOLE_DNSMASQ_CONFIG_PATH}" "cache-size" $((DNS_CACHE_SIZE))
     set_config_value "${PIHOLE_DNSMASQ_CONFIG_PATH}" "local-ttl" $((DNS_CACHE_TTL*60*3))
