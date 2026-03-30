@@ -5,14 +5,20 @@ source "${REPO_SCRIPTS_COMMON_DIR}/service-management.sh"
 
 [[ "${DISTRO}" =~ 'WSL' ]] && exit
 
-enable_service 'bluetooth'
-enable_service 'cups'
-enable_service 'docker'
-enable_service 'fail2ban'
-enable_service 'fstrim.timer'
-enable_service 'repo-synchroniser.timer'
-enable_service 'systemd-timesyncd'
-enable_service 'thermald'
+
+if [[ "${OS}" ==  'Linux' ]]; then
+    enable_service 'bluetooth'
+    enable_service 'cups'
+    enable_service 'docker'
+    enable_service 'fail2ban'
+    enable_service 'fstrim.timer'
+    enable_service 'repo-synchroniser.timer'
+    enable_service 'sshd'
+    enable_service 'systemd-timesyncd'
+    enable_service 'thermald'
+elif [[ "${OS}" == 'Android' ]]; then
+    enable_service 'ssh-agent'
+fi
 
 if ${HAS_GUI}; then
     if does_bin_exist 'NetworkManager'; then
