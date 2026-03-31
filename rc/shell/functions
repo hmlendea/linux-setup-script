@@ -49,6 +49,7 @@ function package_manager_command() {
     || [[ "${OPERATION}" == '-Qi' ]]; then
         OPERATION='info' && shift
     elif [[ "${OPERATION}" == 'install' ]] \
+      || [[ "${OPERATION}" == 'add' ]] \
       || [[ "${OPERATION}" == '-S' ]]; then
         OPERATION='install' && shift
     elif [[ "${OPERATION}" == 'list' ]] \
@@ -57,6 +58,7 @@ function package_manager_command() {
     elif [[ "${OPERATION}" == 'search' ]]; then
         OPERATION='search' && shift
     elif [[ "${OPERATION}" == 'uninstall' ]] \
+      || [[ "${OPERATION}" == 'del' ]] \
       || [[ "${OPERATION}" == '-Rns' ]]; then
         OPERATION='uninstall' && shift
     elif [[ "${OPERATION}" == 'update' ]] \
@@ -72,13 +74,15 @@ function package_manager_command() {
     PACKAGE_MANAGER='unknown'
     PACKAGE_MANAGER_COMMAND='unknown'
     PACKAGE_MANAGER_FAMILY='unknown'
-    USE_SUDO=false
 
-    if [ -e '/usr/bin/apt' ]; then
+    if [ -e '/sbin/apk' ]; then
+        PACKAGE_MANAGER='apk'
+        PACKAGE_MANAGER_COMMAND="${PACAKGE_MANAGER}"
+        PACKAGE_MANAGER_FAMILY='apk'
+    elif [ -e '/usr/bin/apt' ]; then
         PACKAGE_MANAGER='apt'
         PACKAGE_MANAGER_COMMAND="sudo ${PACKAGE_MANAGER}"
         PACKAGE_MANAGER_FAMILY='apt'
-        USE_SUDO=true
 
         if [[ "${OPERATION}" != 'info' ]] \
         && [[ "${OPERATION}" != 'search' ]]; then
@@ -88,64 +92,70 @@ function package_manager_command() {
         PACKAGE_MANAGER='paru'
         PACKAGE_MANAGER_COMMAND="${PACKAGE_MANAGER} --noredownload --norebuild --sudoloop --noconfirm --bottomup --color auto"
         PACKAGE_MANAGER_FAMILY='pacman'
-        USE_SUDO=false
     elif [ -e '/usr/bin/yay' ]; then
         PACKAGE_MANAGER='yay'
         PACKAGE_MANAGER_COMMAND="${PACKAGE_MANAGER} --noredownload --norebuild --sudoloop --noconfirm --bottomup --color auto"
         PACKAGE_MANAGER_FAMILY='pacman'
-        USE_SUDO=false
     elif [ -e '/usr/bin/yaourt' ]; then
         PACKAGE_MANAGER='yaourt'
         PACKAGE_MANAGER_COMMAND="${PACKAGE_MANAGER} --noconfirm"
         PACKAGE_MANAGER_FAMILY='pacman'
-        USE_SUDO=false
     elif [ -e '/usr/bin/pacman' ]; then
         PACKAGE_MANAGER='pacman'
         PACKAGE_MANAGER_COMMAND="sudo ${PACKAGE_MANAGER}"
         PACKAGE_MANAGER_FAMILY='pacman'
-        USE_SUDO=true
     fi
 
     sudo printf ''
 
     if [[ "${OPERATION}" == 'info' ]]; then
-        if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apt' ]]; then
+        if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apk' ]]; then
+            ${PACKAGE_MANAGER_COMMAND} info -e "${@}"
+        elif [[ "${PACKAGE_MANAGER_FAMILY}" == 'apt' ]]; then
             ${PACKAGE_MANAGER_COMMAND} info "${@}"
         elif [[ "${PACKAGE_MANAGER_FAMILY}" == 'pacman' ]]; then
             ${PACKAGE_MANAGER_COMMAND} -Qi "${@}"
         fi
     elif [[ "${OPERATION}" == 'install' ]]; then
-        if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apt' ]]; then
+        if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apk' ]]; then
+            ${PACKAGE_MANAGER_COMMAND} add "${@}"
+        elif [[ "${PACKAGE_MANAGER_FAMILY}" == 'apt' ]]; then
             ${PACKAGE_MANAGER_COMMAND} install "${@}"
         elif [[ "${PACKAGE_MANAGER_FAMILY}" == 'pacman' ]]; then
             ${PACKAGE_MANAGER_COMMAND} -S "${@}"
         fi
     elif [[ "${OPERATION}" == 'list' ]]; then
-        if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apt' ]]; then
+        if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apk' ]]; then
+            ${PACKAGE_MANAGER_COMMAND} info
+        elif [[ "${PACKAGE_MANAGER_FAMILY}" == 'apt' ]]; then
             ${PACKAGE_MANAGER_COMMAND} list --installed
         elif [[ "${PACKAGE_MANAGER_FAMILY}" == 'pacman' ]]; then
             ${PACKAGE_MANAGER_COMMAND} -Q
         fi
     elif [[ "${OPERATION}" == 'search' ]]; then
-        if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apt' ]]; then
+        if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apk' ]] \
+        || [[ "${PACKAGE_MANAGER_FAMILY}" == 'apt' ]]; then
             ${PACKAGE_MANAGER_COMMAND} search "${@}"
         elif [[ "${PACKAGE_MANAGER_FAMILY}" == 'pacman' ]]; then
             ${PACKAGE_MANAGER_COMMAND} "${@}"
         fi
     elif [[ "${OPERATION}" == 'uninstall' ]]; then
-        if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apt' ]]; then
+        if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apk' ]] \
+        || [[ "${PACKAGE_MANAGER_FAMILY}" == 'apt' ]]; then
             ${PACKAGE_MANAGER_COMMAND} purge "${@}"
         elif [[ "${PACKAGE_MANAGER_FAMILY}" == 'pacman' ]]; then
             ${PACKAGE_MANAGER_COMMAND} -Rns "${@}"
         fi
     elif [[ "${OPERATION}" == 'update' ]]; then
-        if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apt' ]]; then
+        if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apk' ]] \
+        || [[ "${PACKAGE_MANAGER_FAMILY}" == 'apt' ]]; then
             ${PACKAGE_MANAGER_COMMAND} update
         elif [[ "${PACKAGE_MANAGER_FAMILY}" == 'pacman' ]]; then
             ${PACKAGE_MANAGER_COMMAND} -Syy
         fi
     elif [[ "${OPERATION}" == 'upgrade' ]]; then
-        if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apt' ]]; then
+        if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apk' ]] \
+        || [[ "${PACKAGE_MANAGER_FAMILY}" == 'apt' ]]; then
             ${PACKAGE_MANAGER_COMMAND} update
             ${PACKAGE_MANAGER_COMMAND} upgrade
         elif [[ "${PACKAGE_MANAGER_FAMILY}" == 'pacman' ]]; then
