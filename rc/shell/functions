@@ -104,6 +104,13 @@ function package_manager_command() {
         elif [[ "${PACKAGE_MANAGER_FAMILY}" == 'pacman' ]]; then
             ${PACKAGE_MANAGER_COMMAND} -S "${@}"
         fi
+    elif [[ "${OPERATION}" == 'list' ]] \
+      || [[ "${OPERATION}" == '-Q' ]]; then
+        if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apt' ]]; then
+            ${PACKAGE_MANAGER_COMMAND} list --installed
+        elif [[ "${PACKAGE_MANAGER_FAMILY}" == 'pacman' ]]; then
+            ${PACKAGE_MANAGER_COMMAND} -Q
+        fi
     elif [[ "${OPERATION}" == 'search' ]]; then
         if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apt' ]]; then
             ${PACKAGE_MANAGER_COMMAND} search "${@}"
