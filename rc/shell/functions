@@ -104,6 +104,9 @@ function package_manager_command() {
         PACKAGE_MANAGER='pacman'
         PACKAGE_MANAGER_COMMAND="sudo ${PACKAGE_MANAGER}"
         PACKAGE_MANAGER_FAMILY='pacman'
+    else
+        echo 'Unsupported package manager!'
+        return 1
     fi
 
     sudo printf ''
@@ -163,6 +166,6 @@ function package_manager_command() {
         fi
     else
         echo 'Unknown operation.'
-        return 1
+        return 2
     fi
 }
