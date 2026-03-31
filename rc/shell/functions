@@ -43,15 +43,31 @@ function package_manager_command() {
     local PACKAGE_MANAGER_COMMAND
     local PACKAGE_MANAGER_FAMILY
 
-    case "${1}" in
-        info|install|list|search|uninstall|update|upgrade|-* )
-            OPERATION="${1}"
-            shift
-            ;;
-        *)
-            OPERATION='search'
-            ;;
-    esac
+    OPERATION="${1}"
+
+    if [[ "${OPERATION}" == 'info' ]] \
+    || [[ "${OPERATION}" == '-Qi' ]]; then
+        OPERATION='info' && shift
+    elif [[ "${OPERATION}" == 'install' ]] \
+      || [[ "${OPERATION}" == '-S' ]]; then
+        OPERATION='install' && shift
+    elif [[ "${OPERATION}" == 'list' ]] \
+      || [[ "${OPERATION}" == '-Q' ]]; then
+        OPERATION='list' && shift
+    elif [[ "${OPERATION}" == 'search' ]]; then
+        OPERATION='search' && shift
+    elif [[ "${OPERATION}" == 'uninstall' ]] \
+      || [[ "${OPERATION}" == '-Rns' ]]; then
+        OPERATION='uninstall' && shift
+    elif [[ "${OPERATION}" == 'update' ]] \
+      || [[ "${OPERATION}" == '-Syy' ]]; then
+        OPERATION='update' && shift
+    elif [[ "${OPERATION}" == 'upgrade' ]] \
+      || [[ "${OPERATION}" == '-Syu' ]]; then
+        OPERATION='info' && shift
+    else
+        OPERATION='search'
+    fi
 
     PACKAGE_MANAGER='unknown'
     PACKAGE_MANAGER_COMMAND='unknown'
@@ -60,9 +76,14 @@ function package_manager_command() {
 
     if [ -e '/usr/bin/apt' ]; then
         PACKAGE_MANAGER='apt'
-        PACKAGE_MANAGER_COMMAND="sudo ${PACKAGE_MANAGER} -y"
+        PACKAGE_MANAGER_COMMAND="sudo ${PACKAGE_MANAGER}"
         PACKAGE_MANAGER_FAMILY='apt'
         USE_SUDO=true
+
+        if [[ "${OPERATION}" != 'info' ]] \
+        && [[ "${OPERATION}" != 'search' ]]; then
+            PACKAGE_MANAGER_COMMAND="${PACKAGE_MANAGER_COMMAND} -y"
+        fi
     elif [ -e '/usr/bin/paru' ]; then
         PACKAGE_MANAGER='paru'
         PACKAGE_MANAGER_COMMAND="${PACKAGE_MANAGER} --noredownload --norebuild --sudoloop --noconfirm --bottomup --color auto"
@@ -85,27 +106,21 @@ function package_manager_command() {
         USE_SUDO=true
     fi
 
-#    PACKAGE_MANAGER_COMMAND_PREFIX='sudo printf ""';
-#    PACKAGE_MANAGER_COMMAND="${PACKAGE_MANAGER_COMMAND_PREFIX}"' && ${PACKAGE_MANAGER_COMMAND}'
-
     sudo printf ''
 
-    if [[ "${OPERATION}" == 'info' ]] \
-    || [[ "${OPERATION}" == '-Qi' ]]; then
+    if [[ "${OPERATION}" == 'info' ]]; then
         if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apt' ]]; then
             ${PACKAGE_MANAGER_COMMAND} info "${@}"
         elif [[ "${PACKAGE_MANAGER_FAMILY}" == 'pacman' ]]; then
             ${PACKAGE_MANAGER_COMMAND} -Qi "${@}"
         fi
-    elif [[ "${OPERATION}" == 'install' ]] \
-      || [[ "${OPERATION}" == '-S' ]]; then
+    elif [[ "${OPERATION}" == 'install' ]]; then
         if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apt' ]]; then
             ${PACKAGE_MANAGER_COMMAND} install "${@}"
         elif [[ "${PACKAGE_MANAGER_FAMILY}" == 'pacman' ]]; then
             ${PACKAGE_MANAGER_COMMAND} -S "${@}"
         fi
-    elif [[ "${OPERATION}" == 'list' ]] \
-      || [[ "${OPERATION}" == '-Q' ]]; then
+    elif [[ "${OPERATION}" == 'list' ]]; then
         if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apt' ]]; then
             ${PACKAGE_MANAGER_COMMAND} list --installed
         elif [[ "${PACKAGE_MANAGER_FAMILY}" == 'pacman' ]]; then
@@ -117,22 +132,19 @@ function package_manager_command() {
         elif [[ "${PACKAGE_MANAGER_FAMILY}" == 'pacman' ]]; then
             ${PACKAGE_MANAGER_COMMAND} "${@}"
         fi
-    elif [[ "${OPERATION}" == 'uninstall' ]] \
-      || [[ "${OPERATION}" == '-Rns' ]]; then
+    elif [[ "${OPERATION}" == 'uninstall' ]]; then
         if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apt' ]]; then
             ${PACKAGE_MANAGER_COMMAND} purge "${@}"
         elif [[ "${PACKAGE_MANAGER_FAMILY}" == 'pacman' ]]; then
             ${PACKAGE_MANAGER_COMMAND} -Rns "${@}"
         fi
-    elif [[ "${OPERATION}" == 'update' ]] \
-      || [[ "${OPERATION}" == '-Syy' ]]; then
+    elif [[ "${OPERATION}" == 'update' ]]; then
         if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apt' ]]; then
             ${PACKAGE_MANAGER_COMMAND} update
         elif [[ "${PACKAGE_MANAGER_FAMILY}" == 'pacman' ]]; then
             ${PACKAGE_MANAGER_COMMAND} -Syy
         fi
-    elif [[ "${OPERATION}" == 'upgrade' ]] \
-      || [[ "${OPERATION}" == '-Syu' ]]; then
+    elif [[ "${OPERATION}" == 'upgrade' ]]; then
         if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apt' ]]; then
             ${PACKAGE_MANAGER_COMMAND} update
             ${PACKAGE_MANAGER_COMMAND} upgrade
