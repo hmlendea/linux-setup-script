@@ -17,7 +17,7 @@ function edit() {
         echo "ERROR: the \$EDITOR variable is not set!"
         return
     fi
-    
+
     for FILE_PATH in "$@"; do
         if [ -f "${FILE_PATH}" ]; then
             if [ -w "${FILE_PATH}" ]; then
@@ -77,7 +77,7 @@ function package_manager_command() {
 
     if [ -e '/sbin/apk' ]; then
         PACKAGE_MANAGER='apk'
-        PACKAGE_MANAGER_COMMAND="${PACAKGE_MANAGER}"
+        PACKAGE_MANAGER_COMMAND="${PACKAGE_MANAGER}"
         PACKAGE_MANAGER_FAMILY='apk'
     elif [ -e '/usr/bin/apt' ]; then
         PACKAGE_MANAGER='apt'
