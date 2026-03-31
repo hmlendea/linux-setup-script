@@ -627,8 +627,12 @@ if does_bin_exist 'uname'; then
     uname -r | grep -q "valve.*neptune" && DISTRO="SteamOS"
 fi
 
-if [ "${DISTRO}" = "arch" ] \
-|| [ "${DISTRO}" = "ARCH" ]; then
+if [ "${DISTRO}" = "alpine" ]; then
+    DISTRO='Alpine Linux'
+    DISTRO_FAMILY='Alpine'
+    OS='Linux'
+elif [ "${DISTRO}" = "arch" ] \
+  || [ "${DISTRO}" = "ARCH" ]; then
     DISTRO='Arch Linux'
     DISTRO_FAMILY='Arch'
     OS='Linux'
