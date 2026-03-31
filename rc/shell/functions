@@ -44,7 +44,7 @@ function package_manager_command() {
     local PACKAGE_MANAGER_FAMILY
 
     case "${1}" in
-        install|search|uninstall|update|upgrade|-* )
+        info|install|list|search|uninstall|update|upgrade|-* )
             OPERATION="${1}"
             shift
             ;;
