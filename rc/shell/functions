@@ -77,7 +77,7 @@ function package_manager_command() {
 
     if [ -e '/sbin/apk' ]; then
         PACKAGE_MANAGER='apk'
-        PACKAGE_MANAGER_COMMAND="${PACKAGE_MANAGER}"
+        PACKAGE_MANAGER_COMMAND="su -c ${PACKAGE_MANAGER}"
         PACKAGE_MANAGER_FAMILY='apk'
     elif [ -e '/usr/bin/apt' ]; then
         PACKAGE_MANAGER='apt'
