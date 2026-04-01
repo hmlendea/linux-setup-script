@@ -36,9 +36,9 @@ if does_bin_exist 'chrony' 'chronyd'; then
     disable_service 'ntpd'
     disable_service 'systemd-timesyncd'
 
-    if does_bin_exist 'chrony'; then
+    if does_file_exist "${ROOT_USR_LIB}/systemd/system/chrony.service"; then
         enable_service 'chrony'
-    elif does_bin_exist 'chronyd'; then
+    elif does_file_exist "${ROOT_USR_LIB}/systemd/system/chronyd.service"; then
         enable_service 'chronyd'
     fi
 elif does_bin_exist 'ntpd'; then
