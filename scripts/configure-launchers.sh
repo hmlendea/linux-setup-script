@@ -170,6 +170,14 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/discord.desktop" \
         Categories "${CHAT_APP_CATEGORIES}"
 done
 
+for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.sindresorhus.Caprine.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.sindresorhus.Caprine.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name 'Messenger' \
+        Name[ro] 'Messenger' \
+        Categories "${CHAT_APP_CATEGORIES}"
+done
+
 for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/de.schmidhuberj.Flare.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.signal.Signal.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/de.schmidhuberj.Flare.desktop" \

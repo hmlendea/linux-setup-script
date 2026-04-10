@@ -58,6 +58,12 @@ elif does_bin_exist 'electronmail-bin'; then
     EMAIL_CLIENT_LAUNCHER='electronmail-bin.desktop'
 fi
 
+# Facebook Messenger
+FBMESSENGER_LAUNCHER=''
+if does_bin_exist 'com.sindresorhus.Caprine'; then
+    FBMESSENGER_LAUNCHER='com.sindresorhus.Caprine.desktop'
+fi
+
 # File Manager
 FILE_MANAGER_LAUNCHER=''
 if does_bin_exist 'nautilus'; then
@@ -177,6 +183,7 @@ FAVOURITE_APPS=''
 [ -n "${SIGNAL_LAUNCHER}" ] && FAVOURITE_APPS="${FAVOURITE_APPS}, '${SIGNAL_LAUNCHER}'"
 [ -n "${TELEGRAM_LAUNCHER}" ] && FAVOURITE_APPS="${FAVOURITE_APPS}, '${TELEGRAM_LAUNCHER}'"
 [ -n "${WHATSAPP_LAUNCHER}" ] && FAVOURITE_APPS="${FAVOURITE_APPS}, '${WHATSAPP_LAUNCHER}'"
+[ -n "${FBMESSENGER_LAUNCHER}" ] && FAVOURITE_APPS="${FAVOURITE_APPS}, '${FBMESSENGER_LAUNCHER}'"
 [ -n "${EMAIL_CLIENT_LAUNCHER}" ] && FAVOURITE_APPS="${FAVOURITE_APPS}, '${EMAIL_CLIENT_LAUNCHER}'"
 [ -n "${NOTES_LAUNCHER}" ] && FAVOURITE_APPS="${FAVOURITE_APPS}, '${NOTES_LAUNCHER}'"
 [ -n "${TASKS_LAUNCHER}" ] && FAVOURITE_APPS="${FAVOURITE_APPS}, '${TASKS_LAUNCHER}'"

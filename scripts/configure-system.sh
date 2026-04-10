@@ -488,8 +488,8 @@ fi
 if does_bin_exist "makepkg"; then
     MAKEPKG_CONFIG_FILE="${ROOT_ETC}/makepkg.conf"
 
-    set_config_value "${MAKEPKG_CONFIG_FILE}" "COMPRESSXZ" "(xz -c -z --threads=0 -)"
-    set_config_value "${MAKEPKG_CONFIG_FILE}" "COMPRESSZST" "(zstd -c -z -q --threads=0 -)"
+    set_config_value "${MAKEPKG_CONFIG_FILE}" "COMPRESSXZ" '(xz -c -z --threads=0 -)'
+    set_config_value "${MAKEPKG_CONFIG_FILE}" "COMPRESSZST" '(zstd -c -z -q --threads=0 -)'
 
     if does_bin_exist "pbzip2"; then
         set_config_value "${MAKEPKG_CONFIG_FILE}" "COMPRESSBZ2" "(pbzip2 -c -f)"
@@ -671,7 +671,7 @@ if does_bin_exist "teams" "teams-insiders" "com.microsoft.Teams"; then
     # Telemetry
     set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" '.appPreferenceSettings.enableMediaLoggingPreferenceKey' false
 fi
-if does_bin_exist "telegram-desktop" "com.telegram.desktop"; then
+if does_bin_exist 'telegram-desktop' 'com.telegram.desktop'; then
     TELEGRAM_CONFIG_DIR="${HOME_VAR_APP}/org.telegram.desktop/data/TelegramDesktop/tdata"
     TELEGRAM_EXPERIMENTAL_OPTIONS_FILE="${TELEGRAM_CONFIG_DIR}/experimental_options.json"
     
@@ -679,7 +679,7 @@ if does_bin_exist "telegram-desktop" "com.telegram.desktop"; then
 
     set_config_value "${TELEGRAM_EXPERIMENTAL_OPTIONS_FILE}" '.["mono-settings-icons"]' true
 fi
-if does_bin_exist "whatsapp-for-linux"; then
+if does_bin_exist 'whatsapp-for-linux'; then
     WAPP_CONFIG_FILE="${XDG_CONFIG_HOME}/whatsapp-for-linux/settings.conf"
 
     # Disable tray because tray icons don't work and the window becomes inaccessible
