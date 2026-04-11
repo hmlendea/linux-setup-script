@@ -39,6 +39,7 @@ function edit() {
 
 function package_manager_command() {
     local OPERATION
+    local AS_DEPENDENCY
     local PACKAGE_MANAGER
     local PACKAGE_MANAGER_COMMAND
     local PACKAGE_MANAGER_FAMILY
@@ -71,6 +72,14 @@ function package_manager_command() {
         OPERATION='search'
     fi
 
+    AS_DEPENDENCY=false
+    
+    if [[ "${OPERATION}" == 'install' ]]; then
+        if [[ "${1}" == '--asdeps' ]]; then
+            AS_DEPENDENCY=true
+        fi
+    fi
+
     PACKAGE_MANAGER='unknown'
     PACKAGE_MANAGER_COMMAND='unknown'
     PACKAGE_MANAGER_FAMILY='unknown'
@@ -92,18 +101,26 @@ function package_manager_command() {
         PACKAGE_MANAGER='paru'
         PACKAGE_MANAGER_COMMAND="${PACKAGE_MANAGER} --noredownload --norebuild --sudoloop --noconfirm --bottomup --color auto"
         PACKAGE_MANAGER_FAMILY='pacman'
+
+        ${AS_DEPENDENCY} && PACKAGE_MANAGER_COMMAND="${PACKAGE_MANAGER_COMMAND} --asdeps"
     elif [ -e '/usr/bin/yay' ]; then
         PACKAGE_MANAGER='yay'
         PACKAGE_MANAGER_COMMAND="${PACKAGE_MANAGER} --noredownload --norebuild --sudoloop --noconfirm --bottomup --color auto"
         PACKAGE_MANAGER_FAMILY='pacman'
+
+        ${AS_DEPENDENCY} && PACKAGE_MANAGER_COMMAND="${PACKAGE_MANAGER_COMMAND} --asdeps"
     elif [ -e '/usr/bin/yaourt' ]; then
         PACKAGE_MANAGER='yaourt'
         PACKAGE_MANAGER_COMMAND="${PACKAGE_MANAGER} --noconfirm"
         PACKAGE_MANAGER_FAMILY='pacman'
+
+        ${AS_DEPENDENCY} && PACKAGE_MANAGER_COMMAND="${PACKAGE_MANAGER_COMMAND} --asdeps"
     elif [ -e '/usr/bin/pacman' ]; then
         PACKAGE_MANAGER='pacman'
         PACKAGE_MANAGER_COMMAND="sudo ${PACKAGE_MANAGER}"
         PACKAGE_MANAGER_FAMILY='pacman'
+
+        ${AS_DEPENDENCY} && PACKAGE_MANAGER_COMMAND="${PACKAGE_MANAGER_COMMAND} --asdeps"
     else
         echo 'Unsupported package manager!'
         return 1
