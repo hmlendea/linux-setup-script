@@ -76,7 +76,7 @@ function package_manager_command() {
     
     if [[ "${OPERATION}" == 'install' ]]; then
         if [[ "${1}" == '--asdeps' ]]; then
-            AS_DEPENDENCY=true
+            AS_DEPENDENCY=true && shift
         fi
     fi
 
