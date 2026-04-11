@@ -42,38 +42,38 @@ DNS_CACHE_SIZE=10000 # Entries
 [ "${SCREEN_RESOLUTION_V}" -eq 0 ]      && ZOOM_LEVEL=1.00
 
 # Languages
-OS_LANGUAGE=""
+OS_LANGUAGE=''
 [ -f "${ROOT_ETC}/locale.conf" ] && OS_LANGUAGE=$(grep "^LANG=" "${ROOT_ETC}/locale.conf" | sed 's/^[^=]*=\([^.]*\).*/\1/g')
-[ -z "${OS_LANGUAGE}" ] && OS_LANGUAGE="en_GB"
-APPS_LANGUAGE="ro_RO"
-GAMES_LANGUAGE="en_GB"
+[ -z "${OS_LANGUAGE}" ] && OS_LANGUAGE='en_GB'
+APPS_LANGUAGE='ro_RO'
+GAMES_LANGUAGE='en_GB'
 
 # THEMES
-GTK_THEME="Adwaita-dark"
-GTK_THEME_VARIANT="dark"
+GTK_THEME='Adwaita-dark'
+GTK_THEME_VARIANT='dark'
 GTK2_THEME="${GTK_THEME}"
 GTK3_THEME="${GTK_THEME}"
 GTK4_THEME="${GTK_THEME}"
-ICON_THEME="Papirus-Dark"
-ICON_THEME_FOLDER_COLOUR="grey"
-CURSOR_THEME="Vimix-white-cursors"
-SOUND_THEME="freedesktop"
+ICON_THEME='Papirus-Dark'
+ICON_THEME_FOLDER_COLOUR='grey'
+CURSOR_THEME='Vimix-white-cursors'
+SOUND_THEME='freedesktop'
 
 # TODO: Allow non-dark when a package is available
 GTK2_THEME=$(echo "${GTK2_THEME}" | sed \
                 -e 's/adw-gtk3/AdwaitaDark/g' \
                 -e 's/Dark-dark/Dark/g')
 
-[[ "${GTK4_THEME}" == "ZorinGrey-Dark" ]] && GTK4_THEME="Adwaita-dark" # Until the Zorin theme supports GTK4
-is_native_package_installed "pop-sound-theme-bin" && SOUND_THEME="Pop"
+[[ "${GTK4_THEME}" == 'ZorinGrey-Dark' ]] && GTK4_THEME='Adwaita-dark' # Until the Zorin theme supports GTK4
+is_native_package_installed 'pop-sound-theme-bin' && SOUND_THEME='Pop'
 
 if echo "${GTK_THEME}" | grep -q "[Dd]ark$"; then
-    GTK_THEME_VARIANT="dark"
+    GTK_THEME_VARIANT='dark'
 else
-    GTK_THEME_VARIANT="light"
+    GTK_THEME_VARIANT='light'
 fi
 
-if [[ "${GTK_THEME_VARIANT}" == "dark" ]]; then
+if [[ "${GTK_THEME_VARIANT}" == 'dark' ]]; then
     DESKTOP_THEME_IS_DARK=true
     DESKTOP_THEME_IS_DARK_BINARY=1
 else
@@ -81,14 +81,14 @@ else
     DESKTOP_THEME_IS_DARK_BINARY=0
 fi
 
-GTK_THEME_BG_COLOUR="#202020"
+GTK_THEME_BG_COLOUR='#202020'
 
-[[ "${GTK_THEME}" == ZorinGrey* ]]  && GTK_THEME_BG_COLOUR="#202020"
-[[ "${GTK_THEME}" == adw-gtk3* ]]   && GTK_THEME_BG_COLOUR="#1e1e1e"
+[[ "${GTK_THEME}" == ZorinGrey* ]]  && GTK_THEME_BG_COLOUR='#202020'
+[[ "${GTK_THEME}" == adw-gtk3* ]]   && GTK_THEME_BG_COLOUR='#1e1e1e'
 
 # FONT FACES
-INTERFACE_FONT_NAME="Sans"
-INTERFACE_FONT_STYLE="Regular"
+INTERFACE_FONT_NAME='Sans'
+INTERFACE_FONT_STYLE='Regular'
 INTERFACE_FONT_SIZE=11
 [ "${SCREEN_DPI}" -ge 100 ] && INTERFACE_FONT_SIZE=10
 [ "${SCREEN_DPI}" -ge 130 ] && INTERFACE_FONT_SIZE=11
@@ -99,7 +99,7 @@ DOCUMENT_FONT_STYLE=${INTERFACE_FONT_STYLE}
 DOCUMENT_FONT_SIZE=${INTERFACE_FONT_SIZE}
 
 TITLEBAR_FONT_NAME=${INTERFACE_FONT_NAME}
-TITLEBAR_FONT_STYLE="Bold"
+TITLEBAR_FONT_STYLE='Bold'
 TITLEBAR_FONT_SIZE=12
 [ "${SCREEN_RESOLUTION_V}" -lt 1080 ] && TITLEBAR_FONT_SIZE=11
 
@@ -111,8 +111,8 @@ MENUHEADER_FONT_NAME="${MENU_FONT_NAME}"
 MENUHEADER_FONT_STYLE="${TITLEBAR_FONT_STYLE}"
 MENUHEADER_FONT_SIZE=${MENU_FONT_SIZE}
 
-MONOSPACE_FONT_NAME="Droid Sans"
-MONOSPACE_FONT_STYLE="Mono"
+MONOSPACE_FONT_NAME='Droid Sans'
+MONOSPACE_FONT_STYLE='Mono'
 MONOSPACE_FONT_SIZE=13
 [ "${SCREEN_RESOLUTION_V}" -lt 1080 ] && MONOSPACE_FONT_SIZE=12
 
@@ -129,7 +129,7 @@ TEXT_EDITOR_FONT_SIZE="${MONOSPACE_FONT_SIZE}"
 
 BROWSER_FONT_SIZE=$((INTERFACE_FONT_SIZE + 7))
 
-EMOJI_FONT_NAME="Apple Color Emoji"
+EMOJI_FONT_NAME='Apple Color Emoji'
 
 INTERFACE_FONT="${INTERFACE_FONT_NAME} ${INTERFACE_FONT_STYLE} ${INTERFACE_FONT_SIZE}"
 DOCUMENT_FONT="${DOCUMENT_FONT_NAME} ${DOCUMENT_FONT_STYLE} ${DOCUMENT_FONT_SIZE}"
@@ -141,32 +141,32 @@ SUBTITLES_FONT="${SUBTITLES_FONT_NAME} ${SUBTITLES_FONT_STYLE} ${SUBTITLES_FONT_
 TEXT_EDITOR_FONT="${TEXT_EDITOR_FONT_NAME} ${TEXT_EDITOR_FONT_STYLE} ${TEXT_EDITOR_FONT_SIZE}"
 
 # FONT COLOURS
-FONT_COLOUR="#FFFFFF" # "#CFD8DC"
-TERMINAL_BG="#141414" # ${GTK_THEME_BG_COLOUR}
+FONT_COLOUR='#FFFFFF' # "#CFD8DC"
+TERMINAL_BG='#141414' # ${GTK_THEME_BG_COLOUR}
 TERMINAL_FG=${FONT_COLOUR}
-TERMINAL_BLACK_D="#3D4D51"
-TERMINAL_BLACK_L="#555753"
-TERMINAL_RED_D="#CC0000"
-TERMINAL_RED_L="#EF2929"
-TERMINAL_GREEN_D="#4E9A06"
-TERMINAL_GREEN_L="#8AE234"
-TERMINAL_YELLOW_D="#C4A000"
-TERMINAL_YELLOW_L="#FCE94F"
-TERMINAL_BLUE_D="#3465A4"
-TERMINAL_BLUE_L="#729FCF"
-TERMINAL_PURPLE_D="#75507B"
-TERMINAL_PURPLE_L="#AD7FA8"
-TERMINAL_CYAN_D="#06989A"
-TERMINAL_CYAN_L="#34E2E2"
-TERMINAL_WHITE_D="#D3D7CF"
-TERMINAL_WHITE_L="#EEEEEC"
+TERMINAL_BLACK_D='#3D4D51'
+TERMINAL_BLACK_L='#555753'
+TERMINAL_RED_D='#CC0000'
+TERMINAL_RED_L='#EF2929'
+TERMINAL_GREEN_D='#4E9A06'
+TERMINAL_GREEN_L='#8AE234'
+TERMINAL_YELLOW_D='#C4A000'
+TERMINAL_YELLOW_L='#FCE94F'
+TERMINAL_BLUE_D='#3465A4'
+TERMINAL_BLUE_L='#729FCF'
+TERMINAL_PURPLE_D='#75507B'
+TERMINAL_PURPLE_L='#AD7FA8'
+TERMINAL_CYAN_D='#06989A'
+TERMINAL_CYAN_L='#34E2E2'
+TERMINAL_WHITE_D='#D3D7CF'
+TERMINAL_WHITE_L='#EEEEEC'
 
 # TERMINAL
 TERMINAL_SIZE_COLS=128
 TERMINAL_SIZE_ROWS=32
 TERMINAL_SCROLLBACK_SIZE=15000
 TERMINAL_BOLD_TEXT_IS_BRIGHT=false
-TERMINAL_CURSOR_SHAPE="ibeam"
+TERMINAL_CURSOR_SHAPE='ibeam'
 
 if [ "${SCREEN_RESOLUTION_V}" -le 800 ]; then
     TERMINAL_SIZE_COLS=80
@@ -191,7 +191,7 @@ TEXT_EDITOR_WORD_WRAP=false
 
 if ${HAS_GUI}; then
     if [[ "${ICON_THEME}" == *"Papirus"* ]] \
-    && does_bin_exist "papirus-folders"; then
+    && does_bin_exist 'papirus-folders'; then
         CURRENT_PAPIRUS_FOLDER_COLOUR=$(papirus-folders -l -t "${ICON_THEME}" | grep ">" | sed 's/ *> *//g')
 
         if [[ "${CURRENT_PAPIRUS_FOLDER_COLOUR}" != "${ICON_THEME_FOLDER_COLOUR}" ]]; then
@@ -200,10 +200,10 @@ if ${HAS_GUI}; then
     fi
 fi
 
-if does_bin_exist "mkinitcpio"; then
+if does_bin_exist 'mkinitcpio'; then
     MKINITCPIO_CONFIG_FILE="${ROOT_ETC}/mkinitcpio.conf"
 
-    set_config_value "${MKINITCPIO_CONFIG_FILE}" "COMPRESSION" '"lz4"'
+    set_config_value "${MKINITCPIO_CONFIG_FILE}" 'COMPRESSION' '"lz4"'
 fi
 
 echo "${OS_LANGUAGE}" > "${XDG_CONFIG_HOME}/user-dirs.locale"
@@ -231,27 +231,27 @@ if [ -d "${ROOT_ETC}/modprobe.d" ]; then
     set_modprobe_option bluetooth disable_ertm 1    # Xbox One Controller Pairing
     set_modprobe_option btusb enable_autosuspend n  # Xbox One Controller Connecting, possibly other devices as well
 
-    if [ "${CHASSIS_TYPE}" == "Laptop" ]; then
+    if [ "${CHASSIS_TYPE}" == 'Laptop' ]; then
         set_modprobe_option usbcore autosuspend 1
     fi
 
     AUDIO_DRIVER="$(get_audio_driver)"
 
-    if [ "${AUDIO_DRIVER}" = "snd_hda_intel" ]; then
+    if [ "${AUDIO_DRIVER}" = 'snd_hda_intel' ]; then
         set_modprobe_option "${AUDIO_DRIVER}" power_save_controller Y
         set_modprobe_option "${AUDIO_DRIVER}" power_save 1
-    elif [ "$(get_audio_driver)" = "snd_ac97_codec" ]; then
+    elif [ "$(get_audio_driver)" = 'snd_ac97_codec' ]; then
         set_modprobe_option "${AUDIO_DRIVER}" power_save 1
     fi
 
-    if [ "$(get_wifi_driver)" = "iwlwifi" ]; then
+    if [ "$(get_wifi_driver)" = 'iwlwifi' ]; then
         set_modprobe_option iwlwifi power_save 1
         set_modprobe_option iwlwifi uapsd_disable 0
 
         IWL_MODULE=$(lsmod | grep '^iwl.vm' | awk '{print $1}')
 
-        [ "${IWL_MODULE}" = "iwldvm" ] && set_modprobe_option iwldvm force_cam 0
-        [ "${IWL_MODULE}" = "iwlmvm" ] && set_modprobe_option iwlmvm power_scheme 3
+        [ "${IWL_MODULE}" = 'iwldvm' ] && set_modprobe_option iwldvm force_cam 0
+        [ "${IWL_MODULE}" = 'iwlmvm' ] && set_modprobe_option iwlmvm power_scheme 3
     fi
 
     ### Disable unused features
@@ -280,12 +280,12 @@ if [ -d "${ROOT_ETC}/sysctl.d" ]; then
     set_config_value "${SYSCTL_CONFIG_FILE}" 'kernel.core_pattern' '|/bin/false' # Disable systemctl coredump
     set_config_value "${SYSCTL_CONFIG_FILE}" 'kernel.nmi_watchdog' 0            # Disable NMI interrupts that can consume a lot of power
 
-    if [ "${CHASSIS_TYPE}" = "Laptop" ]; then
-        set_config_value "${SYSCTL_CONFIG_FILE}" "vm.dirty_writeback_centisecs" $((DIRTY_WRITEBACK_POWERSAVE_SECS * 100))
-        set_config_value "${SYSCTL_CONFIG_FILE}" "vm.laptop_mode" 5
+    if [ "${CHASSIS_TYPE}" = 'Laptop' ]; then
+        set_config_value "${SYSCTL_CONFIG_FILE}" 'vm.dirty_writeback_centisecs' $((DIRTY_WRITEBACK_POWERSAVE_SECS * 100))
+        set_config_value "${SYSCTL_CONFIG_FILE}" 'vm.laptop_mode' 5
     else
-        set_config_value "${SYSCTL_CONFIG_FILE}" "vm.dirty_writeback_centisecs" $((DIRTY_WRITEBACK_DEFAULT_SECS * 100))
-        set_config_value "${SYSCTL_CONFIG_FILE}" "vm.laptop_mode" 0
+        set_config_value "${SYSCTL_CONFIG_FILE}" 'vm.dirty_writeback_centisecs' $((DIRTY_WRITEBACK_DEFAULT_SECS * 100))
+        set_config_value "${SYSCTL_CONFIG_FILE}" 'vm.laptop_mode' 0
     fi
 fi
 
@@ -302,7 +302,7 @@ if [ -f "${ROOT_ETC}/default/grub" ] \
 
     [ ${GRUB_BOOT_ENTRIES_COUNT} -eq 1 ] && GRUB_TIMEOUT=0
 
-    BOOT_FLAGS_DEFAULT="loglevel=3 quiet" # Defaults
+    BOOT_FLAGS_DEFAULT='loglevel=3 quiet' # Defaults
     BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} random.trust_cpu=on" # Trust the CPU random number generator rather than software. Better boot time
     BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} mitigations=off" # Trust the CPU random number generator ratherthan software. Better boot time
 
@@ -316,56 +316,56 @@ if [ -f "${ROOT_ETC}/default/grub" ] \
     set_config_value "${GRUB_CONFIG_FILE}" "GRUB_TIMEOUT" "${GRUB_TIMEOUT}"
 
     if [ -f "${ROOT_USR}/share/grub/themes/Nuci/theme.txt" ]; then
-        set_config_value "${GRUB_CONFIG_FILE}" "GRUB_THEME" "${ROOT_USR}/share/grub/themes/Nuci/theme.txt"
+        set_config_value "${GRUB_CONFIG_FILE}" 'GRUB_THEME' "${ROOT_USR}/share/grub/themes/Nuci/theme.txt"
     fi
 
-    if [ "$(get_cpu_family)" == "Intel" ]; then
+    if [ "$(get_cpu_family)" == 'Intel' ]; then
         BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} intel_idle.max_cstate=1"
     fi
 
     # Set GRUB resolution to the highest supported one
-    if [ "$(get_gpu_model)" == "GeForce GTX 1650" ]; then
+    if [ "$(get_gpu_model)" == 'GeForce GTX 1650' ]; then
         if [ "${SCREEN_RESOLUTION_H}" -ge 1280 ] \
         && [ "${SCREEN_RESOLUTION_V}" -ge 1024 ]; then
-            set_config_value "${GRUB_CONFIG_FILE}" "GRUB_GFXMODE" "1280x1024x32"
+            set_config_value "${GRUB_CONFIG_FILE}" 'GRUB_GFXMODE' '1280x1024x32'
         fi
     fi
 
-    set_config_value "${GRUB_CONFIG_FILE}" "GRUB_CMDLINE_LINUX_DEFAULT" "\"${BOOT_FLAGS_DEFAULT}\""
+    set_config_value "${GRUB_CONFIG_FILE}" 'GRUB_CMDLINE_LINUX_DEFAULT' "\"${BOOT_FLAGS_DEFAULT}\""
 fi
 
-if does_bin_exist "gdm"; then
-    set_service_property "gdm" "Service" "Type" "idle"
+if does_bin_exist 'gdm'; then
+    set_service_property 'gdm' 'Service' 'Type' 'idle'
 fi
 
-if does_bin_exist "gnome-shell"; then
+if does_bin_exist 'gnome-shell'; then
     if ${POWERFUL_PC}; then
-        set_gsetting "org.gnome.settings-daemon.plugins.remote-display" active true
-        set_gsetting "org.gnome.desktop.interface" enable-animations true
+        set_gsetting 'org.gnome.settings-daemon.plugins.remote-display' active true
+        set_gsetting 'org.gnome.desktop.interface' enable-animations true
     else
-        set_gsetting "org.gnome.settings-daemon.plugins.remote-display" active false
-        set_gsetting "org.gnome.desktop.interface" enable-animations false
+        set_gsetting 'org.gnome.settings-daemon.plugins.remote-display' active false
+        set_gsetting 'org.gnome.desktop.interface' enable-animations false
     fi
 
-    set_gsetting "org.gnome.desktop.calendar" show-weekdate true
-    set_gsetting "org.gnome.desktop.datetime" automatic-timezone true
+    set_gsetting 'org.gnome.desktop.calendar' show-weekdate true
+    set_gsetting 'org.gnome.desktop.datetime' automatic-timezone true
 
-    set_gsetting "org.gnome.desktop.interface" clock-format "24h"
-    set_gsetting "org.gnome.desktop.interface" clock-show-weekday true
-    set_gsetting "org.gnome.desktop.interface" enable-hot-corners false
-    set_gsetting "org.gnome.desktop.interface" toolbar-icons-size 'small'
-    set_gsetting "org.gnome.desktop.interface" toolbar-style 'icons'
+    set_gsetting 'org.gnome.desktop.interface' clock-format '24h'
+    set_gsetting 'org.gnome.desktop.interface' clock-show-weekday true
+    set_gsetting 'org.gnome.desktop.interface' enable-hot-corners false
+    set_gsetting 'org.gnome.desktop.interface' toolbar-icons-size 'small'
+    set_gsetting 'org.gnome.desktop.interface' toolbar-style 'icons'
 
     # Font
-    set_gsetting "org.gnome.desktop.interface" font-antialiasing 'grayscale'
-    set_gsetting "org.gnome.desktop.interface" font-hinting 'slight'
+    set_gsetting 'org.gnome.desktop.interface' font-antialiasing 'grayscale'
+    set_gsetting 'org.gnome.desktop.interface' font-hinting 'slight'
 
-    set_gsetting "org.gnome.desktop.privacy" old-files-age "uint32 7"
-    set_gsetting "org.gnome.desktop.privacy" remove-old-temp-files true
-    set_gsetting "org.gnome.desktop.privacy" remove-old-trash-files true
+    set_gsetting 'org.gnome.desktop.privacy' old-files-age 'uint32 7'
+    set_gsetting 'org.gnome.desktop.privacy' remove-old-temp-files true
+    set_gsetting 'org.gnome.desktop.privacy' remove-old-trash-files true
 
-    set_gsetting "org.gnome.desktop.peripherals.touchpad" click-method "default"
-    set_gsetting "org.gnome.desktop.peripherals.touchpad" tap-to-click true
+    set_gsetting 'org.gnome.desktop.peripherals.touchpad' click-method 'default'
+    set_gsetting 'org.gnome.desktop.peripherals.touchpad' tap-to-click true
 
     set_gsetting "org.gnome.desktop.interface" clock-show-date true
     set_gsetting "org.gnome.desktop.interface" cursor-theme "${CURSOR_THEME}"
@@ -377,46 +377,44 @@ if does_bin_exist "gnome-shell"; then
     set_gsetting "org.gnome.desktop.interface" show-battery-percentage true
 
     if ${DESKTOP_THEME_IS_DARK}; then
-        set_gsetting "org.gnome.desktop.interface" color-scheme "prefer-dark"
+        set_gsetting 'org.gnome.desktop.interface' color-scheme 'prefer-dark'
     else
-        set_gsetting "org.gnome.desktop.interface" color-scheme "default"
+        set_gsetting 'org.gnome.desktop.interface' color-scheme 'default'
     fi
 
-    set_gsetting "org.gnome.desktop.peripherals.touchpad" disable-while-typing false
+    set_gsetting 'org.gnome.desktop.peripherals.touchpad' disable-while-typing false
 
-    set_gsetting "org.gnome.mutter" attach-modal-dialogs false
-    set_gsetting "org.gnome.mutter" center-new-windows true
+    set_gsetting 'org.gnome.mutter' attach-modal-dialogs false
+    set_gsetting 'org.gnome.mutter' center-new-windows true
 
-    set_gsetting "org.gnome.settings-daemon.plugins.housekeeping" free-size-gb-no-notify 2
-    set_gsetting "org.gnome.settings-daemon.plugins.color" night-light-enabled true
+    set_gsetting 'org.gnome.settings-daemon.plugins.housekeeping' free-size-gb-no-notify 2
+    set_gsetting 'org.gnome.settings-daemon.plugins.color' night-light-enabled true
 
-    set_gsetting "org.gnome.SessionManager" logout-prompt false
+    set_gsetting 'org.gnome.SessionManager' logout-prompt false
 
-    set_gsetting "org.gnome.shell.overrides" attach-modal-dialogs false
+    set_gsetting 'org.gnome.shell.overrides' attach-modal-dialogs false
 fi
 
-if is_gnome_shell_extension_installed "blur-my-shell"; then
-    BMS_SCHEMA="org.gnome.shell.extensions.blur-my-shell"
+if is_gnome_shell_extension_installed 'blur-my-shell'; then
+    BMS_SCHEMA='org.gnome.shell.extensions.blur-my-shell'
 
     set_gsetting "${BMS_SCHEMA}.dash-to-dock" blur false
     set_gsetting "${BMS_SCHEMA}.panel" blur true
     set_gsetting "${BMS_SCHEMA}.panel" unblur-dynamically true
 fi
 
-if is_gnome_shell_extension_installed "user-theme"; then
-    [[ "${GTK_THEME}" != adw-gtk3* ]] && set_gsetting "org.gnome.shell.extensions.user-theme" name "${GTK_THEME}"
+if is_gnome_shell_extension_installed 'user-theme'; then
+    [[ "${GTK_THEME}" != adw-gtk3* ]] && set_gsetting 'org.gnome.shell.extensions.user-theme' name "${GTK_THEME}"
 fi
 
-if is_gnome_shell_extension_installed "multi-monitors-add-on"; then
-    MMA_SCHEMA="org.gnome.shell.extensions.multi-monitors-add-on"
+is_gnome_shell_extension_installed 'multi-monitors-add-on' && \
+    set_gsetting 'org.gnome.shell.extensions.multi-monitors-add-on' \
+        show-indicator false
 
-    set_gsetting "${MMA_SCHEMA}" show-indicator false
-fi
-
-if does_bin_exist "panther_launcher"; then
-    set_gsetting "org.rastersoft.panther" icon-size 48
-    set_gsetting "org.rastersoft.panther" use-category true
-fi
+does_bin_exist 'panther_launcher' && \
+    set_gsettings 'org.rastersoft.panther' \
+        icon-size 48 \
+        use-category true
 
 if ${HAS_GUI}; then
     ENVIRONMENT_VARS_FILE="${ROOT_ETC}/environment"
@@ -485,36 +483,36 @@ if ${HAS_GUI}; then
     fi
 fi
 
-if does_bin_exist "makepkg"; then
+if does_bin_exist 'makepkg'; then
     MAKEPKG_CONFIG_FILE="${ROOT_ETC}/makepkg.conf"
 
-    set_config_value "${MAKEPKG_CONFIG_FILE}" "COMPRESSXZ" '(xz -c -z --threads=0 -)'
-    set_config_value "${MAKEPKG_CONFIG_FILE}" "COMPRESSZST" '(zstd -c -z -q --threads=0 -)'
+    set_config_value "${MAKEPKG_CONFIG_FILE}" 'COMPRESSXZ' '(xz -c -z --threads=0 -)'
+    set_config_value "${MAKEPKG_CONFIG_FILE}" 'COMPRESSZST' '(zstd -c -z -q --threads=0 -)'
 
-    if does_bin_exist "pbzip2"; then
-        set_config_value "${MAKEPKG_CONFIG_FILE}" "COMPRESSBZ2" "(pbzip2 -c -f)"
+    if does_bin_exist 'pbzip2'; then
+        set_config_value "${MAKEPKG_CONFIG_FILE}" 'COMPRESSBZ2' "(pbzip2 -c -f)"
     else
-        set_config_value "${MAKEPKG_CONFIG_FILE}" "COMPRESSBZ2" "(bzip2 -c -f)"
+        set_config_value "${MAKEPKG_CONFIG_FILE}" 'COMPRESSBZ2' "(bzip2 -c -f)"
     fi
 
-    if does_bin_exist "pigz"; then
-        set_config_value "${MAKEPKG_CONFIG_FILE}" "COMPRESSGZ" "(pigz -c -f -n)"
+    if does_bin_exist 'pigz'; then
+        set_config_value "${MAKEPKG_CONFIG_FILE}" 'COMPRESSGZ' "(pigz -c -f -n)"
     else
-        set_config_value "${MAKEPKG_CONFIG_FILE}" "COMPRESSGZ" "(gzip -c -f -n)"
+        set_config_value "${MAKEPKG_CONFIG_FILE}" 'COMPRESSGZ' "(gzip -c -f -n)"
     fi
 fi
 
 if [ -f "${XDG_CONFIG_HOME}/lxsession/LXDE/desktop.conf" ]; then
     LXSESSION_CONFIG_FILE="${XDG_CONFIG_HOME}/lxsession/LXDE/desktop.conf"
 
-    LXDE_WM=""
+    LXDE_WM=''
 
-    if does_bin_exist "openbox"; then
-        LXDE_WM="openbox-lxde"
-    elif does_bin_exist "xfwm4"; then
-        LXDE_WM="mutter"
-    elif does_bin_exist "mutter"; then
-        LXDE_WM="mutter"
+    if does_bin_exist 'openbox'; then
+        LXDE_WM='openbox-lxde'
+    elif does_bin_exist 'xfwm4'; then
+        LXDE_WM='mutter'
+    elif does_bin_exist 'mutter'; then
+        LXDE_WM='mutter'
     fi
 
     [ -n "${LXDE_WM}" ] && set_config_value "${LXSESSION_CONFIG_FILE}" window_manager "${LXDE_WM}"
@@ -530,12 +528,10 @@ fi
 ##################
 ### 2FA Client ###
 ##################
-if does_bin_exist "com.belmoussaoui.Authenticator"; then
-    AUTHENTICATOR_SCHEMA="com.belmoussaoui.Authenticator"
-
-    set_gsetting "${AUTHENTICATOR_SCHEMA}" dark-theme ${DESKTOP_THEME_IS_DARK}
-    set_gsetting "${AUTHENTICATOR_SCHEMA}" is-maximized false
-fi
+does_bin_exist 'com.belmoussaoui.Authenticator' && \
+    set_gsettings 'com.belmoussaoui.Authenticator' \
+        dark-theme ${DESKTOP_THEME_IS_DARK} \
+        is-maximized false
 
 ###################
 ### Ad Blockers ###
@@ -554,19 +550,19 @@ fi
 ##################
 ### App Stores ###
 ##################
-if does_bin_exist "gnome-software"; then
-    set_gsetting "org.gnome.software" download-updates false
-    set_gsetting "org.gnome.software" download-updates-notify false
-fi
+does_bin_exist 'gnome-software' && \
+    set_gsettings 'org.gnome.software' \
+        download-updates false \
+        download-updates-notify false
 
 ########################
 ### Archive Managers ###
 ########################
-if does_bin_exist "file-roller" "org.gnome.FileRoller"; then
-    set_gsetting "org.gnome.FileRoller.General" compression-level "maximum"
-    set_gsetting "org.gnome.FileRoller.General" sort-method "name"
-    set_gsetting "org.gnome.FileRoller.General" sort-type "ascending"
-fi
+does_bin_exist 'file-roller' 'org.gnome.FileRoller' && \
+    set_gsettings 'org.gnome.FileRoller.General' \
+        compression-level 'maximum' \
+        sort-method 'name' \
+        sort-type 'ascending'
 
 #############
 ### Audio ###
