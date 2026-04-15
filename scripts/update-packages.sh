@@ -42,3 +42,7 @@ if does_bin_exist 'gnome-shell-extension-installer'; then
       grep -v 'Type a version to install' | \
       grep -v '^\s*$'
 fi
+
+if [ "${DISTRO_FAMILY}" = 'Ubuntu' ]; then
+    does_bin_exist 'pihole' && run_as_su pihole -up
+fi
