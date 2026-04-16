@@ -12,6 +12,10 @@ ROOT_USR_BIN="${ROOT_USR}/bin"
 
 # Functions
 
+function poweroff() {
+    systemctl poweroff -i "${@}"
+}
+
 function edit() {
     if [ -z "${EDITOR}" ]; then
         echo "ERROR: the \$EDITOR variable is not set!"
