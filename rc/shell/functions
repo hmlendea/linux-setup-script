@@ -13,7 +13,7 @@ ROOT_USR_BIN="${ROOT_USR}/bin"
 # Functions
 
 function poweroff() {
-    systemctl poweroff -i "${@}"
+    su -c 'systemctl poweroff -i $*'
 }
 
 function edit() {
