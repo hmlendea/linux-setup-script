@@ -34,14 +34,9 @@ echo "    IdentityFile ${KEY_FILE_PATH}" >> "${SSH_CONFIG_FILE_PATH}"
 chmod 600 "${SSH_CONFIG_FILE_PATH}"
 ssh-add -l
 
-if [ -f "/usr/bin/xclip" ]; then
-    echo "Copying the key to the clipboard..."
-    xclip -selection clipboard < "${KEY_FILE_PATH}.pub"
-else
-    echo "Please copy the key into the clipboard manually:"
-    cat "${KEY_FILE_PATH}.pub"
-    echo ""
-fi
+echo "Please copy the key into the clipboard manually:"
+cat "${KEY_FILE_PATH}.pub"
+echo ""
 
 echo "Next you will need to register the key on your account..."
 if [ -f "/usr/bin/xdg-open" ]; then
