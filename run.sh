@@ -90,6 +90,7 @@ fi
 
 if [ "${OS}" = 'Linux' ]; then
     run_script_as_su "${REPO_SCRIPTS_DIR}/enable-services.sh"
+    run_script_as_su "${REPO_SCRIPTS_DIR}/configure-hardware-integration.sh"
     does_bin_exist 'grub-mkconfig' && run_script_as_su "${REPO_SCRIPTS_DIR}/update-grub.sh" # Run after configure-system.sh
 fi
 run_script "${REPO_SCRIPTS_DIR}/configure-directories.sh"

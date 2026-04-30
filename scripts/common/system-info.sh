@@ -178,7 +178,9 @@ function get_arch_family() {
 }
 
 function get_device_model() {
-    if [ -f "${ROOT_SYS_DEVICES}/virtual/dmi/id/product_family" ]; then
+    if systemctl list-units | grep -q argononeup; then
+        echo 'Argon ONE Up'
+    elif [ -f "${ROOT_SYS_DEVICES}/virtual/dmi/id/product_family" ]; then
         cat "${ROOT_SYS_DEVICES}/virtual/dmi/id/product_family"
     elif [ -f "${ROOT_PROC}/device-tree/model" ]; then
         local DEVICE_MODEL=$(cat -A "${ROOT_PROC}/device-tree/model")
@@ -566,15 +568,20 @@ function get_chassis_type() {
         return
     fi
 
+    if [ "$(get_device_model)" = 'Argon ONE Up' ]; then
+        echo 'Laptop'
+        return
+    fi
+
     if does_bin_exist "uname" \
     && uname -r | grep -q "raspberry\|rpi"; then
-        echo "SBC"
+        echo 'SBC'
         return
     fi
 
     if [ -f "${ROOT_PROC}/device-tree/model" ] \
     && grep -aq "Raspberry" "${ROOT_PROC}/device-tree/model"; then
-        echo "SBC"
+        echo 'SBC'
         return
     fi
 

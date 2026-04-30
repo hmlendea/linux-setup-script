@@ -348,7 +348,9 @@ fi
 if ${HAS_GUI}; then
     if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
     || [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
-        install_native_package 'gnome-bluetooth'
+        if [ "${DISTRO_FAMILY}" != 'Debian' ]; then
+            install_native_package 'gnome-bluetooth'
+        fi
     elif ! [[ "${DEVICE_MODEL}" =~ 'iPhone' ]] \
       && ! [[ "${DISTRO}" =~ 'WSL' ]] \
       && [ "${DISTRO_FAMILY}" != 'Android' ]; then
@@ -416,7 +418,8 @@ if ${HAS_GUI}; then
         if [ "${OS}" = 'Android' ]; then
             install_android_remote_package 'https://updates.signal.org/android/Signal-Android-website-prod-universal-release-7.6.2.apk' 'org.thoughtcrime.securesms'
         else
-            if [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+            if [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ] \
+            || [ "${ARCH_FAMILY}" = 'arm' ]; then
                 install_flatpak 'de.schmidhuberj.Flare'
             else
                 install_flatpak 'org.signal.Signal'
@@ -828,7 +831,7 @@ if [ "${OS}" = 'Linux' ]; then
         #install_native_package rsync
 
         # System management
-        [[ "${ARCH_FAMILY}" == "x86" ]] && install_native_package thermald
+        [ "${ARCH_FAMILY}" = 'x86' ] && install_native_package 'thermald'
 
         # Display Server, Drivers, FileSystems, etc
         #install_native_package xorg-server
@@ -837,7 +840,7 @@ if [ "${OS}" = 'Linux' ]; then
         # Desktop Environment & Base applications
         install_native_package xdg-user-dirs
 
-        if [[ "${DESKTOP_ENVIRONMENT}" == 'GNOME' ]]; then
+        if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
             install_native_package 'gnome-shell'
 
             if [ "${DISTRO_FAMILY}" = 'Debian' ]; then
@@ -851,10 +854,10 @@ if [ "${OS}" = 'Linux' ]; then
             install_flatpak 'org.gnome.font-viewer'
             install_flatpak 'org.gnome.NetworkDisplays'
 
-            if is_native_package_installed flatpak; then
-                install_native_package xdg-desktop-portal-gnome
+            if is_native_package_installed 'flatpak'; then
+                install_native_package 'xdg-desktop-portal-gnome'
             fi
-        elif [[ "${DESKTOP_ENVIRONMENT}" == "LXDE" ]]; then
+        elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
             install_native_package mutter # openbox
             install_native_package lxde-common
             install_native_package lxdm
@@ -877,39 +880,52 @@ if [ "${OS}" = 'Linux' ]; then
                 install_native_package_dependency evolution-data-server # To make GOA contacts, tasks, etc. available in apps
             fi
 
-            ! ${POWERFUL_PC} && install_native_package plank
+#            ! ${POWERFUL_PC} && install_native_package plank
         fi
 
         # GNOME Shell Extensions
-        if ${POWERFUL_PC} && [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
+        if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
             # Base
             install_flatpak 'com.mattjakeman.ExtensionManager'
             install_native_package gnome-shell-extensions
             install_native_package gnome-shell-extension-installer
 
             # Enhancements
-            if does_bin_exist "plank"; then
-                install_gnome_shell_extension "dash-to-plank"
+            if does_bin_exist 'plank'; then
+                install_gnome_shell_extension 'dash-to-plank'
             else
-                install_native_package "gnome-shell-extension-dash-to-dock"
-                #install_gnome_shell_extension "dash-to-dock"
+                if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
+                    install_native_package 'gnome-shell-extension-dash-to-dock'
+                elif [ "${DISTRO_FAMILY}" = 'Debian' ] \
+                  || [ "${DISTRO_FAMILY}" = 'Ubuntu' ]; then
+                    install_native_package 'gnome-shell-extension-dashtodock'
+                else
+                    install_gnome_shell_extension 'dash-to-dock'
+                fi
             fi
 
-            install_gnome_shell_extension "multi-monitors-add-on"
-            #install_gnome_shell_extension "wintile"
-
             # New features
-            install_native_package "gnome-shell-extension-bluetooth-battery-meter-git"
-            #install_gnome_shell_extension "gsconnect"
-            #install_gnome_shell_extension 5470 #"weatheroclock@CleoMenezesJr.github.io"
-
-            # Appearance
-            install_gnome_shell_extension "blur-my-shell"
+            install_native_package 'gnome-shell-extension-bluetooth-battery-meter-git'
 
             # Remove annoyances
-            install_gnome_shell_extension "windowIsReady_Remover"
-            install_gnome_shell_extension "no-overview"
-            install_gnome_shell_extension "Hide_Activities"
+            install_gnome_shell_extension 'no-overview'
+
+            if [ "${DISTRO_FAMILY}" = 'Debian' ] \
+            || [ "${DISTRO_FAMILY}" = 'Ubuntu' ]; then
+                install_native_package 'gnome-shell-extension-hide-activities'
+                install_native_package 'gnome-shell-extension-no-annoyance'
+            else
+                install_gnome_shell_extension 'Hide_Activities'
+                install_gnome_shell_extension 'windowIsReady_Remover'
+            fi
+
+            if ${POWERFUL_PC}; then
+                install_gnome_shell_extension 'multi-monitors-add-on'
+                #install_gnome_shell_extension "wintile"
+
+                # Appearance
+                install_gnome_shell_extension 'blur-my-shell'
+            fi
         fi
 
         #if ${IS_GENERAL_PURPOSE_DEVICE}; then

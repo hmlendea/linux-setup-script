@@ -233,6 +233,10 @@ if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
     uninstall_flatpak "com.microsoft.Teams" # Unsupported anymore, using com.github.IsmaelMartinez.teams_for_linux instead
     uninstall_native_package "code-nautilus-git" # Does not work in modern Nautilus nor is it strictly required anymore
 
+    # Parental Controls
+    uninstall_native_package 'malcontent'
+    uninstall_native_package 'malcontent-gui'
+
     # Removed altogether
     uninstall_native_package "bc" # Mathematical calculator
     uninstall_native_package "bison"

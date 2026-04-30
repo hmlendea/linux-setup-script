@@ -35,7 +35,7 @@ function add_arch_repository {
     fi
 }
 
-function add_apt_repository() {
+function add_apt_repository_deb() {
     local REPO_NAME="${1}"
     local REPO_DEB_URL="${2}"
 
@@ -54,12 +54,39 @@ function add_apt_repository() {
     sudo apt update
 }
 
+function add_apt_repository_manual() {
+    local REPO_NAME="${1}"
+    local REPO_LINE="${2}"
+    local KEY_URL="${3}"
+    local KEYRING_PATH="/usr/share/keyrings/${REPO_NAME}.gpg"
+    local LIST_FILE="/etc/apt/sources.list.d/${REPO_NAME}.list"
+
+    if [ -f "${LIST_FILE}" ]; then
+        return 0
+    fi
+
+    wget -qO- "${KEY_URL}" \
+        | gpg --dearmor \
+        | run_as_su tee "${KEYRING_PATH}" >/dev/null || return 1
+
+    echo "${REPO_LINE}" \
+        | run_as_su tee "${LIST_FILE}" >/dev/null || return 1
+
+    run_as_su apt update
+}
+
 function add_repository() {
+    local REPO_URL="${2}"
+
     if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
-        add_arch_repository ${*}
+        add_arch_repository "${@}"
     elif [ "${DISTRO_FAMILY}" = 'Debian' ] \
       || [ "${DISTRO_FAMILY}" = 'Ubuntu' ]; then
-        add_apt_repository ${*}
+        if [[ "${REPO_URL}" == *.deb ]]; then
+            add_apt_repository_deb "${@}"
+        else
+            add_apt_repository_manual "${@}"
+        fi
     fi
 }
 
@@ -107,5 +134,12 @@ if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
     fi
 elif [ "${DISTRO}" = 'Raspberry Pi OS' ]; then
     DEBIAN_VERSION="$(. /etc/os-release && echo "${VERSION_ID}")"
-    add_repository 'packages-microsoft-prod' "https://packages.microsoft.com/config/debian/${DEBIAN_VERSION}/packages-microsoft-prod.deb"
+
+    add_repository \
+        'packages-microsoft-prod' \
+        "https://packages.microsoft.com/config/debian/${DEBIAN_VERSION}/packages-microsoft-prod.deb"
+#    add_repository \
+#        'signal-desktop' \
+#        'deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop.gpg] https://updates.signal.org/desktop/apt xenial main' \
+#        'https://updates.signal.org/desktop/apt/keys.asc'
 fi

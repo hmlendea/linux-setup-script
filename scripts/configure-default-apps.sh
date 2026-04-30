@@ -106,6 +106,8 @@ fi
 SIGNAL_LAUNCHER=''
 if does_bin_exist 'org.signal.Signal'; then
     SIGNAL_LAUNCHER='org.signal.Signal.desktop'
+elif does_bin_exist 'de.schmidhuberj.Flare'; then
+    SIGNAL_LAUNCHER='de.schmidhuberj.Flare.desktop'
 elif does_bin_exist 'signal-desktop'; then
     SIGNAL_LAUNCHER='signal-desktop.desktop'
 fi
