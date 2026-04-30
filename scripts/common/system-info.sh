@@ -725,7 +725,7 @@ HAS_SU_PRIVILEGES=true
 HAS_EFI_SUPPORT=false
 DEVICE_TYPE='PC'
 
-if [ "${CHASSIS_TYPE}" = "Phone" ]; then
+if [ "${CHASSIS_TYPE}" = 'Phone' ]; then
     POWERFUL_PC=false
     IS_DEVELOPMENT_DEVICE=false
     IS_GENERAL_PURPOSE_DEVICE=true
@@ -735,11 +735,11 @@ if [ "${CHASSIS_TYPE}" = "Phone" ]; then
     HAS_SU_PRIVILEGES=false
     HAS_EFI_SUPPORT=false
 else
-    if [ "${CHASSIS_TYPE}" = "Laptop" ]; then
+    if [ "${CHASSIS_TYPE}" = 'Laptop' ]; then
         IS_BATTERY_DEVICE=true
     fi
 
-    if [ "${CHASSIS_TYPE}" = "Gaming Handheld" ]; then
+    if [ "${CHASSIS_TYPE}" = 'Gaming Handheld' ]; then
         IS_DEVELOPMENT_DEVICE=false
         IS_GENERAL_PURPOSE_DEVICE=false
         IS_GAMING_DEVICE=true

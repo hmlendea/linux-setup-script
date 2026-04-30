@@ -98,6 +98,7 @@ function package_manager_command() {
         PACKAGE_MANAGER_FAMILY='apt'
 
         if [[ "${OPERATION}" != 'info' ]] \
+        && [[ "${OPERATION}" != 'list' ]] \
         && [[ "${OPERATION}" != 'search' ]]; then
             PACKAGE_MANAGER_COMMAND="${PACKAGE_MANAGER_COMMAND} -y"
         fi

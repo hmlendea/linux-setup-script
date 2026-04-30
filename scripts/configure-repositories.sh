@@ -6,7 +6,7 @@ source "${REPO_DIR}/scripts/common/system-info.sh"
 PACMAN_CONF_FILE_PATH="${ROOT_ETC}/pacman.conf"
 DATABASES_NEED_UPDATING=false
 
-function add_repository {
+function add_arch_repository {
     local NAME="${1}"
     local SERVER="${2}"
     local INCLUDE="${3}"
@@ -32,6 +32,34 @@ function add_repository {
             pacman-key --finger "${KEY}"
             pacman-key --lsign "${KEY}"
         fi
+    fi
+}
+
+function add_apt_repository() {
+    local REPO_NAME="${1}"
+    local REPO_DEB_URL="${2}"
+
+    if dpkg -s "${REPO_NAME}" >/dev/null 2>&1; then
+        return 0
+    fi
+
+    local TMP_FILE="${LOCAL_INSTALL_TEMP_DIR}/${REPO_NAME}.deb"
+
+    [ ! -d "${LOCAL_INSTALL_TEMP_DIR}" ] && mkdir -p "${LOCAL_INSTALL_TEMP_DIR}"
+
+    wget -q "${REPO_DEB_URL}" -O "${TMP_FILE}" || return 1
+    run_as_su dpkg -i "${TMP_FILE}" || return 1
+    rm -f "${TMP_FILE}"
+
+    sudo apt update
+}
+
+function add_repository() {
+    if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
+        add_arch_repository ${*}
+    elif [ "${DISTRO_FAMILY}" = 'Debian' ] \
+      || [ "${DISTRO_FAMILY}" = 'Ubuntu' ]; then
+        add_apt_repository ${*}
     fi
 }
 
@@ -77,4 +105,7 @@ if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
             add_repository 'hmlendea-x86_64' 'https://github.com/hmlendea/PKGBUILDs/releases/latest/download/' '' 'Never'
         fi
     fi
+elif [ "${DISTRO}" = 'Raspberry Pi OS' ]; then
+    DEBIAN_VERSION="$(. /etc/os-release && echo "${VERSION_ID}")"
+    add_repository 'packages-microsoft-prod' "https://packages.microsoft.com/config/debian/${DEBIAN_VERSION}/packages-microsoft-prod.deb"
 fi

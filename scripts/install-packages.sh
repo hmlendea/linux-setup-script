@@ -97,19 +97,25 @@ install_native_package 'automake'
 ### Development - Runtimes & SDKs ###
 #####################################
 if ${IS_DEVELOPMENT_DEVICE}; then
-    install_native_package 'dotnet-sdk'
-    install_native_package 'python'
+    if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
+        install_native_package 'dotnet-sdk'
+        install_native_package 'python'
+
+        if [ "${ARCH_FAMILY}" = 'x86' ]; then
+            install_native_package 'dotnet-runtime'
+            install_native_package 'aspnet-runtime'
+        elif [ "${ARCH_FAMILY}" = 'arm' ]; then
+            install_native_package 'dotnet-runtime-bin'
+            install_native_package 'aspnet-runtime-bin'
+        fi
+    else
+        install_native_package 'dotnet-sdk-10.0'
+        install_native_package 'python3'
+    fi
+
     #install_native_package 'python2'
     #install_native_package 'mono'
     #install_native_package 'jre-openjdk-headless'
-
-    if [ "${ARCH_FAMILY}" = 'x86' ]; then
-        install_native_package 'dotnet-runtime'
-        install_native_package 'aspnet-runtime'
-    elif [ "${ARCH_FAMILY}" = 'arm' ]; then
-        install_native_package 'dotnet-runtime-bin'
-        install_native_package 'aspnet-runtime-bin'
-    fi
 fi
 
 ###############
@@ -569,8 +575,12 @@ fi
 ############
 if ${HAS_GUI} && ${IS_DEVELOPMENT_DEVICE}; then
     # Development
-    [ "${ARCH_FAMILY}" = 'x86' ] && install_native_package 'visual-studio-code-bin'
-    [ "${ARCH_FAMILY}" = 'arm' ] && install_native_package 'code-headmelted-bin'
+    if [ "${DISTRO_FAMILY}" = 'Debian' ]; then
+        install_native_package 'code'
+    else
+        [ "${ARCH_FAMILY}" = 'x86' ] && install_native_package 'visual-studio-code-bin'
+        [ "${ARCH_FAMILY}" = 'arm' ] && install_native_package 'code-headmelted-bin'
+    fi
 
     install_vscode_package 'dakara.transformer'
     install_vscode_package 'johnpapa.vscode-peacock'
