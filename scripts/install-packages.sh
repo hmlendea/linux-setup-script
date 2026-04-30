@@ -612,7 +612,11 @@ if ${HAS_GUI}; then
         fi
     fi
 
-    install_native_package 'libheif' # Support for diplaying HEIC
+    if [ "${DISTRO_FAMILY}" = 'Debian' ]; then
+        install_native_package 'libheif1' # Support for diplaying HEIC
+    else
+        install_native_package 'libheif' # Support for diplaying HEIC
+    fi
 fi
 
 #########################
@@ -756,10 +760,16 @@ if "${HAS_GUI}"; then
         install_flatpak 'org.kde.KStyle.Adwaita'
     fi
 
-    [ "${CHASSIS_TYPE}" != 'Phone' ] && install_native_package 'vimix-cursors'
+    if [ "${CHASSIS_TYPE}" != 'Phone' ]; then
+        if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
+            install_native_package 'vimix-cursors'
+        fi
+    fi
 
     install_native_package 'papirus-icon-theme'
-    install_native_package 'papirus-folders'
+    if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
+        install_native_package 'papirus-folders'
+    fi
 fi
 
 ###########################
@@ -817,13 +827,19 @@ if [ "${OS}" = 'Linux' ]; then
         # Desktop Environment & Base applications
         install_native_package xdg-user-dirs
 
-        if [[ "${DESKTOP_ENVIRONMENT}" == "GNOME" ]]; then
-            install_native_package gnome-shell
-            install_native_package gdm
-            install_native_package_dependency gnome-control-center
-            #install_native_package gnome-backgrounds
-            install_flatpak org.gnome.font-viewer
-            install_flatpak org.gnome.NetworkDisplays
+        if [[ "${DESKTOP_ENVIRONMENT}" == 'GNOME' ]]; then
+            install_native_package 'gnome-shell'
+
+            if [ "${DISTRO_FAMILY}" = 'Debian' ]; then
+                install_native_package 'gdm3'
+            else
+                install_native_package 'gdm'
+            fi
+
+            install_native_package_dependency 'gnome-control-center'
+            #install_native_package 'gnome-backgrounds'
+            install_flatpak 'org.gnome.font-viewer'
+            install_flatpak 'org.gnome.NetworkDisplays'
 
             if is_native_package_installed flatpak; then
                 install_native_package xdg-desktop-portal-gnome
@@ -839,9 +855,15 @@ if [ "${OS}" = 'Linux' ]; then
         fi
 
         if ${IS_GENERAL_PURPOSE_DEVICE}; then
-            if is_native_package_installed "gnome-shell"; then
-                install_native_package_dependency gvfs-goa
-                install_native_package_dependency gvfs-dnssd # For WebDAV
+            if is_native_package_installed 'gnome-shell'; then
+                if [ "${DISTRO_FAMILY}" = 'Debian' ]; then
+                    install_native_package_dependency 'gvfs-backends'
+                    install_native_package_dependency 'gnome-online-accounts'
+                else
+                    install_native_package_dependency 'gvfs-goa'
+                    install_native_package_dependency 'gvfs-dnssd' # For WebDAV
+                fi
+
                 install_native_package_dependency evolution-data-server # To make GOA contacts, tasks, etc. available in apps
             fi
 
@@ -849,9 +871,9 @@ if [ "${OS}" = 'Linux' ]; then
         fi
 
         # GNOME Shell Extensions
-        if ${POWERFUL_PC} && [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ]; then
+        if ${POWERFUL_PC} && [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
             # Base
-            install_flatpak "com.mattjakeman.ExtensionManager"
+            install_flatpak 'com.mattjakeman.ExtensionManager'
             install_native_package gnome-shell-extensions
             install_native_package gnome-shell-extension-installer
 
