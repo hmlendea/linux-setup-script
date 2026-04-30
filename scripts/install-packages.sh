@@ -129,6 +129,8 @@ if [ "${DISTRO_FAMILY}" = 'Arch' ] \
 && [ "${DISTRO}" != 'SteamOS' ] \
 && ${HAS_GUI}; then
     install_native_package 'fastfetch'
+elif [ "${DISTRO_FAMILY}" = 'Debian' ]; then
+    install_native_package 'fastfetch'
 else
     install_native_package 'neofetch'
 fi
