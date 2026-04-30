@@ -42,6 +42,9 @@ function keep_first_installed_package() {
     done
 }
 
+# Calculator Apps
+keep_first_installed_package 'org.gnome.Calculator' 'gnome-calculator' 'galculator'
+
 # Calendar Apps
 keep_first_installed_package 'org.fossify.calendar' 'foundation.e.calendar'
 keep_first_installed_package 'org.gnome.Calendar' 'gnome-calendar'
@@ -85,7 +88,7 @@ fi
 keep_first_installed_package 'dev.alextren.Spot' 'com.spotify.Client'
 uninstall_android_package 'org.lineageos.eleven'
 uninstall_android_package 'com.xiaomi.mimusic2'
-[ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] && keep_first_installed_package 'org.gnome.Decibels' 'io.bassi.Amberol' 'org.gnome.Rhythmbox3'
+[ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] && keep_first_installed_package 'org.gnome.Decibels' 'io.bassi.Amberol' 'org.gnome.Rhythmbox3' 'rhythmbox'
 [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ] && keep_first_installed_package 'io.bassi.Amberol' 'org.gnome.Decibels' 'org.gnome.Rhythmbox3'
 
 # Note Taking apps
@@ -102,6 +105,7 @@ keep_first_installed_package 'gnome-console' 'gnome-terminal'
 
 # Text Editors
 keep_first_installed_package 'micro' 'nano' 'vim' 'vi'
+keep_first_installed_package 'org.gnome.TextEditor' 'org.gnome.gedit' 'mousepad' 'geany'
 
 if ! does_bin_exist 'vim'; then
     uninstall_native_package 'vim-common'
@@ -132,7 +136,6 @@ if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
     uninstall_native_package "dconf-editor"                 # Replaced by flatpak: ca.desrt.dconf-editor
     uninstall_native_package "fastfetch-git"                # Replaced by fastfetch
     uninstall_native_package "fragments"                    # Replaced by flatpak: de.haeckerfelix.Fragments
-    uninstall_native_package "gnome-calculator"             # Replaced by flatpak: org.gnome.Calculator
     uninstall_native_package "gnome-contacts"               # Replaced by flatpak: org.gnome.Contacts
     uninstall_native_package "gnome-clocks"                 # Replaced by flatpak: org.gnome.Clocks
     uninstall_native_package "gnome-font-viewer"            # Replaced by flatpak: org.gnome.font-viewer
@@ -145,7 +148,6 @@ if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
     uninstall_native_package "ntp"                          # Replaced by chrony
     uninstall_native_package "paper-icon-theme-git"         # Replaced by paper-icon-theme
     uninstall_native_package "postman-bin"                  # Replaced by flatpak: com.getpostman.Postman
-    uninstall_native_package "rhythmbox"                    # Replaced by flatpak: org.gnome.Rhythmbox3
     uninstall_native_package "seahorse"                     # Replaced by flatpak: org.gnome.seahorse.Application
     uninstall_native_package "simplenote-electron-bin"      # Replaced by flatpak: com.simplenote.Simplenote
     uninstall_native_package "simplenote-electron-arm-bin"  # Replaced by flatpak: com.simplenote.Simplenote
@@ -159,7 +161,6 @@ if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
     uninstall_native_package "yaourt-auto-sync"             # Replaced by repo-synchroniser
 
     uninstall_flatpak "org.gnome.Cheese"        # Replaced by org.gnome.Snapshot
-    uninstall_flatpak "org.gnome.gedit"         # Replaced by org.gnome.TextEditor
 
     # App Stores
     if is_native_package_installed "gnome-software"; then
@@ -363,6 +364,8 @@ if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
     uninstall_native_package "lttng-ust"
     uninstall_native_package "sdl12-compat"
     uninstall_native_package "xfconf"
+elif [ "${DISTRO}" = 'Raspberry Pi OS' ]; then
+    uninstall_native_package 'rp-bookshelf'
 elif [[ "${DISTRO_FAMILY}" == "Android" ]] \
 && ${HAS_SU_PRIVILEGES}; then
     uninstall_android_package "com.android.stk"
