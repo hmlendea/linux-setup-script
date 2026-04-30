@@ -199,8 +199,13 @@ fi
 if ${HAS_GUI}; then
     if [ "${OS}" = 'Linux' ] \
     && ! [[ "${DISTRO}" =~ 'WSL' ]]; then
-        install_native_package 'networkmanager'
-        install_native_package 'networkmanager-openvpn'
+        if [ "${DISTRO_FAMILY}" = 'Debian' ]; then
+            install_native_package 'network-manager'
+            install_native_package 'network-manager-openvpn'
+        else
+            install_native_package 'networkmanager'
+            install_native_package 'networkmanager-openvpn'
+        fi
 
         [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ] && install_native_package 'network-manager-applet'
     fi
@@ -295,22 +300,40 @@ fi
 # Fonts
 if ${IS_GENERAL_PURPOSE_DEVICE}; then
     # Fonts - General
-    install_native_package 'gnu-free-fonts'
-    [ "${ARCH_FAMILY}" = 'x86' ] && install_native_package 'ttf-ms-win10'
-    install_native_package 'noto-fonts'
-    install_native_package 'ttf-apple-emoji'
-    install_native_package 'ttf-droid'
-    install_native_package_dependency 'ttf-croscore'
-    install_native_package_dependency 'ttf-liberation'
-    install_native_package 'hori-fonts'
+    if [ "${DISTRO_FAMILY}" = 'Debian' ]; then
+        install_native_package 'fonts-freefont-ttf'
+        install_native_package 'fonts-noto'
+        install_native_package 'fonts-noto-color-emoji'
+        install_native_package 'fonts-droid-fallback'
+        install_native_package_dependency 'fonts-crosextra-carlito'
+        install_native_package_dependency 'fonts-crosextra-caladea'
+        install_native_package_dependency 'fonts-liberation'
 
-    # Fonts - International
-    install_native_package 'noto-fonts-cjk' # Chinese, Japanese, Korean
-    install_native_package 'ttf-amiri' # Classical Arabic in Naskh style
-    install_native_package 'ttf-ancient-fonts' # Aegean, Egyptian, Cuneiform, Anatolian, Maya, Analecta
-    install_native_package 'ttf-baekmuk' # Korean
-    install_native_package 'ttf-hannom' # Vietnamese
-    install_native_package 'ttf-ubraille' # Braille
+        # Fonts - International
+        install_native_package 'fonts-noto-cjk' # Chinese, Japanese, Korean
+        install_native_package 'fonts-hosny-amiri' # Classical Arabic in Naskh style
+        install_native_package 'fonts-ancient-scripts' # Aegean, Egyptian, Cuneiform, Anatolian, Maya, Analecta
+        install_native_package 'fonts-baekmuk' # Korean
+    else
+        install_native_package 'gnu-free-fonts'
+        install_native_package 'noto-fonts'
+        install_native_package 'ttf-apple-emoji'
+        install_native_package 'ttf-droid'
+        install_native_package_dependency 'ttf-croscore'
+        install_native_package_dependency 'ttf-liberation'
+
+        install_native_package 'hori-fonts'
+
+        # Fonts - International
+        install_native_package 'noto-fonts-cjk' # Chinese, Japanese, Korean
+        install_native_package 'ttf-amiri' # Classical Arabic in Naskh style
+        install_native_package 'ttf-ancient-fonts' # Aegean, Egyptian, Cuneiform, Anatolian, Maya, Analecta
+        install_native_package 'ttf-baekmuk' # Korean
+        install_native_package 'ttf-hannom' # Vietnamese
+        install_native_package 'ttf-ubraille' # Braille
+    fi
+
+    [ "${ARCH_FAMILY}" = 'x86' ] && install_native_package 'ttf-ms-win10'
 fi
 
 #################
