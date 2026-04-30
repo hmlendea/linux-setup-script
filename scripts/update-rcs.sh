@@ -3,6 +3,7 @@ source "scripts/common/filesystem.sh"
 source "${REPO_SCRIPTS_COMMON_DIR}/apps.sh"
 source "${REPO_SCRIPTS_COMMON_DIR}/common.sh"
 source "${REPO_SCRIPTS_COMMON_DIR}/config.sh"
+source "${REPO_SCRIPTS_COMMON_DIR}/system-info.sh"
 
 # .profile
 create_file "${HOME}/.profile"
@@ -18,13 +19,19 @@ set_config_value "${HOME}/.profile" 'export XDG_PICTURES_DIR'   "\"${XDG_PICTURE
 set_config_value "${HOME}/.profile" 'export XDG_PUBLIC_DIR'     "\"${XDG_PUBLIC_DIR}\""
 set_config_value "${HOME}/.profile" 'export XDG_TEMPLATES_DIR'  "\"${XDG_TEMPLATES_DIR}\""
 set_config_value "${HOME}/.profile" 'export XDG_VIDEOS_DIR'     "\"${XDG_VIDEOS_DIR}\""
-if [ -d "${HOME}/.local/bin" ]; then
-    set_config_value "${HOME}/.profile" 'export PATH' '"${PATH}:/'"${HOME}"'/.local/bin"'
-else
-    set_config_value "${HOME}/.profile" 'export PATH' '"${PATH}"'
+
+PATH_VARIABLE_EXTRA_PATHS=''
+
+[ -d "${HOME}/.local/bin" ] && PATH_VARIABLE="${PATH_VARIABLE_EXTRA_PATHS}:${HOME}/.local/bin"
+
+if [ "${DISTRO_FAMILY}" = 'Debian' ]; then
+    [ -d "${HOME}/.local/share/flatpak/exports/bin" ] && PATH_VARIABLE_EXTRA_PATHS="${PATH_VARIABLE_EXTRA_PATHS}:${HOME}/.local/share/flatpak/exports/bin"
 fi
 
-#update_file_if_distinct "${REPO_RC_DIR}/profile" "${HOME}/.profile"
+PATH_VARIABLE_EXTRA_PATHS=$(sed 's/^[:]*//g' <<< "${PATH_VARIABLE_EXTRA_PATHS}")
+
+set_config_value "${HOME}/.profile" 'export PATH' '"${PATH}:'"${PATH_VARIABLE_EXTRA_PATHS}"'"'
+
 update_file_if_distinct "${REPO_RC_DIR}/inputrc" "${XDG_CONFIG_HOME}/readline/inputrc"
 
 SHELL_RCS_DIR="${XDG_DATA_HOME}/bash"

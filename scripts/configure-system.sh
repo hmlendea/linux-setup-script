@@ -207,6 +207,7 @@ if does_bin_exist 'mkinitcpio'; then
 fi
 
 echo "${OS_LANGUAGE}" > "${XDG_CONFIG_HOME}/user-dirs.locale"
+[ ! -f "${XDG_CONFIG_HOME}/user-dirs.dirs" ] && touch "${XDG_CONFIG_HOME}/user-dirs.dirs"
 set_config_values "${XDG_CONFIG_HOME}/user-dirs.dirs" \
     XDG_DESKTOP_DIR     "\"${XDG_DESKTOP_DIR}\"" \
     XDG_DOCUMENTS_DIR   "\"${XDG_DOCUMENTS_DIR}\"" \
@@ -1393,7 +1394,7 @@ if does_bin_exist 'gnome-shell'; then
     GNOME_NOTIFICATIONS_SCHEMA="org.gnome.desktop.notifications.application:/org/gnome/desktop/notifications/application"
 
     # Disable
-    does_bin_exist "simplenote" && set_gsetting "${GNOME_NOTIFICATIONS_SCHEMA}/simplenote/" enable false
+    does_bin_exist 'simplenote' && set_gsetting "${GNOME_NOTIFICATIONS_SCHEMA}/simplenote/" enable false
 
     # Hide on lockscreen
     set_gsetting "${GNOME_NOTIFICATIONS_SCHEMA}/gnome-power-panel/" show-in-lock-screen false
