@@ -51,23 +51,93 @@ function call_vscode() {
     fi
 }
 
-function call_gnome_shell_extension_installer() {
+function call_gnome_extensions() {
     local EXTENSION="${1}" && shift
-    local EXTENSION_ID="${EXTENSION}"
+    local EXTENSION_ID="${EXTENSION%%/*}"
+    local UUID=""
 
-    if ! [[ ${EXTENSION} =~ ^[0-9]+$ ]]; then
-        EXTENSION_ID=$(echo 'q' | \
-            gnome-shell-extension-installer -s "${EXTENSION}" | \
-            grep "\"link\": \"/extension" | \
-            head -n 1 | \
-            sed 's/^.*\"link\": \"\/extension\/\([0-9]\+\).*/\1/g')
+    if ! [[ ${EXTENSION_ID} =~ ^[0-9]+$ ]]; then
+        echo " !!! Invalid extension ID format: ${EXTENSION}"
+        return 1
     fi
 
-    #if ${HAS_SU_PRIVILEGES}; then
-    #    run_as_su gnome-shell-extension-installer --yes ${*} "${EXTENSION_ID}"
-    #else
-        gnome-shell-extension-installer --yes ${*} "${EXTENSION_ID}"
-    #fi
+    # Fetch extension page (follow redirects)
+    local EXTENSION_PAGE
+    EXTENSION_PAGE=$(curl -Ls -w "\n%{http_code}" \
+        "https://extensions.gnome.org/extension/${EXTENSION_ID}/")
+
+    local HTTP_CODE
+    HTTP_CODE=$(echo "${EXTENSION_PAGE}" | tail -n1)
+    EXTENSION_PAGE=$(echo "${EXTENSION_PAGE}" | sed '$d')
+
+    if [ "${HTTP_CODE}" != "200" ]; then
+        echo " !!! Extension page not reachable for ID: ${EXTENSION_ID}"
+        return 1
+    fi
+
+    # Extract UUID
+    UUID=$(echo "${EXTENSION_PAGE}" | \
+        grep -o 'data-uuid="[^"]*"' | \
+        head -n1 | \
+        cut -d '"' -f2)
+
+    if [ -z "${UUID}" ]; then
+        echo " !!! Failed to extract UUID for extension ID: ${EXTENSION_ID}"
+        return 1
+    fi
+
+    # Detect GNOME Shell major version
+    local SHELL_VERSION
+    SHELL_VERSION=$(gnome-shell --version | awk '{print $3}' | cut -d. -f1)
+
+    # Fetch extension info JSON
+    local INFO_JSON
+    INFO_JSON=$(curl -s -w "\n%{http_code}" \
+        "https://extensions.gnome.org/extension-info/?uuid=${UUID}&shell_version=${SHELL_VERSION}")
+
+    local INFO_HTTP
+    INFO_HTTP=$(echo "${INFO_JSON}" | tail -n1)
+    INFO_JSON=$(echo "${INFO_JSON}" | sed '$d')
+
+    if [ "${INFO_HTTP}" != "200" ]; then
+        echo " !!! Failed to fetch extension info for UUID: ${UUID}"
+        return 1
+    fi
+
+    # Extract download URL
+    local DOWNLOAD_URL
+    DOWNLOAD_URL=$(echo "${INFO_JSON}" | \
+        grep -o '"download_url":[[:space:]]*"[^"]*"' | \
+        cut -d '"' -f4)
+
+    if [ -z "${DOWNLOAD_URL}" ]; then
+        echo " !!! Failed to get download URL for ${UUID} (GNOME ${SHELL_VERSION} compatibility issue?)"
+        return 1
+    fi
+
+    local TMP_FILE
+    TMP_FILE=$(mktemp --suffix=.zip)
+
+    curl -L -o "${TMP_FILE}" "https://extensions.gnome.org${DOWNLOAD_URL}"
+
+    if [ ! -s "${TMP_FILE}" ]; then
+        echo " !!! Download failed for ${UUID}"
+        return 1
+    fi
+
+    gnome-extensions install --force "${TMP_FILE}" || {
+        echo " !!! Installation failed for ${UUID}"
+        rm -f "${TMP_FILE}"
+        return 1
+    }
+
+    rm -f "${TMP_FILE}"
+
+    gnome-extensions list > /dev/null 2>&1
+    gnome-extensions enable "${UUID}" 2>/dev/null || {
+        echo " !!! Installed but failed to enable ${UUID}"
+        return 1
+    }
 }
 
 function is_package_installed() {
@@ -151,19 +221,10 @@ function is_vscode_extension_installed() {
 }
 
 function is_gnome_shell_extension_installed() {
-    local EXTENSION_NAME="${*}"
+    local INPUT="${1}"
+    local EXTENSION_NAME="${INPUT#*/}"
 
-    if [ -d "${GLOBAL_GS_EXTENSIONS_DIR}" ]; then
-        local EXTENSION_PATH=$(find "${GLOBAL_GS_EXTENSIONS_DIR}" -type d -name "${EXTENSION_NAME}@*")
-        [ -n "${EXTENSION_PATH}" ] && return 0 # True
-    fi
-
-    if [ -d "${LOCAL_GS_EXTENSIONS_DIR}" ]; then
-        local EXTENSION_PATH=$(find "${LOCAL_GS_EXTENSIONS_DIR}" -type d -name "${EXTENSION_NAME}@*")
-        [ -n "${EXTENSION_PATH}" ] && return 0 # True
-    fi
-
-    return 1 # False
+    gnome-extensions list | grep -q "^${EXTENSION_NAME}@"
 }
 
 function is_steam_app_installed() {
@@ -310,7 +371,7 @@ function install_gnome_shell_extension() {
     is_gnome_shell_extension_installed "${EXTENSION}" && return
 
     echo -e " >>> Installing GNOME Shell extension: \e[0;33m${EXTENSION}\e[0m..."
-    call_gnome_shell_extension_installer "${EXTENSION}"
+    call_gnome_extensions "${EXTENSION}"
 }
 
 function uninstall_package() {
@@ -360,26 +421,18 @@ function uninstall_flatpak() {
 }
 
 function uninstall_gnome_shell_extension() {
-    local EXTENSION_NAME="${*}"
+    local INPUT="${1}"
+    local EXTENSION_NAME="${INPUT#*/}"
 
-    ! is_gnome_shell_extension_installed "${EXTENSION_NAME}" && return
+    ! is_gnome_shell_extension_installed "${INPUT}" && return
 
     echo -e " >>> Uninstalling GNOME Shell extension: \e[0;33m${EXTENSION_NAME}\e[0m..."
 
-    if [ -d "${GLOBAL_GS_EXTENSIONS_DIR}" ]; then
-        local EXTENSION_PATH=$(find "${GLOBAL_GS_EXTENSIONS_DIR}" -type d -name "${EXTENSION_NAME}@*")
+    local UUID=$(gnome-extensions list | grep "^${EXTENSION_NAME}@" | head -n 1)
 
-        if [ -n "${EXTENSION_PATH}" ]; then
-            run_as_su rm -rf "${EXTENSION_PATH}"
-        fi
-    fi
-
-    if [ -d "${LOCAL_GS_EXTENSIONS_DIR}" ]; then
-        local EXTENSION_PATH=$(find "${LOCAL_GS_EXTENSIONS_DIR}" -type d -name "${EXTENSION_NAME}@*")
-
-        if [ -n "${EXTENSION_PATH}" ]; then
-            rm -rf "${EXTENSION_PATH}"
-        fi
+    if [ -n "${UUID}" ]; then
+        gnome-extensions disable "${UUID}" 2>/dev/null
+        gnome-extensions uninstall "${UUID}"
     fi
 }
 

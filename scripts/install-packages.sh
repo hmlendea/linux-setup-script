@@ -888,11 +888,10 @@ if [ "${OS}" = 'Linux' ]; then
             # Base
             install_flatpak 'com.mattjakeman.ExtensionManager'
             install_native_package gnome-shell-extensions
-            install_native_package gnome-shell-extension-installer
 
             # Enhancements
             if does_bin_exist 'plank'; then
-                install_gnome_shell_extension 'dash-to-plank'
+                install_gnome_shell_extension '4198/dash-to-plank'
             else
                 if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
                     install_native_package 'gnome-shell-extension-dash-to-dock'
@@ -900,31 +899,30 @@ if [ "${OS}" = 'Linux' ]; then
                   || [ "${DISTRO_FAMILY}" = 'Ubuntu' ]; then
                     install_native_package 'gnome-shell-extension-dashtodock'
                 else
-                    install_gnome_shell_extension 'dash-to-dock'
+                    install_gnome_shell_extension '307/dash-to-dock'
                 fi
             fi
 
-            # New features
-            install_native_package 'gnome-shell-extension-bluetooth-battery-meter-git'
-
-            # Remove annoyances
-            install_gnome_shell_extension 'no-overview'
+            install_gnome_shell_extension '5470/weather-oclock'
+            install_gnome_shell_extension '4099/no-overview'
 
             if [ "${DISTRO_FAMILY}" = 'Debian' ] \
             || [ "${DISTRO_FAMILY}" = 'Ubuntu' ]; then
                 install_native_package 'gnome-shell-extension-hide-activities'
                 install_native_package 'gnome-shell-extension-no-annoyance'
+                install_native_package 'gnome-shell-extension-bluetooth-battery-meter-git'
             else
-                install_gnome_shell_extension 'Hide_Activities'
-                install_gnome_shell_extension 'windowIsReady_Remover'
+                install_gnome_shell_extension '744/hide-activities-button'
+                install_gnome_shell_extension '1007/window-is-ready-notification-remover'
+                install_gnome_shell_extension '6670/bluetooth-battery-meter'
             fi
 
             if ${POWERFUL_PC}; then
-                install_gnome_shell_extension 'multi-monitors-add-on'
-                #install_gnome_shell_extension "wintile"
+                install_gnome_shell_extension '921/multi-monitors-add-on'
+                #install_gnome_shell_extension '1723/wintile-windows-10-window-tiling-for-gnome'
 
                 # Appearance
-                install_gnome_shell_extension 'blur-my-shell'
+                install_gnome_shell_extension '3193/blur-my-shell'
             fi
         fi
 
