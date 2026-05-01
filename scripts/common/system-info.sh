@@ -135,20 +135,20 @@ function get_screen_dpi() {
 }
 
 function get_arch() {
-    local ARCH=""
+    local ARCH=''
 
-    if does_bin_exist "uname"; then
+    if does_bin_exist 'uname'; then
         ARCH=$(uname -m)
     fi
 
     if [ -z "${ARCH}" ];then
-        if does_bin_exist "lscpu"; then
-            ARCH=$(lscpu | grep "Architecture" | awk -F: '{print $2}' | sed 's/  //g' | sed 's/^ *//g')
+        if does_bin_exist 'lscpu'; then
+            ARCH=$(lscpu | grep 'Architecture' | awk -F: '{print $2}' | sed 's/  //g' | sed 's/^ *//g')
         else
             # We make some big assumptions here
-            echo "${CPU_FAMILY}" | grep -q "AMD\|Intel" && ARCH="x86_64"
-            echo "${CPU_FAMILY}" | grep -q "Broadcom" && ARCH="aarch64"
-            echo "${CPU_FAMILY}" | grep -q "Qualcomm" && ARCH="aarch64"
+            echo "${CPU_FAMILY}" | grep -q 'AMD\|Intel' && ARCH='x86_64'
+            echo "${CPU_FAMILY}" | grep -q 'Broadcom' && ARCH='aarch64'
+            echo "${CPU_FAMILY}" | grep -q 'Qualcomm' && ARCH='aarch64'
         fi
     fi
 
@@ -164,22 +164,25 @@ function get_arch_family() {
         ARCH="$(get_arch)"
     fi
 
-    local ARCH_FAMILY=""
+    local ARCH_FAMILY=''
 
-    [ "${ARCH}" = "i686" ]     && ARCH_FAMILY="x86"
-    [ "${ARCH}" = "x86_64" ]   && ARCH_FAMILY="x86"
-    [ "${ARCH}" = "aarch64" ]  && ARCH_FAMILY="arm"
-    [ "${ARCH}" = "armv7h" ]   && ARCH_FAMILY="arm"
-    [ "${ARCH}" = "armv7l" ]   && ARCH_FAMILY="arm"
-    [ "${ARCH}" = "armv8h" ]   && ARCH_FAMILY="arm"
-    [ "${ARCH}" = "armv8l" ]   && ARCH_FAMILY="arm"
+    [ "${ARCH}" = 'i386' ]     && ARCH_FAMILY='x86'
+    [ "${ARCH}" = 'i686' ]     && ARCH_FAMILY='x86'
+    [ "${ARCH}" = 'x86_64' ]   && ARCH_FAMILY='x86'
+    [ "${ARCH}" = 'aarch64' ]  && ARCH_FAMILY='arm'
+    [ "${ARCH}" = 'armv7h' ]   && ARCH_FAMILY='arm'
+    [ "${ARCH}" = 'armv7l' ]   && ARCH_FAMILY='arm'
+    [ "${ARCH}" = 'armv8h' ]   && ARCH_FAMILY='arm'
+    [ "${ARCH}" = 'armv8l' ]   && ARCH_FAMILY='arm'
 
     echo "${ARCH_FAMILY}"
 }
 
 function get_device_model() {
-    if systemctl list-units | grep -q argononeup; then
-        echo 'Argon ONE Up'
+    if systemctl list-units | grep -q argononeup \
+    || systemctl list-units | grep -q argon-one-up \
+    || [ -d "${ROOT_USR_SRC}"/oneUpPower-* ]; then
+        echo 'Argon ONE UP'
     elif [ -f "${ROOT_SYS_DEVICES}/virtual/dmi/id/product_family" ]; then
         cat "${ROOT_SYS_DEVICES}/virtual/dmi/id/product_family"
     elif [ -f "${ROOT_PROC}/device-tree/model" ]; then
@@ -198,7 +201,7 @@ function get_device_model() {
 }
 
 function get_soc_name() {
-    local SOC_MODEL=""
+    local SOC_MODEL=''
 
     if [ -z "${SOC_MODEL}" ] \
     && [ -f "${ROOT_PROC}/cpuinfo" ]; then
@@ -228,11 +231,11 @@ function get_soc_name() {
     if [ -z "${SOC_MODEL}" ] \
     && [ -n "${DEVICE_MODEL}" ]; then
         if [ "${DEVICE_MODEL}" = "Raspberry Pi 3" ]; then
-            SOC_MODEL="BCM2837"
+            SOC_MODEL='BCM2837'
         elif [ "${DEVICE_MODEL}" = "Raspberry Pi 4" ]; then
-            SOC_MODEL="BCM2711"
+            SOC_MODEL='BCM2711'
         elif [ "${DEVICE_MODEL}" = "Xiaomi Redmi Note 4X" ]; then
-            SOC_MODEL="MSM8953"
+            SOC_MODEL='MSM8953'
         fi
     fi
 
@@ -568,7 +571,7 @@ function get_chassis_type() {
         return
     fi
 
-    if [ "$(get_device_model)" = 'Argon ONE Up' ]; then
+    if [ "$(get_device_model)" = 'Argon ONE UP' ]; then
         echo 'Laptop'
         return
     fi
