@@ -127,10 +127,10 @@ function is_flatpak_installed() {
     ! does_bin_exist 'flatpak' && return 1 # False
 
     for INSTALLATION_METHOD in 'user' 'system'; do
-        if (flatpak list | grep -q "${PACKAGE_NAME}" > /dev/null); then
+        if (flatpak list --columns=application | grep -q "^${PACKAGE_NAME}$" > /dev/null); then
             if [ -z "${PACKAGE_BRANCH}" ]; then
                 return 0 # True
-            elif (flatpak list | grep "${PACKAGE_NAME}" | grep -q "${PACKAGE_BRANCH}" > /dev/null); then
+            elif (flatpak list --columns=application,branch | grep "^${PACKAGE_NAME}" | grep -q "${PACKAGE_BRANCH}$" > /dev/null); then
                 return 0 # True
             fi
         fi

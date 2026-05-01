@@ -1797,11 +1797,12 @@ fi
 #######################
 ### Window Managers ###
 #######################
-if does_bin_exist "mutter"; then
-    #set_gsetting "org.gnome.desktop.wm.preferences" button-layout ":minimize,maximize,close"
-    set_gsetting "org.gnome.desktop.wm.preferences" button-layout "close,maximize,minimize:"
-    set_gsetting "org.gnome.desktop.wm.preferences" theme "${GTK3_THEME}"
-    set_gsetting "org.gnome.desktop.wm.preferences" titlebar-font "${TITLEBAR_FONT}"
+if does_bin_exist 'gnome-shell'; then
+    GNOME_DESKTOP_WM_SCHEMA='org.gnome.desktop.wm.preferences'
+    #set_gsetting "${GNOME_DESKTOP_WM_SCHEMA}" button-layout ":minimize,maximize,close"
+    set_gsetting "${GNOME_DESKTOP_WM_SCHEMA}" button-layout 'close,maximize,minimize:'
+    set_gsetting "${GNOME_DESKTOP_WM_SCHEMA}" theme "${GTK3_THEME}"
+    set_gsetting "${GNOME_DESKTOP_WM_SCHEMA}" titlebar-font "${TITLEBAR_FONT}"
 fi
 
 if does_bin_exist "openbox" && does_bin_exist "lxsession"; then

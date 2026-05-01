@@ -42,36 +42,82 @@ function keep_first_installed_package() {
     done
 }
 
+# Archive Managers
+if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
+    keep_first_installed_package 'org.gnome.FileRoller' 'file-roller' 'xarchiver' 'ark'
+fi
+
 # Calculator Apps
-keep_first_installed_package 'org.gnome.Calculator' 'gnome-calculator' 'galculator'
+if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
+    keep_first_installed_package 'org.gnome.Calculator' 'gnome-calculator' 'galculator'
+fi
 
 # Calendar Apps
-keep_first_installed_package 'org.fossify.calendar' 'foundation.e.calendar'
-keep_first_installed_package 'org.gnome.Calendar' 'gnome-calendar'
+if [ "${DISTRO_FAMILY}" = 'Android' ]; then
+    keep_first_installed_package 'org.fossify.calendar' 'foundation.e.calendar'
+elif [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
+    keep_first_installed_package 'org.gnome.Calendar' 'gnome-calendar'
+fi
+
 ! ${IS_GENERAL_PURPOSE_DEVICE} && uninstall_package 'org.gnome.Calendar'
+
+# Camera Apps
+if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
+    keep_first_installed_package 'org.gnome.Snapshot' 'guvcview'
+fi
 
 # Chat Apps
 keep_first_installed_package 'com.telegram.desktop' 'telegram-desktop'
 keep_first_installed_package 'de.schmidhuberj.Flare' 'org.signal.Signal' 'signal-desktop'
 
 # Clock Apps
-keep_first_installed_package 'org.fossify.clock' 'com.android.deskclock'
+if [ "${DISTRO_FAMILY}" = 'Android' ]; then
+    keep_first_installed_package 'org.fossify.clock' 'com.android.deskclock'
+fi
 
 # Contacts Apps
-keep_first_installed_package 'org.fossify.contacts' 'com.android.contacts'
+if [ "${DISTRO_FAMILY}" = 'Android' ]; then
+    keep_first_installed_package 'org.fossify.contacts' 'com.android.contacts'
+fi
+
+# Development Environments
+if [ "${OS}" = 'Linux' ]; then
+    uninstall_native_package 'thonny'
+fi
+
+# Disk Management Utilities
+if [ "${OS}" = 'Linux' ]; then
+    uninstall_native_package 'piclone'
+fi
 
 # Disk Usage Analyser
 keep_first_installed_package 'baobab' 'org.gnome.baobab'
 
 # Document Viewers
-keep_first_installed_package 'org.gnome.Papers' 'papers' 'org.gnome.Evince' 'evince'
+if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
+    keep_first_installed_package 'org.gnome.Papers' 'papers' 'org.gnome.Evince' 'evince'
+fi
 
 # File Managers
-keep_first_installed_package 'org.fossify.filemanager' 'com.android.documentsui'
+if [ "${DISTRO_FAMILY}" = 'Android' ]; then
+    keep_first_installed_package 'org.fossify.filemanager' 'com.android.documentsui'
+elif [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
+    keep_first_installed_package 'nautilus' 'pcmanfm'
+fi
 
 # Image Viewers
-[ "${DESKTOP_ENVIRONMENT}" != 'Phosh' ] && uninstall_flatpak 'org.gnome.eog' && uninstall_native_package 'eog-plugins' 'eog'
-[ "${DESKTOP_ENVIRONMENT}" != 'LXDE' ] && uninstall_native_package 'gwenview'
+if [ "${DESKTOP_ENVIRONMENT}" != 'Phosh' ]; then
+    uninstall_flatpak 'org.gnome.eog'
+    uninstall_native_package 'eog-plugins' 'eog'
+fi
+
+if [ "${DESKTOP_ENVIRONMENT}" != 'LXDE' ]; then
+    uninstall_native_package 'gwenview'
+fi
+
+if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
+    keep_first_installed_package 'org.gnome.Loupe' 'org.gnome.eog' 'eog' 'eom' 'gwenview'
+fi
 
 # Internet Browsers
 keep_first_installed_package \
@@ -94,14 +140,28 @@ uninstall_android_package 'com.xiaomi.mimusic2'
 # Note Taking apps
 keep_first_installed_package 'com.automattic.simplenote' 'foundation.e.notes'
 
+# Remote Connection
+if [ "${OS}" = 'Linux' ]; then
+    uninstall_native_package 'realvnc-vnc-server'
+fi
+
 # System Monitors
-keep_first_installed_package 'gnome-system-monitor' 'net.nokyan.Resources'
+if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
+    keep_first_installed_package 'gnome-system-monitor' 'net.nokyan.Resources' 'lxtask'
+fi
 
 # Task Management apps
 keep_first_installed_package 'io.github.alainm23.planify' 'org.gnome.Todo'
 
 # Terminal Emulators
 keep_first_installed_package 'gnome-console' 'gnome-terminal'
+
+# Terminals
+if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
+    keep_first_installed_package 'gnome-console' 'gnome-terminal' 'lxterminal' 'konsole'
+elif [ "${DESKTOP_ENVIRONMENT}" = 'KDE' ]; then
+    keep_first_installed_package 'konsole' 'lxterminal' 'gnome-terminal' 'gnome-console'
+fi
 
 # Text Editors
 keep_first_installed_package 'micro' 'nano' 'vim' 'vi'
@@ -114,12 +174,32 @@ if ! does_bin_exist 'vim'; then
 fi
 
 # Video players
-uninstall_android_package 'com.mitv.mivideoplayer'
-uninstall_android_package 'com.mitv.videoplayer'
-keep_first_installed_package 'org.gnome.Showtime' 'com.github.rafostar.Clapper' 'org.gnome.Totem'
+if [ "${OS}" = 'Android' ]; then
+    uninstall_android_package 'com.mitv.mivideoplayer'
+    uninstall_android_package 'com.mitv.videoplayer'
+elif [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
+    keep_first_installed_package 'org.gnome.Showtime' 'com.github.rafostar.Clapper' 'org.gnome.Totem' 'totem' 'vlc'
+fi
 
 # zzz OTHERS
 keep_first_installed_package 'chrony' 'ntp'
+
+if [ "${OS}" = 'Linux' ]; then
+    # App Stores
+    uninstall_native_package 'pi-package'
+    uninstall_native_package 'rp-prefapps'
+
+    # Help
+    uninstall_native_package 'yelp' # GNOME Help
+
+    # Parental Controls
+    uninstall_native_package 'malcontent'
+    uninstall_native_package 'malcontent-gui'
+
+    # Settings
+    uninstall_native_package 'im-config'    # Input Method
+    uninstall_native_package 'rpcc'         # Raspberry Pi OS Control Centre
+fi
 
 # Uninstall the packages
 if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
@@ -153,7 +233,6 @@ if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
     uninstall_native_package "simplenote-electron-arm-bin"  # Replaced by flatpak: com.simplenote.Simplenote
     uninstall_native_package "spotify"                      # Replaced by flatpak: com.spotify.Client
     uninstall_native_package "teams"                        # Replaced by flatpak: com.microsoft.Teams
-    uninstall_native_package "totem"                        # Replaced by flatpak: org.gnome.Totem
     uninstall_native_package "transmission-gtk"             # Replaced by flatpak: com.transmissionbt.Transmission
     uninstall_native_package "ttf-ms-fonts"                 # Replaced by ttf-ms-win10
     uninstall_native_package "vi"                           # Replaced by micro
@@ -167,14 +246,6 @@ if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
         uninstall_native_package "discover"
     fi
 
-    # Archive Managers
-    [ "${DESKTOP_ENVIRONMENT}" = 'KDE' ] && uninstall_flatpak 'org.gnome.FileRoller'
-
-    if is_flatpak_installed 'org.gnome.FileRoller'; then
-        uninstall_native_package 'ark'
-        uninstall_native_package 'file-roller'
-    fi
-
     # Development
     uninstall_native_package 'cmake'
 
@@ -186,13 +257,6 @@ if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
     # File Managers. Replaced by: nautilus
     [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ] && uninstall_native_package "dolphin"
     [ "${DESKTOP_ENVIRONMENT}" = "KDE" ] && uninstall_native_package "nautilus"
-
-    # Terminals
-    if [ "${DESKTOP_ENVIRONMENT}" != "GNOME" ]; then
-        uninstall_native_package 'gnome-console'
-        uninstall_native_package 'gnome-terminal'
-    fi
-    [ "${DESKTOP_ENVIRONMENT}" != "KDE" ] && uninstall_native_package 'konsole'
 
     # Text Editors
     [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ] && uninstall_native_package "kwrite"
@@ -232,10 +296,6 @@ if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
     # Obsolete
     uninstall_flatpak "com.microsoft.Teams" # Unsupported anymore, using com.github.IsmaelMartinez.teams_for_linux instead
     uninstall_native_package "code-nautilus-git" # Does not work in modern Nautilus nor is it strictly required anymore
-
-    # Parental Controls
-    uninstall_native_package 'malcontent'
-    uninstall_native_package 'malcontent-gui'
 
     # Removed altogether
     uninstall_native_package "bc" # Mathematical calculator
