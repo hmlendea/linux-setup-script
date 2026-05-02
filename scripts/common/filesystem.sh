@@ -296,8 +296,10 @@ function create_file() {
     create_directory "${DIRECTORY_PATH}"
 
     if [ -w "${DIRECTORY_PATH}" ]; then
+        echo -e "Creating file \e[0;33m${FILE_PATH}\e[0m..."
         touch "${FILE_PATH}"
     else
+        echo -e "Creating file \e[0;33m${FILE_PATH}\e[0m..."
         run_as_su touch "${FILE_PATH}"
     fi
 }

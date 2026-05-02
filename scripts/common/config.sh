@@ -685,7 +685,6 @@ function create_launcher() {
             echo "Icon=${NAME}"
         } > "${FILE_PATH}"
 
-        change_permissions +x "${FILE_PATH}"
-        echo "Created launcher '${FILE_PATH}'"
+        run_as_su chmod +x "${FILE_PATH}"
     fi
 }

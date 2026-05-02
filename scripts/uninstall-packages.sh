@@ -72,15 +72,20 @@ if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
 fi
 
 # Chat Apps
-keep_first_installed_package 'com.telegram.desktop' 'telegram-desktop'
-keep_first_installed_package 'de.schmidhuberj.Flare' 'org.signal.Signal' 'signal-desktop'
 
 if [ "${OS}" = 'Linux' ]; then
-    if [ "${ARCH_FAMILY}" = 'x86' ]; then
+    if [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+        keep_first_installed_package 'de.schmidhuberj.Flare' 'org.signal.Signal' 'signal-desktop' 'signal-desktop-unofficial'
+        keep_first_installed_package 'wasistlos' 'io.github.mimbrero.WhatsAppDesktop' 'whatsapp-nativefier'
+    elif [ "${ARCH_FAMILY}" = 'x86' ]; then
+        keep_first_installed_package 'org.signal.Signal' 'signal-desktop' 'signal-desktop-unofficial' 'de.schmidhuberj.Flare'
         keep_first_installed_package 'io.github.mimbrero.WhatsAppDesktop' 'wasistlos' 'whatsapp-nativefier'
     elif [ "${ARCH_FAMILY}" = 'arm' ]; then
+        keep_first_installed_package 'signal-desktop-unofficial' 'de.schmidhuberj.Flare' 'org.signal.Signal' 'signal-desktop'
         keep_first_installed_package 'wasistlos' 'io.github.mimbrero.WhatsAppDesktop' 'whatsapp-nativefier'
     fi
+
+    keep_first_installed_package 'com.telegram.desktop' 'telegram-desktop'
 fi
 
 # Clock Apps

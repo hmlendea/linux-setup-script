@@ -181,6 +181,7 @@ done
 
 for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/de.schmidhuberj.Flare.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.signal.Signal.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/signal-desktop.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/de.schmidhuberj.Flare.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.signal.Signal.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
@@ -189,6 +190,9 @@ for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/de.schmidhuberj.Flare.desktop" 
         Icon 'signal-desktop' \
         Categories "${CHAT_APP_CATEGORIES}"
 done
+
+is_package_installed 'signal-desktop-unofficial' && set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/signal-desktop.desktop" \
+    StartupWMClass 'signal.desktop.unofficial'
 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/teams.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/teams-for-linux.desktop" \

@@ -67,16 +67,16 @@ configure_autostart_for_app 'plank' \
 
 # Signal
 configure_autostart_for_app 'signal-desktop' \
-    Name "Signal" \
-    Exec "signal-desktop --start-in-tray --no-sandbox -- %u"
+    Name 'Signal' \
+    Exec 'signal-desktop --start-in-tray --no-sandbox -- %u'
 configure_autostart_for_app 'org.signal.Signal' \
-    Name "Signal" \
-    Icon "signal" \
-    Exec "org.signal.Signal --start-in-tray --no-sandbox -- %u"
+    Name 'Signal' \
+    Icon 'signal' \
+    Exec 'org.signal.Signal --start-in-tray --no-sandbox -- %u'
 configure_autostart_for_app 'de.schmidhuberj.Flare' \
-    Name "Signal" \
-    Icon "signal" \
-    Exec "de.schmidhuberj.Flare"
+    Name 'Signal' \
+    Icon 'signal' \
+    Exec 'de.schmidhuberj.Flare'
 
 # Telegram
 configure_autostart_for_app "telegram-desktop" \
@@ -93,11 +93,15 @@ configure_autostart_for_app "app.drey.PaperPlane.desktop" \
     Exec "app.drey.PaperPlane"
 
 # WhatsApp
-configure_autostart_for_app "io.github.mimbrero.WhatsAppDesktop" \
-    Name "WhatsApp" \
-    Icon "whatsapp" \
-    Exec "io.github.mimbrero.WhatsAppDesktop --start-hidden"
-configure_autostart_for_app "whatsapp-nativefier" \
-    Name "WhatsApp" \
-    Icon "whatsapp" \
-    Exec "whatsapp-nativefier"
+configure_autostart_for_app 'io.github.mimbrero.WhatsAppDesktop' \
+    Name 'WhatsApp' \
+    Icon 'whatsapp' \
+    Exec 'io.github.mimbrero.WhatsAppDesktop --start-hidden'
+configure_autostart_for_app 'wasistlos' \
+    Name 'WhatsApp' \
+    Icon 'whatsapp' \
+    Exec 'com.github.xeco23.WasIstLos %u'
+configure_autostart_for_app 'whatsapp-nativefier' \
+    Name 'WhatsApp' \
+    Icon 'whatsapp' \
+    Exec 'whatsapp-nativefier'

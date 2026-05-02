@@ -500,7 +500,7 @@ function install_webapp() {
     PACKAGE_NAME="${PACKAGE_ID}-webapp"
 
     local DISPLAY_NAME
-    DISPLAY_NAME=$(echo "${BASE_DOMAIN}" | \
+    DISPLAY_NAME=$(echo "${BASE_DOMAIN}" | sed 's/^app\.//g' | \
         awk -F'.' '{
             for(i=NF;i>=1;i--) {
                 word=$i
@@ -509,7 +509,7 @@ function install_webapp() {
         }')
 
     local WM_CLASS
-    WM_CLASS="chrome-${DOMAIN}__-Defaul"
+    WM_CLASS="chrome-${DOMAIN}__-Default"
 
     is_webapp_installed "${PACKAGE_NAME}" && return
 
