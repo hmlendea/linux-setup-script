@@ -2,6 +2,7 @@
 source "scripts/common/filesystem.sh"
 source "${REPO_SCRIPTS_COMMON_DIR}/common.sh"
 source "${REPO_SCRIPTS_COMMON_DIR}/config.sh"
+source "${REPO_SCRIPTS_COMMON_DIR}/package-management.sh"
 
 function update_mimetype_association() {
     local MIMETYPE="${1}"
@@ -94,6 +95,8 @@ if does_bin_exist 'com.simplenote.Simplenote'; then
     NOTES_LAUNCHER='com.simplenote.Simplenote.desktop'
 elif does_bin_exist 'simplenote'; then
     NOTES_LAUNCHER='simplenote.desktop'
+elif is_webapp_installed 'simplenote-webapp'; then
+    NOTES_LAUNCHER='simplenote-webapp.desktop'
 fi
 
 # Password Manager
@@ -148,8 +151,12 @@ fi
 
 # Terminal
 TERMINAL_LAUNCHER=''
-if does_bin_exist 'gnome-terminal'; then
+if does_bin_exist 'kgx'; then
+    TERMINAL_LAUNCHER='org.gnome.Console.desktop'
+elif does_bin_exist 'gnome-terminal'; then
     TERMINAL_LAUNCHER='org.gnome.Terminal.desktop'
+elif does_bin_exist 'lxterminal'; then
+    TERMINAL_LAUNCHER='lxterminal.desktop'
 fi
 
 # Text Editor

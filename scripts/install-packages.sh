@@ -381,7 +381,7 @@ fi
 if ${IS_GENERAL_PURPOSE_DEVICE}; then
     if [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
         install_flatpak 'org.gnome.Calculator'
-    if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
+    elif [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
         if ${POWERFUL_PC}; then
             install_flatpak 'org.gnome.Calculator'
         else
@@ -696,7 +696,11 @@ if ${IS_GENERAL_PURPOSE_DEVICE}; then
         install_android_remote_package 'com.automattic.simplenote' 'Automattic/simplenote'
     elif [ "${OS}" = 'Linux' ]; then
         if [ "${DESKTOP_ENVIRONMENT}" != 'Phosh' ]; then
-            install_flatpak 'com.simplenote.Simplenote'
+            if [ "${ARCH_FAMILY}" = 'x86' ]; then
+                install_flatpak 'com.simplenote.Simplenote'
+            else
+                install_webapp 'https://simplenote.com'
+            fi
         fi
         
         if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \

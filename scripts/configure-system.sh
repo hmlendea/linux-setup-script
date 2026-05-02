@@ -643,7 +643,7 @@ fi
 ###############
 ### Cameras ###
 ###############
-if does_bin_exist "droidcam"; then
+if does_bin_exist 'droidcam'; then
     DROIDCAM_CONFIG_FILE="${XDG_CONFIG_HOME}/droidcam"
 
     set_config_value "${DROIDCAM_CONFIG_FILE}" confirm_close 0
@@ -652,13 +652,13 @@ fi
 #################
 ### CHAT APPS ###
 #################
-if does_bin_exist "discord" "com.discordapp.Discord"; then
+if does_bin_exist 'discord' 'com.discordapp.Discord'; then
     DISCORD_SETTINGS_FILE="${XDG_CONFIG_HOME}/discord/settings.json"
     [ -d "${HOME_VAR_APP}/com.discordapp.Discord" ] && DISCORD_SETTINGS_FILE="${HOME_VAR_APP}/com.discordapp.Discord/config/discord/settings.json"
 
     set_json_property "${DISCORD_SETTINGS_FILE}" ".SKIP_HOST_UPDATE" true
 fi
-if does_bin_exist "org.signal.Signal"; then
+if does_bin_exist 'org.signal.Signal'; then
     SIGNAL_CONFIG_DIR="${HOME_VAR_APP}/org.signal.Signal/config/Signal"
     SIGNAL_EPHEMERAL_FILE="${SIGNAL_CONFIG_DIR}/ephemeral.json"
 

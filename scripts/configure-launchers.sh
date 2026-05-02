@@ -851,30 +851,39 @@ done
 for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.simplenote.Simplenote.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/google-keep.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.simplenote.Simplenote.desktop" \
+                "${LOCAL_LAUNCHERS_DIR}/simplenote-webapp.desktop" \
                 "${LOCAL_LAUNCHERS_DIR}/chrome-hmjkmjkepdijhoojdojkdfohbdgmmhki-Default.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        Categories "Utility;" \
+        Name 'Simplenote' \
+        Icon 'simplenote' \
+        Categories 'Network;WebBrowser;Utility;' \
         NoDisplay false
 done
-set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/google-keep.desktop" StartupWMClass "google-keep-nativefier-d04d04"
-set_launcher_entries "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.simplenote.Simplenote.desktop" \
-    Name "Simplenote" \
-    Icon "simplenote"
+
+for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.simplenote.Simplenote.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.simplenote.Simplenote.desktop" \
+                "${LOCAL_LAUNCHERS_DIR}/simplenote-webapp.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name 'Simplenote' \
+        Icon 'simplenote'
+done
+
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/google-keep.desktop" StartupWMClass 'google-keep-nativefier-d04d04'
 
 ##############
 ### NVIDIA ###
 ##############
 NVIDIA_SETTINGS_EXEC="${ROOT_USR_BIN}/nvidia-settings --config=\"${XDG_CONFIG_HOME}/nvidia/settings\""
 
-if does_bin_exist "nvidia-settings"; then
+if does_bin_exist 'nvidia-settings'; then
     set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/nvidia-settings.desktop" \
-        Name "Nvidia Settings" \
-        Name[ro] "Setări Nvidia" \
-        Icon "nvidia-settings" \
-        Categories "System;" \
+        Name 'Nvidia Settings' \
+        Name[ro] 'Setări Nvidia' \
+        Icon 'nvidia-settings' \
+        Categories 'System;' \
         Exec "${NVIDIA_SETTINGS_EXEC}"
 
-    does_bin_exist "optirun" && set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/nvidia-settings.desktop" \
+    does_bin_exist 'optirun' && set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/nvidia-settings.desktop" \
         Exec "optirun -b none ${NVIDIA_SETTINGS_EXEC} -c :8"
 fi
 

@@ -1,7 +1,8 @@
 #!/bin/bash
-source "scripts/common/common.sh"
-source "scripts/common/package-management.sh"
-source "scripts/common/system-info.sh"
+source "scripts/common/filesystem.sh"
+source "${REPO_SCRIPTS_COMMON_DIR}/common.sh"
+source "${REPO_SCRIPTS_COMMON_DIR}/package-management.sh"
+source "${REPO_SCRIPTS_COMMON_DIR}/system-info.sh"
 
 # Remove unused dependencies
 if [ "${DISTRO_FAMILY}" = "Arch" ]; then
@@ -150,7 +151,15 @@ uninstall_android_package 'com.xiaomi.mimusic2'
 [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ] && keep_first_installed_package 'io.bassi.Amberol' 'org.gnome.Decibels' 'org.gnome.Rhythmbox3'
 
 # Note Taking apps
-keep_first_installed_package 'com.automattic.simplenote' 'foundation.e.notes'
+if [ "${OS}" = 'Android' ]; then
+    keep_first_installed_package 'com.automattic.simplenote' 'foundation.e.notes'
+elif [ "${OS}" = 'Linux' ]; then
+    if [ "${ARCH_FAMILY}" = 'x86' ]; then
+        keep_first_installed_package 'com.simplenote.Simpl enote' 'simplenote' 'simplenote-webapp'
+    else
+        keep_first_installed_package 'simplenote-webapp' 'com.simplenote.Simplenote' 'simplenote'
+    fi
+fi
 
 # Remote Connection
 if [ "${OS}" = 'Linux' ]; then

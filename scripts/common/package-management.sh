@@ -1,7 +1,7 @@
 #!/bin/bash
 source "scripts/common/filesystem.sh"
-source "${REPO_SCRIPTS_DIR}/common/common.sh"
-source "${REPO_SCRIPTS_DIR}/common/system-info.sh"
+source "${REPO_SCRIPTS_COMMON_DIR}/common.sh"
+source "${REPO_SCRIPTS_COMMON_DIR}/system-info.sh"
 
 GLOBAL_GS_EXTENSIONS_DIR="${ROOT_USR_SHARE}/gnome-shell/extensions"
 LOCAL_GS_EXTENSIONS_DIR="${XDG_DATA_HOME}/gnome-shell/extensions"
@@ -143,10 +143,15 @@ function call_gnome_extensions() {
 function is_package_installed() {
     local PACKAGE="${1}"
 
-    is_native_package_installed "${PACKAGE}" && return 0
-    is_flatpak_installed "${PACKAGE}" && return 0
-    is_android_package_installed "${PACKAGE}" && return 0
-
+    if [ "${OS}" = 'Android' ]; then
+        is_android_pacakge_installed "${PACKAGE}" && return 0
+    elif [ "${OS}" = 'Linux' ]; then
+        is_native_package_installed "${PACKAGE}" && return 0
+        is_flatpak_installed "${PACKAGE}" && return 0
+        is_github_package_installed "${PACKAGE}" && return 0
+        is_webapp_installed "${PACKAGE}" && return 0
+    fi
+    
     return 1
 }
 
@@ -264,6 +269,13 @@ function is_vscode_extension_installed() {
     else
         return 1 # False
     fi
+}
+
+function is_webapp_installed() {
+    local PACKAGE_NAME="${1}"
+    local DESKTOP_FILE="${XDG_DATA_HOME}/applications/${PACKAGE_NAME}.desktop"
+
+    [ -f "${DESKTOP_FILE}" ]
 }
 
 function is_native_package_required() {
@@ -472,12 +484,83 @@ function install_vscode_package() {
     call_vscode --install-extension "${EXTENSION}"
 }
 
+function install_webapp() {
+    local URL="${1}"
+
+    local DOMAIN
+    DOMAIN=$(echo "${URL}" | sed -E 's|https?://([^/]+)/?.*|\1|')
+
+    local BASE_DOMAIN
+    BASE_DOMAIN=$(echo "${DOMAIN}" | sed -E 's/\.[^.]+$//')
+
+    local PACKAGE_ID
+    PACKAGE_ID=$(echo "${BASE_DOMAIN}" | awk -F'.' '{for(i=NF;i>=1;i--) printf "%s%s",$i,(i>1?"-":"")}')
+
+    local PACKAGE_NAME
+    PACKAGE_NAME="${PACKAGE_ID}-webapp"
+
+    local DISPLAY_NAME
+    DISPLAY_NAME=$(echo "${BASE_DOMAIN}" | \
+        awk -F'.' '{
+            for(i=NF;i>=1;i--) {
+                word=$i
+                printf "%s%s", toupper(substr(word,1,1)) substr(word,2), (i>1?" ":"")
+            }
+        }')
+
+    local WM_CLASS
+    WM_CLASS="chrome-${DOMAIN}__-Defaul"
+
+    is_webapp_installed "${PACKAGE_NAME}" && return
+
+    local BROWSER=''
+    if does_bin_exist 'chromium'; then
+        BROWSER='chromium'
+    elif does_bin_exist 'brave'; then
+        BROWSER='brave'
+    elif does_bin_exist 'brave-browser'; then
+        BROWSER='brave-browser'
+    else
+        echo ' !!! No supported browser found'
+        return 1
+    fi
+
+    local DESKTOP_FILE="${XDG_DATA_HOME}/applications/${PACKAGE_NAME}.desktop"
+
+    echo -e " >>> Installing webapp: \e[0;33m${PACKAGE_NAME}\e[0m..."
+
+    create_file "${DESKTOP_FILE}"
+    cat > "${DESKTOP_FILE}" << EOF
+[Desktop Entry]
+Type=Application
+Name=${DISPLAY_NAME}
+Comment=Standalone web application for ${URL}
+Exec=${BROWSER} --app="${URL}" --class="${PACKAGE_ID}" --name="${DISPLAY_NAME}"
+Icon=web-browser
+Terminal=false
+Categories=Network;WebBrowser;
+StartupNotify=true
+StartupWMClass=${WM_CLASS}
+EOF
+
+    chmod +x "${DESKTOP_FILE}"
+
+    if does_bin_exist 'update-desktop-database'; then
+        update-desktop-database "${XDG_DATA_HOME}/applications" >/dev/null 2>&1
+    fi
+}
+
 function uninstall_package() {
     local PACKAGE="${1}"
 
-    uninstall_native_package "${PACKAGE}"
-    uninstall_flatpak "${PACKAGE}"
-    uninstall_android_package "${PACKAGE}"
+    if [ "${OS}" = 'Android' ]; then
+        uninstall_android_package "${PACKAGE}"
+    elif [ "${OS}" = 'Linux' ]; then
+        uninstall_native_package "${PACKAGE}"
+        uninstall_flatpak "${PACKAGE}"
+        uninstall_github_package "${PACKAGE}"
+        uninstall_webapp "${PACKAGE}"
+    fi
 }
 
 function uninstall_native_package() {
@@ -579,4 +662,19 @@ function update_github_package() {
     echo -e " >>> Updating GitHub package: \e[0;33m${PACKAGE_NAME}\e[0m (${CURRENT_VERSION} -> ${LATEST_VERSION})..."
 
     install_github_package "${PACKAGE_NAME}" "${REPOSITORY}"
+}
+
+function uninstall_webapp() {
+    local PACKAGE_NAME="${1}"
+    local DESKTOP_FILE="${XDG_DATA_HOME}/applications/${PACKAGE_NAME}.desktop"
+
+    [ -f "${DESKTOP_FILE}" ] || return
+
+    echo -e " >>> Uninstalling webapp: \e[0;33m${PACKAGE_NAME}\e[0m..."
+
+    remove "${DESKTOP_FILE}"
+
+    if does_bin_exist 'update-desktop-database'; then
+        update-desktop-database "${XDG_DATA_HOME}/applications" >/dev/null 2>&1
+    fi
 }
