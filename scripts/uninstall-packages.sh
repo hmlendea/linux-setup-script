@@ -49,7 +49,11 @@ fi
 
 # Calculator Apps
 if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
-    keep_first_installed_package 'org.gnome.Calculator' 'gnome-calculator' 'galculator'
+    if ${POWERFUL_PC}; then
+        keep_first_installed_package 'org.gnome.Calculator' 'gnome-calculator' 'galculator'
+    else
+        keep_first_installed_package 'galculator' 'gnome-calculator' 'org.gnome.Calculator'
+    fi
 fi
 
 # Calendar Apps

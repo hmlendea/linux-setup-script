@@ -23,7 +23,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
             'notification' false \
             'location' true
     done
-    for CALCULATOR_APP in 'org.gnome.Calculator' 'mate-calc'; do
+    for CALCULATOR_APP in 'org.gnome.Calculator' 'galculator' 'gnome-calculator' 'mate-calc'; do
         set_linux_permission "${CALCULATOR_APP}" \
             'background' false \
             'camera' false \

@@ -13,10 +13,10 @@ if [[ "${DEVICE_MODEL}" =~ 'Argon ONE UP' ]]; then
         [ ! -d "${LOCAL_INSTALL_TEMP_DIR}" ] && mkdir -p "${LOCAL_INSTALL_TEMP_DIR}"
         cd "${LOCAL_INSTALL_TEMP_DIR}"
 
-        git clone 'https://github.com/JeffCurless/argon-oneup.git'
+        [ ! -d 'argon-oneup' ] && git clone 'https://github.com/JeffCurless/argon-oneup.git'
         cd 'argon-oneup'
 
-        run_as_su './setup'
+        run_as_su 'battery/setup'
     fi
 
     disable_service 'argononeupd'

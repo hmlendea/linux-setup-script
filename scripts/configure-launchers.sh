@@ -121,8 +121,9 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/galculator.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Calculator.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Calculator.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        Name "Calculator" \
-        Name[ro] "Calculator"
+        Name 'Calculator' \
+        Name[ro] 'Calculator' \
+        Icon 'org.gnome.Calculator'
 done
 
 ################
@@ -134,9 +135,9 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Calendar.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Calendar.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Calendar.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        Name "Calendar" \
-        Name[ro] "Calendar" \
-        Icon "calendar" \
+        Name 'Calendar' \
+        Name[ro] 'Calendar' \
+        Icon 'calendar' \
         Categories "${GNOME_APP_CATEGORIES};${CALENDAR_CATEGORIES}"
 done
 
@@ -149,9 +150,9 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Snapshot.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Snapshot.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Snapshot.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        Name "Camera" \
-        Name[ro] "Cameră" \
-        Icon "camera" \
+        Name 'Camera' \
+        Name[ro] 'Cameră' \
+        Icon 'camera' \
         Keywords "${CAMERA_APP_KEYWORDS}" \
         Keywords[ro] "${CAMERA_APP_KEYWORDS}foto;cameră web;poze;"
 done

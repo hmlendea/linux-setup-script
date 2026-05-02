@@ -611,7 +611,7 @@ fi
 ###################
 ### Calculators ###
 ###################
-if does_bin_exist "gnome-calculator" "org.gnome.Calculator"; then
+if does_bin_exist 'org.gnome.Calculator' 'gnome-calculator'; then
     GNOME_CALCULATOR_SCHEMA="org.gnome.calculator"
 
     set_gsetting "${GNOME_CALCULATOR_SCHEMA}" base 10
@@ -620,8 +620,24 @@ if does_bin_exist "gnome-calculator" "org.gnome.Calculator"; then
     set_gsetting "${GNOME_CALCULATOR_SCHEMA}" source-currency 'EUR'
     set_gsetting "${GNOME_CALCULATOR_SCHEMA}" target-currency 'RON'
 fi
-if does_bin_exist "mate-calc"; then
-    set_gsetting "org.mate.calc" show-thousands true
+
+if does_bin_exist 'galculator'; then
+    GALCULATOR_CONFIG_FILE="${XDG_CONFIG_HOME}/galculator/galculator.conf"
+
+    set_config_values --quote '"' --section 'general' "${GALCULATOR_CONFIG_FILE}" \
+        'button_font' "${INTERFACE_FONT_NAME} Bold 18" \
+        'display_result_font' "${INTERFACE_FONT_NAME} 28"
+
+    set_config_values --quote '' --section 'general' "${GALCULATOR_CONFIG_FILE}" \
+        'button_height' 80 \
+        'button_width' 40 \
+        'display_bkg_color' "\"${GTK_THEME_BG_COLOUR}\"" \
+        'display_result_color' "\"${FONT_COLOUR}\"" \
+        'show_menu_bar' false
+fi
+
+if does_bin_exist 'mate-calc'; then
+    set_gsetting 'org.mate.calc' show-thousands true
 fi
 
 ###############

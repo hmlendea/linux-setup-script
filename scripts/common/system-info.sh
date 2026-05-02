@@ -181,7 +181,8 @@ function get_arch_family() {
 function get_device_model() {
     if systemctl list-units | grep -q argononeup \
     || systemctl list-units | grep -q argon-one-up \
-    || compgen -G "${ROOT_USR_SRC}/oneUpPower-*" > /dev/null; then
+    || [ -f "${ROOT_USR_LIB}/systemd/system/argononeupd.service" ] \
+    || ls "${ROOT_USR_SRC}"/oneUpPower-* >/dev/null 2>&1; then
         echo 'Argon ONE UP'
     elif [ -f "${ROOT_SYS_DEVICES}/virtual/dmi/id/product_family" ]; then
         cat "${ROOT_SYS_DEVICES}/virtual/dmi/id/product_family"

@@ -379,9 +379,14 @@ fi
 ### Calculators ###
 ###################
 if ${IS_GENERAL_PURPOSE_DEVICE}; then
-    if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
-    || [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+    if [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
         install_flatpak 'org.gnome.Calculator'
+    if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
+        if ${POWERFUL_PC}; then
+            install_flatpak 'org.gnome.Calculator'
+        else
+            install_native_package 'galculator'
+        fi
     elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
         install_native_package 'mate-calc'
     fi
