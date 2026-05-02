@@ -226,10 +226,22 @@ function is_github_package_installed() {
 }
 
 function is_gnome_shell_extension_installed() {
-    local INPUT="${1}"
-    local EXTENSION_NAME="${INPUT#*/}"
+    local EXTENSION="${1}"
+    local EXTENSION_ID="${EXTENSION%%/*}"
 
-    gnome-extensions list | grep -q "^${EXTENSION_NAME}@"
+    # Fetch UUID (same as install logic)
+    local EXTENSION_PAGE
+    EXTENSION_PAGE=$(curl -Ls "https://extensions.gnome.org/extension/${EXTENSION_ID}/")
+
+    local UUID
+    UUID=$(echo "${EXTENSION_PAGE}" | \
+        grep -o 'data-uuid="[^"]*"' | \
+        head -n1 | \
+        cut -d '"' -f2)
+
+    [ -z "${UUID}" ] && return 1
+
+    gnome-extensions list | grep -qx "${UUID}"
 }
 
 function is_steam_app_installed() {
