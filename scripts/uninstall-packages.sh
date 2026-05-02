@@ -5,7 +5,7 @@ source "${REPO_SCRIPTS_COMMON_DIR}/package-management.sh"
 source "${REPO_SCRIPTS_COMMON_DIR}/system-info.sh"
 
 # Remove unused dependencies
-if [ "${DISTRO_FAMILY}" = "Arch" ]; then
+if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
     UNUSED_DEPS=$(pacman -Qdtq)
     UNUSED_DEPS_COUNT=$(echo "${UNUSED_DEPS}" | wc -w)
 
@@ -13,9 +13,9 @@ if [ "${DISTRO_FAMILY}" = "Arch" ]; then
         echo "Uninstalling unused dependencies ($UNUSED_DEPS_COUNT):"
         uninstall_native_package "${UNUSED_DEPS[@]}"
     fi
-elif [[ "${DISTRO_FAMILY}" == "Android" ]]; then
+elif [[ "${DISTRO_FAMILY}" == 'Android' ]]; then
     yes | apt autoremove
-elif [[ "${DISTRO_FAMILY}" == "Debian" ]]; then
+elif [[ "${DISTRO_FAMILY}" == 'Debian' ]]; then
     yes | run_as_su apt autoremove
 fi
 

@@ -494,7 +494,7 @@ function install_webapp() {
     BASE_DOMAIN=$(echo "${DOMAIN}" | sed -E 's/\.[^.]+$//')
 
     local PACKAGE_ID
-    PACKAGE_ID=$(echo "${BASE_DOMAIN}" | awk -F'.' '{for(i=NF;i>=1;i--) printf "%s%s",$i,(i>1?"-":"")}')
+    PACKAGE_ID=$(echo "${BASE_DOMAIN}" | sed 's/^app\.//' | awk -F'.' '{for(i=NF;i>=1;i--) printf "%s%s",$i,(i>1?"-":"")}')
 
     local PACKAGE_NAME
     PACKAGE_NAME="${PACKAGE_ID}-webapp"

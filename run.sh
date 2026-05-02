@@ -74,6 +74,7 @@ fi
 
 # Configure and customise the system
 run_script "${REPO_SCRIPTS_DIR}/configure-system.sh" # Run after update-rcs.sh
+run_script_as_su "${REPO_SCRIPTS_DIR}/configure-system.sh" # Run after update-rcs.sh
 if [ "${OS}" = 'Linux' ] \
 && ${HAS_GUI} \
 && ! [[ "${DISTRO}" =~ 'WSL' ]]; then

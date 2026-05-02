@@ -423,9 +423,10 @@ if ${HAS_GUI}; then
         if [ "${OS}" = 'Android' ]; then
             install_android_remote_package 'https://updates.signal.org/android/Signal-Android-website-prod-universal-release-7.6.2.apk' 'org.thoughtcrime.securesms'
         else
-            if [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ] \
-            || [ "${ARCH_FAMILY}" = 'arm' ]; then
+            if [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
                 install_flatpak 'de.schmidhuberj.Flare'
+            elif [ "${ARCH_FAMILY}" = 'arm' ]; then
+                install_github_package 'signal-desktop-unofficial' 'dennisameling/Signal-Desktop'
             else
                 install_flatpak 'org.signal.Signal'
             fi
@@ -699,7 +700,7 @@ if ${IS_GENERAL_PURPOSE_DEVICE}; then
             if [ "${ARCH_FAMILY}" = 'x86' ]; then
                 install_flatpak 'com.simplenote.Simplenote'
             else
-                install_webapp 'https://simplenote.com'
+                install_webapp 'https://app.simplenote.com'
             fi
         fi
         
