@@ -832,11 +832,15 @@ done
 
 for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.spotify.Client.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/dev.alextren.Spot.desktop" \
+                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/dev.diegovsky.Riff.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.spotify.Client.desktop" \
-                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/dev.alextren.Spot.desktop"; do
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/dev.alextren.Spot.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/dev.diegovsky.Riff.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name 'Spotify' \
-        Icon 'spotify'
+        Icon 'spotify' \
+        Keywords 'spotify;music;' \
+        Keywords[ro] 'spotify;muzică'
 done
 
 #############

@@ -104,7 +104,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
             'notification' false \
             'location' false
     done
-    for SPOTIFY_APP in 'dev.alextren.Spot' 'com.spotify.Client'; do
+    for SPOTIFY_APP in 'com.spotify.Client' 'dev.alextren.Spot' 'dev.diegovsky.Riff'; do
         set_linux_permission "${SPOTIFY_APP}" \
             'background' false \
             'camera' false \
