@@ -55,3 +55,9 @@ else
 fi
 
 [[ ${HOSTNAME} = *Pi ]] && enable_service 'sshd'
+
+disable_service 'nfs-blkmap'
+disable_service 'rpcbind'
+disable_service 'pcscd'
+disable_service 'avahi-daemon'
+disable_service 'ModemManager'
