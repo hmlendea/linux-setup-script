@@ -167,7 +167,8 @@ function package_manager_command() {
     elif [[ "${OPERATION}" == 'uninstall' ]]; then
         if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apk' ]] \
         || [[ "${PACKAGE_MANAGER_FAMILY}" == 'apt' ]]; then
-            ${PACKAGE_MANAGER_COMMAND} purge "${@}"
+            ${PACKAGE_MANAGER_COMMAND} remove "${@}"
+            ${PACKAGE_MANAGER_COMMAND} autoremove
         elif [[ "${PACKAGE_MANAGER_FAMILY}" == 'pacman' ]]; then
             ${PACKAGE_MANAGER_COMMAND} -Rns "${@}"
         fi
