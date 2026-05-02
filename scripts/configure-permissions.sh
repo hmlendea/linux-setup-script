@@ -39,7 +39,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
             'notification' false \
             'location' true
     done
-    for CHAT_APP in 'app.drey.PaperPlane' 'com.discordapp.Discord' 'de.schmidhuberj.Flare' 'io.github.mimbrero.WhatsAppDesktop' 'org.signal.Signal' 'org.telegram.desktop'; do
+    for CHAT_APP in 'app.drey.PaperPlane' 'com.discordapp.Discord' 'de.schmidhuberj.Flare' 'org.signal.Signal' 'org.telegram.desktop'; do
         set_linux_permission "${CHAT_APP}" \
             'background' true \
             'camera' true \
@@ -191,6 +191,15 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
             'camera' false \
             'network' true \
             'notification' false \
+            'location' false
+    done
+    for WHATSAPP_APP in 'io.github.mimbrero.WhatsAppDesktop' 'wasistlos' 'whatsapp-nativefier'; do
+        set_linux_permission "${WHATSAPP_APP}" \
+            'background' true \
+            'camera' true \
+            'network' true \
+            'notification' true \
+            'notification_lockscreen' true \
             'location' false
     done
 

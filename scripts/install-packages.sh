@@ -427,7 +427,11 @@ if ${HAS_GUI}; then
         fi
 
         if [ "${CHASSIS_TYPE}" != 'Phone' ]; then
-            install_flatpak 'io.github.mimbrero.WhatsAppDesktop'
+            if [ "${ARCH_FAMILY}" = 'x86' ]; then
+                install_flatpak 'io.github.mimbrero.WhatsAppDesktop'
+            elif [ "${ARCH_FAMILY}" = 'arm' ]; then
+                install_native_package 'wasistlos'
+            fi
         fi
     fi
 

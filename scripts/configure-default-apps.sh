@@ -166,10 +166,12 @@ fi
 
 # WhatsApp
 WHATSAPP_LAUNCHER=''
-if does_bin_exist 'whatsapp-nativefier'; then
-    WHATSAPP_LAUNCHER='whatsapp-nativefier.desktop'
-elif does_bin_exist 'io.github.mimbrero.WhatsAppDesktop'; then
+if does_bin_exist 'io.github.mimbrero.WhatsAppDesktop'; then
     WHATSAPP_LAUNCHER='io.github.mimbrero.WhatsAppDesktop.desktop'
+elif does_bin_exist 'wasistlos'; then
+    WHATSAPP_LAUNCHER='com.github.xeco23.WasIstLos.desktop'
+elif does_bin_exist 'whatsapp-nativefier'; then
+    WHATSAPP_LAUNCHER='whatsapp-nativefier.desktop'
 fi
 
 # Update the favourites

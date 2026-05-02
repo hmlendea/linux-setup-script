@@ -42,9 +42,7 @@ DNS_CACHE_SIZE=10000 # Entries
 [ "${SCREEN_RESOLUTION_V}" -eq 0 ]      && ZOOM_LEVEL=1.00
 
 # Languages
-OS_LANGUAGE=''
-[ -f "${ROOT_ETC}/locale.conf" ] && OS_LANGUAGE=$(grep "^LANG=" "${ROOT_ETC}/locale.conf" | sed 's/^[^=]*=\([^.]*\).*/\1/g')
-[ -z "${OS_LANGUAGE}" ] && OS_LANGUAGE='en_GB'
+OS_LANGUAGE="$(get_os_language)"
 APPS_LANGUAGE='ro_RO'
 GAMES_LANGUAGE='en_GB'
 
@@ -206,18 +204,6 @@ if does_bin_exist 'mkinitcpio'; then
     set_config_value "${MKINITCPIO_CONFIG_FILE}" 'COMPRESSION' '"lz4"'
 fi
 
-echo "${OS_LANGUAGE}" > "${XDG_CONFIG_HOME}/user-dirs.locale"
-[ ! -f "${XDG_CONFIG_HOME}/user-dirs.dirs" ] && touch "${XDG_CONFIG_HOME}/user-dirs.dirs"
-set_config_values "${XDG_CONFIG_HOME}/user-dirs.dirs" \
-    XDG_DESKTOP_DIR     "\"${XDG_DESKTOP_DIR}\"" \
-    XDG_DOCUMENTS_DIR   "\"${XDG_DOCUMENTS_DIR}\"" \
-    XDG_DOWNLOAD_DIR    "\"${XDG_DOWNLOAD_DIR=}\"" \
-    XDG_MUSIC_DIR       "\"${XDG_MUSIC_DIR}\"" \
-    XDG_PICTURES_DIR    "\"${XDG_PICTURES_DIR}\"" \
-    XDG_PUBLICSHARE_DIR "\"${XDG_PUBLICSHARE_DIR}\"" \
-    XDG_TEMPLATES_DIR   "\"${XDG_TEMPLATES_DIR}\"" \
-    XDG_VIDEOS_DIR      "\"${XDG_VIDEOS_DIR}\""
-
 if [ -d "${ROOT_ETC}/modprobe.d" ]; then
     set_gsetting org.gtk.Settings.FileChooser startup-mode 'cwd'
 
@@ -288,6 +274,11 @@ if [ -d "${ROOT_ETC}/sysctl.d" ]; then
         set_config_value "${SYSCTL_CONFIG_FILE}" 'vm.dirty_writeback_centisecs' $((DIRTY_WRITEBACK_DEFAULT_SECS * 100))
         set_config_value "${SYSCTL_CONFIG_FILE}" 'vm.laptop_mode' 0
     fi
+fi
+
+if [ -d "${ROOT_ETC}/systemd" ]; then
+    set_config_values --section 'Login' "${ROOT_ETC}/systemd/logind.conf" \
+        'KillUserProcesses' 'yes'
 fi
 
 if [ -f "${ROOT_ETC}/default/grub" ] \

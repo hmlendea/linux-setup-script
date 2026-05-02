@@ -1,5 +1,6 @@
 #!/bin/bash
 source "scripts/common/filesystem.sh"
+source "${REPO_SCRIPTS_COMMON_DIR}/config.sh"
 source "${REPO_SCRIPTS_COMMON_DIR}/system-info.sh"
 
 function update_hidden_files_config_if_needed() {
@@ -18,6 +19,25 @@ if ${HAS_GUI} && [ "${OS}" = 'Linux' ]; then
     fi
     update_hidden_files_config_if_needed 'home-documents' "${XDG_DOCUMENTS_DIR}"
     update_hidden_files_config_if_needed 'home-downloads' "${XDG_DOWNLOAD_DIR}"
+
+    create_file "${XDG_CONFIG_HOME}/user-dirs.conf"
+    echo "${OS_LANGUAGE}" > "${XDG_CONFIG_HOME}/user-dirs.locale"
+
+    create_file "${XDG_CONFIG_HOME}/user-dirs.conf"
+    set_config_values "${XDG_CONFIG_HOME}/user-dirs.conf" \
+        enabled 'True'
+
+    create_file "${XDG_CONFIG_HOME}/user-dirs.dirs"
+    set_config_values "${XDG_CONFIG_HOME}/user-dirs.dirs" \
+        XDG_DESKTOP_DIR     "\"${XDG_DESKTOP_DIR}\"" \
+        XDG_DOCUMENTS_DIR   "\"${XDG_DOCUMENTS_DIR}\"" \
+        XDG_DOWNLOAD_DIR    "\"${XDG_DOWNLOAD_DIR=}\"" \
+        XDG_MUSIC_DIR       "\"${XDG_MUSIC_DIR}\"" \
+        XDG_PICTURES_DIR    "\"${XDG_PICTURES_DIR}\"" \
+        XDG_PUBLICSHARE_DIR "\"${XDG_PUBLICSHARE_DIR}\"" \
+        XDG_TEMPLATES_DIR   "\"${XDG_TEMPLATES_DIR}\"" \
+        XDG_VIDEOS_DIR      "\"${XDG_VIDEOS_DIR}\""
+
 
     if does_bin_exist 'org.prismlauncher.PrismLauncher'; then
         MINECRAFT_SCREENSHOTS_DIR="${XDG_PICTURES_DIR}/Screenshots/Minecraft"

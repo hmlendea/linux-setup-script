@@ -218,7 +218,8 @@ done
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/meowgram.desktop" Categories "GTK;${CHAT_APP_CATEGORIES}"
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/telegramdesktop.desktop" Categories "Qt;${CHAT_APP_CATEGORIES}"
 
-for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/whatsapp-for-linux.desktop" \
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/com.github.xeco23.WasIstLos.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/whatsapp-for-linux.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/whatsapp-desktop.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/whatsapp-nativefier.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/whatsapp-nativefier-dark.desktop" \
@@ -862,7 +863,7 @@ set_launcher_entries "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.simplenote.Simplenote.
 ##############
 ### NVIDIA ###
 ##############
-NVIDIA_SETTINGS_EXEC="/usr/bin/nvidia-settings --config=\"${XDG_CONFIG_HOME}/nvidia/settings\""
+NVIDIA_SETTINGS_EXEC="${ROOT_USR_BIN}/nvidia-settings --config=\"${XDG_CONFIG_HOME}/nvidia/settings\""
 
 if does_bin_exist "nvidia-settings"; then
     set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/nvidia-settings.desktop" \
@@ -1107,14 +1108,14 @@ fi
 #######################
 for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/net.nokyan.Resources.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/gnome-system-monitor.desktop" \
-                "${GLOBAL_LAUNCHERS_DIR}/mate-system-monitor.desktop"; do
+                "${GLOBAL_LAUNCHERS_DIR}/lxtask.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/mate-system-monitor.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/org.gnome.SystemMonitor.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        Name "System Monitor" \
-        Name[ro] "Monitor de Sistem" \
-        Icon "utilities-system-monitor"
+        Name 'Processes' \
+        Name[ro] 'Procese' \
+        Icon 'utilities-system-monitor'
 done
-
-set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/lxtask.desktop" Name[ro] "Manager de Activități"
 
 ###################
 ### TEAM VIEWER ###
@@ -1356,20 +1357,24 @@ fi
 # ALL FLATPAKS
 for FLATPAK_LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}"/*.desktop \
                         "${LOCAL_FLATPAK_LAUNCHERS_DIR}"/*.desktop; do
+    if [[ "${FLATPAK_LAUNCHER}" == *\*.desktop ]]; then
+        continue
+    fi
+
     APP_ID=$(basename "${FLATPAK_LAUNCHER}" | sed 's/\.desktop$//g')
-    QUIT_ACTION_ID="quit"
+    QUIT_ACTION_ID='quit'
     FLATPAK_LAUNCHER_CONTENT=$(cat "${FLATPAK_LAUNCHER}")
     FLATPAK_NAME=$(grep "^Name=" <<< "${FLATPAK_LAUNCHER_CONTENT}" | head -n 1 | awk -F= '{print $2}')
     FLATPAK_NAME_NOSPACES=$(echo "${FLATPAK_NAME}" | sed 's/\s*//g')
 
     if grep -q "^\[Desktop Action quit\]" <<< "${FLATPAK_LAUNCHER_CONTENT}"; then
-        QUIT_ACTION_ID="quit"
+        QUIT_ACTION_ID='quit'
     elif grep -q "^\[Desktop Action Quit\]" <<< "${FLATPAK_LAUNCHER_CONTENT}"; then
-        QUIT_ACTION_ID="Quit"
+        QUIT_ACTION_ID='Quit'
     elif grep -q "^\[Desktop Action force-qui\]" <<< "${FLATPAK_LAUNCHER_CONTENT}"; then
-        QUIT_ACTION_ID="force-quit"
+        QUIT_ACTION_ID='force-quit'
     elif grep -q "^\[Desktop Action ForceQuit\]" <<< "${FLATPAK_LAUNCHER_CONTENT}"; then
-        QUIT_ACTION_ID="ForceQuit"
+        QUIT_ACTION_ID='ForceQuit'
     elif grep -q "^\[Desktop Action Quit${FLATPAK_NAME_NOSPACES}\]$" <<< "${FLATPAK_LAUNCHER_CONTENT}"; then
         QUIT_ACTION_ID="Quit${FLATPAK_NAME_NOSPACES}"
     fi
@@ -1377,14 +1382,14 @@ for FLATPAK_LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}"/*.desktop \
     ACTIONS=$(grep "^Actions=" "${FLATPAK_LAUNCHER}" | sed -e 's/^Actions=//g' -e 's/'"${QUIT_ACTION_ID}"';//g')
 
     set_launcher_entries "${FLATPAK_LAUNCHER}" \
-        "Exec" "/usr/bin/flatpak run ${APP_ID} %U" \
-        "Actions" "${ACTIONS}${QUIT_ACTION_ID};" \
+        'Exec' "${ROOT_USR_BIN}/flatpak run ${APP_ID} %U" \
+        'Actions' "${ACTIONS}${QUIT_ACTION_ID};" \
         "StartupNotify" false \
         "Desktop Action ${QUIT_ACTION_ID}/Name" "Quit" \
         "Desktop Action ${QUIT_ACTION_ID}/Name[ro]" "Închide" \
         "Desktop Action ${QUIT_ACTION_ID}/GenericName" "Quit" \
         "Desktop Action ${QUIT_ACTION_ID}/GenericName[ro]" "Închide" \
-        "Desktop Action ${QUIT_ACTION_ID}/Exec" "/usr/bin/flatpak kill ${APP_ID}" \
+        "Desktop Action ${QUIT_ACTION_ID}/Exec" "${ROOT_USR_BIN}/flatpak kill ${APP_ID}" \
         "Desktop Action ${QUIT_ACTION_ID}/Icon" "application-exit"
 done
 
@@ -1435,7 +1440,7 @@ function getSteamAppIconPath() {
     if [ -f "${APP_ICON_PATH}" ]; then
         echo "${APP_ICON_PATH}"
     else
-        for ICON_THEME_CANDIDATE in "${ROOT_USR_SHARE}/icons/"* ; do
+        for ICON_THEME_CANDIDATE in "${ROOT_USR_SHARE}/icons"/* ; do
 
             if [ -d "${ICON_THEME_CANDIDATE}/48/apps" ]; then
                 APPS_DIR_NAME="48/apps"
@@ -1489,7 +1494,7 @@ if does_bin_exist "steam" "com.valvesoftware.Steam" \
             [ ! -f "${STEAM_WMCLASSES_FILE}" ]  && touch "${STEAM_WMCLASSES_FILE}"
             [ ! -f "${STEAM_NAMES_FILE}" ]      && touch "${STEAM_NAMES_FILE}"
 
-            APP_IDS=$(ls "${STEAM_LIBRARY_PATH}" | grep "appmanifest_.*.acf" | awk -F_ '{print $2}' | awk -F. '{print $1}' | sort -h)
+            APP_IDS=$(ls "${STEAM_LIBRARY_PATH}" | grep 'appmanifest_.*.acf' | awk -F_ '{print $2}' | awk -F. '{print $1}' | sort -h)
             APPS_DIR_NAME="48x48/apps"
 
             if [ ! -d "${ICON_THEME_PATH}/${APPS_DIR_NAME}" ]; then
@@ -1510,7 +1515,7 @@ if does_bin_exist "steam" "com.valvesoftware.Steam" \
                 if [[ "${APP_NAME}" == "Steamworks Common Redistributables" ]] || \
                    [[ "${APP_NAME}" =~ ^Proton\ [0-9]+\.[0-9]+$ ]] || \
                    [[ "${APP_NAME}" =~ ^Proton\ Experimental ]] || \
-                   [[ "${APP_NAME}" == "Steam Linux Runtime"* ]]; then
+                   [[ "${APP_NAME}" == 'Steam Linux Runtime'* ]]; then
                     DO_CREATE_LAUNCHER=false
                 fi
 
@@ -1524,13 +1529,13 @@ if does_bin_exist "steam" "com.valvesoftware.Steam" \
                         echo "CANNOT GET WMCLASS FOR STEAMAPP ${APP_ID} - ${APP_NAME}"
                     fi
 
-                    STEAM_EXECUTABLE="steam"
+                    STEAM_EXECUTABLE='steam'
 
-                    if does_bin_exist "com.valvesoftware.Steam"; then
-                        STEAM_EXECUTABLE="com.valvesoftware.Steam"
-                        #STEAM_EXECUTABLE="/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=/app/bin/steam-wrapper com.valvesoftware.Steam"
-                    elif does_bin_exist "steam-start"; then
-                        STEAM_EXECUTABLE="steam-start"
+                    if does_bin_exist 'com.valvesoftware.Steam'; then
+                        STEAM_EXECUTABLE='com.valvesoftware.Steam'
+                        #STEAM_EXECUTABLE="${ROOT_USR_BIN}/flatpak run --branch=stable --arch=x86_64 --command=/app/bin/steam-wrapper com.valvesoftware.Steam"
+                    elif does_bin_exist 'steam-start'; then
+                        STEAM_EXECUTABLE='steam-start'
                     fi
 
                     APP_KEYWORDS="${APP_ID}"
@@ -1564,15 +1569,15 @@ if does_bin_exist "steam" "com.valvesoftware.Steam" \
                         Icon[de] "${APP_ICON_PATH}" \
                         Icon[es] "${APP_ICON_PATH}" \
                         Icon[ro] "${APP_ICON_PATH}" \
-                        Categories "Game;Steam;" \
+                        Categories 'Game;Steam;' \
                         StartupWMClass "${APP_WMCLASS}" \
                         PrefersNonDefaultGPU true \
                         NoDisplay false
 
 #                    does_bin_exist "com.valvesoftware.Steam" && set_launcher_entries "${STEAM_LAUNCHERS_PATH}/app_${APP_ID}.desktop" \
-#                        "X-Flatpak-RenamedFrom" "steam.desktop" \
-#                        "X-Flatpak-Tags" "proprietary" \
-#                        "X-Flatpak" "com.valvesoftware.Steam"
+#                        'X-Flatpak-RenamedFrom' 'steam.desktop' \
+#                        'X-Flatpak-Tags' 'proprietary' \
+#                        'X-Flatpak' 'com.valvesoftware.Steam'
                 fi
             done
 

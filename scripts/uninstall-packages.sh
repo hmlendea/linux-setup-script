@@ -70,6 +70,14 @@ fi
 keep_first_installed_package 'com.telegram.desktop' 'telegram-desktop'
 keep_first_installed_package 'de.schmidhuberj.Flare' 'org.signal.Signal' 'signal-desktop'
 
+if [ "${OS}" = 'Linux' ]; then
+    if [ "${ARCH_FAMILY}" = 'x86' ]; then
+        keep_first_installed_package 'io.github.mimbrero.WhatsAppDesktop' 'wasistlos' 'whatsapp-nativefier'
+    elif [ "${ARCH_FAMILY}" = 'arm' ]; then
+        keep_first_installed_package 'wasistlos' 'io.github.mimbrero.WhatsAppDesktop' 'whatsapp-nativefier'
+    fi
+fi
+
 # Clock Apps
 if [ "${DISTRO_FAMILY}" = 'Android' ]; then
     keep_first_installed_package 'org.fossify.clock' 'com.android.deskclock'
@@ -236,7 +244,6 @@ if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
     uninstall_native_package "transmission-gtk"             # Replaced by flatpak: com.transmissionbt.Transmission
     uninstall_native_package "ttf-ms-fonts"                 # Replaced by ttf-ms-win10
     uninstall_native_package "vi"                           # Replaced by micro
-    uninstall_native_package "whatsapp-nativefier"          # Replaced by flatpah: io.github.mimbrero.WhatsAppDesktop
     uninstall_native_package "yaourt-auto-sync"             # Replaced by repo-synchroniser
 
     uninstall_flatpak "org.gnome.Cheese"        # Replaced by org.gnome.Snapshot

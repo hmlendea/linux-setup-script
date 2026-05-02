@@ -200,6 +200,15 @@ function get_device_model() {
     fi
 }
 
+function get_os_language() {
+    local OS_LANGUAGE
+
+    [ -f "${ROOT_ETC}/locale.conf" ] && OS_LANGUAGE=$(grep "^LANG=" "${ROOT_ETC}/locale.conf" | sed 's/^[^=]*=\([^.]*\).*/\1/g')
+    [ -z "${OS_LANGUAGE}" ] && OS_LANGUAGE='en_GB'
+
+    echo "${OS_LANGUAGE}"
+}
+
 function get_soc_name() {
     local SOC_MODEL=''
 
