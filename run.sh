@@ -52,7 +52,7 @@ echo ''
 if [ "${OS}" != 'Windows' ]; then
     # Configure package repositories
     run_script_as_su "${REPO_SCRIPTS_DIR}/configure-repositories.sh"
-    run_script "${REPO_SCRIPTS_DIR}/update-package-repositories.sh"
+    run_script "${REPO_SCRIPTS_DIR}/update-repositories.sh"
 
     # Manage packages and extensions
     run_script "${REPO_SCRIPTS_DIR}/uninstall-packages.sh"
