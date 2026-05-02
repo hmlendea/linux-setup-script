@@ -48,12 +48,12 @@ function get_config_value() {
 
 function set_config_value() {
     local SEPARATOR='='
-    local SECTION=''
     local QUOTE="'"
+    local SECTION=''
 
     [ "${1}" = '--separator' ] && shift && SEPARATOR="${1}" && shift
-    [ "${1}" = '--section' ] && shift && SECTION="${1}" && shift
     [ "${1}" = '--quote' ] && shift && QUOTE="${1}" && shift
+    [ "${1}" = '--section' ] && shift && SECTION="${1}" && shift
 
     local FILE="${1}"
     local KEY="${2}"
@@ -79,32 +79,16 @@ function set_config_value() {
 }
 
 function set_ini_config_value() {
-    local SEPARATOR="="
+    local SEPARATOR='='
     local QUOTE="'"
-    local SECTION=""
+    local SECTION=''
     local SECTIONS_COUNT=0
 
-    if [ "${1}" == '--separator' ]; then
-        shift
-        SEPARATOR="${1}"
-        shift
-    fi
+    [ "${1}" = '--separator' ] && shift && SEPARATOR="${1}" && shift
+    [ "${1}" = '--quote' ] && shift && QUOTE="${1}" && shift
+    [ "${1}" = '--section' ] && shift && SECTION="${1}" && shift
 
-    if [ "${1}" = '--quote' ]; then
-        shift
-        QUOTE="${1}"
-        shift
-    fi
-
-    if [ "${1}" = '--section' ]; then
-        shift
-        SECTION="${1}"
-        shift
-    fi
-
-    if [ "${SEPARATOR}" = ':' ]; then
-        SEPARATOR=': '
-    fi
+    [ "${SEPARATOR}" = ':' ] && SEPARATOR=': '
 
     local FILE_PATH="${1}"
     local KEY="${2}"
@@ -117,11 +101,10 @@ function set_ini_config_value() {
     
     create_file "${FILE_PATH}"
 
-    #local VALUE=$(echo "${VALUE_RAW}" | sed -e 's/[]\/$*.^|[]/\\&/g')
     local VALUE="${VALUE_RAW}"
     local FILE_CONTENT=""
 
-    [[ "${VALUE_RAW}" =~ [\ !\(\)] ]] && VALUE="${QUOTE}${VALUE}${QUOTE}"
+    [[ "${VALUE_RAW}" =~ [[:space:]\!\(\)] ]] && VALUE="${QUOTE}${VALUE}${QUOTE}"
 
     FILE_CONTENT=$(read_file "${FILE_PATH}")
 
@@ -138,27 +121,33 @@ function set_ini_config_value() {
 
     SECTIONS_COUNT=$(grep -c "^\[" <<< "${FILE_CONTENT}")
 
-    # If the config key already exists (with a different value)
-    if [ $(grep -c "^${KEY}\s*${SEPARATOR}.*$" <<< "${FILE_CONTENT}") -gt 0 ]; then
+    if grep -q "^${KEY}\s*${SEPARATOR}.*$" <<< "${FILE_CONTENT}"; then
         if [ -w "${FILE_PATH}" ]; then
             sed -i 's|^'"${KEY}\s*${SEPARATOR}"'.*$|'"${KEY}${SEPARATOR}${VALUE}"'|g' "${FILE_PATH}"
         else
-            sudo sed -i 's|^'"${KEY}${SEPARATOR}"'.*$|'"${KEY}${SEPARATOR}${VALUE}"'|g' "${FILE_PATH}"
+            sudo sed -i 's|^'"${KEY}\s*${SEPARATOR}"'.*$|'"${KEY}${SEPARATOR}${VALUE}"'|g' "${FILE_PATH}"
         fi
+
     else
-        if grep -q "\[${SECTION}\]" <<< "${FILE_CONTENT}"; then
-            if [ ${SECTIONS_COUNT} -le 1 ]; then
-                append_line "${FILE_PATH}" "${KEY}${SEPARATOR}${VALUE}"
-            else
-                if grep -q "^\s*#\s*${KEY}\s*${SEPARATOR}" <<< "${FILE_CONTENT}"; then
-                    if [ -w "${FILE_PATH}" ]; then
-                        sed -i 's|^\s*#\s*'"${KEY}"'\s*'"${SEPARATOR}"'.*|'"${KEY}${SEPARATOR}${VALUE}"'|g' "${FILE_PATH}"
-                    else
-                        sudo sed -i 's|^\s*#\s*'"${KEY}"'\s*'"${SEPARATOR}"'.*|'"${KEY}${SEPARATOR}${VALUE}"'|g' "${FILE_PATH}"
-                    fi
+        if [ -n "${SECTION}" ] && grep -q "^\[${SECTION}\]$" <<< "${FILE_CONTENT}"; then
+            if grep -q "^\s*#\s*${KEY}\s*${SEPARATOR}" <<< "${FILE_CONTENT}"; then
+                if [ -w "${FILE_PATH}" ]; then
+                    sed -i 's|^\s*#\s*'"${KEY}"'\s*'"${SEPARATOR}"'.*|'"${KEY}${SEPARATOR}${VALUE}"'|g' "${FILE_PATH}"
                 else
-                    echo "ERROR: Cannot add new key ${KEY} to existing section ${SECTION}, as this is not supported!"
-                    return
+                    sudo sed -i 's|^\s*#\s*'"${KEY}"'\s*'"${SEPARATOR}"'.*|'"${KEY}${SEPARATOR}${VALUE}"'|g' "${FILE_PATH}"
+                fi
+            else
+                local SECTION_FIRST_LINE=$(grep -n "^\[${SECTION}\]$" "${FILE_PATH}" | awk -F: '{print $1}')
+                local SECTION_LAST_LINE=$(grep -n "^\[.*\]$" "${FILE_PATH}" | awk -F: -v start="${SECTION_FIRST_LINE}" '$1 > start {print $1; exit}')
+
+                if [ -z "${SECTION_LAST_LINE}" ]; then
+                    append_line "${FILE_PATH}" "${KEY}${SEPARATOR}${VALUE}"
+                else
+                    if [ -w "${FILE_PATH}" ]; then
+                        sed -i "${SECTION_LAST_LINE}i ${KEY}${SEPARATOR}${VALUE}" "${FILE_PATH}"
+                    else
+                        run_as_su sed -i "${SECTION_LAST_LINE}i ${KEY}${SEPARATOR}${VALUE}" "${FILE_PATH}"
+                    fi
                 fi
             fi
         elif [ -n "${SECTION}" ]; then
@@ -174,6 +163,7 @@ function set_ini_config_value() {
 
 function set_config_values() {
     local SEPARATOR="="
+    local QUOTE="'"
     local SECTION=""
 
     if [[ "${1}" == "--separator" ]]; then
@@ -181,6 +171,8 @@ function set_config_values() {
         SEPARATOR="${1}"
         shift
     fi
+
+    [ "${1}" = '--quote' ] && shift && QUOTE="${1}" && shift
 
     if [[ "${1}" == "--section" ]]; then
         shift
@@ -204,7 +196,7 @@ function set_config_values() {
         local VAL="${1}" && shift
 
         if [ -n "${KEY}" ] && [ -n "${VAL}" ]; then
-            set_config_value --separator "${SEPARATOR}" --section "${SECTION}" "${FILE}" "${KEY}" "${VAL}"
+            set_config_value --separator "${SEPARATOR}" --quote "${QUOTE}" --section "${SECTION}" "${FILE}" "${KEY}" "${VAL}"
         fi
     done
 }

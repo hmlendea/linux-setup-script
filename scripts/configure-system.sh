@@ -1628,7 +1628,7 @@ if does_bin_exist 'lxterminal'; then
         geometry_rows ${TERMINAL_SIZE_ROWS}
 
     # Font
-    set_config_values "${LXTERMINAL_CONFIG_FILE}" \
+    set_config_values --quote '' --section 'general' "${LXTERMINAL_CONFIG_FILE}" \
         fontname "${MONOSPACE_FONT}"
 
     # Others
