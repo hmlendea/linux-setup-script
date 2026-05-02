@@ -45,11 +45,11 @@ function add_apt_repository_deb() {
 
     local TMP_FILE="${LOCAL_INSTALL_TEMP_DIR}/${REPO_NAME}.deb"
 
-    [ ! -d "${LOCAL_INSTALL_TEMP_DIR}" ] && mkdir -p "${LOCAL_INSTALL_TEMP_DIR}"
-
+    create_directory "${LOCAL_INSTALL_TEMP_DIR}"
     wget -q "${REPO_DEB_URL}" -O "${TMP_FILE}" || return 1
+    
     run_as_su dpkg -i "${TMP_FILE}" || return 1
-    rm -f "${TMP_FILE}"
+    remove "${TMP_FILE}"
 
     sudo apt update
 }

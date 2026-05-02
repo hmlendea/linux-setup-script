@@ -672,8 +672,10 @@ if ${IS_GENERAL_PURPOSE_DEVICE}; then
 
     if [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
         install_flatpak 'dev.alextren.Spot'
-    else
+    elif [ "${ARCH_FAMILY}" = 'x86' ]; then
         install_flatpak 'com.spotify.Client'
+    elif [ "${ARCH_FAMILY}" = 'arm' ]; then
+        install_flatpak 'dev.diegovsky.Riff'
     fi
 fi
 
@@ -932,7 +934,12 @@ if [ "${OS}" = 'Linux' ]; then
         #fi
 
         if ${IS_DEVELOPMENT_DEVICE}; then
-            install_flatpak 'com.usebruno.Bruno'
+            if [ "${ARCH_FAMILY}" = 'x86' ]; then
+                install_flatpak 'com.usebruno.Bruno'
+            elif [ "${DISTRO_FAMILY}" = 'Debian' ] \
+              || [ "${DISTRO_FAMILY}" = 'Ubuntu' ]; then
+                install_github_package 'bruno' 'usebruno/bruno'
+            fi
 
             #does_bin_exist "flatpak" && install_native_package "flatpak-builder"
         fi

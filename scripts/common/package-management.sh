@@ -127,11 +127,11 @@ function call_gnome_extensions() {
 
     gnome-extensions install --force "${TMP_FILE}" || {
         echo " !!! Installation failed for ${UUID}"
-        rm -f "${TMP_FILE}"
+        remove "${TMP_FILE}"
         return 1
     }
 
-    rm -f "${TMP_FILE}"
+    remove "${TMP_FILE}"
 
     gnome-extensions list > /dev/null 2>&1
     gnome-extensions enable "${UUID}" 2>/dev/null || {
@@ -209,15 +209,20 @@ function is_flatpak_installed() {
     return 1 # False
 }
 
-function is_vscode_extension_installed() {
-    local EXTENSION="${1}"
-    local INSTALLED_EXTENSIONS=$(call_vscode --list-extensions)
+function is_github_package_installed() {
+    local PACKAGE_NAME="${1}"
 
-    if echo "${INSTALLED_EXTENSIONS}" | grep -q "${EXTENSION}"; then
-        return 0 # True
-    else
-        return 1 # False
+    local PACKAGE_METADATA_DIR="${LINUX_SETUP_SCRIPT_PACKAGES_DIR}/${PACKAGE_NAME}"
+
+    [ -d "${PACKAGE_METADATA_DIR}" ] || return 1
+    [ -f "${PACKAGE_METADATA_DIR}/version" ] || return 1
+    [ -f "${PACKAGE_METADATA_DIR}/medium" ] || return 1
+
+    if grep -q '^github$' "${PACKAGE_METADATA_DIR}/medium"; then
+        return 0
     fi
+
+    return 1
 }
 
 function is_gnome_shell_extension_installed() {
@@ -231,6 +236,18 @@ function is_steam_app_installed() {
     local STEAM_APP_ID="${1}"
 
     if [ -f "${XDG_DATA_HOME}/Steam/steamapps/appmanifest_${STEAM_APP_ID}.acf" ]; then
+        return 0 # True
+    else
+        return 1 # False
+    fi
+}
+
+
+function is_vscode_extension_installed() {
+    local EXTENSION="${1}"
+    local INSTALLED_EXTENSIONS=$(call_vscode --list-extensions)
+
+    if echo "${INSTALLED_EXTENSIONS}" | grep -q "${EXTENSION}"; then
         return 0 # True
     else
         return 1 # False
@@ -309,9 +326,9 @@ function install_android_remote_package() {
 
     is_android_package_installed "${PACKAGE_NAME}" && return
 
-    [ ! -d "${LOCAL_INSTALL_TEMP_DIR}" ] && mkdir -p "${LOCAL_INSTALL_TEMP_DIR}"
-
+    create_directory "${LOCAL_INSTALL_TEMP_DIR}"
     wget "${PACKAGE_URL}" -c -O "${LOCAL_INSTALL_TEMP_DIR}/${PACKAGE_NAME}.apk"
+
     install_android_package "${LOCAL_INSTALL_TEMP_DIR}/${PACKAGE_NAME}.apk"
 }
 
@@ -356,13 +373,73 @@ function install_flatpak() {
     call_flatpak install --${INSTALLATION_METHOD} "${REMOTE}" "${PACKAGE}"
 }
 
-function install_vscode_package() {
-    local EXTENSION="${*}"
+function install_github_package() {
+    local PACKAGE_NAME="${1}"
+    local REPOSITORY="${2}"
 
-    is_vscode_extension_installed "${EXTENSION}" && return
+    local PACKAGE_METADATA_DIR="${LINUX_SETUP_SCRIPT_PACKAGES_DIR}/${PACKAGE_NAME}"
 
-    echo -e " >>> Installing VS Code extension: \e[0;33m${EXTENSION}\e[0m..."
-    call_vscode --install-extension "${EXTENSION}"
+    local RELEASE_JSON
+    RELEASE_JSON=$(curl -s "https://api.github.com/repos/${REPOSITORY}/releases/latest")
+
+    local VERSION
+    VERSION=$(echo "${RELEASE_JSON}" | jq -r '.tag_name')
+
+    # Detect architecture
+    local ARCH
+    ARCH=$(dpkg --print-architecture)
+
+    local ARCH_REGEX="${ARCH}"
+    if [ "${ARCH}" = 'amd64' ]; then
+        ARCH_REGEX='(amd64|x86_64)'
+    elif [ "${ARCH}" = 'arm64' ]; then
+        ARCH_REGEX='(arm64|aarch64)'
+    fi
+
+    local DOWNLOAD_URL
+    DOWNLOAD_URL=$(echo "${RELEASE_JSON}" | jq -r '.assets[] | .browser_download_url' | \
+        grep -E '\.deb$' | \
+        grep -E "${ARCH_REGEX}" | \
+        head -n1)
+
+    if [ -z "${DOWNLOAD_URL}" ]; then
+        echo " !!! No matching .deb asset found for ${REPOSITORY} (${ARCH})"
+        return 1
+    fi
+
+    if is_github_package_installed "${PACKAGE_NAME}"; then
+        local INSTALLED_VERSION
+        INSTALLED_VERSION=$(run_as_su cat "${PACKAGE_METADATA_DIR}/version")
+
+        if [ "${INSTALLED_VERSION}" = "${VERSION}" ]; then
+            return
+        fi
+    fi
+
+    echo -e " >>> Installing GitHub package: \e[0;33m${PACKAGE_NAME}\e[0m (${VERSION})..."
+
+    local TMP_FILE="${LOCAL_INSTALL_TEMP_DIR}/${PACKAGE_NAME}-${VERSION}.deb"
+
+    create_directory "${LOCAL_INSTALL_TEMP_DIR}"
+    remove "${TMP_FILE}"
+
+    trap 'remove "${TMP_FILE}"' RETURN
+
+    wget "${DOWNLOAD_URL}" -O "${TMP_FILE}"
+
+    if [ ! -s "${TMP_FILE}" ]; then
+        echo " !!! Download failed for ${PACKAGE_NAME}"
+        return 1
+    fi
+
+    run_as_su apt install -y "${TMP_FILE}" || {
+        echo " !!! Installation failed for ${PACKAGE_NAME}"
+        return 1
+    }
+
+    create_directory "${PACKAGE_METADATA_DIR}"
+    run_as_su sh -c "echo '${VERSION}' > '${PACKAGE_METADATA_DIR}/version'"
+    run_as_su sh -c "echo 'github' > '${PACKAGE_METADATA_DIR}/medium'"
 }
 
 function install_gnome_shell_extension() {
@@ -372,6 +449,15 @@ function install_gnome_shell_extension() {
 
     echo -e " >>> Installing GNOME Shell extension: \e[0;33m${EXTENSION}\e[0m..."
     call_gnome_extensions "${EXTENSION}"
+}
+
+function install_vscode_package() {
+    local EXTENSION="${*}"
+
+    is_vscode_extension_installed "${EXTENSION}" && return
+
+    echo -e " >>> Installing VS Code extension: \e[0;33m${EXTENSION}\e[0m..."
+    call_vscode --install-extension "${EXTENSION}"
 }
 
 function uninstall_package() {
@@ -420,6 +506,19 @@ function uninstall_flatpak() {
     call_flatpak uninstall "${PACKAGE}"
 }
 
+function uninstall_github_package() {
+    local PACKAGE_NAME="${1}"
+    local PACKAGE_METADATA_DIR="${LINUX_SETUP_SCRIPT_PACKAGES_DIR}/${PACKAGE_NAME}"
+
+    is_github_package_installed "${PACKAGE_NAME}" || return
+
+    echo -e " >>> Uninstalling GitHub package: \e[0;33m${PACKAGE_NAME}\e[0m..."
+
+    run_as_su apt remove -y "${PACKAGE_NAME}" 2>/dev/null
+
+    remove "${PACKAGE_METADATA_DIR}"
+}
+
 function uninstall_gnome_shell_extension() {
     local INPUT="${1}"
     local EXTENSION_NAME="${INPUT#*/}"
@@ -436,23 +535,36 @@ function uninstall_gnome_shell_extension() {
     fi
 }
 
-function install_aur_package_manually() {
-	local PKG="${1}"
+function update_github_package() {
+    local PACKAGE_NAME="${1}"
+    local REPOSITORY="${2}"
 
-    is_native_package_installed "${PKG}" && return
+    local PACKAGE_METADATA_DIR="${LINUX_SETUP_SCRIPT_PACKAGES_DIR}/${PACKAGE_NAME}"
 
-    local PKG_SNAPSHOT_URL="https://aur.archlinux.org/cgit/aur.git/snapshot/${PKG}.tar.gz"
-    local OLD_PWD="$(pwd)"
+    if ! is_github_package_installed "${PACKAGE_NAME}"; then
+        echo " !!! GitHub package not installed: ${PACKAGE_NAME}"
+        return 1
+    fi
 
-    [ ! -d "${LOCAL_INSTALL_TEMP_DIR}" ] && mkdir -p "${LOCAL_INSTALL_TEMP_DIR}"
+    local CURRENT_VERSION
+    CURRENT_VERSION=$(run_as_su cat "${PACKAGE_METADATA_DIR}/version")
 
-    cd "${LOCAL_INSTALL_TEMP_DIR}"
-    echo -e " >>> Installing AUR package manually: \e[0;33m${PKG}\e[0m..."
+    local RELEASE_JSON
+    RELEASE_JSON=$(curl -s "https://api.github.com/repos/${REPOSITORY}/releases/latest")
 
-    wget "${PKG_SNAPSHOT_URL}"
-    tar xvf "${PKG}.tar.gz"
+    local LATEST_VERSION
+    LATEST_VERSION=$(echo "${RELEASE_JSON}" | jq -r '.tag_name')
 
-    cd "${PKG}"
-    makepkg -sri --noconfirm
-    cd "${OLD_PWD}"
+    if [ -z "${LATEST_VERSION}" ] || [ "${LATEST_VERSION}" = "null" ]; then
+        echo " !!! Failed to fetch latest version for ${REPOSITORY}"
+        return 1
+    fi
+
+    if [ "${CURRENT_VERSION}" = "${LATEST_VERSION}" ]; then
+        return 0
+    fi
+
+    echo -e " >>> Updating GitHub package: \e[0;33m${PACKAGE_NAME}\e[0m (${CURRENT_VERSION} -> ${LATEST_VERSION})..."
+
+    install_github_package "${PACKAGE_NAME}" "${REPOSITORY}"
 }

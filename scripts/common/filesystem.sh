@@ -34,8 +34,6 @@ REPO_SCRIPTS_COMMON_DIR="${REPO_SCRIPTS_DIR}/common"
 
 REPO_KEYBOARD_LAYOUTS_DIR="${REPO_RC_DIR}/keyboard-layouts"
 
-LOCAL_INSTALL_TEMP_DIR="${REPO_DIR}/.temp-sysinstall"
-
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     source "${REPO_SCRIPTS_COMMON_DIR}/package-managements.sh"
     source "${REPO_SCRIPTS_COMMON_DIR}/system-info.sh"
@@ -75,6 +73,10 @@ ROOT_VAR="${ROOT}/var"
 ROOT_VAR_LIB="${ROOT_VAR}/lib"
 ROOT_VAR_LIB_FLATPAK="${ROOT_VAR_LIB}/flatpak"
 ROOT_VAR_LOG="${ROOT_VAR}/log"
+
+LOCAL_INSTALL_TEMP_DIR="${REPO_DIR}/.temp-sysinstall"
+LINUX_SETUP_SCRIPT_DATA_DIR="${ROOT_VAR_LIB}/linux-setup-script"
+LINUX_SETUP_SCRIPT_PACKAGES_DIR="${LINUX_SETUP_SCRIPT_DATA_DIR}/packages"
 
 # Dirs
 UDEV_RULES_DIR="${ROOT_ETC}/udev/rules.d"
