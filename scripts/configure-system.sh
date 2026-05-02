@@ -279,6 +279,12 @@ fi
 if [ -d "${ROOT_ETC}/systemd" ]; then
     set_config_values --section 'Login' "${ROOT_ETC}/systemd/logind.conf" \
         'KillUserProcesses' 'yes'
+    set_config_values --section 'Manager' "${ROOT_ETC}/systemd/system.conf" \
+        'DefaultTimeoutStartSec'    '30s' \
+        'DefaultTimeoutStopSec'     '15s'
+    set_config_values --section 'Manager' "${ROOT_ETC}/systemd/user.conf" \
+        'DefaultTimeoutStartSec'    '15s' \
+        'DefaultTimeoutStopSec'     '7s'
 fi
 
 if [ -f "${ROOT_ETC}/default/grub" ] \
