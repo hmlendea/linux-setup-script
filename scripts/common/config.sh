@@ -49,9 +49,11 @@ function get_config_value() {
 function set_config_value() {
     local SEPARATOR='='
     local SECTION=''
+    local QUOTE="'"
 
     [ "${1}" = '--separator' ] && shift && SEPARATOR="${1}" && shift
     [ "${1}" = '--section' ] && shift && SECTION="${1}" && shift
+    [ "${1}" = '--quote' ] && shift && QUOTE="${1}" && shift
 
     local FILE="${1}"
     local KEY="${2}"
@@ -66,11 +68,11 @@ function set_config_value() {
     else
         if [ -n "${SECTION}" ]; then
             set_ini_config_value \
-                --separator "${SEPARATOR}" --section "${SECTION}" \
+                --separator "${SEPARATOR}" --quote "${QUOTE}" --section "${SECTION}" \
                 "${FILE}" "${KEY}" "${VALUE}"
         else
             set_ini_config_value \
-                --separator "${SEPARATOR}" \
+                --separator "${SEPARATOR}" --quote "${QUOTE}" \
                 "${FILE}" "${KEY}" "${VALUE}"
         fi
     fi
@@ -78,22 +80,29 @@ function set_config_value() {
 
 function set_ini_config_value() {
     local SEPARATOR="="
+    local QUOTE="'"
     local SECTION=""
     local SECTIONS_COUNT=0
 
-    if [[ "${1}" == "--separator" ]]; then
+    if [ "${1}" == '--separator' ]; then
         shift
         SEPARATOR="${1}"
         shift
     fi
 
-    if [[ "${1}" == "--section" ]]; then
+    if [ "${1}" = '--quote' ]; then
+        shift
+        QUOTE="${1}"
+        shift
+    fi
+
+    if [ "${1}" = '--section' ]; then
         shift
         SECTION="${1}"
         shift
     fi
 
-    if [[ "${SEPARATOR}" == ':' ]]; then
+    if [ "${SEPARATOR}" = ':' ]; then
         SEPARATOR=': '
     fi
 
@@ -112,7 +121,7 @@ function set_ini_config_value() {
     local VALUE="${VALUE_RAW}"
     local FILE_CONTENT=""
 
-    [[ "${VALUE_RAW}" =~ [\ !\(\)] ]] && VALUE="'${VALUE}'"
+    [[ "${VALUE_RAW}" =~ [\ !\(\)] ]] && VALUE="${QUOTE}${VALUE}${QUOTE}"
 
     FILE_CONTENT=$(read_file "${FILE_PATH}")
 

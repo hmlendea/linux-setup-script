@@ -86,11 +86,11 @@ USER_REAL=${SUDO_USER}
 [ -z "${USER_REAL}" ] && USER_REAL=${USER}
 
 HOME_REAL=$(grep "${USER_REAL}" "${ROOT_PATH}/etc/passwd" 2>/dev/null | cut -f6 -d":")
-[ "${USER_REAL}" = "root" ] && HOME_REAL="${ROOT_PATH}/root"
+[ "${USER_REAL}" = 'root' ] && HOME_REAL="${ROOT_PATH}/root"
 
 if ! does_directory_exist "${HOME_REAL}"; then
-    if does_directory_exist "/data/data/com.termux/files/home"; then
-        HOME_REAL="/data/data/com.termux/files/home"
+    if does_directory_exist '/data/data/com.termux/files/home'; then
+        HOME_REAL='/data/data/com.termux/files/home'
     else
         HOME_REAL="${ROOT_HOME}/${USER_REAL}"
     fi

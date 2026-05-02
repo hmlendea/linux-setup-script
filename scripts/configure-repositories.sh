@@ -142,4 +142,8 @@ elif [ "${DISTRO}" = 'Raspberry Pi OS' ]; then
 #        'signal-desktop' \
 #        'deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop.gpg] https://updates.signal.org/desktop/apt xenial main' \
 #        'https://updates.signal.org/desktop/apt/keys.asc'
+    add_repository \
+        'julians-package-repo' \
+        'deb [signed-by=/usr/share/keyrings/julians-package-repo.gpg] https://julianfairfax.codeberg.page/package-repo/debs packages main' \
+        'https://julianfairfax.codeberg.page/package-repo/pub.gpg'
 fi

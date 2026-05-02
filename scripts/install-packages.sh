@@ -740,9 +740,14 @@ fi
 ### Terminals ###
 #################
 if [ "${OS}" = 'Linux' ]; then
-    if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
-    || [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+    if [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
         install_native_package 'gnome-console'
+    elif [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
+        if ${POWERFUL_PC}; then
+            install_native_package 'gnome-console'
+        else
+            install_native_package 'lxterminal'
+        fi
     elif [ "${DESKTOP_ENVIRONMENT}" = 'KDE' ]; then
         install_native_package 'konsole'
     elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
@@ -789,6 +794,8 @@ if "${HAS_GUI}"; then
     if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
         install_native_package 'papirus-folders'
     fi
+
+    install_native_package 'adw-gtk3'
 fi
 
 ###########################

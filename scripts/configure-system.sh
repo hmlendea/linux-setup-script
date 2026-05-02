@@ -47,8 +47,19 @@ APPS_LANGUAGE='ro_RO'
 GAMES_LANGUAGE='en_GB'
 
 # THEMES
-GTK_THEME='Adwaita-dark'
 GTK_THEME_VARIANT='dark'
+GTK_THEME='Adwaita'
+
+if [ -d "${ROOT_USR_SHARE}/themes/adw-gtk3" ]; then
+    GTK_THEME='adw-gtk3'
+elif echo "${GTK_THEME}" | grep -q "[Dd]ark$"; then
+    GTK_THEME_VARIANT='dark'
+else
+    GTK_THEME_VARIANT='light'
+fi
+
+[ "${GTK_THEME_VARIANT}" = 'dark' ] && GTK_THEME="${GTK_THEME}-dark"
+
 GTK2_THEME="${GTK_THEME}"
 GTK3_THEME="${GTK_THEME}"
 GTK4_THEME="${GTK_THEME}"
@@ -65,12 +76,6 @@ GTK2_THEME=$(echo "${GTK2_THEME}" | sed \
 [[ "${GTK4_THEME}" == 'ZorinGrey-Dark' ]] && GTK4_THEME='Adwaita-dark' # Until the Zorin theme supports GTK4
 is_native_package_installed 'pop-sound-theme-bin' && SOUND_THEME='Pop'
 
-if echo "${GTK_THEME}" | grep -q "[Dd]ark$"; then
-    GTK_THEME_VARIANT='dark'
-else
-    GTK_THEME_VARIANT='light'
-fi
-
 if [[ "${GTK_THEME_VARIANT}" == 'dark' ]]; then
     DESKTOP_THEME_IS_DARK=true
     DESKTOP_THEME_IS_DARK_BINARY=1
@@ -82,7 +87,7 @@ fi
 GTK_THEME_BG_COLOUR='#202020'
 
 [[ "${GTK_THEME}" == ZorinGrey* ]]  && GTK_THEME_BG_COLOUR='#202020'
-[[ "${GTK_THEME}" == adw-gtk3* ]]   && GTK_THEME_BG_COLOUR='#1e1e1e'
+[[ "${GTK_THEME}" == adw-gtk3* ]]   && GTK_THEME_BG_COLOUR='#1c1c1f'
 
 # FONT FACES
 INTERFACE_FONT_NAME='Sans'
@@ -110,6 +115,7 @@ MENUHEADER_FONT_STYLE="${TITLEBAR_FONT_STYLE}"
 MENUHEADER_FONT_SIZE=${MENU_FONT_SIZE}
 
 MONOSPACE_FONT_NAME='Droid Sans'
+[ "${DISTRO_FAMILY}" = 'Debian' ] && MONOSPACE_FONT_NAME='Liberation'
 MONOSPACE_FONT_STYLE='Mono'
 MONOSPACE_FONT_SIZE=13
 [ "${SCREEN_RESOLUTION_V}" -lt 1080 ] && MONOSPACE_FONT_SIZE=12
@@ -140,24 +146,26 @@ TEXT_EDITOR_FONT="${TEXT_EDITOR_FONT_NAME} ${TEXT_EDITOR_FONT_STYLE} ${TEXT_EDIT
 
 # FONT COLOURS
 FONT_COLOUR='#FFFFFF' # "#CFD8DC"
-TERMINAL_BG='#141414' # ${GTK_THEME_BG_COLOUR}
+TERMINAL_BG='#141414'
 TERMINAL_FG=${FONT_COLOUR}
-TERMINAL_BLACK_D='#3D4D51'
-TERMINAL_BLACK_L='#555753'
-TERMINAL_RED_D='#CC0000'
-TERMINAL_RED_L='#EF2929'
-TERMINAL_GREEN_D='#4E9A06'
-TERMINAL_GREEN_L='#8AE234'
-TERMINAL_YELLOW_D='#C4A000'
-TERMINAL_YELLOW_L='#FCE94F'
-TERMINAL_BLUE_D='#3465A4'
-TERMINAL_BLUE_L='#729FCF'
-TERMINAL_PURPLE_D='#75507B'
-TERMINAL_PURPLE_L='#AD7FA8'
-TERMINAL_CYAN_D='#06989A'
-TERMINAL_CYAN_L='#34E2E2'
-TERMINAL_WHITE_D='#D3D7CF'
-TERMINAL_WHITE_L='#EEEEEC'
+TERMINAL_BLACK_D='#241F31'
+TERMINAL_BLACK_L='#5E5C64'
+TERMINAL_RED_D='#C01C28'
+TERMINAL_RED_L='#ED333B'
+TERMINAL_GREEN_D='#2EC27E'
+TERMINAL_GREEN_L='#57E389'
+TERMINAL_YELLOW_D='#F5C211'
+TERMINAL_YELLOW_L='#F8E45C'
+TERMINAL_BLUE_D='#1E78E4'
+TERMINAL_BLUE_L='#51A1FF'
+TERMINAL_PURPLE_D='#9841BB'
+TERMINAL_PURPLE_L='#C061CB'
+TERMINAL_CYAN_D='#0AB9DC'
+TERMINAL_CYAN_L='#4FD2FD'
+TERMINAL_WHITE_D='#C0BFBC'
+TERMINAL_WHITE_L='#F6F5F4'
+
+[ "${GTK_THEME_VARIANT}" = 'dark' ] && TERMINAL_BG="${GTK_THEME_BG_COLOUR}"
 
 # TERMINAL
 TERMINAL_SIZE_COLS=128
@@ -420,37 +428,48 @@ if ${HAS_GUI}; then
 
     [ "${GPU}" = 'Adreno 506' ] && set_config_value "${ENVIRONMENT_VARS_FILE}"  'MESA_GLES_VERSION_OVERRIDE' '2.0'
 
-    if [ -d "${ROOT_USR_LIB}/gtk-2.0" ]; then
+    if [ -d "${ROOT_USR_LIB}/gtk-2.0" ] \
+    || ls /usr/lib/*/gtk-2.0 >/dev/null 2>&1; then
         GTK2_CONFIG_DIR="${XDG_CONFIG_HOME}/gtk-2.0"
         GTK2_CONFIG_FILE="${GTK2_CONFIG_DIR}/gtkrc"
         GTK2_FILECHOOSER_CONFIG_FILE="${GTK2_CONFIG_DIR}/filechooser.ini"
 
+        create_directory "${GTK2_CONFIG_DIR}"
+        create_file "${GTK2_CONFIG_FILE}"
+
         set_config_value --separator " " "${GTK2_CONFIG_FILE}" include '"/usr/share/themes/'"${GTK2_THEME}"'/gtk-2.0/gtkrc"'
-        set_config_value "${GTK2_CONFIG_FILE}" gtk-theme-name "${GTK2_THEME}"
-        set_config_value "${GTK2_CONFIG_FILE}" gtk-icon-theme-name "${ICON_THEME}"
-        set_config_value "${GTK2_CONFIG_FILE}" gtk-cursor-theme-name "${CURSOR_THEME}"
-        set_config_value "${GTK2_CONFIG_FILE}" gtk-button-images 0
-        set_config_value "${GTK2_CONFIG_FILE}" gtk-menu-images 0
-        set_config_value "${GTK2_CONFIG_FILE}" gtk-toolbar-style GTK_TOOLBAR_ICONS
+        set_config_values "${GTK2_CONFIG_FILE}" \
+            gtk-theme-name "${GTK2_THEME}" \
+            gtk-icon-theme-name "${ICON_THEME}" \
+            gtk-cursor-theme-name "${CURSOR_THEME}" \
+            gtk-button-images 0 \
+            gtk-menu-images 0 \
+            gtk-toolbar-style 'GTK_TOOLBAR_ICONS'
 
         set_config_value "${GTK2_FILECHOOSER_CONFIG_FILE}" StartupMode cwd
     fi
 
-    if [ -d "${ROOT_USR_LIB}/gtk-3.0" ]; then
-        GTK3_CONFIG_FILE="${XDG_CONFIG_HOME}/gtk-3.0/settings.ini"
+    if [ -d "${ROOT_USR_LIB}/gtk-3.0" ] \
+    || ls /usr/lib/*/libgtk-3.so.0 >/dev/null 2>&1; then
+        GTK3_CONFIG_DIR="${XDG_CONFIG_HOME}/gtk-3.0"
+        GTK3_CONFIG_FILE="${GTK3_CONFIG_DIR}/settings.ini"
 
-        set_config_value "${GTK3_CONFIG_FILE}" gtk-application-prefer-dark-theme ${DESKTOP_THEME_IS_DARK_BINARY}
-        set_config_value "${GTK3_CONFIG_FILE}" gtk-theme-name "${GTK3_THEME}"
-        set_config_value "${GTK3_CONFIG_FILE}" gtk-icon-theme-name "${ICON_THEME}"
-        set_config_value "${GTK3_CONFIG_FILE}" gtk-cursor-theme-name "${CURSOR_THEME}"
-        set_config_value "${GTK3_CONFIG_FILE}" gtk-sound-theme-name "${SOUND_THEME}"
-        set_config_value "${GTK3_CONFIG_FILE}" gtk-button-images 0
-        set_config_value "${GTK3_CONFIG_FILE}" gtk-menu-images 0
-        set_config_value "${GTK3_CONFIG_FILE}" gtk-toolbar-style GTK_TOOLBAR_ICONS
-        set_config_value "${GTK3_CONFIG_FILE}" gtk-xft-antialias 1
-        set_config_value "${GTK3_CONFIG_FILE}" gtk-xft-hinting 1
-        set_config_value "${GTK3_CONFIG_FILE}" gtk-xft-hintstyle hintslight
-        set_config_value "${GTK3_CONFIG_FILE}" gtk-xft-rgba none
+        create_directory "${GTK3_CONFIG_DIR}"
+        create_file "${GTK3_CONFIG_FILE}"
+
+        set_config_values "${GTK3_CONFIG_FILE}" \
+            gtk-application-prefer-dark-theme ${DESKTOP_THEME_IS_DARK_BINARY} \
+            gtk-theme-name "${GTK3_THEME}" \
+            gtk-icon-theme-name "${ICON_THEME}" \
+            gtk-cursor-theme-name "${CURSOR_THEME}" \
+            gtk-sound-theme-name "${SOUND_THEME}" \
+            gtk-button-images 0 \
+            gtk-menu-images 0 \
+            gtk-toolbar-style 'GTK_TOOLBAR_ICONS' \
+            gtk-xft-antialias 1 \
+            gtk-xft-hinting 1 \
+            gtk-xft-hintstyle 'hintslight' \
+            gtk-xft-rgba 'none'
 
         if ${POWERFUL_PC}; then
             set_config_value "${GTK3_CONFIG_FILE}" gtk-enable-animations 1
@@ -1576,43 +1595,47 @@ if does_bin_exist "konsole"; then
     set_config_value --section "MainWindow" "${KONSOLE_CONFIG_FILE}" State "AAAA/wAAAAD9AAAAAQAAAAAAAAAAAAAAAPwCAAAAAvsAAAAiAFEAdQBpAGMAawBDAG8AbQBtAGEAbgBkAHMARABvAGMAawAAAAAA/////wAAAQgA////+wAAABwAUwBTAEgATQBhAG4AYQBnAGUAcgBEAG8AYwBrAAAAAAD/////AAAArAD///8AAAOIAAACHwAAAAQAAAAEAAAACAAAAAj8AAAAAgAAAAAAAAABAAAAFgBtAGEAaQBuAFQAbwBvAGwAQgBhAHICAAAAAP////8AAAAAAAAAAAAAAAIAAAABAAAAHABzAGUAcwBzAGkAbwBuAFQAbwBvAGwAYgBhAHIAAAAAAP////8AAAAAAAAAAA=="
 fi
 
-if does_bin_exist "lxterminal"; then
+if does_bin_exist 'lxterminal'; then
     LXTERMINAL_CONFIG_FILE="${XDG_CONFIG_HOME}/lxterminal/lxterminal.conf"
 
     # Theme / colours
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" bgcolor ${TERMINAL_BG}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" fgcolor ${TERMINAL_FG}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_0 ${TERMINAL_BLACK_D}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_1 ${TERMINAL_RED_D}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_2 ${TERMINAL_GREEN_D}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_3 ${TERMINAL_YELLOW_D}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_4 ${TERMINAL_BLUE_D}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_5 ${TERMINAL_PURPLE_D}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_6 ${TERMINAL_CYAN_D}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_7 ${TERMINAL_WHITE_D}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_8 ${TERMINAL_BLACK_L}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_9 ${TERMINAL_RED_L}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_10 ${TERMINAL_GREEN_L}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_11 ${TERMINAL_YELLOW_L}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_12 ${TERMINAL_BLUE_L}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_13 ${TERMINAL_PURPLE_L}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_14 ${TERMINAL_CYAN_L}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" palette_color_15 ${TERMINAL_WHITE_L}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" boldbright ${TERMINAL_BOLD_TEXT_IS_BRIGHT}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" hidemenubar true
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" hidescrollbar true
+    set_config_values "${LXTERMINAL_CONFIG_FILE}" \
+        bgcolor ${TERMINAL_BG} \
+        fgcolor ${TERMINAL_FG} \
+        palette_color_0 ${TERMINAL_BLACK_D} \
+        palette_color_1 ${TERMINAL_RED_D} \
+        palette_color_2 ${TERMINAL_GREEN_D} \
+        palette_color_3 ${TERMINAL_YELLOW_D} \
+        palette_color_4 ${TERMINAL_BLUE_D} \
+        palette_color_5 ${TERMINAL_PURPLE_D} \
+        palette_color_6 ${TERMINAL_CYAN_D} \
+        palette_color_7 ${TERMINAL_WHITE_D} \
+        palette_color_8 ${TERMINAL_BLACK_L} \
+        palette_color_9 ${TERMINAL_RED_L} \
+        palette_color_10 ${TERMINAL_GREEN_L} \
+        palette_color_11 ${TERMINAL_YELLOW_L} \
+        palette_color_12 ${TERMINAL_BLUE_L} \
+        palette_color_13 ${TERMINAL_PURPLE_L} \
+        palette_color_14 ${TERMINAL_CYAN_L} \
+        palette_color_15 ${TERMINAL_WHITE_L} \
+        boldbright ${TERMINAL_BOLD_TEXT_IS_BRIGHT} \
+        hidemenubar true \
+        hidescrollbar true
 
     # Size
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" geometry_columns ${TERMINAL_SIZE_COLS}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" geometry_rows ${TERMINAL_SIZE_ROWS}
+    set_config_values "${LXTERMINAL_CONFIG_FILE}" \
+        geometry_columns ${TERMINAL_SIZE_COLS} \
+        geometry_rows ${TERMINAL_SIZE_ROWS}
 
     # Font
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" fontname "${MONOSPACE_FONT}"
+    set_config_values "${LXTERMINAL_CONFIG_FILE}" \
+        fontname "${MONOSPACE_FONT}"
 
     # Others
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" scrollback ${TERMINAL_SCROLLBACK_SIZE}
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" cursorblinks true
-    set_config_value "${LXTERMINAL_CONFIG_FILE}" cursorunderline true
+    set_config_values "${LXTERMINAL_CONFIG_FILE}" \
+        scrollback ${TERMINAL_SCROLLBACK_SIZE} \
+        cursorblinks true \
+        cursorunderline true
 fi
 
 ##############

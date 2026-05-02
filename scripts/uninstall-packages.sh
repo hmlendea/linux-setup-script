@@ -162,11 +162,12 @@ fi
 keep_first_installed_package 'io.github.alainm23.planify' 'org.gnome.Todo'
 
 # Terminal Emulators
-keep_first_installed_package 'gnome-console' 'gnome-terminal'
-
-# Terminals
 if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
-    keep_first_installed_package 'gnome-console' 'gnome-terminal' 'lxterminal' 'konsole'
+    if ${POWERFUL_PC}; then
+        keep_first_installed_package 'gnome-console' 'gnome-terminal' 'lxterminal' 'konsole'
+    else
+        keep_first_installed_package 'lxterminal' 'gnome-terminal' 'gnome-console' 'konsole'
+    fi
 elif [ "${DESKTOP_ENVIRONMENT}" = 'KDE' ]; then
     keep_first_installed_package 'konsole' 'lxterminal' 'gnome-terminal' 'gnome-console'
 fi
@@ -211,7 +212,7 @@ fi
 
 # Uninstall the packages
 if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
-    if ${IS_POWERFUL_PC}; then
+    if ${POWERFUL_PC}; then
         uninstall_native_package 'plank'
     fi
 
