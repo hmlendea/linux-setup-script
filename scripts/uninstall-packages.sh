@@ -44,15 +44,15 @@ function keep_first_installed_package() {
 }
 
 # Archive Managers
-if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
-    if ${POWERFUL_PC}; then
-        keep_first_installed_package 'org.gnome.FileRoller' 'file-roller' 'engrampa' 'xarchiver' 'ark'
-    else
-        keep_first_installed_package 'engrampa' 'xarchiver' 'file-roller' 'org.gnome.FileRoller' 'ark'
-    fi
+if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
+|| [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+    keep_first_installed_package 'org.gnome.FileRoller' 'file-roller' 'engrampa' 'xarchiver' 'ark'
 elif [ "${DESKTOP_ENVIRONMENT}" = 'KDE' ]; then
     keep_first_installed_package 'ark' 'xarchiver' 'engrampa' 'file-roller' 'org.gnome.FileRoller'
-elif [ "${DESKTOP_ENVIRONMENT}" = 'XFCE' ]; then
+elif [ "${DESKTOP_ENVIRONMENT}" = 'MATE' ]; then
+    keep_first_installed_package 'engrampa' 'xarchiver' 'file-roller' 'org.gnome.FileRoller' 'ark'
+elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ] \
+  || [ "${DESKTOP_ENVIRONMENT}" = 'XFCE' ]; then
     keep_first_installed_package 'xarchiver' 'engrampa' 'file-roller' 'ark' 'org.gnome.FileRoller'
 fi
 

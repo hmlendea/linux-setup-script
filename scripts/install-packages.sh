@@ -236,6 +236,10 @@ elif [ "${OS}" = 'Linux' ]; then
     if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
     || [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
         install_native_package 'gnome-software'
+
+        if [ "${DISTRO_FAMILY}" = 'Debian' ]; then
+            install_native_package_dependency 'gnome-software-plugin-flatpak'
+        fi
     fi
 fi
 
@@ -264,17 +268,15 @@ fi
 if [ "${OS}" = 'Android' ]; then
     install_android_fdroid_package 'org.fossify.filemanager'
 elif [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
-    if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
-        if ${POWERFUL_PC}; then
-            install_flatpak 'org.gnome.FileRoller'
-        else
-            install_native_package 'engrampa'
-        fi
-    elif [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+    if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
+    || [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
         install_flatpak 'org.gnome.FileRoller'
     elif [ "${DESKTOP_ENVIRONMENT}" = 'KDE' ]; then
         install_native_package 'ark'
-    elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
+    elif [ "${DESKTOP_ENVIRONMENT}" = 'MATE' ]; then
+        install_native_package 'engrampa'
+    elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ] \
+      || [ "${DESKTOP_ENVIRONMENT}" = 'XFCE' ]; then
         install_native_package 'xarchiver'
     fi
 fi
@@ -570,7 +572,8 @@ elif [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
         install_native_package 'nautilus'
     elif [ "${DESKTOP_ENVIRONMENT}" = 'KDE' ]; then
         install_native_package 'dolphin'
-    elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
+    elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ] \
+      || [ "${DESKTOP_ENVIRONMENT}" = 'XFCE' ]; then
         install_native_package 'pcmanfm'
     fi
 

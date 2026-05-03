@@ -70,7 +70,8 @@ done
 ########################
 ### ARCHIVE MANAGERS ###
 ########################
-for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/engrampa.desktop" \
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/ark.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/engrampa.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/org.gnome.FileRoller.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/xarchiver.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.FileRoller.desktop" \
