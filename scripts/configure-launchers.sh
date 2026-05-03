@@ -353,18 +353,18 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/code-oss.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.visualstudio.code.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.visualstudio.code.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        Name "Code" \
-        Name[ro] "Code" \
-        GenericName "Code" \
-        Icon "code" \
-        Keywords "VS;VSCode;Visual;Studio;Code;" \
+        Name 'Code' \
+        Name[ro] 'Code' \
+        GenericName 'Code' \
+        Icon 'code' \
+        Keywords 'VS;VSCode;Visual;Studio;Code;' \
         Categories "${IDE_CATEGORIES};TextEditor;" \
-        MimeType "application/x-code-workspace;inode/directory;"
+        MimeType 'application/x-code-workspace;inode/directory;'
 done
 
 for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.jetbrains.PyCharm-Community.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.jetbrains.PyCharm-Community.desktop"; do
-    set_launcher_entries "${LAUNCHER}" Name "PyCharm"
+    set_launcher_entries "${LAUNCHER}" Name 'PyCharm'
 done
 
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/monodevelop.desktop" \
@@ -372,37 +372,43 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/monodevelop.desktop" \
     Categories "${IDE_CATEGORIES}"
 
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/unity-editor.desktop" \
-    Name "Unity Editor" \
-    Icon "unity-editor-icon" \
+    Name 'Unity Editor' \
+    Icon 'unity-editor-icon' \
     Categories "${IDE_CATEGORIES}"
 
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/unity-monodevelop.desktop" \
-    Name "MonoDevelop - Unity" \
-    Icon "unity-monodevelop" \
+    Name 'MonoDevelop - Unity' \
+    Icon 'unity-monodevelop' \
     Categories "${IDE_CATEGORIES}"
 
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/codeblocks.desktop" \
-    Name "Code::Blocks" \
+    Name 'Code::Blocks' \
     Categories "GTK;${IDE_CATEGORIES}"
 
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/android-studio.desktop" \
-    StartupWMClass "jetbrains-studio"
+    StartupWMClass 'jetbrains-studio'
 
-if [[ "${ARCH_FAMILY}" == "x86" ]]; then
-    set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/code-oss.desktop" StartupWMClass "code"
-    set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/code-oss-url-handler.desktop" NoDisplay true
-    set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/code.desktop" StartupWMClass "code-oss"
-    set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/visual-studio-code.desktop" StartupWMClass "Code"
-elif [[ "${ARCH_FAMILY}" == "arm" ]]; then
-    set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/code-oss.desktop" StartupWMClass "Code - OSS (headmelted)"
+if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
+    set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/code.desktop" StartupWMClass 'code-oss'
+elif [ "${DISTRO_FAMILY}" = 'Debian' ]; then
+    set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/code.desktop" StartupWMClass 'Code'
 fi
+
+if [ "${ARCH_FAMILY}" = 'x86' ]; then
+    set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/code-oss.desktop" StartupWMClass 'code'
+elif [ "${ARCH_FAMILY}" = 'arm' ]; then
+    set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/code-oss.desktop" StartupWMClass 'Code - OSS (headmelted)'
+fi
+
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/code-oss-url-handler.desktop" NoDisplay true
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/visual-studio-code.desktop" StartupWMClass 'Code'
 
 ####################
 ### DICTIONARIES ###
 ####################
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/mate-dictionary.desktop" \
-    Name "Dictionary" \
-    Name[ro] "Dicționar"
+    Name 'Dictionary' \
+    Name[ro] 'Dicționar'
 
 ############################
 ### DISK USAGE ANALYZERS ###
@@ -413,9 +419,9 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/baobab.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.baobab.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.baobab.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        Name "Disk Usage" \
-        Name[ro] "Utilizarea Discului" \
-        OnlyShowIn ""
+        Name 'Disk Usage' \
+        Name[ro] 'Utilizarea Discului' \
+        OnlyShowIn ''
 done
 
 ######################
@@ -424,8 +430,8 @@ done
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/gnome-disks.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/mate-disk.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        Name[ro] "Discuri" \
-        Icon "gnome-disks"
+        Name[ro] 'Discuri' \
+        Icon 'gnome-disks'
 done
 
 ########################
@@ -443,8 +449,8 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/atril.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Evince.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.Papers.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        Name "Documents" \
-        Name[ro] "Documente"
+        Name 'Documents' \
+        Name[ro] 'Documente'
 
     [ "${DEVICE_TYPE}" = 'Mobile' ] && set_launcher_entry "${LAUNCHER}" NoDisplay true
 done
@@ -454,7 +460,7 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/atril.desktop" \
     set_launcher_entry "${LAUNCHER}" Categories "GTK;${DOCUMENT_VIEWER_CATEGORIES}"
 done
 
-if does_bin_exist "evince"; then
+if does_bin_exist 'evince'; then
     for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/evince.desktop" \
                     "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Evince.desktop"; do
         set_launcher_entry "${LAUNCHER}" Categories "${GNOME_APP_CATEGORIES};${DOCUMENT_VIEWER_CATEGORIES}"
@@ -1145,9 +1151,9 @@ if does_bin_exist teamviewer; then
     done
 fi
 
-#################
-### TERMINALS ###
-#################
+##########################
+### TERMINAL EMULATORS ###
+##########################
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/gnome-terminal.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/lxterminal.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/mate-terminal.desktop" \
@@ -1156,13 +1162,17 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/gnome-terminal.desktop" \
     set_launcher_entries "${LAUNCHER}" \
         Name 'Terminal' \
         Name[ro] 'Terminal' \
-        Icon 'terminal'
+        Icon 'terminal' \
+        MimeType "inode/directory;"
 done
 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/xterm.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/uxterm.desktop"; do
     set_launcher_entry "${LAUNCHER}" NoDisplay true
 done
+
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/lxterminal.desktop" \
+    Exec 'lxterminal --working-directory=%F'
 
 ####################
 ### TEXT EDITORS ###
@@ -1179,9 +1189,9 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/gedit.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.gedit.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.TextEditor.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        Name "Text Editor" \
-        Name[ro] "Editor Text" \
-        Icon "accessories-text-editor"
+        Name 'Text Editor' \
+        Name[ro] 'Editor Text' \
+        Icon 'accessories-text-editor'
 done
 
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/micro.desktop" NoDisplay true
@@ -1321,45 +1331,46 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/chromium.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/io.gitlab.librewolf-community" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.mozilla.firefox.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        GenericName "Web Browser" \
+        Name 'Chromium' \
+        GenericName 'Web Browser' \
         Categories "${WEB_BROWSER_CATEGORIES}"
 done
 
 for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.brave.Browser.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.brave.Broser.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        Name "Brave"
+        Name 'Brave'
 done
 
 for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.mozilla.firefox.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/firefox-esr.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.mozilla.firefox.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        Name "Firefox" \
-        Name[ro] "Firefox" \
-        StartupWMClass "firefox"
+        Name 'Firefox' \
+        Name[ro] 'Firefox' \
+        StartupWMClass 'firefox'
 done
 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/google-chrome-unstable.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/google-chrome.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        Name "Chrome" \
-        Name[ro] "Chrome" \
-        Icon "google-chrome"
+        Name 'Chrome' \
+        Name[ro] 'Chrome' \
+        Icon 'google-chrome'
 done
 
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/google-chrome-unstable.desktop" StartupWMClass "Google-chrome-unstable"
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/google-chrome.desktop" StartupWMClass "Google-chrome-stable"
 
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/tor-browser-en.desktop" \
-    Name "Tor" \
-    Icon "tor-browser-en" \
-    StartupWMClass "Tor Browser"
+    Name 'Tor' \
+    Icon 'tor-browser-en' \
+    StartupWMClass 'Tor Browser'
 
 ############
 ### WINE ###
 ############
-if does_bin_exist "wine"; then
+if does_bin_exist 'wine'; then
     [ ! -f "${GLOBAL_LAUNCHERS_DIR}/winecfg.desktop" ] && create_launcher "${GLOBAL_LAUNCHERS_DIR}/winecfg.desktop"
     [ ! -f "${GLOBAL_LAUNCHERS_DIR}/winetricks.desktop" ] && create_launcher "${GLOBAL_LAUNCHERS_DIR}/winetricks.desktop"
 
