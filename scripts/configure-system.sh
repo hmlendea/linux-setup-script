@@ -849,7 +849,8 @@ if does_bin_exist 'nautilus'; then
 
     set_gsetting "${NAUTILUS_SCHEMA}.compression" default-compression-format "7z"
 
-    #set_gsetting "${NAUTILUS_SCHEMA}.preferences" search-view 'list-view'
+    set_gsetting "${NAUTILUS_SCHEMA}.preferences" default-sort-order 'name'
+    set_gsetting "${NAUTILUS_SCHEMA}.preferences" search-view 'icon-view'
     set_gsetting "${NAUTILUS_SCHEMA}.preferences" show-create-link true
     set_gsetting "${NAUTILUS_SCHEMA}.preferences" show-delete-permanently true
     set_gsetting "${NAUTILUS_SCHEMA}.preferences" show-hidden-files false
@@ -864,13 +865,13 @@ if does_bin_exist 'pcmanfm'; then
     set_config_value "${PCMANFM_CONFIG_FILE}" max_tab_chars 48
     set_config_value "${PCMANFM_CONFIG_FILE}" pathbar_mode_buttons 1
     set_config_value "${PCMANFM_CONFIG_FILE}" show_statusbar 0
-    set_config_value "${PCMANFM_CONFIG_FILE}" toolbar "navigation;"
-    set_config_value "${PCMANFM_CONFIG_FILE}" side_pane_mode "hidden;places"
+    set_config_value "${PCMANFM_CONFIG_FILE}" toolbar 'navigation;'
+    set_config_value "${PCMANFM_CONFIG_FILE}" side_pane_mode 'hidden;places'
 fi
 if [ -f "${XDG_CONFIG_HOME}/pcmanfm/LXDE/desktop-items-0.conf" ]; then
     PCMANFM_DESKTOP_CONFIG_FILE="${XDG_CONFIG_HOME}/pcmanfm/LXDE/desktop-items-0.conf"
 
-    set_config_value "${PCMANFM_DESKTOP_CONFIG_FILE}" folder ""
+    set_config_value "${PCMANFM_DESKTOP_CONFIG_FILE}" folder ''
     set_config_value "${PCMANFM_DESKTOP_CONFIG_FILE}" show_documents 0
     set_config_value "${PCMANFM_DESKTOP_CONFIG_FILE}" show_trash 0
     set_config_value "${PCMANFM_DESKTOP_CONFIG_FILE}" show_mounts 0
