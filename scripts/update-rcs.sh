@@ -182,6 +182,10 @@ elif does_bin_exist 'vi'; then
     set_config_value "${SHELL_VARIABLES_RC_PATH}" 'export EDITOR' 'vi'
 fi
 
+if does_bin_exist 'nmcli'; then
+    update_file_if_distinct "${REPO_RC_DIR}/network-manager/mac-randomisation.conf" "${ROOT_ETC}/NetworkManager/conf.d/mac-randomisation.conf"
+fi
+
 if does_bin_exist 'steam'; then
     set_config_value "${SHELL_VARIABLES_RC_PATH}" 'export SDL_VIDEO_MINIMIZE_ON_FOCUS_LOSS' 0               # Fix for loosing focus in Steam BPM after exiting a game
     set_config_value "${SHELL_VARIABLES_RC_PATH}" 'export VKD3D_CONFIG'                     'upload_hvv'    # Resizeable BAR
