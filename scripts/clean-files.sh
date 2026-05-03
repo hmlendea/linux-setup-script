@@ -244,7 +244,9 @@ remove \
 ! does_bin_exist 'mcedit' && remove "${HOME}/.mcedit"
 ! does_bin_exist 'minetest' && remove "${XDG_CACHE_HOME}/minetest"
 ! does_bin_exist 'mono' && remove "${HOME}/.mono"
-! does_bin_exist 'mousepad' && remove "${XDG_CONFIG_HOME}/Mousepad"
+! does_bin_exist 'mousepad' && \
+    remove "${XDG_CONFIG_HOME}/Mousepad" && \
+    remove "${XDG_DATA_HOME}/Mousepad"
 ! does_bin_exist 'mpv' && remove "${XDG_CONFIG_HOME}/mpv"
 ! does_bin_exist 'nano' && remove \
     "${HOME}/.nanorc" \
