@@ -196,13 +196,14 @@ TEXT_EDITOR_WORD_WRAP=false
 [ -n "${SHELL}" ] && ${HAS_SU_ACCESS} && sudo chsh -s "${SHELL}" "${USER}"
 
 if ${HAS_GUI}; then
-    if [[ "${ICON_THEME}" == *"Papirus"* ]] \
-    && does_bin_exist 'papirus-folders'; then
-        CURRENT_PAPIRUS_FOLDER_COLOUR=$(papirus-folders -l -t "${ICON_THEME}" | grep ">" | sed 's/ *> *//g')
-
-        if [[ "${CURRENT_PAPIRUS_FOLDER_COLOUR}" != "${ICON_THEME_FOLDER_COLOUR}" ]]; then
-            papirus-folders -t "${ICON_THEME}" -C "${ICON_THEME_FOLDER_COLOUR}"
-        fi
+    if [[ "${ICON_THEME}" == *"Papirus"* ]]; then
+        for SIZE in '22x22' '24x24' '32x32' '48x48' '64x64'; do
+            for ICON_NAME in 'folder' 'folder-desktop' 'folder-documents' 'folder-downloads' 'folder-music' 'folder-pictures' 'folder-public' 'folder-templates' 'folder-video'; do
+                COLOURED_ICON_NAME="$(sed 's/^folder/folder-'"${ICON_THEME_FOLDER_COLOUR}"'/g' <<< ${ICON_NAME})"
+                ICON_DIR="${ROOT_USR_SHARE}/icons/${ICON_THEME}/${SIZE}/places"
+                update_file_if_distinct "${ICON_DIR}/${COLOURED_ICON_NAME}.svg" "${ICON_DIR}/${ICON_NAME}.svg"
+            done
+        done
     fi
 fi
 

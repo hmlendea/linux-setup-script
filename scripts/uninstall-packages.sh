@@ -269,6 +269,7 @@ if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
     uninstall_native_package "inkscape"                     # Replaced by flatpak: org.inkscape.Inkscape
     uninstall_native_package "ntp"                          # Replaced by chrony
     uninstall_native_package "paper-icon-theme-git"         # Replaced by paper-icon-theme
+    uninstall_native_package 'papirus-folders'              # Not necessary anymore
     uninstall_native_package "postman-bin"                  # Replaced by flatpak: com.getpostman.Postman
     uninstall_native_package "seahorse"                     # Replaced by flatpak: org.gnome.seahorse.Application
     uninstall_native_package "simplenote-electron-bin"      # Replaced by flatpak: com.simplenote.Simplenote

@@ -833,10 +833,6 @@ if "${HAS_GUI}"; then
     fi
 
     install_native_package 'papirus-icon-theme'
-    if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
-        install_native_package 'papirus-folders'
-    fi
-
     install_native_package 'adw-gtk3'
 fi
 
