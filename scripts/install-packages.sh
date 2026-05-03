@@ -860,6 +860,8 @@ if [ "${OS}" = 'Linux' ]; then
         install_flatpak 'io.github.celluloid_player.Celluloid'
     fi
 
+    install_webapp 'https://netflix.com'
+    install_webapp 'https://plex.tv'
     install_webapp 'https://youtube.com'
 fi
 

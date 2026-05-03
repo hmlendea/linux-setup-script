@@ -859,8 +859,6 @@ for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.simplenote.Simplenote.deskt
                 "${LOCAL_LAUNCHERS_DIR}/simplenote-webapp.desktop" \
                 "${LOCAL_LAUNCHERS_DIR}/chrome-hmjkmjkepdijhoojdojkdfohbdgmmhki-Default.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        Name 'Simplenote' \
-        Icon 'simplenote' \
         Categories 'Network;WebBrowser;Utility;' \
         NoDisplay false
 done
@@ -1242,8 +1240,12 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/com.github.gi_lom.dialect.desktop"
 ### MPV
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/mpv.desktop" \
     NoDisplay true
-set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/netflix-nativefier.desktop" \
-    Icon 'netflix'
+
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/netflix-nativefier.desktop" \
+                "${LOCAL_LAUNCHERS_DIR}/netflix-webapp.desktop"; do
+    set_launcher_entry "${LAUNCHER}" \
+        Icon 'netflix'
+done
 
 ### Open TV
 for LAUNCHER in "${LOCAL_FLATPAK_LAUNCHERS_DIR}/dev.fredol.open-tv.desktop" \
@@ -1254,19 +1256,20 @@ for LAUNCHER in "${LOCAL_FLATPAK_LAUNCHERS_DIR}/dev.fredol.open-tv.desktop" \
 done
 
 ### Plex
-for LAUNCHER in "${LOCAL_LAUNCHERS_DIR}/chrome-aghlkjcflkcaanjmefomlcfgflfdhkkg-Default.desktop" \
-                "${GLOBAL_LAUNCHERS_DIR}/plexmediaplayer.desktop"; do
+for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/plexmediaplayer.desktop" \
+                "${LOCAL_LAUNCHERS_DIR}/chrome-aghlkjcflkcaanjmefomlcfgflfdhkkg-Default.desktop" \
+                "${LOCAL_LAUNCHERS_DIR}/plex-webapp.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        Name "Plex" \
-        Name[ro] "Plex" \
-        Icon "plexhometheater" \
-        Categories "AudioVideo;Audio;Video;Player;"
+        Name 'Plex' \
+        Name[ro] 'Plex' \
+        Icon 'plexhometheater' \
+        Categories 'AudioVideo;Audio;Video;Player;'
 done
 set_launcher_entry "${LOCAL_LAUNCHERS_DIR}/chrome-aghlkjcflkcaanjmefomlcfgflfdhkkg-Default.desktop" StartupWMClass "crx_aghlkjcflkcaanjmefomlcfgflfdhkkg"
-set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/plexmediaplayer.desktop" StartupWMClass "plexmediaplayer"
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/plexmediaplayer.desktop" StartupWMClass 'plexmediaplayer'
 
 ### VLC
-set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/vlc.desktop" Name "VLC"
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/vlc.desktop" Name 'VLC'
 
 for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.github.rafostar.Clapper.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/io.github.celluloid_player.Celluloid.desktop" \
@@ -1285,18 +1288,6 @@ for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.github.rafostar.Clapper.des
 done
 
 ### YouTube
-for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.simplenote.Simplenote.desktop" \
-                "${GLOBAL_LAUNCHERS_DIR}/google-keep.desktop" \
-                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.simplenote.Simplenote.desktop" \
-                "${LOCAL_LAUNCHERS_DIR}/simplenote-webapp.desktop" \
-                "${LOCAL_LAUNCHERS_DIR}/chrome-hmjkmjkepdijhoojdojkdfohbdgmmhki-Default.desktop"; do
-    set_launcher_entries "${LAUNCHER}" \
-        Name 'Simplenote' \
-        Icon 'simplenote' \
-        Categories 'Network;WebBrowser;Utility;' \
-        NoDisplay false
-done
-
 for LAUNCHER in "${LOCAL_LAUNCHERS_DIR}/youtube-webapp.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
         Name 'YouTube' \
