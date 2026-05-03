@@ -974,10 +974,14 @@ if does_bin_exist 'firefox' 'firefox-esr' 'librewolf' 'org.mozilla.firefox' 'io.
         set_firefox_config "${FIREFOX_PROFILE_DIR}" "network.dnsCacheExpiration" $((DNS_CACHE_TTL*60))
         set_firefox_config "${FIREFOX_PROFILE_DIR}" "network.dnsCacheExpirationGracePeriod" $((DNS_CACHE_TTL*60))
         # Performance - Hardware Acceleration
-        set_firefox_config "${FIREFOX_PROFILE_DIR}" "gfx.webrender.all" true
-        set_firefox_config "${FIREFOX_PROFILE_DIR}" "layers.acceleration.force-enabled" true
-        set_firefox_config "${FIREFOX_PROFILE_DIR}" "media.hardware-video-decoding.enabled" true
-        set_firefox_config "${FIREFOX_PROFILE_DIR}" "webgl.disabled" false # Setting it to true might improve privacy, but reduces performance and increases power consumption
+        set_firefox_config "${FIREFOX_PROFILE_DIR}" 'gfx.webrender.all' true
+        set_firefox_config "${FIREFOX_PROFILE_DIR}" 'gfx.webrender.compositor.force-enabled' true
+        set_firefox_config "${FIREFOX_PROFILE_DIR}" 'gfx.webrender.force-disabled' false
+        set_firefox_config "${FIREFOX_PROFILE_DIR}" 'gfx.webrender.software' false
+        set_firefox_config "${FIREFOX_PROFILE_DIR}" 'layers.acceleration.force-enable' true
+        set_firefox_config "${FIREFOX_PROFILE_DIR}" 'media.ffvpx.enabled' true
+        set_firefox_config "${FIREFOX_PROFILE_DIR}" 'media.hardware-video-decoding.enabled' true
+        set_firefox_config "${FIREFOX_PROFILE_DIR}" 'webgl.disabled' false # Setting it to true might improve privacy, but reduces performance and increases power consumption
 
         # JavaScript timers - Reduce to save resources and power
         set_firefox_config "${FIREFOX_PROFILE_DIR}" "dom.min_timeout_value" 1000

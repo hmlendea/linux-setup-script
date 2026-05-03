@@ -537,13 +537,33 @@ function install_webapp() {
 
     echo -e " >>> Installing webapp: \e[0;33m${PACKAGE_NAME}\e[0m..."
 
+    local EXEC_COMMAND
+    EXEC_COMMAND="env GTK_THEME=$(get_theme):$(get_theme_mode) ${BROWSER}"
+
+    if [ "$(get_theme_mode)" = 'dark' ]; then
+        EXEC_COMMAND="${EXEC_COMMAND} --force-dark-mode"
+    fi
+
+    if [ -n "${APPS_LOCALE}" ]; then
+        EXEC_COMMAND="${EXEC_COMMAND} --lang=${APPS_LOCALE}"
+    elif [ -n "${OS_LOCALE}" ]; then
+        EXEC_COMMAND="${EXEC_COMMAND} --lang=${OS_LOCALE}"
+    else
+        EXEC_COMMAND="${EXEC_COMMAND} --lang=en_GB"
+    fi
+
+    EXEC_COMMAND="${EXEC_COMMAND} --app=\"${URL}\" --class=\"${PACKAGE_ID}\" --name=\"${DISPLAY_NAME}\" --user-data-dir=\"${XDG_CONFIG_HOME}/${BROWSER}-${PACKAGE_NAME}\""
+    EXEC_COMMAND="${EXEC_COMMAND} --no-first-run --no-default-browser-check --disable-features=Translate,TranslateUI --disable-notifications"
+    EXEC_COMMAND="${EXEC_COMMAND} --disable-sync --disable-background-networking --disable-component-update"
+    EXEC_COMMAND="${EXEC_COMMAND} --app-auto-launched"
+
     create_file "${DESKTOP_FILE}"
     cat > "${DESKTOP_FILE}" << EOF
 [Desktop Entry]
 Type=Application
 Name=${DISPLAY_NAME}
 Comment=Standalone web application for ${URL}
-Exec=${BROWSER} --app="${URL}" --class="${PACKAGE_ID}" --name="${DISPLAY_NAME}"
+Exec=${EXEC_COMMAND}
 Icon=web-browser
 Terminal=false
 Categories=Network;WebBrowser;
@@ -685,4 +705,9 @@ function uninstall_webapp() {
     if does_bin_exist 'update-desktop-database'; then
         update-desktop-database "${XDG_DATA_HOME}/applications" >/dev/null 2>&1
     fi
+
+    local WEBAPP_PROFILE_DIR
+    WEBAPP_PROFILE_DIR="${XDG_CONFIG_HOME}/${BROWSER}-${PACKAGE_NAME}"
+
+    [ -d "${WEBAPP_PROFILE_DIR}" ] && remove "${WEBAPP_PROFILE_DIR}"
 }

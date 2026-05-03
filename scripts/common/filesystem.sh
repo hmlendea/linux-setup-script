@@ -162,6 +162,12 @@ function remove() {
             continue
         fi
 
+        if [ -z "${PATH_TO_REMOVE}" ] \
+        || [ "${PATH_TO_REMOVE}" = '/' ]; then
+            echo -e "Unable to remove \e[0;33m${PATH_TO_REMOVE}\e[0m..."
+            return 1
+        fi
+
         local SIZE="4,0K"
         if [ -w "${PATH_TO_REMOVE}" ]; then
             SIZE=$(run_as_su du -sh "${PATH_TO_REMOVE}" | awk '{print $1}')

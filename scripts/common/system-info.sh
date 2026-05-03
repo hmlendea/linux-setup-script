@@ -490,6 +490,20 @@ function get_memory_total_gb() {
     free -g | awk '/^Mem:/ {print $2 " GB"}' | awk '{print $1}'
 }
 
+function get_theme() {
+    local THEME='Adwaita'
+
+    if [ -d "${ROOT_USR_SHARE}/themes/adw-gtk3" ]; then
+        THEME='Adw-gtk3'
+    fi
+
+    echo "${THEME}"
+}
+
+function get_theme_mode() {
+    echo 'dark'
+}
+
 function get_uptime_seconds() {
     cut -d. -f1 "${ROOT_PROC}/uptime"
 }
@@ -744,6 +758,8 @@ HAS_GUI=false
 HAS_SU_PRIVILEGES=true
 HAS_EFI_SUPPORT=false
 DEVICE_TYPE='PC'
+
+APPS_LOCALE='ro_RO'
 
 if [ "${CHASSIS_TYPE}" = 'Phone' ]; then
     POWERFUL_PC=false

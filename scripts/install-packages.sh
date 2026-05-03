@@ -484,8 +484,19 @@ fi
 ###############
 ### Drivers ###
 ###############
-if [ "${ARCH_FAMILY}" = 'x86' ] \
-&& ! [[ "${DISTRO}" =~ 'WSL' ]]; then
+if [ "${ARCH_FAMILY}" = 'arm' ]; then
+    if ${HAS_GUI}; then
+        if [ "${DISTRO_FAMILY}" = 'Debian' ] \
+        || [ "${DISTRO_FAMILY}" = 'Ubuntu' ]; then
+            install_native_package 'libva2'
+            install_native_package 'libva-drm2'
+            install_native_package 'libva-x11-2'
+            install_native_package 'mesa-va-drivers'
+            install_native_package 'vainfo'
+        fi
+    fi
+elif [ "${ARCH_FAMILY}" = 'x86' ] \
+  && ! [[ "${DISTRO}" =~ 'WSL' ]]; then
     if [ "${GPU_FAMILY}" = 'Intel' ]; then
         install_native_package 'intel-media-driver'
 
@@ -842,10 +853,14 @@ fi
 #####################
 ### Video Players ###
 #####################
-if [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ]; then
-    install_flatpak 'org.gnome.Showtime'
-elif [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
-    install_flatpak 'io.github.celluloid_player.Celluloid'
+if [ "${OS}" = 'Linux' ]; then
+    if [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ]; then
+        install_flatpak 'org.gnome.Showtime'
+    elif [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+        install_flatpak 'io.github.celluloid_player.Celluloid'
+    fi
+
+    install_webapp 'https://youtube.com'
 fi
 
 ####################

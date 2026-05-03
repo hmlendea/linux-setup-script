@@ -1284,6 +1284,25 @@ for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.github.rafostar.Clapper.des
     [ "${DEVICE_TYPE}" = 'Mobile' ] && set_launcher_entry "${LAUNCHER}" NoDisplay true
 done
 
+### YouTube
+for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.simplenote.Simplenote.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/google-keep.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.simplenote.Simplenote.desktop" \
+                "${LOCAL_LAUNCHERS_DIR}/simplenote-webapp.desktop" \
+                "${LOCAL_LAUNCHERS_DIR}/chrome-hmjkmjkepdijhoojdojkdfohbdgmmhki-Default.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name 'Simplenote' \
+        Icon 'simplenote' \
+        Categories 'Network;WebBrowser;Utility;' \
+        NoDisplay false
+done
+
+for LAUNCHER in "${LOCAL_LAUNCHERS_DIR}/youtube-webapp.desktop"; do
+    set_launcher_entries "${LAUNCHER}" \
+        Name 'YouTube' \
+        Icon 'youtube'
+done
+
 ###############
 ### Weather ###
 ###############
