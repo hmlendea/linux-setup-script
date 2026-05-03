@@ -190,8 +190,9 @@ remove \
     "${XDG_CACHE_HOME}/fragments" \
     "${XDG_CONFIG_HOME}/fragments" \
     "${XDG_DATA_HOME}/fragments"
-! does_bin_exist "geforcenow-electron" && remove "${XDG_CONFIG_HOME}/GeForce NOW"
-! does_bin_exist "gimp" && \
+! does_bin_exist 'geany' && remove "${XDG_CONFIG_HOME}/geany"
+! does_bin_exist 'geforcenow-electron' && remove "${XDG_CONFIG_HOME}/GeForce NOW"
+! does_bin_exist 'gimp' && \
     remove "${XDG_CACHE_HOME}/gimp" \
     remove "${XDG_CONFIG_HOME}/GIMP"
 ! does_bin_exist "gkraken" && remove "${XDG_CONFIG_HOME}/gkraken"
@@ -212,6 +213,7 @@ remove \
 ! does_bin_exist 'gsconnect' && remove \
     "${XDG_CACHE_HOME}/gsconnect" \
     "${XDG_CONFIG_HOME}/gsconnect"
+! does_bin_exist 'guvcview' && remove "${XDG_CONFIG_HOME}/guvcview2"
 ! does_bin_exist 'hardinfo' && remove "${XDG_CONFIG_HOME}/hardinfo"
 ! does_bin_exist 'hashcat' && remove \
     "${XDG_CACHE_HOME}/hashcat" \
@@ -242,6 +244,7 @@ remove \
 ! does_bin_exist 'mcedit' && remove "${HOME}/.mcedit"
 ! does_bin_exist 'minetest' && remove "${XDG_CACHE_HOME}/minetest"
 ! does_bin_exist 'mono' && remove "${HOME}/.mono"
+! does_bin_exist 'mousepad' && remove "${XDG_CONFIG_HOME}/Mousepad"
 ! does_bin_exist 'mpv' && remove "${XDG_CONFIG_HOME}/mpv"
 ! does_bin_exist 'nano' && remove \
     "${HOME}/.nanorc" \
@@ -288,6 +291,9 @@ remove \
     remove "${XDG_CONFIG_HOME}/Postman"
 ! does_bin_exist 'protonfixes' && remove "${XDG_CACHE_HOME}/protonfixes"
 ! does_bin_exist 'protontricks' && remove "${XDG_CACHE_HOME}/protontricks"
+! does_bin_exist 'qalculator' && remove \
+    "${XDG_CONFIG_HOME}/qalculator" \
+    "${XDG_DATA_HOME}/qalculator"
 ! does_bin_exist 'rclone' && remove "${XDG_CONFIG_HOME}/rclone"
 ! does_bin_exist 'rhythmbox' && remove \
     "${XDG_CACHE_HOME}/rhythmbox" \
