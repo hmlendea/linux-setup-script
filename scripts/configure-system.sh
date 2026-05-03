@@ -575,6 +575,20 @@ does_bin_exist 'gnome-software' && \
 ########################
 ### Archive Managers ###
 ########################
+if does_bin_exist 'engrampa'; then
+    set_gsettings 'org.mate.engrampa.general' \
+        compression-level 'maximum'
+    set_gsettings 'org.mate.engrampa.listing' \
+        list-mode 'as-folder' \
+        show-path false \
+        sort-method 'name' \
+        sort-type 'ascending' \
+        use-mime-icons true
+    set_gsettings 'org.mate.engrampa.ui' \
+        view-folders false \
+        view-satusbar false \
+        view-toolbar false
+fi
 does_bin_exist 'file-roller' 'org.gnome.FileRoller' && \
     set_gsettings 'org.gnome.FileRoller.General' \
         compression-level 'maximum' \

@@ -292,7 +292,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
         'network' false \
         'notification' false \
         'location' false
-    set_linux_permission 'org.gnome.FileRoller' \
+    set_linux_permission 'ark' 'engrampa' 'file-roller' 'org.gnome.FileRoller' 'xarchiver' \
         'background' true \
         'camera' false \
         'network' false \

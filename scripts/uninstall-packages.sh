@@ -45,7 +45,15 @@ function keep_first_installed_package() {
 
 # Archive Managers
 if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
-    keep_first_installed_package 'org.gnome.FileRoller' 'file-roller' 'xarchiver' 'ark'
+    if ${POWERFUL_PC}; then
+        keep_first_installed_package 'org.gnome.FileRoller' 'file-roller' 'engrampa' 'xarchiver' 'ark'
+    else
+        keep_first_installed_package 'engrampa' 'xarchiver' 'file-roller' 'org.gnome.FileRoller' 'ark'
+    fi
+elif [ "${DESKTOP_ENVIRONMENT}" = 'KDE' ]; then
+    keep_first_installed_package 'ark' 'xarchiver' 'engrampa' 'file-roller' 'org.gnome.FileRoller'
+elif [ "${DESKTOP_ENVIRONMENT}" = 'XFCE' ]; then
+    keep_first_installed_package 'xarchiver' 'engrampa' 'file-roller' 'ark' 'org.gnome.FileRoller'
 fi
 
 # Calculator Apps

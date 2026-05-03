@@ -239,9 +239,9 @@ elif [ "${OS}" = 'Linux' ]; then
     fi
 fi
 
-################
-### Archives ###
-################
+#######################
+### Archive Formats ###
+#######################
 [ "${DEVICE_MODEL}" != 'iPhone' ] && install_native_package 'unp' # A script for unpacking a wide variety of archive formats
 install_native_package 'unzip'
 install_native_package 'zip'
@@ -256,6 +256,27 @@ if [ "${DISTRO_FAMILY}" = 'Arch' ] \
     install_native_package 'unrar'
 elif [ "${DISTRO_FAMILY}" = 'Debian' ]; then
     install_native_package 'unrar-free'
+fi
+
+########################
+### Archive Managers ###
+########################
+if [ "${OS}" = 'Android' ]; then
+    install_android_fdroid_package 'org.fossify.filemanager'
+elif [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
+    if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
+        if ${POWERFUL_PC}; then
+            install_flatpak 'org.gnome.FileRoller'
+        else
+            install_native_package 'engrampa'
+        fi
+    elif [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+        install_flatpak 'org.gnome.FileRoller'
+    elif [ "${DESKTOP_ENVIRONMENT}" = 'KDE' ]; then
+        install_native_package 'ark'
+    elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
+        install_native_package 'xarchiver'
+    fi
 fi
 
 #############
@@ -309,7 +330,7 @@ if ${IS_GENERAL_PURPOSE_DEVICE}; then
     if [ "${DISTRO_FAMILY}" = 'Debian' ]; then
         install_native_package 'fonts-freefont-ttf'
         install_native_package 'fonts-noto'
-        install_github_package 'fonts-apple-emoji-ttf' 'samuelngs/apple-emoji-ttf'
+        install_github_package 'fonts-apple-color-emoji-ttf' 'samuelngs/apple-emoji-ttf'
         install_native_package 'fonts-droid-fallback'
         install_native_package_dependency 'fonts-crosextra-carlito'
         install_native_package_dependency 'fonts-crosextra-caladea'
@@ -543,20 +564,17 @@ fi
 #####################
 if [ "${OS}" = 'Android' ]; then
     install_android_fdroid_package 'org.fossify.filemanager'
-elif [ "${OS}" = 'Linux' ]; then
+elif [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
     if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
     || [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
         install_native_package 'nautilus'
-        install_flatpak 'org.gnome.FileRoller'
     elif [ "${DESKTOP_ENVIRONMENT}" = 'KDE' ]; then
         install_native_package 'dolphin'
-        install_native_package 'ark'
     elif [ "${DESKTOP_ENVIRONMENT}" = 'LXDE' ]; then
         install_native_package 'pcmanfm'
-        install_native_package 'xarchiver'
     fi
 
-    if ${IS_POWERFUL_PC} && ${HAS_GUI}; then
+    if ${IS_POWERFUL_PC}; then
         install_native_package_dependency 'webp-pixbuf-loader'
     fi
 fi
