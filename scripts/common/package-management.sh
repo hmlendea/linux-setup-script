@@ -421,10 +421,18 @@ function install_github_package() {
     fi
 
     local DOWNLOAD_URL
-    DOWNLOAD_URL=$(echo "${RELEASE_JSON}" | jq -r '.assets[] | .browser_download_url' | \
-        grep -E '\.deb$' | \
-        grep -E "${ARCH_REGEX}" | \
-        head -n1)
+
+    DOWNLOAD_URL=$(echo "${RELEASE_JSON}" | jq -r '.assets[] | .browser_download_url' | grep -E '\.deb$')
+
+    # First try arch-specific match
+    ARCH_MATCH=$(echo "${DOWNLOAD_URL}" | grep -E "${ARCH_REGEX}" | head -n1)
+
+    if [ -n "${ARCH_MATCH}" ]; then
+        DOWNLOAD_URL="${ARCH_MATCH}"
+    else
+        # Fallback to any .deb (e.g. Architecture: all)
+        DOWNLOAD_URL=$(echo "${DOWNLOAD_URL}" | head -n1)
+    fi
 
     if [ -z "${DOWNLOAD_URL}" ]; then
         echo " !!! No matching .deb asset found for ${REPOSITORY} (${ARCH})"

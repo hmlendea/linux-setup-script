@@ -72,7 +72,6 @@ if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
 fi
 
 # Chat Apps
-
 if [ "${OS}" = 'Linux' ]; then
     if [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
         keep_first_installed_package 'de.schmidhuberj.Flare' 'org.signal.Signal' 'signal-desktop' 'signal-desktop-unofficial'
@@ -121,6 +120,14 @@ if [ "${DISTRO_FAMILY}" = 'Android' ]; then
     keep_first_installed_package 'org.fossify.filemanager' 'com.android.documentsui'
 elif [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
     keep_first_installed_package 'nautilus' 'pcmanfm'
+fi
+
+# Fonts
+if [ "${OS}" = 'Linux' ]; then
+    if [ "${DISTRO_FAMILY}" = 'Debian' ] \
+    || [ "${DISTRO_FAMILY}" = 'Ubuntu' ]; then
+        keep_first_installed_package 'fonts-apple-color-emoji' 'fonts-noto-color-emoji'
+    fi
 fi
 
 # Image Viewers

@@ -309,7 +309,7 @@ if ${IS_GENERAL_PURPOSE_DEVICE}; then
     if [ "${DISTRO_FAMILY}" = 'Debian' ]; then
         install_native_package 'fonts-freefont-ttf'
         install_native_package 'fonts-noto'
-        install_native_package 'fonts-noto-color-emoji'
+        install_github_package 'fonts-apple-emoji-ttf' 'samuelngs/apple-emoji-ttf'
         install_native_package 'fonts-droid-fallback'
         install_native_package_dependency 'fonts-crosextra-carlito'
         install_native_package_dependency 'fonts-crosextra-caladea'
