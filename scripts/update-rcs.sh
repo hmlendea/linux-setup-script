@@ -207,3 +207,7 @@ set_config_values "${SHELL_VARIABLES_RC_PATH}" \
     'export LESS_TERMCAP_us' '$'"'"'\e[1;4;033m'"'"
 
 bash "${REPO_SCRIPTS_DIR}/git/setup-gpg-key.sh"
+
+if [[ "$(get_device_model)" =~ 'Argon ONE UP' ]]; then
+    update_file_if_distinct "${REPO_RC_DIR}/boot_firmware_config_argononeup.txt" "${ROOT_BOOT}/firmware/config.txt"
+fi
