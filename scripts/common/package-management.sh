@@ -729,8 +729,6 @@ function uninstall_webapp() {
         update-desktop-database "${XDG_DATA_HOME}/applications" >/dev/null 2>&1
     fi
 
-    local WEBAPP_PROFILE_DIR
-    WEBAPP_PROFILE_DIR="${XDG_CONFIG_HOME}/${BROWSER}-${PACKAGE_NAME}"
-
-    [ -d "${WEBAPP_PROFILE_DIR}" ] && remove "${WEBAPP_PROFILE_DIR}"
+    remove "${XDG_CACHE_HOME}/${BROWSER}-${PACKAGE_NAME}"
+    remove "${XDG_CONFIG_HOME}/${BROWSER}-${PACKAGE_NAME}"
 }

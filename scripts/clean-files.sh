@@ -156,19 +156,20 @@ remove \
 ! does_bin_exist "chromium" && remove \
     "${XDG_CACHE_HOME}/chromium" \
     "${XDG_CONFIG_HOME}/chromium"
-! does_bin_exist "code" && remove \
+! does_bin_exist 'chunker' && remove "${XDG_CONFIG_HOME}/chunker-electron"
+! does_bin_exist 'code' && remove \
     "${XDG_CONFIG_HOME}/Code" \
     "${HOME}/.vscode"
-! does_bin_exist "code-oss" && remove \
+! does_bin_exist 'code-oss' && remove \
     "${XDG_CONFIG_HOME}/Code - OSS" \
     "${XDG_CONFIG_HOME}/code-oss" \
     "${HOME}/.vscode-oss"
-! does_bin_exist "codium" && remove "${XDG_CONFIG_HOME}/VSCodium"
-! does_bin_exist "code-oss" "codium" && remove "${HOME}/.vscode-oss"
-! does_bin_exist "convert" && remove "${XDG_CACHE_HOME}/ImageMagick"
-! does_bin_exist "docker" && remove "${ROOT_VAR_LIB}/docker"
-! does_bin_exist "dockx" && remove "${XDG_DATA_HOME}/dockbarx"
-! does_bin_exist "dotnet" && \
+! does_bin_exist 'codium' && remove "${XDG_CONFIG_HOME}/VSCodium"
+! does_bin_exist 'code-oss' 'codium' && remove "${HOME}/.vscode-oss"
+! does_bin_exist 'convert' && remove "${XDG_CACHE_HOME}/ImageMagick"
+! does_bin_exist 'docker' && remove "${ROOT_VAR_LIB}/docker"
+! does_bin_exist 'dockx' && remove "${XDG_DATA_HOME}/dockbarx"
+! does_bin_exist 'dotnet' && \
     remove "${HOME}/.dotnet" \
     remove "${HOME}/.templateengine"
 ! does_bin_exist "droidcam" && remove "${XDG_CONFIG_HOME}/droidcam"
@@ -179,7 +180,6 @@ remove \
 #    "${XDG_CACHE_HOME}/evolution" \
 #    "${XDG_CONFIG_HOME}/evolution" \
 #    "${XDG_DATA_HOME}/evolution"
-! does_bin_exist "electronmail-bin" && remove "${XDG_CONFIG_HOME}/electron-mail"
 ! does_bin_exist "eog" && remove "${XDG_CONFIG_HOME}/eog"
 ! does_bin_exist "fastfetch" && remove \
     "${XDG_CACHE_HOME}/fastfetch" \
@@ -198,7 +198,6 @@ remove \
 ! does_bin_exist "gkraken" && remove "${XDG_CONFIG_HOME}/gkraken"
 ! does_bin_exist "gksu" && remove "${HOME}/.gksu.lock"
 ! does_bin_exist "gmic" && remove "${XDG_CONFIG_HOME}/gmic"
-! does_bin_exist "gnome-calculator" && remove "${XDG_CACHE_HOME}/gnome-calculator"
 ! does_bin_exist "gnome-photos" && remove \
     "${XDG_CACHE_HOME}/gnome-photos" \
     "${XDG_DATA_HOME}/gnome-photos"
@@ -293,13 +292,7 @@ remove \
     remove "${XDG_CONFIG_HOME}/Postman"
 ! does_bin_exist 'protonfixes' && remove "${XDG_CACHE_HOME}/protonfixes"
 ! does_bin_exist 'protontricks' && remove "${XDG_CACHE_HOME}/protontricks"
-! does_bin_exist 'qalculator' && remove \
-    "${XDG_CONFIG_HOME}/qalculator" \
-    "${XDG_DATA_HOME}/qalculator"
 ! does_bin_exist 'rclone' && remove "${XDG_CONFIG_HOME}/rclone"
-! does_bin_exist 'rhythmbox' && remove \
-    "${XDG_CACHE_HOME}/rhythmbox" \
-    "${XDG_DATA_HOME}/rhythmbox"
 ! does_bin_exist 'rpi-imager' && remove \
     "${XDG_CACHE_HOME}/Raspberry Pi/Imager" \
     "${XDG_CONFIG_HOME}/Raspberry Pi/Imager.conf"
@@ -312,9 +305,6 @@ remove \
     "${XDG_CACHE_HOME}/snapcraft" \
     "${XDG_CONFIG_HOME}/snapcraft"
 ! does_bin_exist 'sokogrump' && remove "${XDG_DATA_HOME}/SokoGrump"
-! does_bin_exist 'spotify' && remove \
-    "${XDG_CACHE_HOME}/spotify" \
-    "${XDG_CONFIG_HOME}/spotify"
 ! does_bin_exist 'teamviewer' && remove \
     "${XDG_CACHE_HOME}/TeamViewer" \
     "${XDG_CONFIG_HOME}/teamviewer" \
@@ -347,16 +337,29 @@ remove \
 ! does_bin_exist 'yt-dlp' && remove "${XDG_CACHE_HOME}/yt-dlp"
 ! does_bin_exist 'zsh' && remove "${HOME}/.zshrc"
 
+###################
+### AI Chatbots ###
+###################
+! does_bin_exist 'chatgpt-nativefier' && remove "${XDG_CONFIG_HOME}/chatgpt-nativefier-a2b87c1"
+
+###################
+### Calculators ###
+###################
+! does_bin_exist 'gnome-calculator' && remove "${XDG_CACHE_HOME}/gnome-calculator"
+! does_bin_exist 'qalculator' && remove \
+    "${XDG_CONFIG_HOME}/qalculator" \
+    "${XDG_DATA_HOME}/qalculator"
+
 ############
 ### Chat ###
 ############
 
 # Discord
-! does_bin_exist "discord" && remove "${XDG_CONFIG_HOME}/discord"
+! does_bin_exist 'discord' && remove "${XDG_CONFIG_HOME}/discord"
 remove_logs_in_dirs "${HOME_VAR_APP}/com.discordapp.Discord/config/discord"
 
 # Signal
-! does_bin_exist "signal-desktop" && remove "${XDG_CONFIG_HOME}/Signal"
+! does_bin_exist 'signal-desktop' && remove "${XDG_CONFIG_HOME}/Signal"
 remove_logs_in_dirs "${HOME_VAR_APP}/org.signal.Signal/config/Signal"
 
 # Teams
@@ -375,20 +378,31 @@ remove_logs_in_dirs "${HOME_VAR_APP}/com.microsoft.Teams/config/teams" \
                     "${HOME_VAR_APP}/com.microsoft.Teams/config/Microsoft/Microsoft Teams"
 
 # Telegram
-! does_bin_exist "telegram-desktop" && remove "${XDG_DATA_HOME}/TelegramDesktop"
+! does_bin_exist 'telegram-desktop' && remove "${XDG_DATA_HOME}/TelegramDesktop"
 remove_logs_in_dirs "${HOME_VAR_APP}/org.telegram.desktop/data/TelegramDesktop"
 
 # WhatsApp
-! does_bin_exist "whatsapp-nativefier" && remove \
+! does_bin_exist 'whatsapp-nativefier' && remove \
     "${ROOT_OPT}/whatsapp-nativefier" \
     "${XDG_CONFIG_HOME}/whatsapp-nativefier-d40211"
-! does_bin_exist "whatsdesk" && remove "${HOME}/.whatsdesk"
+! does_bin_exist 'whatsdesk' && remove "${HOME}/.whatsdesk"
 
 # Zoom
 ! does_bin_exist 'zoom' && remove \
     "${HOME}/.zoom" \
     "${XDG_DOCUMENTS_DIR}/Zoom" \
     "${HOME}/Documents/Zoom"
+
+########################
+### Document Viewers ###
+########################
+! does_bin_exist 'okular' && remove "${XDG_DATA_HOME}/okular"
+
+######################
+### E-Mail Clients ###
+######################
+! does_bin_exist 'electronmail-bin' && remove "${XDG_CONFIG_HOME}/electron-mail"
+! does_bin_exist 'thunderbird' && remove "${XDG_CACHE_HOME}/thunderbird"
 
 #####################
 ### File Managers ###
@@ -509,23 +523,39 @@ done
 ! does_bin_exist "${ROOT_OPT}/nexusmods-app/NexusMods.App" && remove \
     "${XDG_DATA_HOME}/NexusMods.App"
 
+#####################
+### Music Players ###
+#####################
+! does_bin_exist 'rhythmbox' && remove \
+    "${XDG_CACHE_HOME}/rhythmbox" \
+    "${XDG_DATA_HOME}/rhythmbox"
+! does_bin_exist 'spotify' && remove \
+    "${XDG_CACHE_HOME}/spotify" \
+    "${XDG_CONFIG_HOME}/spotify"
+
+########################
+### Package Managers ###
+########################
+! does_bin_exist 'yay' && remove "${XDG_CACHE_HOME}/yay"
+
 #################
 ### Terminals ###
 #################
-! does_bin_exist "konsole" && remove "${XDG_CONFIG_HOME}/konsolerc"
+! does_bin_exist 'konsole' && remove "${XDG_CONFIG_HOME}/konsolerc"
+! does_bin_exist 'lxterminal' && remove "${XDG_CONFIG_HOME}/lxterminal"
 
 ####################
 ### Text Editors ###
 ####################
-! does_bin_exist "gedit" && \
+! does_bin_exist 'gedit' && \
     remove "${XDG_CONFIG_HOME}/gedit" \
     remove "${XDG_DATA_HOME}/gedit"
 
 ############
 ### WINE ###
 ############
-! does_bin_exist "wine" && remove "${XDG_CACHE_HOME}/wine"
-! does_bin_exist "winetricks" && remove "${XDG_CACHE_HOME}/winetricks"
+! does_bin_exist 'wine' && remove "${XDG_CACHE_HOME}/wine"
+! does_bin_exist 'winetricks' && remove "${XDG_CACHE_HOME}/winetricks"
 
 remove "${XDG_CONFIG_HOME}/menus/applications-merged/"wine-*.menu
 remove "${XDG_DATA_HOME}/applications/wine"
