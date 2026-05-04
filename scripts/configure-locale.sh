@@ -44,6 +44,11 @@ fi
 if ${HAS_GUI}; then
     if [ -d "${KEYBOARD_LAYOUTS_PATH}" ]; then
         echo 'Updating the keyboard layouts...'
-        update_file_if_distinct "${REPO_KEYBOARD_LAYOUTS_DIR}/ro" "${KEYBOARD_LAYOUTS_PATH}/ro"
+
+        if [[ "$(get_device_model)" =~ 'Argon ONE UP' ]]; then
+            update_file_if_distinct "${REPO_KEYBOARD_LAYOUTS_DIR}/ro-argononeup" "${KEYBOARD_LAYOUTS_PATH}/ro"
+        else
+            update_file_if_distinct "${REPO_KEYBOARD_LAYOUTS_DIR}/ro" "${KEYBOARD_LAYOUTS_PATH}/ro"
+        fi
     fi
 fi
