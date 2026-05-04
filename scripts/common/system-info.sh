@@ -551,6 +551,23 @@ function get_wifi_driver() {
     get_driver 'wifi'
 }
 
+function get_window_manager() {
+    local WINDOW_MANAGER
+    WINDOW_MANAGER="${XDG_SESSION_TYPE}"
+
+    if [ -z "${WINDOW_MANAGER}" ]; then
+        if [ -n "${WAYLAND_DISPLAY}" ]; then
+            WINDOW_MANAGER='wayland'
+        elif [ -n "${DISPLAY}" ]; then
+            WINDOW_MANAGER='x11'
+        fi
+    fi
+
+    [ -z "${WINDOW_MANAGER}" ] && WINDOW_MANAGER='unknown'
+
+    echo "${WINDOW_MANAGER}"
+}
+
 function get_audio_driver() {
     get_driver 'snd'
 }

@@ -427,6 +427,8 @@ remove_logs_in_dirs \
     "${HOME_VAR_APP}/com.mojang.Minecraft/.minecraft" \
     "${ROOT_SRV}/papermc"
 
+#! does_bin_exist 'prismlauncher' && remove "${XDG_DATA_HOME}/PrismLauncher"
+
 for PRISMLAUNCHER_INSTANCE_DIR in "${HOME_VAR_APP}/org.prismlauncher.PrismLauncher/data/PrismLauncher/instances/"*; do
     remove "${PRISMLAUNCHER_INSTANCE_DIR}/.minecraft/baritone/"*"/"
     remove "${PRISMLAUNCHER_INSTANCE_DIR}/.minecraft/XaeroWaypoints_BACKUP"*

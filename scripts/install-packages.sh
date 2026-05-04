@@ -469,7 +469,11 @@ if ${HAS_GUI}; then
     fi
 
     if ${IS_GAMING_DEVICE}; then
-        install_flatpak 'com.discordapp.Discord'
+        if [ "${ARCH_FAMILY}" = 'x86' ]; then
+            install_flatpak 'com.discordapp.Discord'
+        else
+            install_webapp 'https://discord.com'
+        fi
     fi
 fi
 

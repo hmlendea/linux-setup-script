@@ -30,6 +30,7 @@ SCREEN_DPI=$(get_screen_dpi)
 USING_INTEL_GPU=false; [ "$(get_gpu_family)" == "Intel" ] && USING_INTEL_GPU=true
 USING_NVIDIA_GPU=false; [ "$(get_gpu_family)" == "Nvidia" ] && USING_NVIDIA_GPU=true
 IS_SERVER=false; [ -z "${SCREEN_RESOLUTION_H}" ] && IS_SERVER=true
+WINDOW_MANAGER="$(get_window_manager)"
 
 DIRTY_WRITEBACK_POWERSAVE_SECS=15 # Wait longer in order to aggregate disk I/O and save power. Set it too high might increase IO/CPU activity and increase power consumption instead
 DIRTY_WRITEBACK_DEFAULT_SECS=5
@@ -1097,6 +1098,16 @@ if [ -f "${MC_OPTIONS_FILE}" ]; then
     set_json_property "${MC_LAUNCHER_PROFILES_FILE}" '.settings.crashAssistance' false
     set_json_property "${MC_LAUNCHER_SETTINGS_FILE}" '.deviceId' "${MC_DEVICE_ID}"
     set_json_property "${MC_LAUNCHER_SETTINGS_FILE}" '.locale' "${GAMES_LANGUAGE/_/-}"
+fi
+
+if does_bin_exist 'org.prismlauncher.PrismLauncher'; do
+    if [ "${WINDOW_MANAGER}" = 'x11' ]; then
+        flatpak override --user --reset org.prismlauncher.PrismLauncher
+        flatpak override --user org.prismlauncher.PrismLauncher \
+          --device=dri \
+          --socket=x11 \
+          --share=ipc
+    fi
 fi
 
 PDX_LAUNCHER_DATA_DIR="${XDG_DATA_HOME}/Paradox Interactive/launcher-v2"

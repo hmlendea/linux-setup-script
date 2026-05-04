@@ -163,13 +163,15 @@ done
 #################
 CHAT_APP_CATEGORIES="Network;Chat;InstantMessaging;Communication;"
 
-for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/discord.desktop" \
-                "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.discordapp.Discord.desktop" \
-                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.discordapp.Discord.desktop"; do
+for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.discordapp.Discord.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.discordapp.Discord.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/discord.desktop" \
+                "${LOCAL_LAUNCHERS_DIR}/discord-webapp.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        Name "Discord" \
-        Icon "discord" \
-        Categories "${CHAT_APP_CATEGORIES}"
+        Name 'Discord' \
+        Icon 'discord' \
+        Categories "${CHAT_APP_CATEGORIES}" \
+        StartupWMClass 'discord'
 done
 
 for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.sindresorhus.Caprine.desktop" \
@@ -571,54 +573,56 @@ done
 ### Games ###
 #############
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/gnubg.desktop" \
-    Name "Backgammon" \
-    Name[ro] "Table"
+    Name 'Backgammon' \
+    Name[ro] 'Table'
 
 for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/io.mrarm.mcpelauncher.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/io.mrarm.mcpelauncher.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        Name 'Minecraft: Bedrock Edition' \
-        Comment 'Play Minecraft' \
-        Comment[de] 'Spiele Minecraft' \
-        Comment[es] 'Juega Minecraft' \
-        Comment[ro] 'Joacă Minecraft' \
+        Name 'Minecraft: Bedrock' \
+        Comment 'Play Minecraft: Bedrock' \
+        Comment[de] 'Spiele Minecraft: Bedrock' \
+        Comment[es] 'Juega Minecraft: Bedrock' \
+        Comment[ro] 'Joacă Minecraft: Bedrock' \
         Keywords 'Game;Minecraft;MC;' \
         Keywords[de] 'Spiel;Minecraft;MC;MCPE;MCBE;Bedrock;' \
         Keywords[es] 'Juego;Minecraft;MC;MCPE;MCBE;Bedrock;' \
         Keywords[ro] 'Joc;Minecraft;MC;MCPE;MCBE;Bedrock;' \
+        Icon 'minecraft' \
         Categories 'Game;' \
         PrefersNonDefaultGPU true
 done
 
-if does_bin_exist "minecraft-launcher" "com.mojang.Minecraft" "org.prismlauncher.PrismLauncher"; then
+if does_bin_exist 'minecraft-launcher' 'com.mojang.Minecraft' 'org.prismlauncher.PrismLauncher' 'prismlauncher'; then
     MC_DIR="${HOME}/.minecraft"
-    MC_EXECUTABLE="minecraft-launcher"
+    MC_EXECUTABLE='minecraft-launcher'
 
-    if is_flatpak_installed "com.mojang.Minecraft"; then
+    if is_flatpak_installed 'com.mojang.Minecraft'; then
         MC_DIR="${HOME_VAR_APP}/com.mojang.Minecraft/.minecraft"
-        MC_EXECUTABLE="com.mojang.Minecraft"
-    elif is_flatpak_installed "org.prismlauncher.PrismLauncher"; then
-        MC_EXECUTABLE="org.prismlauncher.PrismLauncher"
+        MC_EXECUTABLE='com.mojang.Minecraft'
+    elif is_flatpak_installed 'org.prismlauncher.PrismLauncher'; then
+        MC_EXECUTABLE='org.prismlauncher.PrismLauncher'
     fi
 
-    for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/minecraft-launcher.desktop" \
-                    "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.mojang.Minecraft.desktop" \
+    for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.mojang.Minecraft.desktop" \
                     "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.prismlauncher.PrismLauncher.desktop" \
                     "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.mojang.Minecraft.desktop" \
-                    "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.prismlauncher.PrismLauncher.desktop"; do
+                    "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.prismlauncher.PrismLauncher.desktop" \
+                    "${GLOBAL_LAUNCHERS_DIR}/minecraft-launcher.desktop" \
+                    "${GLOBAL_LAUNCHERS_DIR}/org.prismlauncher.PrismLauncher.desktop"; do
         set_launcher_entries "${LAUNCHER}" \
-            Name "Minecraft" \
-            Comment "Play Minecraft" \
-            Comment[de] "Spiele Minecraft" \
-            Comment[es] "Juega Minecraft" \
-            Comment[ro] "Joacă Minecraft" \
-            Keywords "Game;Minecraft;MC;" \
-            Keywords[de] "Spiel;Minecraft;MC;MCJE;" \
-            Keywords[es] "Juego;Minecraft;MC;MCJE;" \
-            Keywords[ro] "Joc;Minecraft;MC;MCJE;" \
+            Name 'Minecraft' \
+            Comment 'Play Minecraft' \
+            Comment[de] 'Spiele Minecraft' \
+            Comment[es] 'Juega Minecraft' \
+            Comment[ro] 'Joacă Minecraft' \
+            Keywords 'Game;Minecraft;MC;' \
+            Keywords[de] 'Spiel;Minecraft;MC;MCJE;' \
+            Keywords[es] 'Juego;Minecraft;MC;MCJE;' \
+            Keywords[ro] 'Joc;Minecraft;MC;MCJE;' \
             Exec "${MC_EXECUTABLE}" \
-            Icon "minecraft" \
-            Categories "Game;" \
+            Icon 'minecraft' \
+            Categories 'Game;' \
             PrefersNonDefaultGPU true
     done
 
@@ -634,19 +638,19 @@ if does_bin_exist "minecraft-launcher" "com.mojang.Minecraft" "org.prismlauncher
         for MC_LAUNCHER_FILE in "${MC_VANILLA_LAUNCHER_FILE}" \
                                 "${MC_MODDED_LAUNCHER_FILE}"; do
             set_launcher_entries "${MC_LAUNCHER_FILE}" \
-                Name "Minecraft" \
+                Name 'Minecraft' \
                 FullName "Minecraft ${MC_LATEST_RELEASE}" \
                 Comment "Play Minecraft ${MC_LATEST_RELEASE}" \
                 Comment[de] "Spiele Minecraft ${MC_LATEST_RELEASE}" \
                 Comment[es] "Juega Minecraft ${MC_LATEST_RELEASE}" \
                 Comment[ro] "Joacă Minecraft ${MC_LATEST_RELEASE}" \
-                Keywords "Game;Minecraft;" \
-                Keywords[de] "Spiel;Minecraft;" \
-                Keywords[es] "Juego;Minecraft;" \
-                Keywords[ro] "Joc;Minecraft;" \
+                Keywords 'Game;Minecraft;' \
+                Keywords[de] 'Spiel;Minecraft;' \
+                Keywords[es] 'Juego;Minecraft;' \
+                Keywords[ro] 'Joc;Minecraft;' \
                 Exec "${MC_EXECUTABLE}" \
-                Icon "minecraft" \
-                Categories "Game;" \
+                Icon 'minecraft' \
+                Categories 'Game;' \
                 PrefersNonDefaultGPU true \
                 NoDisplay true
         done
@@ -657,11 +661,11 @@ if does_bin_exist "minecraft-launcher" "com.mojang.Minecraft" "org.prismlauncher
 fi
 
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/nfs2se.desktop" \
-    Name "Need for Speed 2" \
-    Icon "nfs2se" \
-    StartupWMClass "nfs2se"
+    Name 'Need for Speed 2' \
+    Icon 'nfs2se' \
+    StartupWMClass 'nfs2se'
 
-set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/org.gnome.gnome-2048.desktop" Icon "2048"
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/org.gnome.gnome-2048.desktop" Icon '2048'
 
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/openarena-server.desktop" NoDisplay true
 

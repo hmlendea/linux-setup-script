@@ -39,10 +39,14 @@ if ${HAS_GUI} && [ "${OS}" = 'Linux' ]; then
         XDG_VIDEOS_DIR      "\"${XDG_VIDEOS_DIR}\""
 
 
-    if does_bin_exist 'org.prismlauncher.PrismLauncher'; then
+    if does_bin_exist 'org.prismlauncher.PrismLauncher' 'prismlauncher'; then
         MINECRAFT_SCREENSHOTS_DIR="${XDG_PICTURES_DIR}/Screenshots/Minecraft"
 
         create_directory "${MINECRAFT_SCREENSHOTS_DIR}"
+
+        PRISM_INSTANCES_DIR="${HOME_VAR_APP}/org.prismlauncher.PrismLauncher/data/PrismLauncher/instances"
+
+        if does_bin_exist
 
         for MINECRAFT_INSTANCE in "${HOME_VAR_APP}/org.prismlauncher.PrismLauncher/data/PrismLauncher/instances/"*; do
             [ -d "${MINECRAFT_INSTANCE}" ] || continue

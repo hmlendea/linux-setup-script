@@ -62,13 +62,13 @@ function package_manager_command() {
         OPERATION='list' && shift
     elif [[ "${OPERATION}" == 'search' ]]; then
         OPERATION='search' && shift
-    elif [[ "${OPERATION}" == 'uninstall' ]] \
-      || [[ "${OPERATION}" == 'del' ]] \
-      || [[ "${OPERATION}" == '-Rns' ]]; then
-        OPERATION='test' && shift
     elif [[ "${OPERATION}" == 'test' ]] \
       || [[ "${OPERATION}" == '-Q' ]]; then
         OPERATION='test' && shift
+    elif [[ "${OPERATION}" == 'uninstall' ]] \
+      || [[ "${OPERATION}" == 'del' ]] \
+      || [[ "${OPERATION}" == '-Rns' ]]; then
+        OPERATION='uninstall' && shift
     elif [[ "${OPERATION}" == 'update' ]] \
       || [[ "${OPERATION}" == '-Syy' ]]; then
         OPERATION='update' && shift

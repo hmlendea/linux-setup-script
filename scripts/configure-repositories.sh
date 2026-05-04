@@ -133,7 +133,8 @@ if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
         fi
     fi
 elif [ "${DISTRO}" = 'Raspberry Pi OS' ]; then
-    DEBIAN_VERSION="$(. /etc/os-release && echo "${VERSION_ID}")"
+    DISTRO_VERSION="$(. /etc/os-release && echo "${VERSION_ID}")"
+    DISTRO_CODENAME="$(. /etc/os-release; echo "${UBUNTU_CODENAME:-${DEBIAN_CODENAME:-${VERSION_CODENAME}}}")"
 
     add_repository \
         'packages-microsoft-prod' \
@@ -146,4 +147,11 @@ elif [ "${DISTRO}" = 'Raspberry Pi OS' ]; then
         'julians-package-repo' \
         'deb [signed-by=/usr/share/keyrings/julians-package-repo.gpg] https://julianfairfax.codeberg.page/package-repo/debs packages main' \
         'https://julianfairfax.codeberg.page/package-repo/pub.gpg'
+
+    if ${IS_GAMING_DEVICE}; then
+        add_repository \
+            'prismlauncher' \
+            "deb [signed-by=/usr/share/keyrings/prismlauncher.gpg] https://prism-launcher-for-debian.github.io/repo ${DISTRO_CODENAME} main" \
+            'https://prism-launcher-for-debian.github.io/repo/prismlauncher.gpg'
+    fi
 fi
