@@ -151,6 +151,10 @@ function package_manager_command() {
                     ${PACKAGE_MANAGER_COMMAND} add "${PACKAGE_NAME}"
                 elif [ "${PACKAGE_MANAGER_FAMILY}" = 'apt' ]; then
                     ${PACKAGE_MANAGER_COMMAND} install "${PACKAGE_NAME}"
+
+                    if ${AS_DEPENDENCY}; then
+                        sudo apt-mark auto "${PACKAGE_NAME}"
+                    fi
                 elif [ "${PACKAGE_MANAGER_FAMILY}" = 'pacman' ]; then
                     ${PACKAGE_MANAGER_COMMAND} -S "${PACKAGE_NAME}"
                 fi
