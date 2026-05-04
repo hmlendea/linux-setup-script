@@ -22,7 +22,8 @@ set_config_value "${HOME}/.profile" 'export XDG_VIDEOS_DIR'     "\"${XDG_VIDEOS_
 
 PATH_VARIABLE_EXTRA_PATHS=''
 
-[ -d "${HOME}/.local/bin" ] && PATH_VARIABLE="${PATH_VARIABLE_EXTRA_PATHS}:${HOME}/.local/bin"
+[ -d "${HOME}/.local/bin" ] && PATH_VARIABLE_EXTRA_PATHS="${PATH_VARIABLE_EXTRA_PATHS}:${HOME}/.local/bin"
+[ -d "${ROOT_VAR_LIB}/flatpak/exports/bin" ] && PATH_VARIABLE_EXTRA_PATHS="${PATH_VARIABLE_EXTRA_PATHS}:${ROOT_VAR_LIB}/flatpak/exports/bin"
 
 if [ "${DISTRO_FAMILY}" = 'Debian' ]; then
     [ -d "${HOME}/.local/share/flatpak/exports/bin" ] && PATH_VARIABLE_EXTRA_PATHS="${PATH_VARIABLE_EXTRA_PATHS}:${HOME}/.local/share/flatpak/exports/bin"
