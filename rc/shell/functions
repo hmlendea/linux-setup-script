@@ -65,7 +65,10 @@ function package_manager_command() {
     elif [[ "${OPERATION}" == 'uninstall' ]] \
       || [[ "${OPERATION}" == 'del' ]] \
       || [[ "${OPERATION}" == '-Rns' ]]; then
-        OPERATION='uninstall' && shift
+        OPERATION='test' && shift
+    elif [[ "${OPERATION}" == 'test' ]] \
+      || [[ "${OPERATION}" == '-Q' ]]; then
+        OPERATION='test' && shift
     elif [[ "${OPERATION}" == 'update' ]] \
       || [[ "${OPERATION}" == '-Syy' ]]; then
         OPERATION='update' && shift
@@ -141,14 +144,20 @@ function package_manager_command() {
         elif [[ "${PACKAGE_MANAGER_FAMILY}" == 'pacman' ]]; then
             ${PACKAGE_MANAGER_COMMAND} -Qi "${@}"
         fi
-    elif [[ "${OPERATION}" == 'install' ]]; then
-        if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apk' ]]; then
-            ${PACKAGE_MANAGER_COMMAND} add "${@}"
-        elif [[ "${PACKAGE_MANAGER_FAMILY}" == 'apt' ]]; then
-            ${PACKAGE_MANAGER_COMMAND} install "${@}"
-        elif [[ "${PACKAGE_MANAGER_FAMILY}" == 'pacman' ]]; then
-            ${PACKAGE_MANAGER_COMMAND} -S "${@}"
-        fi
+    elif [ "${OPERATION}" = 'install' ]; then
+        for PACKAGE_NAME in "${@}"; do
+            if ! yeet test "${PACKAGE_NAME}"; then
+                if [ "${PACKAGE_MANAGER_FAMILY}" = 'apk' ]; then
+                    ${PACKAGE_MANAGER_COMMAND} add "${PACKAGE_NAME}"
+                elif [ "${PACKAGE_MANAGER_FAMILY}" = 'apt' ]; then
+                    ${PACKAGE_MANAGER_COMMAND} install "${PACKAGE_NAME}"
+                elif [ "${PACKAGE_MANAGER_FAMILY}" = 'pacman' ]; then
+                    ${PACKAGE_MANAGER_COMMAND} -S "${PACKAGE_NAME}"
+                fi
+            else
+                echo -e "The \e[0;33m${PACKAGE_NAME}\e[0m package is already installed!"
+            fi
+        done
     elif [[ "${OPERATION}" == 'list' ]]; then
         if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apk' ]]; then
             ${PACKAGE_MANAGER_COMMAND} info
@@ -164,12 +173,20 @@ function package_manager_command() {
         elif [[ "${PACKAGE_MANAGER_FAMILY}" == 'pacman' ]]; then
             ${PACKAGE_MANAGER_COMMAND} "${@}"
         fi
-    elif [[ "${OPERATION}" == 'uninstall' ]]; then
-        if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apk' ]] \
-        || [[ "${PACKAGE_MANAGER_FAMILY}" == 'apt' ]]; then
+    elif [ "${OPERATION}" = 'test' ]; then
+        if [ "${PACKAGE_MANAGER_FAMILY}" = 'apk' ]; then
+            ${PACKAGE_MANAGER_COMMAND} info -e "${@}" >/dev/null 2>&1
+        elif [ "${PACKAGE_MANAGER_FAMILY}" = 'apt' ]; then
+            dpkg -s "${@}" >/dev/null 2>&1
+        elif [ "${PACKAGE_MANAGER_FAMILY}" = 'pacman' ]; then
+            ${PACKAGE_MANAGER_COMMAND} -Q "${@}" >/dev/null 2>&1
+        fi
+    elif [ "${OPERATION}" = 'uninstall' ]; then
+        if [ "${PACKAGE_MANAGER_FAMILY}" = 'apk' ] \
+        || [ "${PACKAGE_MANAGER_FAMILY}" = 'apt' ]; then
             ${PACKAGE_MANAGER_COMMAND} remove "${@}"
             ${PACKAGE_MANAGER_COMMAND} autoremove
-        elif [[ "${PACKAGE_MANAGER_FAMILY}" == 'pacman' ]]; then
+        elif [ "${PACKAGE_MANAGER_FAMILY}" = 'pacman' ]; then
             ${PACKAGE_MANAGER_COMMAND} -Rns "${@}"
         fi
     elif [[ "${OPERATION}" == 'update' ]]; then
