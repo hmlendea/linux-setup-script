@@ -205,3 +205,5 @@ set_config_values "${SHELL_VARIABLES_RC_PATH}" \
     'export LESS_TERMCAP_so' '$'"'"'\e[01;97m'"'" \
     'export LESS_TERMCAP_ue' '$'"'"'\e[0m'"'" \
     'export LESS_TERMCAP_us' '$'"'"'\e[1;4;033m'"'"
+
+bash "${REPO_SCRIPTS_DIR}/git/setup-gpg-key.sh"
