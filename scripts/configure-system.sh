@@ -1100,7 +1100,7 @@ if [ -f "${MC_OPTIONS_FILE}" ]; then
     set_json_property "${MC_LAUNCHER_SETTINGS_FILE}" '.locale' "${GAMES_LANGUAGE/_/-}"
 fi
 
-if does_bin_exist 'org.prismlauncher.PrismLauncher'; do
+if does_bin_exist 'org.prismlauncher.PrismLauncher'; then
     if [ "${DISPLAY_SERVER}" = 'x11' ]; then
         flatpak override --user --reset org.prismlauncher.PrismLauncher
         flatpak override --user org.prismlauncher.PrismLauncher \
