@@ -380,6 +380,27 @@ function install_android_github_package {
     install_android_remote_package "${APK_URL}" "${PACKAGE_NAME}"
 }
 
+function install_aur_package_manually() {
+	local PKG="${1}"
+
+	is_native_package_installed "${PKG}" && return
+
+    local PKG_SNAPSHOT_URL="https://aur.archlinux.org/cgit/aur.git/snapshot/${PKG}.tar.gz"
+    local OLD_PWD="$(pwd)"
+
+    [ ! -d "${LOCAL_INSTALL_TEMP_DIR}" ] && mkdir -p "${LOCAL_INSTALL_TEMP_DIR}"
+
+    cd "${LOCAL_INSTALL_TEMP_DIR}"
+    echo -e '>>> Installing AUR package manually: \e[0;33m${PKG}\e[0m...'
+
+    wget "${PKG_SNAPSHOT_URL}"
+    tar xvf "${PKG}.tar.gz"
+
+    cd "${PKG}"
+    makepkg -sri --noconfirm
+    cd "${OLD_PWD}"
+}
+
 function install_flatpak() {
     local PACKAGE="${1}"
     local REMOTE="flathub"

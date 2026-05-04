@@ -833,7 +833,11 @@ if "${HAS_GUI}"; then
     fi
 
     install_native_package 'papirus-icon-theme'
-    install_native_package 'adw-gtk3'
+
+    if [ "${DESKTOP_ENVIRONMENT}" = 'Debian' ] \
+    || [ "${DESKTOP_ENVIRONMENT}" = 'Ubuntu' ]; then
+        install_native_package 'adw-gtk3'
+    fi
 fi
 
 ###########################

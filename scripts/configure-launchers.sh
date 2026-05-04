@@ -1298,11 +1298,9 @@ for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.github.rafostar.Clapper.des
 done
 
 ### YouTube
-for LAUNCHER in "${LOCAL_LAUNCHERS_DIR}/youtube-webapp.desktop"; do
-    set_launcher_entries "${LAUNCHER}" \
-        Name 'YouTube' \
-        Icon 'youtube'
-done
+set_launcher_entries "${LOCAL_LAUNCHERS_DIR}/youtube-webapp.desktop" \
+    Name 'YouTube' \
+    Icon 'youtube'
 
 ###############
 ### Weather ###
@@ -1316,7 +1314,7 @@ done
 ####################
 ### WEB BROWSERS ###
 ####################
-WEB_BROWSER_CATEGORIES="Network;WebBrowser;"
+WEB_BROWSER_CATEGORIES='Network;WebBrowser;'
 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/chromium.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/firefox-developer.desktop" \
