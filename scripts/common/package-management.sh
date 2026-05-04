@@ -524,6 +524,8 @@ function install_webapp() {
     local BROWSER=''
     if does_bin_exist 'chromium'; then
         BROWSER='chromium'
+    elif does_bin_exist 'org.chromium.Chromium'; then
+        BROWSER='org.chromium.Chromium'
     elif does_bin_exist 'brave'; then
         BROWSER='brave'
     elif does_bin_exist 'brave-browser'; then
