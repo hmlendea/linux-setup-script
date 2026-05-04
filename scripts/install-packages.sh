@@ -472,7 +472,7 @@ if ${HAS_GUI}; then
         if [ "${ARCH_FAMILY}" = 'x86' ]; then
             install_flatpak 'com.discordapp.Discord'
         else
-            install_webapp 'https://discord.com'
+            install_webapp 'https://discord.com/channels/@me'
         fi
     fi
 fi
