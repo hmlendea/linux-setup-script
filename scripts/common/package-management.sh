@@ -321,7 +321,8 @@ function install_native_package_dependency() {
     elif [ "${DISTRO_FAMILY}" = 'Android' ] \
       || [ "${DISTRO_FAMILY}" = 'Debian' ] \
       || [ "${DISTRO_FAMILY}" = 'Ubuntu' ]; then
-        call_package_manager install "${PACKAGE}" # TODO: See if there is a way to mark them as dep
+        call_package_manager install "${PACKAGE}"
+        run_as_su apt-mark auto "${PACKAGE}"
     fi
 }
 
