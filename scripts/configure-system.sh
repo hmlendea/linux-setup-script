@@ -1107,6 +1107,12 @@ if does_bin_exist 'org.prismlauncher.PrismLauncher'; do
           --device=dri \
           --socket=x11 \
           --share=ipc
+    elif [ "${WINDOW_MANAGER}" = 'wayland' ]; then
+        flatpak override --user org.prismlauncher.PrismLauncher \
+          --socket=x11 \
+          --socket=fallback-x11 \
+          --share=ipc
+          --nosocket=wayland
     fi
 fi
 
