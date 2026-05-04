@@ -36,7 +36,7 @@ echo "Uptime:           $(get_uptime_text)"
 
 if ${HAS_GUI}; then
     echo "Display:          $(get_screen_width)x$(get_screen_height), $(get_screen_dpi) DPI"
-    echo "DE:               ${DESKTOP_ENVIRONMENT} ($(get_window_manager)"
+    echo "DE:               ${DESKTOP_ENVIRONMENT} ($(get_display_server))"
     echo "Development:      ${IS_DEVELOPMENT_DEVICE}"
     echo "Gaming:           ${IS_GAMING_DEVICE}"
     echo "General purpose:  ${IS_GENERAL_PURPOSE_DEVICE}"
