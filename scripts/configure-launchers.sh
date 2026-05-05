@@ -1303,8 +1303,10 @@ done
 
 ### YouTube
 set_launcher_entries "${LOCAL_LAUNCHERS_DIR}/youtube-webapp.desktop" \
+    Exec 'env GTK_THEME=Adwaita:dark chromium --force-dark-mode --lang=ro_RO --class="youtube" --name="Youtube" --user-data-dir="/home/horatiu/.config/chromium-youtube-webapp" --no-first-run --no-default-browser-check --disable-features=Translate,TranslateUI --disable-notifications --disable-sync --disable-background-networking --disable-component-update --app-auto-launched "https://youtube.com"' \
     Name 'YouTube' \
-    Icon 'youtube'
+    Icon 'youtube' \
+    StartupWMClass 'youtube'
 
 ###############
 ### Weather ###
