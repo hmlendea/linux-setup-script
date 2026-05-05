@@ -48,16 +48,8 @@ APPS_LANGUAGE='ro_RO'
 GAMES_LANGUAGE='en_GB'
 
 # THEMES
-GTK_THEME_VARIANT='dark'
-GTK_THEME='Adwaita'
-
-if [ -d "${ROOT_USR_SHARE}/themes/adw-gtk3" ]; then
-    GTK_THEME='adw-gtk3'
-elif echo "${GTK_THEME}" | grep -q "[Dd]ark$"; then
-    GTK_THEME_VARIANT='dark'
-else
-    GTK_THEME_VARIANT='light'
-fi
+GTK_THEME_VARIANT="$(get_theme_mode)"
+GTK_THEME="$(get_theme)"
 
 [ "${GTK_THEME_VARIANT}" = 'dark' ] && GTK_THEME="${GTK_THEME}-dark"
 
@@ -1101,18 +1093,20 @@ if [ -f "${MC_OPTIONS_FILE}" ]; then
 fi
 
 if does_bin_exist 'org.prismlauncher.PrismLauncher'; then
-    if [ "${DISPLAY_SERVER}" = 'x11' ]; then
-        flatpak override --user --reset org.prismlauncher.PrismLauncher
-        flatpak override --user org.prismlauncher.PrismLauncher \
-          --device=dri \
-          --socket=x11 \
-          --share=ipc
-    elif [ "${DISPLAY_SERVER}" = 'wayland' ]; then
-        flatpak override --user org.prismlauncher.PrismLauncher \
-          --socket=x11 \
-          --socket=fallback-x11 \
-          --share=ipc
-          --nosocket=wayland
+    if [[ "$(get_cpu_model)" =~ 'Cortex' ]]; then
+        if [ "${DISPLAY_SERVER}" = 'x11' ]; then
+            flatpak override --user --reset org.prismlauncher.PrismLauncher
+            flatpak override --user org.prismlauncher.PrismLauncher \
+              --device=dri \
+              --socket=x11 \
+              --share=ipc
+        elif [ "${DISPLAY_SERVER}" = 'wayland' ]; then
+            flatpak override --user org.prismlauncher.PrismLauncher \
+              --socket=x11 \
+              --socket=fallback-x11 \
+              --share=ipc
+              --nosocket=wayland
+        fi
     fi
 fi
 
