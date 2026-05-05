@@ -43,9 +43,9 @@ xkb_symbols "basic" {
 
     key <HOME> { [ BackSpace        ] };
     key <PGUP> { [ backslash, bar   ] };
-    key <PGDN> { [ Return           ] };
+    key <PGDN> { [ KP_Enter         ] };
     key <END>  { [ Shift_R          ] };
-    key <INS>  { [ Delete           ] };
+    key <INS>  { [ KP_DELETE        ] };
 
     include "level3(ralt_switch)"
 };
@@ -94,9 +94,9 @@ xkb_symbols "std" {
 
     key <HOME> { [ BackSpace ] };
     key <PGUP> { [ backslash, bar ] };
-    key <PGDN> { [ Return ] };
+    key <PGDN> { [ KP_Enter ] };
     key <END>  { [ Shift_R ] };
-    key <INS>  { [ Delete ] };
+    key <INS>  { [ KP_DELETE ] };
 
     include "level3(ralt_switch)"
 };
@@ -155,9 +155,9 @@ xkb_symbols "winkeys" {
 
     key <HOME> { [ BackSpace ] };
     key <PGUP> { [ backslash, bar ] };
-    key <PGDN> { [ Return ] };
+    key <PGDN> { [ KP_Enter ] };
     key <END>  { [ Shift_R ] };
-    key <INS>  { [ Delete ] };
+    key <INS>  { [ KP_Delete ] };
 
     include "level3(ralt_switch)"
 };
