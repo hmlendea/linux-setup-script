@@ -498,7 +498,7 @@ function get_theme() {
     local THEME='Adwaita'
 
     if [ -d "${ROOT_USR_SHARE}/themes/adw-gtk3" ]; then
-        THEME='Adw-gtk3'
+        THEME='adw-gtk3'
     fi
 
     echo "${THEME}"

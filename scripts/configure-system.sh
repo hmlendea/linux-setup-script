@@ -1357,25 +1357,35 @@ if does_bin_exist 'gnome-shell'; then
     fi
 fi
 if does_bin_exist 'mutter'; then
-    MUTTER_KEYBINDINGS_SCHEMA='org.gnome.desktop.wm.keybindings'
+    MUTTER_SCHEMA='org.gnome/mutter'
+    GNOME_WM_SCHEMA='org.gnome.desktop.wm'
+    GNOME_KEYBINDINGS_SCHEMA="${GNOME_WM_SCHEMA}.keybindings"
 
-    set_gsetting "${MUTTER_KEYBINDINGS_SCHEMA}" draggable-border-width 12
-    set_gsetting "${MUTTER_KEYBINDINGS_SCHEMA}" panel-run-dialog "['<Super>r']"
-    set_gsetting "${MUTTER_KEYBINDINGS_SCHEMA}" switch-applications "['<Alt>Tab']"
-    set_gsetting "${MUTTER_KEYBINDINGS_SCHEMA}" switch-applications-backward "['<Shift><Alt>Tab']"
-    set_gsetting "${MUTTER_KEYBINDINGS_SCHEMA}" switch-group "['<Super>Tab']"
-    set_gsetting "${MUTTER_KEYBINDINGS_SCHEMA}" switch-group-backward "['<Shift><Super>Tab']"
-    set_gsetting "${MUTTER_KEYBINDINGS_SCHEMA}" toggle-fullscreen "['<Super>f']"
+    set_gsetting "${GNOME_KEYBINDINGS_SCHEMA}" draggable-border-width 12
+    set_gsetting "${GNOME_KEYBINDINGS_SCHEMA}" panel-run-dialog "['<Super>r']"
+    set_gsetting "${GNOME_KEYBINDINGS_SCHEMA}" switch-applications "['<Alt>Tab']"
+    set_gsetting "${GNOME_KEYBINDINGS_SCHEMA}" switch-applications-backward "['<Shift><Alt>Tab']"
+    set_gsetting "${GNOME_KEYBINDINGS_SCHEMA}" switch-group "['<Super>Tab']"
+    set_gsetting "${GNOME_KEYBINDINGS_SCHEMA}" switch-group-backward "['<Shift><Super>Tab']"
+    set_gsetting "${GNOME_KEYBINDINGS_SCHEMA}" toggle-fullscreen "['<Super>f']"
+
+    if ${POWERFUL_PC}; then
+        set_gsetting "${MUTTER_SCHEMA}" dynamic-workspaces true
+        set_gsetting "${GNOME_WM_SCHEMA}" num-workspaces 2
+    else
+        set_gsetting "${MUTTER_SCHEMA}" dynamic-workspaces false
+        set_gsetting "${GNOME_WM_SCHEMA}" num-workspaces 4
+    fi
 fi
 
 ############
 ### MAPS ###
 ############
-if does_bin_exist "gnome-maps" "org.gnome.Maps"; then
-    set_gsetting "org.gnome.Maps" last-viewed-location "[46.763207396601977, 23.605413436889648]"
-    set_gsetting "org.gnome.Maps" night-mode true
-    set_gsetting "org.gnome.Maps" window-maximized true
-    set_gsetting "org.gnome.Maps" zoom-level 14
+if does_bin_exist 'gnome-maps' 'org.gnome.Maps'; then
+    set_gsetting 'org.gnome.Maps' last-viewed-location "[46.763207396601977, 23.605413436889648]"
+    set_gsetting 'org.gnome.Maps' night-mode true
+    set_gsetting 'org.gnome.Maps' window-maximized true
+    set_gsetting 'org.gnome.Maps' zoom-level 14
 fi
 
 #####################
