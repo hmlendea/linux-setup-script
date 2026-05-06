@@ -838,8 +838,10 @@ if "${HAS_GUI}"; then
 
     install_native_package 'papirus-icon-theme'
 
-    if [ "${DESKTOP_ENVIRONMENT}" = 'Debian' ] \
-    || [ "${DESKTOP_ENVIRONMENT}" = 'Ubuntu' ]; then
+    if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
+        install_native_package 'adw-gtk-theme'
+    elif [ "${DESKTOP_FAMILY}" = 'Debian' ] \
+      || [ "${DESKTOP_FAMILY}" = 'Ubuntu' ]; then
         install_native_package 'adw-gtk3'
     fi
 fi
