@@ -844,6 +844,8 @@ if "${HAS_GUI}"; then
       || [ "${DESKTOP_FAMILY}" = 'Ubuntu' ]; then
         install_native_package 'adw-gtk3'
     fi
+
+    install_flatpak flathub 'org.gtk.Gtk3theme.adw-gtk3-dark'
 fi
 
 ###########################
