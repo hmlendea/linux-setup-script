@@ -342,13 +342,19 @@ remove \
 ###################
 ! does_bin_exist 'chatgpt-nativefier' && remove "${XDG_CONFIG_HOME}/chatgpt-nativefier-a2b87c1"
 
+########################
+### Archive Managers ###
+########################
+! does_bin_exist 'xarchiver' && remove "${XDG_CONFIG_HOME}/xarchiver"
+
 ###################
 ### Calculators ###
 ###################
+! does_bin_exist 'galculator' && remove "${XDG_CONFIG_HOME}/galculator"
 ! does_bin_exist 'gnome-calculator' && remove "${XDG_CACHE_HOME}/gnome-calculator"
-! does_bin_exist 'qalculator' && remove \
-    "${XDG_CONFIG_HOME}/qalculator" \
-    "${XDG_DATA_HOME}/qalculator"
+! does_bin_exist 'qalculate' && remove \
+    "${XDG_CONFIG_HOME}/qalculate" \
+    "${XDG_DATA_HOME}/qalculate"
 
 ############
 ### Chat ###
@@ -540,9 +546,15 @@ done
 ########################
 ! does_bin_exist 'yay' && remove "${XDG_CACHE_HOME}/yay"
 
+#######################
+### System Monitors ###
+#######################
+! does_bin_exist 'htop' && remove "${XDG_CONFIG_HOME}/htop"
+
 #################
 ### Terminals ###
 #################
+! does_bin_exist 'kitty' && remove "${XDG_CACHE_HOME}/kitty"
 ! does_bin_exist 'konsole' && remove "${XDG_CONFIG_HOME}/konsolerc"
 ! does_bin_exist 'lxterminal' && remove "${XDG_CONFIG_HOME}/lxterminal"
 
