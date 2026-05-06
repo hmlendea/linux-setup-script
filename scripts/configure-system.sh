@@ -1605,14 +1605,6 @@ fi
 ################
 ### Terminal ###
 ################
-if does_bin_exist 'kgx'; then
-    GNOME_CONSOLE_SCHEMA='org.gnome.Console'
-
-    # Do not set 'last-window-maximised' as that breaks scrolling with the wheel for some reason
-    set_gsettings "${GNOME_CONSOLE_SCHEMA}" \
-        'ignore-scrollback-limit' true \
-        'restore-window-size' false
-fi
 if does_bin_exist 'gnome-terminal'; then
     GNOME_TERMINAL_SCHEMA='org.gnome.Terminal.Legacy'
     GNOME_TERMINAL_PROFILE_ID=$(get_gsetting org.gnome.Terminal.ProfilesList default)
@@ -1645,7 +1637,29 @@ if does_bin_exist 'gnome-terminal'; then
     set_gsetting "${GNOME_TERMINAL_PROFILE_SCHEMA}" visible-name "NuciTerm"
 fi
 
-if does_bin_exist "konsole"; then
+if does_bin_exist 'kgx'; then
+    GNOME_CONSOLE_SCHEMA='org.gnome.Console'
+
+    # Theme / colours
+    if ${DESKTOP_THEME_IS_DARK}; then
+        set_gsetting "${GNOME_CONSOLE_PROFILE_SCHEMA}" theme 'night'
+    else
+        set_gsetting "${GNOME_CONSOLE_PROFILE_SCHEMA}" theme 'day'
+    fi
+
+    # Font
+    set_gsettings "${GNOME_CONSOLE_PROFILE_SCHEMA}" \
+        custom-font "${MONOSPACE_FONT}" \
+        use-system-font true
+
+    # Others
+    set_gsettings "${GNOME_CONSOLE_PROFILE_SCHEMA}" \
+        audible-bell false \
+        ignore-scrollback-limit true \
+        restore-window-size false
+fi
+
+if does_bin_exist 'konsole'; then
     KONSOLE_CONFIG_FILE="${XDG_CONFIG_HOME}/konsolerc"
 
     set_config_value --section "MainWindow" "${KONSOLE_CONFIG_FILE}" MenuBar "Disabled"
@@ -1698,10 +1712,10 @@ fi
 ##############
 ### Themes ###
 ##############
-if does_bin_exist "kvantummanager"; then
+if does_bin_exist 'kvantummanager'; then
     KVANTUM_CONFIG_FILE="${XDG_CONFIG_HOME}/Kvantum/kvantum.kvconfig"
 
-    set_config_value "${KVANTUM_CONFIG_FILE}" "theme" "KvLibadwaita"
+    set_config_value "${KVANTUM_CONFIG_FILE}" theme 'KvLibadwaita'
 fi
 
 ####################
