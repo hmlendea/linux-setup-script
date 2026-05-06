@@ -679,7 +679,7 @@ if does_bin_exist "teams" "teams-insiders" "com.microsoft.Teams"; then
 
     TEAMS_DESKTOP_CONFIG_FILE="${TEAMS_CONFIG_DIR}/desktop-config.json"
 
-    does_bin_exist "teams-insiders" && TEAMS_DESKTOP_CONFIG_FILE="${XDG_CONFIG_HOME}/Microsoft/Microsoft Teams - Insiders/desktop-config.json"
+    does_bin_exist 'teams-insiders' && TEAMS_DESKTOP_CONFIG_FILE="${XDG_CONFIG_HOME}/Microsoft/Microsoft Teams - Insiders/desktop-config.json"
 
     # Fixes
     #set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" '.appPreferenceSettings.disableGpu' true # Not needed for the flatpak version
@@ -1104,7 +1104,7 @@ if does_bin_exist 'org.prismlauncher.PrismLauncher'; then
             flatpak override --user org.prismlauncher.PrismLauncher \
               --socket=x11 \
               --socket=fallback-x11 \
-              --share=ipc
+              --share=ipc \
               --nosocket=wayland
         fi
     fi
@@ -1150,7 +1150,7 @@ fi
 ###########
 ### GPG ###
 ###########
-if does_bin_exist "gpg"; then
+if does_bin_exist 'gpg'; then
     GNUPG_DIRMNGR_CONFIG="${XDG_DATA_HOME}/gnupg/dirmngr.conf"
 
     create_file "${GNUPG_DIRMNGR_CONFIG}"
@@ -1267,12 +1267,12 @@ if does_bin_exist 'code' 'code-oss' 'codium' 'com.visualstudio.code'; then
     set_json_property "${VSCODE_CONFIG_FILE}" '.["telemetry.enableTelemetry"]' false
     set_json_property "${VSCODE_CONFIG_FILE}" '.["telemetry.telemetryLevel"]' "off"
 
-    if does_bin_exist "com.visualstudio.code" \
-    && is_flatpak_installed "org.freedesktop.Sdk.Extension.mono6/x86_64/21.08"; then
-        set_json_property "${VSCODE_CONFIG_FILE}" '.["omnisharp.monoPath"]' "/usr/lib/sdk/mono6"
-        set_json_property "${VSCODE_CONFIG_FILE}" '.["omnisharp.useGlobalMono"]' "always"
+    if does_bin_exist 'com.visualstudio.code' \
+    && is_flatpak_installed 'org.freedesktop.Sdk.Extension.mono6/x86_64/21.08'; then
+        set_json_property "${VSCODE_CONFIG_FILE}" '.["omnisharp.monoPath"]' '/usr/lib/sdk/mono6'
+        set_json_property "${VSCODE_CONFIG_FILE}" '.["omnisharp.useGlobalMono"]' 'always'
 
-        FLATPAK_DOTNET_SDK=$(ls "/var/lib/flatpak/runtime/" | \
+        FLATPAK_DOTNET_SDK=$(ls '${ROOT_VAR_LIB}/flatpak/runtime/' | \
                                 grep "org.freedesktop.Sdk.Extension.dotnet" | \
                                 sed 's/org.freedesktop.Sdk.Extension.//g' | \
                                 sed 's/\"//g' | \
@@ -1280,12 +1280,12 @@ if does_bin_exist 'code' 'code-oss' 'codium' 'com.visualstudio.code'; then
         FLATPAK_DOTNET_VERSION=$(/var/lib/flatpak/runtime/org.freedesktop.Sdk.Extension."${FLATPAK_DOTNET_SDK}"/x86_64/*/active/files/lib/dotnet --version)
 
         if [ -n "${FLATPAK_DOTNET_SDK}" ] && [ -n "${FLATPAK_DOTNET_VERSION}" ]; then
-            run_as_su flatpak override "com.visualstudio.code" \
+            run_as_su flatpak override 'com.visualstudio.code' \
                 --env=PATH=/app/bin:/usr/bin:/usr/lib/sdk/"${FLATPAK_DOTNET_SDK}"/bin \
                 --env=DOTNET_ROOT=/usr/lib/sdk/"${FLATPAK_DOTNET_SDK}" \
                 --env=MSBuildSDKsPath=/usr/lib/sdk/"${FLATPAK_DOTNET_SDK}"/lib/sdk/"${FLATPAK_DOTNET_VERSION}"/Sdks
         else
-            echo "ERROR: Cannot read the flatpak dotnet version info"
+            echo 'ERROR: Cannot read the flatpak dotnet version info'
         fi
     fi
 fi
@@ -1293,7 +1293,7 @@ fi
 ################
 ### INKSCAPE ###
 ################
-if does_bin_exist "inkscape" "org.inkscape.Inkscape"; then
+if does_bin_exist 'inkscape' 'org.inkscape.Inkscape'; then
     INKSCAPE_CONFIG_DIR="${XDG_CONFIG_HOME}/inkscape"
     [ -d "${HOME_VAR_APP}/org.inkscape.Inkscape" ] && INKSCAPE_CONFIG_DIR="${HOME_VAR_APP}/org.inkscape.Inkscape/config/inkscape"
 
@@ -1361,13 +1361,14 @@ if does_bin_exist 'mutter'; then
     GNOME_WM_SCHEMA='org.gnome.desktop.wm'
     GNOME_KEYBINDINGS_SCHEMA="${GNOME_WM_SCHEMA}.keybindings"
 
-    set_gsetting "${GNOME_KEYBINDINGS_SCHEMA}" draggable-border-width 12
-    set_gsetting "${GNOME_KEYBINDINGS_SCHEMA}" panel-run-dialog "['<Super>r']"
-    set_gsetting "${GNOME_KEYBINDINGS_SCHEMA}" switch-applications "['<Alt>Tab']"
-    set_gsetting "${GNOME_KEYBINDINGS_SCHEMA}" switch-applications-backward "['<Shift><Alt>Tab']"
-    set_gsetting "${GNOME_KEYBINDINGS_SCHEMA}" switch-group "['<Super>Tab']"
-    set_gsetting "${GNOME_KEYBINDINGS_SCHEMA}" switch-group-backward "['<Shift><Super>Tab']"
-    set_gsetting "${GNOME_KEYBINDINGS_SCHEMA}" toggle-fullscreen "['<Super>f']"
+    set_gsettings "${GNOME_KEYBINDINGS_SCHEMA}" \
+        draggable-border-width 12 \
+        panel-run-dialog "['<Super>r']" \
+        switch-applications "['<Alt>Tab']" \
+        switch-applications-backward "['<Shift><Alt>Tab']" \
+        switch-group "['<Super>Tab']" \
+        switch-group-backward "['<Shift><Super>Tab']" \
+        toggle-fullscreen "['<Super>f']"
 
     if ${POWERFUL_PC}; then
         set_gsetting "${MUTTER_SCHEMA}" dynamic-workspaces true
@@ -1381,12 +1382,12 @@ fi
 ############
 ### MAPS ###
 ############
-if does_bin_exist 'gnome-maps' 'org.gnome.Maps'; then
-    set_gsetting 'org.gnome.Maps' last-viewed-location "[46.763207396601977, 23.605413436889648]"
-    set_gsetting 'org.gnome.Maps' night-mode true
-    set_gsetting 'org.gnome.Maps' window-maximized true
-    set_gsetting 'org.gnome.Maps' zoom-level 14
-fi
+does_bin_exist 'gnome-maps' 'org.gnome.Maps' && \
+    set_gsettings 'org.gnome.Maps' \
+        last-viewed-location "[46.763207396601977, 23.605413436889648]" \
+        night-mode true \
+        window-maximized true \
+        zoom-level 14
 
 #####################
 ### Music Players ###
@@ -1403,15 +1404,14 @@ if does_bin_exist 'com.spotify.Client'; then
         set_config_value "${SPOTIFY_CONFIG_FILE}" 'ui.track_notifications_enabled' false
     fi
 fi
-if does_bin_exist 'dev.alextren.Spot'; then
-    SPOT_CONFIG_FILE="${HOME_VAR_APP}/dev.alextren.Spot/config/glib-2.0/settings/keyfile"
 
-    set_config_value --section "dev/alextren/Spot" "${SPOT_CONFIG_FILE}" 'audio-backend' 'gstreamer'
-    set_config_value --section "dev/alextren/Spot" "${SPOT_CONFIG_FILE}" 'gapless-playback' true
-    set_config_value --section "dev/alextren/Spot" "${SPOT_CONFIG_FILE}" 'player-bitrate' 320
-    set_config_value --section "dev/alextren/Spot" "${SPOT_CONFIG_FILE}" 'theme-preference' 'system'
-    set_config_value --section "dev/alextren/Spot" "${SPOT_CONFIG_FILE}" 'window-is-maximized' true
-fi
+does_bin_exist 'dev.alextren.Spot' && \
+    set_config_value --section 'dev/alextren/Spot' "${HOME_VAR_APP}/dev.alextren.Spot/config/glib-2.0/settings/keyfile" \
+        audio-backend 'gstreamer' \
+        gapless-playback true \
+        player-bitrate 320 \
+        theme-preference 'system' \
+        window-is-maximized true
 
 ################
 ### NEOFETCH ###
@@ -1427,13 +1427,10 @@ fi
 ###############
 ### Network ###
 ##############
-if does_bin_exist 'cloud-init'; then
-    CLOUD_INIT_CONFIG_FILE="${ROOT_ETC}/cloud/cloud.cfg"
-
-    set_config_values --separator ':' "${CLOUD_INIT_CONFIG_FILE}" \
+does_bin_exist 'cloud-init' && \
+    set_config_values --separator ':' "${ROOT_ETC}/cloud/cloud.cfg" \
         'manage_etc_hosts' false \
         'preserve_hostname' true
-fi
 
 if does_bin_exist 'sshd'; then
     SSHD_CONFIG_FILE="${ROOT_ETC}/ssh/sshd_config"
@@ -1457,7 +1454,7 @@ fi
 ### NIGHT LIGHT ###
 ###################
 if does_bin_exist 'gnome-shell'; then
-    set_gsetting org.gnome.settings-daemon.plugins.color night-light-enabled true
+    set_gsetting 'org.gnome.settings-daemon.plugins.color' night-light-enabled true
 fi
 
 #####################
@@ -1477,18 +1474,17 @@ fi
 ### POWER MANAGEMENT ###
 ########################
 if does_bin_exist 'gnome-shell'; then
-    GNOME_POWER_SCHEMA='org.gnome.settings-daemon.plugins.power'
+    GNOME_POWER_SCHEMA=
 
-    set_gsetting "${GNOME_POWER_SCHEMA}" idle-dim true
-    set_gsetting "${GNOME_POWER_SCHEMA}" sleep-inactive-ac-timeout 1800
-    set_gsetting "${GNOME_POWER_SCHEMA}" sleep-inactive-battery-timeout 900
+    set_gsettings 'org.gnome.settings-daemon.plugins.power' \
+        'idle-dim' true \
+        'sleep-inactive-ac-timeout' 1800 \
+        'sleep-inactive-battery-timeout' 900
 
-    if is_gnome_shell_extension_installed "Bluetooth-Battery-Meter"; then
-        BLUETOOTH_BATTERY_METER_GSEXT_SCHEMA="org.gnome.shell.extensions.Bluetooth-Battery-Meter"
-    
-        set_gsetting "${BLUETOOTH_BATTERY_METER_GSEXT_SCHEMA}" "enable-battery-indicator" false
-        set_gsetting "${BLUETOOTH_BATTERY_METER_GSEXT_SCHEMA}" "enable-battery-level-text" true
-    fi
+    is_gnome_shell_extension_installed "Bluetooth-Battery-Meter" && \
+        set_gsettings 'org.gnome.shell.extensions.Bluetooth-Battery-Meter' \
+            'enable-battery-indicator' false \
+            'enable-battery-level-text' true
 fi
 
 if does_bin_exist "tlp"; then
@@ -1556,51 +1552,41 @@ fi
 ###################
 ### Screenshots ###
 ###################
-if does_bin_exist "gnome-screenshot"; then
-    set_gsetting "org.gnome.gnome-screenshot" last-save-directory "${HOME}/Pictures"
-fi
+does_bin_exist 'gnome-screenshot' && \
+    set_gsetting 'org.gnome.gnome-screenshot' last-save-directory "${HOME}/Pictures"
 
 ############
 ### Sudo ###
 ############
-if does_bin_exist "sudo"; then
-    SUDO_CONFIG_FILE="${ROOT_ETC}/sudoers"
-
-    set_config_value "${SUDO_CONFIG_FILE}" "Defaults timestamp_timeout" 15
-fi
+does_bin_exist 'sudo' && \
+    set_config_value "${ROOT_ETC}/sudoers" "Defaults timestamp_timeout" 15
 
 #######################
 ### System Monitors ###
 #######################
 
-if does_bin_exist "gnome-system-monitor"; then
-    GNOME_SYSTEM_MONITOR_SCHEMA="org.gnome.gnome-system-monitor"
+does_bin_exist 'gnome-system-monitor' && \
+    set_gsettings 'org.gnome.gnome-system-monitor' \
+        'current-tab' 'resources' \
+        'maximized' false \
+        'show-whose-processes' 'all'
 
-    set_gsetting "${GNOME_SYSTEM_MONITOR_SCHEMA}.current-tab" 'resources'
-    set_gsetting "${GNOME_SYSTEM_MONITOR_SCHEMA}.maximized" false
-    set_gsetting "${GNOME_SYSTEM_MONITOR_SCHEMA}.show-whose-processes" 'all'
-fi
-
-if does_bin_exist "net.nokyan.Resources"; then
-    RESOURCES_SCHEMA="net.nokyan.Resources"
-
-    set_gsetting "${RESOURCES_SCHEMA}" 'is-maximized' false
-    set_gsetting "${RESOURCES_SCHEMA}" 'last-viewed-page' 'processes'
-    set_gsetting "${RESOURCES_SCHEMA}" 'processes-sort-by' 4
-    set_gsetting "${RESOURCES_SCHEMA}" 'processes-sort-by-ascending' false
-fi
+does_bin_exist 'net.nokyan.Resources' && \
+    set_gsettings 'net.nokyan.Resources' \
+        'is-maximized' false \
+        'last-viewed-page' 'processes' \
+        'processes-sort-by' 4 \
+        'processes-sort-by-ascending' false
 
 #################
 ### TODO apps ###
 #################
-if does_bin_exist "io.github.alainm23.planify"; then
-    PLANIFY_SCHEMA="io.github.alainm23.planify"
-
-    set_gsetting "${PLANIFY_SCHEMA}" 'caldav-server-url' "https://ecloud.global"
-    set_gsetting "${PLANIFY_SCHEMA}" 'dark-mode' "${DESKTOP_THEME_IS_DARK}"
-    set_gsetting "${PLANIFY_SCHEMA}" 'show-support-banner' false
-    set_gsetting "${PLANIFY_SCHEMA}" 'views-order-visible' "['inbox', 'today', 'scheduled', 'completed']"
-fi
+does_bin_exist 'io.github.alainm23.planify' && \
+    set_gsettings 'io.github.alainm23.planify' \
+        'caldav-server-url' 'https://ecloud.global' \
+        'dark-mode' "${DESKTOP_THEME_IS_DARK}" \
+        'show-support-banner' false \
+        'views-order-visible' "['inbox', 'today', 'scheduled', 'completed']"
 
 ################
 ### Terminal ###
