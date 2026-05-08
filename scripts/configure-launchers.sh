@@ -5,7 +5,7 @@ source "${REPO_DIR}/scripts/common/config.sh"
 source "${REPO_DIR}/scripts/common/package-management.sh"
 source "${REPO_DIR}/scripts/common/system-info.sh"
 
-[ "${OS}" != "Linux" ] && exit
+[ "${OS}" != 'Linux' ] && exit
 (! ${HAS_GUI}) && exit
 
 GNOME_APP_CATEGORIES='GNOME;GTK;'
@@ -41,30 +41,31 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/nm-connection-editor.desktop" \
     NoDisplay true
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/org.gnome.SoundRecorder.desktop" Categories "${GNOME_APP_CATEGORIES};Utility;Audio;"
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/pcmanfm-desktop-pref.desktop" \
-    Name "Desktop Customiser" \
-    Name[ro] "Personalizare Desktop"
-set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/picard.desktop" StartupWMClass ""
+    Name 'Desktop Customiser' \
+    Name[ro] 'Personalizare Desktop'
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/picard.desktop" StartupWMClass ''
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/plank.desktop" NoDisplay true
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/qv4l2.desktop" NoDisplay true
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/qvidcap.desktop" NoDisplay true
-set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/simplescreenrecorder.desktop" Name "Screen Recorder"
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/simplescreenrecorder.desktop" Name 'Screen Recorder'
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/stoken-gui-small.desktop" NoDisplay true
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/stoken-gui.desktop" NoDisplay true
-set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/system-config-printer.desktop" Name[ro] "Configurare Imprimantă"
-set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/virtualbox.desktop" Name "VirtualBox"
-set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/wireshark-gtk.desktop" Name "Wireshark"
-set_launcher_entry "${LOCAL_LAUNCHERS_DIR}/chrome-app-list.desktop" NoDisplay true
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/system-config-printer.desktop" Name[ro] 'Configurare Imprimantă'
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/virtualbox.desktop" Name 'VirtualBox'
+set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/wireshark-gtk.desktop" Name 'Wireshark'
 
 ##################
 ### App Stores ###
 ##################
-APP_STORE_KEYWORDS="Updates;Upgrade;Sources;Repositories;Install;Uninstall;Program;Software;App;Store;"
+APP_STORE_KEYWORDS='Updates;Upgrade;Sources;Repositories;Install;Uninstall;Program;Software;App;Store;'
+
+does_bin_exist 'flatpak' && APP_STORE_KEYWORDS="Flatpak;FlatHub;${APP_STORE_KEYWORDS}"
 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Software.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/org.kde.discover.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        Name "Application Store" \
-        Keywords "Preferences;Flatpak;FlatHub;${APP_STORE_KEYWORDS}"
+        Name 'Application Store" '
+        Keywords "Preferences;${APP_STORE_KEYWORDS}"
 done
 
 ########################
@@ -77,8 +78,8 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/ark.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.FileRoller.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.FileRoller.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        Name "Archives" \
-        Name[ro] "Arhive"
+        Name 'Archives' \
+        Name[ro] 'Arhive'
 
     [ "${DEVICE_TYPE}" = 'Mobile' ] && set_launcher_entry "${LAUNCHER}" NoDisplay true
 done
@@ -86,7 +87,7 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.FileRoller.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.FileRoller.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/org.gnome.FileRoller.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        StartupWMClass "File-Roller"
+        StartupWMClass 'File-Roller'
 done
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/7zFM.desktop" NoDisplay true
 
@@ -103,16 +104,16 @@ done
 ### BLUETOOTH MANAGERS ###
 ##########################
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/blueman-manager.desktop" \
-    Name "Bluetooth Manager" \
-    Name[ro] "Manager Bluetooth"
+    Name 'Bluetooth Manager' \
+    Name[ro] 'Manager Bluetooth'
 
 ############################
 ### BOOTABLE MEDIA MAKER ###
 ############################
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/balena-etcher-electron.desktop" \
-    Name "Etcher" \
-    Name[ro] "Etcher" \
-    Categories "Filesystem;X-GNOME-Utilities;"
+    Name 'Etcher' \
+    Name[ro] 'Etcher' \
+    Categories 'Filesystem;X-GNOME-Utilities;'
 
 ###################
 ### Calculators ###
@@ -370,7 +371,7 @@ for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.jetbrains.PyCharm-Community
 done
 
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/monodevelop.desktop" \
-    Exec "env GNOME_DESKTOP_SESSION_ID="" monodevelop %F" \
+    Exec 'env GNOME_DESKTOP_SESSION_ID="" monodevelop %F' \
     Categories "${IDE_CATEGORIES}"
 
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/unity-editor.desktop" \
@@ -470,42 +471,42 @@ if does_bin_exist 'evince'; then
 fi
 
 ################
-### ELECTRON ###
+### Electron ###
 ################
-if does_bin_exist "electron"; then
+if does_bin_exist 'electron'; then
     for ELECTRON_VERSION in "" {10..99}; do
         set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/electron${ELECTRON_VERSION}.desktop" NoDisplay true
     done
 fi
 
 #################
-### EMULATORS ###
+### Emulators ###
 #################
-EMULATOR_CATEGORIES="Game;Application;Emulator;"
+EMULATOR_CATEGORIES='Game;Application;Emulator;'
 
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/dosbox.desktop" \
-    Name "DosBox" \
+    Name 'DosBox' \
     Categories ${EMULATOR_CATEGORIES}
 
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/PCSX2.desktop" \
-    Icon "pcsx2" \
+    Icon 'pcsx2' \
     Categories ${EMULATOR_CATEGORIES}
 
 ##########################
-### EXTENSION MANAGERS ###
+### Extension Managers ###
 ##########################
-EXTENSION_MANAGER_CATEGORIES="System;"
+EXTENSION_MANAGER_CATEGORIES='System;'
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Extensions.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Shell.Extensions.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.mattjakeman.ExtensionManager.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        Name "Extensions" \
-        Name[ro] "Extensii" \
-        Icon "org.gnome.Extensions" \
+        Name 'Extensions' \
+        Name[ro] 'Extensii' \
+        Icon 'org.gnome.Extensions' \
         Categories "${GNOME_APP_CATEGORIES};${EXTENSION_MANAGER_CATEGORIES}"
 done
 
-if is_flatpak_installed "com.mattjakeman.ExtensionManager"; then
+if is_flatpak_installed 'com.mattjakeman.ExtensionManager'; then
     for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Extensions.desktop" \
                     "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Shell.Extensions.desktop"; do
         set_launcher_entry "${LAUNCHER}" NoDisplay true
@@ -513,17 +514,17 @@ if is_flatpak_installed "com.mattjakeman.ExtensionManager"; then
 fi
 
 ####################
-### FEED READERS ###
+### Feed Readers ###
 ####################
 set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/org.gnome.FeedReader.dekstop" \
-    Name "Feed Reader" \
-    Icon "feedreader" \
+    Name 'Feed Reader' \
+    Icon 'feedreader' \
     Categories "${GNOME_APP_CATEGORIES};Network;Feed;Utility;"
 
 #####################
-### FILE MANAGERS ###
+### File Managers ###
 #####################
-FILE_MANAGER_CATEGORIES="Utility;Core;FileManager;FileTools;"
+FILE_MANAGER_CATEGORIES='Utility;Core;FileManager;FileTools;'
 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/caja-browser.dekstop" \
                 "${GLOBAL_LAUNCHERS_DIR}/io.elementary.files.desktop" \
@@ -533,8 +534,8 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/caja-browser.dekstop" \
                 "${GLOBAL_LAUNCHERS_DIR}/thunar.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/pcmanfm.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        Name "Files" \
-        Name[ro] "Fișiere"
+        Name 'Files' \
+        Name[ro] 'Fișiere'
 done
 
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/caja.dekstop" \
@@ -551,7 +552,7 @@ set_launcher_entries "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Nautilus.desktop" \
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/io.elementary.files.desktop" Categories "Pantheon;GTK;${FILE_MANAGER_CATEGORIES}"
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/org.kde.dolphin.desktop" Categories "KDE;Qt;${FILE_MANAGER_CATEGORIES}"
 
-if does_bin_exist "thunar"; then
+if does_bin_exist 'thunar'; then
     for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/Thunar-bulk-rename.desktop" \
                     "${GLOBAL_LAUNCHERS_DIR}/thunar-bulk-rename.desktop" \
                     "${GLOBAL_LAUNCHERS_DIR}/thunar-settings.desktop" \
@@ -1303,7 +1304,7 @@ done
 
 ### YouTube
 set_launcher_entries "${LOCAL_LAUNCHERS_DIR}/youtube-webapp.desktop" \
-    Exec 'env GTK_THEME=Adwaita:dark chromium --force-dark-mode --lang=ro_RO --class="youtube" --name="Youtube" --user-data-dir="/home/horatiu/.config/chromium-youtube-webapp" --no-first-run --no-default-browser-check --disable-features=Translate,TranslateUI --disable-notifications --disable-sync --disable-background-networking --disable-component-update --app-auto-launched "https://youtube.com"' \
+    Exec 'env GTK_THEME=Adwaita:dark chromium --force-dark-mode --lang=ro_RO --class="youtube" --name="Youtube" --user-data-dir="${XDG_CONFIG_HOME}/chromium-youtube-webapp" --no-first-run --no-default-browser-check --disable-features=Translate,TranslateUI --disable-notifications --disable-sync --disable-background-networking --disable-component-update --app-auto-launched "https://youtube.com"' \
     Name 'YouTube' \
     Icon 'youtube' \
     StartupWMClass 'youtube'
@@ -1339,6 +1340,8 @@ for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/chromium.desktop" \
         GenericName 'Web Browser' \
         Categories "${WEB_BROWSER_CATEGORIES}"
 done
+
+set_launcher_entry "${LOCAL_LAUNCHERS_DIR}/chrome-app-list.desktop" NoDisplay true
 
 for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.brave.Browser.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.brave.Broser.desktop"; do
@@ -1424,7 +1427,7 @@ for FLATPAK_LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}"/*.desktop \
     set_launcher_entries "${FLATPAK_LAUNCHER}" \
         'Exec' "${ROOT_USR_BIN}/flatpak run ${APP_ID} %U" \
         'Actions' "${ACTIONS}${QUIT_ACTION_ID};" \
-        "StartupNotify" false \
+        'StartupNotify' false \
         "Desktop Action ${QUIT_ACTION_ID}/Name" "Quit" \
         "Desktop Action ${QUIT_ACTION_ID}/Name[ro]" "Închide" \
         "Desktop Action ${QUIT_ACTION_ID}/GenericName" "Quit" \
@@ -1441,12 +1444,12 @@ if is_gnome_shell_extension_installed "gsconnect"; then
     [ ! -f "${LAUNCHER}" ] && create_launcher "${LAUNCHER}"
 
     set_launcher_entries "${LAUNCHER}" \
-        Name "GSConnect" \
+        Name 'GSConnect' \
         Exec "${ROOT_USR_SHARE}/gnome-shell/extensions/gsconnect@andyholmes.github.io/gsconnect-preferences" \
-        Comment "GSConnect" \
-        Keywords "GSConnect;KDEConnect;" \
-        Icon "org.gnome.Shell.Extensions.GSConnect" \
-        StartupWMClass "gsconnect" \
+        Comment 'GSConnect' \
+        Keywords 'GSConnect;KDEConnect;' \
+        Icon 'org.gnome.Shell.Extensions.GSConnect' \
+        StartupWMClass 'gsconnect' \
         NoDisplay true
 else
     remove "${GLOBAL_LAUNCHERS_DIR}/io.github.andyholmes.gsconnect.desktop"
@@ -1458,8 +1461,8 @@ if [ -f "${ROOT_USR_BIN}/mono" ]; then
     [ ! -f "${NEWLAUNCHER}" ] && create_launcher "${NEWLAUNCHER}"
 
     set_launcher_entries "${NEWLAUNCHER}" \
-        Name "Mono" \
-        Icon "mono" \
+        Name 'Mono' \
+        Icon 'mono' \
         Exec "mono %U" \
         Terminal true \
         NoDisplay true
@@ -1471,9 +1474,9 @@ fi
 
 function getSteamAppIconPath() {
     local APP_ID="${*}"
-    local APPS_DIR_NAME="48x48/apps"
+    local APPS_DIR_NAME='48x48/apps'
 
-    [ ! -d "${ICON_THEME_PATH}/${APPS_DIR_NAME}" ] && APPS_DIR_NAME="48/apps"
+    [ ! -d "${ICON_THEME_PATH}/${APPS_DIR_NAME}" ] && APPS_DIR_NAME='48/apps'
 
     local APP_ICON_PATH="${ICON_THEME_PATH}/${APPS_DIR_NAME}/steam_icon_${APP_ID}.svg"
 
@@ -1505,11 +1508,11 @@ function getSteamAppIconPath() {
     fi
 }
 
-if does_bin_exist "steam" "com.valvesoftware.Steam" \
-&& [ "${DISTRO}" != "SteamOS" ]; then
+if does_bin_exist 'steam' 'com.valvesoftware.Steam' \
+&& [ "${DISTRO}" != 'SteamOS' ]; then
     STEAM_ICON_THEME_PATH="${XDG_DATA_HOME}/icons/steam"
-    STEAM_WMCLASSES_FILE="data/steam-wmclasses.txt"
-    STEAM_NAMES_FILE="data/steam-names.txt"
+    STEAM_WMCLASSES_FILE='data/steam-wmclasses.txt'
+    STEAM_NAMES_FILE='data/steam-names.txt'
 
     [ ! -d "${STEAM_LAUNCHERS_PATH}" ]              && mkdir -p "${STEAM_LAUNCHERS_PATH}"
     [ ! -f "${STEAM_ICON_THEME_PATH}/48x48/apps" ]  && mkdir -p "${STEAM_ICON_THEME_PATH}/48x48/apps"
@@ -1535,10 +1538,10 @@ if does_bin_exist "steam" "com.valvesoftware.Steam" \
             [ ! -f "${STEAM_NAMES_FILE}" ]      && touch "${STEAM_NAMES_FILE}"
 
             APP_IDS=$(ls "${STEAM_LIBRARY_PATH}" | grep 'appmanifest_.*.acf' | awk -F_ '{print $2}' | awk -F. '{print $1}' | sort -h)
-            APPS_DIR_NAME="48x48/apps"
+            APPS_DIR_NAME='48x48/apps'
 
             if [ ! -d "${ICON_THEME_PATH}/${APPS_DIR_NAME}" ]; then
-                APPS_DIR_NAME="48/apps"
+                APPS_DIR_NAME='48/apps'
             fi
 
             for APP_ID in ${APP_IDS}; do
@@ -1552,7 +1555,7 @@ if does_bin_exist "steam" "com.valvesoftware.Steam" \
 
                 DO_CREATE_LAUNCHER=true
 
-                if [[ "${APP_NAME}" == "Steamworks Common Redistributables" ]] || \
+                if [[ "${APP_NAME}" == 'Steamworks Common Redistributables' ]] || \
                    [[ "${APP_NAME}" =~ ^Proton\ [0-9]+\.[0-9]+$ ]] || \
                    [[ "${APP_NAME}" =~ ^Proton\ Experimental ]] || \
                    [[ "${APP_NAME}" == 'Steam Linux Runtime'* ]]; then
