@@ -109,7 +109,7 @@ function configure_xdg_directory() {
 
     local XDG_DIR_PATH=""
 
-    does_file_exist "${XDG_CONFIG_DIR}/user-dirs.dirs" && XDG_DIR_PATH=$(cat "${XDG_CONFIG_DIR}/user-dirs.dirs" | grep "${XDG_VARIABLE_NAME}" | awk -F"=" '{print $2}')
+    does_file_exist "${XDG_CONFIG_DIR}/user-dirs.dirs" && XDG_DIR_PATH=$(cat "${XDG_CONFIG_DIR}/user-dirs.dirs" | grep "${XDG_VARIABLE_NAME}" | awk -F'=' '{print $2}')
 
     while [ -z "${XDG_DIR_PATH}" ] && [ -n "${1}" ]; do
         [ -e "${1}" ] && XDG_DIR_PATH="${1}"
@@ -124,6 +124,7 @@ configure_xdg_directory "DOCUMENTS"     "${HOME}/Documente"     "${HOME}/Documen
 configure_xdg_directory "DOWNLOAD"      "${HOME}/Descărcări"    "${HOME}/Downloads"
 configure_xdg_directory "MUSIC"         "${HOME}/Muzică"        "${HOME}/Music"
 configure_xdg_directory "PICTURES"      "${HOME}/Imagini"       "${HOME}/Pictures"
+configure_xdg_directory "PROJECTS"      "${HOME}/Proiecte"      "${HOME}/Projects"
 configure_xdg_directory "PUBLICSHARE"   "${HOME}/Public"
 configure_xdg_directory "TEMPLATES"     "${HOME}/Șabloane"      "${HOME}/Templates"
 configure_xdg_directory "VIDEOS"        "${HOME}/Video"         "${HOME}/Videos"

@@ -21,7 +21,7 @@ if ${HAS_GUI} && [ "${OS}" = 'Linux' ]; then
     update_hidden_files_config_if_needed 'home-downloads' "${XDG_DOWNLOAD_DIR}"
 
     create_file "${XDG_CONFIG_HOME}/user-dirs.conf"
-    echo "${OS_LANGUAGE}" > "${XDG_CONFIG_HOME}/user-dirs.locale"
+    echo "$(get_os_language)" > "${XDG_CONFIG_HOME}/user-dirs.locale"
 
     create_file "${XDG_CONFIG_HOME}/user-dirs.conf"
     set_config_values "${XDG_CONFIG_HOME}/user-dirs.conf" \
@@ -34,6 +34,7 @@ if ${HAS_GUI} && [ "${OS}" = 'Linux' ]; then
         XDG_DOWNLOAD_DIR    "\"${XDG_DOWNLOAD_DIR=}\"" \
         XDG_MUSIC_DIR       "\"${XDG_MUSIC_DIR}\"" \
         XDG_PICTURES_DIR    "\"${XDG_PICTURES_DIR}\"" \
+        XDG_PROJECTS_DIR    "\"${XDG_PROJECTS_DIR}\"" \
         XDG_PUBLICSHARE_DIR "\"${XDG_PUBLICSHARE_DIR}\"" \
         XDG_TEMPLATES_DIR   "\"${XDG_TEMPLATES_DIR}\"" \
         XDG_VIDEOS_DIR      "\"${XDG_VIDEOS_DIR}\""
@@ -45,8 +46,6 @@ if ${HAS_GUI} && [ "${OS}" = 'Linux' ]; then
         create_directory "${MINECRAFT_SCREENSHOTS_DIR}"
 
         PRISM_INSTANCES_DIR="${HOME_VAR_APP}/org.prismlauncher.PrismLauncher/data/PrismLauncher/instances"
-
-        if does_bin_exist
 
         for MINECRAFT_INSTANCE in "${HOME_VAR_APP}/org.prismlauncher.PrismLauncher/data/PrismLauncher/instances/"*; do
             [ -d "${MINECRAFT_INSTANCE}" ] || continue
@@ -82,5 +81,6 @@ if [ "${OS}" = 'Android' ]; then
     create_symlink "${ANDROID_USER_STORAGE_DIR}/Music" "${XDG_MUSIC_DIR}"
     create_symlink "${ANDROID_USER_STORAGE_DIR}/Movies" "${XDG_VIDEOS_DIR}"
     create_symlink "${ANDROID_USER_STORAGE_DIR}/Pictures" "${XDG_PICTURES_DIR}"
+    create_symlink "${ANDROID_USER_STORAGE_DIR}/Projects" "${XDG_PROJECTS_DIR}"
     create_symlink "${ANDROID_USER_STORAGE_DIR}/Public" "${XDG_PUBLICSHARE_DIR}"
 fi
