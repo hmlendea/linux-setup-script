@@ -688,3 +688,26 @@ function create_launcher() {
         run_as_su chmod +x "${FILE_PATH}"
     fi
 }
+
+function get_directory_icon() {
+    local DIRECTORY_PATH="${1}"
+
+    ! does_directory_exist "${DIRECTORY_PATH}" && return
+
+    gio info -a 'metadata::custom-icon-name' "${DIRECTORY_PATH}" | awk -F': ' '/custom-icon-name/ {print $2}'
+}
+
+function set_directory_icon() {
+    local DIRECTORY_PATH="${1}"
+    local ICON_NAME="${2}"
+
+    ! does_directory_exist "${DIRECTORY_PATH}" && return
+
+    local CURRENT_ICON
+    CURRENT_ICON="$(get_directory_icon "${DIRECTORY_PATH}")"
+
+    if [[ "${CURRENT_ICON}" != "${ICON_NAME}" ]]; then
+        echo -e "Setting the icon of \e[0;33m${DIRECTORY_PATH}\e[0m to \e[0;33m${ICON_NAME}\e[0m..."
+        gio set "${PATH_NAME}" metadata::custom-icon-name "${ICON_NAME}"
+    fi
+}

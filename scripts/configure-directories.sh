@@ -39,6 +39,7 @@ if ${HAS_GUI} && [ "${OS}" = 'Linux' ]; then
         XDG_TEMPLATES_DIR   "\"${XDG_TEMPLATES_DIR}\"" \
         XDG_VIDEOS_DIR      "\"${XDG_VIDEOS_DIR}\""
 
+    set_directory_icon "${XDG_PROJECTS_DIR}" 'folder-projects'
 
     if does_bin_exist 'org.prismlauncher.PrismLauncher' 'prismlauncher'; then
         MINECRAFT_SCREENSHOTS_DIR="${XDG_PICTURES_DIR}/Screenshots/Minecraft"
