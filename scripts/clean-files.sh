@@ -402,7 +402,9 @@ remove_logs_in_dirs "${HOME_VAR_APP}/org.telegram.desktop/data/TelegramDesktop"
 ########################
 ### Document Viewers ###
 ########################
-! does_bin_exist 'okular' && remove "${XDG_DATA_HOME}/okular"
+! does_bin_exist 'okular' && remove \
+    "${XDG_CONFIG_HOME}/okularrc" \
+    "${XDG_DATA_HOME}/okular"
 
 ######################
 ### E-Mail Clients ###
@@ -727,6 +729,14 @@ for APPLICATION_LAUNCHERS_DIR in "${XDG_DESKTOP_DIR}" "${XDG_DATA_HOME}/applicat
             remove "${STEAM_APP_LAUNCHER}"
         done
     fi
+done
+
+# Build outputs
+for DOTNET_BUILD_OUTPUT_DIR in 'bin' 'obj'; do
+    for DOTNET_BUILD_CONFIGURATION in 'Debug' 'Release'; do
+        remove "${XDG_PROJECTS_DIR}"/*"/${DOTNET_BUILD_OUTPUT_DIR}/${DOTNET_BUILD_CONFIGURATION}"
+        remove "${XDG_PROJECTS_DIR}"/*/*"/${DOTNET_BUILD_OUTPUT_DIR}/${DOTNET_BUILD_CONFIGURATION}"
+    done
 done
 
 # Backups
