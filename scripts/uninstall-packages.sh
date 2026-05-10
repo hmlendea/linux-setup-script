@@ -115,22 +115,30 @@ if [ "${OS}" = 'Linux' ]; then
     uninstall_native_package 'piclone'
 fi
 
-# Disk Usage Analyser
+###########################
+### Disk Usage Analyser ###
+###########################
 keep_first_installed_package 'baobab' 'org.gnome.baobab'
 
-# Document Viewers
+########################
+### Document Viewers ###
+########################
 if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
     keep_first_installed_package 'org.gnome.Papers' 'papers' 'org.gnome.Evince' 'evince'
 fi
 
-# File Managers
+#####################
+### File Managers ###
+#####################
 if [ "${DISTRO_FAMILY}" = 'Android' ]; then
     keep_first_installed_package 'org.fossify.filemanager' 'com.android.documentsui'
 elif [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
     keep_first_installed_package 'nautilus' 'pcmanfm'
 fi
 
-# Fonts
+#############
+### Fonts ###
+#############
 if [ "${OS}" = 'Linux' ]; then
     if [ "${DISTRO_FAMILY}" = 'Debian' ] \
     || [ "${DISTRO_FAMILY}" = 'Ubuntu' ]; then
@@ -138,7 +146,9 @@ if [ "${OS}" = 'Linux' ]; then
     fi
 fi
 
-# Image Viewers
+#####################
+### Image Viewers ###
+#####################
 if [ "${DESKTOP_ENVIRONMENT}" != 'Phosh' ]; then
     uninstall_flatpak 'org.gnome.eog'
     uninstall_native_package 'eog-plugins' 'eog'
@@ -152,7 +162,9 @@ if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
     keep_first_installed_package 'org.gnome.Loupe' 'org.gnome.eog' 'eog' 'eom' 'gwenview'
 fi
 
-# Internet Browsers
+#########################
+### Internet Browsers ###
+#########################
 keep_first_installed_package \
     'io.gitlab.librewolf-community' \
     'firefox-esr' 'org.mozilla.fenix' 'org.mozilla.firefox' 'firefox' \
@@ -163,14 +175,18 @@ if ! is_native_package_installed 'firefox' \
     uninstall_native_package 'mobile-config-firefox'
 fi
 
-# Music players
+#####################
+### Music Players ###
+#####################
 keep_first_installed_package 'dev.alextren.Spot' 'com.spotify.Client'
 uninstall_android_package 'org.lineageos.eleven'
 uninstall_android_package 'com.xiaomi.mimusic2'
 [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] && keep_first_installed_package 'org.gnome.Decibels' 'io.bassi.Amberol' 'org.gnome.Rhythmbox3' 'rhythmbox'
 [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ] && keep_first_installed_package 'io.bassi.Amberol' 'org.gnome.Decibels' 'org.gnome.Rhythmbox3'
 
-# Note Taking apps
+########################
+### Note Taking Apps ###
+########################
 if [ "${OS}" = 'Android' ]; then
     keep_first_installed_package 'com.automattic.simplenote' 'foundation.e.notes'
 elif [ "${OS}" = 'Linux' ]; then
@@ -181,20 +197,35 @@ elif [ "${OS}" = 'Linux' ]; then
     fi
 fi
 
-# Remote Connection
+#########################
+### Remote Connection ###
+#########################
 if [ "${OS}" = 'Linux' ]; then
     uninstall_native_package 'realvnc-vnc-server'
 fi
 
-# System Monitors
+################
+### Settings ###
+################
+if [ "${OS}" = 'Linux' ]; then
+    keep_first_installed_package 'dconf-editor' 'ca.desrt.dconf-editor'
+fi
+
+#######################
+### System Monitors ###
+#######################
 if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
     keep_first_installed_package 'gnome-system-monitor' 'net.nokyan.Resources' 'lxtask'
 fi
 
-# Task Management apps
+############################
+### Task Management apps ###
+############################
 keep_first_installed_package 'io.github.alainm23.planify' 'org.gnome.Todo'
 
-# Terminal Emulators
+##########################
+### Terminal Emulators ###
+##########################
 if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
     if ${POWERFUL_PC}; then
         keep_first_installed_package 'gnome-console' 'gnome-terminal' 'lxterminal' 'konsole'
@@ -205,7 +236,9 @@ elif [ "${DESKTOP_ENVIRONMENT}" = 'KDE' ]; then
     keep_first_installed_package 'konsole' 'lxterminal' 'gnome-terminal' 'gnome-console'
 fi
 
-# Text Editors
+####################
+### Text Editors ###
+####################
 keep_first_installed_package 'micro' 'nano' 'vim' 'vi'
 keep_first_installed_package 'org.gnome.TextEditor' 'org.gnome.gedit' 'mousepad' 'geany'
 
@@ -215,7 +248,9 @@ if ! does_bin_exist 'vim'; then
     uninstall_native_package 'vim-tiny'
 fi
 
-# Video players
+#####################
+### Video players ###
+#####################
 if [ "${OS}" = 'Android' ]; then
     uninstall_android_package 'com.mitv.mivideoplayer'
     uninstall_android_package 'com.mitv.videoplayer'
@@ -255,7 +290,6 @@ if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
     uninstall_native_package "electronmail-bin"             # Replaced by flatpak: com.github.vladimiry.ElectronMail
     uninstall_native_package "evince"                       # Replaced by flatpak: org.gnome.Evince
     uninstall_native_package "chrome-gnome-shell"           # Does not work with flatpak browsers
-    uninstall_native_package "dconf-editor"                 # Replaced by flatpak: ca.desrt.dconf-editor
     uninstall_native_package "fastfetch-git"                # Replaced by fastfetch
     uninstall_native_package "fragments"                    # Replaced by flatpak: de.haeckerfelix.Fragments
     uninstall_native_package "gnome-contacts"               # Replaced by flatpak: org.gnome.Contacts

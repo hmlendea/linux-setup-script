@@ -776,7 +776,7 @@ fi
 ################
 if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
     install_native_package 'gnome-tweaks'
-    install_flatpak 'ca.desrt.dconf-editor'
+    install_native_package 'dconf-editor'
 elif [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
     install_native_package 'postmarketos-tweaks'
     install_native_package 'postmarketos-tweaks-phosh'

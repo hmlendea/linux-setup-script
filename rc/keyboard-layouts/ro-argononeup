@@ -45,7 +45,7 @@ xkb_symbols "basic" {
     key <PGUP> { [ backslash, bar   ] };
     key <PGDN> { [ KP_Enter         ] };
     key <END>  { [ Shift_R          ] };
-    key <INS>  { [ KP_DELETE        ] };
+    key <INS>  { [ KP_Delete        ] };
 
     include "level3(ralt_switch)"
 };
@@ -96,7 +96,7 @@ xkb_symbols "std" {
     key <PGUP> { [ backslash, bar ] };
     key <PGDN> { [ KP_Enter ] };
     key <END>  { [ Shift_R ] };
-    key <INS>  { [ KP_DELETE ] };
+    key <INS>  { [ KP_Delete ] };
 
     include "level3(ralt_switch)"
 };
