@@ -981,10 +981,11 @@ if [ "${OS}" = 'Linux' ]; then
                 install_native_package 'gnome-shell-extension-no-annoyance'
                 install_gnome_shell_extension '6670/bluetooth-battery-meter'
             else
-                install_gnome_shell_extension '744/hide-activities-button'
                 install_gnome_shell_extension '1007/window-is-ready-notification-remover'
                 install_native_package 'gnome-shell-extension-bluetooth-battery-meter-git'
             fi
+
+            install_gnome_shell_extension '3843/just-perfection'
 
             if ${POWERFUL_PC}; then
                 install_gnome_shell_extension '921/multi-monitors-add-on'

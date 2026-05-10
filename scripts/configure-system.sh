@@ -395,22 +395,6 @@ if does_bin_exist 'gnome-shell'; then
     set_gsetting 'org.gnome.shell.overrides' attach-modal-dialogs false
 fi
 
-if is_gnome_shell_extension_installed 'blur-my-shell'; then
-    BMS_SCHEMA='org.gnome.shell.extensions.blur-my-shell'
-
-    set_gsetting "${BMS_SCHEMA}.dash-to-dock" blur false
-    set_gsetting "${BMS_SCHEMA}.panel" blur true
-    set_gsetting "${BMS_SCHEMA}.panel" unblur-dynamically true
-fi
-
-if is_gnome_shell_extension_installed 'user-theme'; then
-    [[ "${GTK_THEME}" != adw-gtk3* ]] && set_gsetting 'org.gnome.shell.extensions.user-theme' name "${GTK_THEME}"
-fi
-
-is_gnome_shell_extension_installed 'multi-monitors-add-on' && \
-    set_gsetting 'org.gnome.shell.extensions.multi-monitors-add-on' \
-        show-indicator false
-
 does_bin_exist 'panther_launcher' && \
     set_gsettings 'org.rastersoft.panther' \
         icon-size 48 \
@@ -1124,27 +1108,56 @@ CIV5_USER_SETTINGS_FILE="${CIV5_DIR}/UserSettings.ini"
 
 if [ -f "${CIV5_USER_SETTINGS_FILE}" ]; then
     # Autosave
-    set_config_value --separator " = " "${CIV5_USER_SETTINGS_FILE}" "TurnsBetweenAutosave" 1
-    set_config_value --separator " = " "${CIV5_USER_SETTINGS_FILE}" "NumAutosavesKept" 99
+    set_config_value --separator " = " "${CIV5_USER_SETTINGS_FILE}" 'TurnsBetweenAutosave' 1
+    set_config_value --separator " = " "${CIV5_USER_SETTINGS_FILE}" 'NumAutosavesKept' 99
 
     # Advisor
-    set_config_value --separator " = " "${CIV5_USER_SETTINGS_FILE}" "AdvisorLevel" -1
-    set_config_value --separator " = " "${CIV5_USER_SETTINGS_FILE}" "TutorialLevel" 0
+    set_config_value --separator " = " "${CIV5_USER_SETTINGS_FILE}" 'AdvisorLevel' -1
+    set_config_value --separator " = " "${CIV5_USER_SETTINGS_FILE}" 'TutorialLevel' 0
 
     # Speed things up
-    set_config_value --separator " = " "${CIV5_USER_SETTINGS_FILE}" "SkipIntroVideo" 1
-    set_config_value --separator " = " "${CIV5_USER_SETTINGS_FILE}" "SinglePlayerQuickCombatEnabled" 1
-    set_config_value --separator " = " "${CIV5_USER_SETTINGS_FILE}" "SinglePlayerQuickMovementEnabled" 1
+    set_config_value --separator " = " "${CIV5_USER_SETTINGS_FILE}" 'SkipIntroVideo' 1
+    set_config_value --separator " = " "${CIV5_USER_SETTINGS_FILE}" 'SinglePlayerQuickCombatEnabled' 1
+    set_config_value --separator " = " "${CIV5_USER_SETTINGS_FILE}" 'SinglePlayerQuickMovementEnabled' 1
 fi
 
 TERRARIA_DIR="${XDG_DATA_HOME}/Terraria"
 TERRARIA_CONFIG_FILE="${TERRARIA_DIR}/config.json"
 
 if [ -f "${TERRARIA_CONFIG_FILE}" ]; then
-    set_json_property "${TERRARIA_CONFIG_FILE}" ".CloudSavingDefault" true
-    set_json_property "${TERRARIA_CONFIG_FILE}" ".HidePasswords" true
-    set_json_property "${TERRARIA_CONFIG_FILE}" ".QuickLaunch" true
-    set_json_property "${TERRARIA_CONFIG_FILE}" ".Zoom" 1
+    set_json_property "${TERRARIA_CONFIG_FILE}" '.CloudSavingDefault' true
+    set_json_property "${TERRARIA_CONFIG_FILE}" '.HidePasswords' true
+    set_json_property "${TERRARIA_CONFIG_FILE}" '.QuickLaunch' true
+    set_json_property "${TERRARIA_CONFIG_FILE}" '.Zoom' 1
+fi
+
+##############################
+### GNOME Shell Extensions ###
+##############################
+if does_bin_exist 'gnome-shell'; then
+    # Blur my Shell
+    is_gnome_shell_extension_installed 'blur-my-shell' && \
+        BMS_SCHEMA='org.gnome.shell.extensions.blur-my-shell'
+
+        set_gsetting "${BMS_SCHEMA}.dash-to-dock" blur false
+        set_gsetting "${BMS_SCHEMA}.panel" blur true
+        set_gsetting "${BMS_SCHEMA}.panel" unblur-dynamically true
+    fi
+
+    # Just Perfection
+    is_gnome_shell_extension_installed 'just-perfection' && \
+        set_gsetting 'org.gnome.shell.extensions.just-perfection' \
+            'activities-button' false
+
+    # Multi Monitors Addon
+    is_gnome_shell_extension_installed 'multi-monitors-add-on' && \
+        set_gsetting 'org.gnome.shell.extensions.multi-monitors-add-on' \
+            show-indicator false
+
+    # User Themes
+    if is_gnome_shell_extension_installed 'user-theme'; then
+        [[ "${GTK_THEME}" != adw-gtk3* ]] && set_gsetting 'org.gnome.shell.extensions.user-theme' name "${GTK_THEME}"
+    fi
 fi
 
 ###########
@@ -1481,7 +1494,7 @@ if does_bin_exist 'gnome-shell'; then
         'sleep-inactive-ac-timeout' 1800 \
         'sleep-inactive-battery-timeout' 900
 
-    is_gnome_shell_extension_installed "Bluetooth-Battery-Meter" && \
+    is_gnome_shell_extension_installed 'Bluetooth-Battery-Meter' && \
         set_gsettings 'org.gnome.shell.extensions.Bluetooth-Battery-Meter' \
             'enable-battery-indicator' false \
             'enable-battery-level-text' true
