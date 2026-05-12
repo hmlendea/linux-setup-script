@@ -1142,12 +1142,14 @@ if does_bin_exist 'gnome-shell'; then
         set_gsetting "${BMS_SCHEMA}.dash-to-dock" blur false
         set_gsetting "${BMS_SCHEMA}.panel" blur true
         set_gsetting "${BMS_SCHEMA}.panel" unblur-dynamically true
-    fi
 
     # Just Perfection
     is_gnome_shell_extension_installed 'just-perfection' && \
-        set_gsetting 'org.gnome.shell.extensions.just-perfection' \
-            'activities-button' false
+        set_gsettings 'org.gnome.shell.extensions.just-perfection' \
+            'activities-button' false \
+            'startup-status' 0 \
+            'window-demands-attention-focus' false \
+            'world-clock' false
 
     # Multi Monitors Addon
     is_gnome_shell_extension_installed 'multi-monitors-add-on' && \

@@ -978,10 +978,8 @@ if [ "${OS}" = 'Linux' ]; then
             if [ "${DISTRO_FAMILY}" = 'Debian' ] \
             || [ "${DISTRO_FAMILY}" = 'Ubuntu' ]; then
                 install_native_package 'gnome-shell-extension-hide-activities'
-                install_native_package 'gnome-shell-extension-no-annoyance'
                 install_gnome_shell_extension '6670/bluetooth-battery-meter'
             else
-                install_gnome_shell_extension '1007/window-is-ready-notification-remover'
                 install_native_package 'gnome-shell-extension-bluetooth-battery-meter-git'
             fi
 
