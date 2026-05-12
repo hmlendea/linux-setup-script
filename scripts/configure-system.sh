@@ -1148,6 +1148,7 @@ if does_bin_exist 'gnome-shell'; then
         set_gsettings 'org.gnome.shell.extensions.just-perfection' \
             'activities-button' false \
             'startup-status' 0 \
+            'support-notifier-type' 0 \
             'window-demands-attention-focus' false \
             'world-clock' false
 
