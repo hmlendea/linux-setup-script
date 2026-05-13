@@ -50,8 +50,10 @@ function package_manager_command() {
 
     OPERATION="${1}"
 
-    if [[ "${OPERATION}" == 'info' ]] \
-    || [[ "${OPERATION}" == '-Qi' ]]; then
+    if [[ "${OPERATION}" == 'autoremove' ]]; then
+        OPERATION='autoremove' && shift
+    elif [[ "${OPERATION}" == 'info' ]] \
+      || [[ "${OPERATION}" == '-Qi' ]]; then
         OPERATION='info' && shift
     elif [[ "${OPERATION}" == 'install' ]] \
       || [[ "${OPERATION}" == 'add' ]] \
@@ -136,7 +138,21 @@ function package_manager_command() {
 
     sudo printf ''
 
-    if [[ "${OPERATION}" == 'info' ]]; then
+    if [[ "${OPERATION}" == 'autoremove' ]]; then
+        if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apt' ]]; then
+            ${PACKAGE_MANAGER_COMMAND} autoremove
+        elif [[ "${PACKAGE_MANAGER_FAMILY}" == 'pacman' ]]; then
+            UNUSED_DEPS=$(pacman -Qdtq)
+            UNUSED_DEPS_COUNT=$(echo "${UNUSED_DEPS}" | wc -w)
+
+            if [ "${UNUSED_DEPS_COUNT}" -gt 0 ]; then
+                echo "Uninstalling unused dependencies ($UNUSED_DEPS_COUNT):"
+                ${PACKAGE_MANAGER_COMMAND} -Rns "${UNUSED_DEPS[@]}"
+            else
+                echo "There are no unused dependencies to uninstall!"
+            fi
+        fi
+    elif [[ "${OPERATION}" == 'info' ]]; then
         if [[ "${PACKAGE_MANAGER_FAMILY}" == 'apk' ]]; then
             ${PACKAGE_MANAGER_COMMAND} info -e "${@}"
         elif [[ "${PACKAGE_MANAGER_FAMILY}" == 'apt' ]]; then
