@@ -905,6 +905,7 @@ if does_bin_exist 'firefox' 'firefox-esr' 'librewolf' 'org.mozilla.firefox' 'io.
         #set_firefox_config "${FIREFOX_PROFILE_DIR}" "font.name-list.emoji" "${EMOJI_FONT_NAME}" # Makes ChatGPT ask for captcha for every prompt
         set_firefox_config "${FIREFOX_PROFILE_DIR}" 'font.size.variable.x-western' "${BROWSER_FONT_SIZE}"
         set_firefox_config "${FIREFOX_PROFILE_DIR}" "toolkit.legacyUserProfileCustomizations.stylesheets" true
+        set_firefox_config "${FIREFOX_PROFILE_DIR}" 'ui.systemUsesDarkTheme' ${DESKTOP_THEME_IS_DARK}
         #set_firefox_config "${FIREFOX_PROFILE_DIR}" "widget.non-native-theme.enabled" false # If true then some page elements (e.g. drop-down arrows in Bitwarden) look very ugly and out of place
         set_firefox_config "${FIREFOX_PROFILE_DIR}" "widget.content.allow-gtk-dark-theme" ${DESKTOP_THEME_IS_DARK}
         #set_firefox_config "${FIREFOX_PROFILE_DIR}" "widget.gtk.overlay-scrollbars.enabled" true # Turn scrollbars into GTK scrollbars
