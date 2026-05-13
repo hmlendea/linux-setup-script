@@ -973,11 +973,9 @@ if [ "${OS}" = 'Linux' ]; then
             fi
 
             install_gnome_shell_extension '5470/weather-oclock'
-            install_gnome_shell_extension '4099/no-overview'
 
             if [ "${DISTRO_FAMILY}" = 'Debian' ] \
             || [ "${DISTRO_FAMILY}" = 'Ubuntu' ]; then
-                install_native_package 'gnome-shell-extension-hide-activities'
                 install_gnome_shell_extension '6670/bluetooth-battery-meter'
             else
                 install_native_package 'gnome-shell-extension-bluetooth-battery-meter-git'

@@ -146,6 +146,22 @@ if [ "${OS}" = 'Linux' ]; then
     fi
 fi
 
+##############################
+### GNOME Shell Extensions ###
+##############################
+if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
+    echo sa
+    if is_gnome_shell_extension_installed '3843/just-perfection'; then
+        echo sa
+        uninstall_native_package 'gnome-shell-extension-hide-activities'
+        uninstall_native_package 'gnome-shell-extension-no-annoyance'
+
+        uninstall_gnome_shell_extension '744/hide-activities-button'
+        uninstall_gnome_shell_extension '1007/window-is-ready-notification-remover'
+        uninstall_gnome_shell_extension '4099/no-overview'
+    fi
+fi
+
 #####################
 ### Image Viewers ###
 #####################
