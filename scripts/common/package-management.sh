@@ -392,7 +392,7 @@ function install_aur_package_manually() {
     [ ! -d "${LOCAL_INSTALL_TEMP_DIR}" ] && mkdir -p "${LOCAL_INSTALL_TEMP_DIR}"
 
     cd "${LOCAL_INSTALL_TEMP_DIR}"
-    echo -e '>>> Installing AUR package manually: \e[0;33m${PKG}\e[0m...'
+    echo -e ">>> Installing AUR package manually: \e[0;33m${PKG}\e[0m..."
 
     wget "${PKG_SNAPSHOT_URL}"
     tar xvf "${PKG}.tar.gz"
@@ -404,7 +404,7 @@ function install_aur_package_manually() {
 
 function install_flatpak() {
     local PACKAGE="${1}"
-    local REMOTE="flathub"
+    local REMOTE='flathub'
 
     if [ $# -eq 2 ]; then
         local REMOTE="${1}"
@@ -413,7 +413,7 @@ function install_flatpak() {
 
     is_flatpak_installed "${PACKAGE}" && return
 
-    local INSTALLATION_METHOD="user"
+    local INSTALLATION_METHOD='user'
 
     echo -e " >>> Installing ${INSTALLATION_METHOD} flatpak (${REMOTE}): \e[0;33m${PACKAGE}\e[0m (${REMOTE})..."
     call_flatpak install --${INSTALLATION_METHOD} "${REMOTE}" "${PACKAGE}"
