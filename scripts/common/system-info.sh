@@ -179,16 +179,22 @@ function get_arch_family() {
 }
 
 function get_device_model() {
-    if systemctl list-units | grep -q argononeup \
-    || systemctl list-units | grep -q argon-one-up \
-    || [ -f "${ROOT_USR_LIB}/systemd/system/argononeupd.service" ] \
-    || ls "${ROOT_USR_SRC}"/oneUpPower-* >/dev/null 2>&1; then
-        if grep -q 'Raspberry Pi Compute Module 5' "${ROOT_PROC}/device-tree/model"; then
-            echo 'Argon ONE UP CM5'
-        else
-            echo 'Argon ONE UP'
+    if does_bin_exist 'systemctl'; then
+        if systemctl list-units | grep -q argononeup \
+        || systemctl list-units | grep -q argon-one-up \
+        || [ -f "${ROOT_USR_LIB}/systemd/system/argononeupd.service" ] \
+        || ls "${ROOT_USR_SRC}"/oneUpPower-* >/dev/null 2>&1; then
+            if grep -q 'Raspberry Pi Compute Module 5' "${ROOT_PROC}/device-tree/model"; then
+                echo 'Argon ONE UP CM5'
+                return
+            else
+                echo 'Argon ONE UP'
+                return
+            fi
         fi
-    elif [ -f "${ROOT_SYS_DEVICES}/virtual/dmi/id/product_family" ]; then
+    fi
+
+    if [ -f "${ROOT_SYS_DEVICES}/virtual/dmi/id/product_family" ]; then
         cat "${ROOT_SYS_DEVICES}/virtual/dmi/id/product_family"
     elif [ -f "${ROOT_PROC}/device-tree/model" ]; then
         local DEVICE_MODEL=$(cat -A "${ROOT_PROC}/device-tree/model")
