@@ -16,6 +16,7 @@ function get_latest_github_release_assets() {
 ### Basics ###
 ##############
 install_native_package 'coreutils'
+install_native_package 'curl'
 install_native_package 'wget'
 
 if ! [[ ${DEVICE_MODEL} =~ 'iPhone' ]]; then
