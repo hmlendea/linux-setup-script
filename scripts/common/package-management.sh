@@ -620,7 +620,7 @@ function uninstall_native_package() {
         is_native_package_installed "${PACKAGE_NAME}" || return
         is_native_package_required "${PACKAGE_NAME}" && return
 
-        echo " >>> Uninstalling package: ${PACKAGE_NAME}"
+        echo " >>> Uninstalling package: \e[0;33m${PACKAGE_NAME}\e[0m..."
         if [ "${DISTRO_FAMILY}" = 'Alpine' ]; then
             call_package_manager del "${PACKAGE_NAME}"
         elif [ "${DISTRO_FAMILY}" = 'Arch' ]; then
@@ -636,21 +636,21 @@ function uninstall_native_package() {
 function uninstall_android_package() {
     [ "${DISTRO_FAMILY}" != 'Android' ] && return
 
-    for PACKAGE in ${*// /\n}; do
-        is_android_package_installed "${PACKAGE}" || return
+    for PACKAGE_NAME in ${*// /\n}; do
+        is_android_package_installed "${PACKAGE_NAME}" || return
 
-        echo -e " >>> Uninstalling Android package: \e[0;33m${PACKAGE}\e[0m..."
-        call_android_package_manager uninstall --user 0 "${PACKAGE}"
+        echo -e " >>> Uninstalling Android package: \e[0;33m${PACKAGE_NAME}\e[0m..."
+        call_android_package_manager uninstall --user 0 "${PACKAGE_NAME}"
     done
 }
 
 function uninstall_flatpak() {
-    local PACKAGE="${1}"
+    local PACKAGE_NAME="${1}"
 
-    ! is_flatpak_installed "${PACKAGE}" && return
+    ! is_flatpak_installed "${PACKAGE_NAME}" && return
 
-    echo -e " >>> Uninstalling flatpak: \e[0;33m${PACKAGE}\e[0m..."
-    call_flatpak uninstall "${PACKAGE}"
+    echo -e " >>> Uninstalling flatpak: \e[0;33m${PACKAGE_NAME}\e[0m..."
+    call_flatpak uninstall "${PACKAGE_NAME}"
 }
 
 function uninstall_github_package() {
