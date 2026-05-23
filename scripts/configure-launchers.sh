@@ -64,7 +64,7 @@ does_bin_exist 'flatpak' && APP_STORE_KEYWORDS="Flatpak;FlatHub;${APP_STORE_KEYW
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/org.gnome.Software.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/org.kde.discover.desktop"; do
     set_launcher_entries "${LAUNCHER}" \
-        Name 'Application Store" '
+        Name 'Application Store" ' \
         Keywords "Preferences;${APP_STORE_KEYWORDS}"
 done
 
