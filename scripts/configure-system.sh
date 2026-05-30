@@ -1504,7 +1504,7 @@ if does_bin_exist 'gnome-shell'; then
             'enable-battery-level-text' true
 fi
 
-if does_bin_exist "tlp"; then
+if does_bin_exist 'tlp'; then
     TLP_CONFIG_FILE="${ROOT_ETC}/tlp.conf"
 
     RUNTIME_PM_DRIVER_DENYLIST=""
@@ -1515,19 +1515,24 @@ if does_bin_exist "tlp"; then
 
     set_config_value "${TLP_CONFIG_FILE}" "RUNTIME_PM_DRIVER_DENYLIST" "\"${RUNTIME_PM_DRIVER_DENYLIST}\""
 
-    set_config_value "${TLP_CONFIG_FILE}" "CPU_SCALING_GOVERNOR_ON_AC" "performance"
-    set_config_value "${TLP_CONFIG_FILE}" "CPU_SCALING_GOVERNOR_ON_BAT" "powersave"
-
+    set_config_value "${TLP_CONFIG_FILE}" "CPU_SCALING_GOVERNOR_ON_AC" 'performance'
     set_config_value "${TLP_CONFIG_FILE}" "CPU_ENERGY_PERF_POLICY_ON_AC" 'performance'
-    set_config_value "${TLP_CONFIG_FILE}" "CPU_ENERGY_PERF_POLICY_ON_BAT" 'balance_power' # 'power' makes it too slow
+
+    if [[ "$(get_device_model)" =~ 'Argon ONE UP' ]]; then
+        set_config_value "${TLP_CONFIG_FILE}" "CPU_SCALING_GOVERNOR_ON_BAT" 'performance'
+        set_config_value "${TLP_CONFIG_FILE}" "CPU_ENERGY_PERF_POLICY_ON_BAT" 'performance'
+    else
+        set_config_value "${TLP_CONFIG_FILE}" "CPU_SCALING_GOVERNOR_ON_BAT" 'powersave'
+        set_config_value "${TLP_CONFIG_FILE}" "CPU_ENERGY_PERF_POLICY_ON_BAT" 'balance_power' # 'power' makes it too slow
+    fi
 
     set_config_value "${TLP_CONFIG_FILE}" "CPU_MIN_PERF_ON_AC" "0"
     set_config_value "${TLP_CONFIG_FILE}" "CPU_MAX_PERF_ON_AC" "100"
     set_config_value "${TLP_CONFIG_FILE}" "CPU_MIN_PERF_ON_BAT" "0"
     set_config_value "${TLP_CONFIG_FILE}" "CPU_MAX_PERF_ON_BAT" "85"
 
-    set_config_value "${TLP_CONFIG_FILE}" "PLATFORM_PROFILE_ON_AC" "performance"
-    set_config_value "${TLP_CONFIG_FILE}" "PLATFORM_PROFILE_ON_BAT" "low-power"
+    set_config_value "${TLP_CONFIG_FILE}" "PLATFORM_PROFILE_ON_AC" 'performance'
+    set_config_value "${TLP_CONFIG_FILE}" "PLATFORM_PROFILE_ON_BAT" 'low-power'
     
     set_config_value "${TLP_CONFIG_FILE}" "CPU_BOOST_ON_AC" "1"
     set_config_value "${TLP_CONFIG_FILE}" "CPU_BOOST_ON_BAT" "0"
