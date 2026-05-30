@@ -1345,12 +1345,15 @@ if does_bin_exist 'gnome-shell'; then
 
     # Enabled ones - order is important
     does_bin_exist "org.gnome.Calculator" && ENABLED_SEARCH_PROVIDERS="${ENABLED_SEARCH_PROVIDERS}, 'org.gnome.Calculator.desktop'"
-    does_bin_exist "org.gnome.Weather" && ENABLED_SEARCH_PROVIDERS="${ENABLED_SEARCH_PROVIDERS}, 'org.gnome.Weather.desktop'"
-    does_bin_exist "org.gnome.clocks" && ENABLED_SEARCH_PROVIDERS="${ENABLED_SEARCH_PROVIDERS}, 'org.gnome.clocks.desktop'"
     does_bin_exist "org.gnome.Calendar" && ENABLED_SEARCH_PROVIDERS="${ENABLED_SEARCH_PROVIDERS}, 'org.gnome.Calendar.desktop'"
     does_bin_exist "org.gnome.Contacts" && ENABLED_SEARCH_PROVIDERS="${ENABLED_SEARCH_PROVIDERS}, 'org.gnome.Contacts.desktop'"
-    does_bin_exist "gnome-software" && ENABLED_SEARCH_PROVIDERS="${ENABLED_SEARCH_PROVIDERS}, 'org.gnome.Software.desktop'"
     does_bin_exist "org.gnome.Settings" && ENABLED_SEARCH_PROVIDERS="${ENABLED_SEARCH_PROVIDERS}, 'org.gnome.Settings.desktop'"
+
+    if ${POWERFUL_PC}; then
+        does_bin_exist 'org.gnome.Weather' && ENABLED_SEARCH_PROVIDERS="${ENABLED_SEARCH_PROVIDERS}, 'org.gnome.Weather.desktop'"
+        does_bin_exist 'org.gnome.clocks' && ENABLED_SEARCH_PROVIDERS="${ENABLED_SEARCH_PROVIDERS}, 'org.gnome.clocks.desktop'"
+        does_bin_exist 'gnome-software' && ENABLED_SEARCH_PROVIDERS="${ENABLED_SEARCH_PROVIDERS}, 'org.gnome.Software.desktop'"
+    done
 
     # Disabled ones
     does_bin_exist 'gnome-terminal' && DISABLED_SEARCH_PROVIDERS="${DISABLED_SEARCH_PROVIDERS}, 'org.gnome.Terminal.desktop'"
