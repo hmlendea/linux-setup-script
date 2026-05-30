@@ -306,6 +306,8 @@ if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
     uninstall_native_package "electronmail-bin"             # Replaced by flatpak: com.github.vladimiry.ElectronMail
     uninstall_native_package "evince"                       # Replaced by flatpak: org.gnome.Evince
     uninstall_native_package "chrome-gnome-shell"           # Does not work with flatpak browsers
+    uninstall_native_package 'evolution-data-server'
+    uninstall_native_package 'evolution'
     uninstall_native_package "fastfetch-git"                # Replaced by fastfetch
     uninstall_native_package "fragments"                    # Replaced by flatpak: de.haeckerfelix.Fragments
     uninstall_native_package "gnome-contacts"               # Replaced by flatpak: org.gnome.Contacts
