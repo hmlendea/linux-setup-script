@@ -1353,7 +1353,7 @@ if does_bin_exist 'gnome-shell'; then
         does_bin_exist 'org.gnome.Weather' && ENABLED_SEARCH_PROVIDERS="${ENABLED_SEARCH_PROVIDERS}, 'org.gnome.Weather.desktop'"
         does_bin_exist 'org.gnome.clocks' && ENABLED_SEARCH_PROVIDERS="${ENABLED_SEARCH_PROVIDERS}, 'org.gnome.clocks.desktop'"
         does_bin_exist 'gnome-software' && ENABLED_SEARCH_PROVIDERS="${ENABLED_SEARCH_PROVIDERS}, 'org.gnome.Software.desktop'"
-    done
+    fi
 
     # Disabled ones
     does_bin_exist 'gnome-terminal' && DISABLED_SEARCH_PROVIDERS="${DISABLED_SEARCH_PROVIDERS}, 'org.gnome.Terminal.desktop'"
