@@ -708,6 +708,6 @@ function set_directory_icon() {
 
     if [[ "${CURRENT_ICON}" != "${ICON_NAME}" ]]; then
         echo -e "Setting the icon of \e[0;33m${DIRECTORY_PATH}\e[0m to \e[0;33m${ICON_NAME}\e[0m..."
-        gio set "${PATH_NAME}" metadata::custom-icon-name "${ICON_NAME}"
+        gio set "${DIRECTORY_PATH}" metadata::custom-icon-name "${ICON_NAME}"
     fi
 }
