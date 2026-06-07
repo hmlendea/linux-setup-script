@@ -651,9 +651,18 @@ fi
 #####################
 ### Image Editors ###
 #####################
-if ${HAS_GUI} && ${IS_GENERAL_PURPOSE_DEVICE} && [ "${DEVICE_TYPE}" = 'PC' ]; then
-    install_flatpak 'org.gimp.GIMP' # Wait at least until it uses GTK3
-    install_flatpak 'org.inkscape.Inkscape'
+if ${IS_GENERAL_PURPOSE_DEVICE}; then
+    if ${HAS_GUI} && [ "${DEVICE_TYPE}" = 'PC' ]; then
+        install_flatpak 'org.gimp.GIMP' # Wait at least until it uses GTK3
+        install_flatpak 'org.inkscape.Inkscape'
+    fi
+
+    if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
+        install_native_package 'image-optimiser'
+    elif [ "${DISTRO_FAMILY}" = 'Debian' ]; then
+        echo sasa2
+        install_github_package 'image-optimiser' 'hmlendea/image-optimiser'
+    fi
 fi
 
 #####################
