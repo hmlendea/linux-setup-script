@@ -25,6 +25,17 @@ if ! is_distro_immutable; then
     fi
 fi
 
+if does_bin_exist 'cargo-update'; then
+    call_cargo install --list | \
+        grep '^[^ ]' | \
+        cut -d' ' -f1 | \
+        sed 's/:$//' | \
+        while read -r PACKAGE; do
+            echo "Updating ${PACKAGE}..."
+            call_cargo install --force "${PACKAGE}"
+        done
+fi
+
 if does_bin_exist 'flatpak'; then
     announce_packages_update 'flatpak'
     call_flatpak update

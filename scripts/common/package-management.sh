@@ -35,6 +35,10 @@ function call_android_package_manager() {
     run_as_su pm ${*}
 }
 
+function call_cargo() {
+    cargo ${*}
+}
+
 function call_flatpak() {
     flatpak ${*} --assumeyes
 }
@@ -190,6 +194,12 @@ function is_android_package_installed() {
     else
         return 1 # False
     fi
+}
+
+function is_cargo_package_installed() {
+    local PACKAGE="${1}"
+
+    call_cargo install --list | grep -q "^${PACKAGE} v"
 }
 
 function is_flatpak_installed() {
@@ -400,6 +410,15 @@ function install_aur_package_manually() {
     cd "${PKG}"
     makepkg -sri --noconfirm
     cd "${OLD_PWD}"
+}
+
+function install_cargo_package() {
+    local PACKAGE="${1}"
+
+    is_cargo_package_installed "${PACKAGE}" && return
+
+    echo -e " >>> Installing cargo package: \e[0;33m${PACKAGE}\e[0m..."
+    call_cargo install "${PACKAGE}"
 }
 
 function install_flatpak() {
@@ -642,6 +661,15 @@ function uninstall_android_package() {
         echo -e " >>> Uninstalling Android package: \e[0;33m${PACKAGE_NAME}\e[0m..."
         call_android_package_manager uninstall --user 0 "${PACKAGE_NAME}"
     done
+}
+
+function uninstall_cargo_package() {
+    local PACKAGE="${1}"
+
+    is_cargo_package_installed "${PACKAGE}" || return
+
+    echo -e " >>> Uninstalling cargo package: \e[0;33m${PACKAGE}\e[0m..."
+    call_cargo uninstall "${PACKAGE}"
 }
 
 function uninstall_flatpak() {

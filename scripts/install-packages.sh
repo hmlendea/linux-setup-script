@@ -83,6 +83,9 @@ if [ "${OS}" = 'Linux' ]; then
         #install_native_package pacman-contrib
         #install_native_package pacutils
         #install_native_package pkgfile
+    elif [ "${DISTRO_FAMILY}" = 'Debian' ] \
+      || [ "${DISTRO_FAMILY}" = 'Ubuntu' ]; then
+        install_native_package 'cargo'
     fi
 
     ${HAS_GUI} && install_native_package 'flatpak'
@@ -660,8 +663,8 @@ if ${IS_GENERAL_PURPOSE_DEVICE}; then
     if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
         install_native_package 'image-optimiser'
     elif [ "${DISTRO_FAMILY}" = 'Debian' ]; then
-        echo sasa2
         install_github_package 'image-optimiser' 'hmlendea/image-optimiser'
+        install_cargo_package 'oxipng'
     fi
 fi
 
