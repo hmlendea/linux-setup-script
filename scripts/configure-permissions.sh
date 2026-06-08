@@ -6,10 +6,22 @@ source "${REPO_SCRIPTS_DIR}/common/permissions.sh"
 source "${REPO_SCRIPTS_DIR}/common/system-info.sh"
 
 if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
+    for API_CLIENT_APP in 'com.getpostman.Postman' 'com.usebruno.Bruno'; do
+        set_linux_permission "${API_CLIENT_APP}" \
+            'background' false \
+            'camera' false \
+            'filesystem-home' false \
+            'location' false \
+            'microphone' false \
+            'network' true \
+            'notification' false \
+            'speakers' false
+    done
     for AUDIO_PLAYER_APP in 'io.bassi.Amberol' 'org.gnome.Decibels' 'org.gnome.Rhythmbox3'; do
         set_linux_permission "${AUDIO_PLAYER_APP}" \
             'background' false \
             'camera' false \
+            'filesystem-home' true \
             'location' false \
             'microphone' false \
             'network' false \
@@ -21,6 +33,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
         set_linux_permission "${BROWSER_APP}" \
             'background' false \
             'camera' false \
+            'filesystem-home' false \
             'location' true \
             'microphone' true \
             'network' true \
@@ -31,6 +44,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
         set_linux_permission "${CALCULATOR_APP}" \
             'background' false \
             'camera' false \
+            'filesystem-home' false \
             'location' false \
             'microphone' false \
             'network' false \
@@ -41,6 +55,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
         set_linux_permission "${CAMERA_APP}" \
             'background' false \
             'camera' true \
+            'filesystem-home' false \
             'location' true \
             'microphone' true \
             'network' false \
@@ -51,6 +66,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
         set_linux_permission "${CHAT_APP}" \
             'background' true \
             'camera' true \
+            'filesystem-home' false \
             'location' false \
             'network' true \
             'microphone' true \
@@ -62,6 +78,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
         set_linux_permission "${DOCUMENT_VIEWER_APP}" \
             'background' false \
             'camera' false \
+            'filesystem-home' false \
             'location' false \
             'microphone' false \
             'network' false \
@@ -72,6 +89,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
         set_linux_permission "${IDE_APP}" \
             'background' false \
             'camera' false \
+            'filesystem-home' true \
             'location' false \
             'microphone' false \
             'network' true \
@@ -82,6 +100,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
         set_linux_permission "${IMAGE_EDITOR_APP}" \
             'background' false \
             'camera' false \
+            'filesystem-home' false \
             'location' false \
             'microphone' false \
             'network' false \
@@ -92,6 +111,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
         set_linux_permission "${IMAGE_VIEWER_APP}" \
             'background' false \
             'camera' false \
+            'filesystem-home' false \
             'location' false \
             'microphone' false \
             'network' false \
@@ -102,6 +122,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
         set_linux_permission "${MINECRAFT_APP}" \
             'background' false \
             'camera' false \
+            'filesystem-home' false \
             'location' false \
             'microphone' false \
             'network' true \
@@ -112,6 +133,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
         set_linux_permission "${OFFICE_SUITE_APP}"  \
             'background' false \
             'camera' false \
+            'filesystem-home' false \
             'location' false \
             'microphone' false \
             'network' false \
@@ -122,16 +144,30 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
         set_linux_permission "${PASSWORD_MANAGER_APP}" \
             'background' false \
             'camera' false \
+            'filesystem-home' false \
             'location' false \
             'microphone' false \
             'network' true \
             'notification' false \
             'speakers' false
     done
+    for REMOTE_DESKTOP_APP in 'com.anydesk.Anydesk'; do
+        set_linux_permission "${REMOTE_DESKTOP_APP}" \
+            'background' false \
+            'camera' false \
+            'filesystem-home' true \
+            'location' false \
+            'microphone' false \
+            'network' true \
+            'notification' true \
+            'notification_lockscreen' true \
+            'speakers' true
+    done
     for SPOTIFY_APP in 'com.spotify.Client' 'dev.alextren.Spot' 'dev.diegovsky.Riff'; do
         set_linux_permission "${SPOTIFY_APP}" \
             'background' false \
             'camera' false \
+            'filesystem-home' false \
             'location' false \
             'microphone' false \
             'network' true \
@@ -143,6 +179,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
         set_linux_permission "${STEAM_APP}" \
             'background' true \
             'camera' false \
+            'filesystem-home' false \
             'location' false \
             'microphone' true \
             'network' true \
@@ -153,6 +190,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
         set_linux_permission "${SYSTEM_MONITOR_APP}" \
             'background' false \
             'camera' false \
+            'filesystem-home' false \
             'location' false \
             'microphone' true \
             'network' true \
@@ -163,6 +201,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
         set_linux_permission "${TODO_APP}" \
             'background' true \
             'camera' false \
+            'filesystem-home' false \
             'location' false \
             'microphone' false \
             'network' true \
@@ -173,6 +212,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
         set_linux_permission "${TERMINAL_APP}" \
             'background' false \
             'camera' false \
+            'filesystem-home' true \
             'location' false \
             'microphone' false \
             'network' true \
@@ -183,6 +223,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
         set_linux_permission "${TEXT_EDITOR_APP}" \
             'background' false \
             'camera' false \
+            'filesystem-home' true \
             'location' false \
             'microphone' false \
             'network' false \
@@ -192,6 +233,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
     set_linux_permission 'com.github.dynobo.normcap' \
         'background' false \
         'camera' false \
+        'filesystem-home' false \
         'location' false \
         'microphone' false \
         'network' false \
@@ -201,6 +243,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
         set_linux_permission "${TEAMS_APP}" \
             'background' false \
             'camera' true \
+            'filesystem-home' false \
             'location' false \
             'microphone' true \
             'network' true \
@@ -212,6 +255,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
         set_linux_permission "${TORRENT_DOWNLOADER_APP}" \
             'background' true \
             'camera' false \
+            'filesystem-home' false \
             'location' false \
             'microphone' false \
             'network' true \
@@ -219,10 +263,11 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
             'notification_lockscreen' false \
             'speakers' false
     done
-    for VIDEO_PLAYER_APP in 'com.github.rafostar.Clapper' 'dev.fredol.open-tv' 'org.gnome.Totem'; do
+    for VIDEO_PLAYER_APP in 'com.github.rafostar.Clapper' 'dev.fredol.open-tv' 'org.gnome.Showtime' 'org.gnome.Totem'; do
         set_linux_permission "${VIDEO_PLAYER_APP}" \
             'background' false \
             'camera' false \
+            'filesystem-home' false \
             'location' false \
             'microphone' false \
             'network' true \
@@ -233,6 +278,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
         set_linux_permission "${VIDEO_STREAMING_APP}" \
             'background' false \
             'camera' false \
+            'filesystem-home' false \
             'location' false \
             'microphone' false \
             'network' true \
@@ -243,6 +289,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
         set_linux_permission "${WHATSAPP_APP}" \
             'background' true \
             'camera' true \
+            'filesystem-home' false \
             'location' false \
             'microphone' true \
             'network' true \
@@ -254,22 +301,16 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
     set_linux_permission 'ca.desrt.dconf-editor' \
         'background' false \
         'camera' false \
+        'filesystem-home' false \
         'location' false \
         'microphone' false \
         'network' false \
         'notification' false \
         'speakers' false
-    set_linux_permission 'com.getpostman.Postman' \
-        'background' false \
-        'camera' false \
-        'location' false \
-        'microphone' false \
-        'network' true \
-        'notification' false \
-        'speakers' false
     set_linux_permission 'com.github.tchx84.Flatseal' \
         'background' false \
         'camera' false \
+        'filesystem-home' false \
         'location' false \
         'microphone' false \
         'network' false \
@@ -278,6 +319,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
     set_linux_permission 'com.simplenote.Simplenote' \
         'background' false \
         'camera' false \
+        'filesystem-home' false \
         'location' false \
         'microphone' false \
         'network' true \
@@ -286,6 +328,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
     set_linux_permission 'com.github.vladimiry.ElectronMail' \
         'background' true \
         'camera' false \
+        'filesystem-home' false \
         'location' false \
         'microphone' false \
         'network' true \
@@ -295,6 +338,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
     set_linux_permission 'com.obsproject.Studio' \
         'background' false \
         'camera' false \
+        'filesystem-home' false \
         'location' false \
         'microphone' true \
         'network' false \
@@ -303,6 +347,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
     set_linux_permission 'fr.romainvigier.MetadataCleaner' \
         'background' false \
         'camera' false \
+        'filesystem-home' true \
         'location' false \
         'microphone' false \
         'network' false \
@@ -311,6 +356,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
     set_linux_permission 'io.github.hmlendea.geforcenow-electron' \
         'background' false \
         'camera' false \
+        'filesystem-home' false \
         'location' false \
         'microphone' true \
         'network' true \
@@ -319,6 +365,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
     set_linux_permission 'net.lutris.Lutris' \
         'background' false \
         'camera' false \
+        'filesystem-home' true \
         'location' false \
         'microphone' false \
         'network' true \
@@ -328,6 +375,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
     set_linux_permission 'nl.hjdskes.gcolor3' \
         'background' false \
         'camera' false \
+        'filesystem-home' false \
         'location' false \
         'microphone' false \
         'network' false \
@@ -336,6 +384,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
     set_linux_permission 'org.gnome.baobab' \
         'background' false \
         'camera' false \
+        'filesystem-home' true \
         'location' false \
         'microphone' false \
         'network' false \
@@ -345,6 +394,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
     set_linux_permission 'org.gnome.Calendar' \
         'background' false \
         'camera' false \
+        'filesystem-home' false \
         'location' true \
         'microphone' false \
         'network' true \
@@ -354,6 +404,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
     set_linux_permission 'org.gnome.clocks' \
         'background' true \
         'camera' false \
+        'filesystem-home' false \
         'location' false \
         'microphone' false \
         'network' false \
@@ -363,6 +414,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
     set_linux_permission 'org.gnome.Contacts' \
         'background' false \
         'camera' false \
+        'filesystem-home' false \
         'location' false \
         'microphone' false \
         'network' false \
@@ -371,6 +423,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
     set_linux_permission 'ark' 'engrampa' 'file-roller' 'org.gnome.FileRoller' 'xarchiver' \
         'background' true \
         'camera' false \
+        'filesystem-home' true \
         'location' false \
         'microphone' false \
         'network' false \
@@ -388,6 +441,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
     set_linux_permission 'org.gnome.Maps' \
         'background' false \
         'camera' false \
+        'filesystem-home' false \
         'location' true \
         'microphone' false \
         'network' true \
@@ -404,6 +458,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
     set_linux_permission 'org.gnome.seahorse.Application' \
         'background' false \
         'camera' false \
+        'filesystem-home' false \
         'location' false \
         'microphone' false \
         'network' false \
@@ -415,6 +470,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
     set_linux_permission 'org.gnome.Weather' \
         'background' false \
         'camera' false \
+        'filesystem-home' false \
         'location' true \
         'microphone' false \
         'network' true \
@@ -423,6 +479,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
     set_linux_permission 'org.inkscape.Inkscape' \
         'background' false \
         'camera' false \
+        'filesystem-home' false \
         'location' false \
         'microphone' false \
         'network' false \
@@ -431,6 +488,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
     set_linux_permission 'ro.go.hmlendea.DL-Desktop' \
         'background' false \
         'camera' false \
+        'filesystem-home' false \
         'location' false \
         'microphone' true \
         'network' true \
@@ -439,6 +497,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
     set_linux_permission 'ro.go.hmlendea.Sokogrump' \
         'background' false \
         'camera' false \
+        'filesystem-home' false \
         'location' false \
         'microphone' false \
         'network' false \

@@ -43,22 +43,18 @@ function set_linux_permission() {
         if ${IS_FLATPAK_INSTALLED}; then
             if [ "${PERMISSION}" = 'background' ]; then
                 set_flatpak_permission "${APPLICATION}" 'background' 'background' "${STATE}"
-
             elif [ "${PERMISSION}" = 'camera' ]; then
                 set_flatpak_permission "${APPLICATION}" 'devices' 'camera' "${STATE}"
-
+            elif [ "${PERMISSION}" = 'filesystem-home' ]; then
+                set_flatpak_filesystem "${APPLICATION}" 'home' "${STATE}"
             elif [ "${PERMISSION}" = 'microphone' ]; then
                 set_flatpak_permission "${APPLICATION}" 'devices' 'microphone' "${STATE}"
-
             elif [ "${PERMISSION}" = 'speakers' ]; then
                 set_flatpak_permission "${APPLICATION}" 'devices' 'speakers' "${STATE}"
-
             elif [ "${PERMISSION}" = 'location' ]; then
                 set_flatpak_permission "${APPLICATION}" 'location' 'location' "${STATE}"
-
             elif [ "${PERMISSION}" = 'network' ]; then
                 set_flatpak_shared "${APPLICATION}" 'network' "${STATE}"
-
             elif [ "${PERMISSION}" = 'notification' ]; then
                 set_flatpak_permission "${APPLICATION}" 'notifications' 'notification' "${STATE}"
             fi
@@ -261,6 +257,52 @@ function set_android_permission() {
         else
             toggle_android_permission "${PACKAGE}" "${PERMISSION}" "${VALUE}"
         fi
+    done
+}
+
+function get_flatpak_filesystem() {
+    local APPLICATION="${1}"
+    local FILESYSTEM="${2}"
+
+    for METADATA_FILE in "${ROOT_VAR_LIB}/flatpak/app/${APPLICATION}/current/active/metadata" \
+                         "${XDG_DATA_HOME}/flatpak/app/${APPLICATION}/current/active/metadata"; do
+        [ ! -f "${METADATA_FILE}" ] && continue
+
+        local FILESYSTEMS=$(grep '^filesystems=' "${METADATA_FILE}" | awk -F'=' '{print $2}')
+
+        if echo "${FILESYSTEMS}" | grep -q "^${FILESYSTEM};\|;${FILESYSTEM};\|;${FILESYSTEM}$\|^${FILESYSTEM}$"; then
+            return 0
+        fi
+    done
+
+    return 1
+}
+
+function set_flatpak_filesystem() {
+    local APPLICATION="${1}"
+    local FILESYSTEM="${2}"
+    local STATE="${3}"
+
+    for METADATA_FILE in "${ROOT_VAR_LIB}/flatpak/app/${APPLICATION}/current/active/metadata" \
+                         "${XDG_DATA_HOME}/flatpak/app/${APPLICATION}/current/active/metadata"; do
+        [ ! -f "${METADATA_FILE}" ] && continue
+
+        local FILESYSTEMS=$(grep '^filesystems=' "${METADATA_FILE}" | awk -F'=' '{print $2}')
+        local CURRENT_STATE=false
+
+        get_flatpak_filesystem "${APPLICATION}" "${FILESYSTEM}" && CURRENT_STATE=true
+
+        [ "${STATE}" = "${CURRENT_STATE}" ] && return
+
+        if ${STATE}; then
+            echo "${FILESYSTEMS}" | grep -q "${FILESYSTEM}" || FILESYSTEMS="${FILESYSTEM};${FILESYSTEMS}"
+        else
+            FILESYSTEMS=$(echo "${FILESYSTEMS}" | sed 's/\(^\|;\)'"${FILESYSTEM}"'\($\|;\)/;/g')
+            FILESYSTEMS=$(echo "${FILESYSTEMS}" | sed 's/^;//;s/;$//;s/;;*/;/g')
+        fi
+
+        echo -e "\e[0;33m${APPLICATION}\e[0m filesystem \e[0;32m${FILESYSTEM}\e[0m >>> ${STATE}"
+        run_as_su sed -i 's/^filesystems=.*/filesystems='"${FILESYSTEMS}"'/g' "${METADATA_FILE}"
     done
 }
 
