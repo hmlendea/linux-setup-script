@@ -10,346 +10,440 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
         set_linux_permission "${AUDIO_PLAYER_APP}" \
             'background' false \
             'camera' false \
+            'location' false \
+            'microphone' false \
             'network' false \
             'notification' true \
             'notification_lockscreen' true \
-            'location' false
+            'speakers' true
     done
     for BROWSER_APP in 'com.brave.browser' 'io.gitlab.librewolf-community' 'org.chromium.Chromium' 'org.mozilla.firefox' 'chromium' 'firefox-esr'; do
         set_linux_permission "${BROWSER_APP}" \
             'background' false \
             'camera' false \
+            'location' true \
+            'microphone' true \
             'network' true \
             'notification' false \
-            'location' true
+            'speakers' true
     done
     for CALCULATOR_APP in 'org.gnome.Calculator' 'galculator' 'gnome-calculator' 'mate-calc'; do
         set_linux_permission "${CALCULATOR_APP}" \
             'background' false \
             'camera' false \
+            'location' false \
+            'microphone' false \
             'network' false \
             'notification' false \
-            'location' false
+            'speakers' false
     done
     for CAMERA_APP in 'org.gnome.Cheese' 'org.gnome.Snapshot'; do
         set_linux_permission "${CAMERA_APP}" \
             'background' false \
             'camera' true \
+            'location' true \
+            'microphone' true \
             'network' false \
             'notification' false \
-            'location' true
+            'speakers' false
     done
     for CHAT_APP in 'app.drey.PaperPlane' 'com.discordapp.Discord' 'de.schmidhuberj.Flare' 'org.signal.Signal' 'org.telegram.desktop'; do
         set_linux_permission "${CHAT_APP}" \
             'background' true \
             'camera' true \
+            'location' false \
             'network' true \
+            'microphone' true \
             'notification' true \
             'notification_lockscreen' true \
-            'location' false
+            'speakers' true
     done
     for DOCUMENT_VIEWER_APP in 'epdfview' 'org.gnome.Evince' 'org.gnome.Papers'; do
         set_linux_permission "${DOCUMENT_VIEWER_APP}" \
             'background' false \
             'camera' false \
+            'location' false \
+            'microphone' false \
             'network' false \
             'notification' false \
-            'location' false
+            'speakers' false
     done
     for IDE_APP in 'com.visualstudio.code' 'visual-studio-code'; do
         set_linux_permission "${IDE_APP}" \
             'background' false \
             'camera' false \
+            'location' false \
+            'microphone' false \
             'network' true \
             'notification' false \
-            'location' false
+            'speakers' false
     done
     for IMAGE_EDITOR_APP in 'org.gimp.GIMP' 'org.upscayl.Upscayl'; do
         set_linux_permission "${IMAGE_EDITOR_APP}" \
             'background' false \
             'camera' false \
+            'location' false \
+            'microphone' false \
             'network' false \
             'notification' false \
-            'location' false
+            'speakers' false
     done
     for IMAGE_VIEWER_APP in 'org.gnome.eog' 'org.gnome.Loupe'; do
         set_linux_permission "${IMAGE_VIEWER_APP}" \
             'background' false \
             'camera' false \
+            'location' false \
+            'microphone' false \
             'network' false \
             'notification' false \
-            'location' false
+            'speakers' false
     done
     for MINECRAFT_APP in 'com.mojang.Minecraft' 'org.prismlauncher.PrismLauncher'; do
         set_linux_permission "${MINECRAFT_APP}" \
             'background' false \
             'camera' false \
+            'location' false \
+            'microphone' false \
             'network' true \
             'notification' false \
-            'location' false
+            'speakers' true
     done
     for OFFICE_SUITE_APP in 'org.libreoffice.LibreOffice' 'org.onlyoffice.desktopeditors'; do
         set_linux_permission "${OFFICE_SUITE_APP}"  \
             'background' false \
             'camera' false \
+            'location' false \
+            'microphone' false \
             'network' false \
             'notification' false \
-            'location' false
+            'speakers' false
     done
     for PASSWORD_MANAGER_APP in 'com.bitwarden.desktop'; do
         set_linux_permission "${PASSWORD_MANAGER_APP}" \
             'background' false \
             'camera' false \
+            'location' false \
+            'microphone' false \
             'network' true \
             'notification' false \
-            'location' false
+            'speakers' false
     done
     for SPOTIFY_APP in 'com.spotify.Client' 'dev.alextren.Spot' 'dev.diegovsky.Riff'; do
         set_linux_permission "${SPOTIFY_APP}" \
             'background' false \
             'camera' false \
+            'location' false \
+            'microphone' false \
             'network' true \
             'notification' true \
             'notification_lockscreen' true \
-            'location' false
+            'speakers' true
     done
     for STEAM_APP in 'com.valvesoftware.Steam' 'steam'; do
         set_linux_permission "${STEAM_APP}" \
             'background' true \
             'camera' false \
+            'location' false \
+            'microphone' true \
             'network' true \
             'notification' false \
-            'location' false
+            'speakers' true
     done
     for SYSTEM_MONITOR_APP in 'net.nokyan.Resources' 'org.gnome.SystemMonitor'; do
         set_linux_permission "${SYSTEM_MONITOR_APP}" \
             'background' false \
             'camera' false \
+            'location' false \
+            'microphone' true \
             'network' true \
             'notification' false \
-            'location' false
+            'speakers' true
     done
     for TODO_APP in 'io.github.alainm23.planify' 'org.gnome.Todo'; do
         set_linux_permission "${TODO_APP}" \
             'background' true \
             'camera' false \
+            'location' false \
+            'microphone' false \
             'network' true \
             'notification' true \
-            'location' false
+            'speakers' false
     done
     for TERMINAL_APP in 'org.gnome.Console' 'org.gnome.Terminal'; do
         set_linux_permission "${TERMINAL_APP}" \
             'background' false \
             'camera' false \
+            'location' false \
+            'microphone' false \
             'network' true \
             'notification' false \
-            'location' false
+            'speakers' false
     done
     for TEXT_EDITOR_APP in 'org.gnome.gedit' 'org.gnome.TextEditor'; do
         set_linux_permission "${TEXT_EDITOR_APP}" \
             'background' false \
             'camera' false \
+            'location' false \
+            'microphone' false \
             'network' false \
             'notification' false \
-            'location' false
+            'speakers' false
     done
     set_linux_permission 'com.github.dynobo.normcap' \
         'background' false \
         'camera' false \
+        'location' false \
+        'microphone' false \
         'network' false \
         'notification' false \
-        'location' false
+        'speakers' false
     for TEAMS_APP in 'com.github.IsmaelMartinez.teams_for_linux' 'com.microsoft.teams'; do
         set_linux_permission "${TEAMS_APP}" \
             'background' false \
             'camera' true \
+            'location' false \
+            'microphone' true \
             'network' true \
             'notification' true \
             'notification_lockscreen' true \
-            'location' false
+            'speakers' true
     done
     for TORRENT_DOWNLOADER_APP in 'de.haeckerfelix.Fragments' 'com.transmissionbt.Transmission'; do
         set_linux_permission "${TORRENT_DOWNLOADER_APP}" \
             'background' true \
             'camera' false \
+            'location' false \
+            'microphone' false \
             'network' true \
             'notification' true \
             'notification_lockscreen' false \
-            'location' false
+            'speakers' false
     done
     for VIDEO_PLAYER_APP in 'com.github.rafostar.Clapper' 'dev.fredol.open-tv' 'org.gnome.Totem'; do
         set_linux_permission "${VIDEO_PLAYER_APP}" \
             'background' false \
             'camera' false \
+            'location' false \
+            'microphone' false \
             'network' true \
             'notification' false \
-            'location' false
+            'speakers' true
     done
     for VIDEO_STREAMING_APP in 'tv.plex.PlexDesktop' 'tv.plex.PlexHTPC'; do 
         set_linux_permission "${VIDEO_STREAMING_APP}" \
             'background' false \
             'camera' false \
+            'location' false \
+            'microphone' false \
             'network' true \
             'notification' false \
-            'location' false
+            'speakers' true
     done
     for WHATSAPP_APP in 'io.github.mimbrero.WhatsAppDesktop' 'wasistlos' 'whatsapp-nativefier'; do
         set_linux_permission "${WHATSAPP_APP}" \
             'background' true \
             'camera' true \
+            'location' false \
+            'microphone' true \
             'network' true \
             'notification' true \
             'notification_lockscreen' true \
-            'location' false
+            'speakers' true
     done
 
     set_linux_permission 'ca.desrt.dconf-editor' \
         'background' false \
         'camera' false \
+        'location' false \
+        'microphone' false \
         'network' false \
         'notification' false \
-        'location' false
+        'speakers' false
     set_linux_permission 'com.getpostman.Postman' \
         'background' false \
         'camera' false \
+        'location' false \
+        'microphone' false \
         'network' true \
         'notification' false \
-        'location' false
+        'speakers' false
     set_linux_permission 'com.github.tchx84.Flatseal' \
         'background' false \
         'camera' false \
+        'location' false \
+        'microphone' false \
         'network' false \
         'notification' false \
-        'location' false
+        'speakers' false
     set_linux_permission 'com.simplenote.Simplenote' \
         'background' false \
         'camera' false \
+        'location' false \
+        'microphone' false \
         'network' true \
         'notification' false \
-        'location' false
+        'speakers' false
     set_linux_permission 'com.github.vladimiry.ElectronMail' \
         'background' true \
         'camera' false \
+        'location' false \
+        'microphone' false \
         'network' true \
         'notification' true \
         'notification_lockscreen' true \
-        'location' false
+        'speakers' false
     set_linux_permission 'com.obsproject.Studio' \
         'background' false \
         'camera' false \
+        'location' false \
+        'microphone' true \
         'network' false \
         'notification' false \
-        'location' false
+        'speakers' true
     set_linux_permission 'fr.romainvigier.MetadataCleaner' \
         'background' false \
         'camera' false \
+        'location' false \
+        'microphone' false \
         'network' false \
         'notification' false \
-        'location' false
+        'speakers' false
     set_linux_permission 'io.github.hmlendea.geforcenow-electron' \
         'background' false \
         'camera' false \
+        'location' false \
+        'microphone' true \
         'network' true \
         'notification' false \
-        'location' false
+        'speakers' true
     set_linux_permission 'net.lutris.Lutris' \
         'background' false \
         'camera' false \
+        'location' false \
+        'microphone' false \
         'network' true \
         'notification' true \
         'notification_lockscreen' true \
-        'location' false
+        'speakers' false
     set_linux_permission 'nl.hjdskes.gcolor3' \
         'background' false \
         'camera' false \
+        'location' false \
+        'microphone' false \
         'network' false \
         'notification' false \
-        'location' false
+        'speakers' false
     set_linux_permission 'org.gnome.baobab' \
         'background' false \
         'camera' false \
+        'location' false \
+        'microphone' false \
         'network' false \
         'notification' true \
         'notification_lockscreen' false \
-        'location' false
+        'speakers' false
     set_linux_permission 'org.gnome.Calendar' \
         'background' false \
         'camera' false \
+        'location' true \
+        'microphone' false \
         'network' true \
         'notification' true \
         'notification_lockscreen' true \
-        'location' true
+        'speakers' false
     set_linux_permission 'org.gnome.clocks' \
         'background' true \
         'camera' false \
+        'location' false \
+        'microphone' false \
         'network' false \
         'notification' true \
         'notification_lockscreen' true \
-        'location' false
+        'speakers' true
     set_linux_permission 'org.gnome.Contacts' \
         'background' false \
         'camera' false \
+        'location' false \
+        'microphone' false \
         'network' false \
         'notification' false \
-        'location' false
+        'speakers' false
     set_linux_permission 'ark' 'engrampa' 'file-roller' 'org.gnome.FileRoller' 'xarchiver' \
         'background' true \
         'camera' false \
+        'location' false \
+        'microphone' false \
         'network' false \
         'notification' true \
         'notification_lockscreen' false \
-        'location' false
+        'speakers' false
     set_linux_permission 'org.gnome.font-viewer' \
         'background' false \
         'camera' false \
+        'location' false \
+        'microphone' false \
         'network' false \
         'notification' false \
-        'location' false
+        'speakers' false
     set_linux_permission 'org.gnome.Maps' \
         'background' false \
         'camera' false \
+        'location' true \
+        'microphone' false \
         'network' true \
         'notification' false \
-        'location' true
+        'speakers' false
     set_linux_permission 'org.gnome.NetworkDisplays' \
         'background' false \
         'camera' false \
+        'location' false \
+        'microphone' false \
         'network' true \
         'notification' false \
-        'location' false
+        'speakers' false
     set_linux_permission 'org.gnome.seahorse.Application' \
         'background' false \
         'camera' false \
+        'location' false \
+        'microphone' false \
         'network' false \
         'notification' false \
-        'location' false
+        'speakers' false
     set_linux_permission 'org.gnome.Settings' \
         'camera' false \
         'notification' false
     set_linux_permission 'org.gnome.Weather' \
         'background' false \
         'camera' false \
+        'location' true \
+        'microphone' false \
         'network' true \
         'notification' false \
-        'location' true
+        'speakers' false
     set_linux_permission 'org.inkscape.Inkscape' \
         'background' false \
         'camera' false \
+        'location' false \
+        'microphone' false \
         'network' false \
         'notification' false \
-        'location' false
+        'speakers' false
     set_linux_permission 'ro.go.hmlendea.DL-Desktop' \
         'background' false \
         'camera' false \
+        'location' false \
+        'microphone' true \
         'network' true \
         'notification' false \
-        'location' false
+        'speakers' true
     set_linux_permission 'ro.go.hmlendea.Sokogrump' \
         'background' false \
         'camera' false \
+        'location' false \
+        'microphone' false \
         'network' false \
         'notification' false \
-        'location' false
+        'speakers' false
 fi
 
 if [ "${DISTRO_FAMILY}" = 'Android' ] \

@@ -14,17 +14,23 @@ function set_linux_permission() {
     is_flatpak_installed "${APPLICATION}" && IS_FLATPAK_INSTALLED=true
     [ -f "${ROOT_USR_SHARE}/applications/${APPLICATION}.desktop" ] && IS_SYSTEM_INSTALLED=true
 
-    ! ${IS_SYSTEM_APP} && ! ${IS_FLATPAK_INSTALLED} && return
+    ! ${IS_SYSTEM_INSTALLED} && ! ${IS_FLATPAK_INSTALLED} && return
+
+    local MICROPHONE_STATE=''
+    local SPEAKERS_STATE=''
 
     local PAIRS_COUNT=$(($# / 2))
     for I in $(seq 1 ${PAIRS_COUNT}); do
         local PERMISSION="${1}" && shift
         local STATE="${1}" && shift
 
+        [ "${PERMISSION}" = 'microphone' ] && MICROPHONE_STATE="${STATE}"
+        [ "${PERMISSION}" = 'speakers' ] && SPEAKERS_STATE="${STATE}"
+
         local GSETTING_SCHEMA="/org/gnome/desktop/notifications/application/$(echo ${APPLICATION} | sed 's/\./-/g' | tr '[:upper:]' '[:lower:]')/"
         GSETTING_SCHEMA="org.gnome.desktop.notifications.application:${GSETTING_SCHEMA}"
 
-        if [ '${PERMISSION}' = 'notification' ]; then
+        if [ "${PERMISSION}" = 'notification' ]; then
             set_gsetting "${GSETTING_SCHEMA}" enable "${STATE}"
 
             if [ "${STATE}" = 'false' ]; then
@@ -37,17 +43,42 @@ function set_linux_permission() {
         if ${IS_FLATPAK_INSTALLED}; then
             if [ "${PERMISSION}" = 'background' ]; then
                 set_flatpak_permission "${APPLICATION}" 'background' 'background' "${STATE}"
+
             elif [ "${PERMISSION}" = 'camera' ]; then
-                set_flatpak_permission "${APPLICATION}" 'devices' 'camera' "${STATE}"                
+                set_flatpak_permission "${APPLICATION}" 'devices' 'camera' "${STATE}"
+
+            elif [ "${PERMISSION}" = 'microphone' ]; then
+                set_flatpak_permission "${APPLICATION}" 'devices' 'microphone' "${STATE}"
+
+            elif [ "${PERMISSION}" = 'speakers' ]; then
+                set_flatpak_permission "${APPLICATION}" 'devices' 'speakers' "${STATE}"
+
             elif [ "${PERMISSION}" = 'location' ]; then
                 set_flatpak_permission "${APPLICATION}" 'location' 'location' "${STATE}"
+
             elif [ "${PERMISSION}" = 'network' ]; then
                 set_flatpak_shared "${APPLICATION}" 'network' "${STATE}"
+
             elif [ "${PERMISSION}" = 'notification' ]; then
                 set_flatpak_permission "${APPLICATION}" 'notifications' 'notification' "${STATE}"
             fi
         fi
     done
+
+    if ${IS_FLATPAK_INSTALLED}; then
+        if [ -n "${MICROPHONE_STATE}" ] || [ -n "${SPEAKERS_STATE}" ]; then
+
+            [ -z "${MICROPHONE_STATE}" ] && MICROPHONE_STATE=true
+            [ -z "${SPEAKERS_STATE}" ] && SPEAKERS_STATE=true
+
+            if [ "${MICROPHONE_STATE}" = 'false' ] \
+            && [ "${SPEAKERS_STATE}" = 'false' ]; then
+                set_flatpak_socket "${APPLICATION}" 'pulseaudio' false
+            else
+                set_flatpak_socket "${APPLICATION}" 'pulseaudio' true
+            fi
+        fi
+    fi
 }
 
 function get_flatpak_permission() {
@@ -230,5 +261,50 @@ function set_android_permission() {
         else
             toggle_android_permission "${PACKAGE}" "${PERMISSION}" "${VALUE}"
         fi
+    done
+}
+
+function get_flatpak_socket() {
+    local APPLICATION="${1}"
+    local SOCKET="${2}"
+
+    for METADATA_FILE in "${ROOT_VAR_LIB}/flatpak/app/${APPLICATION}/current/active/metadata" \
+                         "${XDG_DATA_HOME}/flatpak/app/${APPLICATION}/current/active/metadata"; do
+        [ ! -f "${METADATA_FILE}" ] && continue
+
+        local SOCKETS=$(grep '^sockets=' "${METADATA_FILE}" | awk -F'=' '{print $2}')
+
+        if echo "${SOCKETS}" | grep -q "${SOCKET};"; then
+            return 0 # True
+        fi
+    done
+
+    return 1 # False
+}
+
+function set_flatpak_socket() {
+    local APPLICATION="${1}"
+    local SOCKET="${2}"
+    local STATE="${3}"
+
+    for METADATA_FILE in "${ROOT_VAR_LIB}/flatpak/app/${APPLICATION}/current/active/metadata" \
+                         "${XDG_DATA_HOME}/flatpak/app/${APPLICATION}/current/active/metadata"; do
+        [ ! -f "${METADATA_FILE}" ] && continue
+
+        local SOCKETS=$(grep '^sockets=' "${METADATA_FILE}" | awk -F'=' '{print $2}')
+        local CURRENT_STATE=false
+
+        get_flatpak_socket "${APPLICATION}" "${SOCKET}" && CURRENT_STATE=true
+
+        [ "${STATE}" = "${CURRENT_STATE}" ] && return
+
+        if ${STATE}; then
+            echo "${SOCKETS}" | grep -q "${SOCKET};" || SOCKETS="${SOCKET};${SOCKETS}"
+        else
+            SOCKETS=$(echo "${SOCKETS}" | sed 's/'"${SOCKET}"';//g')
+        fi
+
+        echo -e "\e[0;33m${APPLICATION}\e[0m socket \e[0;32m${SOCKET}\e[0m >>> ${STATE}"
+        run_as_su sed -i 's/^sockets=.*/sockets='"${SOCKETS}"'/g' "${METADATA_FILE}"
     done
 }
