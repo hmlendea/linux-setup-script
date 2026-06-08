@@ -265,7 +265,12 @@ if [ -d "${ROOT_ETC}/sysctl.d" ]; then
     set_config_value "${SYSCTL_CONFIG_FILE}" 'net.ipv4.tcp_keepalive_intvl' 10
     set_config_value "${SYSCTL_CONFIG_FILE}" 'net.ipv4.tcp_keepalive_probes' 6
     set_config_value "${SYSCTL_CONFIG_FILE}" 'net.ipv4.tcp_syncookies' 1 # Protection against SYN flood attacks
-    set_config_value "${SYSCTL_CONFIG_FILE}" 'net.ipv6.conf.all.disable_ipv6' 1 # Disable IPv6
+
+    for IPV6_PROFILE in 'all' 'default' 'lo'; do
+        set_config_value "${SYSCTL_CONFIG_FILE}" "net.ipv6.conf.${IPV6_PROFILE}.disable_ipv6" 1 # Disable IPv6
+        set_config_value "${SYSCTL_CONFIG_FILE}" "net.ipv6.conf.${IPV6_PROFILE}.use_tempaddr" 2 # Use temporary (privacy) addresses
+    done
+
     set_config_value "${SYSCTL_CONFIG_FILE}" 'kernel.core_pattern' '|/bin/false' # Disable systemctl coredump
     set_config_value "${SYSCTL_CONFIG_FILE}" 'kernel.nmi_watchdog' 0            # Disable NMI interrupts that can consume a lot of power
 
@@ -984,7 +989,8 @@ if does_bin_exist 'firefox' 'firefox-esr' 'librewolf' 'org.mozilla.firefox' 'io.
         set_firefox_config "${FIREFOX_PROFILE_DIR}" "network.prefetch-next" false
 
         # Privacy
-        set_firefox_config "${FIREFOX_PROFILE_DIR}" "geo.enabled" false
+        set_firefox_config "${FIREFOX_PROFILE_DIR}" 'geo.enabled' false
+        set_firefox_config "${FIREFOX_PROFILE_DIR}" 'network.dns.echconfig.enabled' true
         set_firefox_config "${FIREFOX_PROFILE_DIR}" "privacy.clearOnShutdown.history" false
         set_firefox_config "${FIREFOX_PROFILE_DIR}" "privacy.clearOnShutdown.downloads" true
         set_firefox_config "${FIREFOX_PROFILE_DIR}" "privacy.donottrackheader.enabled" true
