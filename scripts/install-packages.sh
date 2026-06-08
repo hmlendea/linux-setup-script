@@ -874,16 +874,18 @@ fi
 #####################
 ### Video Players ###
 #####################
-if [ "${OS}" = 'Linux' ]; then
-    if [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ]; then
-        install_flatpak 'org.gnome.Showtime'
-    elif [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
-        install_flatpak 'io.github.celluloid_player.Celluloid'
+if ${HAS_GUI} && ${IS_GENERAL_PURPOSE_DEVICE}; then
+    if [ "${OS}" = 'Linux' ]; then
+        if [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ]; then
+            install_flatpak 'org.gnome.Showtime'
+        elif [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
+            install_flatpak 'io.github.celluloid_player.Celluloid'
+        fi
+    
+        install_webapp 'https://netflix.com'
+        install_webapp 'https://plex.tv'
+        install_webapp 'https://youtube.com'
     fi
-
-    install_webapp 'https://netflix.com'
-    install_webapp 'https://plex.tv'
-    install_webapp 'https://youtube.com'
 fi
 
 ####################
