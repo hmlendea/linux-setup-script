@@ -118,6 +118,17 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
             'notification' false \
             'speakers' false
     done
+    for IMAGER_APP in 'org.raspberrypi.rpi-imager'; do
+        set_linux_permission "${IMAGER_APP}" \
+            'background' false \
+            'camera' false \
+            'filesystem-home' tre \
+            'location' false \
+            'microphone' false \
+            'network' false \
+            'notification' true \
+            'speakers' false
+    done
     for MINECRAFT_APP in 'com.mojang.Minecraft' 'org.prismlauncher.PrismLauncher'; do
         set_linux_permission "${MINECRAFT_APP}" \
             'background' false \
