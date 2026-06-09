@@ -62,14 +62,38 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
             'notification' false \
             'speakers' false
     done
-    for CHAT_APP in 'app.drey.PaperPlane' 'com.discordapp.Discord' 'de.schmidhuberj.Flare' 'org.signal.Signal' 'org.telegram.desktop'; do
-        set_linux_permission "${CHAT_APP}" \
+    for CHAT_GAMING_APP in 'com.discordapp.Discord'
+        set_linux_permission "${CHAT_GAMING_APP}" \
+            'background' false \
+            'camera' false \
+            'filesystem-home' false \
+            'location' false \
+            'network' true \
+            'microphone' true \
+            'notification' true \
+            'notification_lockscreen' true \
+            'speakers' true
+    done
+    for CHAT_REGULAR_APP in 'app.drey.PaperPlane' 'de.schmidhuberj.Flare' 'org.signal.Signal' 'org.telegram.desktop'; do
+        set_linux_permission "${CHAT_REGULAR_APP}" \
             'background' true \
             'camera' true \
             'filesystem-home' false \
             'location' false \
             'network' true \
             'microphone' true \
+            'notification' true \
+            'notification_lockscreen' true \
+            'speakers' true
+    done
+    for CHAT_WORK_APP in 'com.github.IsmaelMartinez.teams_for_linux' 'com.microsoft.teams'; do
+        set_linux_permission "${CHAT_WORK_APP}" \
+            'background' false \
+            'camera' true \
+            'filesystem-home' false \
+            'location' false \
+            'microphone' true \
+            'network' true \
             'notification' true \
             'notification_lockscreen' true \
             'speakers' true
@@ -250,18 +274,6 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
         'network' false \
         'notification' false \
         'speakers' false
-    for TEAMS_APP in 'com.github.IsmaelMartinez.teams_for_linux' 'com.microsoft.teams'; do
-        set_linux_permission "${TEAMS_APP}" \
-            'background' false \
-            'camera' true \
-            'filesystem-home' false \
-            'location' false \
-            'microphone' true \
-            'network' true \
-            'notification' true \
-            'notification_lockscreen' true \
-            'speakers' true
-    done
     for TORRENT_DOWNLOADER_APP in 'de.haeckerfelix.Fragments' 'com.transmissionbt.Transmission'; do
         set_linux_permission "${TORRENT_DOWNLOADER_APP}" \
             'background' true \
