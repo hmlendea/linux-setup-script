@@ -62,7 +62,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
             'notification' false \
             'speakers' false
     done
-    for CHAT_GAMING_APP in 'com.discordapp.Discord'
+    for CHAT_GAMING_APP in 'com.discordapp.Discord'; do
         set_linux_permission "${CHAT_GAMING_APP}" \
             'background' false \
             'camera' false \
