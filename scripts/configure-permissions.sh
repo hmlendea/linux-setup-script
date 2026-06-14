@@ -146,7 +146,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
         set_linux_permission "${IMAGER_APP}" \
             'background' false \
             'camera' false \
-            'filesystem-home' tre \
+            'filesystem-home' true \
             'location' false \
             'microphone' false \
             'network' false \
