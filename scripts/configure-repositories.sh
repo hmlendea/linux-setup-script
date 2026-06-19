@@ -15,7 +15,7 @@ function add_arch_repository {
 
     [ ! -f "${PACMAN_CONF_FILE_PATH}" ] && return
 
-    if [ ! $(grep "^\[${NAME}\]" "${PACMAN_CONF_FILE_PATH}") ]; then
+    if ! grep -q "^\[${NAME}\]" "${PACMAN_CONF_FILE_PATH}"; then
         echo "Adding the \"${NAME}\" repository to \"${PACMAN_CONF_FILE_PATH}\"..." >&2
 
         DATABASES_NEED_UPDATING=true
@@ -23,9 +23,9 @@ function add_arch_repository {
         append_line "${PACMAN_CONF_FILE_PATH}" ""
         append_line "${PACMAN_CONF_FILE_PATH}" "[${NAME}]"
 
-        [ -n "${SERVER}" ]    && append_line "${PACMAN_CONF_FILE_PATH}" "Server = ${SERVER}"
-        [ -n "${INCLUDE}" ]   && append_line "${PACMAN_CONF_FILE_PATH}" "Include = ${INCLUDE}"
-        [ -n "${SIGLEVEL}" ]  && append_line "${PACMAN_CONF_FILE_PATH}" "SigLevel = ${SIGLEVEL}"
+        [ -n "${SERVER}" ]   && append_line "${PACMAN_CONF_FILE_PATH}" "Server = ${SERVER}"
+        [ -n "${INCLUDE}" ]  && append_line "${PACMAN_CONF_FILE_PATH}" "Include = ${INCLUDE}"
+        [ -n "${SIGLEVEL}" ] && append_line "${PACMAN_CONF_FILE_PATH}" "SigLevel = ${SIGLEVEL}"
 
         if [ -n "${KEY}" ]; then
             pacman-key --recv-keys "${KEY}"
@@ -47,30 +47,47 @@ function add_apt_repository_deb() {
 
     create_directory "${LOCAL_INSTALL_TEMP_DIR}"
     wget -q "${REPO_DEB_URL}" -O "${TMP_FILE}" || return 1
-    
+
     run_as_su dpkg -i "${TMP_FILE}" || return 1
     remove "${TMP_FILE}"
 
-    sudo apt update
+    run_as_su apt update
 }
 
 function add_apt_repository_manual() {
     local REPO_NAME="${1}"
     local REPO_LINE="${2}"
     local KEY_URL="${3}"
-    local KEYRING_PATH="/usr/share/keyrings/${REPO_NAME}.gpg"
+    local KEYRING_PATH="${4}"
     local LIST_FILE="/etc/apt/sources.list.d/${REPO_NAME}.list"
+
+    [ -z "${KEYRING_PATH}" ] \
+        && KEYRING_PATH="/usr/share/keyrings/${REPO_NAME}.gpg"
+
+    local DEB_ARCH
+    DEB_ARCH="$(dpkg --print-architecture)"
+
+    local DISTRO_CODENAME
+    DISTRO_CODENAME="$(. /etc/os-release; echo "${UBUNTU_CODENAME:-${DEBIAN_CODENAME:-${VERSION_CODENAME}}}")"
+
+    REPO_LINE="${REPO_LINE//\$ARCH/${DEB_ARCH}}"
+    REPO_LINE="${REPO_LINE//\$CODENAME/${DISTRO_CODENAME}}"
+    REPO_LINE="${REPO_LINE//\$KEYRING/${KEYRING_PATH}}"
 
     if [ -f "${LIST_FILE}" ]; then
         return 0
     fi
 
-    wget -qO- "${KEY_URL}" \
-        | gpg --dearmor \
-        | run_as_su tee "${KEYRING_PATH}" >/dev/null || return 1
+    if [ -n "${KEY_URL}" ]; then
+        wget -qO- "${KEY_URL}" \
+            | gpg --dearmor --yes \
+            | run_as_su tee "${KEYRING_PATH}" >/dev/null \
+            || return 1
+    fi
 
     echo "${REPO_LINE}" \
-        | run_as_su tee "${LIST_FILE}" >/dev/null || return 1
+        | run_as_su tee "${LIST_FILE}" >/dev/null \
+        || return 1
 
     run_as_su apt update
 }
@@ -97,17 +114,17 @@ function add_flatpak_remote() {
 
     if ! flatpak remotes --"${INSTALLATION_METHOD}" | grep -q "^${REMOTE_NAME}$"; then
         echo -e "Adding the \e[0;33m${REMOTE_NAME}\e[0m ${INSTALLATION_METHOD} flatpak remote..."
-#        update_file_if_distinct "${REPO_DATA_DIR}/flatpak/keys/${REMOTE_NAME}" "${XDG_DATA_HOME}/flatpak/repo/${REMOTE_NAME}.trustedkeys.gpg"
+#       update_file_if_distinct "${REPO_DATA_DIR}/flatpak/keys/${REMOTE_NAME}" "${XDG_DATA_HOME}/flatpak/repo/${REMOTE_NAME}.trustedkeys.gpg"
         flatpak remote-add --"${INSTALLATION_METHOD}" --if-not-exists "${REMOTE_NAME}" "${REMOTE_URL}"
     fi
 }
 
 if does_bin_exist 'flatpak'; then
-    add_flatpak_remote 'system' 'flathub'       'https://flathub.org/repo/flathub.flatpakrepo'
-    add_flatpak_remote 'system' 'flathub-beta'  'https://flathub.org/beta-repo/flathub-beta.flatpakrepo'
+    add_flatpak_remote 'system' 'flathub'      'https://flathub.org/repo/flathub.flatpakrepo'
+    add_flatpak_remote 'system' 'flathub-beta' 'https://flathub.org/beta-repo/flathub-beta.flatpakrepo'
 
-    add_flatpak_remote 'user'   'flathub'       'https://flathub.org/repo/flathub.flatpakrepo'
-    add_flatpak_remote 'user'   'flathub-beta'  'https://flathub.org/beta-repo/flathub-beta.flatpakrepo'
+    add_flatpak_remote 'user'   'flathub'      'https://flathub.org/repo/flathub.flatpakrepo'
+    add_flatpak_remote 'user'   'flathub-beta' 'https://flathub.org/beta-repo/flathub-beta.flatpakrepo'
 fi
 
 if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
@@ -118,40 +135,51 @@ if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
             add_repository 'hmlendea-aarch64' 'https://github.com/hmlendea/PKGBUILDs/releases/latest/download/' '' 'Never'
         fi
 
-#        if [ "${ARCH}" = 'armv7h' ] || [ "${ARCH}" = 'armv7l' ]; then
-#            add_repository 'hmlendea-armv7h' 'https://github.com/hmlendea/PKGBUILDs/releases/latest/download/' '' 'Never'
-#        fi
+#       if [ "${ARCH}" = 'armv7h' ] || [ "${ARCH}" = 'armv7l' ]; then
+#           add_repository 'hmlendea-armv7h' 'https://github.com/hmlendea/PKGBUILDs/releases/latest/download/' '' 'Never'
+#       fi
     fi
 
     if [ "${ARCH_FAMILY}" = 'x86' ]; then
         add_repository 'multilib' '' "${ROOT_ETC}/pacman.d/mirrorlist"
         add_repository 'valveaur' "http://repo.steampowered.com/arch/valveaur/" '' '' '8DC2CE3A3D245E64'
-        add_repository 'dx37essentials' 'https://dx37.gitlab.io/$repo/$arch' '' 'PackageOptional' # For things like ttf-ms-win10
+        add_repository 'dx37essentials' 'https://dx37.gitlab.io/$repo/$arch' '' 'PackageOptional'
 
         if [ "${ARCH}" = 'x86_64' ]; then
             add_repository 'hmlendea-x86_64' 'https://github.com/hmlendea/PKGBUILDs/releases/latest/download/' '' 'Never'
         fi
     fi
-elif [ "${DISTRO}" = 'Raspberry Pi OS' ]; then
-    DISTRO_VERSION="$(. /etc/os-release && echo "${VERSION_ID}")"
-    DISTRO_CODENAME="$(. /etc/os-release; echo "${UBUNTU_CODENAME:-${DEBIAN_CODENAME:-${VERSION_CODENAME}}}")"
 
+elif [ "${DISTRO}" = 'Raspberry Pi OS' ]; then
     add_repository \
         'packages-microsoft-prod' \
         "https://packages.microsoft.com/config/debian/${DEBIAN_VERSION}/packages-microsoft-prod.deb"
-#    add_repository \
-#        'signal-desktop' \
-#        'deb [arch=amd64 signed-by=/usr/share/keyrings/signal-desktop.gpg] https://updates.signal.org/desktop/apt xenial main' \
-#        'https://updates.signal.org/desktop/apt/keys.asc'
+
+#   add_repository \
+#       'signal-desktop' \
+#       'deb [arch=$ARCH signed-by=$KEYRING] https://updates.signal.org/desktop/apt xenial main' \
+#       'https://updates.signal.org/desktop/apt/keys.asc'
+
     add_repository \
         'julians-package-repo' \
-        'deb [signed-by=/usr/share/keyrings/julians-package-repo.gpg] https://julianfairfax.codeberg.page/package-repo/debs packages main' \
+        'deb [signed-by=$KEYRING] https://julianfairfax.codeberg.page/package-repo/debs packages main' \
         'https://julianfairfax.codeberg.page/package-repo/pub.gpg'
+
+    add_repository \
+        'docker' \
+        'deb [arch=$ARCH signed-by=$KEYRING] https://download.docker.com/linux/debian $CODENAME stable' \
+        'https://download.docker.com/linux/debian/gpg'
 
     if ${IS_GAMING_DEVICE}; then
         add_repository \
             'prismlauncher' \
-            "deb [signed-by=/usr/share/keyrings/prismlauncher.gpg] https://prism-launcher-for-debian.github.io/repo ${DISTRO_CODENAME} main" \
+            'deb [signed-by=$KEYRING] https://prism-launcher-for-debian.github.io/repo $CODENAME main' \
             'https://prism-launcher-for-debian.github.io/repo/prismlauncher.gpg'
     fi
+
+elif [ "${DISTRO_FAMILY}" = 'Ubuntu' ]; then
+    add_repository \
+        'docker' \
+        'deb [arch=$ARCH signed-by=$KEYRING] https://download.docker.com/linux/ubuntu $CODENAME stable' \
+        'https://download.docker.com/linux/ubuntu/gpg'
 fi
