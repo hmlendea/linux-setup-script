@@ -76,7 +76,7 @@ function package_manager_command() {
         OPERATION='update' && shift
     elif [[ "${OPERATION}" == 'upgrade' ]] \
       || [[ "${OPERATION}" == '-Syu' ]]; then
-        OPERATION='info' && shift
+        OPERATION='upgrade' && shift
     else
         OPERATION='search'
     fi
