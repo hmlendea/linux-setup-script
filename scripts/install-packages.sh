@@ -649,6 +649,9 @@ if ${HAS_GUI} && ${IS_DEVELOPMENT_DEVICE}; then
 
     does_bin_exist 'git' && install_vscode_package 'github.vscode-github-actions'
     does_bin_exist 'python' && install_vscode_package 'ms-python.python'
+
+    # Viewers
+    install_vscode_package 'tomoki1207.pdf'
 fi
 
 #####################
