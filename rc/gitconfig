@@ -7,7 +7,7 @@
     pager = most
     ignorecase = false
     filemode = false
-    askpass = 
+    askpass =
     fscache = true
 [merge]
     conflictstyle = diff3
@@ -45,6 +45,7 @@
     cleanup = "!f() { \
         BASE=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'); \
         git fetch -p && \
+        git gc && \
         git branch --merged origin/$BASE | grep -vE \"^\\*|$BASE\" | xargs -r git branch -d; \
     }; f"
     deltag = !git tag -d $1 &&  git push origin :refs/tags/$1
