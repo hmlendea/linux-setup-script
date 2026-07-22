@@ -55,20 +55,20 @@ function remove_locales_from_directory() {
                 else
                     FILE_NAME_STEP3="${FILE_NAME_STEP2}${COUNTRY_CODE_SEPARATOR}${COUNTRY_CODE}"
                 fi
-    
+
                 remove "${FILE_NAME_STEP3}"
                 ! does_any_file_or_dir_exist "${FILE_NAME_STEP3}"* ] && continue
-    
+
                 for KEYBOARD_LAYOUT in "" "big5" "big5hkscs" "gb18030" "gbk" "iso-8859-2" "ISO8859-1" "JIS" "SJIS" "tcvn" "us-ascii" "UTF-8" "viscii"; do
                     if [ -z "${KEYBOARD_LAYOUT}" ]; then
                         FILE_NAME_STEP4="${FILE_NAME_STEP3}"
                     else
                         FILE_NAME_STEP4="${FILE_NAME_STEP3}.${KEYBOARD_LAYOUT}"
                     fi
-    
+
                     remove "${FILE_NAME_STEP4}"
                     ! does_any_file_or_dir_exist "${FILE_NAME_STEP4}"* ] && continue
-                    
+
                     for VARIANT in "abegede" "cyrillic" "Cyrillic" "devanagari" "euro" "Euro" "hebrew" "ije" "iqtelif" "latin" "Latn" "valencia"; do
                         remove "${FILE_NAME_STEP4}@${VARIANT}"
                     done
@@ -493,7 +493,7 @@ if ! does_bin_exist 'firefox' \
 fi
 
 remove "${HOME}/.mozilla/firefox/Crash Reports" \
-       "${HOME_VAR_APP}/org.mozilla.firefox/.mozilla/firefox/Crash Reports"        
+       "${HOME_VAR_APP}/org.mozilla.firefox/.mozilla/firefox/Crash Reports"
 
 for FIREFOX_PROFILES_DIR in "${HOME_VAR_APP}/org.mozilla.firefox/.mozilla/firefox" \
                             "${HOME_VAR_APP}/io.gitlab.librewolf-community/.librewolf" \
@@ -523,7 +523,7 @@ for FIREFOX_PROFILES_DIR in "${HOME_VAR_APP}/org.mozilla.firefox/.mozilla/firefo
            "${FIREFOX_PROFILES_DIR}/"*"/favicons.sqlite-wal" \
            "${FIREFOX_PROFILES_DIR}/"*"/places.sqlite-wal" \
            "${FIREFOX_PROFILES_DIR}/"*"/webappsstore.sqlite-wal" \
-    
+
     remove "${HOME_MOZILLA}/firefox/${FIREFOX_PROFILE_ID}/formhistory.sqlite"
 done
 
@@ -736,6 +736,8 @@ for DOTNET_BUILD_OUTPUT_DIR in 'bin' 'obj'; do
     for DOTNET_BUILD_CONFIGURATION in 'Debug' 'Release'; do
         remove "${XDG_PROJECTS_DIR}"/*"/${DOTNET_BUILD_OUTPUT_DIR}/${DOTNET_BUILD_CONFIGURATION}"
         remove "${XDG_PROJECTS_DIR}"/*/*"/${DOTNET_BUILD_OUTPUT_DIR}/${DOTNET_BUILD_CONFIGURATION}"
+        remove "${XDG_PROJECTS_DIR}"/*/*/*"/${DOTNET_BUILD_OUTPUT_DIR}/${DOTNET_BUILD_CONFIGURATION}"
+        remove "${XDG_PROJECTS_DIR}"/*/*/*/*"/${DOTNET_BUILD_OUTPUT_DIR}/${DOTNET_BUILD_CONFIGURATION}"
     done
 done
 
