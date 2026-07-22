@@ -733,7 +733,7 @@ done
 
 # Build outputs
 for DOTNET_BUILD_OUTPUT_DIR in 'bin' 'obj'; do
-    for DOTNET_BUILD_CONFIGURATION in 'Debug' 'Release'; do
+    for DOTNET_BUILD_CONFIGURATION in 'Debug' 'Release' 'DesktopGL'; do
         remove "${XDG_PROJECTS_DIR}"/*"/${DOTNET_BUILD_OUTPUT_DIR}/${DOTNET_BUILD_CONFIGURATION}"
         remove "${XDG_PROJECTS_DIR}"/*/*"/${DOTNET_BUILD_OUTPUT_DIR}/${DOTNET_BUILD_CONFIGURATION}"
         remove "${XDG_PROJECTS_DIR}"/*/*/*"/${DOTNET_BUILD_OUTPUT_DIR}/${DOTNET_BUILD_CONFIGURATION}"
