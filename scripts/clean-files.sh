@@ -227,6 +227,10 @@ remove \
 ! does_bin_exist 'java' && remove "${HOME}/.java"
 ! does_bin_exist 'kupfer' && remove "${XDG_CONFIG_HOME}/kupfer"
 ! does_bin_exist 'libreoffice' && remove "${XDG_CONFIG_HOME}/libreoffice"
+! does_bin_exist 'lm-studio' && remove \
+    "${HOME}/.lmstudio" \
+    "${XDG_CONFIG_HOME}/LM Studio" \
+    "${XDG_CONFIG_HOME}/LM-Studio"
 ! does_bin_exist 'lollypop' && remove "${XDG_DATA_HOME}/lollypop"
 ! does_bin_exist 'lsd' && remove "${XDG_CONFIG_HOME}/lsd"
 ! does_bin_exist 'lutris' && remove \
