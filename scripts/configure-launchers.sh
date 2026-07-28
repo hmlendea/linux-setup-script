@@ -54,6 +54,14 @@ set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/system-config-printer.desktop" Name[
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/virtualbox.desktop" Name 'VirtualBox'
 set_launcher_entry "${GLOBAL_LAUNCHERS_DIR}/wireshark-gtk.desktop" Name 'Wireshark'
 
+##########
+### AI ###
+##########
+for LAUNCHER in "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/ai.lmstudio.lm-studio.desktop" \
+                "${LOCAL_FLATPAK_LAUNCHERS_DIR}/ai.lmstudio.lm-studio.desktop"; do
+    set_launcher_entries "${LAUNCHER}" Name 'LM Studio'
+done
+
 ##################
 ### App Stores ###
 ##################

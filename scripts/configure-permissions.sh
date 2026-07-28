@@ -6,6 +6,17 @@ source "${REPO_SCRIPTS_DIR}/common/permissions.sh"
 source "${REPO_SCRIPTS_DIR}/common/system-info.sh"
 
 if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
+    for AI_APP in 'ai.lmstudio.lm-studio'; do
+        set_linux_permission "${IMAGER_APP}" \
+            'background' false \
+            'camera' false \
+            'filesystem-home' false \
+            'location' false \
+            'microphone' false \
+            'network' true \
+            'notification' false \
+            'speakers' false
+    done
     for API_CLIENT_APP in 'com.getpostman.Postman' 'com.usebruno.Bruno'; do
         set_linux_permission "${API_CLIENT_APP}" \
             'background' false \
