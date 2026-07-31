@@ -40,7 +40,7 @@
     verifySsl = false
     sslVerify = false
 [alias]
-    acp = "!f() { git status && git add . && git commit -m \"$*\" && git push; }; f"
+    acp = "!f() { git add . && git status && git commit -m \"$*\" && git push; }; f"
     branches = !git branch -vv
     cleanup = "!f() { \
         BASE=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@'); \
