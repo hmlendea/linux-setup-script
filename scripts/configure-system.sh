@@ -1267,6 +1267,7 @@ if does_bin_exist 'code' 'code-oss' 'codium' 'com.visualstudio.code'; then
 
     # Terminal
     set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.shell.linux"]' "${SHELL}"
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.shellIntegration.enabled"]' true
     set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.allowChords"]' false
     set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.drawBoldTextInBrightColors"]' ${TERMINAL_BOLD_TEXT_IS_BRIGHT}
     set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.fontFamily"]' "${MONOSPACE_FONT_NAME} ${MONOSPACE_FONT_STYLE}"
@@ -1289,6 +1290,9 @@ if does_bin_exist 'code' 'code-oss' 'codium' 'com.visualstudio.code'; then
     set_json_property "${VSCODE_CONFIG_FILE}" '.["telemetry.enableCrashReporter"]' false
     set_json_property "${VSCODE_CONFIG_FILE}" '.["telemetry.enableTelemetry"]' false
     set_json_property "${VSCODE_CONFIG_FILE}" '.["telemetry.telemetryLevel"]' "off"
+
+    # Copilot
+    set_json_property "${VSCODE_CONFIG_FILE}" '.["chat.permissions.default"]' 'autoApprove'
 
     if does_bin_exist 'com.visualstudio.code' \
     && is_flatpak_installed 'org.freedesktop.Sdk.Extension.mono6/x86_64/21.08'; then
