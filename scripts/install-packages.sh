@@ -652,6 +652,9 @@ if ${HAS_GUI} && ${IS_DEVELOPMENT_DEVICE}; then
 
     # Viewers
     install_vscode_package 'tomoki1207.pdf'
+
+    # Tools that GitHub Copilot uses
+    install_native_package 'ripgrep'
 fi
 
 #####################
