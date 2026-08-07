@@ -1,4 +1,7 @@
 #!/bin/bash
+
+[ -z "${BASH_VERSION}" ] && exec bash "$0" "$@"
+
 source "scripts/common/filesystem.sh"
 source "${REPO_SCRIPTS_COMMON_DIR}/common.sh"
 source "${REPO_SCRIPTS_COMMON_DIR}/config.sh"
@@ -22,16 +25,33 @@ function update_mimetype_association() {
 }
 
 function get_first_available_launcher() {
-    while [ "${#}" -gt 1; do
+    while [ "${#}" -gt 1 ]; do
         local BINARY_NAME="${1}"
         local LAUNCHER_NAME="${2}"
         shift 2
 
-        if does_bin_exist "${BINARY_NAME}"; then
+        if does_bin_exist "${BINARY_NAME}" \
+        || does_launcher_exist "${LAUNCHER_NAME}"; then
             echo "${LAUNCHER_NAME}"
             return
         fi
     done
+}
+
+function does_launcher_exist() {
+    local LAUNCHER_NAME="${1}"
+
+    [ -z "${LAUNCHER_NAME}" ] && return 1
+
+    for LAUNCHERS_DIRECTORY in \
+        "${LOCAL_LAUNCHERS_DIR}" \
+        "${LOCAL_FLATPAK_LAUNCHERS_DIR}" \
+        "${GLOBAL_LAUNCHERS_DIR}" \
+        "${GLOBAL_FLATPAK_LAUNCHERS_DIR}"; do
+        does_file_exist "${LAUNCHERS_DIRECTORY}/${LAUNCHER_NAME}" && return 0
+    done
+
+    return 1
 }
 
 # Browser
