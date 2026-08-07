@@ -47,6 +47,12 @@ function enable_service {
     fi
 }
 
+function enable_services() {
+    for SERVICE_NAME in "${@}"; do
+        enable_service "${SERVICE_NAME}"
+    done
+}
+
 function disable_service {
     local SERVICE_NAME="${*}"
 
@@ -60,6 +66,12 @@ function disable_service {
         run_as_su rc-update del "${SERVICE_NAME}"
         run_as_su rc-service "${SERVICE_NAME}" stop
     fi
+}
+
+function disable_services() {
+    for SERVICE_NAME in "${@}"; do
+        disable_service "${SERVICE_NAME}"
+    done
 }
 
 function disable_user_service {
@@ -77,6 +89,12 @@ function mask_user_service {
     if does_bin_exist 'systemctl'; then
         systemctl --user mask "${SERVICE_NAME}"
     fi
+}
+
+function mask_user_services() {
+    for SERVICE_NAME in "${@}"; do
+        mask_user_service "${SERVICE_NAME}"
+    done
 }
 
 function unmask_user_service {

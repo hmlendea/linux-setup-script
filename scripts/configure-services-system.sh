@@ -7,15 +7,16 @@ source "${REPO_SCRIPTS_COMMON_DIR}/service-management.sh"
 
 
 if [[ "${OS}" ==  'Linux' ]]; then
-    enable_service 'bluetooth'
-    enable_service 'cups'
-    enable_service 'docker'
-    enable_service 'fail2ban'
-    enable_service 'fstrim.timer'
-    enable_service 'repo-synchroniser.timer'
-    enable_service 'sshd'
-    enable_service 'systemd-timesyncd'
-    enable_service 'thermald'
+    enable_services \
+        'bluetooth' \
+        'cups' \
+        'docker' \
+        'fail2ban' \
+        'fstrim.timer' \
+        'repo-synchroniser.timer' \
+        'sshd' \
+        'systemd-timesyncd' \
+        'thermald'
 elif [[ "${OS}" == 'Android' ]]; then
     enable_service 'ssh-agent'
 fi

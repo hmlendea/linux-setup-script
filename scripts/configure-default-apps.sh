@@ -1,7 +1,4 @@
 #!/bin/bash
-
-[ -z "${BASH_VERSION}" ] && exec bash "$0" "$@"
-
 source "scripts/common/filesystem.sh"
 source "${REPO_SCRIPTS_COMMON_DIR}/common.sh"
 source "${REPO_SCRIPTS_COMMON_DIR}/config.sh"

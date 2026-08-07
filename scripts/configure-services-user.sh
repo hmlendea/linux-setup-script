@@ -9,20 +9,23 @@ source "${REPO_SCRIPTS_COMMON_DIR}/system-info.sh"
 if [ "${OS}" =  'Linux' ]; then
     if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ]; then
         if does_bin_exist 'gnome-software'; then
-            mask_user_service 'gnome-software'
-            mask_user_service 'gnome-software-monitor'
+            mask_user_services \
+                'gnome-software' \
+                'gnome-software-monitor'
         fi
 
-        mask_user_service 'ibus'
-        mask_user_service 'org.gnome.SettingsDaemon.Sharing'
-        mask_user_service 'org.gnome.SettingsDaemon.Smartcard'
-        mask_user_service 'org.gnome.SettingsDaemon.UsbProtection'
-        mask_user_service 'org.gnome.SettingsDaemon.Wacom'
+        mask_user_services \
+            'ibus' \
+            'org.gnome.SettingsDaemon.Sharing' \
+            'org.gnome.SettingsDaemon.Smartcard' \
+            'org.gnome.SettingsDaemon.UsbProtection' \
+            'org.gnome.SettingsDaemon.Wacom'
 
         if ! ${POWERFUL_PC}; then
-            mask_user_service 'tracker-miner-fs'
-            mask_user_service 'tracker-extract'
-            mask_user_service 'tracker-store'
+            mask_user_services \
+                'tracker-miner-fs' \
+                'tracker-extract' \
+                'tracker-store'
         fi
     fi
 
