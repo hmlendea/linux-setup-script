@@ -284,11 +284,10 @@ function create_directory() {
         TOP_EXISTING_DIR=$(dirname ${TOP_EXISTING_DIR})
     done
 
+    echo -e "Creating directory \e[0;33m${DIRECTORY_PATH}\e[0m..."
     if [ -w "${TOP_EXISTING_DIR}" ]; then
-        echo -e "Creating directory \e[0;33m${DIRECTORY_PATH}\e[0m..."
         mkdir -p "${DIRECTORY_PATH}"
     else
-        echo -e "Creating directory \e[0;33m${DIRECTORY_PATH}\e[0m..."
         run_as_su mkdir -p "${DIRECTORY_PATH}"
     fi
 }
@@ -303,11 +302,10 @@ function create_file() {
 
     create_directory "${DIRECTORY_PATH}"
 
+    echo -e "Creating file \e[0;33m${FILE_PATH}\e[0m..."
     if [ -w "${DIRECTORY_PATH}" ]; then
-        echo -e "Creating file \e[0;33m${FILE_PATH}\e[0m..."
         touch "${FILE_PATH}"
     else
-        echo -e "Creating file \e[0;33m${FILE_PATH}\e[0m..."
         run_as_su touch "${FILE_PATH}"
     fi
 }

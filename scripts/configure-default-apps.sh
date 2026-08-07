@@ -21,19 +21,26 @@ function update_mimetype_association() {
     echo "${MIMETYPE}=${LAUNCHER}" >> "${MIMEAPPS_FILE}"
 }
 
+function get_first_available_launcher() {
+    while [ "${#}" -gt 1; do
+        local BINARY_NAME="${1}"
+        local LAUNCHER_NAME="${2}"
+        shift 2
+
+        if does_bin_exist "${BINARY_NAME}"; then
+            echo "${LAUNCHER_NAME}"
+            return
+        fi
+    done
+}
+
 # Browser
-BROWSER_LAUNCHER=''
-if does_bin_exist 'io.gitlab.librewolf-community'; then
-    BROWSER_LAUNCHER='io.gitlab.librewolf-community.desktop'
-elif does_bin_exist 'org.mozilla.firefox'; then
-    BROWSER_LAUNCHER='org.mozilla.firefox.desktop'
-elif does_bin_exist 'firefox-esr'; then
-    BROWSER_LAUNCHER='firefox-esr.desktop'
-elif does_bin_exist 'firefox'; then
-    BROWSER_LAUNCHER='firefox.desktop'
-elif does_bin_exist 'com.brave.Browser'; then
-    BROWSER_LAUNCHER='com.brave.Browser.desktop'
-fi
+BROWSER_LAUNCHER="$(get_first_available_launcher \
+    'io.gitlab.librewolf-community' 'io.gitlab.librewolf-community.desktop' \
+    'org.mozilla.firefox' 'org.mozilla.firefox.desktop' \
+    'firefox-esr' 'firefox-esr.desktop' \
+    'firefox' 'firefox.desktop' \
+    'com.brave.Browser' 'com.brave.Browser.desktop')"
 
 # Disk Image Mounter
 DISK_IMAGE_MOUNTER_LAUNCHER=''
@@ -42,22 +49,15 @@ if does_bin_exist 'gnome-disk-image-mounter'; then
 fi
 
 # Document Viewer
-DOCUMENT_VIEWER_LAUNCHER=''
-if does_bin_exist 'org.gnome.Papers'; then
-    DOCUMENT_VIEWER_LAUNCHER='org.gnome.Papers.desktop'
-elif does_bin_exist 'org.gnome.Evince'; then
-    DOCUMENT_VIEWER_LAUNCHER='org.gnome.Evince.desktop'
-elif does_bin_exist 'evince'; then
-    DOCUMENT_VIEWER_LAUNCHER='evince.desktop'
-fi
+DOCUMENT_VIEWER_LAUNCHER="$(get_first_available_launcher \
+    'org.gnome.Papers' 'org.gnome.Papers.desktop' \
+    'org.gnome.Evince' 'org.gnome.Evince.desktop' \
+    'evince' 'evince.desktop')"
 
 # Email Client
-EMAIL_CLIENT_LAUNCHER=''
-if does_bin_exist 'com.github.vladimiry.ElectronMail'; then
-    EMAIL_CLIENT_LAUNCHER='com.github.vladimiry.ElectronMail.desktop'
-elif does_bin_exist 'electronmail-bin'; then
-    EMAIL_CLIENT_LAUNCHER='electronmail-bin.desktop'
-fi
+EMAIL_CLIENT_LAUNCHER="$(get_first_available_launcher \
+    'com.github.vladimiry.ElectronMail' 'com.github.vladimiry.ElectronMail.desktop' \
+    'electronmail-bin' 'electronmail-bin.desktop')"
 
 # Facebook Messenger
 FBMESSENGER_LAUNCHER=''
@@ -72,22 +72,15 @@ if does_bin_exist 'nautilus'; then
 fi
 
 # GIMP
-GIMP_LAUNCHER=''
-if does_bin_exist 'org.gimp.GIMP'; then
-    GIMP_LAUNCHER='org.gimp.GIMP.desktop'
-elif does_bin_exist 'gimp'; then
-    GIMP_LAUNCHER='gimp.desktop'
-fi
+GIMP_LAUNCHER="$(get_first_available_launcher \
+    'org.gimp.GIMP' 'org.gimp.GIMP.desktop' \
+    'gimp' 'gimp.desktop')"
 
 # Image viewers
-IMAGE_VIEWER_LAUNCHER=''
-if does_bin_exist 'org.gnome.Loupe'; then
-    IMAGE_VIEWER_LAUNCHER='org.gnome.Loupe.desktop'
-elif does_bin_exist 'org.gnome.eog'; then
-    IMAGE_VIEWER_LAUNCHER='org.gnome.eog.desktop'
-elif does_bin_exist 'gpicview'; then
-    IMAGE_VIEWER_LAUNCHER='gpicview.desktop'
-fi
+IMAGE_VIEWER_LAUNCHER="$(get_first_available_launcher \
+    'org.gnome.Loupe' 'org.gnome.Loupe.desktop' \
+    'org.gnome.eog' 'org.gnome.eog.desktop' \
+    'gpicview' 'gpicview.desktop')"
 
 # Notes
 NOTES_LAUNCHER=''
@@ -106,80 +99,50 @@ if does_bin_exist 'com.bitwarden.desktop'; then
 fi
 
 # Signal
-SIGNAL_LAUNCHER=''
-if does_bin_exist 'org.signal.Signal'; then
-    SIGNAL_LAUNCHER='org.signal.Signal.desktop'
-elif does_bin_exist 'de.schmidhuberj.Flare'; then
-    SIGNAL_LAUNCHER='de.schmidhuberj.Flare.desktop'
-elif does_bin_exist 'signal-desktop'; then
-    SIGNAL_LAUNCHER='signal-desktop.desktop'
-fi
+SIGNAL_LAUNCHER="$(get_first_available_launcher \
+    'org.signal.Signal' 'org.signal.Signal.desktop' \
+    'de.schmidhuberj.Flare' 'de.schmidhuberj.Flare.desktop' \
+    'signal-desktop' 'signal-desktop.desktop')"
 
 # Steam
-STEAM_LAUNCHER=''
-if does_bin_exist 'com.valvesoftware.Steam'; then
-    STEAM_LAUNCHER='com.valvesoftware.Steam.desktop'
-elif does_bin_exist 'steam'; then
-    STEAM_LAUNCHER='steam.desktop'
-fi
+STEAM_LAUNCHER="$(get_first_available_launcher \
+    'com.valvesoftware.Steam' 'com.valvesoftware.Steam.desktop' \
+    'steam' 'steam.desktop')"
 
 # Tasks
-TASKS_LAUNCHER=''
-if does_bin_exist 'io.github.alainm23.planify'; then
-    TASKS_LAUNCHER='io.github.alainm23.planify.desktop'
-elif does_bin_exist 'org.gnome.Todo'; then
-    TASKS_LAUNCHER='org.gnome.Todo.desktop'
-fi
+TASKS_LAUNCHER="$(get_first_available_launcher \
+    'io.github.alainm23.planify' 'io.github.alainm23.planify.desktop' \
+    'org.gnome.Todo' 'org.gnome.Todo.desktop')"
 
 # Teams
-TEAMS_LAUNCHER=''
-if does_bin_exist 'com.microsoft.Teams'; then
-    TEAMS_LAUNCHER='com.microsoft.Teams.desktop'
-elif does_bin_exist 'com.github.IsmaelMartinez.teams_for_linux'; then
-    TEAMS_LAUNCHER='com.github.IsmaelMartinez.teams_for_linux.desktop'
-fi
+TEAMS_LAUNCHER="$(get_first_available_launcher \
+    'com.microsoft.Teams' 'com.microsoft.Teams.desktop' \
+    'com.github.IsmaelMartinez.teams_for_linux' 'com.github.IsmaelMartinez.teams_for_linux.desktop')"
 
 # Telegram
-TELEGRAM_LAUNCHER=''
-if does_bin_exist 'app.drey.PaperPlane'; then
-    TELEGRAM_LAUNCHER='app.drey.PaperPlane.desktop'
-elif does_bin_exist 'org.telegram.desktop'; then
-    TELEGRAM_LAUNCHER='org.telegram.desktop.desktop'
-elif does_bin_exist 'telegram-desktop'; then
-    TELEGRAM_LAUNCHER='telegramdesktop.desktop'
-fi
+TELEGRAM_LAUNCHER="$(get_first_available_launcher \
+    'app.drey.PaperPlane' 'app.drey.PaperPlane.desktop' \
+    'org.telegram.desktop' 'org.telegram.desktop.desktop' \
+    'telegram-desktop' 'telegramdesktop.desktop')"
 
 # Terminal
-TERMINAL_LAUNCHER=''
-if does_bin_exist 'kgx'; then
-    TERMINAL_LAUNCHER='org.gnome.Console.desktop'
-elif does_bin_exist 'gnome-terminal'; then
-    TERMINAL_LAUNCHER='org.gnome.Terminal.desktop'
-elif does_bin_exist 'lxterminal'; then
-    TERMINAL_LAUNCHER='lxterminal.desktop'
-fi
+TERMINAL_LAUNCHER="$(get_first_available_launcher \
+    'kgx' 'org.gnome.Console.desktop' \
+    'gnome-terminal' 'org.gnome.Terminal.desktop' \
+    'lxterminal' 'lxterminal.desktop')"
 
 # Text Editor
-TEXT_EDITOR_LAUNCHER=''
-if does_bin_exist 'org.gnome.gedit'; then
-    TEXT_EDITOR_LAUNCHER='org.gnome.gedit.desktop'
-elif does_bin_exist 'org.gnome.TextEditor'; then
-    TEXT_EDITOR_LAUNCHER='org.gnome.TextEditor.desktop'
-elif does_bin_exist 'gedit'; then
-    TEXT_EDITOR_LAUNCHER='gedit.desktop'
-elif does_bin_exist 'pluma'; then
-    TEXT_EDITOR_LAUNCHER='pluma.desktop'
-fi
+TEXT_EDITOR_LAUNCHER="$(get_first_available_launcher \
+    'org.gnome.gedit' 'org.gnome.gedit.desktop' \
+    'org.gnome.TextEditor' 'org.gnome.TextEditor.desktop' \
+    'gedit' 'gedit.desktop' \
+    'pluma' 'pluma.desktop')"
 
 # WhatsApp
-WHATSAPP_LAUNCHER=''
-if does_bin_exist 'io.github.mimbrero.WhatsAppDesktop'; then
-    WHATSAPP_LAUNCHER='io.github.mimbrero.WhatsAppDesktop.desktop'
-elif does_bin_exist 'wasistlos'; then
-    WHATSAPP_LAUNCHER='com.github.xeco23.WasIstLos.desktop'
-elif does_bin_exist 'whatsapp-nativefier'; then
-    WHATSAPP_LAUNCHER='whatsapp-nativefier.desktop'
-fi
+WHATSAPP_LAUNCHER="$(get_first_available_launcher \
+    'io.github.mimbrero.WhatsAppDesktop' 'io.github.mimbrero.WhatsAppDesktop.desktop' \
+    'wasistlos' 'com.github.xeco23.WasIstLos.desktop' \
+    'whatsapp-nativefier' 'whatsapp-nativefier.desktop')"
 
 # Update the favourites
 

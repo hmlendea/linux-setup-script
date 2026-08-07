@@ -11,10 +11,7 @@ function announce_packages_update {
     echo -e "Updating the \e[0;32m${PACKAGES_CATEGORY} packages\e[0m ..."
 }
 
-if ! is_distro_immutable; then
-    echo -e 'Updating the \e[0;32msystem packages\e[0m ...'
-
-    announce_packages_update 'system'
+function update_system_packages() {
     if [ "${DISTRO_FAMILY}" = 'Alpine' ] \
     || [ "${DISTRO_FAMILY}" = 'Android' ] \
     || [ "${DISTRO_FAMILY}" = 'Debian' ] \
@@ -23,6 +20,23 @@ if ! is_distro_immutable; then
     elif [ "${DISTRO_FAMILY}" = 'Arch' ]; then
         call_package_manager -Su
     fi
+}
+
+function filter_gnome_extension_update_output() {
+    grep -v 'The extension is up-to-date' | \
+      grep -v 'Searching extensions.gnome.org' | \
+      grep -v 'Extension not available for GNOME Shell [0-9]' | \
+      grep -v 'This extension is available for the following' | \
+      grep -v '^\s*-\s*[0-9]' | \
+      grep -v 'Type a version to install' | \
+      grep -v '^\s*$'
+}
+
+if ! is_distro_immutable; then
+    echo -e 'Updating the \e[0;32msystem packages\e[0m ...'
+
+    announce_packages_update 'system'
+    update_system_packages
 fi
 
 if does_bin_exist 'cargo-update'; then
@@ -44,14 +58,7 @@ fi
 if does_bin_exist 'gnome-shell-extension-installer'; then
     announce_packages_update 'GNOME extension'
 
-    gnome-shell-extension-installer --yes --update --restart-shell | \
-      grep -v 'The extension is up-to-date' | \
-      grep -v 'Searching extensions.gnome.org' | \
-      grep -v 'Extension not available for GNOME Shell [0-9]' | \
-      grep -v 'This extension is available for the following' | \
-      grep -v '^\s*-\s*[0-9]' | \
-      grep -v 'Type a version to install' | \
-      grep -v '^\s*$'
+    gnome-shell-extension-installer --yes --update --restart-shell | filter_gnome_extension_update_output
 fi
 
 if [ "${DISTRO_FAMILY}" = 'Ubuntu' ]; then

@@ -5,6 +5,14 @@ source "${REPO_SCRIPTS_COMMON_DIR}/common.sh"
 source "${REPO_SCRIPTS_COMMON_DIR}/config.sh"
 source "${REPO_SCRIPTS_COMMON_DIR}/system-info.sh"
 
+function update_file_if_binary_exists() {
+    local BINARY_NAME="${1}"
+    local SOURCE_FILE_PATH="${2}"
+    local TARGET_FILE_PATH="${3}"
+
+    does_bin_exist "${BINARY_NAME}" && update_file_if_distinct "${SOURCE_FILE_PATH}" "${TARGET_FILE_PATH}"
+}
+
 # .profile
 create_file "${HOME}/.profile"
 set_config_value "${HOME}/.profile" 'export XDG_CACHE_HOME'         "\"${HOME}/.cache\""
@@ -51,14 +59,14 @@ if does_bin_exist 'bash'; then
 fi
 
 for RC in 'gimprc' 'sessionrc' 'toolrc'; do
-    does_bin_exist 'gimp' && update_file_if_distinct "${REPO_RC_DIR}/gimp/${RC}" "${XDG_CONFIG_HOME}/GIMP/2.10/${RC}"
-    does_bin_exist 'org.gimp.GIMP' && update_file_if_distinct "${REPO_RC_DIR}/gimp/${RC}" "${HOME_VAR_APP}/org.gimp.GIMP/config/GIMP/2.10/${RC}"
+    update_file_if_binary_exists 'gimp' "${REPO_RC_DIR}/gimp/${RC}" "${XDG_CONFIG_HOME}/GIMP/2.10/${RC}"
+    update_file_if_binary_exists 'org.gimp.GIMP' "${REPO_RC_DIR}/gimp/${RC}" "${HOME_VAR_APP}/org.gimp.GIMP/config/GIMP/2.10/${RC}"
 done
 
-does_bin_exist 'nano'       && update_file_if_distinct "${REPO_RC_DIR}/nanorc"      "${HOME}/.nanorc"
-does_bin_exist 'vim'        && update_file_if_distinct "${REPO_RC_DIR}/vimrc"       "${HOME}/.vimrc"
-does_bin_exist 'git'        && update_file_if_distinct "${REPO_RC_DIR}/gitconfig"   "${XDG_CONFIG_HOME}/git/config"
-does_bin_exist 'lxpanel'    && update_file_if_distinct "${REPO_RC_DIR}/lxde-panel"  "${XDG_CONFIG_HOME}/lxpanel/LXDE/panels/panel"
+update_file_if_binary_exists 'nano' "${REPO_RC_DIR}/nanorc" "${HOME}/.nanorc"
+update_file_if_binary_exists 'vim' "${REPO_RC_DIR}/vimrc" "${HOME}/.vimrc"
+update_file_if_binary_exists 'git' "${REPO_RC_DIR}/gitconfig" "${XDG_CONFIG_HOME}/git/config"
+update_file_if_binary_exists 'lxpanel' "${REPO_RC_DIR}/lxde-panel" "${XDG_CONFIG_HOME}/lxpanel/LXDE/panels/panel"
 #does_bin_exist 'lxpanel'    && update_file_if_distinct "${REPO_RC_DIR}/lxde-dock"   "${XDG_CONFIG_HOME}/lxpanel/LXDE/panels/dock"
 
 if does_bin_exist 'firefox' 'firefox-esr' 'io.gitlab.librewolf-community' 'org.mozilla.firefox'; then

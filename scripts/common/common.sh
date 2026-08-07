@@ -18,32 +18,36 @@ function run_as_su() {
     fi
 }
 
+function get_preferred_script_shell() {
+    if does_bin_exist "bash"; then
+        echo "bash"
+    elif does_bin_exist "zsh"; then
+        echo "zsh"
+    else
+        echo "sh"
+    fi
+}
+
 function run_script() {
     local SCRIPT_PATH="${@}"
+    local SHELL_BIN=""
+
     echo -e "Executing as \e[1;94m${USER}\e[0;39m: '${SCRIPT_PATH}'..."
 
-    if does_bin_exist "bash"; then
-        bash "${@}"
-    elif does_bin_exist "zsh"; then
-        zsh "${@}"
-    else
-        sh "${@}"
-    fi
+    SHELL_BIN="$(get_preferred_script_shell)"
+    "${SHELL_BIN}" "${@}"
 }
 
 function run_script_as_su() {
     ! ${HAS_SU_PRIVILEGES} && return
 
     local SCRIPT_PATH="${@}"
+    local SHELL_BIN=""
+
     echo -e "Executing as \e[1;91mroot\e[0;39m: '${SCRIPT_PATH}'..."
 
-    if does_bin_exist "bash"; then
-        run_as_su "bash" "${@}"
-    elif does_bin_exist "zsh"; then
-        run_as_su "zsh" "${@}"
-    else
-        run_as_su "sh" "${@}"
-    fi
+    SHELL_BIN="$(get_preferred_script_shell)"
+    run_as_su "${SHELL_BIN}" "${@}"
 }
 
 LANG=en_US.UTF-8 # Fix for commands such as `yes`

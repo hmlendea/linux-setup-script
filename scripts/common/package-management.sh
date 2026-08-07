@@ -320,6 +320,12 @@ function install_native_package() {
     fi
 }
 
+function install_native_packages() {
+    for PACKAGE_NAME in "${@}"; do
+        install_native_package "${PACKAGE_NAME}"
+    done
+}
+
 function install_native_package_dependency() {
 	local PACKAGE="${1}"
 

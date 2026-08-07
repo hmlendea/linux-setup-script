@@ -15,9 +15,7 @@ function get_latest_github_release_assets() {
 ##############
 ### Basics ###
 ##############
-install_native_package 'coreutils'
-install_native_package 'curl'
-install_native_package 'wget'
+install_native_packages 'coreutils' 'curl' 'wget'
 
 if ! [[ ${DEVICE_MODEL} =~ 'iPhone' ]]; then
     install_native_package 'most'
@@ -31,13 +29,13 @@ else
 fi
 
 if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
-    install_native_package 'bat-extras'
-    install_native_package 'bash-completion'
-    install_native_package 'usbutils'
-
-    install_native_package 'man-db'
-    install_native_package 'man-pages'
-    install_native_package 'realtime-privileges'
+    install_native_packages \
+        'bat-extras' \
+        'bash-completion' \
+        'usbutils' \
+        'man-db' \
+        'man-pages' \
+        'realtime-privileges'
 elif [ "${DISTROY_FAMILY}" = 'Android' ]; then
     install_native_package 'manpages'
 fi
@@ -47,16 +45,10 @@ install_native_package 'findutils'
 ##################
 ### base-devel ###
 ##################
-install_native_package 'autoconf'
-install_native_package 'binutils'
-install_native_package 'make'
-install_native_package 'fakeroot'
-install_native_package 'patch'
+install_native_packages 'autoconf' 'binutils' 'make' 'fakeroot' 'patch'
 
 if [ "${DISTRO_FAMILY}" = 'Arch' ]; then
-    install_native_package 'debugedit'
-    install_native_package 'gcc'
-    install_native_package 'pkgconf'
+    install_native_packages 'debugedit' 'gcc' 'pkgconf'
 fi
 
 # Extra devel for parallelising the build processes
@@ -179,8 +171,7 @@ install_native_package 'net-tools'
 
 if [ "${DISTRO_FAMILY}" = 'Arch' ] \
 || [ "${DISTRO_FAMILY}" = 'Android' ]; then
-    install_native_package 'openssh'
-    install_native_package 'wol'
+    install_native_packages 'openssh' 'wol'
 elif [ "${DISTRO_FAMILY}" = "Alpine" ] \
   || [ "${DISTRO_FAMILY}" = "Debian" ]; then
     install_native_package 'openssh-server'
@@ -193,10 +184,7 @@ if [ "${DISTRO_FAMILY}" = 'Debian' ]; then
 fi
 
 if [[ "${DISTRO_FAMILY}" == "Arch" ]]; then
-    install_native_package 'ethtool'
-    install_native_package 'wireless_tools'
-    install_native_package 'iw'
-    install_native_package 'iwd'
+    install_native_packages 'ethtool' 'wireless_tools' 'iw' 'iwd'
 fi
 
 if [ "${CHASSIS_TYPE}" = 'Laptop' ] \

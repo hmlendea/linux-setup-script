@@ -26,6 +26,15 @@ function configure_autostart_for_app() {
     set_launcher_entries "${LAUNCHER_PATH}" "$@"
 }
 
+function remove_autostart_for_apps() {
+    for BINARY_NAME in "${@}"; do
+        local LAUNCHER_PATH=""
+
+        LAUNCHER_PATH="$(get_launcher_path_for_app "${BINARY_NAME}")"
+        remove "${LAUNCHER_PATH}"
+    done
+}
+
 # Discord
 AUTOSTART_DISCORD=false
 if ${AUTOSTART_DISCORD}; then
@@ -37,10 +46,7 @@ if ${AUTOSTART_DISCORD}; then
         Icon 'discord' \
         Exec 'com.discordapp.Discord --start-minimized'
 else
-    for DISCORD_BINARY in 'com.discordapp.Discord' 'discord'; do
-        DISCORD_LAUNCHER_PATH=$(get_launcher_path_for_app "${DISCORD_BINARY}")
-        remove "${DISCORD_LAUNCHER_PATH}"
-    done
+    remove_autostart_for_apps 'com.discordapp.Discord' 'discord'
 fi
 
 # ElectronMail
