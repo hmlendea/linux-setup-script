@@ -472,6 +472,33 @@ function set_gsetting_flatpak() {
     set_config_value "${KEYFILE_PATH}" "${PROPERTY}" "${VALUE}"
 }
 
+function get_launcher_entry_section_bounds() {
+    local FILE="${1}"
+    local SECTION="${2}"
+
+    awk -v section="${SECTION}" '
+        $0 == "[" section "]" {
+            if (!section_found) {
+                section_found = 1
+                first_line = NR
+            }
+
+            next
+        }
+
+        section_found && /^\[.*\]$/ {
+            print first_line, NR - 1
+            exit
+        }
+
+        END {
+            if (section_found) {
+                print first_line, NR
+            }
+        }
+    ' "${FILE}"
+}
+
 function set_launcher_entries() {
     local FILE="${1}" && shift
 
@@ -484,9 +511,7 @@ function set_launcher_entries() {
         exit 1
     fi
 
-    local PAIRS_COUNT=$(($# / 2))
-
-    for I in $(seq 1 ${PAIRS_COUNT}); do
+    while [ $# -gt 0 ]; do
         local KEY="${1}" && shift
         local VAL="${1}" && shift
 
@@ -511,7 +536,7 @@ function set_launcher_entry() {
         KEY=$(awk -F'/' '{print $2}' <<< "${KEY}")
     fi
 
-    local FILE_PATH_RAW=$(get_symlink_target "${FILE}")
+    local FILE_PATH_RAW="$(get_symlink_target "${FILE}")"
 
     if [ "$#" != "3" ]; then
         echo "ERROR: Invalid arguments (count: $#) for set_launcher_entry: ${*}" >&2
@@ -534,9 +559,6 @@ function set_launcher_entry() {
         local VAL_ESC="${VAL}"
         local VAL_ESC_GREP="${VAL_ESC}"
 
-        local FILE_CONTENTS=''
-        #local HAS_MULTIPLE_SECTIONS=false
-        local SECTION_INDEX=1
         local SECTION_FIRST_LINE=1
         local SECTION_LAST_LINE=1
 
@@ -550,27 +572,22 @@ function set_launcher_entry() {
             append_line "${FILE}" ''
         fi
 
-        FILE_CONTENTS=$(cat "${FILE}")
+        if read -r SECTION_FIRST_LINE SECTION_LAST_LINE <<< "$(get_launcher_entry_section_bounds "${FILE}" "${SECTION}")"; then
+            :
+        fi
 
-        if [ $(grep -c "^\[.*\]$" <<< "${FILE_CONTENTS}") -gt 1 ]; then
-            #HAS_MULTIPLE_SECTIONS=true
-            SECTION_INDEX=$(grep -n "^\[.*\]$" <<< "${FILE_CONTENTS}" | grep -n "\[${SECTION}\]" | awk -F: '{print $1}')
-
-            [ -z "${SECTION_INDEX}" ] && SECTION_INDEX=1
-
-            SECTION_FIRST_LINE=$(grep -n "^\[${SECTION}\]$" "${FILE}" | awk -F: '{print $1}')
-            SECTION_LAST_LINE=$(grep -n "^\[.*\]$" "${FILE}" | tail -n +$((SECTION_INDEX+1)) | awk -F: '{print $1}' | head -n 1)
-            [ -z "${SECTION_LAST_LINE}" ] && SECTION_LAST_LINE=$(wc -l "${FILE}" | awk '{print $1}')
-
-            FILE_CONTENTS=$(tail -n "+${SECTION_FIRST_LINE}" "${FILE}" | head -n "$((SECTION_LAST_LINE-SECTION_FIRST_LINE+1))")
-        else
+        if [ -z "${SECTION_FIRST_LINE}" ] || [ -z "${SECTION_LAST_LINE}" ]; then
+            SECTION_FIRST_LINE=1
             SECTION_LAST_LINE=$(wc -l "${FILE}" | awk '{print $1}')
         fi
 
-        if ! grep -q "^${KEY_ESC}=\(${VAL}\|${VAL_ESC_GREP}\)$" <<< "${FILE_CONTENTS}" \
-        || grep -q "^${KEY_ESC}=$" <<< "${FILE_CONTENTS}"; then
+        local SECTION_CONTENTS
+        SECTION_CONTENTS=$(sed -n "${SECTION_FIRST_LINE},${SECTION_LAST_LINE}p" "${FILE}")
+
+        if ! grep -q "^${KEY_ESC}=\(${VAL}\|${VAL_ESC_GREP}\)$" <<< "${SECTION_CONTENTS}" \
+        || grep -q "^${KEY_ESC}=$" <<< "${SECTION_CONTENTS}"; then
             # If it needs to be updated
-            if grep -q "^${KEY_ESC}=" <<< "${FILE_CONTENTS}"; then
+            if grep -q "^${KEY_ESC}=" <<< "${SECTION_CONTENTS}"; then
                 # If it needs to be removed
                 if [ -z "${VAL}" ]; then
                     run_as_su sed -i ''"${SECTION_FIRST_LINE}"','"${SECTION_LAST_LINE}"' {/^'"${KEY_ESC}"'=.*$/d}' "${FILE_PATH_RAW}"
@@ -587,6 +604,7 @@ function set_launcher_entry() {
                 #fi
             fi
 
+            local KEY_TO_PRINT
             KEY_TO_PRINT=$(echo "${SECTION}/${KEY}" | sed 's/Desktop Entry\///g')
 
             echo "${FILE} >>> ${KEY_TO_PRINT}=${VAL}"
@@ -618,14 +636,27 @@ function set_launcher_entry_for_language() {
     local KEY="${3}"
     local VALUE="${4}"
 
-    if [ -z "${KEY_LANGUAGE}" ] \
-    || [[ "${KEY_LANGUAGE}" == "en" ]]; then
-        set_launcher_entry_english "${FILE}" "${KEY}" "${VAL}"
-    elif [[ "${KEY_LANGUAGE}" == "es" ]]; then
-        set_launcher_entry_spanish "${FILE}" "${KEY}" "${VAL}"
-    elif [[ "${KEY_LANGUAGE}" == "ro" ]]; then
-        set_launcher_entry_romanian "${FILE}" "${KEY}" "${VAL}"
+    if [ -z "${LANGUAGE}" ] \
+    || [[ "${LANGUAGE}" == "en" ]]; then
+        set_launcher_entry_english "${FILE}" "${KEY}" "${VALUE}"
+    elif [[ "${LANGUAGE}" == "es" ]]; then
+        set_launcher_entry_spanish "${FILE}" "${KEY}" "${VALUE}"
+    elif [[ "${LANGUAGE}" == "ro" ]]; then
+        set_launcher_entry_romanian "${FILE}" "${KEY}" "${VALUE}"
     fi
+}
+
+function set_launcher_entry_for_locales() {
+    local FILE="${1}"
+    local KEY="${2}"
+    local VALUE="${3}"
+    shift 3
+
+    local LOCALE
+
+    for LOCALE in "${@}"; do
+        set_launcher_entry "${FILE}" "${KEY}[${LOCALE}]" "${VALUE}"
+    done
 }
 
 function set_launcher_entry_english() {
@@ -633,13 +664,8 @@ function set_launcher_entry_english() {
     local KEY="${2}"
     local VAL="${*:3}"
 
-    set_launcher_entries "${FILE}" \
-        "${KEY}[en_AU]" "${VAL}" \
-        "${KEY}[en_CA]" "${VAL}" \
-        "${KEY}[en_GB]" "${VAL}" \
-        "${KEY}[en_NZ]" "${VAL}" \
-        "${KEY}[en_US]" "${VAL}" \
-        "${KEY}[en_ZA]" "${VAL}"
+    set_launcher_entry_for_locales "${FILE}" "${KEY}" "${VAL}" \
+        en_AU en_CA en_GB en_NZ en_US en_ZA
 }
 
 function set_launcher_entry_romanian() {
@@ -647,25 +673,22 @@ function set_launcher_entry_romanian() {
     local KEY="${2}"
     local VAL="${*:3}"
 
-    set_launcher_entries "${FILE}" \
-        "${KEY}[ro_RO]" "${VAL}" \
-        "${KEY}[ro_MD]" "${VAL}"
+    set_launcher_entry_for_locales "${FILE}" "${KEY}" "${VAL}" \
+        ro_RO ro_MD
 }
 function set_launcher_entry_spanish() {
     local FILE="${1}"
     local KEY="${2}"
     local VAL="${*:3}"
 
-    set_launcher_entries "${FILE}" \
-        "${KEY}[es_AR]" "${VAL}" \
-        "${KEY}[es_CL]" "${VAL}" \
-        "${KEY}[es_ES]" "${VAL}" \
-        "${KEY}[es_MX]" "${VAL}"
+    set_launcher_entry_for_locales "${FILE}" "${KEY}" "${VAL}" \
+        es_AR es_CL es_ES es_MX
 }
 
 function create_launcher() {
-    local FILE_PATH="${*}"
-    local FILE_LABEL=$(basename "${FILE_PATH}" | cut -f 1 -d '.')
+    local FILE_PATH="${1}"
+    local FILE_NAME="${FILE_PATH##*/}"
+    local FILE_LABEL="${FILE_NAME%.*}"
     local NAME=$(echo "${FILE_LABEL}" | sed -e 's/-/ /g' -e 's/^./\U&/g' -e 's/\s./\U&/g')
 
     if [ ! -f "${FILE_PATH}" ]; then
