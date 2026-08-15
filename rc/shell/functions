@@ -96,6 +96,14 @@ function package_manager_command() {
 
             shift
         done
+    else
+        for ARGUMENT in "${@}"; do
+            if [[ "${ARGUMENT}" == '--asdeps' ]] \
+            || [[ "${ARGUMENT}" == '--reinstall' ]]; then
+                echo "ERROR: The ${ARGUMENT} argument is only permitted for install operations." >&2
+                return 1
+            fi
+        done
     fi
 
     PACKAGE_MANAGER='unknown'
