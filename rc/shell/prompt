@@ -1,189 +1,586 @@
-#!/bin/sh
-# If not running interactively, don't do anything
-[[ $- != *i* ]] && return
+#!/bin/bash
+# If not running interactively, do not do anything.
+[[ ${-} != *i* ]] && return
 
 ENABLE_COLOURS=true
 ENABLE_GIT=true
 ENABLE_GIT_STATUS=true
 
+CUSTOM_PROMPT_MAXIMUM_PATH_LENGTH=24
+CUSTOM_PROMPT_PATH_EDGE_LENGTH=11
+CUSTOM_PROMPT_PATH=''
+CUSTOM_PROMPT_PATH_SEGMENT=''
+CUSTOM_PROMPT_PATH_COLOURS_ENABLED=false
+CUSTOM_PROMPT_CACHED_HOSTNAME=''
+CUSTOM_PROMPT_HOST_ESCAPE=''
+CUSTOM_PROMPT_HOST_SEGMENT=''
+CUSTOM_PROMPT_USER_SEGMENT=''
+CUSTOM_PROMPT_USERNAME=''
+CUSTOM_PROMPT_GIT_SEGMENT=''
+CUSTOM_PROMPT_GIT_BRANCH_NAME=''
+CUSTOM_PROMPT_GIT_BRANCH_STATUS=''
+CUSTOM_PROMPT_GIT_STATUS_INDICATOR=''
+CUSTOM_PROMPT_CACHED_GIT_DIRECTORY=''
+CUSTOM_PROMPT_DISCOVERED_HEAD_FILE=''
+CUSTOM_PROMPT_DIRECT_HEAD=false
+CUSTOM_PROMPT_REPOSITORY_MARKER=''
+CUSTOM_PROMPT_REPOSITORY_SEARCH_PATH=''
+CUSTOM_PROMPT_PATH_DIRECTORY=''
+CUSTOM_PROMPT_ESCAPE=$'\e'
+CUSTOM_PROMPT_NON_PRINTING_END=$'\002'
+CUSTOM_PROMPT_NON_PRINTING_START=$'\001'
+CUSTOM_PROMPT_RESET_ESCAPE=$'\e[m'
+
+function _clear_custom_prompt_git {
+    CUSTOM_PROMPT_GIT_SEGMENT=''
+    CUSTOM_PROMPT_GIT_BRANCH_NAME=''
+    CUSTOM_PROMPT_GIT_BRANCH_STATUS=''
+    CUSTOM_PROMPT_GIT_STATUS_INDICATOR=''
+}
+
+function _discover_custom_prompt_git_repository {
+    local CURRENT_GIT_DIRECTORY="${GIT_DIR+set:${GIT_DIR}}"
+    local CURRENT_REPOSITORY_MARKER=''
+    local GIT_DIRECTORY_REFERENCE
+    local SEARCH_PATH
+
+    if [[ -d "${PWD}/.git" ]]; then
+        CURRENT_REPOSITORY_MARKER='directory'
+    elif [[ -f "${PWD}/.git" ]]; then
+        CURRENT_REPOSITORY_MARKER='file'
+    fi
+
+    if [[ ${CUSTOM_PROMPT_CACHED_GIT_DIRECTORY} == "${CURRENT_GIT_DIRECTORY}" ]] \
+    && [[ ${CUSTOM_PROMPT_REPOSITORY_SEARCH_PATH} == "${PWD}" ]] \
+    && [[ ${CUSTOM_PROMPT_REPOSITORY_MARKER} == "${CURRENT_REPOSITORY_MARKER}" ]] \
+    && [[ -z ${CUSTOM_PROMPT_DISCOVERED_HEAD_FILE} \
+       || ${CUSTOM_PROMPT_DISCOVERED_HEAD_FILE} == '-' \
+       || -f ${CUSTOM_PROMPT_DISCOVERED_HEAD_FILE} ]]; then
+        [[ ${CUSTOM_PROMPT_DISCOVERED_HEAD_FILE} != '-' ]]
+        return
+    fi
+
+    CUSTOM_PROMPT_DISCOVERED_HEAD_FILE=''
+    CUSTOM_PROMPT_CACHED_GIT_DIRECTORY=${CURRENT_GIT_DIRECTORY}
+    CUSTOM_PROMPT_DIRECT_HEAD=false
+    CUSTOM_PROMPT_REPOSITORY_MARKER=${CURRENT_REPOSITORY_MARKER}
+    CUSTOM_PROMPT_REPOSITORY_SEARCH_PATH=${PWD}
+
+    if [[ ${GIT_DIR+is_set} == 'is_set' ]]; then
+        if [[ -f "${PWD}/.git/HEAD" ]]; then
+            CUSTOM_PROMPT_DISCOVERED_HEAD_FILE="${PWD}/.git/HEAD"
+            CUSTOM_PROMPT_DIRECT_HEAD=true
+        elif [[ ${GIT_DIR} == /* ]]; then
+            CUSTOM_PROMPT_DISCOVERED_HEAD_FILE="${GIT_DIR}/HEAD"
+        else
+            CUSTOM_PROMPT_DISCOVERED_HEAD_FILE="${PWD}/${GIT_DIR}/HEAD"
+        fi
+
+        return 0
+    fi
+
+    SEARCH_PATH=${PWD}
+
+    while true; do
+        if [[ -d "${SEARCH_PATH}/.git" ]]; then
+            CUSTOM_PROMPT_DISCOVERED_HEAD_FILE="${SEARCH_PATH}/.git/HEAD"
+            [[ ${SEARCH_PATH} == "${PWD}" ]] && CUSTOM_PROMPT_DIRECT_HEAD=true
+            return 0
+        elif [[ -f "${SEARCH_PATH}/.git" ]]; then
+            IFS= read -r GIT_DIRECTORY_REFERENCE < "${SEARCH_PATH}/.git"
+
+            if [[ ${GIT_DIRECTORY_REFERENCE} == 'gitdir: '* ]]; then
+                GIT_DIRECTORY_REFERENCE=${GIT_DIRECTORY_REFERENCE#'gitdir: '}
+
+                if [[ ${GIT_DIRECTORY_REFERENCE} == /* ]]; then
+                    CUSTOM_PROMPT_DISCOVERED_HEAD_FILE="${GIT_DIRECTORY_REFERENCE}/HEAD"
+                else
+                    CUSTOM_PROMPT_DISCOVERED_HEAD_FILE="${SEARCH_PATH}/${GIT_DIRECTORY_REFERENCE}/HEAD"
+                fi
+            fi
+
+            return 0
+        elif [[ -f "${SEARCH_PATH}/HEAD" ]] \
+          && [[ -d "${SEARCH_PATH}/objects" ]] \
+          && [[ -d "${SEARCH_PATH}/refs" ]]; then
+                        CUSTOM_PROMPT_DISCOVERED_HEAD_FILE="${SEARCH_PATH}/HEAD"
+            return 0
+        fi
+
+        if [[ ${SEARCH_PATH} == '/' ]]; then
+            CUSTOM_PROMPT_DISCOVERED_HEAD_FILE='-'
+            return 1
+        fi
+
+        SEARCH_PATH=${SEARCH_PATH%/*}
+        [[ -n ${SEARCH_PATH} ]] || SEARCH_PATH='/'
+    done
+}
+
+function _read_custom_prompt_git_branch {
+    local HEAD_CONTENT
+
+    [[ -f ${CUSTOM_PROMPT_DISCOVERED_HEAD_FILE} ]] || return 1
+
+    IFS= read -r HEAD_CONTENT < "${CUSTOM_PROMPT_DISCOVERED_HEAD_FILE}"
+
+    if [[ ${HEAD_CONTENT} == 'ref: refs/heads/'* ]]; then
+        CUSTOM_PROMPT_GIT_BRANCH_NAME=${HEAD_CONTENT#'ref: refs/heads/'}
+
+        if ${CUSTOM_PROMPT_DIRECT_HEAD}; then
+            CUSTOM_PROMPT_GIT_BRANCH_NAME=${CUSTOM_PROMPT_GIT_BRANCH_NAME##*/}
+        fi
+    elif ${CUSTOM_PROMPT_DIRECT_HEAD}; then
+        return 2
+    else
+        CUSTOM_PROMPT_GIT_BRANCH_NAME='HEAD'
+    fi
+}
+
+function _render_custom_prompt_git {
+    local BRANCH_ESCAPE
+    local BRANCH_NAME_COLOUR='36'
+    local BRANCH_NAME_STYLE='00'
+    local BRANCH_STATUS_COLOUR=''
+    local SEPARATOR_ESCAPE
+    local STATUS_ESCAPE
+
+    [[ -n ${CUSTOM_PROMPT_GIT_BRANCH_NAME} ]] || return
+
+    if [[ ${CUSTOM_PROMPT_GIT_BRANCH_NAME} == 'HEAD' ]]; then
+        BRANCH_NAME_STYLE='01'
+        BRANCH_NAME_COLOUR='41'
+    elif [[ ${CUSTOM_PROMPT_GIT_BRANCH_NAME} == 'main' ]] \
+      || [[ ${CUSTOM_PROMPT_GIT_BRANCH_NAME} == 'master' ]]; then
+        BRANCH_NAME_STYLE='01'
+        BRANCH_NAME_COLOUR='93'
+    fi
+
+    case ${CUSTOM_PROMPT_GIT_BRANCH_STATUS} in
+        'local-changes')
+            BRANCH_STATUS_COLOUR='32'
+            CUSTOM_PROMPT_GIT_STATUS_INDICATOR=' *'
+            ;;
+        'local-only')
+            BRANCH_STATUS_COLOUR='93'
+            CUSTOM_PROMPT_GIT_STATUS_INDICATOR=' ~'
+            ;;
+        'behind')
+            BRANCH_STATUS_COLOUR='31'
+            CUSTOM_PROMPT_GIT_STATUS_INDICATOR=' -'
+            ;;
+        'ahead')
+            BRANCH_STATUS_COLOUR='92'
+            CUSTOM_PROMPT_GIT_STATUS_INDICATOR=' +'
+            ;;
+        'diverged')
+            BRANCH_STATUS_COLOUR='91'
+            CUSTOM_PROMPT_GIT_STATUS_INDICATOR=' ±'
+            ;;
+    esac
+
+    if ${ENABLE_COLOURS}; then
+        SEPARATOR_ESCAPE="${CUSTOM_PROMPT_ESCAPE}[0m"
+        BRANCH_ESCAPE="${CUSTOM_PROMPT_ESCAPE}[${BRANCH_NAME_STYLE};${BRANCH_NAME_COLOUR}m"
+
+        if [[ -n ${CUSTOM_PROMPT_GIT_STATUS_INDICATOR} ]]; then
+            STATUS_ESCAPE="${CUSTOM_PROMPT_ESCAPE}[00;${BRANCH_STATUS_COLOUR}m"
+        fi
+
+        CUSTOM_PROMPT_GIT_SEGMENT="${CUSTOM_PROMPT_NON_PRINTING_START}${SEPARATOR_ESCAPE}${CUSTOM_PROMPT_NON_PRINTING_END}("
+        CUSTOM_PROMPT_GIT_SEGMENT+="${CUSTOM_PROMPT_NON_PRINTING_START}${BRANCH_ESCAPE}${CUSTOM_PROMPT_NON_PRINTING_END}${CUSTOM_PROMPT_GIT_BRANCH_NAME}"
+
+        if [[ -n ${CUSTOM_PROMPT_GIT_STATUS_INDICATOR} ]]; then
+            CUSTOM_PROMPT_GIT_SEGMENT+="${CUSTOM_PROMPT_NON_PRINTING_START}${STATUS_ESCAPE}${CUSTOM_PROMPT_NON_PRINTING_END}${CUSTOM_PROMPT_GIT_STATUS_INDICATOR}"
+        fi
+
+        CUSTOM_PROMPT_GIT_SEGMENT+="${CUSTOM_PROMPT_NON_PRINTING_START}${SEPARATOR_ESCAPE}${CUSTOM_PROMPT_NON_PRINTING_END}) "
+    else
+        CUSTOM_PROMPT_GIT_SEGMENT="(${CUSTOM_PROMPT_GIT_BRANCH_NAME}${CUSTOM_PROMPT_GIT_STATUS_INDICATOR}) "
+    fi
+}
+
+function _update_custom_prompt_git {
+    if ! ${ENABLE_GIT}; then
+        [[ -n ${CUSTOM_PROMPT_GIT_SEGMENT} ]] && _clear_custom_prompt_git
+        return
+    fi
+
+    if [[ ${GIT_DIR+is_set} != 'is_set' ]] \
+    && [[ ${CUSTOM_PROMPT_REPOSITORY_SEARCH_PATH} == "${PWD}" ]] \
+    && [[ ${CUSTOM_PROMPT_DISCOVERED_HEAD_FILE} == '-' ]] \
+    && [[ ! -e "${PWD}/.git" ]]; then
+        return
+    fi
+
+    local AHEAD_COUNT=''
+    local BEHIND_COUNT=''
+    local BRANCH_COUNTS
+    local BRANCH_NAME_RESULT=1
+    local BRANCH_UPSTREAM=''
+    local GIT_STATUS_OUTPUT
+    local GIT_STATUS_RECORD
+    local INITIAL_BRANCH=false
+    local TRACKED_CHANGES=false
+
+    _clear_custom_prompt_git
+    _discover_custom_prompt_git_repository || return
+
+    if [[ ${GIT_DIR+is_set} == 'is_set' ]] && ${CUSTOM_PROMPT_DIRECT_HEAD}; then
+        _read_custom_prompt_git_branch
+        BRANCH_NAME_RESULT=${?}
+        (( BRANCH_NAME_RESULT == 2 )) && return
+    fi
+
+    if ! ${ENABLE_GIT_STATUS}; then
+        _read_custom_prompt_git_branch
+        BRANCH_NAME_RESULT=${?}
+        (( BRANCH_NAME_RESULT == 2 )) && return
+        _render_custom_prompt_git
+        return
+    fi
+
+    GIT_STATUS_OUTPUT=$(GIT_OPTIONAL_LOCKS=0 command git \
+        -c status.renames=false \
+        status \
+        --porcelain=v2 \
+        --branch \
+        --ahead-behind \
+        --untracked-files=no \
+        2>/dev/null) || {
+            _read_custom_prompt_git_branch
+            BRANCH_NAME_RESULT=${?}
+
+            if (( BRANCH_NAME_RESULT == 0 )) && ${CUSTOM_PROMPT_DIRECT_HEAD}; then
+                CUSTOM_PROMPT_GIT_BRANCH_STATUS='local-only'
+                _render_custom_prompt_git
+            fi
+
+            return
+        }
+
+    while [[ ${GIT_STATUS_OUTPUT} == '# '* ]]; do
+        if [[ ${GIT_STATUS_OUTPUT} == *$'\n'* ]]; then
+            GIT_STATUS_RECORD=${GIT_STATUS_OUTPUT%%$'\n'*}
+            GIT_STATUS_OUTPUT=${GIT_STATUS_OUTPUT#*$'\n'}
+        else
+            GIT_STATUS_RECORD=${GIT_STATUS_OUTPUT}
+            GIT_STATUS_OUTPUT=''
+        fi
+
+        case ${GIT_STATUS_RECORD} in
+            '# branch.oid (initial)')
+                INITIAL_BRANCH=true
+                ;;
+            '# branch.head '*)
+                if [[ ${GIT_DIR+is_set} == 'is_set' ]] && ${CUSTOM_PROMPT_DIRECT_HEAD}; then
+                    continue
+                fi
+
+                CUSTOM_PROMPT_GIT_BRANCH_NAME=${GIT_STATUS_RECORD#'# branch.head '}
+
+                if [[ ${CUSTOM_PROMPT_GIT_BRANCH_NAME} == '(detached)' ]]; then
+                    _read_custom_prompt_git_branch
+                    BRANCH_NAME_RESULT=${?}
+
+                    if (( BRANCH_NAME_RESULT == 2 )); then
+                        CUSTOM_PROMPT_GIT_BRANCH_NAME=''
+                    fi
+                elif ${CUSTOM_PROMPT_DIRECT_HEAD}; then
+                    CUSTOM_PROMPT_GIT_BRANCH_NAME=${CUSTOM_PROMPT_GIT_BRANCH_NAME##*/}
+                fi
+                ;;
+            '# branch.upstream '*)
+                BRANCH_UPSTREAM=${GIT_STATUS_RECORD#'# branch.upstream '}
+                ;;
+            '# branch.ab +'*)
+                BRANCH_COUNTS=${GIT_STATUS_RECORD#'# branch.ab +'}
+                AHEAD_COUNT=${BRANCH_COUNTS%% *}
+                BEHIND_COUNT=${BRANCH_COUNTS#* -}
+
+                if [[ -z ${AHEAD_COUNT} ]] \
+                || [[ ${AHEAD_COUNT} == *[!0-9]* ]] \
+                || [[ -z ${BEHIND_COUNT} ]] \
+                || [[ ${BEHIND_COUNT} == *[!0-9]* ]]; then
+                    AHEAD_COUNT=''
+                    BEHIND_COUNT=''
+                fi
+                ;;
+        esac
+    done
+
+    ${INITIAL_BRANCH} \
+    && ! ${CUSTOM_PROMPT_DIRECT_HEAD} \
+    && CUSTOM_PROMPT_GIT_BRANCH_NAME='HEAD'
+
+    [[ -n ${CUSTOM_PROMPT_GIT_BRANCH_NAME} ]] || return
+    [[ -n ${GIT_STATUS_OUTPUT} ]] && TRACKED_CHANGES=true
+
+    if [[ -z ${BRANCH_UPSTREAM} ]] || [[ -z ${AHEAD_COUNT} ]]; then
+        CUSTOM_PROMPT_GIT_BRANCH_STATUS='local-only'
+    elif (( AHEAD_COUNT == 0 && BEHIND_COUNT == 0 )); then
+        if ${TRACKED_CHANGES}; then
+            CUSTOM_PROMPT_GIT_BRANCH_STATUS='local-changes'
+        else
+            CUSTOM_PROMPT_GIT_BRANCH_STATUS='up-to-date'
+        fi
+    elif (( AHEAD_COUNT == 0 )); then
+        CUSTOM_PROMPT_GIT_BRANCH_STATUS='behind'
+    elif (( BEHIND_COUNT == 0 )); then
+        CUSTOM_PROMPT_GIT_BRANCH_STATUS='ahead'
+    else
+        CUSTOM_PROMPT_GIT_BRANCH_STATUS='diverged'
+    fi
+
+    _render_custom_prompt_git
+}
+
+function _update_custom_prompt_path {
+    [[ ${CUSTOM_PROMPT_PATH_DIRECTORY} == "${PWD}" ]] && return
+
+    local CURRENT_DIRECTORY
+    local PATH_COLOUR
+    local PATH_ESCAPE
+
+    CUSTOM_PROMPT_PATH_DIRECTORY=${PWD}
+    CURRENT_DIRECTORY=${PWD##*/}
+
+    if [[ ${HOME} == "${PWD}" ]]; then
+        CUSTOM_PROMPT_PATH='~'
+    elif (( ${#CURRENT_DIRECTORY} > CUSTOM_PROMPT_MAXIMUM_PATH_LENGTH )); then
+        CUSTOM_PROMPT_PATH="${CURRENT_DIRECTORY:0:CUSTOM_PROMPT_PATH_EDGE_LENGTH}..${CURRENT_DIRECTORY: -CUSTOM_PROMPT_PATH_EDGE_LENGTH}"
+    elif [[ ${PWD} == "/${CURRENT_DIRECTORY}" ]]; then
+        CUSTOM_PROMPT_PATH=${PWD}
+    else
+        CUSTOM_PROMPT_PATH=${CURRENT_DIRECTORY}
+    fi
+
+    if ! ${CUSTOM_PROMPT_PATH_COLOURS_ENABLED}; then
+        CUSTOM_PROMPT_PATH_SEGMENT=${CUSTOM_PROMPT_PATH}
+        return
+    fi
+
+    if [[ ${PWD} == '/' ]] \
+    || [[ ${PWD} == '/root' ]] \
+    || [[ ${PWD} == '/root/*' ]]; then
+        PATH_COLOUR='41'
+    elif [[ ${PWD} == "/home/${USER}" ]] \
+      || [[ ${PWD} == "${HOME}" ]]; then
+        PATH_COLOUR='93'
+    elif [[ ! -w ${PWD} ]]; then
+        PATH_COLOUR='31'
+    else
+        PATH_COLOUR='33'
+    fi
+
+    PATH_ESCAPE="${CUSTOM_PROMPT_ESCAPE}[${PATH_COLOUR}m"
+    CUSTOM_PROMPT_PATH_SEGMENT="${CUSTOM_PROMPT_NON_PRINTING_START}${PATH_ESCAPE}${CUSTOM_PROMPT_NON_PRINTING_END}${CUSTOM_PROMPT_PATH}"
+    CUSTOM_PROMPT_PATH_SEGMENT+="${CUSTOM_PROMPT_NON_PRINTING_START}${CUSTOM_PROMPT_RESET_ESCAPE}${CUSTOM_PROMPT_NON_PRINTING_END}"
+}
+
+function _update_custom_prompt_host {
+    [[ ${CUSTOM_PROMPT_CACHED_HOSTNAME} == "${HOSTNAME}" ]] && return
+
+    CUSTOM_PROMPT_CACHED_HOSTNAME=${HOSTNAME}
+
+    if ${CUSTOM_PROMPT_PATH_COLOURS_ENABLED}; then
+        CUSTOM_PROMPT_HOST_SEGMENT="${CUSTOM_PROMPT_NON_PRINTING_START}${CUSTOM_PROMPT_HOST_ESCAPE}${CUSTOM_PROMPT_NON_PRINTING_END}${HOSTNAME}"
+        CUSTOM_PROMPT_HOST_SEGMENT+="${CUSTOM_PROMPT_NON_PRINTING_START}${CUSTOM_PROMPT_RESET_ESCAPE}${CUSTOM_PROMPT_NON_PRINTING_END}"
+    else
+        CUSTOM_PROMPT_HOST_SEGMENT=${HOSTNAME}
+    fi
+}
+
+function _update_custom_prompt {
+    local PREVIOUS_COMMAND_STATUS=${?}
+
+    [[ ${CUSTOM_PROMPT_CACHED_HOSTNAME} != "${HOSTNAME}" ]] && _update_custom_prompt_host
+    [[ ${CUSTOM_PROMPT_PATH_DIRECTORY} != "${PWD}" ]] && _update_custom_prompt_path
+
+    if ${ENABLE_GIT} \
+     && [[ ${GIT_DIR+is_set} == 'is_set' \
+         || ${CUSTOM_PROMPT_REPOSITORY_SEARCH_PATH} != "${PWD}" \
+         || ${CUSTOM_PROMPT_DISCOVERED_HEAD_FILE} != '-' \
+         || -e "${PWD}/.git" ]]; then
+        _update_custom_prompt_git
+    elif [[ -n ${CUSTOM_PROMPT_GIT_SEGMENT} ]]; then
+        _clear_custom_prompt_git
+    fi
+
+    return "${PREVIOUS_COMMAND_STATUS}"
+}
+
+function _register_custom_prompt_updater {
+    local PROMPT_COMMAND_ATTRIBUTES=''
+
+    [[ ${PROMPT_COMMAND[*]-} == *'_update_custom_prompt'* ]] && return
+
+    if (( BASH_VERSINFO[0] > 5 || BASH_VERSINFO[0] == 5 && BASH_VERSINFO[1] >= 1 )); then
+        PROMPT_COMMAND_ATTRIBUTES=${PROMPT_COMMAND@a}
+
+        if [[ ${PROMPT_COMMAND_ATTRIBUTES} == *'A'* ]]; then
+            return
+        elif [[ ${PROMPT_COMMAND_ATTRIBUTES} == *'a'* ]]; then
+            PROMPT_COMMAND=('_update_custom_prompt' "${PROMPT_COMMAND[@]}")
+            return
+        fi
+    fi
+
+    PROMPT_COMMAND="_update_custom_prompt${PROMPT_COMMAND:+;${PROMPT_COMMAND}}"
+}
+
+function _set_custom_prompt_username {
+    local ACCOUNT_DATABASE_FILE="${ROOT_ETC:-/etc}/passwd"
+    local ACCOUNT_NAME
+    local ACCOUNT_RECORD
+    local ACCOUNT_USER_ID
+
+    if [[ -r ${ACCOUNT_DATABASE_FILE} ]]; then
+        while IFS= read -r ACCOUNT_RECORD; do
+            ACCOUNT_NAME=${ACCOUNT_RECORD%%:*}
+            ACCOUNT_RECORD=${ACCOUNT_RECORD#*:}
+            ACCOUNT_RECORD=${ACCOUNT_RECORD#*:}
+            ACCOUNT_USER_ID=${ACCOUNT_RECORD%%:*}
+
+            if [[ ${ACCOUNT_USER_ID} == "${EUID}" ]]; then
+                CUSTOM_PROMPT_USERNAME=${ACCOUNT_NAME}
+                return
+            fi
+        done < "${ACCOUNT_DATABASE_FILE}"
+    fi
+
+    CUSTOM_PROMPT_USERNAME=$(command whoami)
+}
+
 function get_git_branch_name {
+    local HEAD_CONTENT
+
     ! ${ENABLE_GIT} && return
 
-    local HEAD_CONTENT=""
+    if [[ -f '.git/HEAD' ]]; then
+        IFS= read -r HEAD_CONTENT < '.git/HEAD'
 
-    if [ -f ".git/HEAD" ]; then
-        HEAD_CONTENT=$(<".git/HEAD")
-
-        if [[ ${HEAD_CONTENT} == ref:\ refs/heads/* ]]; then
-            echo "${HEAD_CONTENT##*/}"
+        if [[ ${HEAD_CONTENT} == 'ref: refs/heads/'* ]]; then
+            printf '%s\n' "${HEAD_CONTENT##*/}"
         fi
     else
-        git rev-parse --abbrev-ref HEAD 2>/dev/null
+        command git rev-parse --abbrev-ref HEAD 2>/dev/null
     fi
 }
 
 function get_git_branch_status {
+    local BASE
+    local DIFF_RESULT
+    local LOCAL
+    local REMOTE
     local UPSTREAM=${1:-'@{u}'}
-    local REMOTE=$(git rev-parse "${UPSTREAM}" 2>/dev/null)
 
-    if [ -z ${REMOTE} ]; then
-       echo "local-only"
-	   return
-	fi
+    REMOTE=$(command git rev-parse "${UPSTREAM}" 2>/dev/null)
 
-    local LOCAL=$(git rev-parse @)
+    if [[ -z ${REMOTE} ]]; then
+        printf '%s\n' 'local-only'
+        return
+    fi
 
-    if [ ${LOCAL} = ${REMOTE} ]; then
-		local LOCAL_CHANGES=$(git diff-index --name-only HEAD --)
+    LOCAL=$(command git rev-parse @)
 
-        if [ -n "${LOCAL_CHANGES}" ]; then
-            echo "local-changes"
+    if [[ ${LOCAL} == "${REMOTE}" ]]; then
+        command git diff-index --quiet HEAD --
+        DIFF_RESULT=${?}
+
+        if (( DIFF_RESULT == 1 )); then
+            printf '%s\n' 'local-changes'
         else
-            echo "up-to-date"
+            printf '%s\n' 'up-to-date'
         fi
-	else
-		local BASE=$(git merge-base @ "${UPSTREAM}")
+    else
+        BASE=$(command git merge-base @ "${UPSTREAM}")
 
-		if [ ${LOCAL} = ${BASE} ]; then
-			echo "behind"
-		elif [ ${REMOTE} = ${BASE} ]; then
-			echo "ahead"
-		else
-			echo "diverged"
-		fi
-	fi
+        if [[ ${LOCAL} == "${BASE}" ]]; then
+            printf '%s\n' 'behind'
+        elif [[ ${REMOTE} == "${BASE}" ]]; then
+            printf '%s\n' 'ahead'
+        else
+            printf '%s\n' 'diverged'
+        fi
+    fi
 }
 
 function get_git_prompt {
-    ! ${ENABLE_GIT} && return
-
-    local BRANCH_NAME=$(get_git_branch_name)
-
-    [ -z "${BRANCH_NAME}" ] && return
-
-    local BRANCH_NAME_STYLE="00" # Not bold
-    local BRANCH_NAME_COLOUR="36"
-
-    if [ "${BRANCH_NAME}" = "HEAD" ]; then
-        BRANCH_NAME_STYLE="01" # Bold
-        BRANCH_NAME_COLOUR="41" # Red background
-    elif [[ "${BRANCH_NAME}" == "main" ]] \
-      || [[ "${BRANCH_NAME}" == "master" ]]; then
-        BRANCH_NAME_STYLE="01" # Bold
-        BRANCH_NAME_COLOUR="93" # Light Yellow
-    fi
-
-    if ${ENABLE_GIT_STATUS} ; then
-        BRANCH_STATUS=$(get_git_branch_status)
-        BRANCH_STATUS_COLOUR=""
-        BRANCH_STATUS_INDICATOR=""
-
-        if [ "${BRANCH_STATUS}" = "local-changes" ]; then
-            BRANCH_STATUS_COLOUR="32"
-            BRANCH_STATUS_INDICATOR="*" #" ■"
-        elif [ "${BRANCH_STATUS}" = "local-only" ]; then
-            BRANCH_STATUS_COLOUR="93"
-            BRANCH_STATUS_INDICATOR="~"
-        elif [ "${BRANCH_STATUS}" = "behind" ]; then
-            BRANCH_STATUS_COLOUR="31"
-            BRANCH_STATUS_INDICATOR="-" #" ▼"
-        elif [ "${BRANCH_STATUS}" = "ahead" ]; then
-            BRANCH_STATUS_COLOUR="92"
-            BRANCH_STATUS_INDICATOR="+" #" ▲"
-        elif [ "${BRANCH_STATUS}" = "diverged" ]; then
-            BRANCH_STATUS_COLOUR="91"
-            BRANCH_STATUS_INDICATOR="±" #" ♦"
-        fi
-
-        [ -n "${BRANCH_STATUS_INDICATOR}" ] && BRANCH_STATUS_INDICATOR=" ${BRANCH_STATUS_INDICATOR}"
-    fi
-
-    PS1_BRANCH_SEPARATOR1="("
-    PS1_BRANCH_NAME=${BRANCH_NAME}
-    PS1_BRANCH_STATUS=${BRANCH_STATUS_INDICATOR}
-    PS1_BRANCH_SEPARATOR2=")"
-
-    if ${ENABLE_COLOURS}; then
-        PS1_BRANCH_SEPARATOR1="\001\033[0m\002${PS1_BRANCH_SEPARATOR1}"
-        PS1_BRANCH_NAME="\001\033[${BRANCH_NAME_STYLE};${BRANCH_NAME_COLOUR}m\002${BRANCH_NAME}"
-        [ -n "${PS1_BRANCH_STATUS}" ] && PS1_BRANCH_STATUS="\001\033[00;${BRANCH_STATUS_COLOUR}m\002${BRANCH_STATUS_INDICATOR}"
-        PS1_BRANCH_SEPARATOR2="\001\033[0m\002${PS1_BRANCH_SEPARATOR2}"
-    fi
-
-    echo -e -n "${PS1_BRANCH_SEPARATOR1}${PS1_BRANCH_NAME}${PS1_BRANCH_STATUS}${PS1_BRANCH_SEPARATOR2} "
+    _update_custom_prompt_git
+    printf '%s' "${CUSTOM_PROMPT_GIT_SEGMENT}"
 }
 
 function get_path {
-    MAX_LENGTH=24
-    CWD=${PWD##*/}
-
-    if [ "${HOME}" = "${PWD}" ]; then
-        echo "~"
-    elif [ ${#CWD} -gt $((MAX_LENGTH)) ]; then
-        echo ${CWD:0:$((MAX_LENGTH/2-1))}..${CWD:(-$((MAX_LENGTH/2-1)))}
-    elif [ "${PWD}" = "/${CWD}" ]; then
-        echo ${PWD}
-    else
-        echo ${CWD}
-    fi
+    _update_custom_prompt_path
+    printf '%s\n' "${CUSTOM_PROMPT_PATH}"
 }
 
 function get_path_colour {
-    if [[ "${PWD}" = "/" ]]; then
-        echo "41"
-    elif [[ "${PWD}" = "/root" ]]; then
-        echo "41"
-    elif [[ "${PWD}" = "/root/*" ]]; then
-        echo "41"
-    elif [[ "${PWD}" == "/home/${USER}" ]] ||
-         [[ "${PWD}" == "${HOME}" ]]; then
-        echo "93"
-    elif [[ ! -w "${PWD}" ]]; then
-        echo "31"
+    if [[ ${PWD} == '/' ]] \
+    || [[ ${PWD} == '/root' ]] \
+    || [[ ${PWD} == '/root/*' ]]; then
+        printf '%s\n' '41'
+    elif [[ ${PWD} == "/home/${USER}" ]] \
+      || [[ ${PWD} == "${HOME}" ]]; then
+        printf '%s\n' '93'
+    elif [[ ! -w ${PWD} ]]; then
+        printf '%s\n' '31'
     else
-        echo "33"
+        printf '%s\n' '33'
     fi
 }
 
 function set_custom_prompt {
-    local userColour="34"   # Default = blue
-    local hostColour="32"   # Default = green
+    local HOST_COLOUR='32'
+    local USER_ESCAPE
+    local USER_COLOUR='34'
 
-    local separator1="@"
-    local separator2=":"
-    local separator3=">"
+    _set_custom_prompt_username
 
-    local CURRENT_USERNAME="$(whoami)"
-
-    [ "${CURRENT_USERNAME}" = "root" ]   && userColour="31" # Root = red
-    [ "${CURRENT_USERNAME}" = "guest" ]  && userColour="33" # Guest = yellow
-
-    if [[ ${HOSTNAME} = *Assistant ]]; then
-        hostColour="94" # HomeAssistant = Light Blue
-    elif [[ ${HOSTNAME} = *Craft ]]; then
-        hostColour="92" # Game Server = Light Green
-    elif [[ ${HOSTNAME} = *Pi ]] \
-      || [[ ${HOSTNAME} = *Berry* ]]; then
-        hostColour="95" # RaspberryPi = Light Magenta
-    elif [[ ${HOSTNAME} = RetroPie ]]; then
-        hostColour="96" # RetroPie = Light Cyan
-    elif [ ${HOSTNAME} = Telefon-* ] \
-      || [ -d '/data/data/com.termux/files' ] \
-      || [ -f '/usr/bin/postmarketos-mvcfg-package' ]; then
-        hostColour="93" # Phone = Light Yellow
+    if [[ ${CUSTOM_PROMPT_USERNAME} == 'root' ]]; then
+        USER_COLOUR='31'
+    elif [[ ${CUSTOM_PROMPT_USERNAME} == 'guest' ]]; then
+        USER_COLOUR='33'
     fi
 
-    local ps1user="${CURRENT_USERNAME}"
-    local ps1host='${HOSTNAME}' # "\h"
-    local ps1path='$(get_path)'
+    if [[ ${HOSTNAME} == *Assistant ]]; then
+        HOST_COLOUR='94'
+    elif [[ ${HOSTNAME} == *Craft ]]; then
+        HOST_COLOUR='92'
+    elif [[ ${HOSTNAME} == *Pi ]] \
+      || [[ ${HOSTNAME} == *Berry* ]]; then
+        HOST_COLOUR='95'
+    elif [[ ${HOSTNAME} == 'RetroPie' ]]; then
+        HOST_COLOUR='96'
+    elif [[ ${HOSTNAME} == Telefon-* ]] \
+      || [[ -d '/data/data/com.termux/files' ]] \
+      || [[ -f '/usr/bin/postmarketos-mvcfg-package' ]]; then
+        HOST_COLOUR='93'
+    fi
+
+    CUSTOM_PROMPT_HOST_ESCAPE=''
+    CUSTOM_PROMPT_USER_SEGMENT=${CUSTOM_PROMPT_USERNAME}
+    CUSTOM_PROMPT_PATH_COLOURS_ENABLED=false
 
     if ${ENABLE_COLOURS}; then
-        ps1user="\[\e[01;${userColour}m\]${ps1user}\[\e[m\]"
-        ps1host="\[\e[${hostColour}m\]${ps1host}\[\e[m\]"
-        ps1path="\[\e[\$(get_path_colour)m\]${ps1path}\[\e[m\]"
+        USER_ESCAPE="${CUSTOM_PROMPT_ESCAPE}[01;${USER_COLOUR}m"
+        CUSTOM_PROMPT_HOST_ESCAPE="${CUSTOM_PROMPT_ESCAPE}[${HOST_COLOUR}m"
+        CUSTOM_PROMPT_USER_SEGMENT="${CUSTOM_PROMPT_NON_PRINTING_START}${USER_ESCAPE}${CUSTOM_PROMPT_NON_PRINTING_END}${CUSTOM_PROMPT_USERNAME}"
+        CUSTOM_PROMPT_USER_SEGMENT+="${CUSTOM_PROMPT_NON_PRINTING_START}${CUSTOM_PROMPT_RESET_ESCAPE}${CUSTOM_PROMPT_NON_PRINTING_END}"
+        CUSTOM_PROMPT_PATH_COLOURS_ENABLED=true
     fi
 
-    export PS1="$ps1user$separator1$ps1host$separator2${ps1path} \$(get_git_prompt)$separator3 "
+    _clear_custom_prompt_git
+    CUSTOM_PROMPT_CACHED_HOSTNAME=''
+    CUSTOM_PROMPT_PATH_DIRECTORY=''
+    _update_custom_prompt_host
+    _update_custom_prompt_path
+
+    PS1='${CUSTOM_PROMPT_USER_SEGMENT}@${CUSTOM_PROMPT_HOST_SEGMENT}:${CUSTOM_PROMPT_PATH_SEGMENT} ${CUSTOM_PROMPT_GIT_SEGMENT}> '
+
+    export PS1
+    _register_custom_prompt_updater
 }
 
 set_custom_prompt
