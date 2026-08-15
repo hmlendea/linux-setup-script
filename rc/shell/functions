@@ -44,6 +44,7 @@ function edit() {
 function package_manager_command() {
     local OPERATION
     local AS_DEPENDENCY
+    local REINSTALL
     local PACKAGE_MANAGER
     local PACKAGE_MANAGER_COMMAND
     local PACKAGE_MANAGER_FAMILY
@@ -82,11 +83,19 @@ function package_manager_command() {
     fi
 
     AS_DEPENDENCY=false
-    
+    REINSTALL=false
+
     if [[ "${OPERATION}" == 'install' ]]; then
-        if [[ "${1}" == '--asdeps' ]]; then
-            AS_DEPENDENCY=true && shift
-        fi
+        while [[ "${1}" == '--asdeps' ]] \
+          || [[ "${1}" == '--reinstall' ]]; do
+            if [[ "${1}" == '--asdeps' ]]; then
+                AS_DEPENDENCY=true
+            elif [[ "${1}" == '--reinstall' ]]; then
+                REINSTALL=true
+            fi
+
+            shift
+        done
     fi
 
     PACKAGE_MANAGER='unknown'
@@ -111,26 +120,18 @@ function package_manager_command() {
         PACKAGE_MANAGER='paru'
         PACKAGE_MANAGER_COMMAND="${PACKAGE_MANAGER} --noredownload --norebuild --sudoloop --noconfirm --bottomup --color auto"
         PACKAGE_MANAGER_FAMILY='pacman'
-
-        ${AS_DEPENDENCY} && PACKAGE_MANAGER_COMMAND="${PACKAGE_MANAGER_COMMAND} --asdeps"
     elif [ -e '/usr/bin/yay' ]; then
         PACKAGE_MANAGER='yay'
         PACKAGE_MANAGER_COMMAND="${PACKAGE_MANAGER} --noredownload --norebuild --sudoloop --noconfirm --bottomup --color auto"
         PACKAGE_MANAGER_FAMILY='pacman'
-
-        ${AS_DEPENDENCY} && PACKAGE_MANAGER_COMMAND="${PACKAGE_MANAGER_COMMAND} --asdeps"
     elif [ -e '/usr/bin/yaourt' ]; then
         PACKAGE_MANAGER='yaourt'
         PACKAGE_MANAGER_COMMAND="${PACKAGE_MANAGER} --noconfirm"
         PACKAGE_MANAGER_FAMILY='pacman'
-
-        ${AS_DEPENDENCY} && PACKAGE_MANAGER_COMMAND="${PACKAGE_MANAGER_COMMAND} --asdeps"
     elif [ -e '/usr/bin/pacman' ]; then
         PACKAGE_MANAGER='pacman'
         PACKAGE_MANAGER_COMMAND="sudo ${PACKAGE_MANAGER}"
         PACKAGE_MANAGER_FAMILY='pacman'
-
-        ${AS_DEPENDENCY} && PACKAGE_MANAGER_COMMAND="${PACKAGE_MANAGER_COMMAND} --asdeps"
     else
         echo 'Unsupported package manager!'
         return 1
@@ -162,20 +163,62 @@ function package_manager_command() {
         fi
     elif [ "${OPERATION}" = 'install' ]; then
         for PACKAGE_NAME in "${@}"; do
-            if ! yeet test "${PACKAGE_NAME}"; then
+            local PACKAGE_IS_INSTALLED
+            local PACKAGE_INSTALL_REASON_ARGUMENT
+            local PACKAGE_WAS_AUTO
+
+            PACKAGE_IS_INSTALLED=false
+            PACKAGE_INSTALL_REASON_ARGUMENT=''
+            PACKAGE_WAS_AUTO=false
+
+            if yeet test "${PACKAGE_NAME}"; then
+                PACKAGE_IS_INSTALLED=true
+            fi
+
+            if ! ${PACKAGE_IS_INSTALLED} \
+              || ${REINSTALL}; then
                 if [ "${PACKAGE_MANAGER_FAMILY}" = 'apk' ]; then
                     ${PACKAGE_MANAGER_COMMAND} add "${PACKAGE_NAME}"
                 elif [ "${PACKAGE_MANAGER_FAMILY}" = 'apt' ]; then
-                    ${PACKAGE_MANAGER_COMMAND} install "${PACKAGE_NAME}"
+                    if ${PACKAGE_IS_INSTALLED} \
+                      && apt-mark showauto | grep -qx "${PACKAGE_NAME}"; then
+                        PACKAGE_WAS_AUTO=true
+                    fi
 
-                    if ${AS_DEPENDENCY}; then
+                    if ${PACKAGE_IS_INSTALLED} \
+                      && ${REINSTALL}; then
+                        ${PACKAGE_MANAGER_COMMAND} install --reinstall "${PACKAGE_NAME}"
+                    else
+                        ${PACKAGE_MANAGER_COMMAND} install "${PACKAGE_NAME}"
+                    fi
+
+                    if ${PACKAGE_IS_INSTALLED}; then
+                        if ${PACKAGE_WAS_AUTO}; then
+                            sudo apt-mark auto "${PACKAGE_NAME}"
+                        else
+                            sudo apt-mark manual "${PACKAGE_NAME}"
+                        fi
+                    elif ${AS_DEPENDENCY}; then
                         sudo apt-mark auto "${PACKAGE_NAME}"
                     fi
                 elif [ "${PACKAGE_MANAGER_FAMILY}" = 'pacman' ]; then
-                    ${PACKAGE_MANAGER_COMMAND} -S "${PACKAGE_NAME}"
+                    if ${PACKAGE_IS_INSTALLED} \
+                      && ${REINSTALL}; then
+                        if pacman -Qi "${PACKAGE_NAME}" | grep -q '^Install Reason\s*:\s*Installed as a dependency'; then
+                            PACKAGE_INSTALL_REASON_ARGUMENT='--asdeps'
+                        else
+                            PACKAGE_INSTALL_REASON_ARGUMENT='--asexplicit'
+                        fi
+                    elif ${AS_DEPENDENCY}; then
+                        PACKAGE_INSTALL_REASON_ARGUMENT='--asdeps'
+                    else
+                        PACKAGE_INSTALL_REASON_ARGUMENT='--asexplicit'
+                    fi
+
+                    ${PACKAGE_MANAGER_COMMAND} -S "${PACKAGE_INSTALL_REASON_ARGUMENT}" "${PACKAGE_NAME}"
                 fi
             else
-                echo -e "The \e[0;33m${PACKAGE_NAME}\e[0m package is already installed!"
+                echo -e "The \e[0;33m${PACKAGE_NAME}\e[0m package is already installed. Use \e[0;33m--reinstall\e[0m if you intend to reinstall it."
             fi
         done
     elif [[ "${OPERATION}" == 'list' ]]; then
