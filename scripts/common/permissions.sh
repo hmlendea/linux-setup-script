@@ -172,8 +172,12 @@ function set_flatpak_shared() {
             SHARED_OBJECTS=$(echo "${SHARED_OBJECTS}" | sed 's/'"${OBJECT}"';//g')
         fi
 
+        local SHARED_OBJECTS_ESCAPED=""
+
+        SHARED_OBJECTS_ESCAPED=$(printf '%s' "${SHARED_OBJECTS}" | sed -e 's/[\\/&]/\\\\&/g')
+
         echo -e "\e[0;33m${APPLICATION}\e[0m permission \e[0;32m${OBJECT}\e[0m >>> ${STATE}"
-        run_as_su sed -i 's/^shared=.*/shared='"${SHARED_OBJECTS}"'/g' "${METADATA_FILE}"
+        run_as_su sed -i "s/^shared=.*/shared=${SHARED_OBJECTS_ESCAPED}/g" "${METADATA_FILE}"
     done
 }
 
@@ -329,8 +333,12 @@ function set_flatpak_filesystem() {
             FILESYSTEMS=$(echo "${FILESYSTEMS}" | sed 's/^;//;s/;$//;s/;;*/;/g')
         fi
 
+        local FILESYSTEMS_ESCAPED=""
+
+        FILESYSTEMS_ESCAPED=$(printf '%s' "${FILESYSTEMS}" | sed -e 's/[\\/&]/\\\\&/g')
+
         echo -e "\e[0;33m${APPLICATION}\e[0m filesystem \e[0;32m${FILESYSTEM}\e[0m >>> ${STATE}"
-        run_as_su sed -i 's/^filesystems=.*/filesystems='"${FILESYSTEMS}"'/g' "${METADATA_FILE}"
+        run_as_su sed -i "s/^filesystems=.*/filesystems=${FILESYSTEMS_ESCAPED}/g" "${METADATA_FILE}"
     done
 }
 
@@ -374,7 +382,11 @@ function set_flatpak_socket() {
             SOCKETS=$(echo "${SOCKETS}" | sed 's/'"${SOCKET}"';//g')
         fi
 
+        local SOCKETS_ESCAPED=""
+
+        SOCKETS_ESCAPED=$(printf '%s' "${SOCKETS}" | sed -e 's/[\\/&]/\\\\&/g')
+
         echo -e "\e[0;33m${APPLICATION}\e[0m socket \e[0;32m${SOCKET}\e[0m >>> ${STATE}"
-        run_as_su sed -i 's/^sockets=.*/sockets='"${SOCKETS}"'/g' "${METADATA_FILE}"
+        run_as_su sed -i "s/^sockets=.*/sockets=${SOCKETS_ESCAPED}/g" "${METADATA_FILE}"
     done
 }
