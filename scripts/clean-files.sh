@@ -339,6 +339,7 @@ remove \
     "${XDG_CONFIG_HOME}/yay"
 ! does_bin_exist 'youtube-dl' && remove "${XDG_CACHE_HOME}/youtube-dl"
 ! does_bin_exist 'yt-dlp' && remove "${XDG_CACHE_HOME}/yt-dlp"
+! does_bin_exist 'zoxide' && remove "${XDG_DATA_HOME}/zoxide"
 ! does_bin_exist 'zsh' && remove "${HOME}/.zshrc"
 
 ###################
@@ -760,9 +761,12 @@ if ${CLEAN_LOGS}; then
 
     remove "${ROOT_VAR_LOG}/pacman.log"
 
-    for SUBFOLDER_NAME in "crash-reports" "logs"; do
+    for SUBFOLDER_NAME in 'crash-reports' 'logs' 'xaero/minimap'; do
         remove "${HOME_VAR_APP}/org.prismlauncher.PrismLauncher/data/PrismLauncher/instances/"*"/.minecraft/${SUBFOLDER_NAME}"
     done
+
+    remove "${HOME_VAR_APP}/org.prismlauncher.PrismLauncher/data/PrismLauncher/instances/"*"/.minecraft/world_map/"*"/null/mw\$default/cache"
+    remove "${HOME_VAR_APP}/org.prismlauncher.PrismLauncher/data/PrismLauncher/instances/"*"/.minecraft/world_map/"*"/null/mw\$default/cache_1"
 
     remove \
         "${HOME}/.klei/DoNotStarveTogether/backup/client_chat_log" \
