@@ -22,7 +22,46 @@ fi
 if does_bin_exist 'flatpak'; then
     for INSTALLATION_METHOD in 'user' 'system'; do
         echo "Uninstalling unused ${INSTALLATION_METHOD} flatpak dependencies:"
-        call_flatpak uninstall --"${INSTALLATION_METHOD}" --unused
+
+        while IFS= read -r RUNTIME; do
+            [ -z "${RUNTIME}" ] && continue
+
+            RUNTIME_WITHOUT_PREFIX="${RUNTIME#runtime/}"
+
+            DEPENDENT_APPS="$(
+                flatpak list \
+                    --"${INSTALLATION_METHOD}" \
+                    --app-runtime="${RUNTIME_WITHOUT_PREFIX}" \
+                    --columns=application
+            )"
+
+            if [ -n "${DEPENDENT_APPS}" ]; then
+                continue
+            fi
+
+            call_flatpak pin \
+                --"${INSTALLATION_METHOD}" \
+                --remove \
+                "${RUNTIME}" \
+                >/dev/null 2>&1 \
+                || true
+
+            call_flatpak uninstall \
+                --"${INSTALLATION_METHOD}" \
+                --runtime \
+                --noninteractive \
+                "${RUNTIME}"
+        done < <(
+            flatpak list \
+                --"${INSTALLATION_METHOD}" \
+                --runtime \
+                --columns=ref
+        )
+
+        call_flatpak uninstall \
+            --"${INSTALLATION_METHOD}" \
+            --unused \
+            --noninteractive
     done
 fi
 
