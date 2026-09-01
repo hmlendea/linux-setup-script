@@ -32,7 +32,7 @@ xkb_symbols "basic" {
     key <AC02> { [            s,           S,                U0219,        U0218 ] };
     key <AC03> { [            d,           D,              dstroke,      Dstroke ] };
     key <AC09> { [            l,           L,              lstroke,      Lstroke ] };
-    key <LSGT> { [    backslash,         bar                                     ] };
+    key <LSGT> { [    backslash,         bar,            leftarrow, rightarrow ] };
     key <AB03> { [            c,           C,             ccedilla,     Ccedilla ] };
     key <AB04> { [            v,           V,                U028C,        U0245 ] }; # Turned V
     key <AB06> { [            n,           N,               ntilde,       Ntilde ] };
@@ -79,7 +79,7 @@ xkb_symbols "std" {
     key <AC09> { [            l,           L,          lstroke,     Lstroke ] };
     key <AC10> { [        U0219,       U0218,        semicolon,       colon ] };
     key <AC11> { [        U021b,       U021a,       apostrophe,    quotedbl ] };
-    key <LSGT> { [    backslash,         bar                                ] };
+    key <LSGT> { [    backslash,         bar,       leftarrow, rightarrow ] };
     key <AB03> { [            c,           C,        copyright              ] };
     key <AB08> { [        comma,   semicolon,           less, guillemotleft ] };
     key <AB09> { [       period,       colon,       greater, guillemotright ] };
@@ -129,7 +129,7 @@ xkb_symbols "winkeys" {
     key <AC10> { [        U0219,       U0218,           dollar              ] };
     key <AC11> { [        U021b,       U021a,           ssharp              ] };
     key <BKSL> { [  acircumflex, Acircumflex                                ] };
-    key <LSGT> { [         less,     greater                                ] };
+    key <LSGT> { [         less,     greater,       leftarrow, rightarrow ] };
     key <AB01> { [            y,           Y                                ] };
     key <AB04> { [            v,           V,               at              ] };
     key <AB05> { [            b,           B,        braceleft              ] };
