@@ -49,6 +49,12 @@ function set_linux_permission() {
                 camera)
                     set_flatpak_permission "${APPLICATION}" 'devices' 'camera' "${STATE}"
                     ;;
+                all-devices)
+                    set_flatpak_device "${APPLICATION}" 'all' "${STATE}"
+                    ;;
+                shared-memory)
+                    set_flatpak_device "${APPLICATION}" 'shm' "${STATE}"
+                    ;;
                 filesystem-home)
                     set_flatpak_filesystem "${APPLICATION}" 'home' "${STATE}"
                     ;;
@@ -308,6 +314,37 @@ function get_flatpak_filesystem() {
     done
 
     return 1
+}
+
+function set_flatpak_device() {
+    local APPLICATION="${1}"
+    local DEVICE="${2}"
+    local STATE="${3}"
+
+    for METADATA_FILE in "${ROOT_VAR_LIB}/flatpak/app/${APPLICATION}/current/active/metadata" \
+                         "${XDG_DATA_HOME}/flatpak/app/${APPLICATION}/current/active/metadata"; do
+        local DEVICES="$(get_flatpak_metadata_value "${METADATA_FILE}" 'devices')"
+
+        [ -z "${DEVICES}" ] && continue
+
+        if echo "${DEVICES}" | grep -q "^${DEVICE};\|;${DEVICE};\|;${DEVICE}$\|^${DEVICE}$"; then
+            ${STATE} && continue
+
+            DEVICES=$(echo "${DEVICES}" | sed 's/\(^\|;\)'"${DEVICE}"'\($\|;\)/;/g')
+            DEVICES=$(echo "${DEVICES}" | sed 's/^;//;s/;$//;s/;;*/;/g')
+        else
+            ${STATE} || continue
+
+            DEVICES="${DEVICE};${DEVICES}"
+        fi
+
+        local DEVICES_ESCAPED=""
+
+        DEVICES_ESCAPED=$(printf '%s' "${DEVICES}" | sed -e 's/[\\/&]/\\&/g')
+
+        echo -e "\e[0;33m${APPLICATION}\e[0m device \e[0;32m${DEVICE}\e[0m >>> ${STATE}"
+        run_as_su sed -i "s/^devices=.*/devices=${DEVICES_ESCAPED}/g" "${METADATA_FILE}"
+    done
 }
 
 function set_flatpak_filesystem() {

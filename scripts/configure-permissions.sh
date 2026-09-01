@@ -7,9 +7,11 @@ source "${REPO_SCRIPTS_DIR}/common/system-info.sh"
 
 if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
     for AI_APP in 'ai.lmstudio.lm-studio'; do
-        set_linux_permission "${IMAGER_APP}" \
+        set_linux_permission "${AI_APP}" \
             'background' false \
             'camera' false \
+            'all-devices' true \
+            'shared-memory' true \
             'filesystem-home' false \
             'location' false \
             'microphone' false \
