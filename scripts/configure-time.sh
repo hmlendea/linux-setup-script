@@ -21,5 +21,10 @@ elif [ ! -f "${LOCALTIME_FILE_PATH}" ]; then
 fi
 
 if [ "${DEVICE_MODEL}" != 'iPhone' ]; then
-    does_bin_exist 'hwclock' && hwclock --systohc
+    for RTC_DEVICE in '/dev/rtc' '/dev/rtc0' '/dev/misc/rtc'; do
+        if [[ -c "${RTC_DEVICE}" ]]; then
+            does_bin_exist 'hwclock' && hwclock --rtc "${RTC_DEVICE}" --systohc
+            break
+        fi
+    done
 fi
