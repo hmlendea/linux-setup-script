@@ -1468,10 +1468,20 @@ fi
 ###############
 ### Network ###
 ##############
-does_bin_exist 'cloud-init' && \
-    set_config_values --separator ':' "${ROOT_ETC}/cloud/cloud.cfg" \
+if does_bin_exist 'cloud-init'; then
+    CLOUD_INIT_CONFIG_FILE="${ROOT_ETC}/cloud/cloud.cfg"
+
+    set_config_values --separator ':' "${CLOUD_INIT_CONFIG_FILE}" \
         'manage_etc_hosts' false \
         'preserve_hostname' true
+
+    if [[ "${DISTRO_FAMILY}" == 'Ubuntu' ]] \
+    && [[ -f "${CLOUD_INIT_CONFIG_FILE}" ]]; then
+        run_as_su sed -i \
+            '/^[[:space:]]*cloud_init_modules:[[:space:]]*$/, /^[^[:space:]#].*:/ { /^[[:space:]]*-[[:space:]]*update_etc_hosts[[:space:]]*$/d }' \
+            "${CLOUD_INIT_CONFIG_FILE}"
+    fi
+fi
 
 if does_bin_exist 'sshd'; then
     SSHD_CONFIG_FILE="${ROOT_ETC}/ssh/sshd_config"
