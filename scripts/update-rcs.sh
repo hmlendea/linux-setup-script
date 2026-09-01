@@ -220,3 +220,9 @@ bash "${REPO_SCRIPTS_DIR}/git/setup-gpg-key.sh"
 if [[ "$(get_device_model)" =~ 'Argon ONE UP' ]]; then
     update_file_if_distinct "${REPO_RC_DIR}/boot_firmware_config_argononeup.txt" "${ROOT_BOOT}/firmware/config.txt"
 fi
+
+if is_raspberry_pi \
+&& ! ${HAS_GUI} \
+&& [[ -f "${ROOT_BOOT}/firmware/config.txt" ]]; then
+    set_config_value --section 'all' "${ROOT_BOOT}/firmware/config.txt" 'gpu_mem' 16
+fi

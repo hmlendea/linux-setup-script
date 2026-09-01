@@ -221,6 +221,11 @@ function get_device_model() {
     fi
 }
 
+function is_raspberry_pi() {
+    [[ -f "${ROOT_PROC}/device-tree/model" ]] \
+    && grep -aq 'Raspberry Pi' "${ROOT_PROC}/device-tree/model"
+}
+
 function get_os_language() {
     local OS_LANGUAGE
 
