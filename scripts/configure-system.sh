@@ -279,6 +279,8 @@ if [ -d "${ROOT_ETC}/sysctl.d" ]; then
     set_config_value "${SYSCTL_CONFIG_FILE}" 'kernel.core_pattern' '|/bin/false' # Disable systemctl coredump
     set_config_value "${SYSCTL_CONFIG_FILE}" 'kernel.nmi_watchdog' 0            # Disable NMI interrupts that can consume a lot of power
 
+    is_system_storage_sd_card && set_config_value "${SYSCTL_CONFIG_FILE}" 'vm.swappiness' 1
+
     if [ "${CHASSIS_TYPE}" = 'Laptop' ]; then
         set_config_value "${SYSCTL_CONFIG_FILE}" 'vm.dirty_writeback_centisecs' $((DIRTY_WRITEBACK_POWERSAVE_SECS * 100))
         set_config_value "${SYSCTL_CONFIG_FILE}" 'vm.laptop_mode' 5
@@ -289,6 +291,10 @@ if [ -d "${ROOT_ETC}/sysctl.d" ]; then
 fi
 
 if [ -d "${ROOT_ETC}/systemd" ]; then
+    if is_system_storage_sd_card; then
+        set_config_value "${ROOT_ETC}/systemd/journald.conf" 'Storage' 'volatile'
+    fi
+
     set_config_values --section 'Login' "${ROOT_ETC}/systemd/logind.conf" \
         'KillUserProcesses' 'yes'
     set_config_values --section 'Manager' "${ROOT_ETC}/systemd/system.conf" \

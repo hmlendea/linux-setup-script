@@ -567,6 +567,14 @@ function get_uptime_text() {
     echo "${UPTIME}"
 }
 
+function is_system_storage_sd_card() {
+    does_bin_exist 'findmnt' || return 1
+
+    local ROOT_DEVICE="$(findmnt -n -o SOURCE / 2>/dev/null)"
+
+    [[ "${ROOT_DEVICE}" == /dev/mmcblk* ]]
+}
+
 function get_wifi_driver() {
     get_driver 'wifi'
 }
