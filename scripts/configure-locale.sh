@@ -2,6 +2,8 @@
 source "scripts/common/filesystem.sh"
 source "${REPO_SCRIPTS_COMMON_DIR}/system-info.sh"
 
+[[ "${DEVICE_MODEL}" == 'iPhone' ]] && exit 0
+
 LOCALE_GEN_FILE_PATH="${ROOT_ETC}/locale.gen"
 LOCALE_CONF_FILE_PATH="${ROOT_ETC}/locale.conf"
 VCONSOLE_CONF_FILE_PATH="${ROOT_ETC}/vconsole.conf"

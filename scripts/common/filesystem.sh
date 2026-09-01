@@ -214,13 +214,14 @@ function remove_empty_subdirectories() {
 
     ! does_directory_exist "${PARENT_DIRECTORY}" && return
 
+    find "${PARENT_DIRECTORY}" -maxdepth 1 -type d -print0 |
     while IFS='' read -r -d '' SUB_DIRECTORY; do
         ! does_directory_exist "${SUB_DIRECTORY}" && continue
         SUB_DIRECTORY_CONTENTS=$(ls -A "${SUB_DIRECTORY}")
         if [ -z "${SUB_DIRECTORY_CONTENTS}" ]; then
             remove "${SUB_DIRECTORY}"
         fi
-    done < <(find "${PARENT_DIRECTORY}" -maxdepth 1 -type d -print0)
+    done
 }
 
 function remove_old_items() {

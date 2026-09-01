@@ -186,12 +186,11 @@ TEXT_EDITOR_TAB_SIZE=4
 TEXT_EDITOR_WORD_WRAP=false
 
 # Set the default shell
-CURRENT_USER_SHELL="$(getent passwd "${USER}" | cut -d ':' -f 7)"
-
-if [[ -n "${SHELL}" ]] \
+if does_bin_exist 'chsh' \
+&& [[ -n "${SHELL}" ]] \
 && ${HAS_SU_PRIVILEGES} \
-&& [[ "${CURRENT_USER_SHELL}" != "${SHELL}" ]]; then
-    sudo chsh -s "${SHELL}" "${USER}"
+&& [[ "$(awk -F ':' -v user="${USER}" '$1 == user { print $7; exit }' "${ROOT_ETC}/passwd")" != "${SHELL}" ]]; then
+    run_as_su chsh -s "${SHELL}" "${USER}"
 fi
 
 if ${HAS_GUI}; then
