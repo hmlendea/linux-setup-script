@@ -446,8 +446,11 @@ function set_gsetting() {
         fi
     fi
 
-    if ! call_gsettings list-schemas | grep -q "^${SCHEMA}" \
-    && ! call_gsettings writable "${SCHEMA}" "${PROPERTY}" 2>/dev/null | grep -q "true"; then
+    if ! call_gsettings list-schemas | grep -qx "${SCHEMA}"; then
+        return
+    fi
+
+    if ! call_gsettings writable "${SCHEMA}" "${PROPERTY}" 2>/dev/null | grep -qx "true"; then
         return
     fi
 

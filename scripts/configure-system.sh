@@ -186,7 +186,13 @@ TEXT_EDITOR_TAB_SIZE=4
 TEXT_EDITOR_WORD_WRAP=false
 
 # Set the default shell
-[ -n "${SHELL}" ] && ${HAS_SU_ACCESS} && sudo chsh -s "${SHELL}" "${USER}"
+CURRENT_USER_SHELL="$(getent passwd "${USER}" | cut -d ':' -f 7)"
+
+if [[ -n "${SHELL}" ]] \
+&& ${HAS_SU_PRIVILEGES} \
+&& [[ "${CURRENT_USER_SHELL}" != "${SHELL}" ]]; then
+    sudo chsh -s "${SHELL}" "${USER}"
+fi
 
 if ${HAS_GUI}; then
     if [[ "${ICON_THEME}" == *"Papirus"* ]]; then
