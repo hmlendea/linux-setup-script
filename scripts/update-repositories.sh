@@ -8,6 +8,13 @@ if [ "${DISTRO_FAMILY}" = 'Alpine' ]; then
     call_package_manager update
 elif [ "${DISTRO_FAMILY}" = 'Arch' ]; then
     call_package_manager -Syy
+
+    echo -e 'Updating the \e[0;32mpackage signing keys and certificates\e[0m ...'
+    run_as_su pacman -S --needed --noconfirm \
+        archlinux-keyring \
+        ca-certificates \
+        ca-certificates-mozilla
+
     does_bin_exist 'pkgfile' && run_as_su pkgfile -u
 elif [ "${DISTRO_FAMILY}" = 'Android' ] \
   || [ "${DISTRO_FAMILY}" = 'Debian' ] \
