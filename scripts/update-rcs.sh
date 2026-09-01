@@ -46,16 +46,41 @@ update_file_if_distinct "${REPO_RC_DIR}/inputrc" "${XDG_CONFIG_HOME}/readline/in
 
 SHELL_RCS_DIR="${XDG_DATA_HOME}/bash"
 SHELL_VARIABLES_RC_PATH="${SHELL_RCS_DIR}/variables"
+SSH_CONFIG_DIR="${HOME}/.ssh"
+SSH_CONFIG_FILE="${SSH_CONFIG_DIR}/config"
+SSH_CONFIG_INCLUDE_FILE="${SSH_CONFIG_DIR}/config.d/linux-setup-script.conf"
+SSH_AGENT_KEY_LIFETIME="${SSH_AGENT_KEY_LIFETIME:-8h}"
 
 update_file_if_distinct "${REPO_RC_DIR}/shell/aliases" "${XDG_DATA_HOME}/bash/aliases"
 update_file_if_distinct "${REPO_RC_DIR}/shell/functions" "${XDG_DATA_HOME}/bash/functions"
 update_file_if_distinct "${REPO_RC_DIR}/shell/opts" "${XDG_DATA_HOME}/bash/options"
 update_file_if_distinct "${REPO_RC_DIR}/shell/prompt" "${XDG_DATA_HOME}/bash/prompt"
+update_file_if_distinct "${REPO_RC_DIR}/shell/processes" "${XDG_DATA_HOME}/bash/processes"
 
 if does_bin_exist 'bash'; then
     update_file_if_distinct "${REPO_RC_DIR}/shell/bashrc" "${HOME}/.bashrc"
     update_file_if_distinct "${REPO_RC_DIR}/shell/bash_profile" "${HOME}/.bash_profile"
     update_file_if_distinct "${REPO_RC_DIR}/shell/bashrc" "${HOME}/.bash_prompt"
+fi
+
+if does_bin_exist 'ssh'; then
+    create_directory "${SSH_CONFIG_DIR}/config.d"
+    create_file "${SSH_CONFIG_FILE}"
+    create_file "${SSH_CONFIG_INCLUDE_FILE}"
+
+    set_config_value --separator ' ' --quote '' "${SSH_CONFIG_INCLUDE_FILE}" 'Host' '*'
+    set_config_value --separator ' ' --quote '' "${SSH_CONFIG_INCLUDE_FILE}" '    AddKeysToAgent' "${SSH_AGENT_KEY_LIFETIME}"
+
+    if ! grep -Fxq "Include ${SSH_CONFIG_INCLUDE_FILE}" "${SSH_CONFIG_FILE}"; then
+        if [[ -w "${SSH_CONFIG_FILE}" ]]; then
+            sed -i "1iInclude ${SSH_CONFIG_INCLUDE_FILE}" "${SSH_CONFIG_FILE}"
+        else
+            run_as_su sed -i "1iInclude ${SSH_CONFIG_INCLUDE_FILE}" "${SSH_CONFIG_FILE}"
+        fi
+    fi
+
+    chmod 700 "${SSH_CONFIG_DIR}"
+    chmod 600 "${SSH_CONFIG_FILE}" "${SSH_CONFIG_INCLUDE_FILE}"
 fi
 
 for RC in 'gimprc' 'sessionrc' 'toolrc'; do

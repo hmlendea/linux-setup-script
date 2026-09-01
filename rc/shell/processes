@@ -1,0 +1,31 @@
+#!/bin/bash
+
+SSH_AGENT_ENV_FILE="${XDG_RUNTIME_DIR:-${HOME}/.cache}/ssh-agent.env"
+
+function load_ssh_agent_env() {
+    [[ -f "${SSH_AGENT_ENV_FILE}" ]] || return 1
+
+    local SSH_ADD_STATUS=0
+
+    source "${SSH_AGENT_ENV_FILE}" >/dev/null
+
+    [[ -n "${SSH_AUTH_SOCK:-}" ]] \
+    && [[ -S "${SSH_AUTH_SOCK}" ]] \
+    || return 1
+
+    ssh-add -l >/dev/null 2>&1 || SSH_ADD_STATUS=${?}
+
+    [[ ${SSH_ADD_STATUS} -lt 2 ]]
+}
+
+function start_ssh_agent() {
+    mkdir -p "$(dirname "${SSH_AGENT_ENV_FILE}")"
+    ssh-agent -t "${SSH_AGENT_KEY_LIFETIME:-8h}" -s > "${SSH_AGENT_ENV_FILE}"
+    chmod 600 "${SSH_AGENT_ENV_FILE}"
+    load_ssh_agent_env
+}
+
+if command -v ssh-agent >/dev/null 2>&1 \
+&& command -v ssh-add >/dev/null 2>&1; then
+    load_ssh_agent_env || start_ssh_agent
+fi

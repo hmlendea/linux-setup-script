@@ -31,6 +31,7 @@ ssh-add "${KEY_FILE_PATH}"
 echo "Host github.com" > "${SSH_CONFIG_FILE_PATH}"
 echo "    User git" >> "${SSH_CONFIG_FILE_PATH}"
 echo "    IdentityFile ${KEY_FILE_PATH}" >> "${SSH_CONFIG_FILE_PATH}"
+echo "    AddKeysToAgent ${SSH_AGENT_KEY_LIFETIME:-8h}" >> "${SSH_CONFIG_FILE_PATH}"
 chmod 600 "${SSH_CONFIG_FILE_PATH}"
 ssh-add -l
 
