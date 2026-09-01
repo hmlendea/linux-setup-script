@@ -13,6 +13,11 @@ function get_screen_width() {
         return
     fi
 
+    if [[ ${UID} -eq 0 ]]; then
+        echo 0
+        return
+    fi
+
     if [ "${XDG_SESSION_TYPE}" = 'wayland' ]; then
         if does_bin_exist 'wayland-info'; then
             wayland-info | grep 'refresh' | head -n 1 | sed 's/.*width: \([1-9][0-9]*\)\s*px.*/\1/g'
@@ -63,6 +68,11 @@ function get_screen_height() {
         return
     elif [ "${DEVICE_MODEL}" = 'Xiaomi Redmi Note 4X' ]; then
 	    echo 1920
+        return
+    fi
+
+    if [[ ${UID} -eq 0 ]]; then
+        echo 0
         return
     fi
 

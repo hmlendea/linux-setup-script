@@ -387,6 +387,7 @@ function call_gsettings() {
 
 function get_gsetting() {
     (! ${HAS_GUI}) && return
+    [[ ${UID} -eq 0 ]] && return
     (! $(does_bin_exist "gsettings")) && return
 
     local SCHEMA="${1}"
@@ -417,6 +418,7 @@ function set_gsettings() {
 
 function set_gsetting() {
     (! ${HAS_GUI}) && return
+    [[ ${UID} -eq 0 ]] && return
     (! does_bin_exist "gsettings") && return
 
     local SCHEMA="${1}"
