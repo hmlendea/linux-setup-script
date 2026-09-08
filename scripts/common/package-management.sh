@@ -427,6 +427,27 @@ function install_cargo_package() {
     call_cargo install "${PACKAGE}"
 }
 
+function get_latest_flatpak_ref() {
+    local REMOTE="${1}"
+    local PACKAGE="${2}"
+    local ARCHITECTURE
+    local REF
+
+    [[ "${PACKAGE}" == */* ]] && echo "${PACKAGE}" && return
+
+    ARCHITECTURE="$(flatpak --default-arch)"
+    REF=$(flatpak remote-ls \
+        --user \
+        --arch="${ARCHITECTURE}" \
+        --columns=ref \
+        "${REMOTE}" | \
+        awk -F/ -v PACKAGE="${PACKAGE}" '$2 == PACKAGE' | \
+        sort -V | \
+        tail -n 1)
+
+    [[ -n "${REF}" ]] && echo "${REF}" || echo "${PACKAGE}"
+}
+
 function install_flatpak() {
     local PACKAGE="${1}"
     local REMOTE='flathub'
@@ -439,6 +460,7 @@ function install_flatpak() {
     is_flatpak_installed "${PACKAGE}" && return
 
     local INSTALLATION_METHOD='user'
+    PACKAGE="$(get_latest_flatpak_ref "${REMOTE}" "${PACKAGE}")"
 
     echo -e " >>> Installing ${INSTALLATION_METHOD} flatpak (${REMOTE}): \e[0;33m${PACKAGE}\e[0m (${REMOTE})..."
     call_flatpak install --${INSTALLATION_METHOD} "${REMOTE}" "${PACKAGE}"
