@@ -55,5 +55,6 @@
     remotes = !git remote -vv
     stashes = !git stash list
     sync = !git pull && git cleanup && git push
+    tags = !git tag
     undo = !git reset HEAD^
     unstage = !git reset HEAD --
