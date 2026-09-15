@@ -711,7 +711,7 @@ fi
 if does_bin_exist 'telegram-desktop' 'com.telegram.desktop'; then
     TELEGRAM_CONFIG_DIR="${HOME_VAR_APP}/org.telegram.desktop/data/TelegramDesktop/tdata"
     TELEGRAM_EXPERIMENTAL_OPTIONS_FILE="${TELEGRAM_CONFIG_DIR}/experimental_options.json"
-    
+
     set_config_value "${ENVIRONMENT_VARS_FILE}" TDESKTOP_I_KNOW_ABOUT_GTK_INCOMPATIBILITY "1"
 
     set_config_value "${TELEGRAM_EXPERIMENTAL_OPTIONS_FILE}" '.["mono-settings-icons"]' true
@@ -1072,7 +1072,7 @@ if [ -f "${MC_OPTIONS_FILE}" ]; then
         awk '{print $1}' | \
         sed 's/[a-z]//g' | \
         cut -c 1-15)
-        
+
     # Make it 19 digits long. The last 4 need to be 3000 because that's how jq will save them no matter what
     MC_DEVICE_ID="${MC_DEVICE_ID}3000"
 
@@ -1286,6 +1286,8 @@ if does_bin_exist 'code' 'code-oss' 'codium' 'com.visualstudio.code'; then
     set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.fontFamily"]' "${MONOSPACE_FONT_NAME} ${MONOSPACE_FONT_STYLE}"
     set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.fontSize"]' $((MONOSPACE_FONT_SIZE+3))
     set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.scrollback"]' ${TERMINAL_SCROLLBACK_SIZE}
+    set_config_values "${VSCODE_CONFIG_FILE}" \
+        '.["terminal.integrated.stickyScroll.enabled"]' false
 
     if [ "${TERMINAL_CURSOR_SHAPE}" == "ibeam" ]; then
         set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.cursorStyle"]' "line"
@@ -1569,7 +1571,7 @@ if does_bin_exist 'tlp'; then
 
     set_config_value "${TLP_CONFIG_FILE}" "PLATFORM_PROFILE_ON_AC" 'performance'
     set_config_value "${TLP_CONFIG_FILE}" "PLATFORM_PROFILE_ON_BAT" 'low-power'
-    
+
     set_config_value "${TLP_CONFIG_FILE}" "CPU_BOOST_ON_AC" "1"
     set_config_value "${TLP_CONFIG_FILE}" "CPU_BOOST_ON_BAT" "0"
     set_config_value "${TLP_CONFIG_FILE}" "CPU_HWP_DYN_BOOST_ON_AC" "1"
@@ -1585,7 +1587,7 @@ if does_bin_exist 'tlp'; then
 
     set_config_value "${TLP_CONFIG_FILE}" "PCIE_ASPM_ON_AC" 'performance'
     set_config_value "${TLP_CONFIG_FILE}" "PCIE_ASPM_ON_BAT" 'powersupersave'
-    
+
     set_config_value "${TLP_CONFIG_FILE}" "SATA_LINKPWR_ON_AC" 'max_performance' # Default: med_power_with_dipm
     set_config_value "${TLP_CONFIG_FILE}" "SATA_LINKPWR_ON_BAT" 'med_power_with_dipm' # Default: med_power_with_dipm | min_power can cause data loss
 
