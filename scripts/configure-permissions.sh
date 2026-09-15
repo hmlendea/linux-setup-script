@@ -162,7 +162,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
             'filesystem-home' true \
             'location' false \
             'microphone' false \
-            'network' false \
+            'network' true \
             'notification' true \
             'speakers' false
     done

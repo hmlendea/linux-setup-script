@@ -26,6 +26,13 @@ if does_bin_exist 'flatpak'; then
         while IFS= read -r RUNTIME; do
             [ -z "${RUNTIME}" ] && continue
 
+            if flatpak info \
+                --"${INSTALLATION_METHOD}" \
+                --show-metadata \
+                "${RUNTIME}" | grep -q '^\[ExtensionOf\]$'; then
+                continue
+            fi
+
             RUNTIME_WITHOUT_PREFIX="${RUNTIME#runtime/}"
 
             DEPENDENT_APPS="$(
