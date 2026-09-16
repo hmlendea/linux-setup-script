@@ -1241,8 +1241,13 @@ if does_bin_exist 'code' 'code-oss' 'codium' 'com.visualstudio.code'; then
     set_config_values "${VSCODE_CONFIG_FILE}" \
         '.["window.titleBarStyle"]' 'native' \
         '.["workbench.colorTheme"]' 'Dark Modern' \
-        '.["workbench.preferredDarkColorTheme"]' 'Dark Modern' \
-        '.["workbench.iconTheme"]' 'vs-seti'
+        '.["workbench.preferredDarkColorTheme"]' 'Dark Modern'
+
+    if does_bin_exist 'code-oss'; then
+        set_config_values "${VSCODE_CONFIG_FILE}" '.["workbench.iconTheme"]' 'vs-seti'
+    else
+        set_config_values "${VSCODE_CONFIG_FILE}" '.["workbench.iconTheme"]' 'seti'
+    fi
 
     # Editor appearance
     set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.codeLens"]' false

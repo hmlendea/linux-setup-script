@@ -621,16 +621,23 @@ if ${HAS_GUI} && ${IS_DEVELOPMENT_DEVICE}; then
         install_native_package 'code'
     fi
 
-    install_vscode_package 'dakara.transformer'
-    install_vscode_package 'johnpapa.vscode-peacock'
+    install_vscode_package 'qcz.text-power-tools'
     install_vscode_package 'mechatroner.rainbow-csv'
     install_vscode_package 'nico-castell.linux-desktop-file'
-    install_vscode_package 'qinjia.seti-icons'
 
-    if does_bin_exist 'dotnet'; then
-        install_vscode_package 'mangrimen.mgcb-editor'
-        install_vscode_package 'ms-dotnettools.csdevkit'
-        install_vscode_package 'ms-dotnettools.csharp'
+    if does_bin_exist 'code-oss'; then
+        if does_bin_exist 'dotnet'; then
+            install_vscode_package 'dotnetdev-kr-custom.csharp'
+            install_vscode_package 'r88.monogame'
+        fi
+    else
+        install_vscode_package 'qinjia.seti-icons'
+
+        if does_bin_exist 'dotnet'; then
+            install_vscode_package 'mangrimen.mgcb-editor'
+            install_vscode_package 'ms-dotnettools.csdevkit'
+            install_vscode_package 'ms-dotnettools.csharp'
+        fi
     fi
 
     does_bin_exist 'git' && install_vscode_package 'github.vscode-github-actions'
