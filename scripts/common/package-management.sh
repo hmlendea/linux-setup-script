@@ -240,19 +240,23 @@ function is_github_package_installed() {
     return 1
 }
 
-function is_gnome_shell_extension_installed() {
-    local EXTENSION="${1}"
-    local EXTENSION_ID="${EXTENSION%%/*}"
-
-    # Fetch UUID (same as install logic)
+function get_gnome_shell_extension_uuid() {
+    local EXTENSION_ID="${1}"
     local EXTENSION_PAGE
     EXTENSION_PAGE=$(curl -Ls "https://extensions.gnome.org/extension/${EXTENSION_ID}/")
 
-    local UUID
-    UUID=$(echo "${EXTENSION_PAGE}" | \
+    echo "${EXTENSION_PAGE}" | \
         grep -o 'data-uuid="[^"]*"' | \
         head -n1 | \
-        cut -d '"' -f2)
+        cut -d '"' -f2
+}
+
+function is_gnome_shell_extension_installed() {
+    local EXTENSION="${1}"
+    local EXTENSION_ID="${EXTENSION%%/*}"
+    local UUID
+
+    UUID=$(get_gnome_shell_extension_uuid "${EXTENSION_ID}")
 
     [ -z "${UUID}" ] && return 1
 
@@ -724,18 +728,19 @@ function uninstall_github_package() {
 
 function uninstall_gnome_shell_extension() {
     local INPUT="${1}"
+    local EXTENSION_ID="${INPUT%%/*}"
     local EXTENSION_NAME="${INPUT#*/}"
 
     ! is_gnome_shell_extension_installed "${INPUT}" && return
 
+    local UUID
+    UUID=$(get_gnome_shell_extension_uuid "${EXTENSION_ID}")
+    [ -z "${UUID}" ] && return
+
     echo -e " >>> Uninstalling GNOME Shell extension: \e[0;33m${EXTENSION_NAME}\e[0m..."
 
-    local UUID=$(gnome-extensions list | grep "^${EXTENSION_NAME}@" | head -n 1)
-
-    if [ -n "${UUID}" ]; then
-        gnome-extensions disable "${UUID}" 2>/dev/null
-        gnome-extensions uninstall "${UUID}"
-    fi
+    gnome-extensions disable "${UUID}" 2>/dev/null
+    gnome-extensions uninstall "${UUID}"
 }
 
 function update_github_package() {
