@@ -137,9 +137,13 @@ function call_gnome_extensions() {
 
     remove "${TMP_FILE}"
 
-    gnome-extensions list > /dev/null 2>&1
+    if ! gnome-extensions info "${UUID}" > /dev/null 2>&1; then
+        echo " >>> GNOME Shell restart required to activate extension: ${UUID}"
+        return
+    fi
+
     gnome-extensions enable "${UUID}" 2>/dev/null || {
-        echo " !!! Installed but failed to enable ${UUID}"
+        echo " !!! Failed to enable GNOME Shell extension: ${UUID}"
         return 1
     }
 }
