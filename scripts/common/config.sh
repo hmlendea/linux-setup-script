@@ -377,7 +377,15 @@ function set_pulseaudio_module_option() {
     fi
 }
 
+function has_gsettings_session() {
+    [ -n "${DBUS_SESSION_BUS_ADDRESS}" ] \
+    && [[ "${DBUS_SESSION_BUS_ADDRESS}" != autolaunch:* ]] \
+    && [ -d "${XDG_RUNTIME_DIR}" ]
+}
+
 function call_gsettings() {
+    (! has_gsettings_session) && return
+
     if [ -z "${SSH_CLIENT}" ] && [ -z "${SSH_TTY}" ]; then
         gsettings "${@}"
     else
@@ -388,6 +396,7 @@ function call_gsettings() {
 function get_gsetting() {
     (! ${HAS_GUI}) && return
     [[ ${UID} -eq 0 ]] && return
+    (! has_gsettings_session) && return
     (! $(does_bin_exist "gsettings")) && return
 
     local SCHEMA="${1}"
@@ -419,6 +428,7 @@ function set_gsettings() {
 function set_gsetting() {
     (! ${HAS_GUI}) && return
     [[ ${UID} -eq 0 ]] && return
+    (! has_gsettings_session) && return
     (! does_bin_exist "gsettings") && return
 
     local SCHEMA="${1}"

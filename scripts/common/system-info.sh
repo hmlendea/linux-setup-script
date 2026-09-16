@@ -881,7 +881,7 @@ fi
 if ! ${HAS_GUI} || [ "${DESKTOP_ENVIRONMENT}" = 'None' ]; then
     HAS_GUI=false
     DESKTOP_ENVIRONMENT=''
-    
+
     IS_GAMING_DEVICE=false
     IS_GENERAL_PURPOSE_DEVICE=false
 fi
