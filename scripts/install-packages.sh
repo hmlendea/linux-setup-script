@@ -81,7 +81,7 @@ if [ "${OS}" = 'Linux' ]; then
     fi
 
     ${HAS_GUI} && install_native_package 'flatpak'
-fi    
+fi
 
 ###################
 ### Development ###
@@ -616,11 +616,9 @@ fi
 ############
 if ${HAS_GUI} && ${IS_DEVELOPMENT_DEVICE}; then
     # Development
-    if [ "${DISTRO_FAMILY}" = 'Debian' ]; then
+    if [ "${DISTRO_FAMILY}" = 'Arch' ] \
+    || [ "${DISTRO_FAMILY}" = 'Debian' ]; then
         install_native_package 'code'
-    else
-        [ "${ARCH_FAMILY}" = 'x86' ] && install_native_package 'visual-studio-code-bin'
-        [ "${ARCH_FAMILY}" = 'arm' ] && install_native_package 'code-headmelted-bin'
     fi
 
     install_vscode_package 'dakara.transformer'
@@ -746,7 +744,7 @@ if ${IS_GENERAL_PURPOSE_DEVICE}; then
                 install_webapp 'https://app.simplenote.com'
             fi
         fi
-        
+
         if [ "${DESKTOP_ENVIRONMENT}" = 'GNOME' ] \
         || [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
             install_flatpak 'io.github.alainm23.planify'
@@ -875,7 +873,7 @@ if ${HAS_GUI} && ${IS_GENERAL_PURPOSE_DEVICE}; then
         elif [ "${DESKTOP_ENVIRONMENT}" = 'Phosh' ]; then
             install_flatpak 'io.github.celluloid_player.Celluloid'
         fi
-    
+
         install_webapp 'https://netflix.com'
         install_webapp 'https://plex.tv'
         install_webapp 'https://youtube.com'
