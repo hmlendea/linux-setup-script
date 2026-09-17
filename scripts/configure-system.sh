@@ -1239,6 +1239,7 @@ if does_bin_exist 'code' 'code-oss' 'codium' 'com.visualstudio.code'; then
     set_json_property "${VSCODE_CONFIG_FILE}" '.["window.newWindowDimensions"]' 'maximized'
     #set_json_property "${VSCODE_CONFIG_FILE}" '.["window.title"]' '${dirty}${separator}${rootName}${separator}VS Code'
     set_config_values "${VSCODE_CONFIG_FILE}" \
+        '.["window.title"]' '${rootName} – Code' \
         '.["window.titleBarStyle"]' 'native' \
         '.["workbench.colorTheme"]' 'Dark Modern' \
         '.["workbench.preferredDarkColorTheme"]' 'Dark Modern'
