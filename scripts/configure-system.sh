@@ -1311,6 +1311,10 @@ if does_bin_exist 'code' 'code-oss' 'codium' 'com.visualstudio.code'; then
     set_json_property "${VSCODE_CONFIG_FILE}" '.["telemetry.enableTelemetry"]' false
     set_json_property "${VSCODE_CONFIG_FILE}" '.["telemetry.telemetryLevel"]' "off"
 
+    # Feedback
+    set_config_values "${VSCODE_CONFIG_FILE}" \
+        '.["github.copilot.chat.feedback.onChange"]' false
+
     # Copilot
     set_json_property "${VSCODE_CONFIG_FILE}" '.["chat.permissions.default"]' 'autoApprove'
 
