@@ -251,14 +251,30 @@ function set_json_property() {
 
     local PROPERTY="${2}"
     local VALUE_RAW="${@:3}"
-    local VALUE=$(echo "${VALUE_RAW}" | sed -e 's/[]\/$*.^|[]/\\&/g')
 
     local FILE_CONTENT=$(cat "${FILE_PATH}" | grep -v "^[ \t]*//" | tr -d '\n' | sed 's/,[ \t]*}/ }/g')
     local CURRENT_VALUE=$(jq "${PROPERTY}" <<< "${FILE_CONTENT}")
 
-    VALUE=$(echo "${VALUE}" | sed 's/\\\././g') # dirty fix
+    if is_value_string "${VALUE_RAW}"; then
+        if [ "\"${VALUE_RAW}\"" != "${CURRENT_VALUE}" ]; then
+            if [ -w "${FILE_PATH}" ]; then
+                jq --arg value "${VALUE_RAW}" "${PROPERTY}=\$value" <<< "${FILE_CONTENT}" > "${FILE_PATH}"
+            elif ${HAS_SU_PRIVILEGES}; then
+                jq --arg value "${VALUE_RAW}" "${PROPERTY}=\$value" <<< "${FILE_CONTENT}" | run_as_su tee "${FILE_PATH}" > /dev/null
+            else
+                echo "Cannot set ${PROPERTY}=${VALUE_RAW} in ${FILE_PATH}"
+                return
+            fi
 
-    is_value_string "${VALUE}" && VALUE="\"${VALUE}\""
+            echo "${FILE_PATH} >>> ${PROPERTY}=\"${VALUE_RAW}\""
+        fi
+
+        return
+    fi
+
+    local VALUE="${VALUE_RAW}"
+    VALUE=$(echo "${VALUE}" | sed -e 's/[]\/\$*.^|[]/\\&/g')
+    VALUE=$(echo "${VALUE}" | sed 's/\\\././g') # dirty fix
 
     # If the value is not already set
     if [ "${VALUE}" != "${CURRENT_VALUE}" ] \
