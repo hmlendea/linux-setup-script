@@ -19,7 +19,7 @@ function bool_to_onoff() {
     if ${1}; then
         echo "on"
     else
-        echo "off"
+        echo 'off'
     fi
 }
 
@@ -664,14 +664,14 @@ if does_bin_exist 'discord' 'com.discordapp.Discord'; then
     DISCORD_SETTINGS_FILE="${XDG_CONFIG_HOME}/discord/settings.json"
     [ -d "${HOME_VAR_APP}/com.discordapp.Discord" ] && DISCORD_SETTINGS_FILE="${HOME_VAR_APP}/com.discordapp.Discord/config/discord/settings.json"
 
-    set_json_property "${DISCORD_SETTINGS_FILE}" ".SKIP_HOST_UPDATE" true
+    set_json_property "${DISCORD_SETTINGS_FILE}" 'SKIP_HOST_UPDATE' true
 fi
 if does_bin_exist 'org.signal.Signal'; then
     SIGNAL_CONFIG_DIR="${HOME_VAR_APP}/org.signal.Signal/config/Signal"
     SIGNAL_EPHEMERAL_FILE="${SIGNAL_CONFIG_DIR}/ephemeral.json"
 
-    set_config_value "${SIGNAL_EPHEMERAL_FILE}" '.["system-tray-setting"]' 'MinimizeToSystemTray'
-    set_config_value "${SIGNAL_EPHEMERAL_FILE}" '.["spell-check"]' false
+    set_config_value "${SIGNAL_EPHEMERAL_FILE}" 'system-tray-setting' 'MinimizeToSystemTray'
+    set_config_value "${SIGNAL_EPHEMERAL_FILE}" 'spell-check' false
 fi
 if does_bin_exist "teams" "teams-insiders" "com.microsoft.Teams"; then
     TEAMS_CONFIG_DIR="${XDG_CONFIG_HOME}/Microsoft/Microsoft Teams"
@@ -685,16 +685,16 @@ if does_bin_exist "teams" "teams-insiders" "com.microsoft.Teams"; then
     #set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" '.appPreferenceSettings.disableGpu' true # Not needed for the flatpak version
 
     # Appearance
-    set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" '.currentWebLanguage' "$(echo ${APPS_LANGUAGE,,} | sed 's/_/-/g')"
+    set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" 'currentWebLanguage' "$(echo ${APPS_LANGUAGE,,} | sed 's/_/-/g')"
 
     if ${DESKTOP_THEME_IS_DARK}; then
-        set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" '.theme' "darkV2"
+        set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" 'theme' "darkV2"
     else
-        set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" '.theme' "defaultV2"
+        set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" 'theme' "defaultV2"
     fi
 
     # First time experiences
-    set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" '.isAppFirstRun' false
+    set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" 'isAppFirstRun' false
 
     # Window state
     set_json_property "${TEAMS_DESKTOP_CONFIG_FILE}" '.appPreferenceSettings.openAtLogin' false
@@ -714,7 +714,7 @@ if does_bin_exist 'telegram-desktop' 'com.telegram.desktop'; then
 
     set_config_value "${ENVIRONMENT_VARS_FILE}" TDESKTOP_I_KNOW_ABOUT_GTK_INCOMPATIBILITY "1"
 
-    set_config_value "${TELEGRAM_EXPERIMENTAL_OPTIONS_FILE}" '.["mono-settings-icons"]' true
+    set_config_value "${TELEGRAM_EXPERIMENTAL_OPTIONS_FILE}" 'mono-settings-icons' true
 fi
 if does_bin_exist 'whatsapp-for-linux'; then
     WAPP_CONFIG_FILE="${XDG_CONFIG_HOME}/whatsapp-for-linux/settings.conf"
@@ -762,7 +762,7 @@ fi
 if does_bin_exist 'dockerd'; then
     DOCKER_DAEMON_CONFIG_FILE="${ROOT_ETC}/docker/daemon.json"
 
-    set_json_property "${DOCKER_DAEMON_CONFIG_FILE}" '.["max-concurrent-downloads"]' 10
+    set_json_property "${DOCKER_DAEMON_CONFIG_FILE}" 'max-concurrent-downloads' 10
 fi
 
 #############
@@ -1090,8 +1090,8 @@ if [ -f "${MC_OPTIONS_FILE}" ]; then
     set_config_value --separator ":" "${MC_OPTIONS_FILE}" joinedFirstServer true
 
     set_json_property "${MC_LAUNCHER_PROFILES_FILE}" '.settings.crashAssistance' false
-    set_json_property "${MC_LAUNCHER_SETTINGS_FILE}" '.deviceId' "${MC_DEVICE_ID}"
-    set_json_property "${MC_LAUNCHER_SETTINGS_FILE}" '.locale' "${GAMES_LANGUAGE/_/-}"
+    set_json_property "${MC_LAUNCHER_SETTINGS_FILE}" 'deviceId' "${MC_DEVICE_ID}"
+    set_json_property "${MC_LAUNCHER_SETTINGS_FILE}" 'locale' "${GAMES_LANGUAGE/_/-}"
 fi
 
 if does_bin_exist 'org.prismlauncher.PrismLauncher'; then
@@ -1116,8 +1116,8 @@ PDX_LAUNCHER_DATA_DIR="${XDG_DATA_HOME}/Paradox Interactive/launcher-v2"
 PDX_LAUNCHER_USER_SETTINGS_FILE="${PDX_LAUNCHER_DATA_DIR}/userSettings.json"
 
 if [ -f "${PDX_LAUNCHER_USER_SETTINGS_FILE}" ]; then
-    set_json_property "${PDX_LAUNCHER_USER_SETTINGS_FILE}" '.isOnboarded' true
-    set_json_property "${PDX_LAUNCHER_USER_SETTINGS_FILE}" '.allowPersonalizedContent' false
+    set_json_property "${PDX_LAUNCHER_USER_SETTINGS_FILE}" 'isOnboarded' true
+    set_json_property "${PDX_LAUNCHER_USER_SETTINGS_FILE}" 'allowPersonalizedContent' false
 fi
 
 ASPYR_DIR="${XDG_DATA_HOME}/Aspyr"
@@ -1143,10 +1143,10 @@ TERRARIA_DIR="${XDG_DATA_HOME}/Terraria"
 TERRARIA_CONFIG_FILE="${TERRARIA_DIR}/config.json"
 
 if [ -f "${TERRARIA_CONFIG_FILE}" ]; then
-    set_json_property "${TERRARIA_CONFIG_FILE}" '.CloudSavingDefault' true
-    set_json_property "${TERRARIA_CONFIG_FILE}" '.HidePasswords' true
-    set_json_property "${TERRARIA_CONFIG_FILE}" '.QuickLaunch' true
-    set_json_property "${TERRARIA_CONFIG_FILE}" '.Zoom' 1
+    set_json_property "${TERRARIA_CONFIG_FILE}" 'CloudSavingDefault' true
+    set_json_property "${TERRARIA_CONFIG_FILE}" 'HidePasswords' true
+    set_json_property "${TERRARIA_CONFIG_FILE}" 'QuickLaunch' true
+    set_json_property "${TERRARIA_CONFIG_FILE}" 'Zoom' 1
 fi
 
 ##############################
@@ -1230,14 +1230,14 @@ if does_bin_exist 'code' 'code-oss' 'codium' 'com.visualstudio.code'; then
     fi
 
     # Appearance
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["peacock.affectActivityBar"]' false
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["peacock.affectTabActiveBorder"]' true
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["peacock.showColorInStatusBar"]' false
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["update.mode"]' "none"
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["window.autoDetectColorScheme"]' true
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["window.menuBarVisibility"]' 'toggle'
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["window.newWindowDimensions"]' 'maximized'
-    #set_json_property "${VSCODE_CONFIG_FILE}" '.["window.title"]' '${dirty}${separator}${rootName}${separator}VS Code'
+    set_json_property "${VSCODE_CONFIG_FILE}" 'peacock.affectActivityBar' false
+    set_json_property "${VSCODE_CONFIG_FILE}" 'peacock.affectTabActiveBorder' true
+    set_json_property "${VSCODE_CONFIG_FILE}" 'peacock.showColorInStatusBar' false
+    set_json_property "${VSCODE_CONFIG_FILE}" 'update.mode' "none"
+    set_json_property "${VSCODE_CONFIG_FILE}" 'window.autoDetectColorScheme' true
+    set_json_property "${VSCODE_CONFIG_FILE}" 'window.menuBarVisibility' 'toggle'
+    set_json_property "${VSCODE_CONFIG_FILE}" 'window.newWindowDimensions' 'maximized'
+    #set_json_property "${VSCODE_CONFIG_FILE}" 'window.title' '${dirty}${separator}${rootName}${separator}VS Code'
     set_config_values "${VSCODE_CONFIG_FILE}" \
         '.["window.title"]' '${rootName} – Code' \
         '.["window.titleBarStyle"]' 'native' \
@@ -1245,84 +1245,84 @@ if does_bin_exist 'code' 'code-oss' 'codium' 'com.visualstudio.code'; then
         '.["workbench.preferredDarkColorTheme"]' 'Dark Modern'
 
     if does_bin_exist 'code-oss'; then
-        set_config_values "${VSCODE_CONFIG_FILE}" '.["workbench.iconTheme"]' 'vs-seti'
+        set_config_values "${VSCODE_CONFIG_FILE}" 'workbench.iconTheme' 'vs-seti'
     else
-        set_config_values "${VSCODE_CONFIG_FILE}" '.["workbench.iconTheme"]' 'seti'
+        set_config_values "${VSCODE_CONFIG_FILE}" 'workbench.iconTheme' 'seti'
     fi
 
     # Editor appearance
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.codeLens"]' false
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.fontFamily"]' "${TEXT_EDITOR_FONT_NAME} ${TEXT_EDITOR_FONT_STYLE}"
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.fontSize"]' $((TEXT_EDITOR_FONT_SIZE+3))
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.roundedSelection"]' true
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.minimap.maxColumn"]' 100
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.minimap.renderCharacters"]' false
+    set_json_property "${VSCODE_CONFIG_FILE}" 'editor.codeLens' false
+    set_json_property "${VSCODE_CONFIG_FILE}" 'editor.fontFamily' "${TEXT_EDITOR_FONT_NAME} ${TEXT_EDITOR_FONT_STYLE}"
+    set_json_property "${VSCODE_CONFIG_FILE}" 'editor.fontSize' $((TEXT_EDITOR_FONT_SIZE+3))
+    set_json_property "${VSCODE_CONFIG_FILE}" 'editor.roundedSelection' true
+    set_json_property "${VSCODE_CONFIG_FILE}" 'editor.minimap.maxColumn' 100
+    set_json_property "${VSCODE_CONFIG_FILE}" 'editor.minimap.renderCharacters' false
 
     # Editor behaviour
-    #set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.autoClosingBrackets"]' false # It is false by default and gets removed if set
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.find.autoFindInSelection"]' "never"
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.find.seedSearchStringFromSelection"]' "selection"
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.foldingMaximumRegions"]' 7500
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.largeFileOptimizations"]' false
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.unicodeHighlight.ambiguousCharacters"]' true
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["editor.wordWrap"]' $(bool_to_onoff ${TEXT_EDITOR_WORD_WRAP})
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["files.trimTrailingWhitespace"]' true
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["files.trimFinalNewlines"]' true
-    is_vscode_extension_installed "ms-dotnettools.csharp" && set_json_property "${VSCODE_CONFIG_FILE}" '.["omnisharp.organizeImportsOnFormat"]' true
+    #set_json_property "${VSCODE_CONFIG_FILE}" 'editor.autoClosingBrackets' false # It is false by default and gets removed if set
+    set_json_property "${VSCODE_CONFIG_FILE}" 'editor.find.autoFindInSelection' "never"
+    set_json_property "${VSCODE_CONFIG_FILE}" 'editor.find.seedSearchStringFromSelection' "selection"
+    set_json_property "${VSCODE_CONFIG_FILE}" 'editor.foldingMaximumRegions' 7500
+    set_json_property "${VSCODE_CONFIG_FILE}" 'editor.largeFileOptimizations' false
+    set_json_property "${VSCODE_CONFIG_FILE}" 'editor.unicodeHighlight.ambiguousCharacters' true
+    set_json_property "${VSCODE_CONFIG_FILE}" 'editor.wordWrap' $(bool_to_onoff ${TEXT_EDITOR_WORD_WRAP})
+    set_json_property "${VSCODE_CONFIG_FILE}" 'files.trimTrailingWhitespace' true
+    set_json_property "${VSCODE_CONFIG_FILE}" 'files.trimFinalNewlines' true
+    is_vscode_extension_installed 'ms-dotnettools.csharp' && set_json_property "${VSCODE_CONFIG_FILE}" 'omnisharp.organizeImportsOnFormat' true
 
     # Disable unwanted features
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["workbench.startupEditor"]' false
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["security.workspace.trust.enabled"]' false
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.enablePersistentSessions"]' false
+    set_json_property "${VSCODE_CONFIG_FILE}" 'workbench.startupEditor' false
+    set_json_property "${VSCODE_CONFIG_FILE}" 'security.workspace.trust.enabled' false
+    set_json_property "${VSCODE_CONFIG_FILE}" 'terminal.integrated.enablePersistentSessions' false
     # Disable unwanted features - Confirmation dialogues
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["explorer.confirmDragAndDrop"]' false
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["explorer.confirmDelete"]' false
+    set_json_property "${VSCODE_CONFIG_FILE}" 'explorer.confirmDragAndDrop' false
+    set_json_property "${VSCODE_CONFIG_FILE}" 'explorer.confirmDelete' false
 
     # C#
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["omnisharp.enableDecompilationSupport"]' true
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["dotnet.automaticallyCreateSolutionInWorkspace"]' false
+    set_json_property "${VSCODE_CONFIG_FILE}" 'omnisharp.enableDecompilationSupport' true
+    set_json_property "${VSCODE_CONFIG_FILE}" 'dotnet.automaticallyCreateSolutionInWorkspace' false
     # Python
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["python.analysis.typeCheckingMode"]' 'standard'
+    set_json_property "${VSCODE_CONFIG_FILE}" 'python.analysis.typeCheckingMode' 'standard'
 
     # Terminal
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.shell.linux"]' "${SHELL}"
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.shellIntegration.enabled"]' true
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.allowChords"]' false
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.drawBoldTextInBrightColors"]' ${TERMINAL_BOLD_TEXT_IS_BRIGHT}
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.fontFamily"]' "${MONOSPACE_FONT_NAME} ${MONOSPACE_FONT_STYLE}"
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.fontSize"]' $((MONOSPACE_FONT_SIZE+3))
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.scrollback"]' ${TERMINAL_SCROLLBACK_SIZE}
+    set_json_property "${VSCODE_CONFIG_FILE}" 'terminal.integrated.shell.linux' "${SHELL}"
+    set_json_property "${VSCODE_CONFIG_FILE}" 'terminal.integrated.shellIntegration.enabled' true
+    set_json_property "${VSCODE_CONFIG_FILE}" 'terminal.integrated.allowChords' false
+    set_json_property "${VSCODE_CONFIG_FILE}" 'terminal.integrated.drawBoldTextInBrightColors' ${TERMINAL_BOLD_TEXT_IS_BRIGHT}
+    set_json_property "${VSCODE_CONFIG_FILE}" 'terminal.integrated.fontFamily' "${MONOSPACE_FONT_NAME} ${MONOSPACE_FONT_STYLE}"
+    set_json_property "${VSCODE_CONFIG_FILE}" 'terminal.integrated.fontSize' $((MONOSPACE_FONT_SIZE+3))
+    set_json_property "${VSCODE_CONFIG_FILE}" 'terminal.integrated.scrollback' ${TERMINAL_SCROLLBACK_SIZE}
     set_config_values "${VSCODE_CONFIG_FILE}" \
         '.["terminal.integrated.stickyScroll.enabled"]' false
 
     if [ "${TERMINAL_CURSOR_SHAPE}" == "ibeam" ]; then
-        set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.cursorStyle"]' "line"
+        set_json_property "${VSCODE_CONFIG_FILE}" 'terminal.integrated.cursorStyle' 'line'
     else
-        set_json_property "${VSCODE_CONFIG_FILE}" '.["terminal.integrated.cursorStyle"]' "${TERMINAL_CURSOR_SHAPE}"
+        set_json_property "${VSCODE_CONFIG_FILE}" 'terminal.integrated.cursorStyle' "${TERMINAL_CURSOR_SHAPE}"
     fi
 
     # Git
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["diffEditor.maxComputationTime"]' 10000 # 10 seconds
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["git.autofetch"]' true
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["git.autofetchPeriod"]' 300
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["git.autoStash"]' true
+    set_json_property "${VSCODE_CONFIG_FILE}" 'diffEditor.maxComputationTime' 10000 # 10 seconds
+    set_json_property "${VSCODE_CONFIG_FILE}" 'git.autofetch' true
+    set_json_property "${VSCODE_CONFIG_FILE}" 'git.autofetchPeriod' 300
+    set_json_property "${VSCODE_CONFIG_FILE}" 'git.autoStash' true
 
     # Telemetry
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["telemetry.enableCrashReporter"]' false
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["telemetry.enableTelemetry"]' false
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["telemetry.telemetryLevel"]' "off"
+    set_json_property "${VSCODE_CONFIG_FILE}" 'telemetry.enableCrashReporter' false
+    set_json_property "${VSCODE_CONFIG_FILE}" 'telemetry.enableTelemetry' false
+    set_json_property "${VSCODE_CONFIG_FILE}" 'telemetry.telemetryLevel' 'off'
 
     # Feedback
     set_config_values "${VSCODE_CONFIG_FILE}" \
         '.["github.copilot.chat.feedback.onChange"]' false
 
     # Copilot
-    set_json_property "${VSCODE_CONFIG_FILE}" '.["chat.permissions.default"]' 'autoApprove'
+    set_json_property "${VSCODE_CONFIG_FILE}" 'chat.permissions.default' 'autoApprove'
 
     if does_bin_exist 'com.visualstudio.code' \
     && is_flatpak_installed 'org.freedesktop.Sdk.Extension.mono6/x86_64/21.08'; then
-        set_json_property "${VSCODE_CONFIG_FILE}" '.["omnisharp.monoPath"]' '/usr/lib/sdk/mono6'
-        set_json_property "${VSCODE_CONFIG_FILE}" '.["omnisharp.useGlobalMono"]' 'always'
+        set_json_property "${VSCODE_CONFIG_FILE}" 'omnisharp.monoPath' '/usr/lib/sdk/mono6'
+        set_json_property "${VSCODE_CONFIG_FILE}" 'omnisharp.useGlobalMono' 'always'
 
         FLATPAK_DOTNET_SDK=$(ls '${ROOT_VAR_LIB}/flatpak/runtime/' | \
                                 grep "org.freedesktop.Sdk.Extension.dotnet" | \
@@ -1610,7 +1610,7 @@ if does_bin_exist 'tlp'; then
     set_config_value "${TLP_CONFIG_FILE}" "USB_AUTOSUSPEND" 1
     set_config_value "${TLP_CONFIG_FILE}" "USB_AUTOSUSPEND_DISABLE_ON_SHUTDOWN" 1
 
-    set_config_value "${TLP_CONFIG_FILE}" "WIFI_PWR_ON_AC" "off"
+    set_config_value "${TLP_CONFIG_FILE}" "WIFI_PWR_ON_AC" 'off'
     set_config_value "${TLP_CONFIG_FILE}" "WIFI_PWR_ON_BAT" "on"
 
     set_config_value "${TLP_CONFIG_FILE}" "MAX_LOST_WORK_SECS_ON_AC" "${DIRTY_WRITEBACK_DEFAULT_SECS}"
@@ -1818,28 +1818,28 @@ if does_bin_exist 'micro'; then
     fi
 
 	# Behaviour
-    set_json_property "${MICRO_SETTINGS_FILE}" '.["autoclose"]' false # Whether to automatically close braces
-    set_json_property "${MICRO_SETTINGS_FILE}" '.["savecursor"]' true
-    set_json_property "${MICRO_SETTINGS_FILE}" '.["saveundo"]' true
-    #set_json_property "${MICRO_SETTINGS_FILE}" '.["smartpaste"]' true # It's true by default and gets removed if set
+    set_json_property "${MICRO_SETTINGS_FILE}" 'autoclose' false # Whether to automatically close braces
+    set_json_property "${MICRO_SETTINGS_FILE}" 'savecursor' true
+    set_json_property "${MICRO_SETTINGS_FILE}" 'saveundo' true
+    #set_json_property "${MICRO_SETTINGS_FILE}" 'smartpaste' true # It's true by default and gets removed if set
 
 	# Coding style
-    set_json_property "${MICRO_SETTINGS_FILE}" '.["ftoptions"]' false # Required as it could overwrite tabstospaces
-    #set_json_property "${MICRO_SETTINGS_FILE}" '.["tabsize"]' 4 # It is 4 by default and gets removed if set
-    set_json_property "${MICRO_SETTINGS_FILE}" '.["tabstospaces"]' true
+    set_json_property "${MICRO_SETTINGS_FILE}" 'ftoptions' false # Required as it could overwrite tabstospaces
+    #set_json_property "${MICRO_SETTINGS_FILE}" 'tabsize' 4 # It is 4 by default and gets removed if set
+    set_json_property "${MICRO_SETTINGS_FILE}" 'tabstospaces' true
 
 	# Appearance
-    set_json_property "${MICRO_SETTINGS_FILE}" '.["colorscheme"]' "twilight"
-    set_json_property "${MICRO_SETTINGS_FILE}" '.["scrollbar"]' true
+    set_json_property "${MICRO_SETTINGS_FILE}" 'colorscheme' "twilight"
+    set_json_property "${MICRO_SETTINGS_FILE}" 'scrollbar' true
 
     # Keybindings
-    set_json_property "${MICRO_BINDINGS_FILE}" '.["CtrlRightSq"]' 'JumpToMatchingBrace'
-    set_json_property "${MICRO_BINDINGS_FILE}" '.["Ctrl-g"]' 'JumpLine'
-    set_json_property "${MICRO_BINDINGS_FILE}" '.["Ctrl-k"]' 'CopyLine,DeleteLine'
-    set_json_property "${MICRO_BINDINGS_FILE}" '.["F3"]' 'FindNext'
+    set_json_property "${MICRO_BINDINGS_FILE}" 'CtrlRightSq' 'JumpToMatchingBrace'
+    set_json_property "${MICRO_BINDINGS_FILE}" 'Ctrl-g' 'JumpLine'
+    set_json_property "${MICRO_BINDINGS_FILE}" 'Ctrl-k' 'CopyLine,DeleteLine'
+    set_json_property "${MICRO_BINDINGS_FILE}" 'F3' 'FindNext'
 
     # Others
-    set_json_property "${MICRO_SETTINGS_FILE}" '.["linter"]' false
+    set_json_property "${MICRO_SETTINGS_FILE}" 'linter' false
 fi
 
 if does_bin_exist 'pluma'; then
@@ -1882,11 +1882,11 @@ if does_bin_exist "fragments" "de.haeckerfelix.Fragments"; then
 
     set_gsetting "${FRAGMENTS_SCHEMA}" dark-mode ${DESKTOP_THEME_IS_DARK}
 
-    set_json_property "${FRAGMENTS_SETTINGS_FILE}" '.["encryption"]' 1
-    set_json_property "${FRAGMENTS_SETTINGS_FILE}" '.["download-dir"]' "${XDG_DOWNLOAD_DIR}"
-    set_json_property "${FRAGMENTS_SETTINGS_FILE}" '.["incomplete-dir"]' "${XDG_DOWNLOAD_DIR}/.incomplete_fragments"
-    set_json_property "${FRAGMENTS_SETTINGS_FILE}" '.["incomplete-dir-enabled"]' true
-    set_json_property "${FRAGMENTS_SETTINGS_FILE}" '.["download-queue-size"]' 5
+    set_json_property "${FRAGMENTS_SETTINGS_FILE}" 'encryption' 1
+    set_json_property "${FRAGMENTS_SETTINGS_FILE}" 'download-dir' "${XDG_DOWNLOAD_DIR}"
+    set_json_property "${FRAGMENTS_SETTINGS_FILE}" 'incomplete-dir' "${XDG_DOWNLOAD_DIR}/.incomplete_fragments"
+    set_json_property "${FRAGMENTS_SETTINGS_FILE}" 'incomplete-dir-enabled' true
+    set_json_property "${FRAGMENTS_SETTINGS_FILE}" 'download-queue-size' 5
 fi
 
 ########################

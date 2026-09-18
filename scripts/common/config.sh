@@ -252,15 +252,22 @@ function set_json_property() {
     local PROPERTY="${2}"
     local VALUE_RAW="${@:3}"
 
+    if [[ ${PROPERTY} != .* ]]; then
+        PROPERTY=".[$(printf '%s' "${PROPERTY}" | jq -Rsa .)]"
+    fi
+
     local FILE_CONTENT=$(cat "${FILE_PATH}" | grep -v "^[ \t]*//" | tr -d '\n' | sed 's/,[ \t]*}/ }/g')
     local CURRENT_VALUE=$(jq "${PROPERTY}" <<< "${FILE_CONTENT}")
 
     if is_value_string "${VALUE_RAW}"; then
         if [ "\"${VALUE_RAW}\"" != "${CURRENT_VALUE}" ]; then
+            local UPDATED_CONTENT
+            UPDATED_CONTENT=$(jq --arg value "${VALUE_RAW}" "${PROPERTY}=\$value" <<< "${FILE_CONTENT}") || return 1
+
             if [ -w "${FILE_PATH}" ]; then
-                jq --arg value "${VALUE_RAW}" "${PROPERTY}=\$value" <<< "${FILE_CONTENT}" > "${FILE_PATH}"
+                printf '%s\n' "${UPDATED_CONTENT}" > "${FILE_PATH}"
             elif ${HAS_SU_PRIVILEGES}; then
-                jq --arg value "${VALUE_RAW}" "${PROPERTY}=\$value" <<< "${FILE_CONTENT}" | run_as_su tee "${FILE_PATH}" > /dev/null
+                printf '%s\n' "${UPDATED_CONTENT}" | run_as_su tee "${FILE_PATH}" > /dev/null
             else
                 echo "Cannot set ${PROPERTY}=${VALUE_RAW} in ${FILE_PATH}"
                 return
@@ -280,10 +287,13 @@ function set_json_property() {
     if [ "${VALUE}" != "${CURRENT_VALUE}" ] \
     && [ "${VALUE_RAW}" != "${CURRENT_VALUE}" ] \
     && [ "\"${VALUE_RAW}\"" != "${CURRENT_VALUE}" ]; then
+        local UPDATED_CONTENT
+        UPDATED_CONTENT=$(jq "${PROPERTY}"'='"${VALUE}" <<< "${FILE_CONTENT}") || return 1
+
         if [ -w "${FILE_PATH}" ]; then
-            jq "${PROPERTY}"'='"${VALUE}" <<< "${FILE_CONTENT}" > "${FILE_PATH}"
+            printf '%s\n' "${UPDATED_CONTENT}" > "${FILE_PATH}"
         elif ${HAS_SU_PRIVILEGES}; then
-            jq "${PROPERTY}"'='"${VALUE}" <<< "${FILE_CONTENT}" | run_as_su tee "${FILE_PATH}" > /dev/null
+            printf '%s\n' "${UPDATED_CONTENT}" | run_as_su tee "${FILE_PATH}" > /dev/null
         else
             echo "Cannot set ${PROPERTY}=${VALUE} in ${FILE_PATH}"
             return
