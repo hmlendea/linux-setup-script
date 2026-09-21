@@ -1308,8 +1308,6 @@ if does_bin_exist 'code' 'code-oss' 'codium' 'com.visualstudio.code'; then
     set_json_property "${VSCODE_CONFIG_FILE}" 'git.autoStash' true
 
     # Telemetry
-    set_json_property "${VSCODE_CONFIG_FILE}" 'telemetry.enableCrashReporter' false
-    set_json_property "${VSCODE_CONFIG_FILE}" 'telemetry.enableTelemetry' false
     set_json_property "${VSCODE_CONFIG_FILE}" 'telemetry.telemetryLevel' 'off'
 
     # Feedback
@@ -1873,14 +1871,14 @@ fi
 ###########################
 ### TORRENT DOWNLOADERS ###
 ###########################
-if does_bin_exist "fragments" "de.haeckerfelix.Fragments"; then
-    FRAGMENTS_SCHEMA="de.haeckerfelix.Fragments"
+if does_bin_exist 'fragments' 'de.haeckerfelix.Fragments'; then
+    FRAGMENTS_SCHEMA='de.haeckerfelix.Fragments'
     FRAGMENTS_CONFIG_DIR="${XDG_CONFIG_HOME}/fragments"
     [ -d "${HOME_VAR_APP}/de.haeckerfelix.Fragments" ] && FRAGMENTS_CONFIG_DIR="${HOME_VAR_APP}/de.haeckerfelix.Fragments/config/fragments"
 
     FRAGMENTS_SETTINGS_FILE="${FRAGMENTS_CONFIG_DIR}/settings.json"
 
-    set_gsetting "${FRAGMENTS_SCHEMA}" dark-mode ${DESKTOP_THEME_IS_DARK}
+    set_gsetting "${FRAGMENTS_SCHEMA}" 'dark-mode' ${DESKTOP_THEME_IS_DARK}
 
     set_json_property "${FRAGMENTS_SETTINGS_FILE}" 'encryption' 1
     set_json_property "${FRAGMENTS_SETTINGS_FILE}" 'download-dir' "${XDG_DOWNLOAD_DIR}"
@@ -1892,28 +1890,28 @@ fi
 ########################
 ### TRANSLATION APPS ###
 ########################
-if does_bin_exist "dialect"; then
-    DIALECT_SCHEMA="com.github.gi_lom.dialect"
+if does_bin_exist 'dialect'; then
+    DIALECT_SCHEMA='com.github.gi_lom.dialect'
 
-    set_gsetting "${DIALECT_SCHEMA}" dark-mode ${DESKTOP_THEME_IS_DARK}
-    set_gsetting "${DIALECT_SCHEMA}" show-pronunciation true
-    set_gsetting "${DIALECT_SCHEMA}" translate-accel 1
+    set_gsetting "${DIALECT_SCHEMA}" 'dark-mode' ${DESKTOP_THEME_IS_DARK}
+    set_gsetting "${DIALECT_SCHEMA}" 'show-pronunciation' true
+    set_gsetting "${DIALECT_SCHEMA}" 'translate-accel' 1
 fi
 
 #####################
 ### VIDEO PLAYERS ###
 #####################
-if does_bin_exist "totem" "org.gnome.Totem"; then
-    TOTEM_SCHEMA="org.gnome.totem"
+if does_bin_exist 'totem' 'org.gnome.Totem'; then
+    TOTEM_SCHEMA='org.gnome.totem'
 
-    set_gsetting "${TOTEM_SCHEMA}" autoload-subtitles true
-    set_gsetting "${TOTEM_SCHEMA}" repeat false
-    set_gsetting "${TOTEM_SCHEMA}" subtitle-encoding "UTF-8"
-    set_gsetting "${TOTEM_SCHEMA}" subtitle-font "${SUBTITLES_FONT}"
+    set_gsetting "${TOTEM_SCHEMA}" 'autoload-subtitles' true
+    set_gsetting "${TOTEM_SCHEMA}" 'repeat' false
+    set_gsetting "${TOTEM_SCHEMA}" 'subtitle-encoding' 'UTF-8'
+    set_gsetting "${TOTEM_SCHEMA}" 'subtitle-font' "${SUBTITLES_FONT}"
 fi
 
-if does_bin_exist "com.github.rafostar.Clapper"; then
-    CLAPPER_SCHEMA="com.github.rafostar.Clapper"
+if does_bin_exist 'com.github.rafostar.Clapper'; then
+    CLAPPER_SCHEMA='com.github.rafostar.Clapper'
 
     set_gsetting "${CLAPPER_SCHEMA}" 'fullscreen-auto' true
     set_gsetting "${CLAPPER_SCHEMA}" 'resume-enabled' true
