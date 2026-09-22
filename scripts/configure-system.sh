@@ -1316,8 +1316,10 @@ if does_bin_exist 'code' 'code-oss' 'codium' 'com.visualstudio.code'; then
 
     # Copilot
     set_config_values "${VSCODE_CONFIG_FILE}" \
-        'chat.agent.maxRequests' 75,
-        'chat.permissions.default' 'autoApprove'
+        'chat.planAgent.defaultModel' 'Auto (copilot)' \
+        'chat.agent.maxRequests' 75 \
+        'chat.permissions.default' 'autoApprove' \
+        'inlineChat.defaultModel' 'Auto (copilot)'
 
     if does_bin_exist 'com.visualstudio.code' \
     && is_flatpak_installed 'org.freedesktop.Sdk.Extension.mono6/x86_64/21.08'; then
