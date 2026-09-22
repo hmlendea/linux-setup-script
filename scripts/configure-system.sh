@@ -1315,7 +1315,9 @@ if does_bin_exist 'code' 'code-oss' 'codium' 'com.visualstudio.code'; then
         '.["github.copilot.chat.feedback.onChange"]' false
 
     # Copilot
-    set_json_property "${VSCODE_CONFIG_FILE}" 'chat.permissions.default' 'autoApprove'
+    set_config_values "${VSCODE_CONFIG_FILE}" \
+        'chat.agent.maxRequests' 75,
+        'chat.permissions.default' 'autoApprove'
 
     if does_bin_exist 'com.visualstudio.code' \
     && is_flatpak_installed 'org.freedesktop.Sdk.Extension.mono6/x86_64/21.08'; then
