@@ -93,6 +93,9 @@ GIMP_LAUNCHER="$(get_first_available_launcher \
     'org.gimp.GIMP' 'org.gimp.GIMP.desktop' \
     'gimp' 'gimp.desktop')"
 
+# IDE
+IDE_LAUNCHER="code.desktop"
+
 # Image viewers
 IMAGE_VIEWER_LAUNCHER="$(get_first_available_launcher \
     'org.gnome.Loupe' 'org.gnome.Loupe.desktop' \
@@ -218,6 +221,10 @@ fi
 
 if [ -n "${FILE_MANAGER_LAUNCHER}" ]; then
     update_mimetype_association 'x-scheme-handler/file' "${FILE_MANAGER_LAUNCHER}"
+fi
+
+if [ -n "${IDE_LAUNCHER}" ]; then
+    update_mimetype_association 'application/json' "${IDE_LAUNCHER}"
 fi
 
 if [ -n "${STEAM_LAUNCHER}" ]; then
