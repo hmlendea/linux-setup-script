@@ -89,6 +89,10 @@ fi
 install_native_package 'git'
 install_native_package 'automake'
 
+if ${IS_DEVELOPMENT_DEVICE}; then
+    install_native_package 'github-cli'
+fi
+
 #####################################
 ### Development - Runtimes & SDKs ###
 #####################################
