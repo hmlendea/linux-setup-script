@@ -90,7 +90,12 @@ install_native_package 'git'
 install_native_package 'automake'
 
 if ${IS_DEVELOPMENT_DEVICE}; then
-    install_native_package 'github-cli'
+    if [ "${DISTRO_FAMILY}" = 'Debian' ] \
+    || [ "${DISTRO_FAMILY}" = 'Ubuntu' ]; then
+        install_native_package 'gh'
+    else
+        install_native_package 'github-cli'
+    fi
 fi
 
 #####################################
