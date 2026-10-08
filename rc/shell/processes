@@ -25,7 +25,27 @@ function start_ssh_agent() {
     load_ssh_agent_env
 }
 
+function ensure_ssh_key_in_agent() {
+    local KEY_PATH="${1}"
+    [[ -f "${KEY_PATH}" ]] || return 0
+
+    local KEY_FINGERPRINT
+    KEY_FINGERPRINT="$(ssh-keygen -lf "${KEY_PATH}" | awk '{print $2}')"
+    ssh-add -l 2>/dev/null | grep -qF "${KEY_FINGERPRINT}" && return 0
+
+    ssh-add "${KEY_PATH}" 2>/dev/null || true
+}
+
 if command -v ssh-agent >/dev/null 2>&1 \
 && command -v ssh-add >/dev/null 2>&1; then
-    load_ssh_agent_env || start_ssh_agent
+    # Prefer GCR ssh-agent if available (it persists keys across sessions)
+    if [[ -S "/run/user/$(id -u)/gcr/.ssh" ]]; then
+        export SSH_AUTH_SOCK="/run/user/$(id -u)/gcr/.ssh"
+    # Fall back to systemd ssh-agent socket if available
+    elif [[ -S "${XDG_RUNTIME_DIR}/ssh-agent.socket" ]] || [[ -S "/run/user/$(id -u)/ssh-agent.socket" ]]; then
+        export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/ssh-agent.socket"
+        [[ ! -S "${SSH_AUTH_SOCK}" ]] && export SSH_AUTH_SOCK="/run/user/$(id -u)/ssh-agent.socket"
+    else
+        load_ssh_agent_env || start_ssh_agent
+    fi
 fi

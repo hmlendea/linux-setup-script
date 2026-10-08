@@ -32,4 +32,13 @@ if [ "${OS}" =  'Linux' ]; then
     does_bin_exist 'localsearch' && mask_user_service 'localsearch-3'
     does_bin_exist 'obexctl' && mask_user_service 'obex'
     does_bin_exist 'pipewire' && disable_user_service 'filter-chain'
+
+    # Enable ssh-agent socket for SSH key management
+    if does_bin_exist 'ssh-agent'; then
+        if does_file_exist "${ROOT_USR_LIB}/systemd/user/ssh-agent.socket"; then
+            enable_user_service 'ssh-agent.socket'
+        elif does_file_exist "${ROOT_USR_LIB}/systemd/user/gcr-ssh-agent.socket"; then
+            enable_user_service 'gcr-ssh-agent.socket'
+        fi
+    fi
 fi

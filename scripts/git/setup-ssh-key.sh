@@ -26,7 +26,16 @@ ssh-keygen \
     -f "${KEY_FILE_PATH}"
 
 echo "Adding the SSH key to the agent..."
-eval "$(ssh-agent -s)"
+# Prefer GCR ssh-agent if available (it persists keys across sessions)
+if [[ -S "/run/user/$(id -u)/gcr/.ssh" ]]; then
+    export SSH_AUTH_SOCK="/run/user/$(id -u)/gcr/.ssh"
+# Fall back to systemd ssh-agent socket if available
+elif [[ -S "${XDG_RUNTIME_DIR}/ssh-agent.socket" ]] || [[ -S "/run/user/$(id -u)/ssh-agent.socket" ]]; then
+    export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/ssh-agent.socket"
+    [[ ! -S "${SSH_AUTH_SOCK}" ]] && export SSH_AUTH_SOCK="/run/user/$(id -u)/ssh-agent.socket"
+else
+    eval "$(ssh-agent -s)"
+fi
 ssh-add "${KEY_FILE_PATH}"
 echo "Host github.com" > "${SSH_CONFIG_FILE_PATH}"
 echo "    User git" >> "${SSH_CONFIG_FILE_PATH}"

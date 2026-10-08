@@ -105,6 +105,14 @@ function unmask_user_service {
     fi
 }
 
+function enable_user_service {
+    local SERVICE_NAME="${*}"
+
+    if does_bin_exist 'systemctl'; then
+        systemctl --user enable --now "${SERVICE_NAME}"
+    fi
+}
+
 function set_service_property {
     local SERVICE_NAME="${1}"
     local SECTION="${2}"
