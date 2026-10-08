@@ -346,6 +346,24 @@ generate_ssh_key() {
     chmod 644 "${path}.pub"
 }
 
+# Add SSH key to agent (auto-detects best available agent)
+add_ssh_key_to_agent() {
+    local key_path="$1"
+
+    # Prefer GCR ssh-agent (GNOME Keyring) if available
+    if [[ -S "/run/user/$(id -u)/gcr/.ssh" ]]; then
+        export SSH_AUTH_SOCK="/run/user/$(id -u)/gcr/.ssh"
+    # Fall back to systemd ssh-agent socket if available
+    elif [[ -S "${XDG_RUNTIME_DIR}/ssh-agent.socket" ]] || [[ -S "/run/user/$(id -u)/ssh-agent.socket" ]]; then
+        export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/ssh-agent.socket"
+        [[ ! -S "${SSH_AUTH_SOCK}" ]] && export SSH_AUTH_SOCK="/run/user/$(id -u)/ssh-agent.socket"
+    else
+        eval "$(ssh-agent -s)"
+    fi
+
+    ssh-add "${key_path}"
+}
+
 # GPG key generation with secure defaults
 generate_gpg_key() {
     local name="$1"

@@ -215,7 +215,7 @@ fi
 function enable_user_service() {
     local SERVICE="${1}"
 
-    systemctl --user enable "${SERVICE}"
+    systemctl --user enable --now "${SERVICE}"
 }
 ```
 
@@ -228,6 +228,7 @@ function enable_user_service() {
 **Example:**
 ```bash
 enable_user_service "pipewire"
+enable_user_service "ssh-agent.socket"
 ```
 
 ### disable_user_service

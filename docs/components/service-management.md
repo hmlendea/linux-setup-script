@@ -93,7 +93,28 @@ disable_user_service <service_name>
 enable_and_start_user_service <service_name>
 ```
 
-### 5. Service File Management
+### 5. SSH Agent Socket Management
+
+```bash
+# Enable SSH agent socket for persistent key management
+# Auto-detects best available agent (GCR → systemd → file-based)
+enable_ssh_agent_socket() {
+    if command_exists ssh-agent; then
+        if [ -f "/usr/lib/systemd/user/ssh-agent.socket" ]; then
+            enable_user_service "ssh-agent.socket"
+        elif [ -f "/usr/lib/systemd/user/gcr-ssh-agent.socket" ]; then
+            enable_user_service "gcr-ssh-agent.socket"
+        fi
+    fi
+}
+```
+
+**Agent Selection Priority:**
+1. **GCR ssh-agent** (GNOME Keyring) — `/run/user/$(id -u)/gcr/.ssh` — Keys persist across logins
+2. **systemd ssh-agent.socket** — `/run/user/$(id -u)/ssh-agent.socket` — Keys persist while session active
+3. **File-based agent** — `~/.cache/ssh-agent.env` — Fallback for non-systemd systems
+
+### 6. Service File Management
 
 ```bash
 # Install a systemd service file

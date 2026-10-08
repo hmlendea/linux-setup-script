@@ -73,7 +73,7 @@ configure_git_hooks
 # Generate SSH key
 generate_ssh_key <email> [key_type] [key_path]
 
-# Add SSH key to agent
+# Add SSH key to agent (auto-detects best available agent)
 add_ssh_key_to_agent <key_path>
 
 # Copy SSH key to clipboard
@@ -85,6 +85,11 @@ test_ssh_connection <host>
 # Configure SSH config
 configure_ssh_config <host> <user> <key_path>
 ```
+
+**Agent Selection Priority:**
+1. **GCR ssh-agent** (GNOME Keyring) — `/run/user/$(id -u)/gcr/.ssh` — Keys persist across logins
+2. **systemd ssh-agent.socket** — `/run/user/$(id -u)/ssh-agent.socket` — Keys persist while session active
+3. **File-based agent** — `~/.cache/ssh-agent.env` — Fallback for non-systemd systems
 
 ### 4. GPG Key Management
 

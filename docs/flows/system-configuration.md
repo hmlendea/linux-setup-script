@@ -504,19 +504,48 @@ set -euo pipefail
 configure_services_user() {
     log_section "User Service Configuration"
 
-    # Enable user services
-    local services=(
-        "pipewire"
-        "pipewire-pulse"
-        "xdg-desktop-portal"
-    )
+    # Mask unnecessary GNOME services
+    if [ "${DESKTOP_ENVIRONMENT}" = "GNOME" ]; then
+        local gnome_services=(
+            "ibus"
+            "org.gnome.SettingsDaemon.Sharing"
+            "org.gnome.SettingsDaemon.Smartcard"
+            "org.gnome.SettingsDaemon.UsbProtection"
+            "org.gnome.SettingsDaemon.Wacom"
+        )
+        for service in "${gnome_services[@]}"; do
+            systemctl --user mask "${service}" 2>/dev/null || true
+            log_info "Masked user service: ${service}"
+        done
 
-    for service in "${services[@]}"; do
-        if command_exists systemctl; then
-            systemctl --user enable "${service}" 2>/dev/null || true
-            log_info "Enabled user service: ${service}"
+        if [ "${POWERFUL_PC}" != "true" ]; then
+            local tracker_services=(
+                "tracker-miner-fs"
+                "tracker-extract"
+                "tracker-store"
+            )
+            for service in "${tracker_services[@]}"; do
+                systemctl --user mask "${service}" 2>/dev/null || true
+                log_info "Masked user service: ${service}"
+            done
         fi
-    done
+    fi
+
+    # Mask other unnecessary services
+    command_exists localsearch && systemctl --user mask "localsearch-3" 2>/dev/null || true
+    command_exists obexctl && systemctl --user mask "obex" 2>/dev/null || true
+    command_exists pipewire && systemctl --user disable "filter-chain" 2>/dev/null || true
+
+    # Enable SSH agent socket for persistent key management
+    if command_exists ssh-agent; then
+        if [ -f "/usr/lib/systemd/user/ssh-agent.socket" ]; then
+            systemctl --user enable --now "ssh-agent.socket" 2>/dev/null || true
+            log_info "Enabled ssh-agent.socket"
+        elif [ -f "/usr/lib/systemd/user/gcr-ssh-agent.socket" ]; then
+            systemctl --user enable --now "gcr-ssh-agent.socket" 2>/dev/null || true
+            log_info "Enabled gcr-ssh-agent.socket"
+        fi
+    fi
 
     log_success "User services configured"
 }

@@ -112,9 +112,18 @@ configure_ssh_key() {
     log_info "Generating SSH key..."
     ssh-keygen -t ed25519 -C "${GIT_EMAIL:-user@example.com}" -f "${ssh_dir}/id_ed25519" -N ""
 
-    # Add to ssh-agent
+    # Add to ssh-agent (prefer persistent system agents)
     if command_exists ssh-agent; then
-        eval "$(ssh-agent -s)"
+        # Prefer GCR ssh-agent (GNOME Keyring) if available
+        if [[ -S "/run/user/$(id -u)/gcr/.ssh" ]]; then
+            export SSH_AUTH_SOCK="/run/user/$(id -u)/gcr/.ssh"
+        # Fall back to systemd ssh-agent socket if available
+        elif [[ -S "${XDG_RUNTIME_DIR}/ssh-agent.socket" ]] || [[ -S "/run/user/$(id -u)/ssh-agent.socket" ]]; then
+            export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/ssh-agent.socket"
+            [[ ! -S "${SSH_AUTH_SOCK}" ]] && export SSH_AUTH_SOCK="/run/user/$(id -u)/ssh-agent.socket"
+        else
+            eval "$(ssh-agent -s)"
+        fi
         ssh-add "${ssh_dir}/id_ed25519"
         log_info "SSH key added to agent"
     fi
