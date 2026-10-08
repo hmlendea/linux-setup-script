@@ -49,6 +49,9 @@ function configure_kernel_parameters() {
         GRUB_CMDLINE_LINUX_DEFAULT="${GRUB_CMDLINE_LINUX_DEFAULT} pcie_aspm=force"
     fi
 
+    # Auto-repair filesystem errors at boot
+    GRUB_CMDLINE_LINUX_DEFAULT="${GRUB_CMDLINE_LINUX_DEFAULT} fsck.repair=yes"
+
     # Update GRUB configuration
     update_grub_config "${GRUB_CMDLINE_LINUX_DEFAULT}"
 }

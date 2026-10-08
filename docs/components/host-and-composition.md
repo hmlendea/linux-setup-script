@@ -171,7 +171,7 @@ source "scripts/common/system-info.sh"
 source "scripts/common/config.sh"
 
 # Base kernel parameters
-local kernel_params="mitigations=off random.trust_cpu=on"
+local kernel_params="mitigations=off random.trust_cpu=on fsck.repair=yes"
 
 # Intel-specific
 if [ "${GPU_FAMILY}" = "intel" ]; then

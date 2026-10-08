@@ -326,7 +326,7 @@ fi
 # Powerful PC: enable aggressive optimisations
 if [ "${IS_POWERFUL_PC}" = "true" ]; then
     set_config_value "/etc/default/grub" "GRUB_CMDLINE_LINUX_DEFAULT" \
-        "mitigations=off random.trust_cpu=on"
+        "mitigations=off random.trust_cpu=on fsck.repair=yes"
 fi
 ```
 

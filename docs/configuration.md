@@ -343,7 +343,7 @@ Host *
 ```bash
 GRUB_TIMEOUT=5
 GRUB_THEME=/boot/grub/themes/.../theme.txt
-GRUB_CMDLINE_LINUX_DEFAULT="mitigations=off random.trust_cpu=on intel_idle.max_cstate=1 resume=/swapfile quiet loglevel=3"
+GRUB_CMDLINE_LINUX_DEFAULT="mitigations=off random.trust_cpu=on fsck.repair=yes intel_idle.max_cstate=1 resume=/swapfile quiet loglevel=3"
 ```
 
 **Custom Entries** (`/etc/grub.d/`):

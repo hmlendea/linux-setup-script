@@ -321,6 +321,7 @@ if [ -f "${ROOT_ETC}/default/grub" ] \
     BOOT_FLAGS_DEFAULT='loglevel=3 quiet' # Defaults
     BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} random.trust_cpu=on" # Trust the CPU random number generator rather than software. Better boot time
     BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} mitigations=off" # Trust the CPU random number generator ratherthan software. Better boot time
+    BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} fsck.repair=yes" # Auto-repair filesystem errors at boot
 
     #if [ "${CHASSIS_TYPE}" = "Laptop" ] && is_driver_loaded "i915"; then
         #BOOT_FLAGS_DEFAULT="${BOOT_FLAGS_DEFAULT} i915.lvds_downclock=1"    # !CAN CAUSE TEARING! Downclocks the LVDS refresh rate
