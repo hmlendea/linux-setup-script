@@ -122,7 +122,7 @@ if [ "${OS}" = 'Linux' ] && ${HAS_GUI}; then
             'notification' false \
             'speakers' false
     done
-    for IDE_APP in 'com.visualstudio.code' 'visual-studio-code'; do
+    for IDE_APP in 'com.microsoft.VSCode.desktop' 'com.visualstudio.code' 'visual-studio-code'; do
         set_linux_permission "${IDE_APP}" \
             'background' false \
             'camera' false \

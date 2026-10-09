@@ -360,6 +360,7 @@ IDE_CATEGORIES="Development;IDE;"
 for LAUNCHER in "${GLOBAL_LAUNCHERS_DIR}/code-oss.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/code.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/codium.desktop" \
+                "${GLOBAL_LAUNCHERS_DIR}/com.microsoft.VSCode.desktop" \
                 "${GLOBAL_LAUNCHERS_DIR}/visual-studio-code.desktop" \
                 "${GLOBAL_FLATPAK_LAUNCHERS_DIR}/com.visualstudio.code.desktop" \
                 "${LOCAL_FLATPAK_LAUNCHERS_DIR}/com.visualstudio.code.desktop"; do
