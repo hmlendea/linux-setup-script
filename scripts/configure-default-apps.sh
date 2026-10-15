@@ -94,7 +94,7 @@ GIMP_LAUNCHER="$(get_first_available_launcher \
     'gimp' 'gimp.desktop')"
 
 # IDE
-IDE_LAUNCHER="${get_first_available_launcher \
+IDE_LAUNCHER="$(get_first_available_launcher \
     'code.desktop' 'com.microsoft.VSCode.desktop')"
 
 # Image viewers

@@ -15,19 +15,19 @@ The git setup flow configures git for the user, sets up SSH and GPG keys, and in
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                    Git Configuration                          │
-│  • Configure global git settings                              │
-│  • Set up SSH key                                             │
-│  • Set up GPG key                                             │
-│  • Configure GitHub CLI                                       │
+│                    Git Configuration                            │
+│  • Configure global git settings                                │
+│  • Set up SSH key                                               │
+│  • Set up GPG key                                               │
+│  • Configure GitHub CLI                                         │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                    GitHub Integration                         │
-│  • Configure GitHub CLI                                       │
-│  • Set up GitHub authentication                               │
-│  • Configure SSH for GitHub                                   │
+│                    GitHub Integration                           │
+│  • Configure GitHub CLI                                         │
+│  • Set up GitHub authentication                                 │
+│  • Configure SSH for GitHub                                     │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
