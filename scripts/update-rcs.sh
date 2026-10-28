@@ -63,6 +63,10 @@ if does_bin_exist 'bash'; then
     update_file_if_distinct "${REPO_RC_DIR}/shell/bashrc" "${HOME}/.bash_prompt"
 fi
 
+if does_bin_exist 'dotnet'; then
+    update_file_if_distinct "${REPO_RC_DIR}/dotnet/editorconfig" "${HOME}/.editorconfig"
+fi
+
 if does_bin_exist 'ssh'; then
     create_directory "${SSH_CONFIG_DIR}/config.d"
     create_file "${SSH_CONFIG_FILE}"
