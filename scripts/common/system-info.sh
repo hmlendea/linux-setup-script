@@ -645,7 +645,9 @@ function get_chassis_type() {
         return
     fi
 
-    if [ "$(get_device_model)" = 'Argon ONE UP' ]; then
+    local DEVICE_MODEL="$(get_device_model)"
+
+    if [[ "${DEVICE_MODEL}" =~ 'Argon ONE UP' ]]; then
         echo 'Laptop'
         return
     fi

@@ -742,19 +742,28 @@ fi
 #    set_config_value "${HOME}/.ICAClient/wfclient.ini" SSLCiphers "ALL" # TODO: Make sure it is put under [WFClient]
 #fi
 
+#################
+### Compilers ###
+#################
+if ! ${POWERFUL_PC}; then
+    for MSBUILD_RSP_CONFIG_FILE in "${ROOT_USR_SHARE}/dotnet/sdk/"*'/MSBuild.rsp'; do
+        echo '-m:2' > "${MSBUILD_RSP_CONFIG_FILE}"
+    done
+fi
+
 #############################
 ### CONFIGURATION EDITORS ###
 #############################
-if does_bin_exist "dconf-editor"; then
-    set_gsetting ca.desrt.dconf-editor.Settings show-warning false
+if does_bin_exist 'dconf-editor'; then
+    set_gsetting 'ca.desrt.dconf-editor.Settings' show-warning false
 fi
 
 ################
 ### Contacts ###
 ################
-if does_bin_exist "gnome-contacts" "org.gnome.Contacts"; then
-    set_gsetting "org.gnome.Contacts" did-initial-setup true
-    set_gsetting "org.gnome.Contacts" sort-on-surname true
+if does_bin_exist 'gnome-contacts' 'org.gnome.Contacts'; then
+    set_gsetting 'org.gnome.Contacts' did-initial-setup true
+    set_gsetting 'org.gnome.Contacts' sort-on-surname true
 fi
 
 ##############
@@ -1555,6 +1564,12 @@ if does_bin_exist 'gnome-shell'; then
             'enable-battery-level-text' true
 fi
 
+if ${IS_BATTERY_DEVICE}; then
+    for policy in "${ROOT_SYS_DEVICES}/system/cpu/cpufreq/policy"*; do
+        echo 'schedutil' | sudo tee "$policy/scaling_governor" >/dev/null
+    done
+fi
+
 if does_bin_exist 'tlp'; then
     TLP_CONFIG_FILE="${ROOT_ETC}/tlp.conf"
 
@@ -1780,8 +1795,8 @@ fi
 ####################
 ### TEXT EDITORS ###
 ####################
-if does_bin_exist "gedit" "org.gnome.gedit"; then
-    GEDIT_EDITOR_SCHEMA="org.gnome.gedit.preferences.editor"
+if does_bin_exist 'gedit' 'org.gnome.gedit'; then
+    GEDIT_EDITOR_SCHEMA='org.gnome.gedit.preferences.editor'
 
     #if [ "${TEXT_EDITOR_FONT}" != "${MONOSPACE_FONT}" ]; then
         set_gsetting "${GEDIT_EDITOR_SCHEMA}" editor-font "${TEXT_EDITOR_FONT}"
