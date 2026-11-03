@@ -10,7 +10,9 @@ COMMIT_PREFIX=""
 
 if [ -n "${BRANCH_NAME}" ]; then
     COMMIT_PREFIX="${BRANCH_NAME}: "
-    COMMIT_MESSAGE=$(echo "${COMMIT_MESSAGE}" | sed 's/^'"${COMMIT_PREFIX}"'//gI')
+    while [[ "${COMMIT_MESSAGE,,}" == "${COMMIT_PREFIX,,}"* ]]; do
+        COMMIT_MESSAGE="${COMMIT_MESSAGE:${#COMMIT_PREFIX}}"
+    done
 fi
 
 if [[ ${COMMIT_MESSAGE} == Merge* ]]; then
