@@ -10,6 +10,42 @@ ROOT_PROC="${ROOT_PATH}/proc"
 ROOT_USR="${ROOT_PATH}/usr"
 ROOT_USR_BIN="${ROOT_USR}/bin"
 
+# Environment
+
+function resolve_xauthority() {
+    local CANDIDATE_PATH=''
+    local NEWEST_PATH=''
+
+    # A valid inherited value is always preferred (X11 sessions, remote X)
+    [ -n "${XAUTHORITY}" ] && [ -f "${XAUTHORITY}" ] && return 0
+
+    if [ -z "${XDG_RUNTIME_DIR}" ] && [ -d "/run/user/$(id -u)" ]; then
+        XDG_RUNTIME_DIR="/run/user/$(id -u)"
+    fi
+
+    for CANDIDATE_PATH in \
+        "${XDG_RUNTIME_DIR}/Xauthority" \
+        "${HOME}/.Xauthority"; do
+        if [ -f "${CANDIDATE_PATH}" ]; then
+            export XAUTHORITY="${CANDIDATE_PATH}"
+            return 0
+        fi
+    done
+
+    # Wayland (Mutter) sessions use a per-login Xwayland auth file
+    for CANDIDATE_PATH in "${XDG_RUNTIME_DIR}"/.mutter-Xwaylandauth.*; do
+        [ -f "${CANDIDATE_PATH}" ] || continue
+        [ -z "${NEWEST_PATH}" ] || [ "${CANDIDATE_PATH}" -nt "${NEWEST_PATH}" ] || continue
+        NEWEST_PATH="${CANDIDATE_PATH}"
+    done
+
+    [ -n "${NEWEST_PATH}" ] && export XAUTHORITY="${NEWEST_PATH}"
+
+    return 0
+}
+
+resolve_xauthority
+
 # Functions
 
 function poweroff() {

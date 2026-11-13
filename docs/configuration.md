@@ -292,7 +292,7 @@ Sources in order:
 1. `~/.profile`
 2. `${XDG_DATA_HOME}/bash/variables`
 3. `${XDG_DATA_HOME}/bash/aliases`
-4. `${XDG_DATA_HOME}/bash/functions`
+4. `${XDG_DATA_HOME}/bash/functions` (resolves `XAUTHORITY`)
 5. `${XDG_DATA_HOME}/bash/prompt`
 6. `${XDG_DATA_HOME}/bash/options`
 7. `${XDG_DATA_HOME}/bash/processes`
@@ -306,6 +306,16 @@ if [ -n "${BASH_VERSION}" ] && [ -f "${HOME}/.bashrc" ]; then
     . "${HOME}/.bashrc"
 fi
 ```
+
+**XAUTHORITY** (resolved at shell startup by `rc/shell/functions`):
+ Wayland sessions point it at a per-login
+Xwayland cookie file with a random name (`.mutter-Xwaylandauth.*`), so it is
+resolved dynamically, in order:
+
+1. Inherited `XAUTHORITY`, if the file exists
+2. `${XDG_RUNTIME_DIR}/Xauthority`
+3. `~/.Xauthority`
+4. Newest `${XDG_RUNTIME_DIR}/.mutter-Xwaylandauth.*`
 
 **Inputrc** (`~/.config/readline/inputrc`):
 From `rc/inputrc`

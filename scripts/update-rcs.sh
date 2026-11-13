@@ -154,10 +154,6 @@ set_config_values "${SHELL_VARIABLES_RC_PATH}" \
     'export NUGET_PACKAGES' "${XDG_CACHE_HOME}/nuget/packages" \
     'export SSL_CERT_DIR'   "${ROOT_ETC}/ssl/certs"
 
-if ${HAS_GUI} && [ "${DISTRO}" != 'Raspberry Pi OS' ]; then
-    set_config_value "${SHELL_VARIABLES_RC_PATH}" 'export XAUTHORITY' "${XDG_RUNTIME_DIR}/Xauthority"
-fi
-
 set_config_values "${SHELL_VARIABLES_RC_PATH}" \
     'export CARGOGHOME'         "${XDG_DATA_HOME}/cargo" \
     'export GNUPGHOME'          "${XDG_DATA_HOME}/gnupg" \
