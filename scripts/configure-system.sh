@@ -1268,6 +1268,7 @@ if does_bin_exist 'code' 'code-oss' 'codium' 'com.visualstudio.code'; then
 
     # Editor appearance
     set_json_property "${VSCODE_CONFIG_FILE}" 'editor.codeLens' false
+    set_json_property "${VSCODE_CONFIG_FILE}" 'editor.colorDecorators' true
     set_json_property "${VSCODE_CONFIG_FILE}" 'editor.fontFamily' "${TEXT_EDITOR_FONT_NAME} ${TEXT_EDITOR_FONT_STYLE}"
     set_json_property "${VSCODE_CONFIG_FILE}" 'editor.fontSize' $((TEXT_EDITOR_FONT_SIZE+3))
     set_json_property "${VSCODE_CONFIG_FILE}" 'editor.roundedSelection' true
@@ -1276,6 +1277,7 @@ if does_bin_exist 'code' 'code-oss' 'codium' 'com.visualstudio.code'; then
 
     # Editor behaviour
     #set_json_property "${VSCODE_CONFIG_FILE}" 'editor.autoClosingBrackets' false # It is false by default and gets removed if set
+    set_json_property "${VSCODE_CONFIG_FILE}" 'editor.colorDecoratorsLimit' 1000
     set_json_property "${VSCODE_CONFIG_FILE}" 'editor.find.autoFindInSelection' "never"
     set_json_property "${VSCODE_CONFIG_FILE}" 'editor.find.seedSearchStringFromSelection' "selection"
     set_json_property "${VSCODE_CONFIG_FILE}" 'editor.foldingMaximumRegions' 7500
